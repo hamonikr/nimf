@@ -1,0 +1,60 @@
+What is Dasom?
+-------------
+Dasom is a input method framework.
+Dasom is still early in development.
+
+DO NOT USE IN PRODUCTION YET
+
+
+Architecture
+------------
+
+
+      +- a process ---+    +----- a process -------+  +- a process --+
+      | gtk im module |    | gnome-shell-extension |  |   X server   |
+      +---------------+    +-----------------------+  +--------------+
+              |                        |                     ^ |
+              | calls                  | calls               | |
+              |                        |                     | |
+    +------------------+    +---------------------+          | |
+    | dasom IM library |    | dasom agent library |          | | communicates
+    +------------------+    +---------------------+          | |
+             ^ |                      ^ |                    | |
+             | |   communicates       | |                    | |
+             | |   via Unix Socket    | |                    | |
+             | v                      | v                    | v
+          +---------------------- a process ----------------------+
+          |                     dasom-daemon (including XIM)      |
+          +-------------------------------------------------------+
+                          |                        |
+                          | calls                  | calls
+                          | singleton instance     |
+                +---------------+            +------------------+
+                | engine module |            | candidate module |
+                |   interface   |            |    interface     |
+                +---------------+            +------------------+
+                  |                            |
+                  +- dasom-english             +- dasom-candidate-gtk3
+                  +- dasom-jeongeum
+
+
+Debugging
+---------
+    sudo /usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
+    sudo /usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
+    export GTK_IM_MODULE="dasom"
+    export G_MESSAGES_DEBUG=dasom
+    export XMODIFIERS="@im=dasom"
+    gedit
+
+
+References
+----------
+  http://www.x.org/releases/X11R7.6/doc/libX11/specs/XIM/xim.html
+  https://github.com/choehwanjin/nabi
+  https://git.gnome.org/browse/gtk+
+  https://github.com/ibus
+  http://docs.enlightenment.org/auto/efl/ecore_main.html
+  http://www.w3.org/TR/ime-api/
+  https://developer.chrome.com/extensions/input_ime
+  http://doc.qt.io/qt-5/qinputmethod.html
