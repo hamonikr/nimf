@@ -1,0 +1,10 @@
+{
+  "extension-id": "dasom-agent-extension",
+  "uuid": "dasom-agent@gnome-shell-extensions.cogno.org",
+  "original-author": "Hodong Kim",
+  "gettext-domain": "gnome-shell-extensions",
+  "name": "Dasom Agent",
+  "description": "Dasom Agent for Dasom Input Method Framework",
+  "shell-version": [ "3.14" ],
+  "url": "https://github.com/cogniti/dasom"
+}
