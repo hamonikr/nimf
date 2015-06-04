@@ -787,9 +787,21 @@ void _Xi18nChangeIC (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto(ims, call_data))) {
-            XFree (value_buf);
-            return;
+        if (i18n_core->address.user_data)
+        {
+                if (!(i18n_core->address.improto(ims, call_data, i18n_core->address.user_data))) {
+                    XFree (value_buf);
+                    return;
+                }
+                /*endif*/
+        }
+        else
+        {
+                if (!(i18n_core->address.improto(ims, call_data, NULL))) {
+                    XFree (value_buf);
+                    return;
+                }
+                /*endif*/
         }
         /*endif*/
     }
@@ -973,8 +985,21 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
     getic->ic_attr = ic_attr;
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
+
         /*endif*/
 	if (_Xi18nNeedSwap (i18n_core, connect_id))
 	  SwapAttributes(getic->ic_attr, getic->ic_attr_num);

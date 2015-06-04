@@ -248,6 +248,11 @@ static char *ParseArgs (Xi18n i18n_core, int mode, XIMArg *args)
                 address->improto = (IMProtoHandler) p->value;
                 address->imvalue_mask |= I18N_IM_HANDLER;
             }
+            else if (strcmp (p->name, IMUserData) == 0)
+            {
+                address->user_data = (void *) p->value;
+                address->imvalue_mask |= I18N_IM_USER_DATA;
+            }
             else if (strcmp (p->name, IMOnKeysList) == 0)
             {
                 if (address->imvalue_mask & I18N_ON_KEYS)
@@ -390,6 +395,14 @@ static char *ParseArgs (Xi18n i18n_core, int mode, XIMArg *args)
                     *((IMProtoHandler *) (p->value)) = address->improto;
                 else
                     return IMProtocolHandler;
+                /*endif*/
+            }
+            else if (strcmp (p->name, IMUserData) == 0)
+            {
+                if (address->imvalue_mask & I18N_IM_USER_DATA)
+                    p->value = address->user_data;
+                else
+                    return IMUserData;
                 /*endif*/
             }
             else if (strcmp (p->name, IMOnKeysList) == 0)

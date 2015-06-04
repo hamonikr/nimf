@@ -456,7 +456,7 @@ typedef union _IMProtocol
     long pad[32];
 } IMProtocol;
 
-typedef int (*IMProtoHandler) (XIMS, IMProtocol*);
+typedef int (*IMProtoHandler) (XIMS, IMProtocol*, void*);
 
 #define DEFAULT_FILTER_MASK	(KeyPressMask)
 
@@ -476,6 +476,7 @@ typedef struct _Xi18nAddressRec
     XIMTriggerKeys off_keys;	/* IMOffKeysList */
     XIMEncodings encoding_list; /* IMEncodingList */
     IMProtoHandler improto;	/* IMProtocolHandler */
+    void	*user_data;	/* IMUserData */
     long	filterevent_mask; /* IMFilterEventMask */
     /* XIM_SERVERS target Atoms */
     Atom	selection;

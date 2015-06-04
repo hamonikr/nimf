@@ -51,6 +51,7 @@ extern "C" {
 #define IMEncodingList		"encodingList"
 #define IMFilterEventMask	"filterEventMask"
 #define IMProtocolDepend	"protocolDepend"
+#define IMUserData		"userData"
 
 /* Masks for IM Attributes Name */
 #define I18N_IMSERVER_WIN	0x0001 /* IMServerWindow */
@@ -64,6 +65,7 @@ extern "C" {
 #define I18N_ENCODINGS		0x0100 /* IMEncodingList */
 #define I18N_FILTERMASK		0x0200 /* IMFilterEventMask */
 #define I18N_PROTO_DEPEND	0x0400 /* IMProtoDepend */
+#define I18N_IM_USER_DATA	0x0800 /* IMUserData */
 
 typedef struct
 {

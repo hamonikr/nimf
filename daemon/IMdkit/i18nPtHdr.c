@@ -187,8 +187,20 @@ static void OpenMessageProc(XIMS ims, IMProtocol *call_data, unsigned char *p)
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto(ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -292,8 +304,20 @@ static void CloseMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -574,7 +598,14 @@ static void SyncReplyMessageProc (XIMS ims,
 	    call_data->sync_xlib.minor_code = 0;
 	    call_data->sync_xlib.connect_id = input_method_ID;
 	    call_data->sync_xlib.icid = input_context_ID;
-	    i18n_core->address.improto(ims, call_data);
+            if (i18n_core->address.user_data)
+                i18n_core->address.improto (ims,
+                                            call_data,
+                                            i18n_core->address.user_data);
+            else
+                i18n_core->address.improto (ims,
+                                            call_data,
+                                            NULL);
 	}
     }
 }
@@ -880,8 +911,20 @@ static void SetICFocusMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -912,8 +955,20 @@ static void UnsetICFocusMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -946,8 +1001,20 @@ static void DestroyICMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -1007,8 +1074,20 @@ static void ResetICMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto(ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -1144,8 +1223,20 @@ static void ForwardEventMessageProc (XIMS ims,
     {
         if (i18n_core->address.improto)
         {
-            if (!(i18n_core->address.improto(ims, call_data)))
-                return;
+            if (i18n_core->address.user_data)
+            {
+                if (!(i18n_core->address.improto (ims,
+                                                  call_data,
+                                                  i18n_core->address.user_data)))
+                    return;
+            }
+            else
+            {
+                if (!(i18n_core->address.improto (ims,
+                                                  call_data,
+                                                  NULL)))
+                    return;
+            }
             /*endif*/
         }
         /*endif*/
@@ -1209,8 +1300,20 @@ static void ExtForwardKeyEventMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -1241,8 +1344,20 @@ static void ExtMoveMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -1337,8 +1452,20 @@ static void TriggerNotifyMessageProc (XIMS ims,
     /*endif*/
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto(ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -1550,8 +1677,20 @@ void PreeditStartReplyMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto (ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
@@ -1583,8 +1722,20 @@ void PreeditCaretReplyMessageProc (XIMS ims,
 
     if (i18n_core->address.improto)
     {
-        if (!(i18n_core->address.improto(ims, call_data)))
-            return;
+        if (i18n_core->address.user_data)
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              i18n_core->address.user_data)))
+                return;
+        }
+        else
+        {
+            if (!(i18n_core->address.improto (ims,
+                                              call_data,
+                                              NULL)))
+                return;
+        }
         /*endif*/
     }
     /*endif*/
