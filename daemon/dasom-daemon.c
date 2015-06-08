@@ -174,6 +174,7 @@ on_request_dasom (GSocket      *socket,
     else if (context->type == DASOM_CONNECTION_DASOM_AGENT)
       g_hash_table_remove (context->daemon->agents,
                            GUINT_TO_POINTER (dasom_context_get_id (context)));
+    g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
 
     return G_SOURCE_REMOVE;
   }
@@ -216,10 +217,12 @@ on_request_dasom (GSocket      *socket,
       break;
     case DASOM_MESSAGE_FOCUS_IN:
       dasom_context_focus_in (context);
+      g_debug (G_STRLOC ": %s: context id = %d", G_STRFUNC, dasom_context_get_id (context));
       dasom_send_message (socket, DASOM_MESSAGE_FOCUS_IN_REPLY, NULL, NULL);
       break;
     case DASOM_MESSAGE_FOCUS_OUT:
       dasom_context_focus_out (context);
+      g_debug (G_STRLOC ": %s: context id = %d", G_STRFUNC, dasom_context_get_id (context));
       dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT_REPLY, NULL, NULL);
       break;
     case DASOM_MESSAGE_PREEDIT_START_REPLY:
@@ -243,7 +246,9 @@ dasom_context_wait_and_recv_message (DasomContext     *context,
                                      DasomMessageType  type)
 {
   do {
+    g_print ("g_socket_condition_wait\n");
     g_socket_condition_wait (context->socket, G_IO_IN, NULL, NULL);
+    g_print ("g_socket_condition_check\n");
     GIOCondition condition = g_socket_condition_check (context->socket, G_IO_IN | G_IO_HUP | G_IO_ERR);
     g_print (G_STRLOC ": _MESSAGE_ %s: CALL on_request_dasom\n", G_STRFUNC);
     if (!on_request_dasom (context->socket, condition, context))
@@ -341,6 +346,7 @@ on_signal_commit (DasomContext *context,
       g_warning ("Unknown type: %d", context->type);
       break;
   }
+
   g_debug (G_STRLOC ":EXIT: %s", G_STRFUNC);
 }
 
@@ -904,7 +910,7 @@ on_incoming (GSocketService    *service,
   DasomDaemon *daemon = user_data;
 
   GSocket *socket = g_socket_connection_get_socket (connection);
-  GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
+  GSource *source;
 
   DasomMessage *message;
   message = dasom_recv_message (socket);
@@ -921,8 +927,6 @@ on_incoming (GSocketService    *service,
   connection_type = *(DasomConnectionType *) message->body.data;
 
   dasom_message_free (message);
-
-  g_source_attach (source, NULL);
 
   DasomContext *context;
   context = dasom_context_new (connection_type,
@@ -945,7 +949,7 @@ on_incoming (GSocketService    *service,
   g_signal_connect (context,
                     "commit",
                     G_CALLBACK (on_signal_commit),
-                    NULL);
+                    daemon);
   g_signal_connect (context,
                     "retrieve-surrounding",
                     G_CALLBACK (on_signal_retrieve_surrounding),
@@ -972,6 +976,8 @@ on_incoming (GSocketService    *service,
   else
     g_error ("Unknown client type: %d", connection_type);
 
+  source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
+  g_source_attach (source, NULL);
   g_source_set_callback (source,
                          (GSourceFunc) on_request_dasom,
                          context,
