@@ -21,3 +21,5 @@ stamp-h1
 dasom-agent
 *.gir
 *.typelib
+dasom-enum-types.c
+dasom-enum-types.h
