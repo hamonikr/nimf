@@ -211,7 +211,7 @@ gboolean dasom_context_filter_event (DasomContext     *context,
 
   if (dasom_event_is_hotkey (event, (const gchar * const *) context->daemon->hotkey_names))
   {
-    if (event->key.type == DASOM_KEY_RELEASE)
+    if (event->key.type == DASOM_EVENT_KEY_RELEASE)
     {
       dasom_context_reset (context);
       dasom_context_set_next_engine (context);

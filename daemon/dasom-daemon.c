@@ -646,7 +646,7 @@ int dasom_daemon_xim_forward_event (DasomDaemon          *daemon,
 
   xevent = (XKeyEvent*) &(data->event);
 
-  type = (xevent->type == KeyPress) ? DASOM_KEY_PRESS : DASOM_KEY_RELEASE;
+  type = (xevent->type == KeyPress) ? DASOM_EVENT_KEY_PRESS : DASOM_EVENT_KEY_RELEASE;
 
   event = dasom_event_new (type);
 
