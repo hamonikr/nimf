@@ -36,6 +36,8 @@ G_BEGIN_DECLS
 #define DASOM_IS_DAEMON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_DAEMON))
 #define DASOM_DAEMON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_DAEMON, DasomDaemonClass))
 
+typedef struct _DasomEngine  DasomEngine;
+
 typedef struct _DasomDaemon      DasomDaemon;
 typedef struct _DasomDaemonClass DasomDaemonClass;
 

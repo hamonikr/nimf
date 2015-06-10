@@ -23,6 +23,7 @@
 #define __DASOM_CONTEXT_H__
 
 #include <glib-object.h>
+#include "dasom-engine.h"
 #include "dasom-daemon.h"
 #include "dasom-message.h"
 #include "dasom-types.h"
