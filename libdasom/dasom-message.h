@@ -1,0 +1,103 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/*
+ * dasom-message.h
+ * This file is part of Dasom.
+ *
+ * Copyright (C) 2015 Hodong Kim <hodong@cogno.org>
+ *
+ * Dasom is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Dasom is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program;  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef __DASOM_MESSAGE_H__
+#define __DASOM_MESSAGE_H__
+
+#if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
+#error "Only <dasom/dasom.h> can be included directly."
+#endif
+
+#include <glib-object.h>
+#include "dasom-events.h"
+
+G_BEGIN_DECLS
+
+typedef union  _DasomMessage       DasomMessage;
+typedef struct _DasomMessageHeader DasomMessageHeader;
+typedef struct _DasomMessageBody   DasomMessageBody;
+
+typedef enum
+{
+  DASOM_MESSAGE_NONE = 0,
+  /* im methods */
+  DASOM_MESSAGE_CONNECT,
+  DASOM_MESSAGE_CONNECT_REPLY,
+  DASOM_MESSAGE_FILTER_EVENT,
+  DASOM_MESSAGE_FILTER_EVENT_REPLY,
+  DASOM_MESSAGE_GET_PREEDIT_STRING,
+  DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY,
+  DASOM_MESSAGE_RESET,
+  DASOM_MESSAGE_RESET_REPLY,
+  DASOM_MESSAGE_FOCUS_IN,
+  DASOM_MESSAGE_FOCUS_IN_REPLY,
+  DASOM_MESSAGE_FOCUS_OUT,
+  DASOM_MESSAGE_FOCUS_OUT_REPLY,
+  /* context signals */
+  DASOM_MESSAGE_PREEDIT_START,
+  DASOM_MESSAGE_PREEDIT_START_REPLY,
+  DASOM_MESSAGE_PREEDIT_END,
+  DASOM_MESSAGE_PREEDIT_END_REPLY,
+  DASOM_MESSAGE_PREEDIT_CHANGED,
+  DASOM_MESSAGE_PREEDIT_CHANGED_REPLY,
+  DASOM_MESSAGE_COMMIT,
+  DASOM_MESSAGE_COMMIT_REPLY,
+  DASOM_MESSAGE_RETRIEVE_SURROUNDING,
+  DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
+  DASOM_MESSAGE_DELETE_SURROUNDING,
+  DASOM_MESSAGE_DELETE_SURROUNDING_REPLY,
+  DASOM_MESSAGE_ENGINE_CHANGED,
+  DASOM_MESSAGE_ENGINE_CHANGED_REPLY,
+
+  DASOM_MESSAGE_ERROR
+} DasomMessageType;
+
+struct _DasomMessageHeader
+{
+  DasomMessageType type;
+  guint16          data_len;
+};
+
+struct _DasomMessageBody
+{
+  DasomMessageType  type;
+  guint16           data_len;
+  void             *data;
+  GDestroyNotify    data_destroy_func;
+};
+
+union _DasomMessage
+{
+  DasomMessageType   type;
+  DasomMessageHeader header;
+  DasomMessageBody   body;
+};
+
+DasomMessage *dasom_message_new      (void);
+DasomMessage *dasom_message_new_full (DasomMessageType  type,
+                                      gpointer          data,
+                                      GDestroyNotify    data_destroy_func);
+void          dasom_message_free     (DasomMessage     *message);
+const gchar  *dasom_message_get_name (DasomMessage     *message);
+
+G_END_DECLS
+
+#endif /* __DASOM_MESSAGE_H__ */
