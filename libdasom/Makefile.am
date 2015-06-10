@@ -5,6 +5,8 @@ lib_LTLIBRARIES = libdasom.la
 BUILT_SOURCES =      \
 	dasom-enum-types.h \
 	dasom-enum-types.c \
+	dasom-marshalers.h \
+	dasom-marshalers.c \
 	$(NULL)
 
 libdasom_la_SOURCES = \
@@ -23,8 +25,6 @@ libdasom_la_SOURCES = \
 	dasom-module-manager.h \
 	dasom-module-manager.c \
 	dasom-key-syms.h \
-	dasom-marshalers.h \
-	dasom-marshalers.c \
 	dasom-message.h \
 	dasom-message.c \
 	dasom-candidate.h \
@@ -57,6 +57,12 @@ dasominclude_HEADERS = \
 	dasom-events.h \
 	dasom-engine.h \
 	dasom-key-syms.h
+
+dasom-marshalers.h: dasom-marshalers.list
+	$(AM_V_GEN) glib-genmarshal --prefix=dasom_cclosure_marshal --header dasom-marshalers.list > dasom-marshalers.h
+
+dasom-marshalers.c: dasom-marshalers.list
+	$(AM_V_GEN) glib-genmarshal --prefix=dasom_cclosure_marshal --body dasom-marshalers.list > dasom-marshalers.c
 
 dasom-enum-types.h: dasom-message.h dasom-enum-types.h.template
 	$(AM_V_GEN) glib-mkenums --identifier-prefix Dasom --template \
@@ -99,6 +105,9 @@ gir_DATA = $(INTROSPECTION_GIRS)
 typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
-CLEANFILES = $(gir_DATA) $(typelib_DATA)
+CLEANFILES = \
+	dasom-marshalers.h dasom-marshalers.c \
+	dasom-enum-types.h dasom-enum-types.c \
+	$(gir_DATA) $(typelib_DATA)
 
 endif
