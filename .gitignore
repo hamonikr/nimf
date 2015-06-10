@@ -23,3 +23,5 @@ dasom-agent
 *.typelib
 dasom-enum-types.c
 dasom-enum-types.h
+dasom-marshalers.c
+dasom-marshalers.h
