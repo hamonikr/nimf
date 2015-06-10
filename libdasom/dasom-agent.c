@@ -23,7 +23,7 @@
 #include "dasom-agent.h"
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include "dasom.h"
+#include "dasom-private.h"
 #include <gio/gunixsocketaddress.h>
 #include "dasom-marshalers.h"
 

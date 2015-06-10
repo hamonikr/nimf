@@ -27,7 +27,7 @@
 #include "dasom-marshalers.h"
 #include <gio/gunixsocketaddress.h>
 #include "dasom-message.h"
-#include "dasom.h"
+#include "dasom-private.h"
 
 enum {
   PREEDIT_START,

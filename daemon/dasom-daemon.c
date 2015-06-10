@@ -38,7 +38,7 @@
 #include "dasom-context.h"
 #include "dasom-daemon.h"
 #include "dasom-message.h"
-#include "dasom.h"
+#include "dasom-private.h"
 
 /*
   const gchar *desktop = g_getenv ("XDG_CURRENT_DESKTOP");

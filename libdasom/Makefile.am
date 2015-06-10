@@ -11,8 +11,8 @@ BUILT_SOURCES =      \
 
 libdasom_la_SOURCES = \
 	dasom.h \
-	dasom.c \
 	dasom-private.h \
+	dasom-private.c \
 	dasom-im.c \
 	dasom-im.h \
 	dasom-types.h \
