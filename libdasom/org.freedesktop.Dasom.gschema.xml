@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.freedesktop.Dasom" path="/org/freedesktop/dasom/">
+    <key type="s" name="default-engine">
+      <default>'dasom-english'</default>
+      <summary>default input method engine</summary>
+      <description>default input method engine</description>
+    </key>
+    <key type="as" name="hotkeys">
+      <default>['Control space', 'Shift space', 'Hangul']</default>
+      <summary>hotkey for switching input method</summary>
+      <description>Binding to change the input method</description>
+    </key>
+    <key name="active-modules" type="as">
+      <default>['']</default>
+      <summary>Active modules</summary>
+      <description>List of active modules. It contains the "Location" of the active modules.</description>
+    </key>
+  </schema>
+</schemalist>
