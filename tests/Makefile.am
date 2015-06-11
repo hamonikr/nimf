@@ -1,4 +1,4 @@
-bin_PROGRAMS = textview
+noinst_PROGRAMS = textview
 
 textview_SOURCES = textview.c
 
