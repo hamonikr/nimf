@@ -46,4 +46,5 @@ AC_OUTPUT([
   modules/engines/dasom-english/Makefile
   modules/engines/dasom-jeongeum/Makefile
   daemon/Makefile
-  daemon/IMdkit/Makefile])
+  daemon/IMdkit/Makefile
+  tests/Makefile])
