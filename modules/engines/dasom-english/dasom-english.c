@@ -1,0 +1,119 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/*
+ * dasom-english.c
+ * This file is part of Dasom.
+ *
+ * Copyright (C) 2015 Hodong Kim <hodong@cogno.org>
+ *
+ * Dasom is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Dasom is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program;  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "dasom.h"
+#include "dasom-english.h"
+
+G_DEFINE_DYNAMIC_TYPE (DasomEnglish, dasom_english, DASOM_TYPE_ENGINE);
+
+void
+dasom_english_reset (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+const gchar *
+dasom_english_get_name (DasomEngine *engine)
+{
+  DasomEnglish *english = DASOM_ENGLISH (engine);
+  return english->name;
+}
+
+gboolean
+dasom_english_filter_event (DasomEngine *engine, const DasomEvent *event)
+{
+  g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
+
+  if (event->key.type == DASOM_EVENT_KEY_RELEASE)
+    return FALSE;
+
+  /* TODO: number key pad */
+  if (event->key.keyval >= 32  &&
+      event->key.keyval <= 126 &&
+      !(event->key.state & DASOM_CONTROL_MASK))
+  {
+    gchar *text = g_strdup_printf ("%c", event->key.keyval);
+    dasom_engine_emit_commit (engine, text);
+    g_free (text);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+static void
+dasom_english_init (DasomEnglish *english)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  english->name = g_strdup ("en");
+}
+
+static void
+dasom_english_finalize (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomEnglish *english = DASOM_ENGLISH (object);
+  g_free (english->name);
+
+  G_OBJECT_CLASS (dasom_english_parent_class)->finalize (object);
+}
+
+static void
+dasom_english_class_init (DasomEnglishClass *klass)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  DasomEngineClass *engine_class = DASOM_ENGINE_CLASS (klass);
+
+  engine_class->filter_event = dasom_english_filter_event;
+  engine_class->reset        = dasom_english_reset;
+  engine_class->get_name     = dasom_english_get_name;
+
+  object_class->finalize = dasom_english_finalize;
+}
+
+static void
+dasom_english_class_finalize (DasomEnglishClass *klass)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+void module_load (GTypeModule *type_module)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  dasom_english_register_type (type_module);
+}
+
+GType module_get_type ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return dasom_english_get_type ();
+}
+
+void module_unload ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
