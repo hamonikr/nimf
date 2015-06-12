@@ -139,10 +139,8 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
 
-  if (event->key.type == DASOM_EVENT_KEY_RELEASE)
-    return FALSE;
-
-  if (event->key.keyval == DASOM_KEY_Shift_L ||
+  if (event->key.type   == DASOM_EVENT_KEY_RELEASE ||
+      event->key.keyval == DASOM_KEY_Shift_L       ||
       event->key.keyval == DASOM_KEY_Shift_R)
     return FALSE;
 
@@ -152,7 +150,88 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
     return FALSE;
   }
 
-  const ucschar *commit = hangul_ic_get_commit_string (jeongeum->context);
+  if (event->key.keyval == DASOM_KEY_Hangul_Hanja)
+  {
+    if (jeongeum->is_candidate_mode == FALSE)
+    {
+      jeongeum->is_candidate_mode = TRUE;
+      HanjaList *list = hanja_table_match_exact (jeongeum->hanja_table,
+                                                 jeongeum->preedit_string);
+      gint list_len = hanja_list_get_size (list);
+      gchar **strv = g_malloc0 ((list_len + 1) * sizeof (gchar *));
+
+      if (list)
+      {
+        gint i;
+        for (i = 0; i < list_len; i++)
+        {
+          const char *hanja = hanja_list_get_nth_value (list, i);
+          strv[i] = g_strdup (hanja);
+        }
+
+        hanja_list_delete (list);
+      }
+
+      dasom_candidate_update_window (jeongeum->candidate, (const gchar **) strv);
+      g_strfreev (strv);
+      dasom_candidate_show_window (jeongeum->candidate);
+    }
+    else
+    {
+      jeongeum->is_candidate_mode = FALSE;
+      dasom_candidate_hide_window (jeongeum->candidate);
+    }
+
+    return TRUE;
+  }
+
+  if (jeongeum->is_candidate_mode)
+  {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+    switch (event->key.keyval)
+    {
+      case DASOM_KEY_Return:
+        {
+          gchar *text;
+          text = dasom_candidate_get_selected_text (jeongeum->candidate);
+          if (text)
+          {
+            hangul_ic_reset (jeongeum->context);
+
+            if (jeongeum->preedit_string != NULL)
+            {
+              g_free (jeongeum->preedit_string);
+              jeongeum->preedit_string = NULL;
+              dasom_engine_emit_preedit_changed (engine);
+              dasom_engine_emit_preedit_end (engine);
+            }
+
+            dasom_engine_emit_commit (engine, text);
+            g_free (text);
+          }
+        }
+        dasom_candidate_hide_window (jeongeum->candidate);
+        jeongeum->is_candidate_mode = FALSE;
+        break;
+      case DASOM_KEY_Up:
+        dasom_candidate_select_previous_item (jeongeum->candidate);
+        break;
+      case DASOM_KEY_Down:
+        dasom_candidate_select_next_item (jeongeum->candidate);
+        break;
+      case DASOM_KEY_Escape:
+        dasom_candidate_hide_window (jeongeum->candidate);
+        jeongeum->is_candidate_mode = FALSE;
+        break;
+      default:
+        break;
+    }
+
+    return TRUE;
+  }
+
+  const ucschar *commit  = hangul_ic_get_commit_string  (jeongeum->context);
   const ucschar *preedit = hangul_ic_get_preedit_string (jeongeum->context);
 
   gchar *new_commit  = NULL;
@@ -254,6 +333,8 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
 
   jeongeum->context = hangul_ic_new ("2");
   jeongeum->name = g_strdup ("정");
+  jeongeum->hanja_table = hanja_table_load(NULL);
+  jeongeum->candidate = dasom_candidate_new ();
 }
 
 static void
@@ -263,9 +344,10 @@ dasom_jeongeum_finalize (GObject *object)
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (object);
 
+  hanja_table_delete (jeongeum->hanja_table);
   hangul_ic_delete   (jeongeum->context);
+  g_object_unref (jeongeum->candidate);
   g_free (jeongeum->preedit_string);
-
   g_free (jeongeum->name);
 
   G_OBJECT_CLASS (dasom_jeongeum_parent_class)->finalize (object);

@@ -24,6 +24,7 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include "dasom-events.h"
 
 G_BEGIN_DECLS
 
@@ -41,12 +42,10 @@ struct _DasomCandidate
 {
   GObject parent_instance;
 
-  GtkWidget    *window;
-  GtkWidget    *treeview;
-  GtkListStore *store;
-
-  GtkTreeSelection *selection;
+  GtkWidget        *window;
+  GtkWidget        *treeview;
   GtkTreeModel     *model;
+  GtkTreeSelection *selection;
   GtkTreeIter       iter; /* 이거 맞음 */
 };
 
@@ -58,13 +57,13 @@ struct _DasomCandidateClass
 GType dasom_candidate_get_type (void) G_GNUC_CONST;
 
 DasomCandidate *dasom_candidate_new                  (void);
-void            dasom_candidate_update_window        (DasomCandidate  *candidate,
-                                                      const gchar    **strv);
-void            dasom_candidate_show_window          (DasomCandidate  *candidate);
-void            dasom_candidate_hide_window          (DasomCandidate  *candidate);
-void            dasom_candidate_select_previous_item (DasomCandidate  *candidate);
-void            dasom_candidate_select_next_item     (DasomCandidate  *candidate);
-/* void dasom_candidate_filter_event (DasomCandidate *candidate, DasomEvent *event); */
+void            dasom_candidate_update_window        (DasomCandidate   *candidate,
+                                                      const gchar     **strv);
+void            dasom_candidate_show_window          (DasomCandidate   *candidate);
+void            dasom_candidate_hide_window          (DasomCandidate   *candidate);
+void            dasom_candidate_select_previous_item (DasomCandidate   *candidate);
+void            dasom_candidate_select_next_item     (DasomCandidate   *candidate);
+gchar          *dasom_candidate_get_selected_text    (DasomCandidate   *candidate);
 
 G_END_DECLS
 

@@ -89,13 +89,6 @@ void     dasom_engine_emit_preedit_end          (DasomEngine      *engine);
 void     dasom_engine_emit_commit               (DasomEngine      *engine,
                                                  gchar const      *text);
 
-void     dasom_engine_update_candidate_window   (DasomEngine      *engine,
-                                                 const gchar     **strv);
-void     dasom_engine_show_candidate_window     (DasomEngine      *engine);
-void     dasom_engine_hide_candidate_window     (DasomEngine      *engine);
-void     dasom_engine_select_previous_candidate (DasomEngine      *engine);
-void     dasom_engine_select_next_candidate     (DasomEngine      *engine);
-
 const gchar *dasom_engine_get_name     (DasomEngine      *engine);
 
 G_END_DECLS
