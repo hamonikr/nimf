@@ -44,14 +44,17 @@ struct _DasomCandidate
 
   GtkWidget        *window;
   GtkWidget        *treeview;
-  GtkTreeModel     *model;
-  GtkTreeSelection *selection;
-  GtkTreeIter       iter; /* 이거 맞음 */
+  GtkTreeIter       iter;
 };
 
 struct _DasomCandidateClass
 {
   GObjectClass parent_class;
+
+  /*< public >*/
+  /* Signals */
+  void (*row_activated) (DasomCandidate *candidate,
+                         gchar          *text);
 };
 
 GType dasom_candidate_get_type (void) G_GNUC_CONST;

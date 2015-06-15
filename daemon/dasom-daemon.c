@@ -404,7 +404,7 @@ dasom_daemon_init (DasomDaemon *daemon)
   daemon->module_manager = dasom_module_manager_get_default ();
   daemon->instances = dasom_module_manager_create_instances (daemon->module_manager);
   daemon->engine = dasom_daemon_get_default_engine (daemon);
-  daemon->candidate = dasom_candidate_new ();
+  /* FIXME: daemon->candidate = dasom_candidate_new (); */
   daemon->loop = g_main_loop_new (NULL, FALSE);
   daemon->contexts = g_hash_table_new_full (g_direct_hash,
                                             g_direct_equal,
@@ -442,7 +442,7 @@ dasom_daemon_finalize (GObject *object)
     daemon->instances = NULL;
   }
 
-  g_object_unref (daemon->candidate);
+  /* FIXME: g_object_unref (daemon->candidate); */
   g_hash_table_unref (daemon->contexts);
   g_hash_table_unref (daemon->agents);
   g_strfreev (daemon->hotkey_names);
