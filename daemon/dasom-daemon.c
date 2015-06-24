@@ -350,7 +350,7 @@ on_signal_commit (DasomContext *context,
   g_debug (G_STRLOC ":EXIT: %s", G_STRFUNC);
 }
 
-static void
+static gboolean
 on_signal_retrieve_surrounding (DasomContext *context,
                                 gpointer      user_data)
 
@@ -359,9 +359,12 @@ on_signal_retrieve_surrounding (DasomContext *context,
 
   dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING, NULL, NULL);
   dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
+
+  /* TODO */
+  return FALSE;
 }
 
-static void
+static gboolean
 on_signal_delete_surrounding (DasomContext *context,
                               gint          offset,
                               gint          n_chars,
@@ -371,6 +374,9 @@ on_signal_delete_surrounding (DasomContext *context,
 
   dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING, NULL, NULL);
   dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
+
+  /* TODO */
+  return FALSE;
 }
 
 static void
