@@ -155,9 +155,9 @@ dasom_daemon_get_default_engine (DasomDaemon *daemon)
 }
 
 static gboolean
-on_request_dasom (GSocket      *socket,
-                  GIOCondition  condition,
-                  gpointer      user_data)
+on_incoming_message_dasom (GSocket      *socket,
+                           GIOCondition  condition,
+                           gpointer      user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -250,10 +250,10 @@ dasom_context_wait_and_recv_message (DasomContext     *context,
     g_socket_condition_wait (context->socket, G_IO_IN, NULL, NULL);
     g_print ("g_socket_condition_check\n");
     GIOCondition condition = g_socket_condition_check (context->socket, G_IO_IN | G_IO_HUP | G_IO_ERR);
-    g_print (G_STRLOC ": _MESSAGE_ %s: CALL on_request_dasom\n", G_STRFUNC);
-    if (!on_request_dasom (context->socket, condition, context))
+    g_print (G_STRLOC ": _MESSAGE_ %s: CALL on_incoming_message_dasom\n", G_STRFUNC);
+    if (!on_incoming_message_dasom (context->socket, condition, context))
       break; /* TODO: error handling */
-    g_print (G_STRLOC ": _MESSAGE_ %s: END  on_request_dasom\n", G_STRFUNC);
+    g_print (G_STRLOC ": _MESSAGE_ %s: END  on_incoming_message_dasom\n", G_STRFUNC);
   } while (context->reply->type != type);
 
   if (context->reply->type != type)
@@ -699,9 +699,9 @@ int dasom_daemon_xim_reset_ic (DasomDaemon     *daemon,
 }
 
 static int
-on_request_xim (XIMS        xims,
-                IMProtocol *data,
-                gpointer    user_data)
+on_incoming_message_xim (XIMS        xims,
+                         IMProtocol *data,
+                         gpointer    user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -873,7 +873,7 @@ dasom_daemon_init_xims (DasomDaemon *daemon)
             IMServerTransport,  "X/",
             IMInputStyles,      &styles,
             IMEncodingList,     &encodings,
-            IMProtocolHandler,  on_request_xim,
+            IMProtocolHandler,  on_incoming_message_xim,
             IMUserData,         daemon,
             IMFilterEventMask,  KeyPressMask | KeyReleaseMask,
             NULL);
@@ -889,10 +889,10 @@ dasom_daemon_init_xims (DasomDaemon *daemon)
 }
 
 static gboolean
-on_incoming (GSocketService    *service,
-             GSocketConnection *connection,
-             GObject           *source_object,
-             gpointer           user_data)
+on_new_connection (GSocketService    *service,
+                   GSocketConnection *connection,
+                   GObject           *source_object,
+                   gpointer           user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -905,7 +905,7 @@ on_incoming (GSocketService    *service,
   /* FIXME: g_object_ref (connection);*/
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 DaemonContext, on_request_dasom 에서 처리토록 하자. */
+   * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
 
   DasomDaemon *daemon = user_data;
 
@@ -964,7 +964,7 @@ on_incoming (GSocketService    *service,
                     NULL);
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 DaemonContext, on_request_dasom 에서 처리토록 하자. */
+   * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
   if (context->type == DASOM_CONNECTION_DASOM_IM)
     g_hash_table_insert (daemon->contexts,
                          GUINT_TO_POINTER (dasom_context_get_id (context)),
@@ -979,7 +979,7 @@ on_incoming (GSocketService    *service,
   source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
   g_source_attach (source, NULL);
   g_source_set_callback (source,
-                         (GSourceFunc) on_request_dasom,
+                         (GSourceFunc) on_incoming_message_dasom,
                          context,
                          NULL);
 
@@ -1000,7 +1000,7 @@ dasom_daemon_start (DasomDaemon *daemon)
   daemon->service = g_socket_service_new ();
   g_signal_connect (daemon->service,
                     "incoming",
-                    (GCallback) on_incoming,
+                    (GCallback) on_new_connection,
                     daemon);
   g_socket_listener_add_address (G_SOCKET_LISTENER (daemon->service),
                                  address,

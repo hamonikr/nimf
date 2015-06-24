@@ -44,9 +44,9 @@ static guint im_signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (DasomIM, dasom_im, G_TYPE_OBJECT);
 
 static gboolean
-on_response (GSocket      *socket,
-             GIOCondition  condition,
-             gpointer      user_data)
+on_incoming_message (GSocket      *socket,
+                     GIOCondition  condition,
+                     gpointer      user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -124,12 +124,12 @@ dasom_im_loop_until (DasomIM          *im,
     g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
     GIOCondition condition = g_socket_condition_check (socket, G_IO_IN | G_IO_HUP | G_IO_ERR);
 
-    if (!on_response (socket, condition, im))
+    if (!on_incoming_message (socket, condition, im))
       break; /* TODO: error handling */
 
   } while (im->reply->type != type); /* <<< 요런 부분이 NULL 때문에 에러 발생 가능성이 높은 부분 */
 
-  /* 연결이 끊어지면 아무 것도 받지 못하여 on_response에서 NULL로 설정합니다. */
+  /* 연결이 끊어지면 아무 것도 받지 못하여 on_incoming_message에서 NULL로 설정합니다. */
   /* FIXME: 추후 이에 대한 처리가 있어야 합니다. */
   /* 클라이언트 부분과 서버 부분에도 이와 비슷한 코드를 사용하므로
    * 통합적인 코드가 필요하겠습니다.
@@ -373,7 +373,7 @@ dasom_im_init (DasomIM *im)
   GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
   g_source_attach (source, NULL);
   g_source_set_callback (source,
-                         (GSourceFunc) on_response,
+                         (GSourceFunc) on_incoming_message,
                          im,
                          NULL);
 }
