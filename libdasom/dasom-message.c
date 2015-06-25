@@ -90,3 +90,12 @@ const gchar *dasom_message_get_name (DasomMessage *message)
 
   return enum_value ? enum_value->value_name : NULL;
 }
+
+const gchar *dasom_message_get_name_by_type (DasomMessageType type)
+{
+  GEnumClass *enum_class = (GEnumClass *) g_type_class_ref (DASOM_TYPE_MESSAGE_TYPE);
+  GEnumValue *enum_value = g_enum_get_value (enum_class, type);
+  g_type_class_unref (enum_class);
+
+  return enum_value ? enum_value->value_name : NULL;
+}

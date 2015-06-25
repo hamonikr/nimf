@@ -91,12 +91,13 @@ union _DasomMessage
   DasomMessageBody   body;
 };
 
-DasomMessage *dasom_message_new      (void);
-DasomMessage *dasom_message_new_full (DasomMessageType  type,
-                                      gpointer          data,
-                                      GDestroyNotify    data_destroy_func);
-void          dasom_message_free     (DasomMessage     *message);
-const gchar  *dasom_message_get_name (DasomMessage     *message);
+DasomMessage *dasom_message_new              (void);
+DasomMessage *dasom_message_new_full         (DasomMessageType  type,
+                                              gpointer          data,
+                                              GDestroyNotify    data_destroy_func);
+void          dasom_message_free             (DasomMessage     *message);
+const gchar  *dasom_message_get_name         (DasomMessage     *message);
+const gchar  *dasom_message_get_name_by_type (DasomMessageType  type);
 
 G_END_DECLS
 
