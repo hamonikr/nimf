@@ -49,20 +49,18 @@
 
 G_DEFINE_TYPE (DasomDaemon, dasom_daemon, G_TYPE_OBJECT);
 
-static gint compare_engine_path (gconstpointer a, gconstpointer b)
+static gint
+on_comparing_engine_with_path (DasomEngine *engine, const gchar *path)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  const DasomEngine *engine;
-  gchar *path;
-  int retval;
+  int    retval;
+  gchar *engine_path;
 
-  engine = DASOM_ENGINE (a);
+  g_object_get (engine, "path", &engine_path, NULL);
+  retval = g_strcmp0 (engine_path, path);
 
-  g_object_get ((DasomEngine *) engine, "path", &path, NULL);
-
-  retval = g_strcmp0 (path, (const gchar *) b);
-  g_free (path);
+  g_free (engine_path);
 
   return retval;
 }
@@ -73,20 +71,20 @@ dasom_daemon_get_instance (DasomDaemon *daemon,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  GList *list;
   DasomEngine *engine = NULL;
   gchar *soname = g_strdup_printf ("%s.so", module_name);
   gchar *path = g_build_path (G_DIR_SEPARATOR_S,
                               DASOM_MODULE_DIR, soname, NULL);
   g_free (soname);
 
-  GList *list = g_list_find_custom (g_list_first (daemon->instances),
-                                    path,
-                                    compare_engine_path);
+  list = g_list_find_custom (g_list_first (daemon->instances),
+                             path,
+                             (GCompareFunc) on_comparing_engine_with_path);
+  g_free (path);
 
   if (list)
     engine = list->data;
-
-  g_free (path);
 
   return engine;
 }
