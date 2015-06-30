@@ -240,19 +240,12 @@ on_incoming_message_dasom (GSocket      *socket,
 }
 
 void
-dasom_context_wait_and_recv_message (DasomContext     *context,
-                                     DasomMessageType  type)
+dasom_iteration_until (DasomContext     *context,
+                       DasomMessageType  type)
 {
   do {
-    g_print ("g_socket_condition_wait\n");
-    g_socket_condition_wait (context->socket, G_IO_IN, NULL, NULL);
-    g_print ("g_socket_condition_check\n");
-    GIOCondition condition = g_socket_condition_check (context->socket, G_IO_IN | G_IO_HUP | G_IO_ERR);
-    g_print (G_STRLOC ": _MESSAGE_ %s: CALL on_incoming_message_dasom\n", G_STRFUNC);
-    if (!on_incoming_message_dasom (context->socket, condition, context))
-      break; /* TODO: error handling */
-    g_print (G_STRLOC ": _MESSAGE_ %s: END  on_incoming_message_dasom\n", G_STRFUNC);
-  } while (context->reply->type != type);
+    g_main_context_iteration (NULL, TRUE);
+  } while (context->reply && (context->reply->type != type));
 
   if (context->reply->type != type)
   {
@@ -277,7 +270,7 @@ on_signal_preedit_start (DasomContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_START, NULL, NULL);
-  dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_PREEDIT_START_REPLY);
+  dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_START_REPLY);
 }
 
 static void
@@ -288,7 +281,7 @@ on_signal_preedit_end (DasomContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_END, NULL, NULL);
-  dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_PREEDIT_END_REPLY);
+  dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_END_REPLY);
 }
 
 static void
@@ -299,7 +292,7 @@ on_signal_preedit_changed (DasomContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_CHANGED, NULL, NULL);
-  dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
+  dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
 }
 
 static void
@@ -314,7 +307,7 @@ on_signal_commit (DasomContext *context,
     case DASOM_CONNECTION_DASOM_IM:
       g_message ("commit text:%s", text);
       dasom_send_message (context->socket, DASOM_MESSAGE_COMMIT, g_strdup (text), NULL); /* FIXME: 좀더 확인해봅시다 */
-      dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_COMMIT_REPLY);
+      dasom_iteration_until (context, DASOM_MESSAGE_COMMIT_REPLY);
       break;
     case DASOM_CONNECTION_XIM:
       {
@@ -356,7 +349,7 @@ on_signal_retrieve_surrounding (DasomContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING, NULL, NULL);
-  dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
+  dasom_iteration_until (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
 
   /* TODO */
   return FALSE;
@@ -371,7 +364,7 @@ on_signal_delete_surrounding (DasomContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING, NULL, NULL);
-  dasom_context_wait_and_recv_message (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
+  dasom_iteration_until (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
 
   /* TODO */
   return FALSE;
@@ -392,7 +385,7 @@ on_signal_engine_changed (DasomContext *context,
   while (g_hash_table_iter_next (&iter, &key, (void **) &agent))
     {
       dasom_send_message (agent->socket, DASOM_MESSAGE_ENGINE_CHANGED, (gchar *) name, NULL);
-      dasom_context_wait_and_recv_message (agent, DASOM_MESSAGE_ENGINE_CHANGED_REPLY);
+      dasom_iteration_until (agent, DASOM_MESSAGE_ENGINE_CHANGED_REPLY);
     }
 }
 
@@ -981,6 +974,7 @@ on_new_connection (GSocketService    *service,
     g_error ("Unknown client type: %d", connection_type);
 
   source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
+  g_source_set_can_recurse (source, TRUE);
   g_source_attach (source, NULL);
   g_source_set_callback (source,
                          (GSourceFunc) on_incoming_message_dasom,
