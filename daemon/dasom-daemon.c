@@ -161,7 +161,7 @@ on_incoming_message_dasom (GSocket      *socket,
 
   DasomMessage *message;
   DasomContext *context = user_data;
-  gboolean *retval = NULL;
+  gboolean retval;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -188,11 +188,9 @@ on_incoming_message_dasom (GSocket      *socket,
   switch (message->type)
   {
     case DASOM_MESSAGE_FILTER_EVENT:
-      retval = g_malloc0 (sizeof (gboolean));
-      *retval = dasom_context_filter_event (context,
-                                           (DasomEvent *) message->body.data);
-      dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT_REPLY, retval, g_free);
-      retval = NULL;
+      retval = dasom_context_filter_event (context,
+                                          (DasomEvent *) message->body.data);
+      dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT_REPLY, &retval, NULL);
       break;
     case DASOM_MESSAGE_GET_PREEDIT_STRING:
       {
@@ -203,7 +201,6 @@ on_incoming_message_dasom (GSocket      *socket,
         dasom_context_get_preedit_string (context, &str, &cursor_pos);
 
         str_len = strlen (str);
-
         str = g_realloc (str, str_len + 1 + sizeof (gint));
         *(gint *) (str + str_len + 1) = cursor_pos;
 
@@ -352,8 +349,8 @@ on_signal_retrieve_surrounding (DasomContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING, NULL, NULL);
-  dasom_iteration_until (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
+  dasom_send_message (context->socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING, NULL, NULL);
+  dasom_iteration_until (context, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
 
   /* TODO */
   return FALSE;
