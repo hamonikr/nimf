@@ -37,9 +37,9 @@ static guint agent_signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (DasomAgent, dasom_agent, G_TYPE_OBJECT);
 
 static gboolean
-on_response (GSocket      *socket,
-             GIOCondition  condition,
-             gpointer      user_data)
+on_incoming_message (GSocket      *socket,
+                     GIOCondition  condition,
+                     gpointer      user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -116,7 +116,7 @@ dasom_agent_init (DasomAgent *agent)
   GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
   g_source_attach (source, NULL);
   g_source_set_callback (source,
-                         (GSourceFunc) on_response,
+                         (GSourceFunc) on_incoming_message,
                          agent,
                          NULL);
 }
