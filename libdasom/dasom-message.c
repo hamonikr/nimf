@@ -73,13 +73,13 @@ dasom_message_new_full (DasomMessageType type,
 
 void dasom_message_free (DasomMessage *message)
 {
-  g_return_if_fail (message != NULL);
+  if (G_UNLIKELY (message == NULL))
+    return;
 
   if (message->body.data_destroy_func)
     message->body.data_destroy_func (message->body.data);
 
   g_slice_free (DasomMessage, message);
-  message = NULL;
 }
 
 const gchar *dasom_message_get_name (DasomMessage *message)
