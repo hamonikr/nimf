@@ -248,6 +248,10 @@ dasom_iteration_until (DasomContext     *context,
     g_main_context_iteration (NULL, TRUE);
   } while (context->reply && (context->reply->type != type));
 
+  /* TODO: error handling */
+  if (G_UNLIKELY (context->reply == NULL))
+    return;
+
   if (context->reply->type != type)
   {
     g_print ("error NOT MATCH\n");
