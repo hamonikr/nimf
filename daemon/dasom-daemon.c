@@ -166,12 +166,16 @@ on_incoming_message_dasom (GSocket      *socket,
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
     g_socket_close (socket, NULL);
-    if (context->type == DASOM_CONNECTION_DASOM_IM)
-      g_hash_table_remove (context->daemon->contexts,
-                           GUINT_TO_POINTER (dasom_context_get_id (context)));
-    else if (context->type == DASOM_CONNECTION_DASOM_AGENT)
-      g_hash_table_remove (context->daemon->agents,
-                           GUINT_TO_POINTER (dasom_context_get_id (context)));
+
+    dasom_message_free (context->reply);
+    context->reply = NULL;
+
+    if (G_UNLIKELY (context->type == DASOM_CONNECTION_DASOM_AGENT))
+      context->daemon->agents_list = g_list_remove (context->daemon->agents_list, context);
+
+    g_hash_table_remove (context->daemon->contexts,
+                         GUINT_TO_POINTER (dasom_context_get_id (context)));
+
     g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
 
     return G_SOURCE_REMOVE;
@@ -377,16 +381,14 @@ on_signal_engine_changed (DasomContext *context,
 {
   g_debug (G_STRLOC ": %s:%s:id = %d", G_STRFUNC, name, context->id);
 
-  GHashTableIter iter;
-  gpointer key;
-  DasomContext *agent;
-
-  g_hash_table_iter_init (&iter, context->daemon->agents);
-  while (g_hash_table_iter_next (&iter, &key, (void **) &agent))
-    {
-      dasom_send_message (agent->socket, DASOM_MESSAGE_ENGINE_CHANGED, (gchar *) name, NULL);
-      dasom_iteration_until (agent, DASOM_MESSAGE_ENGINE_CHANGED_REPLY);
-    }
+  GList *l = context->daemon->agents_list;
+  while (l != NULL)
+  {
+    GList *next = l->next;
+    dasom_send_message (DASOM_CONTEXT (l->data)->socket, DASOM_MESSAGE_ENGINE_CHANGED, (gchar *) name, NULL);
+    dasom_iteration_until (DASOM_CONTEXT (l->data), DASOM_MESSAGE_ENGINE_CHANGED_REPLY);
+    l = next;
+  }
 }
 
 static void
@@ -407,10 +409,7 @@ dasom_daemon_init (DasomDaemon *daemon)
                                             g_direct_equal,
                                             NULL, /* FIXME */
                                             (GDestroyNotify) g_object_unref);
-  daemon->agents = g_hash_table_new_full (g_direct_hash,
-                                          g_direct_equal,
-                                          NULL, /* FIXME */
-                                          (GDestroyNotify) g_object_unref);
+  daemon->agents_list = NULL;
 }
 
 static void
@@ -441,7 +440,7 @@ dasom_daemon_finalize (GObject *object)
 
   /* FIXME: g_object_unref (daemon->candidate); */
   g_hash_table_unref (daemon->contexts);
-  g_hash_table_unref (daemon->agents);
+  g_list_free (daemon->agents_list);
   g_strfreev (daemon->hotkey_names);
 
   dasom_daemon_stop (daemon);
@@ -962,16 +961,12 @@ on_new_connection (GSocketService    *service,
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
    * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
-  if (context->type == DASOM_CONNECTION_DASOM_IM)
-    g_hash_table_insert (daemon->contexts,
-                         GUINT_TO_POINTER (dasom_context_get_id (context)),
-                         context);
-  else if (context->type == DASOM_CONNECTION_DASOM_AGENT)
-    g_hash_table_insert (daemon->agents,
-                         GUINT_TO_POINTER (dasom_context_get_id (context)),
-                         context);
-  else
-    g_error ("Unknown client type: %d", connection_type);
+  g_hash_table_insert (daemon->contexts,
+                       GUINT_TO_POINTER (dasom_context_get_id (context)),
+                       context);
+
+  if (context->type == DASOM_CONNECTION_DASOM_AGENT)
+    daemon->agents_list = g_list_prepend (daemon->agents_list, context);
 
   source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
   g_source_set_can_recurse (source, TRUE);

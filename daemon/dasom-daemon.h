@@ -52,7 +52,7 @@ struct _DasomDaemon
   DasomEngine         *engine;
   GSocketService      *service;
   GHashTable          *contexts;
-  GHashTable          *agents;
+  GList               *agents_list;
   gchar              **hotkey_names;
   DasomCandidate      *candidate;
 };
