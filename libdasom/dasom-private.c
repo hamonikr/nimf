@@ -20,6 +20,7 @@
  */
 
 #include "dasom.h"
+#include "dasom-private.h"
 
 void
 dasom_send_message (GSocket          *socket,
@@ -61,11 +62,11 @@ DasomMessage *dasom_recv_message (GSocket *socket)
 
   gssize n_read = 0;
 
-  g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
   n_read = g_socket_receive (socket,
                              (gchar *) message,
                              sizeof (DasomMessageHeader),
                              NULL, NULL);
+
   /* FIXME: 에러 처리해야 함 */
   g_assert (n_read == sizeof (DasomMessageHeader));
 
@@ -78,7 +79,6 @@ DasomMessage *dasom_recv_message (GSocket *socket)
                                message->header.data_len,
                                NULL,
                                NULL);
-
     g_assert (n_read == message->header.data_len);
   }
 
