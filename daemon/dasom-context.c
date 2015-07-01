@@ -42,6 +42,7 @@ G_DEFINE_TYPE (DasomContext, dasom_context, G_TYPE_OBJECT);
 static void
 dasom_context_init (DasomContext *context)
 {
+  /* FIXME: overflow */
   static gint id = 0;
   id++;
   context->id = id;
