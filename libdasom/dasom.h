@@ -32,6 +32,7 @@
 #include "dasom-key-syms.h"
 #include "dasom-enum-types.h"
 #include "dasom-agent.h"
+#include "dasom-candidate.h"
 
 #undef __DASOM_H_INSIDE__
 
