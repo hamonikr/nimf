@@ -54,11 +54,13 @@ on_incoming_message (GSocket      *socket,
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
-    g_socket_close (socket, NULL);
+    if (!g_socket_is_closed (socket))
+      g_socket_close (socket, NULL);
+
     dasom_message_free (im->reply);
     im->reply = NULL;
-    /* FIXME */
-    g_error (G_STRLOC ": %s", G_STRFUNC);
+
+    g_critical (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
 
     return G_SOURCE_REMOVE;
   }
@@ -129,13 +131,11 @@ dasom_im_loop_until (DasomIM          *im,
 
   } while (im->reply->type != type); /* <<< 요런 부분이 NULL 때문에 에러 발생 가능성이 높은 부분 */
 
-  /* 연결이 끊어지면 아무 것도 받지 못하여 on_incoming_message에서 NULL로 설정합니다. */
-  /* FIXME: 추후 이에 대한 처리가 있어야 합니다. */
-  /* 클라이언트 부분과 서버 부분에도 이와 비슷한 코드를 사용하므로
-   * 통합적인 코드가 필요하겠습니다.
-   * DasomConnection 의 필요성이 느껴집니다 */
-
-  g_assert (im->reply != NULL);
+  if (G_UNLIKELY (im->reply == NULL))
+  {
+    g_critical (G_STRLOC ": %s:", G_STRFUNC);
+    return;
+  }
 
   if (im->reply->type != type)
   {
@@ -225,7 +225,7 @@ dasom_im_get_preedit_string (DasomIM  *im,
 {
   g_debug (G_STRLOC ":REQ %s", G_STRFUNC);
 
-  g_return_val_if_fail (DASOM_IS_IM (im), FALSE);
+  g_return_if_fail (DASOM_IS_IM (im));
 
   GSocket *socket = g_socket_connection_get_socket (im->connection);
 
@@ -244,6 +244,20 @@ dasom_im_get_preedit_string (DasomIM  *im,
 
   dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, NULL);
   dasom_im_loop_until (im, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
+
+  /* FIXME: 중복 코드 */
+  if (im->reply == NULL)
+  {
+    g_critical (G_STRLOC ":%s", G_STRFUNC);
+
+    if (str)
+      *str = g_strdup ("");
+
+    if (cursor_pos)
+      *cursor_pos = 0;
+
+    return;
+  }
 
   g_assert (im->reply->type == DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
 
@@ -267,8 +281,6 @@ dasom_im_get_preedit_string (DasomIM  *im,
     *cursor_pos = pos;
     g_print ("cursor_pos:%d\n", *cursor_pos);
   }
-
-  /* TODO: g_source_add */
 
   g_return_if_fail (str == NULL || g_utf8_validate (*str, -1, NULL));
 
@@ -309,6 +321,12 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
 
   dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event, (GDestroyNotify) dasom_event_free);
   dasom_im_loop_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
+
+  if (im->reply == NULL)
+  {
+    g_critical (G_STRLOC ": %s:", G_STRFUNC);
+    return FALSE;
+  }
 
   gboolean retval = FALSE;
 
