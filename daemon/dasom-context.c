@@ -60,6 +60,15 @@ dasom_context_finalize (GObject *object)
   g_free (context->commit_text);
   dasom_message_free (context->reply);
 
+  if (context->source)
+  {
+    g_source_destroy (context->source);
+    g_source_unref (context->source);
+  }
+
+  if (context->connection)
+    g_object_unref (context->connection);
+
   G_OBJECT_CLASS (dasom_context_parent_class)->finalize (object);
 }
 

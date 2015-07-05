@@ -52,8 +52,9 @@ struct _DasomContext
 
   DasomDaemon         *daemon;
   GSocket             *socket;
-  /*DasomMessageType     reply_type;*/
   DasomMessage        *reply;
+  GSource             *source;
+  GSocketConnection   *connection;
 };
 
 struct _DasomContextClass

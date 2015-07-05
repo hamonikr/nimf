@@ -54,6 +54,8 @@ struct _DasomIM
   DasomEngine       *engine;
   GSocketConnection *connection;
   DasomMessage      *reply;
+  GSource           *sockets_context_source;
+  GSource           *default_context_source;
 };
 
 struct _DasomIMClass

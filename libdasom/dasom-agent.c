@@ -60,9 +60,7 @@ on_incoming_message (GSocket      *socket,
   {
     /* reply */
     case DASOM_MESSAGE_ENGINE_CHANGED:
-      g_print ("\trecv: DASOM_MESSAGE_ENGINE_CHANGED\n");
       g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->reply->body.data);
-      dasom_send_message (socket, DASOM_MESSAGE_ENGINE_CHANGED_REPLY, NULL, NULL);
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->type);

@@ -40,6 +40,8 @@ enum {
 };
 
 static guint im_signals[LAST_SIGNAL] = { 0 };
+static GMainContext *dasom_im_sockets_context = NULL;
+static guint         dasom_im_sockets_context_ref_count = 0;
 
 G_DEFINE_TYPE (DasomIM, dasom_im, G_TYPE_OBJECT);
 
@@ -48,12 +50,22 @@ on_incoming_message (GSocket      *socket,
                      GIOCondition  condition,
                      gpointer      user_data)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  g_debug (G_STRLOC ": %s: socket fd:%d", G_STRFUNC, g_socket_get_fd (socket));
 
   DasomIM *im = DASOM_IM (user_data);
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
+    /* 동일 소켓으로 GSource를 2개 만들기 때문에 G_IO_HUP | G_IO_ERR 일 때
+       callback 이 두번 실행될 수 있기 때문에 두 번 실행되는 것을 방지하기 위한
+       코드입니다. */
+    GSource *source = g_main_current_source ();
+
+    if (source == im->default_context_source)
+      g_source_destroy (im->sockets_context_source);
+    else if (source == im->sockets_context_source)
+      g_source_destroy (im->default_context_source);
+
     if (!g_socket_is_closed (socket))
       g_socket_close (socket, NULL);
 
@@ -114,41 +126,39 @@ on_incoming_message (GSocket      *socket,
 }
 
 void
-dasom_im_loop_until (DasomIM          *im,
-                     DasomMessageType  type)
+dasom_iteration_until (DasomIM          *im,
+                       DasomMessageType  type)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /* FIXME: socket 변수가 im 스트럭에 들어가는건 어떤지 고려할 것 */
-  GSocket *socket = g_socket_connection_get_socket (im->connection);
+  gboolean is_dispatched;
 
   do {
-    g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
-    GIOCondition condition = g_socket_condition_check (socket, G_IO_IN | G_IO_HUP | G_IO_ERR);
-
-    if (!on_incoming_message (socket, condition, im))
-      break; /* TODO: error handling */
-
-  } while (im->reply->type != type); /* <<< 요런 부분이 NULL 때문에 에러 발생 가능성이 높은 부분 */
+    is_dispatched = g_main_context_iteration (dasom_im_sockets_context, TRUE);
+  } while (!is_dispatched || (im->reply && (im->reply->type != type)));
 
   if (G_UNLIKELY (im->reply == NULL))
   {
-    g_critical (G_STRLOC ": %s:", G_STRFUNC);
+    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
+                dasom_message_get_name_by_type (type));
     return;
   }
 
   if (im->reply->type != type)
   {
-    g_print ("error NOT MATCH\n");
-
     const gchar *name = dasom_message_get_name (im->reply);
-    if (name)
-      g_print ("reply_type: %s\n", name);
-    else
-      g_error ("unknown reply_type type");
-  }
+    gchar *mesg;
 
-  g_assert (im->reply->type == type);
+    if (name)
+      mesg = g_strdup (name);
+    else
+      mesg = g_strdup_printf ("unknown type %d", im->reply->type);
+
+    g_critical ("Reply type does not match.\n"
+                "%s is required, but we received %s\n",
+                dasom_message_get_name_by_type (type), mesg);
+    g_free (mesg);
+  }
 }
 
 void dasom_im_focus_out (DasomIM *im)
@@ -165,9 +175,7 @@ void dasom_im_focus_out (DasomIM *im)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT, NULL, NULL);
-  dasom_im_loop_until (im, DASOM_MESSAGE_FOCUS_OUT_REPLY);
-
-  g_assert (im->reply->type == DASOM_MESSAGE_FOCUS_OUT_REPLY);
+  dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_OUT_REPLY);
 }
 
 void dasom_im_set_cursor_location (DasomIM        *im,
@@ -213,9 +221,7 @@ void dasom_im_focus_in (DasomIM *im)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_FOCUS_IN, NULL, NULL);
-  dasom_im_loop_until (im, DASOM_MESSAGE_FOCUS_IN_REPLY);
-
-  g_assert (im->reply->type == DASOM_MESSAGE_FOCUS_IN_REPLY);
+  dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_IN_REPLY);
 }
 
 void
@@ -223,7 +229,7 @@ dasom_im_get_preedit_string (DasomIM  *im,
                              gchar   **str,
                              gint     *cursor_pos)
 {
-  g_debug (G_STRLOC ":REQ %s", G_STRFUNC);
+  g_debug (G_STRLOC ":%s", G_STRFUNC);
 
   g_return_if_fail (DASOM_IS_IM (im));
 
@@ -243,13 +249,11 @@ dasom_im_get_preedit_string (DasomIM  *im,
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, NULL);
-  dasom_im_loop_until (im, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
+  dasom_iteration_until (im, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
 
   /* FIXME: 중복 코드 */
   if (im->reply == NULL)
   {
-    g_critical (G_STRLOC ":%s", G_STRFUNC);
-
     if (str)
       *str = g_strdup ("");
 
@@ -258,8 +262,6 @@ dasom_im_get_preedit_string (DasomIM  *im,
 
     return;
   }
-
-  g_assert (im->reply->type == DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
 
   gchar *preedit_str; /* do not free */
   gint   pos;
@@ -281,10 +283,6 @@ dasom_im_get_preedit_string (DasomIM  *im,
     *cursor_pos = pos;
     g_print ("cursor_pos:%d\n", *cursor_pos);
   }
-
-  g_return_if_fail (str == NULL || g_utf8_validate (*str, -1, NULL));
-
-  return;
 }
 
 void dasom_im_reset (DasomIM *im)
@@ -301,14 +299,12 @@ void dasom_im_reset (DasomIM *im)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_RESET, NULL, NULL);
-  dasom_im_loop_until (im, DASOM_MESSAGE_RESET_REPLY);
-
-  g_assert (im->reply->type == DASOM_MESSAGE_RESET_REPLY);
+  dasom_iteration_until (im, DASOM_MESSAGE_RESET_REPLY);
 }
 
 gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
 {
-  g_debug (G_STRLOC ":REQ %s", G_STRFUNC);
+  g_debug (G_STRLOC ":%s", G_STRFUNC);
 
   g_return_val_if_fail (DASOM_IS_IM (im), FALSE);
 
@@ -320,20 +316,12 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event, (GDestroyNotify) dasom_event_free);
-  dasom_im_loop_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
+  dasom_iteration_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
 
   if (im->reply == NULL)
-  {
-    g_critical (G_STRLOC ": %s:", G_STRFUNC);
     return FALSE;
-  }
 
-  gboolean retval = FALSE;
-
-  if (im->reply->type == DASOM_MESSAGE_FILTER_EVENT_REPLY)
-    retval = *(gboolean *) (im->reply->body.data);
-
-  return retval;
+  return *(gboolean *) (im->reply->body.data);
 }
 
 DasomIM *
@@ -353,25 +341,31 @@ dasom_im_init (DasomIM *im)
   GSocketClient  *client;
   GSocketAddress *address;
   GSocket        *socket;
+  GError         *error = NULL;
 
-  address = g_unix_socket_address_new_with_type ("unix:abstract=dasom",
-                                                  -1,
-                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-
+  address = g_unix_socket_address_new_with_type ("unix:abstract=dasom", -1,
+                                                 G_UNIX_SOCKET_ADDRESS_ABSTRACT);
   client = g_socket_client_new ();
   im->connection = g_socket_client_connect (client,
                                             G_SOCKET_CONNECTABLE (address),
-                                            NULL,
-                                            NULL);
+                                            NULL, &error);
   g_object_unref (address);
+  g_object_unref (client);
+
   if (im->connection == NULL)
-    return; /* 에러 메시지 있어야 한다 */
+  {
+    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+    g_clear_error (&error);
+    return;
+  }
 
   socket = g_socket_connection_get_socket (im->connection);
-  /* FALSE 이면 im 이 생성되지 않으므로 initable 을 포기하고 디폴트로 영어가
-   * 입력될 수 있도록 해야 한다. */
+
   if (!socket)
-    return; /* 에러 메시지 있어야 한다 */
+  {
+    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, "Can't get socket");
+    return;
+  }
 
   DasomMessage *message;
 
@@ -388,12 +382,41 @@ dasom_im_init (DasomIM *im)
 
   dasom_message_free (message);
 
-  GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
-  g_source_attach (source, NULL);
-  g_source_set_callback (source,
+  GMutex mutex;
+
+  g_mutex_init (&mutex);
+  g_mutex_lock (&mutex);
+
+  if (G_UNLIKELY (dasom_im_sockets_context == NULL))
+  {
+    dasom_im_sockets_context = g_main_context_new ();
+    dasom_im_sockets_context_ref_count++;
+  }
+  else
+  {
+    dasom_im_sockets_context = g_main_context_ref (dasom_im_sockets_context);
+    dasom_im_sockets_context_ref_count++;
+  }
+
+  g_mutex_unlock (&mutex);
+
+  /* g_main_context_iteration() 할 때 소켓들만 iteration 하기 위함 */
+  im->sockets_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
+  g_source_set_can_recurse (im->sockets_context_source, TRUE);
+  g_source_attach (im->sockets_context_source, dasom_im_sockets_context);
+  g_source_set_callback (im->sockets_context_source,
                          (GSourceFunc) on_incoming_message,
-                         im,
-                         NULL);
+                         im, NULL);
+
+  /* default context 는 응용 프로그램의 default context일 것입니다.
+     default context에 source를 부착하는 이유는, 키보드 말고, 마우스 같은
+     것으로 입력할 때 서버에서 commit 등의 신호를 발생시킬텐데 그에 대응하기
+     위함입니다. */
+  im->default_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
+  g_source_set_can_recurse (im->default_context_source, TRUE);
+  g_source_set_callback (im->default_context_source,
+                         (GSourceFunc) on_incoming_message, im, NULL);
+  g_source_attach (im->default_context_source, NULL);
 }
 
 static void
@@ -403,8 +426,36 @@ dasom_im_finalize (GObject *object)
 
   DasomIM *im = DASOM_IM (object);
 
+  if (im->sockets_context_source)
+  {
+    g_source_destroy (im->sockets_context_source);
+    g_source_unref   (im->sockets_context_source);
+  }
+
+  if (im->default_context_source)
+  {
+    g_source_destroy (im->default_context_source);
+    g_source_unref   (im->default_context_source);
+  }
+
   if (im->connection)
     g_object_unref (im->connection);
+
+  GMutex mutex;
+
+  g_mutex_init (&mutex);
+  g_mutex_lock (&mutex);
+
+  if (dasom_im_sockets_context)
+  {
+    g_main_context_unref (dasom_im_sockets_context);
+    dasom_im_sockets_context_ref_count--;
+
+    if (dasom_im_sockets_context_ref_count == 0)
+      dasom_im_sockets_context = NULL;
+  }
+
+  g_mutex_unlock (&mutex);
 
   G_OBJECT_CLASS (dasom_im_parent_class)->finalize (object);
 }

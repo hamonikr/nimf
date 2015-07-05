@@ -230,7 +230,6 @@ on_incoming_message_dasom (GSocket      *socket,
     case DASOM_MESSAGE_COMMIT_REPLY:
     case DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
     case DASOM_MESSAGE_DELETE_SURROUNDING_REPLY:
-    case DASOM_MESSAGE_ENGINE_CHANGED_REPLY:
       break;
     default:
       g_warning ("Unknown message type: %d", message->type);
@@ -244,26 +243,36 @@ void
 dasom_iteration_until (DasomContext     *context,
                        DasomMessageType  type)
 {
-  do {
-    g_main_context_iteration (NULL, TRUE);
-  } while (context->reply && (context->reply->type != type));
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /* TODO: error handling */
+  gboolean is_dispatched;
+
+  do {
+    is_dispatched = g_main_context_iteration (NULL, TRUE);
+  } while (!is_dispatched || (context->reply && (context->reply->type != type)));
+
   if (G_UNLIKELY (context->reply == NULL))
+  {
+    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
+                dasom_message_get_name_by_type (type));
     return;
+  }
 
   if (context->reply->type != type)
   {
-    g_print ("error NOT MATCH\n");
-
     const gchar *name = dasom_message_get_name (context->reply);
-    if (name)
-      g_print ("reply_type: %s\n", name);
-    else
-      g_error ("unknown reply_type type");
-  }
+    gchar *mesg;
 
-  g_assert (context->reply->type == type);
+    if (name)
+      mesg = g_strdup (name);
+    else
+      mesg = g_strdup_printf ("unknown type %d", context->reply->type);
+
+    g_critical ("Reply type does not match.\n"
+                "%s is required, but we received %s\n",
+                dasom_message_get_name_by_type (type), mesg);
+    g_free (mesg);
+  }
 }
 
 /* TODO */
@@ -387,7 +396,6 @@ on_signal_engine_changed (DasomContext *context,
   {
     GList *next = l->next;
     dasom_send_message (DASOM_CONTEXT (l->data)->socket, DASOM_MESSAGE_ENGINE_CHANGED, (gchar *) name, NULL);
-    dasom_iteration_until (DASOM_CONTEXT (l->data), DASOM_MESSAGE_ENGINE_CHANGED_REPLY);
     l = next;
   }
 }
@@ -802,7 +810,7 @@ dasom_xevent_source_new (Display *display)
   g_source_add_poll (source, &event_source->poll_fd);
 
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
-  g_source_set_can_recurse (source, TRUE);
+  g_source_set_can_recurse (source, FALSE);
 
   return source;
 }
@@ -894,12 +902,6 @@ on_new_connection (GSocketService    *service,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   /* TODO: simple authentication */
-  /* TODO: by library or by protocol */
-
-  /* NOTE: connection will be unreffed once the signal handler returns,
-   * so you need to ref it yourself if you are planning to use it.
-   */
-  /* FIXME: g_object_ref (connection);*/
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
    * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
@@ -969,13 +971,13 @@ on_new_connection (GSocketService    *service,
   if (context->type == DASOM_CONNECTION_DASOM_AGENT)
     daemon->agents_list = g_list_prepend (daemon->agents_list, context);
 
-  source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
+  source = g_socket_create_source (socket, G_IO_IN, NULL);
+  context->source = source;
+  context->connection = g_object_ref (connection);
   g_source_set_can_recurse (source, TRUE);
+  g_source_set_callback (source, (GSourceFunc) on_incoming_message_dasom,
+                         context, NULL);
   g_source_attach (source, NULL);
-  g_source_set_callback (source,
-                         (GSourceFunc) on_incoming_message_dasom,
-                         context,
-                         NULL);
 
   return TRUE;
 }
