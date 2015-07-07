@@ -152,7 +152,7 @@ dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->caller, "preedit-start");
+  g_signal_emit_by_name (engine->priv->daemon->caller, "preedit-start");
 }
 
 void
@@ -160,7 +160,7 @@ dasom_engine_emit_preedit_changed (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->caller, "preedit-changed");
+  g_signal_emit_by_name (engine->priv->daemon->caller, "preedit-changed");
 }
 
 void
@@ -168,7 +168,7 @@ dasom_engine_emit_preedit_end (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->caller, "preedit-end");
+  g_signal_emit_by_name (engine->priv->daemon->caller, "preedit-end");
 }
 
 void
@@ -176,7 +176,7 @@ dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->caller, "commit", text);
+  g_signal_emit_by_name (engine->priv->daemon->caller, "commit", text);
 }
 
 static void

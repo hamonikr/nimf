@@ -23,7 +23,7 @@
 #define __DASOM_PRIVATE_H__
 
 #include <glib-object.h>
-#include "daemon/dasom-context.h"
+#include "daemon/dasom-daemon.h"
 
 G_BEGIN_DECLS
 
@@ -32,7 +32,7 @@ typedef struct _DasomEnginePrivate DasomEnginePrivate;
 struct _DasomEnginePrivate
 {
   gchar        *path;
-  DasomContext *caller;
+  DasomDaemon  *daemon;
 };
 
 void          dasom_send_message (GSocket          *socket,

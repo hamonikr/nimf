@@ -163,6 +163,10 @@ on_incoming_message_dasom (GSocket      *socket,
   DasomContext *context = user_data;
   gboolean retval;
 
+  DasomContext *saved_context = context->daemon->caller;
+
+  context->daemon->caller = context;
+
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
     g_socket_close (socket, NULL);
@@ -177,6 +181,8 @@ on_incoming_message_dasom (GSocket      *socket,
                          GUINT_TO_POINTER (dasom_context_get_id (context)));
 
     g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
+
+    context->daemon->caller = saved_context;
 
     return G_SOURCE_REMOVE;
   }
@@ -235,6 +241,8 @@ on_incoming_message_dasom (GSocket      *socket,
       g_warning ("Unknown message type: %d", message->type);
       break;
   }
+
+  context->daemon->caller = saved_context;
 
   return G_SOURCE_CONTINUE;
 }
@@ -319,7 +327,6 @@ on_signal_commit (DasomContext *context,
   switch (context->type)
   {
     case DASOM_CONNECTION_DASOM_IM:
-      g_message ("commit text:%s", text);
       dasom_send_message (context->socket, DASOM_MESSAGE_COMMIT, g_strdup (text), NULL); /* FIXME: 좀더 확인해봅시다 */
       dasom_iteration_until (context, DASOM_MESSAGE_COMMIT_REPLY);
       break;
@@ -411,7 +418,13 @@ dasom_daemon_init (DasomDaemon *daemon)
 
   daemon->module_manager = dasom_module_manager_get_default ();
   daemon->instances = dasom_module_manager_create_instances (daemon->module_manager);
-  daemon->engine = dasom_daemon_get_default_engine (daemon);
+
+  GList *l;
+  for (l = daemon->instances; l != NULL; l = l->next)
+    {
+      DASOM_ENGINE (l->data)->priv->daemon = daemon;
+    }
+
   /* FIXME: daemon->candidate = dasom_candidate_new (); */
   daemon->loop = g_main_loop_new (NULL, FALSE);
   daemon->contexts = g_hash_table_new_full (g_direct_hash,
@@ -909,7 +922,6 @@ on_new_connection (GSocketService    *service,
   DasomDaemon *daemon = user_data;
 
   GSocket *socket = g_socket_connection_get_socket (connection);
-  GSource *source;
 
   DasomMessage *message;
   message = dasom_recv_message (socket);
@@ -971,13 +983,13 @@ on_new_connection (GSocketService    *service,
   if (context->type == DASOM_CONNECTION_DASOM_AGENT)
     daemon->agents_list = g_list_prepend (daemon->agents_list, context);
 
-  source = g_socket_create_source (socket, G_IO_IN, NULL);
-  context->source = source;
+  context->source = g_socket_create_source (socket, G_IO_IN, NULL);
   context->connection = g_object_ref (connection);
-  g_source_set_can_recurse (source, TRUE);
-  g_source_set_callback (source, (GSourceFunc) on_incoming_message_dasom,
+  g_source_set_can_recurse (context->source, TRUE);
+  g_source_set_callback (context->source,
+                         (GSourceFunc) on_incoming_message_dasom,
                          context, NULL);
-  g_source_attach (source, NULL);
+  g_source_attach (context->source, NULL);
 
   return TRUE;
 }

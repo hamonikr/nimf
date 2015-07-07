@@ -26,6 +26,7 @@
 #include "dasom-module-manager.h"
 #include "dasom-candidate.h"
 #include "dasom-engine.h"
+#include "dasom-context.h"
 
 G_BEGIN_DECLS
 
@@ -37,6 +38,7 @@ G_BEGIN_DECLS
 #define DASOM_DAEMON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_DAEMON, DasomDaemonClass))
 
 typedef struct _DasomEngine  DasomEngine;
+typedef struct _DasomContext DasomContext;
 
 typedef struct _DasomDaemon      DasomDaemon;
 typedef struct _DasomDaemonClass DasomDaemonClass;
@@ -49,12 +51,12 @@ struct _DasomDaemon
   int                  status;
   DasomModuleManager  *module_manager;
   GList               *instances;
-  DasomEngine         *engine;
   GSocketService      *service;
   GHashTable          *contexts;
   GList               *agents_list;
   gchar              **hotkey_names;
   DasomCandidate      *candidate;
+  DasomContext        *caller;
 };
 
 struct _DasomDaemonClass

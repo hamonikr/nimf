@@ -37,6 +37,8 @@ G_BEGIN_DECLS
 #define DASOM_IS_CONTEXT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_CONTEXT))
 #define DASOM_CONTEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_CONTEXT, DasomContextClass))
 
+typedef struct _DasomDaemon       DasomDaemon;
+
 typedef struct _DasomContext      DasomContext;
 typedef struct _DasomContextClass DasomContextClass;
 

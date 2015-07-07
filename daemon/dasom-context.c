@@ -173,7 +173,6 @@ void dasom_context_reset (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->engine->priv->caller = context;
   dasom_engine_reset (context->engine);
 }
 
@@ -181,7 +180,6 @@ void dasom_context_focus_in (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->engine->priv->caller = context;
   dasom_engine_focus_in (context->engine);
 
   g_signal_emit_by_name (context, "engine-changed",
@@ -192,14 +190,10 @@ void dasom_context_focus_out (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar *str = g_strdup ("Dasom");
-
-  context->engine->priv->caller = context;
-
   dasom_engine_focus_out (context->engine);
 
+  gchar *str = g_strdup ("Dasom");
   g_signal_emit_by_name (context, "engine-changed", str);
-
   g_free (str);
 }
 
@@ -216,8 +210,6 @@ gboolean dasom_context_filter_event (DasomContext     *context,
                                      const DasomEvent *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  context->engine->priv->caller = context;
 
   if (dasom_event_is_hotkey (event, (const gchar * const *) context->daemon->hotkey_names))
   {
@@ -238,7 +230,6 @@ dasom_context_get_preedit_string (DasomContext  *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->engine->priv->caller = context;
   dasom_engine_get_preedit_string (context->engine,
                                    str,
                                    cursor_pos);
