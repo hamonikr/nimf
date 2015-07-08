@@ -42,21 +42,61 @@ dasom_english_filter_event (DasomEngine *engine, const DasomEvent *event)
 {
   g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
 
-  if (event->key.type == DASOM_EVENT_KEY_RELEASE)
+  gboolean retval = FALSE;
+
+  if ((event->key.type == DASOM_EVENT_KEY_RELEASE) ||
+      (event->key.keyval == DASOM_KEY_Shift_L)     ||
+      (event->key.keyval == DASOM_KEY_Shift_R)     ||
+      (event->key.state & (DASOM_CONTROL_MASK | DASOM_MOD1_MASK)))
     return FALSE;
 
-  /* TODO: number key pad */
-  if (event->key.keyval >= 32  &&
-      event->key.keyval <= 126 &&
-      !(event->key.state & DASOM_CONTROL_MASK))
+  gchar c = 0;
+
+  if (event->key.keyval >= 32 && event->key.keyval <= 126)
+    c = event->key.keyval;
+
+  if (!c)
   {
-    gchar *text = g_strdup_printf ("%c", event->key.keyval);
-    dasom_engine_emit_commit (engine, text);
-    g_free (text);
-    return TRUE;
+    switch (event->key.keyval)
+    {
+      case DASOM_KEY_KP_Multiply: c = '*'; break;
+      case DASOM_KEY_KP_Add:      c = '+'; break;
+      case DASOM_KEY_KP_Subtract: c = '-'; break;
+      case DASOM_KEY_KP_Divide:   c = '/'; break;
+      default:
+        break;
+    }
   }
 
-  return FALSE;
+  if (!c && (event->key.state & DASOM_MOD2_MASK))
+  {
+    switch (event->key.keyval)
+    {
+      case DASOM_KEY_KP_Decimal:  c = '.'; break;
+      case DASOM_KEY_KP_0:        c = '0'; break;
+      case DASOM_KEY_KP_1:        c = '1'; break;
+      case DASOM_KEY_KP_2:        c = '2'; break;
+      case DASOM_KEY_KP_3:        c = '3'; break;
+      case DASOM_KEY_KP_4:        c = '4'; break;
+      case DASOM_KEY_KP_5:        c = '5'; break;
+      case DASOM_KEY_KP_6:        c = '6'; break;
+      case DASOM_KEY_KP_7:        c = '7'; break;
+      case DASOM_KEY_KP_8:        c = '8'; break;
+      case DASOM_KEY_KP_9:        c = '9'; break;
+      default:
+        break;
+    }
+  }
+
+  if (c)
+  {
+    gchar *str = g_strdup_printf ("%c", c);
+    dasom_engine_emit_commit (engine, str);
+    g_free (str);
+    retval = TRUE;
+  }
+
+  return retval;
 }
 
 static void

@@ -142,7 +142,7 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
            event->key.hardware_keycode);
 
   guint keyval;
-  gboolean retval;
+  gboolean retval = FALSE;
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
 
@@ -251,6 +251,7 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
       if (old_preedit != NULL && preedit[0] == 0)
         dasom_engine_emit_preedit_end (engine);
     }
+
     return retval;
   }
 
@@ -305,14 +306,57 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
     }
   }
 
-  if (keyval == DASOM_KEY_space)
-  {
-    dasom_engine_emit_commit (engine, " ");
-    retval = TRUE;
-  }
-
   g_free (new_commit);
   g_free (old_preedit);
+
+  if (retval)
+    return TRUE;
+
+  gchar c = 0;
+
+  if (keyval == DASOM_KEY_space)
+    c = ' ';
+
+  if (!c)
+  {
+    switch (event->key.keyval)
+    {
+      case DASOM_KEY_KP_Multiply: c = '*'; break;
+      case DASOM_KEY_KP_Add:      c = '+'; break;
+      case DASOM_KEY_KP_Subtract: c = '-'; break;
+      case DASOM_KEY_KP_Divide:   c = '/'; break;
+      default:
+        break;
+    }
+  }
+
+  if (!c && (event->key.state & DASOM_MOD2_MASK))
+  {
+    switch (keyval)
+    {
+      case DASOM_KEY_KP_Decimal:  c = '.'; break;
+      case DASOM_KEY_KP_0:        c = '0'; break;
+      case DASOM_KEY_KP_1:        c = '1'; break;
+      case DASOM_KEY_KP_2:        c = '2'; break;
+      case DASOM_KEY_KP_3:        c = '3'; break;
+      case DASOM_KEY_KP_4:        c = '4'; break;
+      case DASOM_KEY_KP_5:        c = '5'; break;
+      case DASOM_KEY_KP_6:        c = '6'; break;
+      case DASOM_KEY_KP_7:        c = '7'; break;
+      case DASOM_KEY_KP_8:        c = '8'; break;
+      case DASOM_KEY_KP_9:        c = '9'; break;
+      default:
+        break;
+    }
+  }
+
+  if (c)
+  {
+    gchar *str = g_strdup_printf ("%c", c);
+    dasom_engine_emit_commit (engine, str);
+    g_free (str);
+    retval = TRUE;
+  }
 
   return retval;
 }

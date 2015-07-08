@@ -66,6 +66,12 @@
 #define DASOM_KEY_KP_Page_Up    0xff9a
 #define DASOM_KEY_KP_Page_Down  0xff9b
 
+#define DASOM_KEY_KP_Multiply   0xffaa
+#define DASOM_KEY_KP_Add        0xffab
+
+#define DASOM_KEY_KP_Subtract   0xffad
+#define DASOM_KEY_KP_Decimal    0xffae
+#define DASOM_KEY_KP_Divide     0xffaf
 #define DASOM_KEY_KP_0          0xffb0
 #define DASOM_KEY_KP_1          0xffb1
 #define DASOM_KEY_KP_2          0xffb2
