@@ -34,8 +34,8 @@ typedef struct _DasomGtkIMContextClass DasomGtkIMContextClass;
 struct _DasomGtkIMContext
 {
   GtkIMContext  parent_instance;
-
-  DasomIM *im;
+  DasomIM      *im;
+  GdkWindow    *client_window;
 };
 
 struct _DasomGtkIMContextClass
@@ -50,6 +50,17 @@ dasom_gtk_im_context_set_client_window (GtkIMContext *context,
                                         GdkWindow    *window)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
+
+  if (dasom_context->client_window)
+  {
+    g_object_unref (dasom_context->client_window);
+    dasom_context->client_window = NULL;
+  }
+
+  if (window)
+    dasom_context->client_window = g_object_ref (window);
 }
 
 static void
@@ -299,6 +310,9 @@ dasom_gtk_im_context_finalize (GObject *object)
 
   DasomGtkIMContext *context = DASOM_GTK_IM_CONTEXT (object);
   g_object_unref (context->im);
+
+  if (context->client_window)
+    g_object_unref (context->client_window);
 
   G_OBJECT_CLASS (dasom_gtk_im_context_parent_class)->finalize (object);
 }
