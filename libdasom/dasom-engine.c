@@ -204,6 +204,8 @@ dasom_engine_real_get_preedit_string (DasomEngine  *engine,
                                       gchar       **str,
                                       gint         *cursor_pos)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   if (str)
     *str = g_strdup ("");
 
