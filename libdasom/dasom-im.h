@@ -87,8 +87,6 @@ void      dasom_im_focus_out           (DasomIM           *im);
 void      dasom_im_reset               (DasomIM           *im);
 gboolean  dasom_im_filter_event        (DasomIM           *im,
                                         DasomEvent        *event);
-void      dasom_im_commit              (DasomIM           *im,
-                                        const gchar       *text);
 void      dasom_im_get_preedit_string  (DasomIM           *im,
                                         gchar            **str,
                                         gint              *cursor_pos);
