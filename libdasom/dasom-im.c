@@ -262,7 +262,6 @@ dasom_im_get_preedit_string (DasomIM  *im,
   g_return_if_fail (DASOM_IS_IM (im));
 
   GSocket *socket = g_socket_connection_get_socket (im->connection);
-
   if (!socket || g_socket_is_closed (socket))
   {
     if (str)
@@ -291,24 +290,17 @@ dasom_im_get_preedit_string (DasomIM  *im,
     return;
   }
 
-  gchar *preedit_str; /* do not free */
-  gint   pos;
-  gint   str_len = im->reply->header->data_len - 1 - sizeof (gint);
-
-  preedit_str = g_strndup (im->reply->data, str_len);
-  pos = *(gint *) (im->reply->data + str_len + 1);
-
   if (str)
   {
-    *str = preedit_str;
+    *str = g_strndup (im->reply->data,
+                      im->reply->header->data_len - 1 - sizeof (gint));
     g_print ("preedit:%s\n", *str);
   }
-  else
-    g_free (preedit_str);
 
   if (cursor_pos)
   {
-    *cursor_pos = pos;
+    *cursor_pos = *(gint *) (im->reply->data +
+                             im->reply->header->data_len - sizeof (gint));
     g_print ("cursor_pos:%d\n", *cursor_pos);
   }
 }
