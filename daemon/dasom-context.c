@@ -219,7 +219,7 @@ gboolean dasom_context_filter_event (DasomContext     *context,
       dasom_context_set_next_engine (context);
     }
 
-    return FALSE;
+    return TRUE;
   }
 
   return dasom_engine_filter_event (context->engine, event);
