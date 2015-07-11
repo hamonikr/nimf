@@ -33,21 +33,57 @@ dasom_send_message (GSocket          *socket,
 
   DasomMessage *message;
   const DasomMessageHeader *header;
+  GError *error = NULL;
+  gssize n_written;
 
   message = dasom_message_new_full (type, data, data_len, data_destroy_func);
   header  = dasom_message_get_header (message);
 
-  g_socket_send (socket,
-                 (gchar *) header,
-                 dasom_message_get_header_size (),
-                 NULL, NULL);
+  n_written = g_socket_send (socket,
+                             (gchar *) header,
+                             dasom_message_get_header_size (),
+                             NULL, &error);
 
-  if (message->header->data_len > 0)
-    g_socket_send (socket,
-                   message->data,
-                   message->header->data_len,
-                   NULL, NULL);
+  if (G_UNLIKELY (n_written < dasom_message_get_header_size ()))
+  {
+    g_critical (G_STRLOC ": %s: sent %ld less than %d",
+                G_STRFUNC, n_written, dasom_message_get_header_size ());
+    if (error)
+    {
+      g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+      g_error_free (error);
+    }
 
+    dasom_message_free (message);
+
+    return;
+  }
+
+  if (G_LIKELY (message->header->data_len > 0))
+  {
+    n_written = g_socket_send (socket,
+                               message->data,
+                               message->header->data_len,
+                               NULL, &error);
+
+    if (G_UNLIKELY (n_written < message->header->data_len))
+    {
+      g_critical (G_STRLOC ": %s: sent %ld less than %d",
+                  G_STRFUNC, n_written, message->header->data_len);
+
+      if (error)
+      {
+        g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+        g_error_free (error);
+      }
+
+      dasom_message_free (message);
+
+      return;
+    }
+  }
+
+  /* debug message */
   const gchar *name = dasom_message_get_name (message);
   if (name)
     g_print ("send: %s, fd: %d\n", name, g_socket_get_fd(socket));
@@ -62,29 +98,60 @@ DasomMessage *dasom_recv_message (GSocket *socket)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomMessage *message = dasom_message_new ();
-
+  GError *error = NULL;
   gssize n_read = 0;
 
   n_read = g_socket_receive (socket,
                              (gchar *) message->header,
-                             sizeof (DasomMessageHeader),
-                             NULL, NULL);
+                             dasom_message_get_header_size (),
+                             NULL, &error);
 
-  /* FIXME: 에러 처리해야 함 */
-  g_assert (n_read == sizeof (DasomMessageHeader));
+  if (G_UNLIKELY (n_read < dasom_message_get_header_size ()))
+  {
+    g_critical (G_STRLOC ": %s: received %ld less than %d",
+                G_STRFUNC, n_read, message->header->data_len);
+
+    if (error)
+    {
+      g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+      g_error_free (error);
+    }
+
+    dasom_message_free (message);
+
+    return NULL;
+  }
 
   if (message->header->data_len > 1)
   {
-    message->data = g_malloc0 (message->header->data_len);
-    g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
+    dasom_message_set_body (message,
+                            g_malloc0 (message->header->data_len),
+                            message->header->data_len,
+                            g_free);
+
     n_read = g_socket_receive (socket,
                                message->data,
                                message->header->data_len,
-                               NULL,
-                               NULL);
-    g_assert (n_read == message->header->data_len);
+                               NULL, &error);
+
+    if (G_UNLIKELY (n_read < message->header->data_len))
+    {
+      g_critical (G_STRLOC ": %s: received %ld less than %d",
+                G_STRFUNC, n_read, message->header->data_len);
+
+      if (error)
+      {
+        g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+        g_error_free (error);
+      }
+
+      dasom_message_free (message);
+
+      return NULL;
+    }
   }
 
+  /* debug message */
   const gchar *name = dasom_message_get_name (message);
   if (name)
     g_print ("recv: %s, fd: %d\n", name, g_socket_get_fd (socket));
