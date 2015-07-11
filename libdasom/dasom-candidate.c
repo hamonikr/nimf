@@ -57,12 +57,9 @@ on_row_activated (GtkTreeView       *tree_view,
 
   DasomCandidate *candidate = user_data;
 
-  /* FIXME: 다솜 프로젝트에서 사용되는
-   * 모든 g_signal_emit_by_name 경우에
-   * 인자(예; text)를 여기서 free 하는 것이 나을지,
-   * 아니면 callback 함수에서 free 하는 것이 나을지 결정해야 합니다 */
   gchar *text = dasom_candidate_get_selected_text (candidate);
   g_signal_emit_by_name (candidate, "row-activated", text);
+  g_free (text);
 }
 
 static void

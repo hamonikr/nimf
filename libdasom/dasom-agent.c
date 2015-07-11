@@ -53,7 +53,7 @@ on_incoming_message (GSocket      *socket,
 
   DasomMessage *message;
   message = dasom_recv_message (socket);
-
+  dasom_message_free (agent->reply);
   agent->reply = message;
 
   switch (message->header->type)
@@ -122,6 +122,9 @@ static void
 dasom_agent_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomAgent *agent = DASOM_AGENT (object);
+  dasom_message_free (agent->reply);
 
   G_OBJECT_CLASS (dasom_agent_parent_class)->finalize (object);
 }

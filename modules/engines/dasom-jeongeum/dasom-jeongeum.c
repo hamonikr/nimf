@@ -203,6 +203,7 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
         {
           gchar *text = dasom_candidate_get_selected_text (jeongeum->candidate);
           g_signal_emit_by_name (jeongeum->candidate, "row-activated", text);
+          g_free (text);
         }
         break;
       case DASOM_KEY_Up:
@@ -363,7 +364,7 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
 
 void
 on_candidate_row_activated (DasomCandidate *candidate,
-                            gchar          *text,
+                            const gchar    *text,
                             gpointer        user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
