@@ -321,7 +321,7 @@ on_signal_preedit_changed (DasomContext *context,
 
 static void
 on_signal_commit (DasomContext *context,
-                  const gchar  *text, /* It should be null-terminated string */
+                  const gchar  *text,
                   gpointer      user_data)
 {
   g_debug (G_STRLOC ": %s:%s:id = %d", G_STRFUNC, text, context->id);
@@ -329,7 +329,8 @@ on_signal_commit (DasomContext *context,
   switch (context->type)
   {
     case DASOM_CONNECTION_DASOM_IM:
-      dasom_send_message (context->socket, DASOM_MESSAGE_COMMIT, g_strdup (text), strlen (text) + 1, NULL); /* FIXME: 좀더 확인해봅시다 */
+      dasom_send_message (context->socket, DASOM_MESSAGE_COMMIT,
+                          (gchar *) text, strlen (text) + 1, NULL);
       dasom_iteration_until (context, DASOM_MESSAGE_COMMIT_REPLY);
       break;
     case DASOM_CONNECTION_XIM:
