@@ -27,8 +27,12 @@
 DasomMessage *
 dasom_message_new ()
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomMessage *message;
-  message = g_slice_new0 (DasomMessage);
+
+  message         = g_slice_new0 (DasomMessage);
+  message->header = g_slice_new0 (DasomMessageHeader);
 
   return message;
 }
@@ -36,56 +40,89 @@ dasom_message_new ()
 DasomMessage *
 dasom_message_new_full (DasomMessageType type,
                         gpointer         data,
+                        guint16          data_len,
                         GDestroyNotify   data_destroy_func)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomMessage *message;
 
-  message = g_slice_new0 (DasomMessage);
-  message->type = type;
-  message->body.data = data;
-  message->body.data_destroy_func = data_destroy_func;
-
-  switch (type)
-  {
-    case DASOM_MESSAGE_CONNECT:
-      message->body.data_len = sizeof (DasomConnectionType);
-      break;
-    case DASOM_MESSAGE_FILTER_EVENT:
-      message->body.data_len = sizeof (DasomEvent);
-      break;
-    case DASOM_MESSAGE_FILTER_EVENT_REPLY:
-      message->body.data_len = sizeof (gboolean);
-      break;
-    case DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY:
-      message->body.data_len = strlen (data) + 1 + sizeof (gint);
-      break;
-    case DASOM_MESSAGE_COMMIT:
-    case DASOM_MESSAGE_ENGINE_CHANGED:
-      message->body.data_len = strlen (message->body.data) + 1;
-      break;
-    default:
-      message->body.data_len = 0;
-      break;
-  }
+  message                    = g_slice_new0 (DasomMessage);
+  message->header            = g_slice_new0 (DasomMessageHeader);
+  message->header->type      = type;
+  message->header->data_len  = data_len;
+  message->data              = data;
+  message->data_destroy_func = data_destroy_func;
 
   return message;
 }
 
 void dasom_message_free (DasomMessage *message)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   if (G_UNLIKELY (message == NULL))
     return;
 
-  if (message->body.data_destroy_func)
-    message->body.data_destroy_func (message->body.data);
+  g_slice_free (DasomMessageHeader, message->header);
+
+  if (message->data_destroy_func)
+    message->data_destroy_func (message->data);
 
   g_slice_free (DasomMessage, message);
 }
 
+const DasomMessageHeader *
+dasom_message_get_header (DasomMessage *message)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return message->header;
+}
+
+guint16
+dasom_message_get_header_size ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return sizeof (DasomMessageHeader);
+}
+
+void
+dasom_message_set_body (DasomMessage   *message,
+                        gchar          *data,
+                        guint16         data_len,
+                        GDestroyNotify  data_destroy_func)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  message->data              = data;
+  message->header->data_len  = data_len;
+  message->data_destroy_func = data_destroy_func;
+}
+
+const gchar *
+dasom_message_get_body (DasomMessage *message)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return message->data;
+}
+
+guint16
+dasom_message_get_body_size (DasomMessage *message)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return message->header->data_len;
+}
+
 const gchar *dasom_message_get_name (DasomMessage *message)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   GEnumClass *enum_class = (GEnumClass *) g_type_class_ref (DASOM_TYPE_MESSAGE_TYPE);
-  GEnumValue *enum_value = g_enum_get_value (enum_class, message->type);
+  GEnumValue *enum_value = g_enum_get_value (enum_class, message->header->type);
   g_type_class_unref (enum_class);
 
   return enum_value ? enum_value->value_name : NULL;
@@ -93,6 +130,8 @@ const gchar *dasom_message_get_name (DasomMessage *message)
 
 const gchar *dasom_message_get_name_by_type (DasomMessageType type)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   GEnumClass *enum_class = (GEnumClass *) g_type_class_ref (DASOM_TYPE_MESSAGE_TYPE);
   GEnumValue *enum_value = g_enum_get_value (enum_class, type);
   g_type_class_unref (enum_class);

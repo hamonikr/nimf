@@ -56,14 +56,14 @@ on_incoming_message (GSocket      *socket,
 
   agent->reply = message;
 
-  switch (message->type)
+  switch (message->header->type)
   {
     /* reply */
     case DASOM_MESSAGE_ENGINE_CHANGED:
-      g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->reply->body.data);
+      g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->reply->data);
       break;
     default:
-      g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->type);
+      g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
       break;
   }
 
@@ -97,14 +97,13 @@ dasom_agent_init (DasomAgent *agent)
   if (!socket)
     return; /* 에러 메시지 있어야 한다 */
 
-  DasomConnectionType *ctype = g_malloc0 (sizeof (DasomConnectionType));
-  *ctype = DASOM_CONNECTION_DASOM_AGENT;
+  DasomConnectionType type = DASOM_CONNECTION_DASOM_AGENT;
 
-  dasom_send_message (socket, DASOM_MESSAGE_CONNECT, ctype, g_free);
+  dasom_send_message (socket, DASOM_MESSAGE_CONNECT, &type, sizeof (DasomConnectionType), NULL);
   g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
   message = dasom_recv_message (socket);
 
-  if (message->type != DASOM_MESSAGE_CONNECT_REPLY)
+  if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
     g_error ("FIXME: error handling");
 
   g_print ("\trecv: DASOM_MESSAGE_CONNECT_REPLY\n");

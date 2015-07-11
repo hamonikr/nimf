@@ -31,9 +31,8 @@
 
 G_BEGIN_DECLS
 
-typedef union  _DasomMessage       DasomMessage;
+typedef struct _DasomMessage       DasomMessage;
 typedef struct _DasomMessageHeader DasomMessageHeader;
-typedef struct _DasomMessageBody   DasomMessageBody;
 
 typedef enum
 {
@@ -75,26 +74,28 @@ struct _DasomMessageHeader
   guint16          data_len;
 };
 
-struct _DasomMessageBody
+struct _DasomMessage
 {
-  DasomMessageType  type;
-  guint16           data_len;
-  void             *data;
-  GDestroyNotify    data_destroy_func;
+  DasomMessageHeader *header;
+  gchar              *data;
+  GDestroyNotify      data_destroy_func;
 };
 
-union _DasomMessage
-{
-  DasomMessageType   type;
-  DasomMessageHeader header;
-  DasomMessageBody   body;
-};
-
-DasomMessage *dasom_message_new              (void);
-DasomMessage *dasom_message_new_full         (DasomMessageType  type,
-                                              gpointer          data,
-                                              GDestroyNotify    data_destroy_func);
+DasomMessage *dasom_message_new          (void);
+DasomMessage *dasom_message_new_full     (DasomMessageType  type,
+                                          gpointer          data,
+                                          guint16           data_len,
+                                          GDestroyNotify    data_destroy_func);
 void          dasom_message_free             (DasomMessage     *message);
+const DasomMessageHeader *
+              dasom_message_get_header       (DasomMessage     *message);
+guint16       dasom_message_get_header_size  (void);
+void          dasom_message_set_body         (DasomMessage     *message,
+                                              gchar            *data,
+                                              guint16           data_len,
+                                              GDestroyNotify    data_destroy_func);
+const gchar  *dasom_message_get_body         (DasomMessage     *message);
+guint16       dasom_message_get_body_size    (DasomMessage     *message);
 const gchar  *dasom_message_get_name         (DasomMessage     *message);
 const gchar  *dasom_message_get_name_by_type (DasomMessageType  type);
 

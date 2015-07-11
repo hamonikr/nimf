@@ -26,23 +26,26 @@ void
 dasom_send_message (GSocket          *socket,
                     DasomMessageType  type,
                     gpointer          data,
+                    guint16           data_len,
                     GDestroyNotify    data_destroy_func)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomMessage *message;
+  const DasomMessageHeader *header;
 
-  message = dasom_message_new_full (type, data, data_destroy_func);
+  message = dasom_message_new_full (type, data, data_len, data_destroy_func);
+  header  = dasom_message_get_header (message);
 
   g_socket_send (socket,
-                 (gchar *) message,
-                 sizeof (DasomMessageHeader),
+                 (gchar *) header,
+                 dasom_message_get_header_size (),
                  NULL, NULL);
 
-  if (message->header.data_len > 0)
+  if (message->header->data_len > 0)
     g_socket_send (socket,
-                   message->body.data,
-                   message->body.data_len,
+                   message->data,
+                   message->header->data_len,
                    NULL, NULL);
 
   const gchar *name = dasom_message_get_name (message);
@@ -63,28 +66,28 @@ DasomMessage *dasom_recv_message (GSocket *socket)
   gssize n_read = 0;
 
   n_read = g_socket_receive (socket,
-                             (gchar *) message,
+                             (gchar *) message->header,
                              sizeof (DasomMessageHeader),
                              NULL, NULL);
 
   /* FIXME: 에러 처리해야 함 */
   g_assert (n_read == sizeof (DasomMessageHeader));
 
-  if (message->header.data_len > 1)
+  if (message->header->data_len > 1)
   {
-    message->body.data = g_malloc0 (message->header.data_len);
+    message->data = g_malloc0 (message->header->data_len);
     g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
     n_read = g_socket_receive (socket,
-                               message->body.data,
-                               message->header.data_len,
+                               message->data,
+                               message->header->data_len,
                                NULL,
                                NULL);
-    g_assert (n_read == message->header.data_len);
+    g_assert (n_read == message->header->data_len);
   }
 
   const gchar *name = dasom_message_get_name (message);
   if (name)
-    g_print ("recv: %s, fd: %d\n", name, g_socket_get_fd(socket));
+    g_print ("recv: %s, fd: %d\n", name, g_socket_get_fd (socket));
   else
     g_error ("unknown message type");
 

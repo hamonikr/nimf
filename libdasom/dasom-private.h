@@ -38,6 +38,7 @@ struct _DasomEnginePrivate
 void          dasom_send_message (GSocket          *socket,
                                   DasomMessageType  type,
                                   gpointer          data,
+                                  guint16           data_len,
                                   GDestroyNotify    data_destroy_func);
 DasomMessage* dasom_recv_message (GSocket          *socket);
 

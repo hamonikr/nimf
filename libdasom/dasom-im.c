@@ -82,7 +82,7 @@ on_incoming_message (GSocket      *socket,
   dasom_message_free (im->reply);
   im->reply = message;
 
-  switch (message->type)
+  switch (message->header->type)
   {
     /* reply */
     case DASOM_MESSAGE_FILTER_EVENT_REPLY:
@@ -94,31 +94,31 @@ on_incoming_message (GSocket      *socket,
     /* signals */
     case DASOM_MESSAGE_PREEDIT_START:
       g_signal_emit_by_name (im, "preedit-start");
-      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_START_REPLY, NULL, NULL);
+      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_START_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_PREEDIT_END:
       g_signal_emit_by_name (im, "preedit-end");
-      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_END_REPLY, NULL, NULL);
+      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_END_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_PREEDIT_CHANGED:
       g_signal_emit_by_name (im, "preedit-changed");
-      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY, NULL, NULL);
+      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_COMMIT:
-      g_print ("g_signal_emit_by_name:commit:%s\n", (const gchar *) message->body.data);
-      g_signal_emit_by_name (im, "commit", (const gchar *) message->body.data);
-      dasom_send_message (socket, DASOM_MESSAGE_COMMIT_REPLY, NULL, NULL);
+      g_print ("g_signal_emit_by_name:commit:%s\n", (const gchar *) message->data);
+      g_signal_emit_by_name (im, "commit", (const gchar *) message->data);
+      dasom_send_message (socket, DASOM_MESSAGE_COMMIT_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_RETRIEVE_SURROUNDING:
       g_signal_emit_by_name (im, "retrieve-surrounding");
-      dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY, NULL, NULL);
+      dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_DELETE_SURROUNDING:
       g_signal_emit_by_name (im, "delete-surrounding");
-      dasom_send_message (socket, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY, NULL, NULL);
+      dasom_send_message (socket, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY, NULL, 0, NULL);
       break;
     default:
-      g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->type);
+      g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
       break;
   }
 
@@ -135,7 +135,7 @@ dasom_iteration_until (DasomIM          *im,
 
   do {
     is_dispatched = g_main_context_iteration (dasom_im_sockets_context, TRUE);
-  } while (!is_dispatched || (im->reply && (im->reply->type != type)));
+  } while (!is_dispatched || (im->reply && (im->reply->header->type != type)));
 
   if (G_UNLIKELY (im->reply == NULL))
   {
@@ -144,7 +144,7 @@ dasom_iteration_until (DasomIM          *im,
     return;
   }
 
-  if (im->reply->type != type)
+  if (im->reply->header->type != type)
   {
     const gchar *name = dasom_message_get_name (im->reply);
     gchar *mesg;
@@ -152,7 +152,7 @@ dasom_iteration_until (DasomIM          *im,
     if (name)
       mesg = g_strdup (name);
     else
-      mesg = g_strdup_printf ("unknown type %d", im->reply->type);
+      mesg = g_strdup_printf ("unknown type %d", im->reply->header->type);
 
     g_critical ("Reply type does not match.\n"
                 "%s is required, but we received %s\n",
@@ -174,7 +174,7 @@ void dasom_im_focus_out (DasomIM *im)
     return;
   }
 
-  dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT, NULL, NULL);
+  dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT, NULL, 0, NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_OUT_REPLY);
 }
 
@@ -220,7 +220,7 @@ void dasom_im_focus_in (DasomIM *im)
     return;
   }
 
-  dasom_send_message (socket, DASOM_MESSAGE_FOCUS_IN, NULL, NULL);
+  dasom_send_message (socket, DASOM_MESSAGE_FOCUS_IN, NULL, 0, NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_IN_REPLY);
 }
 
@@ -248,7 +248,7 @@ dasom_im_get_preedit_string (DasomIM  *im,
     return;
   }
 
-  dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, NULL);
+  dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, 0, NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
 
   /* FIXME: 중복 코드 */
@@ -265,10 +265,10 @@ dasom_im_get_preedit_string (DasomIM  *im,
 
   gchar *preedit_str; /* do not free */
   gint   pos;
-  gint   str_len = im->reply->body.data_len - 1 - sizeof (gint);
+  gint   str_len = im->reply->header->data_len - 1 - sizeof (gint);
 
-  preedit_str = g_strndup (im->reply->body.data, str_len);
-  pos = *(gint *) (im->reply->body.data + str_len + 1);
+  preedit_str = g_strndup (im->reply->data, str_len);
+  pos = *(gint *) (im->reply->data + str_len + 1);
 
   if (str)
   {
@@ -298,7 +298,7 @@ void dasom_im_reset (DasomIM *im)
     return;
   }
 
-  dasom_send_message (socket, DASOM_MESSAGE_RESET, NULL, NULL);
+  dasom_send_message (socket, DASOM_MESSAGE_RESET, NULL, 0, NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_RESET_REPLY);
 }
 
@@ -315,13 +315,13 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
     return FALSE;
   }
 
-  dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event, (GDestroyNotify) dasom_event_free);
+  dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event, sizeof (DasomEvent), (GDestroyNotify) dasom_event_free);
   dasom_iteration_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
 
   if (im->reply == NULL)
     return FALSE;
 
-  return *(gboolean *) (im->reply->body.data);
+  return *(gboolean *) (im->reply->data);
 }
 
 DasomIM *
@@ -369,15 +369,13 @@ dasom_im_init (DasomIM *im)
 
   DasomMessage *message;
 
-/* FIXME: 우아하게 처리할 필요가 있음 */
-  DasomConnectionType *type = g_malloc0 (sizeof (DasomConnectionType));
-  *type = DASOM_CONNECTION_DASOM_IM;
+  DasomConnectionType type = DASOM_CONNECTION_DASOM_IM;
 
-  dasom_send_message (socket, DASOM_MESSAGE_CONNECT, type, g_free);
+  dasom_send_message (socket, DASOM_MESSAGE_CONNECT, &type, sizeof (DasomConnectionType), NULL);
   g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
   message = dasom_recv_message (socket);
 
-  if (message->type != DASOM_MESSAGE_CONNECT_REPLY)
+  if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
     g_error ("FIXME: error handling");
 
   dasom_message_free (message);
