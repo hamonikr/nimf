@@ -236,3 +236,14 @@ dasom_context_get_preedit_string (DasomContext  *context,
                                    str,
                                    cursor_pos);
 }
+
+void
+dasom_context_set_surrounding (DasomContext *context,
+                               const char   *text,
+                               gint          len,
+                               gint          cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  dasom_engine_set_surrounding (context->engine, text, len, cursor_index);
+}

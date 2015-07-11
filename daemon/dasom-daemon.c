@@ -216,7 +216,6 @@ on_incoming_message_dasom (GSocket      *socket,
                             NULL);
         g_free (data);
       }
-
       break;
     case DASOM_MESSAGE_RESET:
       dasom_context_reset (context);
@@ -231,6 +230,18 @@ on_incoming_message_dasom (GSocket      *socket,
       dasom_context_focus_out (context);
       g_debug (G_STRLOC ": %s: context id = %d", G_STRFUNC, dasom_context_get_id (context));
       dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT_REPLY, NULL, 0, NULL);
+      break;
+    case DASOM_MESSAGE_SET_SURROUNDING:
+      {
+        gchar   *data     = message->data;
+        guint16  data_len = message->header->data_len;
+
+        gint   str_len      = data_len - 1 - 2 * sizeof (gint);
+        gint   cursor_index = *(gint *) (data + data_len - sizeof (gint));
+
+        dasom_context_set_surrounding (context, data, str_len, cursor_index);
+        dasom_send_message (socket, DASOM_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
+      }
       break;
     case DASOM_MESSAGE_PREEDIT_START_REPLY:
     case DASOM_MESSAGE_PREEDIT_CHANGED_REPLY:

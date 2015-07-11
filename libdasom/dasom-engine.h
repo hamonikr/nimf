@@ -68,6 +68,10 @@ struct _DasomEngineClass
   void     (* reset)              (DasomEngine      *engine);
   void     (* focus_in)           (DasomEngine      *engine);
   void     (* focus_out)          (DasomEngine      *engine);
+  void     (* set_surrounding)    (DasomEngine      *engine,
+                                   const char       *text,
+                                   gint              len,
+                                   gint              cursor_index);
 
   const gchar * (* get_name)      (DasomEngine      *engine);
 };
@@ -81,6 +85,10 @@ void     dasom_engine_focus_out                 (DasomEngine      *engine);
 void     dasom_engine_get_preedit_string        (DasomEngine      *engine,
                                                  gchar           **str,
                                                  gint             *cursor_pos);
+void     dasom_engine_set_surrounding           (DasomEngine      *engine,
+                                                 const char       *text,
+                                                 gint              len,
+                                                 gint              cursor_index);
 
 void     dasom_engine_emit_preedit_start        (DasomEngine      *engine);
 void     dasom_engine_emit_preedit_changed      (DasomEngine      *engine);

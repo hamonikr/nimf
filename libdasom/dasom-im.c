@@ -28,6 +28,7 @@
 #include <gio/gunixsocketaddress.h>
 #include "dasom-message.h"
 #include "dasom-private.h"
+#include <string.h>
 
 enum {
   PREEDIT_START,
@@ -199,12 +200,39 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
   return FALSE;
 }
 
-void dasom_im_set_surrounding (DasomIM   *im,
-                              const char *text,
-                              gint        len,
-                              gint        cursor_index)
+void dasom_im_set_surrounding (DasomIM    *im,
+                               const char *text,
+                               gint        len,
+                               gint        cursor_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (DASOM_IS_IM (im));
+
+  GSocket *socket = g_socket_connection_get_socket (im->connection);
+  if (!socket || g_socket_is_closed (socket))
+  {
+    g_warning ("socket is closed");
+    return;
+  }
+
+  gchar *data = NULL;
+  gint   str_len;
+
+  if (len == -1)
+    str_len = strlen (text);
+  else
+    str_len = len;
+
+  data = g_strndup (text, str_len);
+  data = g_realloc (data, str_len + 1 + 2 * sizeof (gint));
+
+  *(gint *) (data + str_len + 1) = len;
+  *(gint *) (data + str_len + 1 + sizeof (gint)) = cursor_index;
+
+  dasom_send_message (socket, DASOM_MESSAGE_SET_SURROUNDING, data,
+                      str_len + 1 + 2 * sizeof (gint), g_free);
+  dasom_iteration_until (im, DASOM_MESSAGE_SET_SURROUNDING_REPLY);
 }
 
 void dasom_im_focus_in (DasomIM *im)

@@ -91,6 +91,10 @@ void          dasom_context_get_preedit_string (DasomContext        *context,
 void          dasom_context_reset              (DasomContext        *context);
 void          dasom_context_focus_in           (DasomContext        *context);
 void          dasom_context_focus_out          (DasomContext        *context);
+void          dasom_context_set_surrounding    (DasomContext        *context,
+                                                const char          *text,
+                                                gint                 len,
+                                                gint                 cursor_index);
 
 G_END_DECLS
 

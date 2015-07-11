@@ -148,6 +148,23 @@ dasom_engine_get_preedit_string (DasomEngine  *engine,
 }
 
 void
+dasom_engine_set_surrounding (DasomEngine  *engine,
+                              const char   *text,
+                              gint          len,
+                              gint          cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (DASOM_IS_ENGINE (engine));
+  g_return_if_fail (text != NULL || len == 0);
+
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
+
+  if (class->set_surrounding)
+    class->set_surrounding (engine, text, len, cursor_index);
+}
+
+void
 dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -193,7 +210,9 @@ dasom_engine_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomEngine *engine = DASOM_ENGINE (object);
+
   g_free (engine->priv->path);
+  g_free (engine->priv->surrounding_text);
 
   G_OBJECT_CLASS (dasom_engine_parent_class)->finalize (object);
 }
@@ -211,6 +230,19 @@ dasom_engine_real_get_preedit_string (DasomEngine  *engine,
 
   if (cursor_pos)
     *cursor_pos = 0;
+}
+
+static void
+dasom_engine_real_set_surrounding (DasomEngine  *engine,
+                                   const char   *text,
+                                   gint          len,
+                                   gint          cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_free (engine->priv->surrounding_text);
+  engine->priv->surrounding_text         = g_strndup (text, len);
+  engine->priv->surrounding_cursor_index = cursor_index;
 }
 
 const gchar *
@@ -245,6 +277,7 @@ dasom_engine_class_init (DasomEngineClass *klass)
 
   klass->filter_event        = dasom_engine_real_filter_event;
   klass->get_preedit_string  = dasom_engine_real_get_preedit_string;
+  klass->set_surrounding     = dasom_engine_real_set_surrounding;
  /* FIXME: 나중에  get_engine_info 이런 걸로 추가해야 할지도 모르겠습니다. */
   klass->get_name            = dasom_engine_real_get_name;
 
