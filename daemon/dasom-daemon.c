@@ -383,11 +383,14 @@ on_signal_retrieve_surrounding (DasomContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING, NULL, 0, NULL);
+  dasom_send_message (context->socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING,
+                      NULL, 0, NULL);
   dasom_iteration_until (context, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
 
-  /* TODO */
-  return FALSE;
+  if (context->reply == NULL)
+    return FALSE;
+
+  return *(gboolean *) (context->reply->data);
 }
 
 static gboolean

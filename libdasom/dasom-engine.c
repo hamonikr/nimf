@@ -209,6 +209,17 @@ dasom_engine_emit_delete_surrounding (DasomEngine *engine,
   return retval;
 }
 
+gboolean
+dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval;
+  g_signal_emit_by_name (engine->priv->daemon->caller,
+                         "retrieve-surrounding", &retval);
+  return retval;
+}
+
 static void
 dasom_engine_init (DasomEngine *engine)
 {

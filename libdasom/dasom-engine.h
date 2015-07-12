@@ -95,6 +95,7 @@ void     dasom_engine_emit_preedit_changed      (DasomEngine      *engine);
 void     dasom_engine_emit_preedit_end          (DasomEngine      *engine);
 void     dasom_engine_emit_commit               (DasomEngine      *engine,
                                                  gchar const      *text);
+gboolean dasom_engine_emit_retrieve_surrounding (DasomEngine      *engine);
 gboolean dasom_engine_emit_delete_surrounding   (DasomEngine      *engine,
                                                  gint              offset,
                                                  gint              n_chars);

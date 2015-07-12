@@ -112,8 +112,12 @@ on_incoming_message (GSocket      *socket,
       dasom_send_message (socket, DASOM_MESSAGE_COMMIT_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_RETRIEVE_SURROUNDING:
-      g_signal_emit_by_name (im, "retrieve-surrounding");
-      dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY, NULL, 0, NULL);
+      {
+        gboolean retval;
+        g_signal_emit_by_name (im, "retrieve-surrounding", &retval);
+        dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
+                            &retval, sizeof (gboolean), NULL);
+      }
       break;
     case DASOM_MESSAGE_DELETE_SURROUNDING:
       {

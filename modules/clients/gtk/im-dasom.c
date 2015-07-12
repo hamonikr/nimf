@@ -265,13 +265,17 @@ on_preedit_start (DasomIM           *im,
   g_signal_emit_by_name (context, "preedit-start");
 }
 
-static void
+static gboolean
 on_retrieve_surrounding (DasomIM           *im,
                          DasomGtkIMContext *context)
 
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-  g_signal_emit_by_name (context, "retrieve-surrounding");
+
+  gboolean retval;
+  g_signal_emit_by_name (context, "retrieve-surrounding", &retval);
+
+  return retval;
 }
 
 static void
