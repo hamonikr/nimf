@@ -91,6 +91,7 @@ on_incoming_message (GSocket      *socket,
     case DASOM_MESSAGE_RESET_REPLY:
     case DASOM_MESSAGE_FOCUS_IN_REPLY:
     case DASOM_MESSAGE_FOCUS_OUT_REPLY:
+    case DASOM_MESSAGE_SET_SURROUNDING_REPLY:
       break;
     /* signals */
     case DASOM_MESSAGE_PREEDIT_START:
