@@ -398,11 +398,18 @@ on_signal_delete_surrounding (DasomContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING, NULL, 0, NULL);
+  gint *data = g_malloc (2 * sizeof (gint));
+  data[0] = offset;
+  data[1] = n_chars;
+
+  dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING,
+                      data, 2 * sizeof (gint), g_free);
   dasom_iteration_until (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
 
-  /* TODO */
-  return FALSE;
+  if (context->reply == NULL)
+    return FALSE;
+
+  return *(gboolean *) (context->reply->data);
 }
 
 static void

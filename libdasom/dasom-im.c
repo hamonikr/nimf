@@ -116,8 +116,15 @@ on_incoming_message (GSocket      *socket,
       dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_DELETE_SURROUNDING:
-      g_signal_emit_by_name (im, "delete-surrounding");
-      dasom_send_message (socket, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY, NULL, 0, NULL);
+      {
+        gint offset, n_chars;
+        gboolean retval;
+        offset  = ((gint *) message->data)[0];
+        n_chars = ((gint *) message->data)[1];
+        g_signal_emit_by_name (im, "delete-surrounding", offset, n_chars, &retval);
+        dasom_send_message (socket, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY,
+                            &retval, sizeof (gboolean), NULL);
+      }
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);

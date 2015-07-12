@@ -196,6 +196,19 @@ dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
   g_signal_emit_by_name (engine->priv->daemon->caller, "commit", text);
 }
 
+gboolean
+dasom_engine_emit_delete_surrounding (DasomEngine *engine,
+                                      gint         offset,
+                                      gint         n_chars)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval;
+  g_signal_emit_by_name (engine->priv->daemon->caller,
+                         "delete-surrounding", offset, n_chars, &retval);
+  return retval;
+}
+
 static void
 dasom_engine_init (DasomEngine *engine)
 {

@@ -224,14 +224,18 @@ on_commit (DasomIM           *im,
   g_debug (G_STRLOC ": %s: END", G_STRFUNC);
 }
 
-static void
+static gboolean
 on_delete_surrounding (DasomIM           *im,
                        gint               offset,
                        gint               n_chars,
                        DasomGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-  g_signal_emit_by_name (context, "delete-surrounding", offset, n_chars);
+
+  gboolean retval;
+  g_signal_emit_by_name (context,
+                         "delete-surrounding", offset, n_chars, &retval);
+  return retval;
 }
 
 static void
