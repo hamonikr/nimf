@@ -72,6 +72,9 @@ struct _DasomEngineClass
                                    const char       *text,
                                    gint              len,
                                    gint              cursor_index);
+  gboolean (* get_surrounding)    (DasomEngine      *engine,
+                                   gchar           **text,
+                                   gint             *cursor_index);
 
   const gchar * (* get_name)      (DasomEngine      *engine);
 };
@@ -89,6 +92,9 @@ void     dasom_engine_set_surrounding           (DasomEngine      *engine,
                                                  const char       *text,
                                                  gint              len,
                                                  gint              cursor_index);
+gboolean dasom_engine_get_surrounding           (DasomEngine      *engine,
+                                                 gchar           **text,
+                                                 gint             *cursor_index);
 
 void     dasom_engine_emit_preedit_start        (DasomEngine      *engine);
 void     dasom_engine_emit_preedit_changed      (DasomEngine      *engine);

@@ -243,6 +243,27 @@ on_incoming_message_dasom (GSocket      *socket,
         dasom_send_message (socket, DASOM_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
       }
       break;
+    case DASOM_MESSAGE_GET_SURROUNDING:
+      {
+        gchar *data;
+        gint   cursor_index;
+        gint   str_len = 0;
+        gboolean retval;
+
+        retval = dasom_context_get_surrounding (context, &data, &cursor_index);
+
+        str_len = strlen (data);
+        data = g_realloc (data, str_len + 1 + sizeof (gint) + sizeof (gboolean));
+        *(gint *) (data + str_len + 1) = cursor_index;
+        *(gboolean *) (data + str_len + 1 + sizeof (gint)) = retval;
+
+        dasom_send_message (socket, DASOM_MESSAGE_GET_SURROUNDING_REPLY,
+                            data,
+                            str_len + 1 + sizeof (gint) + sizeof (gboolean),
+                            NULL);
+        g_free (data);
+      }
+      break;
     case DASOM_MESSAGE_PREEDIT_START_REPLY:
     case DASOM_MESSAGE_PREEDIT_CHANGED_REPLY:
     case DASOM_MESSAGE_PREEDIT_END_REPLY:

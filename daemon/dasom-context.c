@@ -247,3 +247,13 @@ dasom_context_set_surrounding (DasomContext *context,
 
   dasom_engine_set_surrounding (context->engine, text, len, cursor_index);
 }
+
+gboolean
+dasom_context_get_surrounding (DasomContext  *context,
+                               gchar        **text,
+                               gint          *cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return dasom_engine_get_surrounding (context->engine, text, cursor_index);
+}

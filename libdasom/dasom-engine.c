@@ -164,6 +164,22 @@ dasom_engine_set_surrounding (DasomEngine  *engine,
     class->set_surrounding (engine, text, len, cursor_index);
 }
 
+gboolean
+dasom_engine_get_surrounding (DasomEngine  *engine,
+                              gchar       **text,
+                              gint         *cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval = FALSE;
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
+
+  if (class->get_surrounding)
+    retval = class->get_surrounding (engine, text, cursor_index);
+
+  return retval;
+}
+
 void
 dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
@@ -269,6 +285,33 @@ dasom_engine_real_set_surrounding (DasomEngine  *engine,
   engine->priv->surrounding_cursor_index = cursor_index;
 }
 
+static gboolean
+dasom_engine_real_get_surrounding (DasomEngine  *engine,
+                                   gchar       **text,
+                                   gint         *cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval = dasom_engine_emit_retrieve_surrounding (engine);
+
+  if (retval)
+  {
+    if (engine->priv->surrounding_text)
+      *text = g_strdup (engine->priv->surrounding_text);
+    else
+      *text = g_strdup ("");
+
+    *cursor_index = engine->priv->surrounding_cursor_index;
+  }
+  else
+  {
+    *text = NULL;
+    *cursor_index = 0;
+  }
+
+  return retval;
+}
+
 const gchar *
 dasom_engine_get_name (DasomEngine *engine)
 {
@@ -302,6 +345,7 @@ dasom_engine_class_init (DasomEngineClass *klass)
   klass->filter_event        = dasom_engine_real_filter_event;
   klass->get_preedit_string  = dasom_engine_real_get_preedit_string;
   klass->set_surrounding     = dasom_engine_real_set_surrounding;
+  klass->get_surrounding     = dasom_engine_real_get_surrounding;
  /* FIXME: 나중에  get_engine_info 이런 걸로 추가해야 할지도 모르겠습니다. */
   klass->get_name            = dasom_engine_real_get_name;
 

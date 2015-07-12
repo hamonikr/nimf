@@ -95,6 +95,9 @@ void          dasom_context_set_surrounding    (DasomContext        *context,
                                                 const char          *text,
                                                 gint                 len,
                                                 gint                 cursor_index);
+gboolean      dasom_context_get_surrounding    (DasomContext        *context,
+                                                gchar              **text,
+                                                gint                *cursor_index);
 
 G_END_DECLS
 

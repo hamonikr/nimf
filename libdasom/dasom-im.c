@@ -92,6 +92,7 @@ on_incoming_message (GSocket      *socket,
     case DASOM_MESSAGE_FOCUS_IN_REPLY:
     case DASOM_MESSAGE_FOCUS_OUT_REPLY:
     case DASOM_MESSAGE_SET_SURROUNDING_REPLY:
+    case DASOM_MESSAGE_GET_SURROUNDING_REPLY:
       break;
     /* signals */
     case DASOM_MESSAGE_PREEDIT_START:
@@ -209,7 +210,54 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return FALSE;
+  g_return_if_fail (DASOM_IS_IM (im));
+
+  GSocket *socket = g_socket_connection_get_socket (im->connection);
+  if (!socket || g_socket_is_closed (socket))
+  {
+    if (text)
+      *text = g_strdup ("");
+
+    if (cursor_index)
+      *cursor_index = 0;
+
+    g_warning ("socket is closed");
+
+    return FALSE;
+  }
+
+  dasom_send_message (socket, DASOM_MESSAGE_GET_SURROUNDING, NULL, 0, NULL);
+  dasom_iteration_until (im, DASOM_MESSAGE_GET_SURROUNDING_REPLY);
+
+  /* FIXME: 중복 코드 */
+  if (im->reply == NULL)
+  {
+    if (text)
+      *text = g_strdup ("");
+
+    if (cursor_index)
+      *cursor_index = 0;
+
+    return FALSE;
+  }
+
+  if (text)
+  {
+    *text = g_strndup (im->reply->data,
+                       im->reply->header->data_len - 1 -
+                       sizeof (gint) - sizeof (gboolean));
+    g_print ("surrounding: %s\n", *text);
+  }
+
+  if (cursor_index)
+  {
+    *cursor_index = *(gint *) (im->reply->data +
+                               im->reply->header->data_len -
+                               sizeof (gint) - sizeof (gboolean));
+    g_print ("cursor_index: %d\n", *cursor_index);
+  }
+
+  return *(gboolean *) (im->reply->data - sizeof (gboolean));
 }
 
 void dasom_im_set_surrounding (DasomIM    *im,
