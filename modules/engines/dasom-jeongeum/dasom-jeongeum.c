@@ -230,7 +230,9 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
   gchar *new_preedit = NULL;
   gchar *old_preedit = g_strdup (jeongeum->preedit_string);
 
-  if (event->key.keyval == DASOM_KEY_BackSpace)
+  if (event->key.keyval == DASOM_KEY_BackSpace ||
+      event->key.keyval == DASOM_KEY_Delete    ||
+      event->key.keyval == DASOM_KEY_KP_Delete)
   {
     retval = hangul_ic_backspace (jeongeum->context);
 
@@ -315,7 +317,7 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
 
   gchar c = 0;
 
-  if (keyval == DASOM_KEY_space)
+  if (event->key.keyval == DASOM_KEY_space)
     c = ' ';
 
   if (!c)
@@ -333,7 +335,7 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
 
   if (!c && (event->key.state & DASOM_MOD2_MASK))
   {
-    switch (keyval)
+    switch (event->key.keyval)
     {
       case DASOM_KEY_KP_Decimal:  c = '.'; break;
       case DASOM_KEY_KP_0:        c = '0'; break;

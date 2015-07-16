@@ -66,6 +66,8 @@
 #define DASOM_KEY_KP_Page_Up    0xff9a
 #define DASOM_KEY_KP_Page_Down  0xff9b
 
+#define DASOM_KEY_KP_Delete     0xff9f
+
 #define DASOM_KEY_KP_Multiply   0xffaa
 #define DASOM_KEY_KP_Add        0xffab
 
@@ -85,5 +87,7 @@
 
 #define DASOM_KEY_Shift_L       0xffe1
 #define DASOM_KEY_Shift_R       0xffe2
+
+#define DASOM_KEY_Delete        0xffff
 
 #endif /* __DASOM_KEY_SYMS_H__ */
