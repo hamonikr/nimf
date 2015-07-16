@@ -180,6 +180,7 @@ void dasom_context_focus_in (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  context->daemon->target = context;
   dasom_engine_focus_in (context->engine);
 
   g_signal_emit_by_name (context, "engine-changed",
@@ -195,6 +196,7 @@ void dasom_context_focus_out (DasomContext *context)
   gchar *str = g_strdup ("Dasom");
   g_signal_emit_by_name (context, "engine-changed", str);
   g_free (str);
+  context->daemon->target = NULL;
 }
 
 void dasom_context_set_next_engine (DasomContext *context)

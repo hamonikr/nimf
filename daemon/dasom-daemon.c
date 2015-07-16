@@ -163,9 +163,9 @@ on_incoming_message_dasom (GSocket      *socket,
   DasomContext *context = user_data;
   gboolean retval;
 
-  DasomContext *saved_context = context->daemon->caller;
+  DasomContext *saved_context = context->daemon->target;
 
-  context->daemon->caller = context;
+  context->daemon->target = context;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -182,7 +182,7 @@ on_incoming_message_dasom (GSocket      *socket,
 
     g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
 
-    context->daemon->caller = saved_context;
+    context->daemon->target = saved_context;
 
     return G_SOURCE_REMOVE;
   }
@@ -280,7 +280,7 @@ on_incoming_message_dasom (GSocket      *socket,
       break;
   }
 
-  context->daemon->caller = saved_context;
+  context->daemon->target = saved_context;
 
   return G_SOURCE_CONTINUE;
 }

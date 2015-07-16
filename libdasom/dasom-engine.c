@@ -185,7 +185,7 @@ dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->caller, "preedit-start");
+  g_signal_emit_by_name (engine->priv->daemon->target, "preedit-start");
 }
 
 void
@@ -193,7 +193,7 @@ dasom_engine_emit_preedit_changed (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->caller, "preedit-changed");
+  g_signal_emit_by_name (engine->priv->daemon->target, "preedit-changed");
 }
 
 void
@@ -201,7 +201,7 @@ dasom_engine_emit_preedit_end (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->caller, "preedit-end");
+  g_signal_emit_by_name (engine->priv->daemon->target, "preedit-end");
 }
 
 void
@@ -209,7 +209,7 @@ dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->caller, "commit", text);
+  g_signal_emit_by_name (engine->priv->daemon->target, "commit", text);
 }
 
 gboolean
@@ -220,7 +220,7 @@ dasom_engine_emit_delete_surrounding (DasomEngine *engine,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gboolean retval;
-  g_signal_emit_by_name (engine->priv->daemon->caller,
+  g_signal_emit_by_name (engine->priv->daemon->target,
                          "delete-surrounding", offset, n_chars, &retval);
   return retval;
 }
@@ -231,7 +231,7 @@ dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gboolean retval;
-  g_signal_emit_by_name (engine->priv->daemon->caller,
+  g_signal_emit_by_name (engine->priv->daemon->target,
                          "retrieve-surrounding", &retval);
   return retval;
 }

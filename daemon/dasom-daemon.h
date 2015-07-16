@@ -56,7 +56,7 @@ struct _DasomDaemon
   GList               *agents_list;
   gchar              **hotkey_names;
   DasomCandidate      *candidate;
-  DasomContext        *caller;
+  DasomContext        *target;
 };
 
 struct _DasomDaemonClass
