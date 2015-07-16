@@ -25,6 +25,7 @@
 #include <glib-object.h>
 #include "dasom-events.h"
 #include "dasom-im.h"
+#include "dasom.h"
 
 G_BEGIN_DECLS
 
@@ -61,7 +62,7 @@ struct _DasomEngineClass
   /*< public >*/
   /* Virtual functions */
   gboolean (* filter_event)       (DasomEngine      *engine,
-                                  const DasomEvent  *event);
+                                   const DasomEvent *event);
   void     (* get_preedit_string) (DasomEngine      *engine,
                                    gchar           **str,
                                    gint             *cursor_pos);
@@ -75,6 +76,8 @@ struct _DasomEngineClass
   gboolean (* get_surrounding)    (DasomEngine      *engine,
                                    gchar           **text,
                                    gint             *cursor_index);
+  void     (* set_cursor_location)(DasomEngine          *engine,
+                                   const DasomRectangle *area);
 
   const gchar * (* get_name)      (DasomEngine      *engine);
 };
@@ -95,6 +98,8 @@ void     dasom_engine_set_surrounding           (DasomEngine      *engine,
 gboolean dasom_engine_get_surrounding           (DasomEngine      *engine,
                                                  gchar           **text,
                                                  gint             *cursor_index);
+void     dasom_engine_set_cursor_location       (DasomEngine          *engine,
+                                                 const DasomRectangle *area);
 
 void     dasom_engine_emit_preedit_start        (DasomEngine      *engine);
 void     dasom_engine_emit_preedit_changed      (DasomEngine      *engine);

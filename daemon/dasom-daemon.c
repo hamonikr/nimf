@@ -268,6 +268,14 @@ on_incoming_message_dasom (GSocket      *socket,
         g_free (data);
       }
       break;
+    case DASOM_MESSAGE_SET_CURSOR_LOCATION:
+      dasom_message_ref (message);
+      dasom_context_set_cursor_location (context,
+                                         (DasomRectangle *) message->data);
+      dasom_message_unref (message);
+      dasom_send_message (socket, DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY,
+                          NULL, 0, NULL);
+      break;
     case DASOM_MESSAGE_PREEDIT_START_REPLY:
     case DASOM_MESSAGE_PREEDIT_CHANGED_REPLY:
     case DASOM_MESSAGE_PREEDIT_END_REPLY:

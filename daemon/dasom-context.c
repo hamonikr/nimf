@@ -259,3 +259,12 @@ dasom_context_get_surrounding (DasomContext  *context,
 
   return dasom_engine_get_surrounding (context->engine, text, cursor_index);
 }
+
+void
+dasom_context_set_cursor_location (DasomContext         *context,
+                                   const DasomRectangle *area)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  dasom_engine_set_cursor_location (context->engine, area);
+}

@@ -94,6 +94,7 @@ on_incoming_message (GSocket      *socket,
     case DASOM_MESSAGE_FOCUS_OUT_REPLY:
     case DASOM_MESSAGE_SET_SURROUNDING_REPLY:
     case DASOM_MESSAGE_GET_SURROUNDING_REPLY:
+    case DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY:
       break;
     /* signals */
     case DASOM_MESSAGE_PREEDIT_START:
@@ -190,10 +191,23 @@ void dasom_im_focus_out (DasomIM *im)
   dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_OUT_REPLY);
 }
 
-void dasom_im_set_cursor_location (DasomIM        *im,
-                                   DasomRectangle *area)
+void dasom_im_set_cursor_location (DasomIM              *im,
+                                   const DasomRectangle *area)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (DASOM_IS_IM (im));
+
+  GSocket *socket = g_socket_connection_get_socket (im->connection);
+  if (!socket || g_socket_is_closed (socket))
+  {
+    g_warning ("socket is closed");
+    return;
+  }
+
+  dasom_send_message (socket, DASOM_MESSAGE_SET_CURSOR_LOCATION,
+                      (gchar *) area, sizeof (DasomRectangle), NULL);
+  dasom_iteration_until (im, DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY);
 }
 
 void dasom_im_set_use_preedit (DasomIM  *im,

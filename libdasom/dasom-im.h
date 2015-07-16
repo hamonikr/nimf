@@ -31,6 +31,7 @@
 #include "dasom-events.h"
 #include "dasom-engine.h"
 #include "dasom-message.h"
+#include "dasom.h"
 
 G_BEGIN_DECLS
 
@@ -75,11 +76,6 @@ struct _DasomIMClass
                                     gint     n_chars);
 };
 
-typedef struct {
-    int x, y;
-    int width, height;
-} DasomRectangle;
-
 GType     dasom_im_get_type            (void) G_GNUC_CONST;
 DasomIM  *dasom_im_new                 (void);
 void      dasom_im_focus_in            (DasomIM           *im);
@@ -90,8 +86,8 @@ gboolean  dasom_im_filter_event        (DasomIM           *im,
 void      dasom_im_get_preedit_string  (DasomIM           *im,
                                         gchar            **str,
                                         gint              *cursor_pos);
-void      dasom_im_set_cursor_location (DasomIM           *im,
-                                        DasomRectangle    *area);
+void      dasom_im_set_cursor_location (DasomIM              *im,
+                                        const DasomRectangle *area);
 void      dasom_im_set_use_preedit     (DasomIM           *im,
                                         gboolean           use_preedit);
 gboolean  dasom_im_get_surrounding     (DasomIM           *im,

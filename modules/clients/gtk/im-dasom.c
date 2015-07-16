@@ -24,6 +24,7 @@
 #include <gtk/gtkimmodule.h>
 #include <glib/gi18n.h>
 #include "dasom.h"
+#include <string.h>
 
 #define DASOM_TYPE_GTK_IM_CONTEXT  (dasom_gtk_im_context_get_type ())
 #define DASOM_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_GTK_IM_CONTEXT, DasomGtkIMContext))
@@ -36,6 +37,7 @@ struct _DasomGtkIMContext
   GtkIMContext  parent_instance;
   DasomIM      *im;
   GdkWindow    *client_window;
+  GdkRectangle  cursor_area;
 };
 
 struct _DasomGtkIMContextClass
@@ -167,8 +169,26 @@ dasom_gtk_im_context_set_cursor_location (GtkIMContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_im_set_cursor_location (DASOM_GTK_IM_CONTEXT (context)->im,
-                                (DasomRectangle *) area);
+  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
+
+  if (memcmp (&dasom_context->cursor_area, area, sizeof (GdkRectangle)) == 0)
+    return;
+
+  dasom_context->cursor_area = *area;
+
+  GdkRectangle root_area;
+
+  if (dasom_context->client_window)
+  {
+    gdk_window_get_root_coords (dasom_context->client_window,
+                                area->x,
+                                area->y,
+                                &root_area.x,
+                                &root_area.y);
+
+    dasom_im_set_cursor_location (DASOM_GTK_IM_CONTEXT (context)->im,
+                                  (const DasomRectangle *) &root_area);
+  }
 }
 
 static void

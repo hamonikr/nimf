@@ -24,6 +24,11 @@
 
 #define __DASOM_H_INSIDE__
 
+typedef struct {
+    int x, y;
+    int width, height;
+} DasomRectangle;
+
 #include "dasom-im.h"
 #include "dasom-types.h"
 #include "dasom-events.h"

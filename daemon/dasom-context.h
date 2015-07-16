@@ -98,6 +98,8 @@ void          dasom_context_set_surrounding    (DasomContext        *context,
 gboolean      dasom_context_get_surrounding    (DasomContext        *context,
                                                 gchar              **text,
                                                 gint                *cursor_index);
+void          dasom_context_set_cursor_location (DasomContext         *context,
+                                                 const DasomRectangle *area);
 
 G_END_DECLS
 

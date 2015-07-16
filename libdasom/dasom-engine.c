@@ -179,6 +179,20 @@ dasom_engine_get_surrounding (DasomEngine  *engine,
 }
 
 void
+dasom_engine_set_cursor_location (DasomEngine          *engine,
+                                  const DasomRectangle *area)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (DASOM_IS_ENGINE (engine));
+
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
+
+  if (class->set_cursor_location)
+    class->set_cursor_location (engine, area);
+}
+
+void
 dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
