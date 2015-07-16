@@ -31,8 +31,9 @@ dasom_message_new ()
 
   DasomMessage *message;
 
-  message         = g_slice_new0 (DasomMessage);
-  message->header = g_slice_new0 (DasomMessageHeader);
+  message            = g_slice_new0 (DasomMessage);
+  message->header    = g_slice_new0 (DasomMessageHeader);
+  message->ref_count = 1;
 
   return message;
 }
@@ -57,9 +58,39 @@ dasom_message_new_full (DasomMessageType type,
   return message;
 }
 
-void dasom_message_free (DasomMessage *message)
+DasomMessage *
+dasom_message_ref (DasomMessage *message)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_val_if_fail (message != NULL, NULL);
+
+  g_atomic_int_inc (&message->ref_count);
+
+  return message;
+}
+
+void
+dasom_message_unref (DasomMessage *message)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (message == NULL))
+    return;
+
+  if (g_atomic_int_dec_and_test (&message->ref_count))
+  {
+    g_slice_free (DasomMessageHeader, message->header);
+
+    if (message->data_destroy_func)
+      message->data_destroy_func (message->data);
+
+    g_slice_free (DasomMessage, message);
+  }
+}
+
+void dasom_message_free (DasomMessage *message)
+{
 
   if (G_UNLIKELY (message == NULL))
     return;

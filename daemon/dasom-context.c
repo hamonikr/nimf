@@ -58,7 +58,7 @@ dasom_context_finalize (GObject *object)
 
   DasomContext *context = DASOM_CONTEXT (object);
   g_free (context->commit_text);
-  dasom_message_free (context->reply);
+  dasom_message_unref (context->reply);
 
   if (context->source)
   {

@@ -54,7 +54,7 @@ dasom_send_message (GSocket          *socket,
       g_error_free (error);
     }
 
-    dasom_message_free (message);
+    dasom_message_unref (message);
 
     return;
   }
@@ -77,7 +77,7 @@ dasom_send_message (GSocket          *socket,
         g_error_free (error);
       }
 
-      dasom_message_free (message);
+      dasom_message_unref (message);
 
       return;
     }
@@ -90,7 +90,7 @@ dasom_send_message (GSocket          *socket,
   else
     g_error ("unknown message type");
 
-  dasom_message_free (message);
+  dasom_message_unref (message);
 }
 
 DasomMessage *dasom_recv_message (GSocket *socket)
@@ -117,7 +117,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
       g_error_free (error);
     }
 
-    dasom_message_free (message);
+    dasom_message_unref (message);
 
     return NULL;
   }
@@ -145,7 +145,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
         g_error_free (error);
       }
 
-      dasom_message_free (message);
+      dasom_message_unref (message);
 
       return NULL;
     }

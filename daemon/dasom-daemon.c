@@ -171,7 +171,7 @@ on_incoming_message_dasom (GSocket      *socket,
   {
     g_socket_close (socket, NULL);
 
-    dasom_message_free (context->reply);
+    dasom_message_unref (context->reply);
     context->reply = NULL;
 
     if (G_UNLIKELY (context->type == DASOM_CONNECTION_DASOM_AGENT))
@@ -188,15 +188,18 @@ on_incoming_message_dasom (GSocket      *socket,
   }
 
   message = dasom_recv_message (socket);
-  dasom_message_free (context->reply);
+  dasom_message_unref (context->reply);
   context->reply = message;
 
   switch (message->header->type)
   {
     case DASOM_MESSAGE_FILTER_EVENT:
+      dasom_message_ref (message);
       retval = dasom_context_filter_event (context,
-                                          (DasomEvent *) message->data);
-      dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT_REPLY, &retval, sizeof (gboolean), NULL);
+                                           (const DasomEvent *) message->data);
+      dasom_message_unref (message);
+      dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT_REPLY, &retval,
+                          sizeof (gboolean), NULL);
       break;
     case DASOM_MESSAGE_GET_PREEDIT_STRING:
       {
@@ -233,6 +236,7 @@ on_incoming_message_dasom (GSocket      *socket,
       break;
     case DASOM_MESSAGE_SET_SURROUNDING:
       {
+        dasom_message_ref (message);
         gchar   *data     = message->data;
         guint16  data_len = message->header->data_len;
 
@@ -240,6 +244,7 @@ on_incoming_message_dasom (GSocket      *socket,
         gint   cursor_index = *(gint *) (data + data_len - sizeof (gint));
 
         dasom_context_set_surrounding (context, data, str_len, cursor_index);
+        dasom_message_unref (message);
         dasom_send_message (socket, DASOM_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
       }
       break;
@@ -248,7 +253,6 @@ on_incoming_message_dasom (GSocket      *socket,
         gchar *data;
         gint   cursor_index;
         gint   str_len = 0;
-        gboolean retval;
 
         retval = dasom_context_get_surrounding (context, &data, &cursor_index);
 
@@ -979,14 +983,10 @@ on_new_connection (GSocketService    *service,
     return TRUE; /* TODO: return 값을 FALSE 로 하면 어떻 일이 벌어지는가 */
   }
 
-  DasomConnectionType connection_type;
-  connection_type = *(DasomConnectionType *) message->data;
-
-  dasom_message_free (message);
-
   DasomContext *context;
-  context = dasom_context_new (connection_type,
+  context = dasom_context_new (*(DasomConnectionType *) message->data,
                                dasom_daemon_get_default_engine (daemon));
+  dasom_message_unref (message);
   context->daemon = user_data;
   context->socket = socket;
 

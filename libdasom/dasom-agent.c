@@ -53,14 +53,16 @@ on_incoming_message (GSocket      *socket,
 
   DasomMessage *message;
   message = dasom_recv_message (socket);
-  dasom_message_free (agent->reply);
+  dasom_message_unref (agent->reply);
   agent->reply = message;
 
   switch (message->header->type)
   {
     /* reply */
     case DASOM_MESSAGE_ENGINE_CHANGED:
+      dasom_message_ref (agent->reply);
       g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->reply->data);
+      dasom_message_unref (agent->reply);
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
@@ -108,7 +110,7 @@ dasom_agent_init (DasomAgent *agent)
 
   g_print ("\trecv: DASOM_MESSAGE_CONNECT_REPLY\n");
 
-  dasom_message_free (message);
+  dasom_message_unref (message);
 
   GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
   g_source_attach (source, NULL);
@@ -124,7 +126,7 @@ dasom_agent_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomAgent *agent = DASOM_AGENT (object);
-  dasom_message_free (agent->reply);
+  dasom_message_unref (agent->reply);
 
   G_OBJECT_CLASS (dasom_agent_parent_class)->finalize (object);
 }

@@ -70,7 +70,7 @@ on_incoming_message (GSocket      *socket,
     if (!g_socket_is_closed (socket))
       g_socket_close (socket, NULL);
 
-    dasom_message_free (im->reply);
+    dasom_message_unref (im->reply);
     im->reply = NULL;
 
     g_critical (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
@@ -80,8 +80,9 @@ on_incoming_message (GSocket      *socket,
 
   DasomMessage *message;
   message = dasom_recv_message (socket);
-  dasom_message_free (im->reply);
+  dasom_message_unref (im->reply);
   im->reply = message;
+  gboolean retval;
 
   switch (message->header->type)
   {
@@ -108,28 +109,25 @@ on_incoming_message (GSocket      *socket,
       dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_COMMIT:
+      dasom_message_ref (message);
       g_print ("g_signal_emit_by_name:commit:%s\n", (const gchar *) message->data);
       g_signal_emit_by_name (im, "commit", (const gchar *) message->data);
+      dasom_message_unref (message);
       dasom_send_message (socket, DASOM_MESSAGE_COMMIT_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_RETRIEVE_SURROUNDING:
-      {
-        gboolean retval;
-        g_signal_emit_by_name (im, "retrieve-surrounding", &retval);
-        dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
-                            &retval, sizeof (gboolean), NULL);
-      }
+      g_signal_emit_by_name (im, "retrieve-surrounding", &retval);
+      dasom_send_message (socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
+                          &retval, sizeof (gboolean), NULL);
       break;
     case DASOM_MESSAGE_DELETE_SURROUNDING:
-      {
-        gint offset, n_chars;
-        gboolean retval;
-        offset  = ((gint *) message->data)[0];
-        n_chars = ((gint *) message->data)[1];
-        g_signal_emit_by_name (im, "delete-surrounding", offset, n_chars, &retval);
-        dasom_send_message (socket, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY,
-                            &retval, sizeof (gboolean), NULL);
-      }
+      dasom_message_ref (message);
+      g_signal_emit_by_name (im, "delete-surrounding",
+                             ((gint *) message->data)[0],
+                             ((gint *) message->data)[1], &retval);
+      dasom_message_unref (message);
+      dasom_send_message (socket, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY,
+                          &retval, sizeof (gboolean), NULL);
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
@@ -458,7 +456,7 @@ dasom_im_init (DasomIM *im)
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
     g_error ("FIXME: error handling");
 
-  dasom_message_free (message);
+  dasom_message_unref (message);
 
   GMutex mutex;
 

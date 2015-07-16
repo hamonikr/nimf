@@ -83,6 +83,7 @@ struct _DasomMessage
   DasomMessageHeader *header;
   gchar              *data;
   GDestroyNotify      data_destroy_func;
+  gint                ref_count;
 };
 
 DasomMessage *dasom_message_new          (void);
@@ -90,7 +91,8 @@ DasomMessage *dasom_message_new_full     (DasomMessageType  type,
                                           gpointer          data,
                                           guint16           data_len,
                                           GDestroyNotify    data_destroy_func);
-void          dasom_message_free             (DasomMessage     *message);
+DasomMessage *dasom_message_ref          (DasomMessage     *message);
+void          dasom_message_unref        (DasomMessage     *message);
 const DasomMessageHeader *
               dasom_message_get_header       (DasomMessage     *message);
 guint16       dasom_message_get_header_size  (void);
