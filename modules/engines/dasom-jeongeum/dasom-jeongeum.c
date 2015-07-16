@@ -441,9 +441,12 @@ dasom_jeongeum_get_preedit_string (DasomEngine  *engine,
   }
 
   if (cursor_pos)
-    *cursor_pos = g_utf8_strlen (jeongeum->preedit_string, -1);
-
-  g_return_if_fail (str == NULL || g_utf8_validate (*str, -1, NULL));
+  {
+    if (jeongeum->preedit_string)
+      *cursor_pos = g_utf8_strlen (jeongeum->preedit_string, -1);
+    else
+      *cursor_pos = 0;
+  }
 }
 
 const gchar *

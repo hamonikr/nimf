@@ -143,8 +143,6 @@ dasom_engine_get_preedit_string (DasomEngine  *engine,
 
   DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
   klass->get_preedit_string (engine, str, cursor_pos);
-
-  g_return_if_fail (str == NULL || g_utf8_validate (*str, -1, NULL));
 }
 
 void
