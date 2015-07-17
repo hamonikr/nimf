@@ -47,8 +47,6 @@ dasom_context_init (DasomContext *context)
   id++;
   context->id = id;
   g_debug (G_STRLOC ": %s, id = %d", G_STRFUNC, context->id);
-
-  context->commit_text = g_strdup ("");
 }
 
 static void
@@ -57,7 +55,6 @@ dasom_context_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomContext *context = DASOM_CONTEXT (object);
-  g_free (context->commit_text);
   dasom_message_unref (context->reply);
 
   if (context->source)

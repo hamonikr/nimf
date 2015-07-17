@@ -50,7 +50,6 @@ struct _DasomContext
   DasomEngine         *engine;
   guint16              id;
   guint16              xim_connect_id;
-  gchar               *commit_text;
 
   DasomDaemon         *daemon;
   GSocket             *socket;
