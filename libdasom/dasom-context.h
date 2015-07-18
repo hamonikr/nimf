@@ -56,12 +56,9 @@ struct _DasomContext
   DasomEngine         *engine;
   guint16              id;
   guint16              xim_connect_id;
-  gboolean             is_preedit_visible;
   DasomPreeditState    preedit_state;
+  gboolean             use_preedit;
   gpointer             cb_user_data;
-  gulong               cb_start_id;
-  gulong               cb_changed_id;
-  gulong               cb_end_id;
 
   DasomDaemon         *daemon;
   GSocket             *socket;
@@ -90,7 +87,8 @@ struct _DasomContextClass
 
 GType         dasom_context_get_type           (void) G_GNUC_CONST;
 DasomContext *dasom_context_new                (DasomConnectionType  type,
-                                                DasomEngine         *engine);
+                                                DasomEngine         *engine,
+                                                gpointer             cb_user_data);
 void          dasom_context_set_engine         (DasomContext        *context,
                                                 DasomEngine         *engine);
 guint16       dasom_context_get_id             (DasomContext        *context);
@@ -113,6 +111,16 @@ void          dasom_context_set_cursor_location (DasomContext         *context,
                                                  const DasomRectangle *area);
 void          dasom_context_set_use_preedit     (DasomContext *context,
                                                  gboolean      use_preedit);
+
+void          dasom_context_emit_preedit_start        (DasomContext *context);
+void          dasom_context_emit_preedit_changed      (DasomContext *context);
+void          dasom_context_emit_preedit_end          (DasomContext *context);
+void          dasom_context_emit_commit               (DasomContext *context,
+                                                       const gchar  *text);
+gboolean      dasom_context_emit_retrieve_surrounding (DasomContext *context);
+gboolean      dasom_context_emit_delete_surrounding   (DasomContext *context,
+                                                       gint          offset,
+                                                       gint          n_chars);
 
 G_END_DECLS
 

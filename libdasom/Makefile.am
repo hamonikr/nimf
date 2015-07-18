@@ -1,5 +1,7 @@
 # 후보창 때문에 gtk3을 추가하는데 나중에 모듈로 분리하면서 제거해야 합니다.
 
+SUBDIRS = IMdkit
+
 lib_LTLIBRARIES = libdasom.la
 
 BUILT_SOURCES =      \
@@ -31,6 +33,10 @@ libdasom_la_SOURCES = \
 	dasom-candidate.c \
 	dasom-agent.c \
 	dasom-agent.h \
+	dasom-context.c \
+	dasom-context.h \
+	dasom-daemon.c \
+	dasom-daemon.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
@@ -47,7 +53,7 @@ libdasom_la_CFLAGS = \
 	$(GTK3_CFLAGS)
 
 libdasom_la_LDFLAGS = $(GTK3_LIBS)
-libdasom_la_LIBADD =
+libdasom_la_LIBADD = IMdkit/libIMdkit.la
 
 dasomincludedir = $(includedir)/dasom
 dasominclude_HEADERS = \

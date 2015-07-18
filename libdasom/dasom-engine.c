@@ -20,7 +20,7 @@
  */
 
 #include "dasom-engine.h"
-#include "daemon/dasom-context.h"
+#include "dasom-context.h"
 #include "dasom-private.h"
 
 enum
@@ -197,7 +197,7 @@ dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->target, "preedit-start");
+  dasom_context_emit_preedit_start (engine->priv->daemon->target);
 }
 
 void
@@ -205,7 +205,7 @@ dasom_engine_emit_preedit_changed (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->target, "preedit-changed");
+  dasom_context_emit_preedit_changed (engine->priv->daemon->target);
 }
 
 void
@@ -213,7 +213,7 @@ dasom_engine_emit_preedit_end (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->target, "preedit-end");
+  dasom_context_emit_preedit_end (engine->priv->daemon->target);
 }
 
 void
@@ -221,7 +221,7 @@ dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->daemon->target, "commit", text);
+  dasom_context_emit_commit (engine->priv->daemon->target, text);
 }
 
 gboolean
@@ -231,10 +231,8 @@ dasom_engine_emit_delete_surrounding (DasomEngine *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval;
-  g_signal_emit_by_name (engine->priv->daemon->target,
-                         "delete-surrounding", offset, n_chars, &retval);
-  return retval;
+  return dasom_context_emit_delete_surrounding (engine->priv->daemon->target,
+                                                offset, n_chars);
 }
 
 gboolean
@@ -242,10 +240,7 @@ dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval;
-  g_signal_emit_by_name (engine->priv->daemon->target,
-                         "retrieve-surrounding", &retval);
-  return retval;
+  return dasom_context_emit_retrieve_surrounding (engine->priv->daemon->target);
 }
 
 static void

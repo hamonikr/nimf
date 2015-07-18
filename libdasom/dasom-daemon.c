@@ -26,15 +26,11 @@
 #include "dasom-events.h"
 #include "dasom-types.h"
 #include <glib/gi18n.h>
-#include <glib-unix.h>
 #include <gio/gunixsocketaddress.h>
-#include <stdio.h>
-#include <X11/Xlocale.h>
 #include <X11/Xlib.h>
-#include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include "IMdkit/IMdkit.h"
-#include "Xi18n.h"
+#include "IMdkit/Xi18n.h"
 #include "dasom-context.h"
 #include "dasom-daemon.h"
 #include "dasom-message.h"
@@ -300,181 +296,6 @@ on_incoming_message_dasom (GSocket      *socket,
   return G_SOURCE_CONTINUE;
 }
 
-void
-dasom_iteration_until (DasomContext     *context,
-                       DasomMessageType  type)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gboolean is_dispatched;
-
-  do {
-    is_dispatched = g_main_context_iteration (NULL, TRUE);
-  } while (!is_dispatched || (context->reply && (context->reply->header->type != type)));
-
-  if (G_UNLIKELY (context->reply == NULL))
-  {
-    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
-                dasom_message_get_name_by_type (type));
-    return;
-  }
-
-  if (context->reply->header->type != type)
-  {
-    const gchar *name = dasom_message_get_name (context->reply);
-    gchar *mesg;
-
-    if (name)
-      mesg = g_strdup (name);
-    else
-      mesg = g_strdup_printf ("unknown type %d", context->reply->header->type);
-
-    g_critical ("Reply type does not match.\n"
-                "%s is required, but we received %s\n",
-                dasom_message_get_name_by_type (type), mesg);
-    g_free (mesg);
-  }
-}
-
-void
-on_signal_preedit_start (DasomContext *context,
-                         gpointer      user_data)
-
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_START,
-                      NULL, 0, NULL);
-  dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_START_REPLY);
-  context->preedit_state = DASOM_PREEDIT_STATE_START;
-}
-
-void
-on_signal_preedit_end (DasomContext *context,
-                       gpointer      user_data)
-
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_END,
-                      NULL, 0, NULL);
-  dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_END_REPLY);
-  context->preedit_state = DASOM_PREEDIT_STATE_END;
-}
-
-void
-on_signal_preedit_changed (DasomContext *context,
-                           gpointer      user_data)
-
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
-                      NULL, 0, NULL);
-  dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
-}
-
-static void
-on_signal_commit (DasomContext *context,
-                  const gchar  *text,
-                  gpointer      user_data)
-{
-  g_debug (G_STRLOC ": %s:%s:id = %d", G_STRFUNC, text, context->id);
-
-  switch (context->type)
-  {
-    case DASOM_CONNECTION_DASOM_IM:
-      dasom_send_message (context->socket, DASOM_MESSAGE_COMMIT,
-                          (gchar *) text, strlen (text) + 1, NULL);
-      dasom_iteration_until (context, DASOM_MESSAGE_COMMIT_REPLY);
-      break;
-    case DASOM_CONNECTION_XIM:
-      {
-        XIMS xims = user_data;
-        XTextProperty property;
-        /* TODO: gdk 소스를 확인해봅시다. utf8인가... 문자열 복사할 때
-         * 문자열 내에 널 값이 있을 수 있다는 영어를 어디선가 본 것 같은데
-         * 정확하게 확인해봅시다 */
-        Xutf8TextListToTextProperty (xims->core.display,
-                                     (char **)&text, 1, XCompoundTextStyle,
-                                     &property);
-
-        IMCommitStruct commit_data;
-        commit_data.major_code = XIM_COMMIT;
-        commit_data.minor_code = 0;
-        commit_data.connect_id = context->xim_connect_id;
-        commit_data.icid       = context->id;
-        commit_data.flag       = XimLookupChars;
-        /* commit_data.keysym = ??; */
-        commit_data.commit_string = (gchar *) property.value;
-        IMCommitString (xims, (XPointer) &commit_data);
-
-        XFree (property.value);
-      }
-      break;
-    default:
-      g_warning ("Unknown type: %d", context->type);
-      break;
-  }
-
-  g_debug (G_STRLOC ":EXIT: %s", G_STRFUNC);
-}
-
-static gboolean
-on_signal_retrieve_surrounding (DasomContext *context,
-                                gpointer      user_data)
-
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_send_message (context->socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING,
-                      NULL, 0, NULL);
-  dasom_iteration_until (context, DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
-
-  if (context->reply == NULL)
-    return FALSE;
-
-  return *(gboolean *) (context->reply->data);
-}
-
-static gboolean
-on_signal_delete_surrounding (DasomContext *context,
-                              gint          offset,
-                              gint          n_chars,
-                              gpointer      user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gint *data = g_malloc (2 * sizeof (gint));
-  data[0] = offset;
-  data[1] = n_chars;
-
-  dasom_send_message (context->socket, DASOM_MESSAGE_DELETE_SURROUNDING,
-                      data, 2 * sizeof (gint), g_free);
-  dasom_iteration_until (context, DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
-
-  if (context->reply == NULL)
-    return FALSE;
-
-  return *(gboolean *) (context->reply->data);
-}
-
-static void
-on_signal_engine_changed (DasomContext *context,
-                          const gchar  *name,
-                          gpointer      user_data)
-{
-  g_debug (G_STRLOC ": %s:%s:id = %d", G_STRFUNC, name, context->id);
-
-  GList *l = context->daemon->agents_list;
-  while (l != NULL)
-  {
-    GList *next = l->next;
-    dasom_send_message (DASOM_CONTEXT (l->data)->socket, DASOM_MESSAGE_ENGINE_CHANGED, (gchar *) name, strlen (name) + 1, NULL);
-    l = next;
-  }
-}
-
 static void
 dasom_daemon_init (DasomDaemon *daemon)
 {
@@ -502,7 +323,7 @@ dasom_daemon_init (DasomDaemon *daemon)
   daemon->agents_list = NULL;
 }
 
-static void
+void
 dasom_daemon_stop (DasomDaemon *daemon)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -549,7 +370,7 @@ dasom_daemon_class_init (DasomDaemonClass *klass)
   object_class->finalize = dasom_daemon_finalize;
 }
 
-static DasomDaemon *
+DasomDaemon *
 dasom_daemon_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -615,38 +436,13 @@ int dasom_daemon_xim_create_ic (DasomDaemon      *daemon,
     g_debug (G_STRLOC ": %s: context == NULL", G_STRFUNC);
 
     context = dasom_context_new (DASOM_CONNECTION_XIM,
-                                 dasom_daemon_get_default_engine (daemon));
+                                 dasom_daemon_get_default_engine (daemon),
+                                 xims);
 
     g_debug (G_STRLOC ": %s: icid = %d", G_STRFUNC, dasom_context_get_id (context));
 
     context->xim_connect_id = data->connect_id;
     context->daemon = daemon;
-    context->cb_user_data = xims;
-
-    context->cb_start_id =
-      g_signal_connect (context, "preedit-start",
-                        G_CALLBACK (on_signal_preedit_start), xims);
-
-    context->cb_end_id =
-      g_signal_connect (context, "preedit-end",
-                        G_CALLBACK (on_signal_preedit_end), xims);
-
-    context->cb_changed_id =
-      g_signal_connect (context, "preedit-changed",
-                        G_CALLBACK (on_signal_preedit_changed), xims);
-
-    g_signal_connect (context,
-                      "commit",
-                      G_CALLBACK (on_signal_commit),
-                      xims);
-    g_signal_connect (context,
-                      "retrieve-surrounding",
-                      G_CALLBACK (on_signal_retrieve_surrounding),
-                      xims);
-    g_signal_connect (context,
-                      "delete-surrounding",
-                      G_CALLBACK (on_signal_delete_surrounding),
-                      xims);
 
     g_hash_table_insert (daemon->contexts,
                          GUINT_TO_POINTER (dasom_context_get_id (context)),
@@ -1005,40 +801,10 @@ on_new_connection (GSocketService    *service,
 
   DasomContext *context;
   context = dasom_context_new (*(DasomConnectionType *) message->data,
-                               dasom_daemon_get_default_engine (daemon));
+                               dasom_daemon_get_default_engine (daemon), NULL);
   dasom_message_unref (message);
   context->daemon = user_data;
   context->socket = socket;
-  context->cb_user_data = NULL;
-
-  context->cb_start_id =
-    g_signal_connect (context, "preedit-start",
-                      G_CALLBACK (on_signal_preedit_start), NULL);
-
-  context->cb_end_id =
-    g_signal_connect (context, "preedit-end",
-                      G_CALLBACK (on_signal_preedit_end), NULL);
-
-  context->cb_changed_id =
-    g_signal_connect (context, "preedit-changed",
-                      G_CALLBACK (on_signal_preedit_changed), NULL);
-
-  g_signal_connect (context,
-                    "commit",
-                    G_CALLBACK (on_signal_commit),
-                    daemon);
-  g_signal_connect (context,
-                    "retrieve-surrounding",
-                    G_CALLBACK (on_signal_retrieve_surrounding),
-                    NULL);
-  g_signal_connect (context,
-                    "delete-surrounding",
-                    G_CALLBACK (on_signal_delete_surrounding),
-                    NULL);
-  g_signal_connect (context,
-                    "engine-changed",
-                    G_CALLBACK (on_signal_engine_changed),
-                    NULL);
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
    * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
@@ -1060,7 +826,7 @@ on_new_connection (GSocketService    *service,
   return TRUE;
 }
 
-static int
+int
 dasom_daemon_start (DasomDaemon *daemon)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -1094,26 +860,3 @@ dasom_daemon_start (DasomDaemon *daemon)
   return daemon->status;
 }
 
-int
-main (int argc, char **argv)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  int status;
-  DasomDaemon *daemon;
-
-#if ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, DASOM_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-#endif
-
-  daemon = dasom_daemon_new ();
-  g_unix_signal_add (SIGINT,  (GSourceFunc) dasom_daemon_stop, daemon);
-  g_unix_signal_add (SIGTERM, (GSourceFunc) dasom_daemon_stop, daemon);
-
-  status = dasom_daemon_start (daemon);
-  g_object_unref (daemon);
-
-  return status;
-}

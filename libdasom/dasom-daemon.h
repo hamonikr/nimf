@@ -65,15 +65,15 @@ struct _DasomDaemonClass
 };
 
 GType        dasom_daemon_get_type           (void) G_GNUC_CONST;
+
+DasomDaemon *dasom_daemon_new                (void);
+int          dasom_daemon_start              (DasomDaemon *daemon);
+void         dasom_daemon_stop               (DasomDaemon *daemon);
 DasomEngine *dasom_daemon_get_default_engine (DasomDaemon *daemon);
 DasomEngine *dasom_daemon_get_next_instance  (DasomDaemon *daemon,
                                               DasomEngine *engine);
 DasomEngine *dasom_daemon_get_instance       (DasomDaemon *daemon,
                                               const gchar *module_name);
-
-void on_signal_preedit_start   (DasomContext *context, gpointer user_data);
-void on_signal_preedit_changed (DasomContext *context, gpointer user_data);
-void on_signal_preedit_end     (DasomContext *context, gpointer user_data);
 
 G_END_DECLS
 

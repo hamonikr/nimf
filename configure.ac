@@ -38,6 +38,7 @@ AC_OUTPUT([
   agents/gnome-shell-extension/Makefile
   agents/standalone/Makefile
   libdasom/Makefile
+  libdasom/IMdkit/Makefile
   libdasom/dasom.pc
   modules/Makefile
   modules/clients/Makefile
@@ -46,5 +47,4 @@ AC_OUTPUT([
   modules/engines/dasom-english/Makefile
   modules/engines/dasom-jeongeum/Makefile
   daemon/Makefile
-  daemon/IMdkit/Makefile
   tests/Makefile])
