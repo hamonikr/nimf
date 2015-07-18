@@ -276,6 +276,13 @@ on_incoming_message_dasom (GSocket      *socket,
       dasom_send_message (socket, DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY,
                           NULL, 0, NULL);
       break;
+    case DASOM_MESSAGE_SET_USE_PREEDIT:
+      dasom_message_ref (message);
+      dasom_context_set_use_preedit (context, *(gboolean *) message->data);
+      dasom_message_unref (message);
+      dasom_send_message (socket, DASOM_MESSAGE_SET_USE_PREEDIT_REPLY,
+                          NULL, 0, NULL);
+      break;
     case DASOM_MESSAGE_PREEDIT_START_REPLY:
     case DASOM_MESSAGE_PREEDIT_CHANGED_REPLY:
     case DASOM_MESSAGE_PREEDIT_END_REPLY:
@@ -329,37 +336,41 @@ dasom_iteration_until (DasomContext     *context,
   }
 }
 
-/* TODO */
-static void
+void
 on_signal_preedit_start (DasomContext *context,
                          gpointer      user_data)
 
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_START, NULL, 0, NULL);
+  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_START,
+                      NULL, 0, NULL);
   dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_START_REPLY);
+  context->preedit_state = DASOM_PREEDIT_STATE_START;
 }
 
-static void
+void
 on_signal_preedit_end (DasomContext *context,
                        gpointer      user_data)
 
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_END, NULL, 0, NULL);
+  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_END,
+                      NULL, 0, NULL);
   dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_END_REPLY);
+  context->preedit_state = DASOM_PREEDIT_STATE_END;
 }
 
-static void
+void
 on_signal_preedit_changed (DasomContext *context,
                            gpointer      user_data)
 
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_CHANGED, NULL, 0, NULL);
+  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
+                      NULL, 0, NULL);
   dasom_iteration_until (context, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
 }
 
@@ -610,19 +621,20 @@ int dasom_daemon_xim_create_ic (DasomDaemon      *daemon,
 
     context->xim_connect_id = data->connect_id;
     context->daemon = daemon;
+    context->cb_user_data = xims;
 
-    g_signal_connect (context,
-                      "preedit-start",
-                      G_CALLBACK (on_signal_preedit_start),
-                      xims);
-    g_signal_connect (context,
-                      "preedit-end",
-                      G_CALLBACK (on_signal_preedit_end),
-                      xims);
-    g_signal_connect (context,
-                      "preedit-changed",
-                      G_CALLBACK (on_signal_preedit_changed),
-                      xims);
+    context->cb_start_id =
+      g_signal_connect (context, "preedit-start",
+                        G_CALLBACK (on_signal_preedit_start), xims);
+
+    context->cb_end_id =
+      g_signal_connect (context, "preedit-end",
+                        G_CALLBACK (on_signal_preedit_end), xims);
+
+    context->cb_changed_id =
+      g_signal_connect (context, "preedit-changed",
+                        G_CALLBACK (on_signal_preedit_changed), xims);
+
     g_signal_connect (context,
                       "commit",
                       G_CALLBACK (on_signal_commit),
@@ -997,19 +1009,20 @@ on_new_connection (GSocketService    *service,
   dasom_message_unref (message);
   context->daemon = user_data;
   context->socket = socket;
+  context->cb_user_data = NULL;
 
-  g_signal_connect (context,
-                    "preedit-start",
-                    G_CALLBACK (on_signal_preedit_start),
-                    NULL);
-  g_signal_connect (context,
-                    "preedit-end",
-                    G_CALLBACK (on_signal_preedit_end),
-                    NULL);
-  g_signal_connect (context,
-                    "preedit-changed",
-                    G_CALLBACK (on_signal_preedit_changed),
-                    NULL);
+  context->cb_start_id =
+    g_signal_connect (context, "preedit-start",
+                      G_CALLBACK (on_signal_preedit_start), NULL);
+
+  context->cb_end_id =
+    g_signal_connect (context, "preedit-end",
+                      G_CALLBACK (on_signal_preedit_end), NULL);
+
+  context->cb_changed_id =
+    g_signal_connect (context, "preedit-changed",
+                      G_CALLBACK (on_signal_preedit_changed), NULL);
+
   g_signal_connect (context,
                     "commit",
                     G_CALLBACK (on_signal_commit),

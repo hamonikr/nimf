@@ -71,6 +71,10 @@ DasomEngine *dasom_daemon_get_next_instance  (DasomDaemon *daemon,
 DasomEngine *dasom_daemon_get_instance       (DasomDaemon *daemon,
                                               const gchar *module_name);
 
+void on_signal_preedit_start   (DasomContext *context, gpointer user_data);
+void on_signal_preedit_changed (DasomContext *context, gpointer user_data);
+void on_signal_preedit_end     (DasomContext *context, gpointer user_data);
+
 G_END_DECLS
 
 #endif /* __DASOM_DAEMON_H__ */

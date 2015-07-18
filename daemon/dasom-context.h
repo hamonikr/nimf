@@ -42,6 +42,12 @@ typedef struct _DasomDaemon       DasomDaemon;
 typedef struct _DasomContext      DasomContext;
 typedef struct _DasomContextClass DasomContextClass;
 
+typedef enum
+{
+  DASOM_PREEDIT_STATE_START = 1,
+  DASOM_PREEDIT_STATE_END   = 0
+} DasomPreeditState;
+
 struct _DasomContext
 {
   GObject parent_instance;
@@ -50,6 +56,12 @@ struct _DasomContext
   DasomEngine         *engine;
   guint16              id;
   guint16              xim_connect_id;
+  gboolean             is_preedit_visible;
+  DasomPreeditState    preedit_state;
+  gpointer             cb_user_data;
+  gulong               cb_start_id;
+  gulong               cb_changed_id;
+  gulong               cb_end_id;
 
   DasomDaemon         *daemon;
   GSocket             *socket;
@@ -99,6 +111,8 @@ gboolean      dasom_context_get_surrounding    (DasomContext        *context,
                                                 gint                *cursor_index);
 void          dasom_context_set_cursor_location (DasomContext         *context,
                                                  const DasomRectangle *area);
+void          dasom_context_set_use_preedit     (DasomContext *context,
+                                                 gboolean      use_preedit);
 
 G_END_DECLS
 

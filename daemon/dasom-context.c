@@ -47,6 +47,9 @@ dasom_context_init (DasomContext *context)
   id++;
   context->id = id;
   g_debug (G_STRLOC ": %s, id = %d", G_STRFUNC, context->id);
+
+  context->is_preedit_visible = TRUE;
+  context->preedit_state = DASOM_PREEDIT_STATE_END;
 }
 
 static void
@@ -231,9 +234,18 @@ dasom_context_get_preedit_string (DasomContext  *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_engine_get_preedit_string (context->engine,
-                                   str,
-                                   cursor_pos);
+  if (G_LIKELY (context->is_preedit_visible == TRUE))
+    dasom_engine_get_preedit_string (context->engine,
+                                     str,
+                                     cursor_pos);
+  else
+  {
+    if (str)
+      *str = g_strdup ("");
+
+    if (cursor_pos)
+      *cursor_pos = 0;
+  }
 }
 
 void
@@ -264,4 +276,58 @@ dasom_context_set_cursor_location (DasomContext         *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_engine_set_cursor_location (context->engine, area);
+}
+
+void
+dasom_context_set_use_preedit (DasomContext *context,
+                               gboolean      use_preedit)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (context->is_preedit_visible == TRUE && use_preedit == FALSE)
+  {
+    context->is_preedit_visible = FALSE;
+
+    if (context->preedit_state == DASOM_PREEDIT_STATE_START)
+    {
+      g_signal_emit_by_name (context, "preedit-changed");
+      g_signal_emit_by_name (context, "preedit-end");
+    }
+
+    g_signal_handler_disconnect (context, context->cb_start_id);
+    g_signal_handler_disconnect (context, context->cb_changed_id);
+    g_signal_handler_disconnect (context, context->cb_end_id);
+  }
+  else if (context->is_preedit_visible == FALSE && use_preedit == TRUE)
+  {
+    context->is_preedit_visible = TRUE;
+
+    gchar *str = NULL;
+    gint   cursor_pos;
+
+    dasom_context_get_preedit_string (context, &str, &cursor_pos);
+
+    context->cb_start_id =
+      g_signal_connect (context, "preedit-start",
+                        G_CALLBACK (on_signal_preedit_start),
+                        context->cb_user_data);
+
+    context->cb_changed_id =
+      g_signal_connect (context, "preedit-changed",
+                        G_CALLBACK (on_signal_preedit_changed),
+                        context->cb_user_data);
+
+    context->cb_end_id =
+      g_signal_connect (context, "preedit-end",
+                        G_CALLBACK (on_signal_preedit_end),
+                        context->cb_user_data);
+
+    if (*str != 0)
+    {
+      g_signal_emit_by_name (context, "preedit-start");
+      g_signal_emit_by_name (context, "preedit-changed");
+
+      g_free (str);
+    }
+  }
 }

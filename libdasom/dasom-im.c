@@ -95,6 +95,7 @@ on_incoming_message (GSocket      *socket,
     case DASOM_MESSAGE_SET_SURROUNDING_REPLY:
     case DASOM_MESSAGE_GET_SURROUNDING_REPLY:
     case DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY:
+    case DASOM_MESSAGE_SET_USE_PREEDIT_REPLY:
       break;
     /* signals */
     case DASOM_MESSAGE_PREEDIT_START:
@@ -214,6 +215,19 @@ void dasom_im_set_use_preedit (DasomIM  *im,
                                gboolean  use_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (DASOM_IS_IM (im));
+
+  GSocket *socket = g_socket_connection_get_socket (im->connection);
+  if (!socket || g_socket_is_closed (socket))
+  {
+    g_warning ("socket is closed");
+    return;
+  }
+
+  dasom_send_message (socket, DASOM_MESSAGE_SET_USE_PREEDIT,
+                      (gchar *) &use_preedit, sizeof (gboolean), NULL);
+  dasom_iteration_until (im, DASOM_MESSAGE_SET_USE_PREEDIT_REPLY);
 }
 
 gboolean dasom_im_get_surrounding (DasomIM  *im,
