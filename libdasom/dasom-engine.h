@@ -25,7 +25,7 @@
 #include <glib-object.h>
 #include "dasom-events.h"
 #include "dasom-im.h"
-#include "dasom.h"
+#include "dasom-types.h"
 
 G_BEGIN_DECLS
 

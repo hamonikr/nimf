@@ -1,5 +1,6 @@
 /*** BEGIN file-header ***/
-#include "dasom.h"
+#include "dasom-enum-types.h"
+#include "dasom-message.h"
 
 /*** END file-header ***/
 

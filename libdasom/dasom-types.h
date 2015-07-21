@@ -79,6 +79,11 @@ typedef enum
   DASOM_MODIFIER_MASK = 0x5c001fff
 } DasomModifierType;
 
+typedef struct {
+    int x, y;
+    int width, height;
+} DasomRectangle;
+
 G_END_DECLS
 
 #endif /* __DASOM_TYPES_H__ */
