@@ -1,14 +1,9 @@
 /* -*- mode: js2; js2-basic-offset: 2; indent-tabs-mode: nil -*- */
 
-/* FIXME: ALT + F2 로 익스텐션을 여러번 반복하여 재실행하다보면
- * 응용 프로그램이 죽는 경우가 있습니다.
- * 익스텐션의 문제인지, WM, GNOME SHELL 문제인지, 아니면 im library의 문제인지 반드시 확인해봐야 합니다 */
-
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Dasom = imports.gi.Dasom;
-const Tweener = imports.ui.tweener;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -17,34 +12,7 @@ const PopupMenu = imports.ui.popupMenu;
 const Gettext = imports.gettext.domain('gnome-shell-extensions');
 const _ = Gettext.gettext;
 
-let dasom_agent, dasom_menu, engine_label;
-
-function _hideEngineLabel()
-{
-    Main.uiGroup.remove_actor(engine_label);
-    engine_label = null;
-}
-
-function _showEngineLabel(text)
-{
-    if (!engine_label)
-    {
-        engine_label = new St.Label({ style_class: 'engine-label', text: text });
-        Main.uiGroup.add_actor(engine_label);
-    }
-
-    engine_label.opacity = 255;
-    engine_label.text = text;
-
-    let [x, y, mods] = global.get_pointer();
-
-    engine_label.set_position(x, y);
-
-    Tweener.addTween(engine_label, { opacity: 0,
-                                     time: 2,
-                                     transition: 'easeOutQuad',
-                                     onComplete: _hideEngineLabel });
-}
+let dasom_agent, dasom_menu;
 
 const DasomMenu = new Lang.Class({
     Name: 'DasomMenu',
@@ -62,7 +30,7 @@ const DasomMenu = new Lang.Class({
                                    style_class: 'system-status-icon' });
 
         this._hbox.add_child(this._icon);
-        this.actor.add_actor(this._hbox);
+        this.actor.add_child(this._hbox);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._about_menu = new PopupMenu.PopupMenuItem(_("About"));
@@ -81,22 +49,20 @@ function enable()
     dasom_menu  = new DasomMenu;
 
     dasom_agent.connect('engine-changed', function(agent, text) {
+        child = dasom_menu._hbox.get_child_at_index (0);
+
         if (text != "Dasom")
         {
-            dasom_menu._hbox.remove_child (dasom_menu._icon);
-
             if (dasom_menu._label.text != text)
-            {
                 dasom_menu._label.text = text;
-                _showEngineLabel(text);
-            }
 
-            dasom_menu._hbox.add_child (dasom_menu._label);
+            if (child != dasom_menu._label)
+                dasom_menu._hbox.replace_child (child, dasom_menu._label);
         }
         else
         {
-            dasom_menu._hbox.remove_child (dasom_menu._label);
-            dasom_menu._hbox.add_child (dasom_menu._icon);
+            if (child != dasom_menu._icon)
+                dasom_menu._hbox.replace_child (child, dasom_menu._icon);
         }
     });
 
@@ -107,5 +73,5 @@ function enable()
 function disable()
 {
     dasom_menu.destroy();
-    // dasom_agent.destroy(); FIXME: 해제는 어떻게?
+    // dasom_agent.destroy(); FIXME: How to free ?
 }
