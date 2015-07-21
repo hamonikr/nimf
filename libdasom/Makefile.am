@@ -105,10 +105,10 @@ Dasom_0_1_gir_FILES = $(introspection_sources)
 
 INTROSPECTION_GIRS += Dasom-0.1.gir
 
-girdir = $(datadir)/gir-1.0
+girdir = $(INTROSPECTION_GIRDIR)
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(INTROSPECTION_TYPELIBDIR)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = \
