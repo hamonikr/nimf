@@ -261,11 +261,6 @@ dasom_jeongeum_filter_event (DasomEngine      *engine,
   keyval = dasom_event_keycode_to_qwerty_keyval (event);
   retval = hangul_ic_process (jeongeum->context, keyval);
 
-  if (retval)
-    g_print (">>>> hangul_ic_process() returns TRUE\n");
-  else
-    g_print (">>>> hangul_ic_process() returns FALSE\n");
-
   if (commit[0] != 0)
     new_commit  = g_ucs4_to_utf8 (commit, -1, NULL, NULL, NULL);
 
@@ -438,8 +433,6 @@ dasom_jeongeum_get_preedit_string (DasomEngine  *engine,
       *str = g_strdup (jeongeum->preedit_string);
     else
       *str = g_strdup ("");
-
-    g_print (G_STRLOC ": %s: PRE-EDIT:%s\n", G_STRFUNC, *str);
   }
 
   if (cursor_pos)

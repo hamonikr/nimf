@@ -85,7 +85,7 @@ dasom_send_message (GSocket          *socket,
   /* debug message */
   const gchar *name = dasom_message_get_name (message);
   if (name)
-    g_print ("send: %s, fd: %d\n", name, g_socket_get_fd(socket));
+    g_debug ("send: %s, fd: %d", name, g_socket_get_fd(socket));
   else
     g_error ("unknown message type");
 
@@ -153,7 +153,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
   /* debug message */
   const gchar *name = dasom_message_get_name (message);
   if (name)
-    g_print ("recv: %s, fd: %d\n", name, g_socket_get_fd (socket));
+    g_debug ("recv: %s, fd: %d", name, g_socket_get_fd (socket));
   else
     g_error ("unknown message type");
 

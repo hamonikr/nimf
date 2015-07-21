@@ -112,7 +112,6 @@ on_incoming_message (GSocket      *socket,
       break;
     case DASOM_MESSAGE_COMMIT:
       dasom_message_ref (message);
-      g_print ("g_signal_emit_by_name:commit:%s\n", (const gchar *) message->data);
       g_signal_emit_by_name (im, "commit", (const gchar *) message->data);
       dasom_message_unref (message);
       dasom_send_message (socket, DASOM_MESSAGE_COMMIT_REPLY, NULL, 0, NULL);
@@ -268,12 +267,9 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
   }
 
   if (text)
-  {
     *text = g_strndup (im->reply->data,
                        im->reply->header->data_len - 1 -
                        sizeof (gint) - sizeof (gboolean));
-    g_print ("surrounding: %s\n", *text);
-  }
 
   if (cursor_index)
   {
@@ -377,11 +373,8 @@ dasom_im_get_preedit_string (DasomIM  *im,
   }
 
   if (str)
-  {
     *str = g_strndup (im->reply->data,
                       im->reply->header->data_len - 1 - sizeof (gint));
-    g_print ("preedit:%s\n", *str);
-  }
 
   if (cursor_pos)
   {

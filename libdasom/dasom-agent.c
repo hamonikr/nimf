@@ -108,8 +108,6 @@ dasom_agent_init (DasomAgent *agent)
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
     g_error ("FIXME: error handling");
 
-  g_print ("\trecv: DASOM_MESSAGE_CONNECT_REPLY\n");
-
   dasom_message_unref (message);
 
   GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
