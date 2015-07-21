@@ -159,7 +159,7 @@ on_incoming_message_dasom (GSocket      *socket,
   DasomContext *context = user_data;
   gboolean retval;
 
-  DasomContext *saved_context = context->daemon->target;
+  DasomContext *pushed_context = context->daemon->target;
 
   context->daemon->target = context;
 
@@ -170,6 +170,9 @@ on_incoming_message_dasom (GSocket      *socket,
     dasom_message_unref (context->reply);
     context->reply = NULL;
 
+    if (pushed_context == context)
+      pushed_context = NULL;
+
     if (G_UNLIKELY (context->type == DASOM_CONNECTION_DASOM_AGENT))
       context->daemon->agents_list = g_list_remove (context->daemon->agents_list, context);
 
@@ -178,7 +181,7 @@ on_incoming_message_dasom (GSocket      *socket,
 
     g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
 
-    context->daemon->target = saved_context;
+    context->daemon->target = pushed_context;
 
     return G_SOURCE_REMOVE;
   }
@@ -291,7 +294,8 @@ on_incoming_message_dasom (GSocket      *socket,
       break;
   }
 
-  context->daemon->target = saved_context;
+  if (g_main_depth () > 1)
+    context->daemon->target = pushed_context;
 
   return G_SOURCE_CONTINUE;
 }
@@ -593,7 +597,6 @@ int dasom_daemon_xim_set_ic_focus (DasomDaemon         *daemon,
                                                GUINT_TO_POINTER (data->icid));
   daemon->target = context;
   dasom_context_focus_in (context);
-  daemon->target = NULL;
 
   return 1;
 }
@@ -608,7 +611,6 @@ int dasom_daemon_xim_unset_ic_focus (DasomDaemon         *daemon,
                                                GUINT_TO_POINTER (data->icid));
   daemon->target = context;
   dasom_context_focus_out (context);
-  daemon->target = NULL;
 
   return 1;
 }
@@ -656,7 +658,6 @@ int dasom_daemon_xim_forward_event (DasomDaemon          *daemon,
                                                GUINT_TO_POINTER (data->icid));
   daemon->target = context;
   retval = dasom_context_filter_event (context, event);
-  daemon->target = NULL;
   dasom_event_free (event);
 
   if (retval)
@@ -684,7 +685,6 @@ int dasom_daemon_xim_reset_ic (DasomDaemon     *daemon,
                                                GUINT_TO_POINTER (data->icid));
   daemon->target = context;
   dasom_context_reset (context);
-  daemon->target = NULL;
 
   return 1;
 }
