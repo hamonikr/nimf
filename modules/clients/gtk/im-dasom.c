@@ -133,9 +133,8 @@ dasom_gtk_im_context_filter_keypress (GtkIMContext *context,
 
   retval = dasom_im_filter_event (DASOM_GTK_IM_CONTEXT (context)->im,
                                   dasom_event);
+  dasom_event_free (dasom_event);
 
-  /* Do not free GdkEventKey */
-  /* FIXME: whether to free dasom event or not */
   return retval;
 }
 
@@ -175,8 +174,7 @@ dasom_gtk_im_context_set_cursor_location (GtkIMContext *context,
     return;
 
   dasom_context->cursor_area = *area;
-
-  GdkRectangle root_area;
+  GdkRectangle root_area = *area;
 
   if (dasom_context->client_window)
   {
