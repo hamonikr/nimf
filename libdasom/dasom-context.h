@@ -27,6 +27,8 @@
 #include "dasom-daemon.h"
 #include "dasom-message.h"
 #include "dasom-types.h"
+#include <X11/Xlib.h>
+#include "IMdkit/IMdkit.h"
 
 G_BEGIN_DECLS
 
@@ -65,6 +67,11 @@ struct _DasomContext
   DasomMessage        *reply;
   GSource             *source;
   GSocketConnection   *connection;
+  /* XIM */
+  gint                 xim_preedit_length;
+  Window               client_window;
+  Window               focus_window;
+  DasomRectangle       preedit_area;
 };
 
 struct _DasomContextClass
@@ -107,6 +114,7 @@ void          dasom_context_set_surrounding    (DasomContext        *context,
 gboolean      dasom_context_get_surrounding    (DasomContext        *context,
                                                 gchar              **text,
                                                 gint                *cursor_index);
+void          dasom_context_xim_set_cursor_location (DasomContext *context, XIMS xims);
 void          dasom_context_set_cursor_location (DasomContext         *context,
                                                  const DasomRectangle *area);
 void          dasom_context_set_use_preedit     (DasomContext *context,

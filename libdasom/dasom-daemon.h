@@ -57,6 +57,7 @@ struct _DasomDaemon
   gchar              **hotkey_names;
   DasomCandidate      *candidate;
   DasomContext        *target;
+  GSource             *xevent_source;
 };
 
 struct _DasomDaemonClass

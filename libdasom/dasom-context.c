@@ -24,10 +24,8 @@
 #include "dasom-marshalers.h"
 #include "dasom-private.h"
 #include <string.h>
-#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-#include "IMdkit/IMdkit.h"
 #include "IMdkit/Xi18n.h"
 
 enum {
@@ -323,14 +321,37 @@ dasom_context_emit_preedit_start (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (context->use_preedit == FALSE &&
-                  context->preedit_state == DASOM_PREEDIT_STATE_END))
-    return;
+  switch (context->type)
+  {
+    case DASOM_CONNECTION_DASOM_IM:
+      if (G_UNLIKELY (context->use_preedit == FALSE &&
+                      context->preedit_state == DASOM_PREEDIT_STATE_END))
+        return;
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_START,
-                      NULL, 0, NULL);
-  dasom_context_iteration_until (context, DASOM_MESSAGE_PREEDIT_START_REPLY);
-  context->preedit_state = DASOM_PREEDIT_STATE_START;
+      dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_START,
+                          NULL, 0, NULL);
+      dasom_context_iteration_until (context, DASOM_MESSAGE_PREEDIT_START_REPLY);
+      context->preedit_state = DASOM_PREEDIT_STATE_START;
+      break;
+    case DASOM_CONNECTION_XIM:
+      {
+        XIMS xims = context->cb_user_data;
+        IMPreeditStateStruct preedit_state_data = {0};
+        preedit_state_data.connect_id = context->xim_connect_id;
+        preedit_state_data.icid       = context->id;
+        IMPreeditStart (xims, (XPointer) &preedit_state_data);
+
+        IMPreeditCBStruct preedit_cb_data = {0};
+        preedit_cb_data.major_code = XIM_PREEDIT_START;
+        preedit_cb_data.connect_id = context->xim_connect_id;
+        preedit_cb_data.icid       = context->id;
+        IMCallCallback (xims, (XPointer) & preedit_cb_data);
+      }
+      break;
+    default:
+      g_warning ("Unknown type: %d", context->type);
+      break;
+  }
 }
 
 void
@@ -339,13 +360,81 @@ dasom_context_emit_preedit_changed (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (context->use_preedit == FALSE &&
-                  context->preedit_state == DASOM_PREEDIT_STATE_END))
-    return;
+  switch (context->type)
+  {
+    case DASOM_CONNECTION_DASOM_IM:
+      if (G_UNLIKELY (context->use_preedit == FALSE &&
+                      context->preedit_state == DASOM_PREEDIT_STATE_END))
+        return;
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
-                      NULL, 0, NULL);
-  dasom_context_iteration_until (context, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
+      dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
+                          NULL, 0, NULL);
+      dasom_context_iteration_until (context, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
+      break;
+    case DASOM_CONNECTION_XIM:
+      {
+        XIMS xims = context->cb_user_data;
+        gchar *preedit_string;
+        gint   cursor_pos;
+        dasom_context_get_preedit_string (context, &preedit_string, &cursor_pos);
+
+        IMPreeditCBStruct preedit_cb_data = {0};
+        XIMText           text;
+        XTextProperty     text_property;
+
+        static XIMFeedback *feedback;
+        gint i, len;
+
+        if (preedit_string == NULL)
+          return;
+
+        len = g_utf8_strlen (preedit_string, -1);
+
+        feedback = g_malloc (sizeof (XIMFeedback) * (len + 1));
+
+        for (i = 0; i < len; i++)
+          feedback[i] = XIMUnderline;
+
+        feedback[len] = 0;
+
+        preedit_cb_data.major_code = XIM_PREEDIT_DRAW;
+        preedit_cb_data.connect_id = context->xim_connect_id;
+        preedit_cb_data.icid = context->id;
+        preedit_cb_data.todo.draw.caret = len;
+        preedit_cb_data.todo.draw.chg_first = 0;
+        preedit_cb_data.todo.draw.chg_length = MIN (len, context->xim_preedit_length);
+        preedit_cb_data.todo.draw.text = &text;
+
+        text.feedback = feedback;
+
+        if (len > 0)
+        {
+          Xutf8TextListToTextProperty (xims->core.display,
+                                       (char **) &preedit_string, 1,
+                                       XCompoundTextStyle, &text_property);
+          text.encoding_is_wchar = 0;
+          text.length = strlen ((char *) text_property.value);
+          text.string.multi_byte = (char *) text_property.value;
+          IMCallCallback (xims, (XPointer) &preedit_cb_data);
+          XFree (text_property.value);
+        }
+        else
+        {
+          text.encoding_is_wchar = 0;
+          text.length = 0;
+          text.string.multi_byte = "";
+          IMCallCallback (xims, (XPointer) &preedit_cb_data);
+          len = 0;
+        }
+
+        context->xim_preedit_length = len;
+        g_free (feedback);
+      }
+      break;
+    default:
+      g_warning ("Unknown type: %d", context->type);
+      break;
+  }
 }
 
 void
@@ -354,14 +443,37 @@ dasom_context_emit_preedit_end (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (context->use_preedit == FALSE &&
-                  context->preedit_state == DASOM_PREEDIT_STATE_END))
-    return;
+  switch (context->type)
+  {
+    case DASOM_CONNECTION_DASOM_IM:
+      if (G_UNLIKELY (context->use_preedit == FALSE &&
+                      context->preedit_state == DASOM_PREEDIT_STATE_END))
+        return;
 
-  dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_END,
-                      NULL, 0, NULL);
-  dasom_context_iteration_until (context, DASOM_MESSAGE_PREEDIT_END_REPLY);
-  context->preedit_state = DASOM_PREEDIT_STATE_END;
+      dasom_send_message (context->socket, DASOM_MESSAGE_PREEDIT_END,
+                          NULL, 0, NULL);
+      dasom_context_iteration_until (context, DASOM_MESSAGE_PREEDIT_END_REPLY);
+      context->preedit_state = DASOM_PREEDIT_STATE_END;
+      break;
+    case DASOM_CONNECTION_XIM:
+      {
+        XIMS xims = context->cb_user_data;
+        IMPreeditStateStruct preedit_state_data = {0};
+        preedit_state_data.connect_id = context->xim_connect_id;
+        preedit_state_data.icid       = context->id;
+        IMPreeditEnd (xims, (XPointer) &preedit_state_data);
+
+        IMPreeditCBStruct preedit_cb_data = {0};
+        preedit_cb_data.major_code = XIM_PREEDIT_DONE;
+        preedit_cb_data.connect_id = context->xim_connect_id;
+        preedit_cb_data.icid       = context->id;
+        IMCallCallback (xims, (XPointer) &preedit_cb_data);
+      }
+      break;
+    default:
+      g_warning ("Unknown type: %d", context->type);
+      break;
+  }
 }
 
 void
@@ -381,20 +493,15 @@ dasom_context_emit_commit (DasomContext *context,
       {
         XIMS xims = context->cb_user_data;
         XTextProperty property;
-        /* TODO: gdk 소스를 확인해봅시다. utf8인가... 문자열 복사할 때
-         * 문자열 내에 널 값이 있을 수 있다는 영어를 어디선가 본 것 같은데
-         * 정확하게 확인해봅시다 */
         Xutf8TextListToTextProperty (xims->core.display,
                                      (char **)&text, 1, XCompoundTextStyle,
                                      &property);
 
-        IMCommitStruct commit_data;
+        IMCommitStruct commit_data = {0};
         commit_data.major_code = XIM_COMMIT;
-        commit_data.minor_code = 0;
         commit_data.connect_id = context->xim_connect_id;
         commit_data.icid       = context->id;
         commit_data.flag       = XimLookupChars;
-        /* commit_data.keysym = ??; */
         commit_data.commit_string = (gchar *) property.value;
         IMCommitString (xims, (XPointer) &commit_data);
 
@@ -446,4 +553,36 @@ dasom_context_emit_delete_surrounding (DasomContext *context,
     return FALSE;
 
   return *(gboolean *) (context->reply->data);
+}
+
+void
+dasom_context_xim_set_cursor_location (DasomContext *context, XIMS xims)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomRectangle preedit_area = context->preedit_area;
+
+  Window target;
+
+  if (context->focus_window)
+    target = context->focus_window;
+  else
+    target = context->client_window;
+
+  if (target)
+  {
+    XWindowAttributes xwa;
+    Window child;
+
+    XGetWindowAttributes (xims->core.display, target, &xwa);
+    XTranslateCoordinates (xims->core.display, target,
+                           xwa.root,
+                           preedit_area.x,
+                           preedit_area.y,
+                           &preedit_area.x,
+                           &preedit_area.y,
+                           &child);
+  }
+
+  dasom_context_set_cursor_location (context, &preedit_area);
 }

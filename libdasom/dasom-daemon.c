@@ -357,6 +357,12 @@ dasom_daemon_finalize (GObject *object)
   dasom_daemon_stop (daemon);
   g_main_loop_unref (daemon->loop);
 
+  if (daemon->xevent_source)
+  {
+    g_source_destroy (daemon->xevent_source);
+    g_source_unref   (daemon->xevent_source);
+  }
+
   G_OBJECT_CLASS (dasom_daemon_parent_class)->finalize (object);
 }
 
@@ -421,6 +427,61 @@ int dasom_daemon_xim_close (DasomDaemon *daemon, XIMS xims, IMCloseStruct *data)
   return 1;
 }
 
+int dasom_daemon_xim_set_ic_values (DasomDaemon      *daemon,
+                                    XIMS              xims,
+                                    IMChangeICStruct *data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+                                               GUINT_TO_POINTER (data->icid));
+
+  CARD16 i;
+
+  for (i = 0; i < data->ic_attr_num; i++)
+  {
+    if (g_strcmp0 (XNInputStyle, data->ic_attr[i].name) == 0)
+      ; /* XNInputStyle is ignored */
+    else if (g_strcmp0 (XNClientWindow, data->ic_attr[i].name) == 0)
+      context->client_window = *(Window *) data->ic_attr[i].value;
+    else
+      g_warning (G_STRLOC ": %s %s", G_STRFUNC, data->ic_attr[i].name);
+  }
+
+  for (i = 0; i < data->preedit_attr_num; i++)
+  {
+    if (g_strcmp0 (XNPreeditState, data->preedit_attr[i].name) == 0)
+    {
+      XIMPreeditState state = *(XIMPreeditState *) data->preedit_attr[i].value;
+      switch (state)
+      {
+        case XIMPreeditEnable:
+          dasom_context_set_use_preedit (context, TRUE);
+          break;
+        case XIMPreeditDisable:
+          dasom_context_set_use_preedit (context, FALSE);
+          break;
+        default:
+          g_message ("XIMPreeditState: %ld is ignored", state);
+          break;
+      }
+    }
+    else
+      g_critical (G_STRLOC ": %s: %s is ignored",
+                  G_STRFUNC, data->preedit_attr[i].name);
+  }
+
+  for (i = 0; i < data->status_attr_num; i++)
+  {
+    g_critical (G_STRLOC ": %s: %s is ignored",
+                G_STRFUNC, data->status_attr[i].name);
+  }
+
+  dasom_context_xim_set_cursor_location (context, xims);
+
+  return 1;
+}
+
 int dasom_daemon_xim_create_ic (DasomDaemon      *daemon,
                                 XIMS              xims,
                                 IMChangeICStruct *data)
@@ -450,6 +511,8 @@ int dasom_daemon_xim_create_ic (DasomDaemon      *daemon,
     data->icid = dasom_context_get_id (context);
   }
 
+  dasom_daemon_xim_set_ic_values (daemon, xims, data);
+
   return 1;
 }
 
@@ -466,33 +529,56 @@ int dasom_daemon_xim_destroy_ic (DasomDaemon       *daemon,
                               GUINT_TO_POINTER (data->icid));
 }
 
-int dasom_daemon_xim_set_ic_values (DasomDaemon      *daemon,
-                                    XIMS              xims,
-                                    IMChangeICStruct *data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return 1;
-}
-
 int dasom_daemon_xim_get_ic_values (DasomDaemon      *daemon,
                                     XIMS              xims,
                                     IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  XICAttribute *ic_attr = data->ic_attr;
-  gint i;
+  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+                                               GUINT_TO_POINTER (data->icid));
 
-  for (i = 0; i < (int) data->ic_attr_num; ++i, ++ic_attr)
+  CARD16 i;
+
+  for (i = 0; i < data->ic_attr_num; i++)
   {
-    if (g_strcmp0 (XNFilterEvents, ic_attr->name) == 0)
+    if (g_strcmp0 (XNFilterEvents, data->ic_attr[i].name) == 0)
     {
-      ic_attr->value = (void *) malloc (sizeof (CARD32));
-      *(CARD32 *) ic_attr->value = KeyPressMask | KeyReleaseMask;
-      ic_attr->value_length = sizeof (CARD32);
+      data->ic_attr[i].value_length = sizeof (CARD32);
+      data->ic_attr[i].value = g_malloc (sizeof (CARD32));
+      *(CARD32 *) data->ic_attr[i].value = KeyPressMask | KeyReleaseMask;
     }
+    else if (g_strcmp0 (XNSeparatorofNestedList, data->ic_attr[i].name) == 0)
+    {
+      data->ic_attr[i].value_length = sizeof (CARD16);
+      data->ic_attr[i].value = g_malloc (sizeof (CARD16));
+      *(CARD16 *) data->ic_attr[i].value = 0;
+    }
+    else
+      g_critical (G_STRLOC ": %s: %s is ignored",
+                  G_STRFUNC, data->ic_attr[i].name);
   }
+
+  for (i = 0; i < data->preedit_attr_num; i++)
+  {
+    if (g_strcmp0 (XNPreeditState, data->preedit_attr[i].name) == 0)
+    {
+      data->preedit_attr[i].value_length = sizeof (XIMPreeditState);
+      data->preedit_attr[i].value = g_malloc (sizeof (XIMPreeditState));
+
+      if (context->use_preedit)
+        *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditEnable;
+      else
+        *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditDisable;
+    }
+    else
+      g_critical (G_STRLOC ": %s: %s is ignored",
+                  G_STRFUNC, data->preedit_attr[i].name);
+  }
+
+  for (i = 0; i < data->status_attr_num; i++)
+    g_critical (G_STRLOC ": %s: %s is ignored",
+                G_STRFUNC, data->status_attr[i].name);
 
   return 1;
 }
@@ -503,6 +589,12 @@ int dasom_daemon_xim_set_ic_focus (DasomDaemon         *daemon,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+                                               GUINT_TO_POINTER (data->icid));
+  daemon->target = context;
+  dasom_context_focus_in (context);
+  daemon->target = NULL;
+
   return 1;
 }
 
@@ -511,6 +603,12 @@ int dasom_daemon_xim_unset_ic_focus (DasomDaemon         *daemon,
                                      IMChangeFocusStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+                                               GUINT_TO_POINTER (data->icid));
+  daemon->target = context;
+  dasom_context_focus_out (context);
+  daemon->target = NULL;
 
   return 1;
 }
@@ -549,12 +647,16 @@ int dasom_daemon_xim_forward_event (DasomDaemon          *daemon,
   if (xevent->state & Mod5Mask)    event->key.state |= DASOM_MOD5_MASK;
   /* FIXME: I don't know how I process SUPER, HYPER, META */
 
-  event->key.keyval = XLookupKeysym (xevent, 0); /* TODO: test for qwerty and dvorak */
+  /* TODO: test for qwerty and dvorak */
+  event->key.keyval = XLookupKeysym (xevent,
+                                     (xevent->state & ShiftMask) ? 1 : 0);
   event->key.hardware_keycode = xevent->keycode;
 
   DasomContext *context = g_hash_table_lookup (daemon->contexts,
                                                GUINT_TO_POINTER (data->icid));
+  daemon->target = context;
   retval = dasom_context_filter_event (context, event);
+  daemon->target = NULL;
   dasom_event_free (event);
 
   if (retval)
@@ -577,6 +679,12 @@ int dasom_daemon_xim_reset_ic (DasomDaemon     *daemon,
                                IMResetICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+                                               GUINT_TO_POINTER (data->icid));
+  daemon->target = context;
+  dasom_context_reset (context);
+  daemon->target = NULL;
 
   return 1;
 }
@@ -674,18 +782,18 @@ dasom_xevent_source_new (Display *display)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GSource *source;
-  DasomXEventSource *event_source;
+  DasomXEventSource *xevent_source;
   int connection_number;
 
   source = g_source_new (&event_funcs, sizeof (DasomXEventSource));
-  event_source = (DasomXEventSource *) source;
-  event_source->display = display;
+  xevent_source = (DasomXEventSource *) source;
+  xevent_source->display = display;
 
-  connection_number = ConnectionNumber (event_source->display);
+  connection_number = ConnectionNumber (xevent_source->display);
 
-  event_source->poll_fd.fd = connection_number;
-  event_source->poll_fd.events = G_IO_IN;
-  g_source_add_poll (source, &event_source->poll_fd);
+  xevent_source->poll_fd.fd = connection_number;
+  xevent_source->poll_fd.events = G_IO_IN;
+  g_source_add_poll (source, &xevent_source->poll_fd);
 
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_can_recurse (source, FALSE);
@@ -693,12 +801,24 @@ dasom_xevent_source_new (Display *display)
   return source;
 }
 
+static int
+on_xerror (Display *display, XErrorEvent *error)
+{
+  gchar err_msg[64];
+
+  XGetErrorText (display, error->error_code, err_msg, 63);
+  g_warning (G_STRLOC ": %s: XError: %s "
+    "serial=%lu, error_code=%d request_code=%d minor_code=%d resourceid=%lu",
+    G_STRFUNC, err_msg, error->serial, error->error_code, error->request_code,
+    error->minor_code, error->resourceid);
+
+  return 1;
+}
+
 static gboolean
 dasom_daemon_init_xims (DasomDaemon *daemon)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  /* TODO: set x error handler */
 
   Display *display;
   Window   window;
@@ -761,14 +881,11 @@ dasom_daemon_init_xims (DasomDaemon *daemon)
             IMFilterEventMask,  KeyPressMask | KeyReleaseMask,
             NULL);
 
-  GSource *source = dasom_xevent_source_new (display);
-  guint id = g_source_attach (source, NULL);
-  /* FIXME: memory leak; g_source_unref (source) */
+  daemon->xevent_source = dasom_xevent_source_new (display);
+  g_source_attach (daemon->xevent_source, NULL);
+  XSetErrorHandler (on_xerror);
 
-  if (id > 0)
-    return TRUE;
-  else
-    return FALSE;
+  return TRUE;
 }
 
 static gboolean
