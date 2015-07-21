@@ -377,11 +377,8 @@ dasom_im_get_preedit_string (DasomIM  *im,
                       im->reply->header->data_len - 1 - sizeof (gint));
 
   if (cursor_pos)
-  {
     *cursor_pos = *(gint *) (im->reply->data +
                              im->reply->header->data_len - sizeof (gint));
-    g_print ("cursor_pos:%d\n", *cursor_pos);
-  }
 }
 
 void dasom_im_reset (DasomIM *im)
