@@ -47,6 +47,7 @@ function enable()
 {
     dasom_agent = new Dasom.Agent;
     dasom_menu  = new DasomMenu;
+    let child;
 
     dasom_agent.connect('engine-changed', function(agent, text) {
         child = dasom_menu._hbox.get_child_at_index (0);
