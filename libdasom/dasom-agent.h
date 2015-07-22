@@ -44,6 +44,7 @@ struct _DasomAgent
 
   GSocketConnection *connection;
   DasomMessage      *reply;
+  GSource           *source;
 };
 
 struct _DasomAgentClass

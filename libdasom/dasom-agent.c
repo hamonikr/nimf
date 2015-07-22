@@ -110,9 +110,9 @@ dasom_agent_init (DasomAgent *agent)
 
   dasom_message_unref (message);
 
-  GSource *source = g_socket_create_source (socket, G_IO_IN | G_IO_HUP | G_IO_ERR, NULL);
-  g_source_attach (source, NULL);
-  g_source_set_callback (source,
+  agent->source = g_socket_create_source (socket, G_IO_IN, NULL);
+  g_source_attach (agent->source, NULL);
+  g_source_set_callback (agent->source,
                          (GSourceFunc) on_incoming_message,
                          agent,
                          NULL);
@@ -124,6 +124,9 @@ dasom_agent_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomAgent *agent = DASOM_AGENT (object);
+
+  g_source_destroy (agent->source);
+  g_source_unref   (agent->source);
   dasom_message_unref (agent->reply);
 
   G_OBJECT_CLASS (dasom_agent_parent_class)->finalize (object);
