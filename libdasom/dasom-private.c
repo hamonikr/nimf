@@ -45,7 +45,7 @@ dasom_send_message (GSocket          *socket,
 
   if (G_UNLIKELY (n_written < dasom_message_get_header_size ()))
   {
-    g_critical (G_STRLOC ": %s: sent %ld less than %d",
+    g_critical (G_STRLOC ": %s: sent %"G_GSSIZE_FORMAT" less than %d",
                 G_STRFUNC, n_written, dasom_message_get_header_size ());
     if (error)
     {
@@ -67,7 +67,7 @@ dasom_send_message (GSocket          *socket,
 
     if (G_UNLIKELY (n_written < message->header->data_len))
     {
-      g_critical (G_STRLOC ": %s: sent %ld less than %d",
+      g_critical (G_STRLOC ": %s: sent %"G_GSSIZE_FORMAT" less than %d",
                   G_STRFUNC, n_written, message->header->data_len);
 
       if (error)
@@ -107,7 +107,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
 
   if (G_UNLIKELY (n_read < dasom_message_get_header_size ()))
   {
-    g_critical (G_STRLOC ": %s: received %ld less than %d",
+    g_critical (G_STRLOC ": %s: received %"G_GSSIZE_FORMAT" less than %d",
                 G_STRFUNC, n_read, message->header->data_len);
 
     if (error)
@@ -135,7 +135,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
 
     if (G_UNLIKELY (n_read < message->header->data_len))
     {
-      g_critical (G_STRLOC ": %s: received %ld less than %d",
+      g_critical (G_STRLOC ": %s: received %"G_GSSIZE_FORMAT" less than %d",
                 G_STRFUNC, n_read, message->header->data_len);
 
       if (error)
