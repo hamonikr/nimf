@@ -47,6 +47,7 @@ on_incoming_message (GSocket      *socket,
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
+    /* FIXME: g_socket_close () 가 적절하게 사용되었는지 검증해야 합니다. */
     g_socket_close (socket, NULL);
     return G_SOURCE_REMOVE;
   }
@@ -128,6 +129,9 @@ dasom_agent_finalize (GObject *object)
   g_source_destroy (agent->source);
   g_source_unref   (agent->source);
   dasom_message_unref (agent->reply);
+
+  if (agent->connection)
+    g_object_unref (agent->connection);
 
   G_OBJECT_CLASS (dasom_agent_parent_class)->finalize (object);
 }
