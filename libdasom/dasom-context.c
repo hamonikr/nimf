@@ -94,8 +94,11 @@ on_signal_engine_changed (DasomContext *context,
                           const gchar  *name,
                           gpointer      user_data)
 {
-  g_debug (G_STRLOC ": %s:%s:id = %d", G_STRFUNC, name, context->id);
+  g_debug (G_STRLOC ": %s: %s: context id = %d", G_STRFUNC, name, context->id);
 
+  /* FIXME: 가끔 에이전트 리스트에 추가적으로 에이전트가 더 들어가 있는 것 같습니다.
+   * 그래서 죽은 에이전트로 패킷을 보내어 g_socket_send 에서 정체가 되는 듯합니다.
+   * 에이전트가 제거되지는 않는지 확인해야 합니다 */
   GList *l = context->daemon->agents_list;
   while (l != NULL)
   {
@@ -105,6 +108,7 @@ on_signal_engine_changed (DasomContext *context,
                         (gchar *) name, strlen (name) + 1, NULL);
     l = next;
   }
+  g_debug (G_STRLOC ": %s: END", G_STRFUNC);
 }
 
 DasomContext *
@@ -146,7 +150,6 @@ void dasom_context_focus_in (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->daemon->target = context;
   dasom_engine_focus_in (context->engine);
 
   g_signal_emit_by_name (context, "engine-changed",
@@ -162,7 +165,6 @@ void dasom_context_focus_out (DasomContext *context)
   gchar *str = g_strdup ("Dasom");
   g_signal_emit_by_name (context, "engine-changed", str);
   g_free (str);
-  context->daemon->target = NULL;
 }
 
 void dasom_context_set_next_engine (DasomContext *context)
