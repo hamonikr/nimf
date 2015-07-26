@@ -79,24 +79,37 @@ dasom_agent_init (DasomAgent *agent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSocketClient  *client;
   GSocketAddress *address;
+  GSocketClient  *client;
   GSocket        *socket;
   DasomMessage   *message;
   GError         *error = NULL;
+  gint            retry_limit = 5;
+  gint            retry_count = 0;
 
   address = g_unix_socket_address_new_with_type ("unix:abstract=dasom", -1,
                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
   client = g_socket_client_new ();
-  agent->connection = g_socket_client_connect (client,
-                                               G_SOCKET_CONNECTABLE (address),
-                                               NULL, &error);
-  g_object_unref (address);
 
-  if (agent->connection == NULL)
+  for (retry_count = 0; retry_count < retry_limit; retry_count++)
   {
-    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
     g_clear_error (&error);
+    agent->connection = g_socket_client_connect (client,
+                                                 G_SOCKET_CONNECTABLE (address),
+                                                 NULL, &error);
+
+    if (agent->connection)
+      break;
+    else
+      g_usleep (G_USEC_PER_SEC);;
+  }
+
+  g_object_unref (address);
+  g_object_unref (client);
+
+  if (error)
+  {
+    g_critical ("%s", error->message);
     return;
   }
 
