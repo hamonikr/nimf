@@ -24,33 +24,59 @@
 #include <gtk/gtk.h>
 #include "dasom.h"
 #include <gio/gunixsocketaddress.h>
+#include <libappindicator/app-indicator.h>
 
-static void on_clicked (GtkWidget *widget,
-                        gpointer   data )
+static void on_about (GtkWidget *widget,
+                      gpointer   data)
 {
-  g_print ("클릭됨\n");
+  GtkWidget *dialog;
+
+  dialog = gtk_message_dialog_new (NULL,
+                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_INFO,
+                                   GTK_BUTTONS_CLOSE,
+                                   "Dasom Indicator for Dasom Input Method");
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (gtk_widget_destroy), NULL);
+
+  gtk_widget_show (dialog);
 }
 
-static gboolean on_delete_event (GtkWidget *widget,
-                                 GdkEvent  *event,
-                                 gpointer   data )
+static void on_exit (GtkWidget *widget,
+                      gpointer   data)
 {
-  g_print ("delete event\n");
+  g_print ("on_exit\n");
 
-  return FALSE;
-}
-
-static void on_destroy (GtkWidget *widget,
-                        gpointer   data )
-{
   gtk_main_quit ();
 }
 
-static void on_engine_changed (DasomAgent *agent,
-                               gchar      *name,
-                               gpointer    data )
+/* TODO: name 대신에 DasomModuleInfo, DasomStatusInfo
+ *       이런 걸 받아올 필요가 있습니다. */
+static void on_engine_changed (DasomAgent   *agent,
+                               gchar        *name,
+                               AppIndicator *indicator)
 {
   g_print ("engine changed: %s\n", name);
+
+  if (g_strcmp0 (name, "en") == 0)
+  {
+    app_indicator_set_icon_full (indicator, "dasom-en", "english");
+    app_indicator_set_attention_icon (indicator, "dasom-en");
+    app_indicator_set_label  (indicator, name, name);
+  }
+  else if (g_strcmp0 (name, "정") == 0)
+  {
+    app_indicator_set_icon_full (indicator, "dasom-ko", "korean");
+    app_indicator_set_attention_icon (indicator, "dasom-ko");
+    app_indicator_set_label  (indicator, name, name);
+  }
+  else
+  {
+    app_indicator_set_icon_full (indicator, "input-keyboard", "Dasom");
+    app_indicator_set_attention_icon (indicator, "input-keyboard");
+    app_indicator_set_label  (indicator, name, name);
+  }
 }
 
 int
@@ -66,27 +92,41 @@ main (int argc, char **argv)
 
   gtk_init (&argc, &argv);
 
-  GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  GtkWidget *button = gtk_button_new_with_label ("Dasom");
+  AppIndicator *indicator;
+  GtkWidget    *menu_shell;
+  GtkWidget    *about_menu;
+  GtkWidget    *exit_menu;
+  DasomAgent   *agent;
 
-  g_signal_connect (window, "delete-event",
-                    G_CALLBACK (on_delete_event), NULL);
-  g_signal_connect (window, "destroy",
-                    G_CALLBACK (on_destroy), NULL);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (on_clicked), NULL);
+  menu_shell = gtk_menu_new();
+  about_menu = gtk_menu_item_new_with_label(_("About"));
+  exit_menu  = gtk_menu_item_new_with_label(_("Exit"));
 
-  gtk_container_set_border_width (GTK_CONTAINER (window), 10);
-  gtk_container_add (GTK_CONTAINER (window), button);
+  gtk_widget_show_all (about_menu);
+  gtk_widget_show_all (exit_menu);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), exit_menu);
 
-  gtk_widget_show (button);
-  gtk_widget_show (window);
+  gtk_widget_show_all (menu_shell);
 
-  DasomAgent *agent;
+  indicator = app_indicator_new ("dasom-indicator",
+                                 "input-keyboard",
+                                 APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+  app_indicator_set_status (indicator, APP_INDICATOR_STATUS_ACTIVE);
+  app_indicator_set_label  (indicator, "Dasom",
+                            "Dasom Indicator for Dasom IM");
+  app_indicator_set_menu   (indicator, GTK_MENU (menu_shell));
+
   agent = dasom_agent_new ();
-  g_signal_connect (agent, "engine-changed", G_CALLBACK (on_engine_changed), NULL);
+  g_signal_connect (agent, "engine-changed",
+                    G_CALLBACK (on_engine_changed), indicator);
+  g_signal_connect (about_menu, "activate",  G_CALLBACK (on_about), indicator);
+  g_signal_connect (exit_menu,  "activate",  G_CALLBACK (on_exit),  indicator);
 
   gtk_main ();
+
+  g_object_unref (agent);
+  g_object_unref (indicator);
 
   return 0;
 }
