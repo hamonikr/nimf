@@ -49,6 +49,7 @@ on_incoming_message (GSocket      *socket,
   {
     /* FIXME: g_socket_close () 가 적절하게 사용되었는지 검증해야 합니다. */
     g_socket_close (socket, NULL);
+    g_warning (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
     return G_SOURCE_REMOVE;
   }
 
@@ -82,27 +83,35 @@ dasom_agent_init (DasomAgent *agent)
   GSocketAddress *address;
   GSocket        *socket;
   DasomMessage   *message;
+  GError         *error = NULL;
 
   address = g_unix_socket_address_new_with_type ("unix:abstract=dasom", -1,
                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-
   client = g_socket_client_new ();
   agent->connection = g_socket_client_connect (client,
                                                G_SOCKET_CONNECTABLE (address),
-                                               NULL, NULL);
+                                               NULL, &error);
   g_object_unref (address);
 
   if (agent->connection == NULL)
-    return; /* 에러 메시지 있어야 한다 */
+  {
+    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+    g_clear_error (&error);
+    return;
+  }
 
   socket = g_socket_connection_get_socket (agent->connection);
 
   if (!socket)
-    return; /* 에러 메시지 있어야 한다 */
+  {
+    g_critical (G_STRLOC ": %s: Can't get socket", G_STRFUNC);
+    return;
+  }
 
   DasomConnectionType type = DASOM_CONNECTION_DASOM_AGENT;
 
-  dasom_send_message (socket, DASOM_MESSAGE_CONNECT, &type, sizeof (DasomConnectionType), NULL);
+  dasom_send_message (socket, DASOM_MESSAGE_CONNECT, &type,
+                      sizeof (DasomConnectionType), NULL);
   g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
   message = dasom_recv_message (socket);
 
