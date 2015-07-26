@@ -28,7 +28,7 @@ dasom_send_message (GSocket          *socket,
                     guint16           data_len,
                     GDestroyNotify    data_destroy_func)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  g_debug (G_STRLOC ": %s: fd = %d", G_STRFUNC, g_socket_get_fd (socket));
 
   DasomMessage *message;
   const DasomMessageHeader *header;
