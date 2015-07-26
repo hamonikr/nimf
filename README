@@ -4,14 +4,44 @@ Dasom is an input method framework.
 Now we can test Dasom.
 
 
+INSTALL
+-------
+
+  Compile
+
+    ./autogen.sh
+    make
+    sudo make install
+    sudo ldconfig
+
+  Update your gtk module cache
+
+  debian / ubuntu 32-bit
+
+    sudo /usr/lib/i386-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
+    sudo /usr/lib/i386-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
+
+  debian / ubuntu64-bit
+
+    sudo /usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
+    sudo /usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
+
+  Configuration im-config
+
+    im-config
+
+  Then, select Dasom, logout and login.
+
+
 Architecture
 ------------
 
 
-      +- a process ---+    +----- a process -------+  +- a process --+
+      +- a process ---+    +--- each processes ----+  +- a process --+
       | gtk im module |    | gnome-shell-extension |  |   X server   |
-      +---------------+    +-----------------------+  +--------------+
-              |                        |                     ^ |
+      +---------------+    | dasom-indicator       |  +--------------+
+              |            +-----------------------+         ^ |
+              |                        |                     | |
               | calls                  | calls               | |
               |                        |                     | |
     +------------------+    +---------------------+          | |
