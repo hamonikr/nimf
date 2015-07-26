@@ -18,7 +18,7 @@ m4/
 stamp-h1
 *.valid
 *anjuta*
-dasom-agent
+dasom-indicator
 *.gir
 *.typelib
 dasom-enum-types.c

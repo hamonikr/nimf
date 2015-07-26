@@ -1,8 +1,8 @@
-bin_PROGRAMS = dasom-agent
+bin_PROGRAMS = dasom-indicator
 
-dasom_agent_SOURCES = main.c
+dasom_indicator_SOURCES = main.c
 
-dasom_agent_CFLAGS = \
+dasom_indicator_CFLAGS = \
 	-Wall \
 	-Werror \
 	-I$(top_srcdir)/libdasom \
@@ -12,12 +12,14 @@ dasom_agent_CFLAGS = \
 	$(GIO_CFLAGS) \
 	$(GIO_UNIX_CFLAGS) \
 	$(X11_CFLAGS) \
-	$(GTK3_CFLAGS)
+	$(GTK3_CFLAGS) \
+	$(APP_INDICATOR_CFLAGS)
 
-dasom_agent_LDADD = \
+dasom_indicator_LDADD = \
 	$(top_builddir)/libdasom/libdasom.la \
 	$(GLIB_LIBS) \
 	$(GIO_LIBS) \
 	$(GIO_UNIX_LIBS) \
 	$(X11_LIBS) \
-	$(GTK3_LIBS)
+	$(GTK3_LIBS) \
+	$(APP_INDICATOR_LIBS)
