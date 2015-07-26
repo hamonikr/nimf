@@ -47,17 +47,21 @@ struct _DasomServer
 {
   GObject parent_instance;
 
-  GMainLoop           *loop;
-  int                  status;
+  GMainContext        *main_context;
   DasomModuleManager  *module_manager;
   GList               *instances;
-  GSocketService      *service;
+  GSocketListener     *listener;
   GHashTable          *contexts;
   GList               *agents_list;
   gchar              **hotkey_names;
   DasomCandidate      *candidate;
   DasomContext        *target;
   GSource             *xevent_source;
+
+  gchar     *address;
+  gboolean   active;
+  gboolean   is_using_listener;
+  gulong     run_signal_handler_id;
 };
 
 struct _DasomServerClass
@@ -67,14 +71,15 @@ struct _DasomServerClass
 
 GType        dasom_server_get_type           (void) G_GNUC_CONST;
 
-DasomServer *dasom_server_new                (void);
-int          dasom_server_start              (DasomServer *server);
-void         dasom_server_stop               (DasomServer *server);
-DasomEngine *dasom_server_get_default_engine (DasomServer *server);
-DasomEngine *dasom_server_get_next_instance  (DasomServer *server,
-                                              DasomEngine *engine);
-DasomEngine *dasom_server_get_instance       (DasomServer *server,
-                                              const gchar *module_name);
+DasomServer *dasom_server_new                (const gchar  *address,
+                                              GError      **error);
+void         dasom_server_start              (DasomServer  *server);
+void         dasom_server_stop               (DasomServer  *server);
+DasomEngine *dasom_server_get_default_engine (DasomServer  *server);
+DasomEngine *dasom_server_get_next_instance  (DasomServer  *server,
+                                              DasomEngine  *engine);
+DasomEngine *dasom_server_get_instance       (DasomServer  *server,
+                                              const gchar  *module_name);
 
 G_END_DECLS
 

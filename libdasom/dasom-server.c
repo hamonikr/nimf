@@ -43,110 +43,11 @@
     ;
 */
 
-G_DEFINE_TYPE (DasomServer, dasom_server, G_TYPE_OBJECT);
-
-static gint
-on_comparing_engine_with_path (DasomEngine *engine, const gchar *path)
+enum
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  int    retval;
-  gchar *engine_path;
-
-  g_object_get (engine, "path", &engine_path, NULL);
-  retval = g_strcmp0 (engine_path, path);
-
-  g_free (engine_path);
-
-  return retval;
-}
-
-DasomEngine *
-dasom_server_get_instance (DasomServer *server,
-                           const gchar *module_name)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GList *list;
-  DasomEngine *engine = NULL;
-  gchar *soname = g_strdup_printf ("%s.so", module_name);
-  gchar *path = g_build_path (G_DIR_SEPARATOR_S,
-                              DASOM_MODULE_DIR, soname, NULL);
-  g_free (soname);
-
-  list = g_list_find_custom (g_list_first (server->instances),
-                             path,
-                             (GCompareFunc) on_comparing_engine_with_path);
-  g_free (path);
-
-  if (list)
-    engine = list->data;
-
-  return engine;
-}
-
-DasomEngine *
-dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
-{
-  g_debug (G_STRLOC ": %s: arg: %s", G_STRFUNC, dasom_engine_get_name (engine));
-
-  g_assert (engine != NULL);
-
-  GList *list;
-
-  server->instances = g_list_first (server->instances);
-
-  g_assert (server->instances != NULL);
-
-
-  server->instances = g_list_find (server->instances, engine);
-
-  g_assert (server->instances != NULL);
-
-  list = g_list_next (server->instances);
-
-  if (list == NULL)
-  {
-    g_debug (G_STRLOC ": %s: list == NULL", G_STRFUNC);
-    list = g_list_first (server->instances);
-    g_debug (G_STRLOC ": %s: g_list_first (server->instances);", G_STRFUNC);
-  }
-
-  if (list)
-  {
-    engine = list->data;
-    server->instances = list;
-    g_debug (G_STRLOC ": %s: engine name: %s", G_STRFUNC, dasom_engine_get_name (engine));
-  }
-
-  g_assert (list != NULL);
-
-  return engine;
-}
-
-DasomEngine *
-dasom_server_get_default_engine (DasomServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GSettings *settings = g_settings_new ("org.freedesktop.Dasom");
-  gchar *module_name = g_settings_get_string (settings, "default-engine");
-
-  DasomEngine *engine;
-  engine = dasom_server_get_instance (server, module_name);
-  g_free (module_name);
-
-  if (engine == NULL)
-    engine = dasom_server_get_instance (server, "dasom-english");
-
-  g_object_unref (settings);
-
-  /* FIXME: 오타, 설정 파일 등으로 인하여 엔진이 NULL 이 나올 수 있습니다.
-   * 이에 대한 처리가 필요합니다. */
-  g_assert (engine != NULL);
-
-  return engine;
-}
+  PROP_0,
+  PROP_ADDRESS,
+};
 
 static gboolean
 on_incoming_message_dasom (GSocket      *socket,
@@ -300,6 +201,225 @@ on_incoming_message_dasom (GSocket      *socket,
   return G_SOURCE_CONTINUE;
 }
 
+static gboolean
+on_new_connection (GSocketService    *service,
+                   GSocketConnection *connection,
+                   GObject           *source_object,
+                   gpointer           user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* TODO: simple authentication */
+
+  /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
+   * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
+
+  DasomServer *server = user_data;
+
+  GSocket *socket = g_socket_connection_get_socket (connection);
+
+  DasomMessage *message;
+  message = dasom_recv_message (socket);
+
+  if (message->header->type == DASOM_MESSAGE_CONNECT)
+    dasom_send_message (socket, DASOM_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
+  else
+  {
+    /* TODO: error 처리 */
+    dasom_send_message (socket, DASOM_MESSAGE_ERROR, NULL, 0, NULL);
+    return TRUE; /* TODO: return 값을 FALSE 로 하면 어떻 일이 벌어지는가 */
+  }
+
+  DasomContext *context;
+  context = dasom_context_new (*(DasomConnectionType *) message->data,
+                               dasom_server_get_default_engine (server), NULL);
+  dasom_message_unref (message);
+  context->server = user_data;
+  context->socket = socket;
+
+  /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
+   * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
+  g_hash_table_insert (server->contexts,
+                       GUINT_TO_POINTER (dasom_context_get_id (context)),
+                       context);
+
+  if (context->type == DASOM_CONNECTION_DASOM_AGENT)
+    server->agents_list = g_list_prepend (server->agents_list, context);
+
+  context->source = g_socket_create_source (socket, G_IO_IN, NULL);
+  context->connection = g_object_ref (connection);
+  g_source_set_can_recurse (context->source, TRUE);
+  g_source_set_callback (context->source,
+                         (GSourceFunc) on_incoming_message_dasom,
+                         context, NULL);
+  g_source_attach (context->source, server->main_context);
+
+  return TRUE;
+}
+
+static gboolean
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomServer    *server = DASOM_SERVER (initable);
+  GSocketAddress *address;
+  GError         *local_error = NULL;
+
+  server->listener = G_SOCKET_LISTENER (g_socket_service_new ()); /* FIXME: threaded */
+  /* server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1)); */
+
+  if (g_unix_socket_address_abstract_names_supported ())
+    address = g_unix_socket_address_new_with_type (server->address, -1,
+                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+  else
+  {
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                         "Abstract UNIX domain socket names are not supported.");
+    return FALSE;
+  }
+
+  g_socket_listener_add_address (server->listener, address,
+                                 G_SOCKET_TYPE_STREAM,
+                                 G_SOCKET_PROTOCOL_DEFAULT,
+                                 NULL, NULL, &local_error);
+  g_object_unref (address);
+
+  if (local_error)
+  {
+    g_propagate_error (error, local_error);
+    return FALSE;
+  }
+
+  server->is_using_listener = TRUE;
+  server->run_signal_handler_id =
+    g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
+                      (GCallback) on_new_connection, server);
+/*
+  server->run_signal_handler_id = g_signal_connect (G_SOCKET_SERVICE (server->listener),
+                                                    "run",
+                                                    G_CALLBACK (on_run),
+                                                    server);
+*/
+
+  return TRUE;
+}
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_iface->init = initable_init;
+}
+
+G_DEFINE_TYPE_WITH_CODE (DasomServer, dasom_server, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                initable_iface_init));
+
+static gint
+on_comparing_engine_with_path (DasomEngine *engine, const gchar *path)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  int    retval;
+  gchar *engine_path;
+
+  g_object_get (engine, "path", &engine_path, NULL);
+  retval = g_strcmp0 (engine_path, path);
+
+  g_free (engine_path);
+
+  return retval;
+}
+
+DasomEngine *
+dasom_server_get_instance (DasomServer *server,
+                           const gchar *module_name)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GList *list;
+  DasomEngine *engine = NULL;
+  gchar *soname = g_strdup_printf ("%s.so", module_name);
+  gchar *path = g_build_path (G_DIR_SEPARATOR_S,
+                              DASOM_MODULE_DIR, soname, NULL);
+  g_free (soname);
+
+  list = g_list_find_custom (g_list_first (server->instances),
+                             path,
+                             (GCompareFunc) on_comparing_engine_with_path);
+  g_free (path);
+
+  if (list)
+    engine = list->data;
+
+  return engine;
+}
+
+DasomEngine *
+dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s: arg: %s", G_STRFUNC, dasom_engine_get_name (engine));
+
+  g_assert (engine != NULL);
+
+  GList *list;
+
+  server->instances = g_list_first (server->instances);
+
+  g_assert (server->instances != NULL);
+
+
+  server->instances = g_list_find (server->instances, engine);
+
+  g_assert (server->instances != NULL);
+
+  list = g_list_next (server->instances);
+
+  if (list == NULL)
+  {
+    g_debug (G_STRLOC ": %s: list == NULL", G_STRFUNC);
+    list = g_list_first (server->instances);
+    g_debug (G_STRLOC ": %s: g_list_first (server->instances);", G_STRFUNC);
+  }
+
+  if (list)
+  {
+    engine = list->data;
+    server->instances = list;
+    g_debug (G_STRLOC ": %s: engine name: %s", G_STRFUNC, dasom_engine_get_name (engine));
+  }
+
+  g_assert (list != NULL);
+
+  return engine;
+}
+
+DasomEngine *
+dasom_server_get_default_engine (DasomServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GSettings *settings = g_settings_new ("org.freedesktop.Dasom");
+  gchar *module_name = g_settings_get_string (settings, "default-engine");
+
+  DasomEngine *engine;
+  engine = dasom_server_get_instance (server, module_name);
+  g_free (module_name);
+
+  if (engine == NULL)
+    engine = dasom_server_get_instance (server, "dasom-english");
+
+  g_object_unref (settings);
+
+  /* FIXME: 오타, 설정 파일 등으로 인하여 엔진이 NULL 이 나올 수 있습니다.
+   * 이에 대한 처리가 필요합니다. */
+  g_assert (engine != NULL);
+
+  return engine;
+}
+
 static void
 dasom_server_init (DasomServer *server)
 {
@@ -319,7 +439,7 @@ dasom_server_init (DasomServer *server)
     }
 
   /* FIXME: server->candidate = dasom_candidate_new (); */
-  server->loop = g_main_loop_new (NULL, FALSE);
+  server->main_context = g_main_context_ref_thread_default ();
   server->contexts = g_hash_table_new_full (g_direct_hash,
                                             g_direct_equal,
                                             NULL, /* FIXME */
@@ -332,10 +452,19 @@ dasom_server_stop (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_socket_service_stop (server->service);
+  g_return_if_fail (DASOM_IS_SERVER (server));
 
-  if (g_main_loop_is_running (server->loop))
-    g_main_loop_quit (server->loop);
+  if (!server->active)
+    return;
+
+  g_assert (server->is_using_listener);
+  g_assert (server->run_signal_handler_id > 0);
+
+  g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
+  server->run_signal_handler_id = 0;
+
+  g_socket_service_stop (G_SOCKET_SERVICE (server->listener));
+  server->active = FALSE;
 }
 
 static void
@@ -344,6 +473,12 @@ dasom_server_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomServer *server = DASOM_SERVER (object);
+
+  if (server->run_signal_handler_id > 0)
+    g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
+
+  if (server->listener != NULL)
+    g_object_unref (server->listener);
 
   g_object_unref (server->module_manager);
 
@@ -357,9 +492,7 @@ dasom_server_finalize (GObject *object)
   g_hash_table_unref (server->contexts);
   g_list_free (server->agents_list);
   g_strfreev (server->hotkey_names);
-
-  dasom_server_stop (server);
-  g_main_loop_unref (server->loop);
+  g_free (server->address);
 
   if (server->xevent_source)
   {
@@ -367,25 +500,85 @@ dasom_server_finalize (GObject *object)
     g_source_unref   (server->xevent_source);
   }
 
+  g_main_context_unref (server->main_context);
+
   G_OBJECT_CLASS (dasom_server_parent_class)->finalize (object);
 }
 
 static void
-dasom_server_class_init (DasomServerClass *klass)
+dasom_server_get_property (GObject    *object,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
+{
+  DasomServer *server = DASOM_SERVER (object);
+
+  switch (prop_id)
+  {
+    case PROP_ADDRESS:
+      g_value_set_string (value, server->address);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+dasom_server_set_property (GObject      *object,
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
+{
+  DasomServer *server = DASOM_SERVER (object);
+
+  switch (prop_id)
+  {
+    case PROP_ADDRESS:
+      server->address = g_value_dup_string (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+dasom_server_class_init (DasomServerClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass* object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize = dasom_server_finalize;
+  object_class->finalize     = dasom_server_finalize;
+  object_class->set_property = dasom_server_set_property;
+  object_class->get_property = dasom_server_get_property;
+
+  g_object_class_install_property (object_class,
+                                   PROP_ADDRESS,
+                                   g_param_spec_string ("address",
+                                                        "Address",
+                                                        "The address to listen on",
+                                                        NULL,
+                                                        G_PARAM_READABLE |
+                                                        G_PARAM_WRITABLE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_NAME |
+                                                        G_PARAM_STATIC_BLURB |
+                                                        G_PARAM_STATIC_NICK));
 }
 
 DasomServer *
-dasom_server_new ()
+dasom_server_new (const gchar  *address,
+                  GError      **error)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_object_new (DASOM_TYPE_SERVER, NULL);
+  g_return_val_if_fail (address != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  return g_initable_new (DASOM_TYPE_SERVER, NULL, error,
+                         "address", address, NULL);
 }
 
 typedef struct
@@ -882,99 +1075,27 @@ dasom_server_init_xims (DasomServer *server)
             NULL);
 
   server->xevent_source = dasom_xevent_source_new (display);
-  g_source_attach (server->xevent_source, NULL);
+  g_source_attach (server->xevent_source, server->main_context);
   XSetErrorHandler (on_xerror);
 
   return TRUE;
 }
 
-static gboolean
-on_new_connection (GSocketService    *service,
-                   GSocketConnection *connection,
-                   GObject           *source_object,
-                   gpointer           user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  /* TODO: simple authentication */
-
-  /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
-
-  DasomServer *server = user_data;
-
-  GSocket *socket = g_socket_connection_get_socket (connection);
-
-  DasomMessage *message;
-  message = dasom_recv_message (socket);
-
-  if (message->header->type == DASOM_MESSAGE_CONNECT)
-    dasom_send_message (socket, DASOM_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
-  else
-  {
-    /* TODO: error 처리 */
-    dasom_send_message (socket, DASOM_MESSAGE_ERROR, NULL, 0, NULL);
-    return TRUE; /* TODO: return 값을 FALSE 로 하면 어떻 일이 벌어지는가 */
-  }
-
-  DasomContext *context;
-  context = dasom_context_new (*(DasomConnectionType *) message->data,
-                               dasom_server_get_default_engine (server), NULL);
-  dasom_message_unref (message);
-  context->server = user_data;
-  context->socket = socket;
-
-  /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
-  g_hash_table_insert (server->contexts,
-                       GUINT_TO_POINTER (dasom_context_get_id (context)),
-                       context);
-
-  if (context->type == DASOM_CONNECTION_DASOM_AGENT)
-    server->agents_list = g_list_prepend (server->agents_list, context);
-
-  context->source = g_socket_create_source (socket, G_IO_IN, NULL);
-  context->connection = g_object_ref (connection);
-  g_source_set_can_recurse (context->source, TRUE);
-  g_source_set_callback (context->source,
-                         (GSourceFunc) on_incoming_message_dasom,
-                         context, NULL);
-  g_source_attach (context->source, NULL);
-
-  return TRUE;
-}
-
-int
+void
 dasom_server_start (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GError *error = NULL;
-  GSocketAddress *address;
+  g_return_if_fail (DASOM_IS_SERVER (server));
 
-  address = g_unix_socket_address_new_with_type ("unix:abstract=dasom",
-                                                  -1,
-                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-  server->service = g_socket_service_new ();
-  g_signal_connect (server->service,
-                    "incoming",
-                    (GCallback) on_new_connection,
-                    server);
-  g_socket_listener_add_address (G_SOCKET_LISTENER (server->service),
-                                 address,
-                                 G_SOCKET_TYPE_STREAM,
-                                 G_SOCKET_PROTOCOL_DEFAULT,
-                                 NULL,
-                                 NULL,
-                                 &error);
-  g_object_unref (address);
-  g_socket_service_start (server->service);
+  if (server->active)
+    return;
+
+  g_assert (server->is_using_listener);
+  g_socket_service_start (G_SOCKET_SERVICE (server->listener));
 
   if (dasom_server_init_xims (server) == FALSE)
-    g_warning ("Can't Open Display");
+    g_warning ("XIM server is not starded");
 
-  g_main_loop_run (server->loop);
-
-  return server->status;
+  server->active = TRUE;
 }
-

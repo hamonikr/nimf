@@ -6,8 +6,9 @@ main (int argc, char **argv)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  int status;
   DasomServer *server;
+  GMainLoop   *loop;
+  GError      *error = NULL;
 
 #if ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, DASOM_LOCALE_DIR);
@@ -15,12 +16,28 @@ main (int argc, char **argv)
   textdomain (GETTEXT_PACKAGE);
 #endif
 
-  server = dasom_server_new ();
-  g_unix_signal_add (SIGINT,  (GSourceFunc) dasom_server_stop, server);
-  g_unix_signal_add (SIGTERM, (GSourceFunc) dasom_server_stop, server);
+  server = dasom_server_new ("unix:abstract=dasom", &error);
 
-  status = dasom_server_start (server);
+  if (server == NULL)
+  {
+    g_critical ("%s", error->message);
+    g_clear_error (&error);
+
+    return EXIT_FAILURE;
+  }
+
+  dasom_server_start (server);
+
+  /* TODO: demonize */
+  loop = g_main_loop_new (NULL, FALSE);
+
+  g_unix_signal_add (SIGINT,  (GSourceFunc) g_main_loop_quit, loop);
+  g_unix_signal_add (SIGTERM, (GSourceFunc) g_main_loop_quit, loop);
+
+  g_main_loop_run (loop);
+
+  g_main_loop_unref (loop);
   g_object_unref (server);
 
-  return status;
+  return EXIT_SUCCESS;
 }
