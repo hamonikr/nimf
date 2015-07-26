@@ -1,1 +1,1 @@
-SUBDIRS = gnome-shell-extension standalone
+SUBDIRS = gnome-shell-extension app-indicator
