@@ -24,7 +24,7 @@
 
 #include <glib-object.h>
 #include "dasom-engine.h"
-#include "dasom-daemon.h"
+#include "dasom-server.h"
 #include "dasom-message.h"
 #include "dasom-types.h"
 #include <X11/Xlib.h>

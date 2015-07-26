@@ -32,7 +32,7 @@
 #include "IMdkit/IMdkit.h"
 #include "IMdkit/Xi18n.h"
 #include "dasom-context.h"
-#include "dasom-daemon.h"
+#include "dasom-server.h"
 #include "dasom-message.h"
 #include "dasom-private.h"
 

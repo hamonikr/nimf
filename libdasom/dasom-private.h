@@ -23,7 +23,7 @@
 #define __DASOM_PRIVATE_H__
 
 #include <glib-object.h>
-#include "dasom-daemon.h"
+#include "dasom-server.h"
 
 G_BEGIN_DECLS
 

@@ -35,8 +35,8 @@ libdasom_la_SOURCES = \
 	dasom-agent.h \
 	dasom-context.c \
 	dasom-context.h \
-	dasom-daemon.c \
-	dasom-daemon.h \
+	dasom-server.c \
+	dasom-server.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
