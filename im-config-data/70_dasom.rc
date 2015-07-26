@@ -2,7 +2,8 @@
 
 if [ "$IM_CONFIG_PHASE" = 2 ]; then
 # start Dasom daemon
-/usr/local/bin/dasom-daemon &
+dasom-daemon &
+dasom-indicator &
 fi
 
 if [ "$IM_CONFIG_PHASE" = 1 ]; then
