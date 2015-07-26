@@ -34,7 +34,7 @@ struct _DasomEnginePrivate
   gchar        *path;
   gchar        *surrounding_text;
   gint          surrounding_cursor_index;
-  DasomDaemon  *daemon;
+  DasomServer  *server;
 };
 
 void          dasom_send_message (GSocket          *socket,

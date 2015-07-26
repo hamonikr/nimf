@@ -7,7 +7,7 @@ main (int argc, char **argv)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   int status;
-  DasomDaemon *daemon;
+  DasomServer *server;
 
 #if ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, DASOM_LOCALE_DIR);
@@ -15,12 +15,12 @@ main (int argc, char **argv)
   textdomain (GETTEXT_PACKAGE);
 #endif
 
-  daemon = dasom_daemon_new ();
-  g_unix_signal_add (SIGINT,  (GSourceFunc) dasom_daemon_stop, daemon);
-  g_unix_signal_add (SIGTERM, (GSourceFunc) dasom_daemon_stop, daemon);
+  server = dasom_server_new ();
+  g_unix_signal_add (SIGINT,  (GSourceFunc) dasom_server_stop, server);
+  g_unix_signal_add (SIGTERM, (GSourceFunc) dasom_server_stop, server);
 
-  status = dasom_daemon_start (daemon);
-  g_object_unref (daemon);
+  status = dasom_server_start (server);
+  g_object_unref (server);
 
   return status;
 }

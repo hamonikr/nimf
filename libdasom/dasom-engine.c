@@ -197,7 +197,7 @@ dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_preedit_start (engine->priv->daemon->target);
+  dasom_context_emit_preedit_start (engine->priv->server->target);
 }
 
 void
@@ -205,7 +205,7 @@ dasom_engine_emit_preedit_changed (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_preedit_changed (engine->priv->daemon->target);
+  dasom_context_emit_preedit_changed (engine->priv->server->target);
 }
 
 void
@@ -213,7 +213,7 @@ dasom_engine_emit_preedit_end (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_preedit_end (engine->priv->daemon->target);
+  dasom_context_emit_preedit_end (engine->priv->server->target);
 }
 
 void
@@ -221,7 +221,7 @@ dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_commit (engine->priv->daemon->target, text);
+  dasom_context_emit_commit (engine->priv->server->target, text);
 }
 
 gboolean
@@ -231,7 +231,7 @@ dasom_engine_emit_delete_surrounding (DasomEngine *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_context_emit_delete_surrounding (engine->priv->daemon->target,
+  return dasom_context_emit_delete_surrounding (engine->priv->server->target,
                                                 offset, n_chars);
 }
 
@@ -240,7 +240,7 @@ dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_context_emit_retrieve_surrounding (engine->priv->daemon->target);
+  return dasom_context_emit_retrieve_surrounding (engine->priv->server->target);
 }
 
 static void

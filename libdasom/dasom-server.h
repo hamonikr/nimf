@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
- * dasom-daemon.h
+ * dasom-server.h
  * This file is part of Dasom.
  *
  * Copyright (C) 2015 Hodong Kim <hodong@cogno.org>
@@ -19,8 +19,8 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __DASOM_DAEMON_H__
-#define __DASOM_DAEMON_H__
+#ifndef __DASOM_SERVER_H__
+#define __DASOM_SERVER_H__
 
 #include <glib-object.h>
 #include "dasom-module-manager.h"
@@ -30,20 +30,20 @@
 
 G_BEGIN_DECLS
 
-#define DASOM_TYPE_DAEMON             (dasom_daemon_get_type ())
-#define DASOM_DAEMON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_DAEMON, DasomDaemon))
-#define DASOM_DAEMON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), DASOM_TYPE_DAEMON, DasomDaemonClass))
-#define DASOM_IS_DAEMON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), DASOM_TYPE_DAEMON))
-#define DASOM_IS_DAEMON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_DAEMON))
-#define DASOM_DAEMON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_DAEMON, DasomDaemonClass))
+#define DASOM_TYPE_SERVER             (dasom_server_get_type ())
+#define DASOM_SERVER(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_SERVER, DasomServer))
+#define DASOM_SERVER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), DASOM_TYPE_SERVER, DasomServerClass))
+#define DASOM_IS_SERVER(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), DASOM_TYPE_SERVER))
+#define DASOM_IS_SERVER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_SERVER))
+#define DASOM_SERVER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_SERVER, DasomServerClass))
 
 typedef struct _DasomEngine  DasomEngine;
 typedef struct _DasomContext DasomContext;
 
-typedef struct _DasomDaemon      DasomDaemon;
-typedef struct _DasomDaemonClass DasomDaemonClass;
+typedef struct _DasomServer      DasomServer;
+typedef struct _DasomServerClass DasomServerClass;
 
-struct _DasomDaemon
+struct _DasomServer
 {
   GObject parent_instance;
 
@@ -60,23 +60,23 @@ struct _DasomDaemon
   GSource             *xevent_source;
 };
 
-struct _DasomDaemonClass
+struct _DasomServerClass
 {
   GObjectClass parent_class;
 };
 
-GType        dasom_daemon_get_type           (void) G_GNUC_CONST;
+GType        dasom_server_get_type           (void) G_GNUC_CONST;
 
-DasomDaemon *dasom_daemon_new                (void);
-int          dasom_daemon_start              (DasomDaemon *daemon);
-void         dasom_daemon_stop               (DasomDaemon *daemon);
-DasomEngine *dasom_daemon_get_default_engine (DasomDaemon *daemon);
-DasomEngine *dasom_daemon_get_next_instance  (DasomDaemon *daemon,
+DasomServer *dasom_server_new                (void);
+int          dasom_server_start              (DasomServer *server);
+void         dasom_server_stop               (DasomServer *server);
+DasomEngine *dasom_server_get_default_engine (DasomServer *server);
+DasomEngine *dasom_server_get_next_instance  (DasomServer *server,
                                               DasomEngine *engine);
-DasomEngine *dasom_daemon_get_instance       (DasomDaemon *daemon,
+DasomEngine *dasom_server_get_instance       (DasomServer *server,
                                               const gchar *module_name);
 
 G_END_DECLS
 
-#endif /* __DASOM_DAEMON_H__ */
+#endif /* __DASOM_SERVER_H__ */
 

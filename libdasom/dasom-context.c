@@ -99,7 +99,7 @@ on_signal_engine_changed (DasomContext *context,
   /* FIXME: 가끔 에이전트 리스트에 추가적으로 에이전트가 더 들어가 있는 것 같습니다.
    * 그래서 죽은 에이전트로 패킷을 보내어 g_socket_send 에서 정체가 되는 듯합니다.
    * 에이전트가 제거되지는 않는지 확인해야 합니다 */
-  GList *l = context->daemon->agents_list;
+  GList *l = context->server->agents_list;
   while (l != NULL)
   {
     GList *next = l->next;
@@ -171,7 +171,7 @@ void dasom_context_set_next_engine (DasomContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->engine = dasom_daemon_get_next_instance (context->daemon, context->engine);
+  context->engine = dasom_server_get_next_instance (context->server, context->engine);
   g_signal_emit_by_name (context, "engine-changed",
                          dasom_engine_get_name (context->engine));
 }
@@ -181,7 +181,7 @@ gboolean dasom_context_filter_event (DasomContext     *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (dasom_event_is_hotkey (event, (const gchar * const *) context->daemon->hotkey_names))
+  if (dasom_event_is_hotkey (event, (const gchar * const *) context->server->hotkey_names))
   {
     if (event->key.type == DASOM_EVENT_KEY_RELEASE)
     {

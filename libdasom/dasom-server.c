@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
- * dasom-daemon.c
+ * dasom-server.c
  * This file is part of Dasom.
  *
  * Copyright (C) 2015 Hodong Kim <hodong@cogno.org>
@@ -43,7 +43,7 @@
     ;
 */
 
-G_DEFINE_TYPE (DasomDaemon, dasom_daemon, G_TYPE_OBJECT);
+G_DEFINE_TYPE (DasomServer, dasom_server, G_TYPE_OBJECT);
 
 static gint
 on_comparing_engine_with_path (DasomEngine *engine, const gchar *path)
@@ -62,7 +62,7 @@ on_comparing_engine_with_path (DasomEngine *engine, const gchar *path)
 }
 
 DasomEngine *
-dasom_daemon_get_instance (DasomDaemon *daemon,
+dasom_server_get_instance (DasomServer *server,
                            const gchar *module_name)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -74,7 +74,7 @@ dasom_daemon_get_instance (DasomDaemon *daemon,
                               DASOM_MODULE_DIR, soname, NULL);
   g_free (soname);
 
-  list = g_list_find_custom (g_list_first (daemon->instances),
+  list = g_list_find_custom (g_list_first (server->instances),
                              path,
                              (GCompareFunc) on_comparing_engine_with_path);
   g_free (path);
@@ -86,7 +86,7 @@ dasom_daemon_get_instance (DasomDaemon *daemon,
 }
 
 DasomEngine *
-dasom_daemon_get_next_instance (DasomDaemon *daemon, DasomEngine *engine)
+dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s: arg: %s", G_STRFUNC, dasom_engine_get_name (engine));
 
@@ -94,28 +94,28 @@ dasom_daemon_get_next_instance (DasomDaemon *daemon, DasomEngine *engine)
 
   GList *list;
 
-  daemon->instances = g_list_first (daemon->instances);
+  server->instances = g_list_first (server->instances);
 
-  g_assert (daemon->instances != NULL);
+  g_assert (server->instances != NULL);
 
 
-  daemon->instances = g_list_find (daemon->instances, engine);
+  server->instances = g_list_find (server->instances, engine);
 
-  g_assert (daemon->instances != NULL);
+  g_assert (server->instances != NULL);
 
-  list = g_list_next (daemon->instances);
+  list = g_list_next (server->instances);
 
   if (list == NULL)
   {
     g_debug (G_STRLOC ": %s: list == NULL", G_STRFUNC);
-    list = g_list_first (daemon->instances);
-    g_debug (G_STRLOC ": %s: g_list_first (daemon->instances);", G_STRFUNC);
+    list = g_list_first (server->instances);
+    g_debug (G_STRLOC ": %s: g_list_first (server->instances);", G_STRFUNC);
   }
 
   if (list)
   {
     engine = list->data;
-    daemon->instances = list;
+    server->instances = list;
     g_debug (G_STRLOC ": %s: engine name: %s", G_STRFUNC, dasom_engine_get_name (engine));
   }
 
@@ -125,7 +125,7 @@ dasom_daemon_get_next_instance (DasomDaemon *daemon, DasomEngine *engine)
 }
 
 DasomEngine *
-dasom_daemon_get_default_engine (DasomDaemon *daemon)
+dasom_server_get_default_engine (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -133,11 +133,11 @@ dasom_daemon_get_default_engine (DasomDaemon *daemon)
   gchar *module_name = g_settings_get_string (settings, "default-engine");
 
   DasomEngine *engine;
-  engine = dasom_daemon_get_instance (daemon, module_name);
+  engine = dasom_server_get_instance (server, module_name);
   g_free (module_name);
 
   if (engine == NULL)
-    engine = dasom_daemon_get_instance (daemon, "dasom-english");
+    engine = dasom_server_get_instance (server, "dasom-english");
 
   g_object_unref (settings);
 
@@ -159,9 +159,9 @@ on_incoming_message_dasom (GSocket      *socket,
   DasomContext *context = user_data;
   gboolean retval;
 
-  DasomContext *pushed_context = context->daemon->target;
+  DasomContext *pushed_context = context->server->target;
 
-  context->daemon->target = context;
+  context->server->target = context;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -174,14 +174,14 @@ on_incoming_message_dasom (GSocket      *socket,
       pushed_context = NULL;
 
     if (G_UNLIKELY (context->type == DASOM_CONNECTION_DASOM_AGENT))
-      context->daemon->agents_list = g_list_remove (context->daemon->agents_list, context);
+      context->server->agents_list = g_list_remove (context->server->agents_list, context);
 
-    g_hash_table_remove (context->daemon->contexts,
+    g_hash_table_remove (context->server->contexts,
                          GUINT_TO_POINTER (dasom_context_get_id (context)));
 
     g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
 
-    context->daemon->target = pushed_context;
+    context->server->target = pushed_context;
 
     return G_SOURCE_REMOVE;
   }
@@ -295,97 +295,97 @@ on_incoming_message_dasom (GSocket      *socket,
   }
 
   if (g_main_depth () > 1)
-    context->daemon->target = pushed_context;
+    context->server->target = pushed_context;
 
   return G_SOURCE_CONTINUE;
 }
 
 static void
-dasom_daemon_init (DasomDaemon *daemon)
+dasom_server_init (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GSettings *settings = g_settings_new ("org.freedesktop.Dasom");
-  daemon->hotkey_names = g_settings_get_strv (settings, "hotkeys");
+  server->hotkey_names = g_settings_get_strv (settings, "hotkeys");
   g_object_unref (settings);
 
-  daemon->module_manager = dasom_module_manager_get_default ();
-  daemon->instances = dasom_module_manager_create_instances (daemon->module_manager);
+  server->module_manager = dasom_module_manager_get_default ();
+  server->instances = dasom_module_manager_create_instances (server->module_manager);
 
   GList *l;
-  for (l = daemon->instances; l != NULL; l = l->next)
+  for (l = server->instances; l != NULL; l = l->next)
     {
-      DASOM_ENGINE (l->data)->priv->daemon = daemon;
+      DASOM_ENGINE (l->data)->priv->server = server;
     }
 
-  /* FIXME: daemon->candidate = dasom_candidate_new (); */
-  daemon->loop = g_main_loop_new (NULL, FALSE);
-  daemon->contexts = g_hash_table_new_full (g_direct_hash,
+  /* FIXME: server->candidate = dasom_candidate_new (); */
+  server->loop = g_main_loop_new (NULL, FALSE);
+  server->contexts = g_hash_table_new_full (g_direct_hash,
                                             g_direct_equal,
                                             NULL, /* FIXME */
                                             (GDestroyNotify) g_object_unref);
-  daemon->agents_list = NULL;
+  server->agents_list = NULL;
 }
 
 void
-dasom_daemon_stop (DasomDaemon *daemon)
+dasom_server_stop (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_socket_service_stop (daemon->service);
+  g_socket_service_stop (server->service);
 
-  if (g_main_loop_is_running (daemon->loop))
-    g_main_loop_quit (daemon->loop);
+  if (g_main_loop_is_running (server->loop))
+    g_main_loop_quit (server->loop);
 }
 
 static void
-dasom_daemon_finalize (GObject *object)
+dasom_server_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomDaemon *daemon = DASOM_DAEMON (object);
+  DasomServer *server = DASOM_SERVER (object);
 
-  g_object_unref (daemon->module_manager);
+  g_object_unref (server->module_manager);
 
-  if (daemon->instances)
+  if (server->instances)
   {
-    g_list_free_full (daemon->instances, g_object_unref);
-    daemon->instances = NULL;
+    g_list_free_full (server->instances, g_object_unref);
+    server->instances = NULL;
   }
 
-  /* FIXME: g_object_unref (daemon->candidate); */
-  g_hash_table_unref (daemon->contexts);
-  g_list_free (daemon->agents_list);
-  g_strfreev (daemon->hotkey_names);
+  /* FIXME: g_object_unref (server->candidate); */
+  g_hash_table_unref (server->contexts);
+  g_list_free (server->agents_list);
+  g_strfreev (server->hotkey_names);
 
-  dasom_daemon_stop (daemon);
-  g_main_loop_unref (daemon->loop);
+  dasom_server_stop (server);
+  g_main_loop_unref (server->loop);
 
-  if (daemon->xevent_source)
+  if (server->xevent_source)
   {
-    g_source_destroy (daemon->xevent_source);
-    g_source_unref   (daemon->xevent_source);
+    g_source_destroy (server->xevent_source);
+    g_source_unref   (server->xevent_source);
   }
 
-  G_OBJECT_CLASS (dasom_daemon_parent_class)->finalize (object);
+  G_OBJECT_CLASS (dasom_server_parent_class)->finalize (object);
 }
 
 static void
-dasom_daemon_class_init (DasomDaemonClass *klass)
+dasom_server_class_init (DasomServerClass *klass)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GObjectClass* object_class = G_OBJECT_CLASS (klass);
 
-  object_class->finalize = dasom_daemon_finalize;
+  object_class->finalize = dasom_server_finalize;
 }
 
-DasomDaemon *
-dasom_daemon_new ()
+DasomServer *
+dasom_server_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_object_new (DASOM_TYPE_DAEMON, NULL);
+  return g_object_new (DASOM_TYPE_SERVER, NULL);
 }
 
 typedef struct
@@ -417,27 +417,27 @@ static gboolean dasom_xevent_source_check (GSource *source)
     return FALSE;
 }
 
-int dasom_daemon_xim_open (DasomDaemon *daemon, XIMS xims, IMOpenStruct *data)
+int dasom_server_xim_open (DasomServer *server, XIMS xims, IMOpenStruct *data)
 {
   g_debug (G_STRLOC ": %s, data->connect_id = %d", G_STRFUNC, data->connect_id);
 
   return 1;
 }
 
-int dasom_daemon_xim_close (DasomDaemon *daemon, XIMS xims, IMCloseStruct *data)
+int dasom_server_xim_close (DasomServer *server, XIMS xims, IMCloseStruct *data)
 {
   g_debug (G_STRLOC ": %s, data->connect_id = %d", G_STRFUNC, data->connect_id);
 
   return 1;
 }
 
-int dasom_daemon_xim_set_ic_values (DasomDaemon      *daemon,
+int dasom_server_xim_set_ic_values (DasomServer      *server,
                                     XIMS              xims,
                                     IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+  DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
 
   CARD16 i;
@@ -486,14 +486,14 @@ int dasom_daemon_xim_set_ic_values (DasomDaemon      *daemon,
   return 1;
 }
 
-int dasom_daemon_xim_create_ic (DasomDaemon      *daemon,
+int dasom_server_xim_create_ic (DasomServer      *server,
                                 XIMS              xims,
                                 IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s, data->icid = %d", G_STRFUNC, data->icid);
 
   DasomContext *context;
-  context = g_hash_table_lookup (daemon->contexts,
+  context = g_hash_table_lookup (server->contexts,
                                  GUINT_TO_POINTER ((gint) data->icid));
 
   if (!context)
@@ -501,26 +501,26 @@ int dasom_daemon_xim_create_ic (DasomDaemon      *daemon,
     g_debug (G_STRLOC ": %s: context == NULL", G_STRFUNC);
 
     context = dasom_context_new (DASOM_CONNECTION_XIM,
-                                 dasom_daemon_get_default_engine (daemon),
+                                 dasom_server_get_default_engine (server),
                                  xims);
 
     g_debug (G_STRLOC ": %s: icid = %d", G_STRFUNC, dasom_context_get_id (context));
 
     context->xim_connect_id = data->connect_id;
-    context->daemon = daemon;
+    context->server = server;
 
-    g_hash_table_insert (daemon->contexts,
+    g_hash_table_insert (server->contexts,
                          GUINT_TO_POINTER (dasom_context_get_id (context)),
                          context);
     data->icid = dasom_context_get_id (context);
   }
 
-  dasom_daemon_xim_set_ic_values (daemon, xims, data);
+  dasom_server_xim_set_ic_values (server, xims, data);
 
   return 1;
 }
 
-int dasom_daemon_xim_destroy_ic (DasomDaemon       *daemon,
+int dasom_server_xim_destroy_ic (DasomServer       *server,
                                  XIMS               xims,
                                  IMDestroyICStruct *data)
 {
@@ -529,17 +529,17 @@ int dasom_daemon_xim_destroy_ic (DasomDaemon       *daemon,
   /* FIXME: 클라이언트 프로그램이 정상 종료하지 않을 경우 destroy_ic 함수가
      호출되지 않아 IC가 제거되지 않습니다 */
   /* FIXME: dasom_xevent_source에서 처리가 가능한지 확인해봅시다 */
-  return g_hash_table_remove (daemon->contexts,
+  return g_hash_table_remove (server->contexts,
                               GUINT_TO_POINTER (data->icid));
 }
 
-int dasom_daemon_xim_get_ic_values (DasomDaemon      *daemon,
+int dasom_server_xim_get_ic_values (DasomServer      *server,
                                     XIMS              xims,
                                     IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+  DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
 
   CARD16 i;
@@ -587,35 +587,35 @@ int dasom_daemon_xim_get_ic_values (DasomDaemon      *daemon,
   return 1;
 }
 
-int dasom_daemon_xim_set_ic_focus (DasomDaemon         *daemon,
+int dasom_server_xim_set_ic_focus (DasomServer         *server,
                                    XIMS                 xims,
                                    IMChangeFocusStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+  DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
-  daemon->target = context;
+  server->target = context;
   dasom_context_focus_in (context);
 
   return 1;
 }
 
-int dasom_daemon_xim_unset_ic_focus (DasomDaemon         *daemon,
+int dasom_server_xim_unset_ic_focus (DasomServer         *server,
                                      XIMS                 xims,
                                      IMChangeFocusStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+  DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
-  daemon->target = context;
+  server->target = context;
   dasom_context_focus_out (context);
 
   return 1;
 }
 
-int dasom_daemon_xim_forward_event (DasomDaemon          *daemon,
+int dasom_server_xim_forward_event (DasomServer          *server,
                                     XIMS                  xims,
                                     IMForwardEventStruct *data)
 {
@@ -654,9 +654,9 @@ int dasom_daemon_xim_forward_event (DasomDaemon          *daemon,
                                      (xevent->state & ShiftMask) ? 1 : 0);
   event->key.hardware_keycode = xevent->keycode;
 
-  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+  DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
-  daemon->target = context;
+  server->target = context;
   retval = dasom_context_filter_event (context, event);
   dasom_event_free (event);
 
@@ -675,15 +675,15 @@ int dasom_daemon_xim_forward_event (DasomDaemon          *daemon,
   return 1;
 }
 
-int dasom_daemon_xim_reset_ic (DasomDaemon     *daemon,
+int dasom_server_xim_reset_ic (DasomServer     *server,
                                XIMS             xims,
                                IMResetICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomContext *context = g_hash_table_lookup (daemon->contexts,
+  DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
-  daemon->target = context;
+  server->target = context;
   dasom_context_reset (context);
 
   return 1;
@@ -699,8 +699,8 @@ on_incoming_message_xim (XIMS        xims,
   g_return_val_if_fail (xims != NULL, True);
   g_return_val_if_fail (data != NULL, True);
 
-  DasomDaemon *daemon = user_data;
-  if (!DASOM_IS_DAEMON (daemon))
+  DasomServer *server = user_data;
+  if (!DASOM_IS_SERVER (server))
     g_error ("ERROR: IMUserData");
 
   int retval;
@@ -708,34 +708,34 @@ on_incoming_message_xim (XIMS        xims,
   switch (data->major_code)
   {
     case XIM_OPEN:
-      retval = dasom_daemon_xim_open (daemon, xims, &data->imopen);
+      retval = dasom_server_xim_open (server, xims, &data->imopen);
       break;
     case XIM_CLOSE:
-      retval = dasom_daemon_xim_close (daemon, xims, &data->imclose);
+      retval = dasom_server_xim_close (server, xims, &data->imclose);
       break;
     case XIM_CREATE_IC:
-      retval = dasom_daemon_xim_create_ic (daemon, xims, &data->changeic);
+      retval = dasom_server_xim_create_ic (server, xims, &data->changeic);
       break;
     case XIM_DESTROY_IC:
-      retval = dasom_daemon_xim_destroy_ic (daemon, xims, &data->destroyic);
+      retval = dasom_server_xim_destroy_ic (server, xims, &data->destroyic);
       break;
     case XIM_SET_IC_VALUES:
-      retval = dasom_daemon_xim_set_ic_values (daemon, xims, &data->changeic);
+      retval = dasom_server_xim_set_ic_values (server, xims, &data->changeic);
       break;
     case XIM_GET_IC_VALUES:
-      retval = dasom_daemon_xim_get_ic_values (daemon, xims, &data->changeic);
+      retval = dasom_server_xim_get_ic_values (server, xims, &data->changeic);
       break;
     case XIM_FORWARD_EVENT:
-      retval = dasom_daemon_xim_forward_event (daemon, xims, &data->forwardevent);
+      retval = dasom_server_xim_forward_event (server, xims, &data->forwardevent);
       break;
     case XIM_SET_IC_FOCUS:
-      retval = dasom_daemon_xim_set_ic_focus (daemon, xims, &data->changefocus);
+      retval = dasom_server_xim_set_ic_focus (server, xims, &data->changefocus);
       break;
     case XIM_UNSET_IC_FOCUS:
-      retval = dasom_daemon_xim_unset_ic_focus (daemon, xims, &data->changefocus);
+      retval = dasom_server_xim_unset_ic_focus (server, xims, &data->changefocus);
       break;
     case XIM_RESET_IC:
-      retval = dasom_daemon_xim_reset_ic (daemon, xims, &data->resetic);
+      retval = dasom_server_xim_reset_ic (server, xims, &data->resetic);
       break;
     default:
       retval = 0;
@@ -816,7 +816,7 @@ on_xerror (Display *display, XErrorEvent *error)
 }
 
 static gboolean
-dasom_daemon_init_xims (DasomDaemon *daemon)
+dasom_server_init_xims (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -877,12 +877,12 @@ dasom_daemon_init_xims (DasomDaemon *daemon)
             IMInputStyles,      &styles,
             IMEncodingList,     &encodings,
             IMProtocolHandler,  on_incoming_message_xim,
-            IMUserData,         daemon,
+            IMUserData,         server,
             IMFilterEventMask,  KeyPressMask | KeyReleaseMask,
             NULL);
 
-  daemon->xevent_source = dasom_xevent_source_new (display);
-  g_source_attach (daemon->xevent_source, NULL);
+  server->xevent_source = dasom_xevent_source_new (display);
+  g_source_attach (server->xevent_source, NULL);
   XSetErrorHandler (on_xerror);
 
   return TRUE;
@@ -899,9 +899,9 @@ on_new_connection (GSocketService    *service,
   /* TODO: simple authentication */
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
+   * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
 
-  DasomDaemon *daemon = user_data;
+  DasomServer *server = user_data;
 
   GSocket *socket = g_socket_connection_get_socket (connection);
 
@@ -919,19 +919,19 @@ on_new_connection (GSocketService    *service,
 
   DasomContext *context;
   context = dasom_context_new (*(DasomConnectionType *) message->data,
-                               dasom_daemon_get_default_engine (daemon), NULL);
+                               dasom_server_get_default_engine (server), NULL);
   dasom_message_unref (message);
-  context->daemon = user_data;
+  context->server = user_data;
   context->socket = socket;
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 DaemonContext, on_incoming_message_dasom 에서 처리토록 하자. */
-  g_hash_table_insert (daemon->contexts,
+   * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
+  g_hash_table_insert (server->contexts,
                        GUINT_TO_POINTER (dasom_context_get_id (context)),
                        context);
 
   if (context->type == DASOM_CONNECTION_DASOM_AGENT)
-    daemon->agents_list = g_list_prepend (daemon->agents_list, context);
+    server->agents_list = g_list_prepend (server->agents_list, context);
 
   context->source = g_socket_create_source (socket, G_IO_IN, NULL);
   context->connection = g_object_ref (connection);
@@ -945,7 +945,7 @@ on_new_connection (GSocketService    *service,
 }
 
 int
-dasom_daemon_start (DasomDaemon *daemon)
+dasom_server_start (DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -955,12 +955,12 @@ dasom_daemon_start (DasomDaemon *daemon)
   address = g_unix_socket_address_new_with_type ("unix:abstract=dasom",
                                                   -1,
                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-  daemon->service = g_socket_service_new ();
-  g_signal_connect (daemon->service,
+  server->service = g_socket_service_new ();
+  g_signal_connect (server->service,
                     "incoming",
                     (GCallback) on_new_connection,
-                    daemon);
-  g_socket_listener_add_address (G_SOCKET_LISTENER (daemon->service),
+                    server);
+  g_socket_listener_add_address (G_SOCKET_LISTENER (server->service),
                                  address,
                                  G_SOCKET_TYPE_STREAM,
                                  G_SOCKET_PROTOCOL_DEFAULT,
@@ -968,13 +968,13 @@ dasom_daemon_start (DasomDaemon *daemon)
                                  NULL,
                                  &error);
   g_object_unref (address);
-  g_socket_service_start (daemon->service);
+  g_socket_service_start (server->service);
 
-  if (dasom_daemon_init_xims (daemon) == FALSE)
+  if (dasom_server_init_xims (server) == FALSE)
     g_warning ("Can't Open Display");
 
-  g_main_loop_run (daemon->loop);
+  g_main_loop_run (server->loop);
 
-  return daemon->status;
+  return server->status;
 }
 
