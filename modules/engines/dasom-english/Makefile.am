@@ -10,6 +10,9 @@ AM_CFLAGS = -Wall -Werror
 moduledir = $(libdir)/dasom/modules
 module_LTLIBRARIES = dasom-english.la
 
+icondir = $(datadir)/icons/hicolor/22x22/status
+icon_DATA = dasom-en.png
+
 dasom_english_la_SOURCES  = dasom-english.c dasom-english.h
 dasom_english_la_CFLAGS   = $(AM_CFLAGS) $(GTK3_CFLAGS)
 dasom_english_la_LDFLAGS  = -avoid-version -module $(GTK3_LIBS)

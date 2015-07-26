@@ -8,6 +8,9 @@ AM_CFLAGS = -Wall -Werror
 moduledir = $(libdir)/dasom/modules
 module_LTLIBRARIES = dasom-jeongeum.la
 
+icondir = $(datadir)/icons/hicolor/22x22/status
+icon_DATA = dasom-ko.png
+
 # gtk3 부분 나중에 없애자
 
 dasom_jeongeum_la_SOURCES = dasom-jeongeum.c dasom-jeongeum.h
