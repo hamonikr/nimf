@@ -57,7 +57,7 @@ static void on_engine_changed (DasomAgent   *agent,
                                gchar        *name,
                                AppIndicator *indicator)
 {
-  g_print ("engine changed: %s\n", name);
+  g_debug (G_STRLOC ": %s: name: %s", G_STRFUNC, name);
 
   if (g_strcmp0 (name, "en") == 0)
   {
