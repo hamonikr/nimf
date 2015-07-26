@@ -912,6 +912,7 @@ on_new_connection (GSocketService    *service,
     dasom_send_message (socket, DASOM_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
   else
   {
+    /* TODO: error 처리 */
     dasom_send_message (socket, DASOM_MESSAGE_ERROR, NULL, 0, NULL);
     return TRUE; /* TODO: return 값을 FALSE 로 하면 어떻 일이 벌어지는가 */
   }
