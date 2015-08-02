@@ -38,7 +38,7 @@ dasom_english_get_name (DasomEngine *engine)
 }
 
 gboolean
-dasom_english_filter_event (DasomEngine *engine, const DasomEvent *event)
+dasom_english_filter_event (DasomEngine *engine, DasomEvent *event)
 {
   g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
 

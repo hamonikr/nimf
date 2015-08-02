@@ -133,8 +133,8 @@ dasom_jeongeum_focus_out (DasomEngine *engine)
 }
 
 gboolean
-dasom_jeongeum_filter_event (DasomEngine      *engine,
-                             const DasomEvent *event)
+dasom_jeongeum_filter_event (DasomEngine *engine,
+                             DasomEvent  *event)
 {
   g_debug (G_STRLOC ": %s:keyval:%d\t hardware_keycode:%d",
            G_STRFUNC,

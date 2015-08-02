@@ -114,8 +114,8 @@ void dasom_engine_focus_out (DasomEngine *engine)
     klass->focus_out (engine);
 }
 
-gboolean dasom_engine_filter_event (DasomEngine      *engine,
-                                    const DasomEvent *event)
+gboolean dasom_engine_filter_event (DasomEngine *engine,
+                                    DasomEvent  *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -124,8 +124,8 @@ gboolean dasom_engine_filter_event (DasomEngine      *engine,
   return klass->filter_event (engine, event);
 }
 
-gboolean dasom_engine_real_filter_event (DasomEngine      *engine,
-                                         const DasomEvent *event)
+gboolean dasom_engine_real_filter_event (DasomEngine *engine,
+                                         DasomEvent  *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

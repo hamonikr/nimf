@@ -62,7 +62,7 @@ struct _DasomEngineClass
   /*< public >*/
   /* Virtual functions */
   gboolean (* filter_event)       (DasomEngine      *engine,
-                                   const DasomEvent *event);
+                                   DasomEvent       *event);
   void     (* get_preedit_string) (DasomEngine      *engine,
                                    gchar           **str,
                                    gint             *cursor_pos);
@@ -84,7 +84,7 @@ struct _DasomEngineClass
 
 GType    dasom_engine_get_type                  (void) G_GNUC_CONST;
 gboolean dasom_engine_filter_event              (DasomEngine      *engine,
-                                                 const DasomEvent *event);
+                                                 DasomEvent       *event);
 void     dasom_engine_reset                     (DasomEngine      *engine);
 void     dasom_engine_focus_in                  (DasomEngine      *engine);
 void     dasom_engine_focus_out                 (DasomEngine      *engine);
