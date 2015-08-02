@@ -18,5 +18,10 @@
       <summary>Korean keyboard layout</summary>
       <description>Korean keyboard layout</description>
     </key>
+    <key type="as" name="hangul-keys">
+      <default>['hangul', 'shift-mask meta-r', 'alt-r']</default>
+      <summary>hotkey for switching Korean / English</summary>
+      <description>Binding to change Korean / English</description>
+    </key>
   </schema>
 </schemalist>

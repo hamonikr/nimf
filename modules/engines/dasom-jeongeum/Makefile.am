@@ -21,6 +21,7 @@ dasom_jeongeum_la_CFLAGS  = $(AM_CFLAGS) $(LIBHANGUL_CFLAGS) $(GTK3_CFLAGS)
 dasom_jeongeum_la_LDFLAGS = -avoid-version -module $(GTK3_LIBS)
 dasom_jeongeum_la_LIBADD  = \
 	$(top_builddir)/libdasom/libdasom.la \
+	$(top_builddir)/modules/engines/dasom-english/libdasom-english.la \
 	$(LIBHANGUL_LIBS)
 
 install-data-hook:

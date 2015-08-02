@@ -21,6 +21,7 @@
 
 #include "dasom.h"
 #include "dasom-jeongeum.h"
+#include "modules/engines/dasom-english/dasom-english.h"
 
 G_DEFINE_DYNAMIC_TYPE (DasomJeongeum, dasom_jeongeum, DASOM_TYPE_ENGINE);
 
@@ -156,6 +157,17 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
     dasom_jeongeum_reset (engine);
     return FALSE;
   }
+
+  if (dasom_event_matches (event, (const DasomKey **) jeongeum->hangul_keys))
+  {
+    dasom_jeongeum_reset (engine);
+    jeongeum->is_hangul_mode = !jeongeum->is_hangul_mode;
+    dasom_engine_emit_engine_changed (engine);
+    return TRUE;
+  }
+
+  if (jeongeum->is_hangul_mode == FALSE)
+    return dasom_english_filter_event (engine, event);
 
   if (event->key.keyval == DASOM_KEY_Hangul_Hanja)
   {
@@ -393,19 +405,37 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GSettings *settings;
-  gchar     *layout;
+  gchar     *layout, **hangul_keys;
 
   settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
   layout   = g_settings_get_string (settings, "layout");
+  hangul_keys = g_settings_get_strv (settings, "hangul-keys");
+
+  jeongeum->hangul_keys = g_malloc0_n (sizeof (DasomKey *), 1);
+
+  gint i;
+  for (i = 0; hangul_keys[i] != NULL; i++)
+  {
+    gchar **nicks = g_strsplit (hangul_keys[i], " ", -1);
+    DasomKey *key = dasom_key_new_from_nicks ((const gchar **) nicks);
+    g_strfreev (nicks);
+
+    jeongeum->hangul_keys = g_realloc_n (jeongeum->hangul_keys, sizeof (DasomKey *), i + 2);
+    jeongeum->hangul_keys[i] = key;
+    jeongeum->hangul_keys[i + 1] = NULL;
+  }
 
   jeongeum->context = hangul_ic_new (layout);
-  jeongeum->name = g_strdup ("정");
+  jeongeum->en_name = g_strdup ("EN");
+  jeongeum->ko_name = g_strdup ("정");
   jeongeum->hanja_table = hanja_table_load (NULL);
   jeongeum->candidate = dasom_candidate_new (); /* FIXME */
-  g_signal_connect (jeongeum->candidate, "row-activated", (GCallback) on_candidate_row_activated, jeongeum);
+  g_signal_connect (jeongeum->candidate, "row-activated",
+                    (GCallback) on_candidate_row_activated, jeongeum);
 
   g_object_unref (settings);
   g_free (layout);
+  g_strfreev (hangul_keys);
 }
 
 static void
@@ -419,7 +449,9 @@ dasom_jeongeum_finalize (GObject *object)
   hangul_ic_delete   (jeongeum->context);
   g_object_unref (jeongeum->candidate); /* FIXME */
   g_free (jeongeum->preedit_string);
-  g_free (jeongeum->name);
+  g_free (jeongeum->en_name);
+  g_free (jeongeum->ko_name);
+  dasom_key_freev (jeongeum->hangul_keys);
 
   G_OBJECT_CLASS (dasom_jeongeum_parent_class)->finalize (object);
 }
@@ -461,7 +493,7 @@ dasom_jeongeum_get_name (DasomEngine *engine)
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
 
-  return jeongeum->name;
+  return jeongeum->is_hangul_mode ? jeongeum->ko_name : jeongeum->en_name;
 }
 
 static void

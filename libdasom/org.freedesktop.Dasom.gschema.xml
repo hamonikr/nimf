@@ -2,12 +2,12 @@
 <schemalist>
   <schema id="org.freedesktop.Dasom" path="/org/freedesktop/dasom/">
     <key type="s" name="default-engine">
-      <default>'libdasom-english'</default>
+      <default>'dasom-jeongeum'</default>
       <summary>default input method engine</summary>
       <description>default input method engine</description>
     </key>
     <key type="as" name="hotkeys">
-      <default>['Control space', 'Shift space', 'Hangul']</default>
+      <default>['Control space']</default>
       <summary>hotkey for switching input method</summary>
       <description>Binding to change the input method</description>
     </key>

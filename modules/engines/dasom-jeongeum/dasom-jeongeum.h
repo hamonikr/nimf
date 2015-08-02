@@ -44,11 +44,14 @@ struct _DasomJeongeum
 
   HangulInputContext *context;
   gchar              *preedit_string;
-  gchar              *name;
+  gchar              *en_name;
+  gchar              *ko_name;
 
   DasomCandidate     *candidate;
   gboolean            is_candidate_mode;
+  gboolean            is_hangul_mode;
   HanjaTable         *hanja_table;
+  DasomKey          **hangul_keys;
 };
 
 struct _DasomJeongeumClass
