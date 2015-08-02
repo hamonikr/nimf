@@ -7,7 +7,7 @@
       <description>default input method engine</description>
     </key>
     <key type="as" name="hotkeys">
-      <default>['Control space']</default>
+      <default>['control-mask space']</default>
       <summary>hotkey for switching input method</summary>
       <description>Binding to change the input method</description>
     </key>

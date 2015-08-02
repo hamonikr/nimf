@@ -182,7 +182,7 @@ gboolean dasom_context_filter_event (DasomContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (dasom_event_is_hotkey (event, (const gchar * const *) context->server->hotkey_names))
+  if (dasom_event_matches (event, (const DasomKey **) context->server->hotkeys))
   {
     if (event->key.type == DASOM_EVENT_KEY_RELEASE)
     {

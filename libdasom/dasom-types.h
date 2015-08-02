@@ -91,10 +91,11 @@ typedef struct {
   guint keyval;
 } DasomKey;
 
-DasomKey *dasom_key_new            (void);
-DasomKey *dasom_key_new_from_nicks (const gchar    **nicks);
-void      dasom_key_freev          (DasomKey       **keys);
-void      dasom_key_free           (DasomKey        *key);
+DasomKey  *dasom_key_new            (void);
+DasomKey  *dasom_key_new_from_nicks (const gchar **nicks);
+void       dasom_key_free           (DasomKey     *key);
+DasomKey **dasom_key_newv           (const gchar **keys);
+void       dasom_key_freev          (DasomKey    **keys);
 
 G_END_DECLS
 

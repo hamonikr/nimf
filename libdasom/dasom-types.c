@@ -70,9 +70,30 @@ dasom_key_new_from_nicks (const gchar **nicks)
   return key;
 }
 
+DasomKey **dasom_key_newv (const gchar **keys)
+{
+  DasomKey **dasom_keys = g_malloc0_n (sizeof (DasomKey *), 1);
+
+  gint i;
+  for (i = 0; keys[i] != NULL; i++)
+  {
+    gchar **nicks = g_strsplit (keys[i], " ", -1);
+    DasomKey *key = dasom_key_new_from_nicks ((const gchar **) nicks);
+    g_strfreev (nicks);
+
+    dasom_keys = g_realloc_n (dasom_keys, sizeof (DasomKey *), i + 2);
+    dasom_keys[i] = key;
+    dasom_keys[i + 1] = NULL;
+  }
+
+  return dasom_keys;
+}
+
 void
 dasom_key_freev (DasomKey **keys)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   if (keys)
   {
     int i;

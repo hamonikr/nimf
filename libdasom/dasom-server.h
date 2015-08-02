@@ -53,7 +53,7 @@ struct _DasomServer
   GSocketListener     *listener;
   GHashTable          *contexts;
   GList               *agents_list;
-  gchar              **hotkey_names;
+  DasomKey           **hotkeys;
   DasomCandidate      *candidate;
   DasomContext        *target;
   GSource             *xevent_source;

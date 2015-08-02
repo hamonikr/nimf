@@ -107,47 +107,6 @@ dasom_event_matches (DasomEvent *event, const DasomKey **keys)
   return retval;
 }
 
-gboolean dasom_event_is_hotkey (DasomEvent          *event,
-                                const gchar * const *key_names)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  DasomModifierType mods;
-  guint keyval = 0;
-  guint i, j, k;
-
-  /*
-   * example
-   *
-   * hotkey_names[0] = "Control space";
-   * hotkey_names[1] = "Hangul"
-   */
-
-  gchar **keys;
-
-  for (i = 0; key_names[i] != NULL; i++)
-  {
-    keys = g_strsplit (key_names[i], " ", -1);
-    mods = event->key.state & (DASOM_MOD2_MASK | DASOM_META_MASK |
-                               DASOM_RELEASE_MASK);
-    for (j = 0; keys[j] != NULL; j++)
-    {
-      for (k = 0; k < G_N_ELEMENTS (mod_info_list); k++)
-        if (g_strcmp0 (keys[j], mod_info_list[k].name) == 0)
-          mods = mods | mod_info_list[k].mod;
-
-      keyval = dasom_keyval_from_name (keys[j]);
-
-      if ((event->key.state & DASOM_MODIFIER_MASK) == mods && event->key.keyval == keyval)
-        return TRUE;
-    }
-
-    g_strfreev (keys);
-  }
-
-  return FALSE;
-}
-
 DasomEvent *
 dasom_event_new (DasomEventType type)
 {

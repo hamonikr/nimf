@@ -429,8 +429,10 @@ dasom_server_init (DasomServer *server)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GSettings *settings = g_settings_new ("org.freedesktop.Dasom");
-  server->hotkey_names = g_settings_get_strv (settings, "hotkeys");
+  gchar **hotkeys = g_settings_get_strv (settings, "hotkeys");
+  server->hotkeys = dasom_key_newv ((const gchar **) hotkeys);
   g_object_unref (settings);
+  g_strfreev (hotkeys);
 
   server->module_manager = dasom_module_manager_get_default ();
   server->instances = dasom_module_manager_create_instances (server->module_manager);
@@ -494,7 +496,7 @@ dasom_server_finalize (GObject *object)
   /* FIXME: g_object_unref (server->candidate); */
   g_hash_table_unref (server->contexts);
   g_list_free (server->agents_list);
-  g_strfreev (server->hotkey_names);
+  dasom_key_freev (server->hotkeys);
   g_free (server->address);
 
   if (server->xevent_source)

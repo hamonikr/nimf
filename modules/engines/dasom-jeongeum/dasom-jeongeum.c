@@ -411,20 +411,7 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   layout   = g_settings_get_string (settings, "layout");
   hangul_keys = g_settings_get_strv (settings, "hangul-keys");
 
-  jeongeum->hangul_keys = g_malloc0_n (sizeof (DasomKey *), 1);
-
-  gint i;
-  for (i = 0; hangul_keys[i] != NULL; i++)
-  {
-    gchar **nicks = g_strsplit (hangul_keys[i], " ", -1);
-    DasomKey *key = dasom_key_new_from_nicks ((const gchar **) nicks);
-    g_strfreev (nicks);
-
-    jeongeum->hangul_keys = g_realloc_n (jeongeum->hangul_keys, sizeof (DasomKey *), i + 2);
-    jeongeum->hangul_keys[i] = key;
-    jeongeum->hangul_keys[i + 1] = NULL;
-  }
-
+  jeongeum->hangul_keys = dasom_key_newv ((const gchar **) hangul_keys);
   jeongeum->context = hangul_ic_new (layout);
   jeongeum->en_name = g_strdup ("EN");
   jeongeum->ko_name = g_strdup ("정");
