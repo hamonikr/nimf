@@ -11,6 +11,9 @@ module_LTLIBRARIES = dasom-jeongeum.la
 icondir = $(datadir)/icons/hicolor/22x22/status
 icon_DATA = dasom-ko.png
 
+gsettings_SCHEMAS = org.freedesktop.Dasom.engines.jeongeum.gschema.xml
+@GSETTINGS_RULES@
+
 # gtk3 부분 나중에 없애자
 
 dasom_jeongeum_la_SOURCES = dasom-jeongeum.c dasom-jeongeum.h

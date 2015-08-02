@@ -392,12 +392,20 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  jeongeum->context = hangul_ic_new ("2");
+  GSettings *settings;
+  gchar     *layout;
+
+  settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
+  layout   = g_settings_get_string (settings, "layout");
+
+  jeongeum->context = hangul_ic_new (layout);
   jeongeum->name = g_strdup ("정");
   jeongeum->hanja_table = hanja_table_load (NULL);
   jeongeum->candidate = dasom_candidate_new (); /* FIXME */
-
   g_signal_connect (jeongeum->candidate, "row-activated", (GCallback) on_candidate_row_activated, jeongeum);
+
+  g_object_unref (settings);
+  g_free (layout);
 }
 
 static void
