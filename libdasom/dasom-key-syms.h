@@ -102,6 +102,8 @@ typedef enum
 
   DASOM_KEY_Shift_L      = 0xffe1,
   DASOM_KEY_Shift_R      = 0xffe2,
+  DASOM_KEY_Control_L    = 0xffe3,
+  DASOM_KEY_Control_R    = 0xffe4,
 
   DASOM_KEY_Meta_L       = 0xffe7,
   DASOM_KEY_Meta_R       = 0xffe8,
