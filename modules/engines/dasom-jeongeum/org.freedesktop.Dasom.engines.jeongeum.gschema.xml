@@ -23,5 +23,10 @@
       <summary>hotkey for switching Korean / English</summary>
       <description>Binding to change Korean / English</description>
     </key>
+    <key type="as" name="hanja-keys">
+      <default>['hangul-hanja', 'control-r']</default>
+      <summary>hotkey for hanja</summary>
+      <description>Binding to Hanja key</description>
+    </key>
   </schema>
 </schemalist>

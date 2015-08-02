@@ -52,6 +52,7 @@ struct _DasomJeongeum
   gboolean            is_english_mode;
   HanjaTable         *hanja_table;
   DasomKey          **hangul_keys;
+  DasomKey          **hanja_keys;
 };
 
 struct _DasomJeongeumClass

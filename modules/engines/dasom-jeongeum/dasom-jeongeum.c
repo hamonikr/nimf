@@ -169,7 +169,7 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
   if (jeongeum->is_english_mode)
     return dasom_english_filter_event (engine, event);
 
-  if (event->key.keyval == DASOM_KEY_Hangul_Hanja)
+  if (dasom_event_matches (event, (const DasomKey **) jeongeum->hanja_keys))
   {
     if (jeongeum->is_candidate_mode == FALSE)
     {
@@ -405,13 +405,15 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GSettings *settings;
-  gchar     *layout, **hangul_keys;
+  gchar     *layout, **hangul_keys, **hanja_keys;
 
   settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
   layout   = g_settings_get_string (settings, "layout");
   hangul_keys = g_settings_get_strv (settings, "hangul-keys");
+  hanja_keys  = g_settings_get_strv (settings, "hanja-keys");
 
   jeongeum->hangul_keys = dasom_key_newv ((const gchar **) hangul_keys);
+  jeongeum->hanja_keys  = dasom_key_newv ((const gchar **) hanja_keys);
   jeongeum->context = hangul_ic_new (layout);
   jeongeum->en_name = g_strdup ("EN");
   jeongeum->ko_name = g_strdup ("정");
@@ -424,6 +426,7 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_object_unref (settings);
   g_free (layout);
   g_strfreev (hangul_keys);
+  g_strfreev (hanja_keys);
 }
 
 static void
@@ -440,6 +443,7 @@ dasom_jeongeum_finalize (GObject *object)
   g_free (jeongeum->en_name);
   g_free (jeongeum->ko_name);
   dasom_key_freev (jeongeum->hangul_keys);
+  dasom_key_freev (jeongeum->hanja_keys);
 
   G_OBJECT_CLASS (dasom_jeongeum_parent_class)->finalize (object);
 }
