@@ -57,9 +57,9 @@ union _DasomEvent
 };
 
 DasomEvent *dasom_event_new        (DasomEventType       type);
-DasomEvent *dasom_event_copy       (const DasomEvent    *event);
+DasomEvent *dasom_event_copy       (DasomEvent          *event);
 void        dasom_event_free       (DasomEvent          *event);
-gboolean    dasom_event_is_hotkey  (const DasomEvent    *event,
+gboolean    dasom_event_is_hotkey  (DasomEvent          *event,
                                     const gchar * const *key_names);
 guint       dasom_keyval_from_name (const gchar         *keyval_name);
 gchar      *dasom_keyval_name      (guint                keyval);

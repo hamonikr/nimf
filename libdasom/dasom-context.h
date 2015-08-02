@@ -100,7 +100,7 @@ void          dasom_context_set_engine         (DasomContext        *context,
                                                 DasomEngine         *engine);
 guint16       dasom_context_get_id             (DasomContext        *context);
 gboolean      dasom_context_filter_event       (DasomContext        *context,
-                                                const DasomEvent    *event);
+                                                DasomEvent          *event);
 void          dasom_context_get_preedit_string (DasomContext        *context,
                                                 gchar              **str,
                                                 gint                *cursor_pos);

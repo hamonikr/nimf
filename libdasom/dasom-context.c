@@ -176,8 +176,8 @@ void dasom_context_set_next_engine (DasomContext *context)
                          dasom_engine_get_name (context->engine));
 }
 
-gboolean dasom_context_filter_event (DasomContext     *context,
-                                     const DasomEvent *event)
+gboolean dasom_context_filter_event (DasomContext *context,
+                                     DasomEvent   *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

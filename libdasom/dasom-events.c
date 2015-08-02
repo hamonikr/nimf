@@ -79,7 +79,7 @@ gchar *dasom_keyval_name (guint keyval)
   return name;
 }
 
-gboolean dasom_event_is_hotkey (const DasomEvent    *event,
+gboolean dasom_event_is_hotkey (DasomEvent          *event,
                                 const gchar * const *key_names)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -142,7 +142,7 @@ dasom_event_free (DasomEvent *event)
 }
 
 DasomEvent *
-dasom_event_copy (const DasomEvent *event)
+dasom_event_copy (DasomEvent *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

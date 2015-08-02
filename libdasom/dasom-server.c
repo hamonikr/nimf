@@ -96,7 +96,7 @@ on_incoming_message_dasom (GSocket      *socket,
     case DASOM_MESSAGE_FILTER_EVENT:
       dasom_message_ref (message);
       retval = dasom_context_filter_event (context,
-                                           (const DasomEvent *) message->data);
+                                           (DasomEvent *) message->data);
       dasom_message_unref (message);
       dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT_REPLY, &retval,
                           sizeof (gboolean), NULL);
