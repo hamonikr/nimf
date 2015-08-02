@@ -22,6 +22,7 @@
 #include "dasom-events.h"
 #include "dasom-types.h"
 #include "dasom-key-syms.h"
+#include <string.h>
 
 typedef struct _dasom_mod_info DasomModifierInfo;
 
@@ -77,6 +78,29 @@ gchar *dasom_keyval_name (guint keyval)
       break;
   }
   return name;
+}
+
+gboolean
+dasom_event_matches (DasomEvent *event, const DasomKey **keys)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval = FALSE;
+  gint i;
+
+  guint mods = event->key.state & (DASOM_MOD2_MASK | DASOM_RELEASE_MASK);
+
+  for (i = 0; keys[i] != 0; i++)
+  {
+    if ((event->key.state & DASOM_MODIFIER_MASK) == (keys[i]->mods | mods) &&
+        event->key.keyval == keys[i]->keyval)
+    {
+      retval = TRUE;
+      break;
+    }
+  }
+
+  return retval;
 }
 
 gboolean dasom_event_is_hotkey (DasomEvent          *event,
