@@ -83,12 +83,16 @@ gchar *dasom_keyval_name (guint keyval)
 gboolean
 dasom_event_matches (DasomEvent *event, const DasomKey **keys)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  g_debug (G_STRLOC ": %s: event->key.state: %d", G_STRFUNC, event->key.state);
 
   gboolean retval = FALSE;
   gint i;
 
-  guint mods = event->key.state & (DASOM_MOD2_MASK | DASOM_RELEASE_MASK);
+  /* Alt키를 눌렀을 때, 어떤 프로그램에서는 DASOM_META_MASK를 발생시키고
+   * 어떤 프로그램에서는 DASOM_META_MASK를 발생시키지 않습니다.
+   * DASOM_MOD2_MASK 는 Number 키와 관련이 있습니다. */
+  guint mods = event->key.state & (DASOM_MOD2_MASK | DASOM_META_MASK |
+                                   DASOM_RELEASE_MASK);
 
   for (i = 0; keys[i] != 0; i++)
   {
@@ -124,8 +128,8 @@ gboolean dasom_event_is_hotkey (DasomEvent          *event,
   for (i = 0; key_names[i] != NULL; i++)
   {
     keys = g_strsplit (key_names[i], " ", -1);
-    mods = event->key.state & (DASOM_MOD2_MASK | DASOM_RELEASE_MASK);
-
+    mods = event->key.state & (DASOM_MOD2_MASK | DASOM_META_MASK |
+                               DASOM_RELEASE_MASK);
     for (j = 0; keys[j] != NULL; j++)
     {
       for (k = 0; k < G_N_ELEMENTS (mod_info_list); k++)
