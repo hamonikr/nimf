@@ -26,6 +26,8 @@
 #error "Only <dasom/dasom.h> can be included directly."
 #endif
 
+#include <glib-object.h>
+
 G_BEGIN_DECLS
 
 typedef enum
@@ -80,9 +82,19 @@ typedef enum
 } DasomModifierType;
 
 typedef struct {
-    int x, y;
-    int width, height;
+  int x, y;
+  int width, height;
 } DasomRectangle;
+
+typedef struct {
+  guint mods;
+  guint keyval;
+} DasomKey;
+
+DasomKey *dasom_key_new            (void);
+DasomKey *dasom_key_new_from_nicks (const gchar    **nicks);
+void      dasom_key_freev          (DasomKey       **keys);
+void      dasom_key_free           (DasomKey        *key);
 
 G_END_DECLS
 

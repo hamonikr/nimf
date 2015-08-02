@@ -2,6 +2,7 @@
 #include "dasom-enum-types.h"
 #include "dasom-message.h"
 #include "dasom-key-syms.h"
+#include "dasom-types.h"
 
 /*** END file-header ***/
 
