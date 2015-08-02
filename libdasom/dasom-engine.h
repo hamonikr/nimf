@@ -110,6 +110,7 @@ gboolean dasom_engine_emit_retrieve_surrounding (DasomEngine      *engine);
 gboolean dasom_engine_emit_delete_surrounding   (DasomEngine      *engine,
                                                  gint              offset,
                                                  gint              n_chars);
+void     dasom_engine_emit_engine_changed       (DasomEngine      *engine);
 
 const gchar *dasom_engine_get_name     (DasomEngine      *engine);
 

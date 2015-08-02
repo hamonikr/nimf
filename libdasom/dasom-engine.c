@@ -243,6 +243,15 @@ dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
   return dasom_context_emit_retrieve_surrounding (engine->priv->server->target);
 }
 
+void
+dasom_engine_emit_engine_changed (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_signal_emit_by_name (engine->priv->server->target, "engine-changed",
+                         dasom_engine_get_name (engine));
+}
+
 static void
 dasom_engine_init (DasomEngine *engine)
 {
