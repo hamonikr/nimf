@@ -2,7 +2,7 @@
 <schemalist>
   <schema id="org.freedesktop.Dasom" path="/org/freedesktop/dasom/">
     <key type="s" name="default-engine">
-      <default>'dasom-english'</default>
+      <default>'libdasom-english'</default>
       <summary>default input method engine</summary>
       <description>default input method engine</description>
     </key>

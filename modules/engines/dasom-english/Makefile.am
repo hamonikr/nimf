@@ -8,19 +8,19 @@ AM_CPPFLAGS = \
 AM_CFLAGS = -Wall -Werror
 
 moduledir = $(libdir)/dasom/modules
-module_LTLIBRARIES = dasom-english.la
+module_LTLIBRARIES = libdasom-english.la
 
 icondir = $(datadir)/icons/hicolor/22x22/status
 icon_DATA = dasom-en.png
 
-dasom_english_la_SOURCES  = dasom-english.c dasom-english.h
-dasom_english_la_CFLAGS   = $(AM_CFLAGS) $(GTK3_CFLAGS)
-dasom_english_la_LDFLAGS  = -avoid-version -module $(GTK3_LIBS)
-dasom_english_la_LIBADD   = $(top_builddir)/libdasom/libdasom.la
+libdasom_english_la_SOURCES  = dasom-english.c dasom-english.h
+libdasom_english_la_CFLAGS   = $(AM_CFLAGS) $(GTK3_CFLAGS)
+libdasom_english_la_LDFLAGS  = -avoid-version $(GTK3_LIBS)
+libdasom_english_la_LIBADD   = $(top_builddir)/libdasom/libdasom.la
 
 install-data-hook:
-	chmod -x $(DESTDIR)$(moduledir)/dasom-english.so
-	rm $(DESTDIR)$(moduledir)/dasom-english.la
+	chmod -x $(DESTDIR)$(moduledir)/libdasom-english.so
+	rm $(DESTDIR)$(moduledir)/libdasom-english.la
 
 uninstall-hook:
-	rm -f $(DESTDIR)$(moduledir)/dasom-english.so
+	rm -f $(DESTDIR)$(moduledir)/libdasom-english.so

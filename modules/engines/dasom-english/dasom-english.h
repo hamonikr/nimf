@@ -49,7 +49,9 @@ struct _DasomEnglishClass
   DasomEngineClass parent_class;
 };
 
-GType dasom_english_get_type (void) G_GNUC_CONST;
+GType    dasom_english_get_type     (void) G_GNUC_CONST;
+gboolean dasom_english_filter_event (DasomEngine      *engine,
+                                     const DasomEvent *event);
 
 G_END_DECLS
 
