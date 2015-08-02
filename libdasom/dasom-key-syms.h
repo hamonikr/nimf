@@ -22,72 +22,75 @@
 #ifndef __DASOM_KEY_SYMS_H__
 #define __DASOM_KEY_SYMS_H__
 
-#define DASOM_KEY_space         0x0020
+typedef enum
+{
+  DASOM_KEY_space        = 0x0020,
 
-#define DASOM_KEY_0             0x030
-#define DASOM_KEY_1             0x031
-#define DASOM_KEY_2             0x032
-#define DASOM_KEY_3             0x033
-#define DASOM_KEY_4             0x034
-#define DASOM_KEY_5             0x035
-#define DASOM_KEY_6             0x036
-#define DASOM_KEY_7             0x037
-#define DASOM_KEY_8             0x038
-#define DASOM_KEY_9             0x039
+  DASOM_KEY_0            = 0x030,
+  DASOM_KEY_1            = 0x031,
+  DASOM_KEY_2            = 0x032,
+  DASOM_KEY_3            = 0x033,
+  DASOM_KEY_4            = 0x034,
+  DASOM_KEY_5            = 0x035,
+  DASOM_KEY_6            = 0x036,
+  DASOM_KEY_7            = 0x037,
+  DASOM_KEY_8            = 0x038,
+  DASOM_KEY_9            = 0x039,
 
-#define DASOM_KEY_h             0x068
+  DASOM_KEY_h            = 0x068,
 
-#define DASOM_KEY_j             0x06a
-#define DASOM_KEY_k             0x06b
-#define DASOM_KEY_l             0x06c
+  DASOM_KEY_j            = 0x06a,
+  DASOM_KEY_k            = 0x06b,
+  DASOM_KEY_l            = 0x06c,
 
-#define DASOM_KEY_BackSpace     0xff08
-#define DASOM_KEY_Return        0xff0d
+  DASOM_KEY_BackSpace    = 0xff08,
+  DASOM_KEY_Return       = 0xff0d,
 
-#define DASOM_KEY_Escape        0xff1b
+  DASOM_KEY_Escape       = 0xff1b,
 
-#define DASOM_KEY_Hangul        0xff31
+  DASOM_KEY_Hangul       = 0xff31,
 
-#define DASOM_KEY_Hangul_Hanja  0xff34
+  DASOM_KEY_Hangul_Hanja = 0xff34,
 
-#define DASOM_KEY_Left          0xff51
-#define DASOM_KEY_Up            0xff52
-#define DASOM_KEY_Right         0xff53
-#define DASOM_KEY_Down          0xff54
-#define DASOM_KEY_Page_Up       0xff55
-#define DASOM_KEY_Page_Down     0xff56
+  DASOM_KEY_Left         = 0xff51,
+  DASOM_KEY_Up           = 0xff52,
+  DASOM_KEY_Right        = 0xff53,
+  DASOM_KEY_Down         = 0xff54,
+  DASOM_KEY_Page_Up      = 0xff55,
+  DASOM_KEY_Page_Down    = 0xff56,
 
-#define DASOM_KEY_KP_Enter      0xff8d
+  DASOM_KEY_KP_Enter     = 0xff8d,
 
-#define DASOM_KEY_KP_Left       0xff96
-#define DASOM_KEY_KP_Up         0xff97
-#define DASOM_KEY_KP_Right      0xff98
-#define DASOM_KEY_KP_Down       0xff99
-#define DASOM_KEY_KP_Page_Up    0xff9a
-#define DASOM_KEY_KP_Page_Down  0xff9b
+  DASOM_KEY_KP_Left      = 0xff96,
+  DASOM_KEY_KP_Up        = 0xff97,
+  DASOM_KEY_KP_Right     = 0xff98,
+  DASOM_KEY_KP_Down      = 0xff99,
+  DASOM_KEY_KP_Page_Up   = 0xff9a,
+  DASOM_KEY_KP_Page_Down = 0xff9b,
 
-#define DASOM_KEY_KP_Delete     0xff9f
+  DASOM_KEY_KP_Delete    = 0xff9f,
 
-#define DASOM_KEY_KP_Multiply   0xffaa
-#define DASOM_KEY_KP_Add        0xffab
+  DASOM_KEY_KP_Multiply  = 0xffaa,
+  DASOM_KEY_KP_Add       = 0xffab,
 
-#define DASOM_KEY_KP_Subtract   0xffad
-#define DASOM_KEY_KP_Decimal    0xffae
-#define DASOM_KEY_KP_Divide     0xffaf
-#define DASOM_KEY_KP_0          0xffb0
-#define DASOM_KEY_KP_1          0xffb1
-#define DASOM_KEY_KP_2          0xffb2
-#define DASOM_KEY_KP_3          0xffb3
-#define DASOM_KEY_KP_4          0xffb4
-#define DASOM_KEY_KP_5          0xffb5
-#define DASOM_KEY_KP_6          0xffb6
-#define DASOM_KEY_KP_7          0xffb7
-#define DASOM_KEY_KP_8          0xffb8
-#define DASOM_KEY_KP_9          0xffb9
+  DASOM_KEY_KP_Subtract  = 0xffad,
+  DASOM_KEY_KP_Decimal   = 0xffae,
+  DASOM_KEY_KP_Divide    = 0xffaf,
+  DASOM_KEY_KP_0         = 0xffb0,
+  DASOM_KEY_KP_1         = 0xffb1,
+  DASOM_KEY_KP_2         = 0xffb2,
+  DASOM_KEY_KP_3         = 0xffb3,
+  DASOM_KEY_KP_4         = 0xffb4,
+  DASOM_KEY_KP_5         = 0xffb5,
+  DASOM_KEY_KP_6         = 0xffb6,
+  DASOM_KEY_KP_7         = 0xffb7,
+  DASOM_KEY_KP_8         = 0xffb8,
+  DASOM_KEY_KP_9         = 0xffb9,
 
-#define DASOM_KEY_Shift_L       0xffe1
-#define DASOM_KEY_Shift_R       0xffe2
+  DASOM_KEY_Shift_L      = 0xffe1,
+  DASOM_KEY_Shift_R      = 0xffe2,
 
-#define DASOM_KEY_Delete        0xffff
+  DASOM_KEY_Delete       = 0xffff
+} DasomKeySym;
 
 #endif /* __DASOM_KEY_SYMS_H__ */
