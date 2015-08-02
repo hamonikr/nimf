@@ -161,12 +161,12 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
   if (dasom_event_matches (event, (const DasomKey **) jeongeum->hangul_keys))
   {
     dasom_jeongeum_reset (engine);
-    jeongeum->is_hangul_mode = !jeongeum->is_hangul_mode;
+    jeongeum->is_english_mode = !jeongeum->is_english_mode;
     dasom_engine_emit_engine_changed (engine);
     return TRUE;
   }
 
-  if (jeongeum->is_hangul_mode == FALSE)
+  if (jeongeum->is_english_mode)
     return dasom_english_filter_event (engine, event);
 
   if (event->key.keyval == DASOM_KEY_Hangul_Hanja)
@@ -428,6 +428,7 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->context = hangul_ic_new (layout);
   jeongeum->en_name = g_strdup ("EN");
   jeongeum->ko_name = g_strdup ("정");
+  jeongeum->is_english_mode = TRUE;
   jeongeum->hanja_table = hanja_table_load (NULL);
   jeongeum->candidate = dasom_candidate_new (); /* FIXME */
   g_signal_connect (jeongeum->candidate, "row-activated",
@@ -493,7 +494,31 @@ dasom_jeongeum_get_name (DasomEngine *engine)
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
 
-  return jeongeum->is_hangul_mode ? jeongeum->ko_name : jeongeum->en_name;
+  return jeongeum->is_english_mode ? jeongeum->en_name : jeongeum->ko_name;
+}
+
+void
+dasom_jeongeum_set_english_mode (DasomEngine *engine,
+                                 gboolean     is_english_mode)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+
+  if (jeongeum->is_english_mode != is_english_mode)
+  {
+    jeongeum->is_english_mode = is_english_mode;
+    dasom_engine_emit_engine_changed (engine);
+  }
+}
+
+gboolean
+dasom_jeongeum_get_english_mode (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+  return jeongeum->is_english_mode;
 }
 
 static void
@@ -511,6 +536,8 @@ dasom_jeongeum_class_init (DasomJeongeumClass *klass)
   engine_class->focus_out          = dasom_jeongeum_focus_out;
 
   engine_class->get_name           = dasom_jeongeum_get_name;
+  engine_class->set_english_mode   = dasom_jeongeum_set_english_mode;
+  engine_class->get_english_mode   = dasom_jeongeum_get_english_mode;
 
   object_class->finalize = dasom_jeongeum_finalize;
 }

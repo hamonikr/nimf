@@ -49,7 +49,7 @@ struct _DasomJeongeum
 
   DasomCandidate     *candidate;
   gboolean            is_candidate_mode;
-  gboolean            is_hangul_mode;
+  gboolean            is_english_mode;
   HanjaTable         *hanja_table;
   DasomKey          **hangul_keys;
 };

@@ -193,6 +193,31 @@ dasom_engine_set_cursor_location (DasomEngine          *engine,
 }
 
 void
+dasom_engine_set_english_mode (DasomEngine *engine,
+                               gboolean     is_english_mode)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+
+  if (klass->set_english_mode)
+    klass->set_english_mode (engine, is_english_mode);
+}
+
+gboolean
+dasom_engine_get_english_mode (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+
+  if (klass->get_english_mode)
+    return klass->get_english_mode (engine);
+
+  return TRUE;
+}
+
+void
 dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

@@ -120,6 +120,7 @@ dasom_context_new (DasomConnectionType  type,
   DasomContext *context = g_object_new (DASOM_TYPE_CONTEXT, NULL);
   context->type = type;
   context->engine = engine;
+  context->is_english_mode = TRUE;
   context->cb_user_data = cb_user_data;
 
   g_signal_connect (context,

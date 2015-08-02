@@ -61,6 +61,7 @@ on_incoming_message_dasom (GSocket      *socket,
   gboolean retval;
 
   DasomContext *pushed_context = context->server->target;
+  dasom_engine_set_english_mode (context->engine, context->is_english_mode);
 
   context->server->target = context;
 
@@ -194,6 +195,8 @@ on_incoming_message_dasom (GSocket      *socket,
       g_warning ("Unknown message type: %d", message->header->type);
       break;
   }
+
+  context->is_english_mode = dasom_engine_get_english_mode (context->engine);
 
   if (g_main_depth () > 1)
     context->server->target = pushed_context;

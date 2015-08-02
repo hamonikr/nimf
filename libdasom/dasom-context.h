@@ -61,6 +61,7 @@ struct _DasomContext
   DasomPreeditState    preedit_state;
   gboolean             use_preedit;
   gpointer             cb_user_data;
+  gboolean             is_english_mode;
 
   DasomServer         *server;
   GSocket             *socket;

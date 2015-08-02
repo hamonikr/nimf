@@ -78,6 +78,9 @@ struct _DasomEngineClass
                                    gint             *cursor_index);
   void     (* set_cursor_location)(DasomEngine          *engine,
                                    const DasomRectangle *area);
+  void     (* set_english_mode)   (DasomEngine      *engine,
+                                   gboolean          is_english_mode);
+  gboolean (* get_english_mode)   (DasomEngine      *engine);
 
   const gchar * (* get_name)      (DasomEngine      *engine);
 };
@@ -100,6 +103,9 @@ gboolean dasom_engine_get_surrounding           (DasomEngine      *engine,
                                                  gint             *cursor_index);
 void     dasom_engine_set_cursor_location       (DasomEngine          *engine,
                                                  const DasomRectangle *area);
+void     dasom_engine_set_english_mode          (DasomEngine      *engine,
+                                                 gboolean          is_english_mode);
+gboolean dasom_engine_get_english_mode          (DasomEngine      *engine);
 
 void     dasom_engine_emit_preedit_start        (DasomEngine      *engine);
 void     dasom_engine_emit_preedit_changed      (DasomEngine      *engine);
