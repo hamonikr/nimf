@@ -87,8 +87,26 @@ typedef enum
   DASOM_KEY_KP_8         = 0xffb8,
   DASOM_KEY_KP_9         = 0xffb9,
 
+  DASOM_KEY_F1           = 0xffbe,
+  DASOM_KEY_F2           = 0xffbf,
+  DASOM_KEY_F3           = 0xffc0,
+  DASOM_KEY_F4           = 0xffc1,
+  DASOM_KEY_F5           = 0xffc2,
+  DASOM_KEY_F6           = 0xffc3,
+  DASOM_KEY_F7           = 0xffc4,
+  DASOM_KEY_F8           = 0xffc5,
+  DASOM_KEY_F9           = 0xffc6,
+  DASOM_KEY_F10          = 0xffc7,
+  DASOM_KEY_F11          = 0xffc8,
+  DASOM_KEY_F12          = 0xffc9,
+
   DASOM_KEY_Shift_L      = 0xffe1,
   DASOM_KEY_Shift_R      = 0xffe2,
+
+  DASOM_KEY_Meta_L       = 0xffe7,
+  DASOM_KEY_Meta_R       = 0xffe8,
+  DASOM_KEY_Alt_L        = 0xffe9,
+  DASOM_KEY_Alt_R        = 0xffea,
 
   DASOM_KEY_Delete       = 0xffff
 } DasomKeySym;
