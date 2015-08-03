@@ -244,6 +244,7 @@ dasom_context_set_cursor_location (DasomContext         *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  context->cursor_area = *area;
   dasom_engine_set_cursor_location (context->engine, area);
 }
 
@@ -563,7 +564,7 @@ dasom_context_xim_set_cursor_location (DasomContext *context, XIMS xims)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomRectangle preedit_area = context->preedit_area;
+  DasomRectangle preedit_area = context->cursor_area;
 
   Window target;
 

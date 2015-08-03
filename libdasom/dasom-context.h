@@ -57,22 +57,21 @@ struct _DasomContext
   DasomConnectionType  type;
   DasomEngine         *engine;
   guint16              id;
-  guint16              xim_connect_id;
-  DasomPreeditState    preedit_state;
   gboolean             use_preedit;
-  gpointer             cb_user_data;
   gboolean             is_english_mode;
-
+  DasomRectangle       cursor_area;
   DasomServer         *server;
   GSocket             *socket;
   DasomMessage        *reply;
   GSource             *source;
   GSocketConnection   *connection;
   /* XIM */
+  guint16              xim_connect_id;
   gint                 xim_preedit_length;
+  DasomPreeditState    preedit_state;
+  gpointer             cb_user_data;
   Window               client_window;
   Window               focus_window;
-  DasomRectangle       preedit_area;
 };
 
 struct _DasomContextClass
