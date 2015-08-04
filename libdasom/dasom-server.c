@@ -439,6 +439,7 @@ static GList *dasom_server_create_module_instances (DasomServer *server)
     instances = g_list_prepend (instances,
                                 g_object_new (module->type,
                                               "path",   module->path,
+                                              "server", server,
                                               NULL));
   }
 
@@ -458,12 +459,6 @@ dasom_server_init (DasomServer *server)
 
   server->module_manager = dasom_module_manager_get_default ();
   server->instances = dasom_server_create_module_instances (server);
-
-  GList *l;
-  for (l = server->instances; l != NULL; l = l->next)
-    {
-      DASOM_ENGINE (l->data)->priv->server = server;
-    }
 
   /* FIXME: server->candidate = dasom_candidate_new (); */
   server->main_context = g_main_context_ref_thread_default ();

@@ -22,11 +22,13 @@
 #include "dasom-engine.h"
 #include "dasom-context.h"
 #include "dasom-private.h"
+#include "dasom-server.h"
 
 enum
 {
   PROP_0,
-  PROP_PATH
+  PROP_PATH,
+  PROP_SERVER
 };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (DasomEngine, dasom_engine, G_TYPE_OBJECT);
@@ -47,6 +49,10 @@ dasom_engine_set_property (GObject      *object,
   {
     case PROP_PATH:
       engine->priv->path = g_strdup (g_value_get_string (value));
+      g_object_notify_by_pspec (object, pspec);
+      break;
+    case PROP_SERVER:
+      engine->priv->server = g_value_get_object (value);
       g_object_notify_by_pspec (object, pspec);
       break;
     default:
@@ -71,6 +77,9 @@ dasom_engine_get_property (GObject    *object,
   {
     case PROP_PATH:
       g_value_set_string (value, engine->priv->path);
+      break;
+    case PROP_SERVER:
+      g_value_set_object (value, engine->priv->server);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -396,5 +405,12 @@ dasom_engine_class_init (DasomEngineClass *klass)
                                                         "path",
                                                         "path",
                                                         NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
+                                   PROP_SERVER,
+                                   g_param_spec_object ("server",
+                                                        "server",
+                                                        "server",
+                                                        DASOM_TYPE_SERVER,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
