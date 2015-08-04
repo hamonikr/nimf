@@ -26,27 +26,6 @@
 
 G_DEFINE_TYPE (DasomModuleManager, dasom_module_manager, G_TYPE_OBJECT);
 
-GList *dasom_module_manager_create_instances (DasomModuleManager *manager)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GList *instances = NULL;
-
-  GHashTableIter iter;
-  gpointer value;
-
-  g_hash_table_iter_init (&iter, manager->modules);
-  while (g_hash_table_iter_next (&iter, NULL, &value))
-  {
-    DasomModule *module = value;
-    instances = g_list_prepend (instances, g_object_new (module->type,
-                                                         "path", module->path,
-                                                         NULL));
-  }
-
-  return instances;
-}
-
 DasomModuleManager *
 dasom_module_manager_get_default (void)
 {

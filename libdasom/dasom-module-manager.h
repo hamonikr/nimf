@@ -50,7 +50,6 @@ struct _DasomModuleManagerClass
 
 GType               dasom_module_manager_get_type         (void) G_GNUC_CONST;
 DasomModuleManager *dasom_module_manager_get_default      (void);
-GList              *dasom_module_manager_create_instances (DasomModuleManager *manager);
 
 G_END_DECLS
 
