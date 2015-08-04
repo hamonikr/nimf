@@ -423,6 +423,28 @@ dasom_server_get_default_engine (DasomServer *server)
   return engine;
 }
 
+static GList *dasom_server_create_module_instances (DasomServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GList *instances = NULL;
+
+  GHashTableIter iter;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, server->module_manager->modules);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+  {
+    DasomModule *module = value;
+    instances = g_list_prepend (instances,
+                                g_object_new (module->type,
+                                              "path",   module->path,
+                                              NULL));
+  }
+
+  return instances;
+}
+
 static void
 dasom_server_init (DasomServer *server)
 {
@@ -435,7 +457,7 @@ dasom_server_init (DasomServer *server)
   g_strfreev (hotkeys);
 
   server->module_manager = dasom_module_manager_get_default ();
-  server->instances = dasom_module_manager_create_instances (server->module_manager);
+  server->instances = dasom_server_create_module_instances (server);
 
   GList *l;
   for (l = server->instances; l != NULL; l = l->next)
