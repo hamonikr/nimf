@@ -20,21 +20,12 @@
  */
 
 #include "config.h"
-#include <glib.h>
-#include <glib-object.h>
-#include <gio/gio.h>
-#include "dasom-events.h"
-#include "dasom-types.h"
-#include <glib/gi18n.h>
-#include <gio/gunixsocketaddress.h>
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include "IMdkit/IMdkit.h"
-#include "IMdkit/Xi18n.h"
-#include "dasom-context.h"
 #include "dasom-server.h"
-#include "dasom-message.h"
 #include "dasom-private.h"
+#include <string.h>
+#include <gio/gunixsocketaddress.h>
+#include "dasom-module.h"
+#include "IMdkit/Xi18n.h"
 
 /*
   const gchar *desktop = g_getenv ("XDG_CURRENT_DESKTOP");
@@ -457,10 +448,10 @@ dasom_server_init (DasomServer *server)
   g_object_unref (settings);
   g_strfreev (hotkeys);
 
+  server->candidate = dasom_candidate_new (server);
   server->module_manager = dasom_module_manager_get_default ();
   server->instances = dasom_server_create_module_instances (server);
 
-  /* FIXME: server->candidate = dasom_candidate_new (); */
   server->main_context = g_main_context_ref_thread_default ();
   server->contexts = g_hash_table_new_full (g_direct_hash,
                                             g_direct_equal,

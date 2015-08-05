@@ -24,7 +24,7 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include "dasom-events.h"
+#include "dasom-server.h"
 
 G_BEGIN_DECLS
 
@@ -35,6 +35,8 @@ G_BEGIN_DECLS
 #define DASOM_IS_CANDIDATE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_CANDIDATE))
 #define DASOM_CANDIDATE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_CANDIDATE, DasomCandidateClass))
 
+typedef struct _DasomServer          DasomServer;
+
 typedef struct _DasomCandidate       DasomCandidate;
 typedef struct _DasomCandidateClass  DasomCandidateClass;
 
@@ -42,31 +44,27 @@ struct _DasomCandidate
 {
   GObject parent_instance;
 
-  GtkWidget        *window;
-  GtkWidget        *treeview;
-  GtkTreeIter       iter;
+  GtkWidget   *window;
+  GtkWidget   *treeview;
+  GtkTreeIter  iter;
+  DasomServer *server;
 };
 
 struct _DasomCandidateClass
 {
   GObjectClass parent_class;
-
-  /*< public >*/
-  /* Signals */
-  void (*row_activated) (DasomCandidate *candidate,
-                         gchar          *text);
 };
 
 GType dasom_candidate_get_type (void) G_GNUC_CONST;
 
-DasomCandidate *dasom_candidate_new                  (void);
-void            dasom_candidate_update_window        (DasomCandidate   *candidate,
-                                                      const gchar     **strv);
-void            dasom_candidate_show_window          (DasomCandidate   *candidate);
-void            dasom_candidate_hide_window          (DasomCandidate   *candidate);
-void            dasom_candidate_select_previous_item (DasomCandidate   *candidate);
-void            dasom_candidate_select_next_item     (DasomCandidate   *candidate);
-gchar          *dasom_candidate_get_selected_text    (DasomCandidate   *candidate);
+DasomCandidate *dasom_candidate_new                  (DasomServer     *server);
+void            dasom_candidate_update_window        (DasomCandidate  *candidate,
+                                                      const gchar    **strv);
+void            dasom_candidate_show_window          (DasomCandidate  *candidate);
+void            dasom_candidate_hide_window          (DasomCandidate  *candidate);
+void            dasom_candidate_select_previous_item (DasomCandidate  *candidate);
+void            dasom_candidate_select_next_item     (DasomCandidate  *candidate);
+gchar          *dasom_candidate_get_selected_text    (DasomCandidate  *candidate);
 
 G_END_DECLS
 

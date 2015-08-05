@@ -29,13 +29,6 @@ enum
   N_COLUMNS
 };
 
-enum {
-  ROW_ACTIVATED,
-  LAST_SIGNAL
-};
-
-static guint candidate_signals[LAST_SIGNAL] = { 0 };
-
 G_DEFINE_TYPE (DasomCandidate, dasom_candidate, G_TYPE_OBJECT);
 
 static gboolean
@@ -48,17 +41,22 @@ on_changed (GtkTreeSelection *selection,
 }
 
 static void
-on_row_activated (GtkTreeView       *tree_view,
-                  GtkTreePath       *path,
-                  GtkTreeViewColumn *column,
-                  gpointer           user_data)
+on_tree_view_row_activated (GtkTreeView       *tree_view,
+                            GtkTreePath       *path,
+                            GtkTreeViewColumn *column,
+                            gpointer           user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomCandidate *candidate = user_data;
+  DasomServer *server = user_data;
+  DasomEngineClass *engine_class;
+  engine_class = DASOM_ENGINE_GET_CLASS (server->target->engine);
 
-  gchar *text = dasom_candidate_get_selected_text (candidate);
-  g_signal_emit_by_name (candidate, "row-activated", text);
+  gchar *text = dasom_candidate_get_selected_text (server->candidate);
+
+  if (engine_class->candidate_clicked)
+    engine_class->candidate_clicked (server->target->engine, text);
+
   g_free (text);
 }
 
@@ -108,7 +106,6 @@ dasom_candidate_init (DasomCandidate *candidate)
   GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
 
   g_signal_connect (selection, "changed", (GCallback) on_changed, &candidate->iter);
-  g_signal_connect (candidate->treeview, "row-activated", (GCallback) on_row_activated, candidate);
 
 /* FIXME: 아래는 cell 높이와 스크롤러 설정을 위한 코드입니다.
    원래 의도한 바는 gtk_widget_show_all 을 실행하지 않고서 실제로 보이게 될
@@ -207,16 +204,6 @@ dasom_candidate_class_init (DasomCandidateClass *class)
   GObjectClass* object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = dasom_candidate_finalize;
-
-  candidate_signals[ROW_ACTIVATED] =
-    g_signal_new (g_intern_static_string ("row-activated"),
-                  G_TYPE_FROM_CLASS (class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (DasomCandidateClass, row_activated),
-                  NULL, NULL,
-                  dasom_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_STRING);
 }
 
 void
@@ -342,9 +329,13 @@ void dasom_candidate_select_next_item (DasomCandidate *candidate)
   }
 }
 
-DasomCandidate *dasom_candidate_new ()
+DasomCandidate *dasom_candidate_new (DasomServer *server)
 {
-  return g_object_new (DASOM_TYPE_CANDIDATE, NULL);
+  DasomCandidate *candidate = g_object_new (DASOM_TYPE_CANDIDATE, NULL);
+  candidate->server = server;
+  g_signal_connect (candidate->treeview, "row-activated",
+                    (GCallback) on_tree_view_row_activated, candidate->server);
+  return candidate;
 }
 
 gchar *dasom_candidate_get_selected_text (DasomCandidate *candidate)

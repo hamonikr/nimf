@@ -362,6 +362,43 @@ dasom_engine_real_get_surrounding (DasomEngine  *engine,
   return retval;
 }
 
+void
+dasom_engine_update_candidate_window (DasomEngine  *engine,
+                                      const gchar **strv)
+{
+  dasom_candidate_update_window (engine->priv->server->candidate, strv);
+}
+
+void
+dasom_engine_show_candidate_window (DasomEngine *engine)
+{
+  dasom_candidate_show_window (engine->priv->server->candidate);
+}
+
+void
+dasom_engine_hide_candidate_window (DasomEngine *engine)
+{
+  dasom_candidate_hide_window (engine->priv->server->candidate);
+}
+
+void
+dasom_engine_select_previous_candidate_item (DasomEngine *engine)
+{
+  dasom_candidate_select_previous_item (engine->priv->server->candidate);
+}
+
+void
+dasom_engine_select_next_candidate_item (DasomEngine *engine)
+{
+  dasom_candidate_select_next_item (engine->priv->server->candidate);
+}
+
+gchar *
+dasom_engine_get_selected_candidate_text (DasomEngine *engine)
+{
+  return dasom_candidate_get_selected_text (engine->priv->server->candidate);
+}
+
 const gchar *
 dasom_engine_get_name (DasomEngine *engine)
 {

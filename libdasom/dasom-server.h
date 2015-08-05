@@ -24,6 +24,8 @@
 
 #include <glib-object.h>
 #include "dasom-module-manager.h"
+#include <gio/gio.h>
+#include "dasom-types.h"
 #include "dasom-candidate.h"
 #include "dasom-engine.h"
 #include "dasom-context.h"
@@ -37,8 +39,8 @@ G_BEGIN_DECLS
 #define DASOM_IS_SERVER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_SERVER))
 #define DASOM_SERVER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_SERVER, DasomServerClass))
 
-typedef struct _DasomEngine  DasomEngine;
-typedef struct _DasomContext DasomContext;
+typedef struct _DasomContext     DasomContext;
+typedef struct _DasomCandidate   DasomCandidate;
 
 typedef struct _DasomServer      DasomServer;
 typedef struct _DasomServerClass DasomServerClass;

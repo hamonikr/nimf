@@ -40,6 +40,7 @@ G_BEGIN_DECLS
 #define DASOM_CONTEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_CONTEXT, DasomContextClass))
 
 typedef struct _DasomServer       DasomServer;
+typedef struct _DasomEngine       DasomEngine;
 
 typedef struct _DasomContext      DasomContext;
 typedef struct _DasomContextClass DasomContextClass;

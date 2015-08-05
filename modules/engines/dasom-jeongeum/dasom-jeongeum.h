@@ -47,7 +47,6 @@ struct _DasomJeongeum
   gchar              *en_name;
   gchar              *ko_name;
 
-  DasomCandidate     *candidate;
   gboolean            is_candidate_mode;
   gboolean            is_english_mode;
   HanjaTable         *hanja_table;

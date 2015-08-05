@@ -19,7 +19,6 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dasom.h"
 #include "dasom-jeongeum.h"
 #include "modules/engines/dasom-english/dasom-english.h"
 
@@ -89,7 +88,7 @@ dasom_jeongeum_reset (DasomEngine *engine)
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
 
-  dasom_candidate_hide_window (jeongeum->candidate);
+  dasom_engine_hide_candidate_window (engine);
   jeongeum->is_candidate_mode = FALSE;
 
   const ucschar *flush;
@@ -131,6 +130,32 @@ dasom_jeongeum_focus_out (DasomEngine *engine)
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
   dasom_jeongeum_reset (engine);
+}
+
+static void
+on_candidate_clicked (DasomEngine *engine, gchar *text)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+
+  if (text)
+  {
+    hangul_ic_reset (jeongeum->context);
+
+    if (jeongeum->preedit_string != NULL)
+    {
+      g_free (jeongeum->preedit_string);
+      jeongeum->preedit_string = NULL;
+      dasom_engine_emit_preedit_changed (DASOM_ENGINE (jeongeum));
+      dasom_engine_emit_preedit_end (DASOM_ENGINE (jeongeum));
+    }
+
+    dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), text);
+  }
+
+  dasom_engine_hide_candidate_window (DASOM_ENGINE (jeongeum));
+  jeongeum->is_candidate_mode = FALSE;
 }
 
 gboolean
@@ -191,14 +216,14 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
         hanja_list_delete (list);
       }
 
-      dasom_candidate_update_window (jeongeum->candidate, (const gchar **) strv);
+      dasom_engine_update_candidate_window (engine, (const gchar **) strv);
       g_strfreev (strv);
-      dasom_candidate_show_window (jeongeum->candidate);
+      dasom_engine_show_candidate_window (engine);
     }
     else
     {
       jeongeum->is_candidate_mode = FALSE;
-      dasom_candidate_hide_window (jeongeum->candidate);
+      dasom_engine_hide_candidate_window (engine);
     }
 
     return TRUE;
@@ -213,19 +238,19 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
       case DASOM_KEY_Return:
       case DASOM_KEY_KP_Enter:
         {
-          gchar *text = dasom_candidate_get_selected_text (jeongeum->candidate);
-          g_signal_emit_by_name (jeongeum->candidate, "row-activated", text);
+          gchar *text = dasom_engine_get_selected_candidate_text (engine);
+          on_candidate_clicked (engine, text);
           g_free (text);
         }
         break;
       case DASOM_KEY_Up:
-        dasom_candidate_select_previous_item (jeongeum->candidate);
+        dasom_engine_select_previous_candidate_item (engine);
         break;
       case DASOM_KEY_Down:
-        dasom_candidate_select_next_item (jeongeum->candidate);
+        dasom_engine_select_next_candidate_item (engine);
         break;
       case DASOM_KEY_Escape:
-        dasom_candidate_hide_window (jeongeum->candidate);
+        dasom_engine_hide_candidate_window (engine);
         jeongeum->is_candidate_mode = FALSE;
         break;
       default:
@@ -371,34 +396,6 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
   return retval;
 }
 
-void
-on_candidate_row_activated (DasomCandidate *candidate,
-                            const gchar    *text,
-                            gpointer        user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  DasomJeongeum *jeongeum = user_data;
-
-  if (text)
-  {
-    hangul_ic_reset (jeongeum->context);
-
-    if (jeongeum->preedit_string != NULL)
-    {
-      g_free (jeongeum->preedit_string);
-      jeongeum->preedit_string = NULL;
-      dasom_engine_emit_preedit_changed (DASOM_ENGINE (jeongeum));
-      dasom_engine_emit_preedit_end (DASOM_ENGINE (jeongeum));
-    }
-
-    dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), text);
-  }
-
-  dasom_candidate_hide_window (jeongeum->candidate);
-  jeongeum->is_candidate_mode = FALSE;
-}
-
 static void
 dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
@@ -419,9 +416,6 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->ko_name = g_strdup ("정");
   jeongeum->is_english_mode = TRUE;
   jeongeum->hanja_table = hanja_table_load (NULL);
-  jeongeum->candidate = dasom_candidate_new (); /* FIXME */
-  g_signal_connect (jeongeum->candidate, "row-activated",
-                    (GCallback) on_candidate_row_activated, jeongeum);
 
   g_object_unref (settings);
   g_free (layout);
@@ -438,7 +432,6 @@ dasom_jeongeum_finalize (GObject *object)
 
   hanja_table_delete (jeongeum->hanja_table);
   hangul_ic_delete   (jeongeum->context);
-  g_object_unref (jeongeum->candidate); /* FIXME */
   g_free (jeongeum->preedit_string);
   g_free (jeongeum->en_name);
   g_free (jeongeum->ko_name);
@@ -525,6 +518,8 @@ dasom_jeongeum_class_init (DasomJeongeumClass *klass)
   engine_class->reset              = dasom_jeongeum_reset;
   engine_class->focus_in           = dasom_jeongeum_focus_in;
   engine_class->focus_out          = dasom_jeongeum_focus_out;
+
+  engine_class->candidate_clicked  = on_candidate_clicked;
 
   engine_class->get_name           = dasom_jeongeum_get_name;
   engine_class->set_english_mode   = dasom_jeongeum_set_english_mode;

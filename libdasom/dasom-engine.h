@@ -24,7 +24,6 @@
 
 #include <glib-object.h>
 #include "dasom-events.h"
-#include "dasom-im.h"
 #include "dasom-types.h"
 
 G_BEGIN_DECLS
@@ -82,6 +81,9 @@ struct _DasomEngineClass
                                    gboolean          is_english_mode);
   gboolean (* get_english_mode)   (DasomEngine      *engine);
 
+  void     (* candidate_clicked)  (DasomEngine      *engine,
+                                   gchar            *text);
+
   const gchar * (* get_name)      (DasomEngine      *engine);
 };
 
@@ -117,6 +119,14 @@ gboolean dasom_engine_emit_delete_surrounding   (DasomEngine      *engine,
                                                  gint              offset,
                                                  gint              n_chars);
 void     dasom_engine_emit_engine_changed       (DasomEngine      *engine);
+/* candidate */
+void     dasom_engine_update_candidate_window        (DasomEngine  *engine,
+                                                      const gchar **strv);
+void     dasom_engine_show_candidate_window          (DasomEngine  *engine);
+void     dasom_engine_hide_candidate_window          (DasomEngine  *engine);
+void     dasom_engine_select_previous_candidate_item (DasomEngine  *engine);
+void     dasom_engine_select_next_candidate_item     (DasomEngine  *engine);
+gchar   *dasom_engine_get_selected_candidate_text    (DasomEngine  *engine);
 
 const gchar *dasom_engine_get_name     (DasomEngine      *engine);
 
