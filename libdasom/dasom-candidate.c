@@ -61,11 +61,39 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
 }
 
 static void
+on_tree_view_realize (GtkWidget      *tree_view,
+                      DasomCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GtkTreeViewColumn *column;
+  GtkAdjustment *adjustment;
+  gint horizontal_space, height;
+  guint border_width;
+
+  column = gtk_tree_view_get_column (GTK_TREE_VIEW (tree_view), TITEL_COLUMN);
+  gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
+  border_width = gtk_container_get_border_width (GTK_CONTAINER (candidate->window));
+  gtk_widget_style_get (tree_view, "horizontal-separator",
+                        &horizontal_space, NULL);
+  height = height + horizontal_space / 2;
+  gtk_window_resize (GTK_WINDOW (candidate->window),
+                     height * 10 / 1.6,
+                     height * 10 + border_width * 2);
+
+  adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
+  gtk_adjustment_set_value (adjustment, 0.0);
+}
+
+static void
 dasom_candidate_init (DasomCandidate *candidate)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   GtkCellRenderer   *renderer;
   GtkTreeViewColumn *column;
   GtkListStore      *store;
+  GtkTreeSelection  *selection;
 
   gtk_init (0, NULL); /* FIXME */
 
@@ -73,10 +101,13 @@ dasom_candidate_init (DasomCandidate *candidate)
   store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
   candidate->treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+  g_signal_connect (candidate->treeview, "realize",
+                    (GCallback) on_tree_view_realize, candidate);
+  g_signal_connect (selection, "changed", (GCallback) on_changed, &candidate->iter);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Title",
-                                                     renderer,
+  column = gtk_tree_view_column_new_with_attributes ("Title", renderer,
                                                      "text", TITEL_COLUMN,
                                                      NULL);
   gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_FIXED);
@@ -87,103 +118,12 @@ dasom_candidate_init (DasomCandidate *candidate)
   /* scrolled window */
   GtkWidget *scrolled_window = gtk_scrolled_window_new (NULL, NULL);
 
-  /* for default size */
-  gint height;
-  gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
-
   /* gtk window */
   candidate->window = gtk_window_new (GTK_WINDOW_POPUP);
-  guint border_width = 1;
   gtk_window_set_position (GTK_WINDOW (candidate->window), GTK_WIN_POS_MOUSE);
-  gtk_container_set_border_width (GTK_CONTAINER (candidate->window), border_width);
-  gtk_window_set_default_size (GTK_WINDOW (candidate->window),
-                               (gint) ((gdouble) height * 10.0 / 1.6),
-                               height * 10 + border_width * 2);
-
+  gtk_container_set_border_width (GTK_CONTAINER (candidate->window), 1);
   gtk_container_add (GTK_CONTAINER (scrolled_window), candidate->treeview);
   gtk_container_add (GTK_CONTAINER (candidate->window), scrolled_window);
-
-  GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
-
-  g_signal_connect (selection, "changed", (GCallback) on_changed, &candidate->iter);
-
-/* FIXME: 아래는 cell 높이와 스크롤러 설정을 위한 코드입니다.
-   원래 의도한 바는 gtk_widget_show_all 을 실행하지 않고서 실제로 보이게 될
-   정확한 크기를 구하는 것입니다. 그런데,
-   gtk_widget_show_all 실행 전과 실행 후의 cell 높이 값이 다르고,
-   또한, dasom_candidate_show_window 함수에서 gtk_widget_show_all 한 후에
-   실행하여도 값이 제대로 나오지를 않습니다.
-   그 이유는 저도 모르겠습니다.
-   그래서 실제로 보이게 될 정확한 크기를 구하고자 코드를 아래처럼 작성했습니다.
- */
-  GtkTreeModel *model;
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
-  GtkTreeIter iter;
-
-  /* 임시로 넣는 데이터입니다. */
-  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set    (GTK_LIST_STORE (model), &iter,
-                         TITEL_COLUMN, g_strdup ("test"),
-                         -1);
-
-  /* show 후에 바로 hide 하여도 값이 제대로 나오더군요 */
-  gtk_widget_show_all (candidate->window);
-  gtk_widget_hide (candidate->window);
-
-  if (gtk_tree_model_get_iter_first (model, &candidate->iter))
-  {
-    GtkTreePath *path = NULL;
-    GdkRectangle rect = {0};
-
-    GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
-    gtk_tree_selection_select_iter (selection, &candidate->iter);
-
-    path = gtk_tree_model_get_path (model, &candidate->iter);
-    gtk_tree_view_get_background_area (GTK_TREE_VIEW (candidate->treeview),
-                                       path,
-                                       NULL,
-                                       &rect);
-
-    gtk_tree_path_free (path);
-    guint border_width = gtk_container_get_border_width (GTK_CONTAINER (candidate->window));
-    gtk_window_resize (GTK_WINDOW (candidate->window),
-                       (gint) ((gdouble) (rect.height) * 10.0 / 1.6),
-                       rect.height * 10 + border_width * 2);
-
-    GtkAdjustment *adjustment;
-    adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
-    gtk_adjustment_set_value (adjustment, 0.0);
-  }
-
-  gtk_list_store_clear (GTK_LIST_STORE (model));
-
-/* FIXME: 크기 구하는 방법은 아래와 같은 방법으로도 구할 수 있습니다.
-   아래 방법 역시 gtk_widget_show_all 전/후 값이 다릅니다.
-   또한, dasom_candidate_show_window 함수에서 gtk_widget_show_all 한 후에
-   실행하여도 값이 제대로 나오지를 않습니다.
-   그 이유는 저도 모르겠습니다.
-
-  gint cell_height, horizontal_separator, height;
-  GtkTreeViewColumn *column = gtk_tree_view_get_column (GTK_TREE_VIEW (candidate->treeview), TITEL_COLUMN);
-  gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &cell_height);
-
-  gtk_widget_style_get (candidate->treeview,
-                        "horizontal_separator", &horizontal_separator,
-                        NULL);
-
-  height = cell_height + horizontal_separator / 2;
-
-  g_print ("SIZE: %d %d\n", cell_height, horizontal_separator);
-
-  guint border_width = gtk_container_get_border_width (GTK_CONTAINER (candidate->window));
-  gtk_window_resize (GTK_WINDOW (candidate->window),
-                               (gint) ((gdouble) height * 10.0 / 1.6),
-                               height * 10 + border_width * 2);
-
-  GtkAdjustment *adjustment;
-  adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
-  gtk_adjustment_set_value (adjustment, 0.0);
-*/
 }
 
 static void
