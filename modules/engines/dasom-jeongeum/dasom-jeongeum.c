@@ -201,6 +201,10 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
       jeongeum->is_candidate_mode = TRUE;
       HanjaList *list = hanja_table_match_exact (jeongeum->hanja_table,
                                                  jeongeum->preedit_string);
+      if (list == NULL)
+        list = hanja_table_match_exact (jeongeum->symbol_table,
+                                        jeongeum->preedit_string);
+
       gint list_len = hanja_list_get_size (list);
       gchar **strv = g_malloc0 ((list_len + 1) * sizeof (gchar *));
 
@@ -415,7 +419,8 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->en_name = g_strdup ("EN");
   jeongeum->ko_name = g_strdup ("정");
   jeongeum->is_english_mode = TRUE;
-  jeongeum->hanja_table = hanja_table_load (NULL);
+  jeongeum->hanja_table  = hanja_table_load (NULL);
+  jeongeum->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
 
   g_object_unref (settings);
   g_free (layout);
@@ -431,6 +436,7 @@ dasom_jeongeum_finalize (GObject *object)
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (object);
 
   hanja_table_delete (jeongeum->hanja_table);
+  hanja_table_delete (jeongeum->symbol_table);
   hangul_ic_delete   (jeongeum->context);
   g_free (jeongeum->preedit_string);
   g_free (jeongeum->en_name);
