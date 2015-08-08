@@ -152,21 +152,23 @@ dasom_candidate_update_window (DasomCandidate  *candidate,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GtkTreeModel *model;
-  GtkTreeIter iter;
+  GtkTreeModel  *model;
+  GtkTreeIter    iter;
+  GtkAdjustment *adjustment;
+  guint          i;
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
   gtk_list_store_clear (GTK_LIST_STORE (model));
-
-  guint i;
 
   for (i = 0; strv[i] != NULL; i++)
   {
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set    (GTK_LIST_STORE (model), &iter,
-                           TITEL_COLUMN, strv[i],
-                           -1);
+                           TITEL_COLUMN, strv[i], -1);
   }
+
+  adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
+  gtk_adjustment_set_value (adjustment, 0.0);
 }
 
 void dasom_candidate_show_window (DasomCandidate *candidate)
