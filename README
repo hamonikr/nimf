@@ -14,6 +14,16 @@ INSTALL
     sudo make install
     sudo ldconfig
 
+  For using symbols in Jeongeum Engine
+
+    wget https://raw.githubusercontent.com/choehwanjin/libhangul/master/data/hanja/mssymbol.txt
+    sudo mv mssymbol.txt /usr/share/libhangul/hanja/
+    ls /usr/share/libhangul/hanja/mssymbol.txt
+
+  Enabling dasom-agent@gnome-shell-extensions.cogno.org
+
+    gnome-shell-extension-tool -e dasom-agent@gnome-shell-extensions.cogno.org
+
   Update your gtk module cache
 
   debian / ubuntu 32-bit
