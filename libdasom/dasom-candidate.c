@@ -182,6 +182,9 @@ void dasom_candidate_show_window (DasomCandidate *candidate)
     gtk_tree_selection_select_iter (selection, &candidate->iter);
   }
 
+  gtk_window_move (GTK_WINDOW (candidate->window),
+                   candidate->server->target->cursor_area.x,
+                   candidate->server->target->cursor_area.y);
   gtk_widget_show_all (candidate->window);
 }
 
