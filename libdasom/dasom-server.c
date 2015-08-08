@@ -52,7 +52,6 @@ on_incoming_message_dasom (GSocket      *socket,
   gboolean retval;
 
   DasomContext *pushed_context = context->server->target;
-  dasom_engine_set_english_mode (context->engine, context->is_english_mode);
 
   context->server->target = context;
 
@@ -79,6 +78,7 @@ on_incoming_message_dasom (GSocket      *socket,
     return G_SOURCE_REMOVE;
   }
 
+  dasom_engine_set_english_mode (context->engine, context->is_english_mode);
   message = dasom_recv_message (socket);
   dasom_message_unref (context->reply);
   context->reply = message;
