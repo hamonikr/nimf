@@ -29,7 +29,14 @@ PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 PKG_CHECK_MODULES(LIBHANGUL, libhangul >= 0.0.12)
 PKG_CHECK_MODULES(X11, [x11])
 
-PKG_CHECK_MODULES(APP_INDICATOR, [appindicator3-0.1])
+AC_ARG_ENABLE([appindicator],
+  AS_HELP_STRING([--disable-appindicator], [Disable feature appindicator]))
+
+AS_IF([test "x$enable_appindicator" != "xno"],
+  [PKG_CHECK_MODULES(APPINDICATOR, [appindicator3-0.1])
+])
+
+AM_CONDITIONAL([ENABLE_APPINDICATOR], [test "$enable_appindicator" = "yes"])
 
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([0.10.1])

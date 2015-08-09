@@ -1,1 +1,5 @@
-SUBDIRS = gnome-shell-extension app-indicator
+SUBDIRS = gnome-shell-extension
+
+if ENABLE_APPINDICATOR
+  SUBDIRS += app-indicator
+endif

@@ -1,9 +1,12 @@
 # start Dasom
 
 if [ "$IM_CONFIG_PHASE" = 2 ]; then
-# start Dasom daemon
-dasom-daemon &
-dasom-indicator &
+    # start Dasom daemon
+    dasom-daemon &
+
+    if ! test -z `which dasom-indicator`; then
+        dasom-indicator &
+    fi
 fi
 
 if [ "$IM_CONFIG_PHASE" = 1 ]; then
