@@ -5,6 +5,6 @@
   "gettext-domain": "gnome-shell-extensions",
   "name": "Dasom Agent",
   "description": "Dasom Agent for Dasom Input Method Framework",
-  "shell-version": [ "3.14" ],
+  "shell-version": [ "3.14", "3.16" ],
   "url": "https://github.com/cogniti/dasom"
 }
