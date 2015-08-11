@@ -88,8 +88,6 @@ gsettings_SCHEMAS = org.freedesktop.Dasom.gschema.xml
 EXTRA_DIST = \
 	dasom.pc.in
 
-if HAVE_INTROSPECTION
-
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS  = --add-include-path=$(srcdir) --warn-all \
@@ -116,5 +114,3 @@ CLEANFILES = \
 	dasom-marshalers.h dasom-marshalers.c \
 	dasom-enum-types.h dasom-enum-types.c \
 	$(gir_DATA) $(typelib_DATA)
-
-endif

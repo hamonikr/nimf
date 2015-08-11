@@ -28,6 +28,7 @@ PKG_CHECK_MODULES(GTK3, [gtk+-3.0])
 PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 PKG_CHECK_MODULES(LIBHANGUL, libhangul >= 0.0.12)
 PKG_CHECK_MODULES(X11, [x11])
+PKG_CHECK_MODULES(GOBJECT_INTROSPECTION, [gobject-introspection-1.0])
 
 AC_ARG_ENABLE([appindicator],
   AS_HELP_STRING([--disable-appindicator], [Disable feature appindicator]))
