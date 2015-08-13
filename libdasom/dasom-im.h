@@ -31,7 +31,6 @@
 #include "dasom-events.h"
 #include "dasom-engine.h"
 #include "dasom-message.h"
-#include "dasom.h"
 
 G_BEGIN_DECLS
 
@@ -41,9 +40,6 @@ G_BEGIN_DECLS
 #define DASOM_IS_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), DASOM_TYPE_IM))
 #define DASOM_IS_IM_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_IM))
 #define DASOM_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_IM, DasomIMClass))
-
-typedef struct _DasomEngine        DasomEngine;
-typedef struct _DasomModuleManager DasomModuleManager;
 
 typedef struct _DasomIM      DasomIM;
 typedef struct _DasomIMClass DasomIMClass;
