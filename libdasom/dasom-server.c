@@ -838,24 +838,7 @@ int dasom_server_xim_forward_event (DasomServer          *server,
   type = (xevent->type == KeyPress) ? DASOM_EVENT_KEY_PRESS : DASOM_EVENT_KEY_RELEASE;
 
   event = dasom_event_new (type);
-
-  if (xevent->type == KeyRelease)  event->key.state |= DASOM_RELEASE_MASK;
-  if (xevent->state & Button1Mask) event->key.state |= DASOM_BUTTON1_MASK;
-  if (xevent->state & Button2Mask) event->key.state |= DASOM_BUTTON2_MASK;
-  if (xevent->state & Button3Mask) event->key.state |= DASOM_BUTTON3_MASK;
-  if (xevent->state & Button4Mask) event->key.state |= DASOM_BUTTON4_MASK;
-  if (xevent->state & Button5Mask) event->key.state |= DASOM_BUTTON5_MASK;
-  if (xevent->state & ShiftMask)   event->key.state |= DASOM_SHIFT_MASK;
-  if (xevent->state & LockMask)    event->key.state |= DASOM_LOCK_MASK;
-  if (xevent->state & ControlMask) event->key.state |= DASOM_CONTROL_MASK;
-  if (xevent->state & Mod1Mask)    event->key.state |= DASOM_MOD1_MASK;
-  if (xevent->state & Mod2Mask)    event->key.state |= DASOM_MOD2_MASK;
-  if (xevent->state & Mod3Mask)    event->key.state |= DASOM_MOD3_MASK;
-  if (xevent->state & Mod4Mask)    event->key.state |= DASOM_MOD4_MASK;
-  if (xevent->state & Mod5Mask)    event->key.state |= DASOM_MOD5_MASK;
-  /* FIXME: I don't know how I process SUPER, HYPER, META */
-
-  /* TODO: test for qwerty and dvorak */
+  event->key.state = (DasomModifierType) xevent->state;
   event->key.keyval = XLookupKeysym (xevent,
                                      (xevent->state & ShiftMask) ? 1 : 0);
   event->key.hardware_keycode = xevent->keycode;
