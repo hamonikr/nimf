@@ -1,1 +1,1 @@
-SUBDIRS = gtk qt4
+SUBDIRS = gtk qt4 qt5

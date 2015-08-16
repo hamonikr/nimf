@@ -47,7 +47,7 @@ for IM_CONFIG_MARKER in /usr/lib/*/qt4/plugins/inputmethods/libqt4im-dasom.so \
 done
 QT_IM_MODULE=xim
 # use immodule when available for Qt5
-for IM_CONFIG_MARKER in /usr/lib/*/qt5/plugins/platforminputcontexts/libdasomplatforminputcontextplugin.so ; do
+for IM_CONFIG_MARKER in /usr/lib/*/qt5/plugins/platforminputcontexts/libqt5im-dasom.so ; do
     if [ -e $IM_CONFIG_MARKER ]; then
         QT_IM_MODULE=dasom
         break
