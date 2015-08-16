@@ -59,14 +59,11 @@ Troubleshoot
 Architecture
 ------------
 
-     +-- im modules --+    +--- each processes ----+  +- a process --+
-     | gtk2 im module |    | gnome-shell-extension |  |   X server   |
-     | gtk3 im module |    | dasom-indicator       |  +--------------+
-     | qt4  im module |    +-----------------------+         ^ |
-     +----------------+                |                     | |
-              |                        |                     | |
+      +- im modules --+    +--- each processes ----+  +- a process --+
+      | gtk im module |    | gnome-shell-extension |  |   X server   |
+      | qt  im module |    | dasom-indicator       |  +--------------+
+      +---------------+    +-----------------------+         ^ |
               | calls                  | calls               | |
-              |                        |                     | |
     +------------------+    +---------------------+          | |
     | dasom IM library |    | dasom agent library |          | | communicates
     +------------------+    +---------------------+          | |
@@ -77,7 +74,6 @@ Architecture
           +---------------------- a process ----------------------+
           |                     dasom-daemon (including XIM)      |
           +-------------------------------------------------------+
-                          |                        |
                           | calls                  | create instance
                           | singleton instance     | (not module yet)
                 +---------------+            +------------------+
@@ -93,6 +89,7 @@ Debugging
 ---------
     export GTK_IM_MODULE="dasom"
     export QT4_IM_MODULE="dasom"
+    export QT_IM_MODULE="dasom"
     export G_MESSAGES_DEBUG=dasom
     export XMODIFIERS="@im=dasom"
     gedit
