@@ -38,8 +38,8 @@ fi
 
 QT4_IM_MODULE=xim
 # use immodule when available for Qt4 (Qt3 has been long dead)
-for IM_CONFIG_MARKER in /usr/lib/*/qt4/plugins/inputmethods/libqtim-dasom.so\
-                        /usr/lib/qt4/plugins/inputmethods/libqtim-dasom.so ; do
+for IM_CONFIG_MARKER in /usr/lib/*/qt4/plugins/inputmethods/libqt4im-dasom.so \
+                        /usr/lib/qt4/plugins/inputmethods/libqt4im-dasom.so ; do
     if [ -e $IM_CONFIG_MARKER ]; then
         QT4_IM_MODULE=dasom
         break

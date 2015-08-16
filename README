@@ -59,10 +59,11 @@ Troubleshoot
 Architecture
 ------------
 
-      +- a process ---+    +--- each processes ----+  +- a process --+
-      | gtk im module |    | gnome-shell-extension |  |   X server   |
-      +---------------+    | dasom-indicator       |  +--------------+
-              |            +-----------------------+         ^ |
+     +-- im modules --+    +--- each processes ----+  +- a process --+
+     | gtk2 im module |    | gnome-shell-extension |  |   X server   |
+     | gtk3 im module |    | dasom-indicator       |  +--------------+
+     | qt4  im module |    +-----------------------+         ^ |
+     +----------------+                |                     | |
               |                        |                     | |
               | calls                  | calls               | |
               |                        |                     | |
@@ -78,19 +79,20 @@ Architecture
           +-------------------------------------------------------+
                           |                        |
                           | calls                  | create instance
-                          | singleton instance     |
+                          | singleton instance     | (not module yet)
                 +---------------+            +------------------+
                 | engine module |   calls    | candidate module |
                 |   interface   | ---------> |    interface     |
                 +---------------+            +------------------+
                   |                            |
-                  +- dasom-english             +- dasom-candidate-gtk3
+                  +- dasom-english             +- dasom-candidate (gtk3)
                   +- dasom-jeongeum
 
 
 Debugging
 ---------
     export GTK_IM_MODULE="dasom"
+    export QT4_IM_MODULE="dasom"
     export G_MESSAGES_DEBUG=dasom
     export XMODIFIERS="@im=dasom"
     gedit
@@ -105,4 +107,5 @@ References
   http://docs.enlightenment.org/auto/efl/ecore_main.html
   http://www.w3.org/TR/ime-api/
   https://developer.chrome.com/extensions/input_ime
+  http://doc.qt.io/qt-4.8/qinputcontext.html
   http://doc.qt.io/qt-5/qinputmethod.html

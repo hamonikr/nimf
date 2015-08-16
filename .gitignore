@@ -26,3 +26,4 @@ dasom-enum-types.h
 dasom-marshalers.c
 dasom-marshalers.h
 tests/textview
+*.moc

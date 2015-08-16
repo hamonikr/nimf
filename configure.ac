@@ -12,6 +12,7 @@ AM_SILENT_RULES([yes])
 
 AM_PROG_AR
 AC_PROG_CC
+AC_PROG_CXX
 
 GETTEXT_PACKAGE=dasom
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [gettext package name])
@@ -20,15 +21,15 @@ AM_GLIB_DEFINE_LOCALEDIR(DASOM_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0])
-PKG_CHECK_MODULES(GIO, [gio-2.0])
-PKG_CHECK_MODULES(GIO_UNIX, [gio-unix-2.0])
-PKG_CHECK_MODULES(GMODULE, [gmodule-2.0])
+PKG_CHECK_MODULES(LIBDASOM_DEPS,
+                  [glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0
+                   gobject-introspection-1.0])
+
 PKG_CHECK_MODULES(GTK3, [gtk+-3.0])
 PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 PKG_CHECK_MODULES(LIBHANGUL, libhangul >= 0.0.12)
 PKG_CHECK_MODULES(X11, [x11])
-PKG_CHECK_MODULES(GOBJECT_INTROSPECTION, [gobject-introspection-1.0])
+PKG_CHECK_MODULES(QT4_GUI, [QtGui])
 
 AC_ARG_ENABLE([appindicator],
   AS_HELP_STRING([--disable-appindicator], [Disable feature appindicator]))
@@ -54,6 +55,7 @@ AC_OUTPUT([
   modules/Makefile
   modules/clients/Makefile
   modules/clients/gtk/Makefile
+  modules/clients/qt4/Makefile
   modules/engines/Makefile
   modules/engines/dasom-english/Makefile
   modules/engines/dasom-jeongeum/Makefile

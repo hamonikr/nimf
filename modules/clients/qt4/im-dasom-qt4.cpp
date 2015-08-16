@@ -1,0 +1,320 @@
+/* -*- Mode: C++; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
+
+#include <QTextFormat>
+#include <QInputContext>
+#include <QInputContextPlugin>
+#include "dasom-im.h"
+
+#ifdef Q_WS_X11
+# include <X11/Xlib.h>
+#endif
+
+class DasomInputContext : public QInputContext
+{
+   Q_OBJECT
+public:
+   DasomInputContext ();
+  ~DasomInputContext ();
+
+  virtual QString identifierName  ();
+  virtual QString language        ();
+
+  virtual void    reset           ();
+  virtual void    update          ();
+
+  virtual bool    isComposing     () const;
+
+  virtual void    setFocusWidget  (QWidget *w);
+
+#if defined(Q_WS_X11)
+  virtual bool    x11FilterEvent  (QWidget *keywidget, XEvent *event);
+#endif // Q_WS_X11
+  virtual bool    filterEvent     (const QEvent *event);
+
+  // dasom signal callbacks
+  static void     on_preedit_start        (DasomIM     *im,
+                                           gpointer     user_data);
+  static void     on_preedit_end          (DasomIM     *im,
+                                           gpointer     user_data);
+  static void     on_preedit_changed      (DasomIM     *im,
+                                           gpointer     user_data);
+  static void     on_commit               (DasomIM     *im,
+                                           const gchar *text,
+                                           gpointer     user_data);
+  static gboolean on_retrieve_surrounding (DasomIM     *im,
+                                           gpointer     user_data);
+  static gboolean on_delete_surrounding   (DasomIM     *im,
+                                           gint         offset,
+                                           gint         n_chars,
+                                           gpointer     user_data);
+
+private:
+  DasomIM *m_im;
+  bool     m_isComposing;
+};
+
+/* dasom signal callbacks */
+void
+DasomInputContext::on_preedit_start (DasomIM *im, gpointer user_data)
+{
+  DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
+  context->m_isComposing = true;
+}
+
+void
+DasomInputContext::on_preedit_end (DasomIM *im, gpointer user_data)
+{
+  DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
+  context->m_isComposing = false;
+}
+
+void
+DasomInputContext::on_preedit_changed (DasomIM *im, gpointer user_data)
+{
+  DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
+
+  gchar *str;
+  gint   cursor_pos;
+  dasom_im_get_preedit_string (im, &str, &cursor_pos);
+
+  QString preeditText = QString::fromUtf8 (str);
+  g_free (str);
+
+  QList <QInputMethodEvent::Attribute> attrs;
+  // preedit text attribute
+  QInputMethodEvent::Attribute attr (QInputMethodEvent::TextFormat,
+                                     0, preeditText.length (),
+                                     context->standardFormat (PreeditFormat));
+  attrs << attr;
+  // cursor attribute
+  attrs << QInputMethodEvent::Attribute (QInputMethodEvent::Cursor,
+                                         cursor_pos, true, 0);
+
+  QInputMethodEvent event (preeditText, attrs);
+  context->sendEvent (event);
+}
+
+void
+DasomInputContext::on_commit (DasomIM     *im,
+                              const gchar *text,
+                              gpointer     user_data)
+{
+  DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
+  QString str = QString::fromUtf8 (text);
+  QInputMethodEvent event;
+  event.setCommitString (str);
+  context->sendEvent (event);
+}
+
+gboolean
+DasomInputContext::on_retrieve_surrounding (DasomIM *im, gpointer user_data)
+{
+  // TODO
+  return FALSE;
+}
+
+gboolean
+DasomInputContext::on_delete_surrounding (DasomIM *im,
+                                          gint     offset,
+                                          gint     n_chars,
+                                          gpointer user_data)
+{
+  // TODO
+  return FALSE;
+}
+
+DasomInputContext::DasomInputContext ()
+  : m_isComposing(false)
+{
+  m_im = dasom_im_new ();
+  g_signal_connect (m_im, "preedit-start",
+                    G_CALLBACK (DasomInputContext::on_preedit_start), this);
+  g_signal_connect (m_im, "preedit-end",
+                    G_CALLBACK (DasomInputContext::on_preedit_end), this);
+  g_signal_connect (m_im, "preedit-changed",
+                    G_CALLBACK (DasomInputContext::on_preedit_changed), this);
+  g_signal_connect (m_im, "commit",
+                    G_CALLBACK (DasomInputContext::on_commit), this);
+  g_signal_connect (m_im, "retrieve-surrounding",
+                    G_CALLBACK (DasomInputContext::on_retrieve_surrounding),
+                    this);
+  g_signal_connect (m_im, "delete-surrounding",
+                    G_CALLBACK (DasomInputContext::on_delete_surrounding),
+                    this);
+}
+
+DasomInputContext::~DasomInputContext ()
+{
+  g_object_unref (m_im);
+}
+
+QString
+DasomInputContext::identifierName ()
+{
+  return QString ("dasom");
+}
+
+QString
+DasomInputContext::language ()
+{
+  return QString ("");
+}
+
+void
+DasomInputContext::reset ()
+{
+  dasom_im_reset (m_im);
+}
+
+void
+DasomInputContext::update ()
+{
+  QWidget *widget = focusWidget ();
+
+  if (widget)
+  {
+    QRect  rect  = widget->inputMethodQuery(Qt::ImMicroFocus).toRect();
+    QPoint point = widget->mapToGlobal (QPoint(0,0));
+    rect.translate (point);
+    DasomRectangle cursor_area = {0};
+    cursor_area.x      = rect.x ();
+    cursor_area.y      = rect.y ();
+    cursor_area.width  = rect.width ();
+    cursor_area.height = rect.height ();
+    dasom_im_set_cursor_location (m_im, &cursor_area);
+  }
+}
+
+bool
+DasomInputContext::isComposing () const
+{
+  return m_isComposing;
+}
+
+void
+DasomInputContext::setFocusWidget (QWidget *w)
+{
+  QInputContext::setFocusWidget (w);
+
+  if (w)
+    dasom_im_focus_in (m_im);
+  else
+    dasom_im_focus_out (m_im);
+
+  update ();
+}
+
+#ifdef Q_WS_X11
+bool DasomInputContext::x11FilterEvent (QWidget *keywidget, XEvent *event)
+{
+  DasomEvent     *dasom_event;
+  DasomEventType  type = DASOM_EVENT_NOTHING;
+
+  gboolean retval;
+
+  if (event->type == KeyPress)
+    type = DASOM_EVENT_KEY_PRESS;
+  else
+    type = DASOM_EVENT_KEY_RELEASE;
+
+  dasom_event = dasom_event_new (type);
+  dasom_event->key.state = (DasomModifierType) event->xkey.state;
+  dasom_event->key.keyval = XLookupKeysym (&event->xkey,
+                                           (event->xkey.state & ShiftMask) ? 1 : 0);
+  dasom_event->key.hardware_keycode = event->xkey.keycode;
+
+  retval = dasom_im_filter_event (m_im, dasom_event);
+  dasom_event_free (dasom_event);
+
+  return retval;
+}
+#endif // Q_WS_X11
+
+bool
+DasomInputContext::filterEvent (const QEvent *event)
+{
+  gboolean         retval;
+  const QKeyEvent *key_event = static_cast<const QKeyEvent *>( event );
+  DasomEvent      *dasom_event;
+  DasomEventType   type = DASOM_EVENT_NOTHING;
+
+  switch (event->type ())
+  {
+#ifdef KeyPress
+#undef KeyPress
+    case QEvent::KeyPress:
+#endif
+      type = DASOM_EVENT_KEY_PRESS;
+      break;
+#ifdef KeyRelease
+#undef KeyRelease
+    case QEvent::KeyRelease:
+#endif
+      type = DASOM_EVENT_KEY_RELEASE;
+      break;
+    case QEvent::MouseButtonPress:
+      dasom_im_reset (m_im);
+      return false;
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+    case QEvent::MouseMove:
+      return false;
+    default:
+      break;
+  }
+
+  dasom_event = dasom_event_new (type);
+  dasom_event->key.state            = key_event->nativeModifiers  ();
+  dasom_event->key.keyval           = key_event->nativeVirtualKey ();
+  dasom_event->key.hardware_keycode = key_event->nativeScanCode   (); /* FIXME: guint16 quint32 */
+
+  retval = dasom_im_filter_event (m_im, dasom_event);
+  dasom_event_free (dasom_event);
+
+  return retval;
+}
+
+/*
+ * class DasomInputContextPlugin
+ */
+class DasomInputContextPlugin : public QInputContextPlugin
+{
+  Q_OBJECT
+public:
+  DasomInputContextPlugin ()
+  {
+  }
+
+  ~DasomInputContextPlugin ()
+  {
+  }
+
+  virtual QStringList keys () const
+  {
+    return QStringList () <<  "dasom";
+  }
+
+  virtual QInputContext *create (const QString &key)
+  {
+    return new DasomInputContext ();
+  }
+
+  virtual QStringList languages (const QString &key)
+  {
+    return QStringList () << "ko" << "zh" << "ja";
+  }
+
+  virtual QString displayName (const QString &key)
+  {
+    return QString ("dasom");
+  }
+
+  virtual QString description (const QString &key)
+  {
+    return QString ("dasom Qt4 im module");
+  }
+};
+
+Q_EXPORT_PLUGIN2 (DasomInputContextPlugin, DasomInputContextPlugin)
+
+#include "im-dasom-qt4.moc"
