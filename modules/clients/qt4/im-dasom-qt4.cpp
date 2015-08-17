@@ -24,10 +24,6 @@
 #include <QInputContextPlugin>
 #include "dasom-im.h"
 
-#ifdef Q_WS_X11
-# include <X11/Xlib.h>
-#endif
-
 class DasomInputContext : public QInputContext
 {
    Q_OBJECT
@@ -35,20 +31,14 @@ public:
    DasomInputContext ();
   ~DasomInputContext ();
 
-  virtual QString identifierName  ();
-  virtual QString language        ();
+  virtual QString identifierName ();
+  virtual QString language       ();
 
-  virtual void    reset           ();
-  virtual void    update          ();
-
-  virtual bool    isComposing     () const;
-
-  virtual void    setFocusWidget  (QWidget *w);
-
-#if defined(Q_WS_X11)
-  virtual bool    x11FilterEvent  (QWidget *keywidget, XEvent *event);
-#endif // Q_WS_X11
-  virtual bool    filterEvent     (const QEvent *event);
+  virtual void    reset          ();
+  virtual void    update         ();
+  virtual bool    isComposing    () const;
+  virtual void    setFocusWidget (QWidget *w);
+  virtual bool    filterEvent    (const QEvent *event);
 
   // dasom signal callbacks
   static void     on_preedit_start        (DasomIM     *im,
@@ -145,6 +135,8 @@ DasomInputContext::on_delete_surrounding (DasomIM *im,
 DasomInputContext::DasomInputContext ()
   : m_isComposing(false)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   m_im = dasom_im_new ();
   g_signal_connect (m_im, "preedit-start",
                     G_CALLBACK (DasomInputContext::on_preedit_start), this);
@@ -164,6 +156,8 @@ DasomInputContext::DasomInputContext ()
 
 DasomInputContext::~DasomInputContext ()
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   g_object_unref (m_im);
 }
 
@@ -223,35 +217,11 @@ DasomInputContext::setFocusWidget (QWidget *w)
   update ();
 }
 
-#ifdef Q_WS_X11
-bool DasomInputContext::x11FilterEvent (QWidget *keywidget, XEvent *event)
-{
-  DasomEvent     *dasom_event;
-  DasomEventType  type = DASOM_EVENT_NOTHING;
-
-  gboolean retval;
-
-  if (event->type == KeyPress)
-    type = DASOM_EVENT_KEY_PRESS;
-  else
-    type = DASOM_EVENT_KEY_RELEASE;
-
-  dasom_event = dasom_event_new (type);
-  dasom_event->key.state = (DasomModifierType) event->xkey.state;
-  dasom_event->key.keyval = XLookupKeysym (&event->xkey,
-                                           (event->xkey.state & ShiftMask) ? 1 : 0);
-  dasom_event->key.hardware_keycode = event->xkey.keycode;
-
-  retval = dasom_im_filter_event (m_im, dasom_event);
-  dasom_event_free (dasom_event);
-
-  return retval;
-}
-#endif // Q_WS_X11
-
 bool
 DasomInputContext::filterEvent (const QEvent *event)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   gboolean         retval;
   const QKeyEvent *key_event = static_cast<const QKeyEvent *>( event );
   DasomEvent      *dasom_event;
@@ -259,16 +229,10 @@ DasomInputContext::filterEvent (const QEvent *event)
 
   switch (event->type ())
   {
-#ifdef KeyPress
-#undef KeyPress
     case QEvent::KeyPress:
-#endif
       type = DASOM_EVENT_KEY_PRESS;
       break;
-#ifdef KeyRelease
-#undef KeyRelease
     case QEvent::KeyRelease:
-#endif
       type = DASOM_EVENT_KEY_RELEASE;
       break;
     case QEvent::MouseButtonPress:
