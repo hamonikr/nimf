@@ -73,19 +73,19 @@ private:
 void
 DasomInputContext::on_preedit_start (DasomIM *im, gpointer user_data)
 {
-  qDebug ("%s:%s\n", __FILE__, "on_preedit_start");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
 DasomInputContext::on_preedit_end (DasomIM *im, gpointer user_data)
 {
-  qDebug ("%s:%s\n", __FILE__, "on_preedit_end");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
 DasomInputContext::on_preedit_changed (DasomIM *im, gpointer user_data)
 {
-  qDebug ("%s:%s\n", __FILE__, "on_preedit_changed");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gchar *str;
   gint   cursor_pos;
@@ -120,8 +120,7 @@ DasomInputContext::on_commit (DasomIM     *im,
                               const gchar *text,
                               gpointer     user_data)
 {
-  qDebug ("%s: void on_commit (DasomIM *im, |%s|, gpointer user_data)\n",
-          __FILE__, text);
+  g_debug (G_STRLOC ": %s: |%s|", G_STRFUNC, text);
 
   QString str = QString::fromUtf8 (text);
   QInputMethodEvent event;
@@ -138,7 +137,7 @@ DasomInputContext::on_commit (DasomIM     *im,
 gboolean
 DasomInputContext::on_retrieve_surrounding (DasomIM *im, gpointer user_data)
 {
-  qDebug ("%s:%s\n", __FILE__, "on_retrieve_surrounding");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return FALSE;
 }
 
@@ -148,13 +147,13 @@ DasomInputContext::on_delete_surrounding (DasomIM *im,
                                           gint     n_chars,
                                           gpointer user_data)
 {
-  qDebug ("%s:%s\n", __FILE__, "on_delete_surrounding");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return FALSE;
 }
 
 DasomInputContext::DasomInputContext ()
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::DasomInputContext()");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   m_im = dasom_im_new ();
   g_signal_connect (m_im, "preedit-start",
@@ -175,36 +174,35 @@ DasomInputContext::DasomInputContext ()
 
 DasomInputContext::~DasomInputContext ()
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::~DasomInputContext()");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   g_object_unref (m_im);
 }
 
 bool
 DasomInputContext::isValid () const
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::isValid ()");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return true;
 }
 
 void
 DasomInputContext::reset ()
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::reset ()");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   dasom_im_reset (m_im);
 }
 
 void
 DasomInputContext::commit ()
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::commit ()");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   dasom_im_reset (m_im);
 }
 
 void
-DasomInputContext::update (Qt::InputMethodQueries)
+DasomInputContext::update (Qt::InputMethodQueries) /* FIXME */
 {
-  qDebug ("%s:%s\n", __FILE__,
-          "DasomInputContext::update (Qt::InputMethodQueries)");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   QWidget *widget = qApp->focusWidget ();
 
@@ -225,14 +223,13 @@ DasomInputContext::update (Qt::InputMethodQueries)
 void
 DasomInputContext::invokeAction(QInputMethod::Action, int cursorPosition)
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::invokeAction ()");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 bool
 DasomInputContext::filterEvent (const QEvent *event)
 {
-  qDebug ("%s:%s\n", __FILE__,
-          "DasomInputContext::filterEvent (const QEvent *event)");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gboolean         retval;
   const QKeyEvent *key_event = static_cast<const QKeyEvent *>( event );
@@ -272,55 +269,54 @@ DasomInputContext::filterEvent (const QEvent *event)
 QRectF
 DasomInputContext::keyboardRect() const
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::keyboardRect");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return QRectF ();
 }
 
 bool
 DasomInputContext::isAnimating() const
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::isAnimating");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return false;
 }
 
 void
 DasomInputContext::showInputPanel()
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::showInputPanel");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
 DasomInputContext::hideInputPanel()
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::hideInputPanel");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 bool
 DasomInputContext::isInputPanelVisible() const
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::isInputPanelVisible");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return false;
 }
 
 QLocale
 DasomInputContext::locale() const
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::locale");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return QLocale ();
 }
 
 Qt::LayoutDirection
 DasomInputContext::inputDirection() const
 {
-  qDebug ("%s:%s\n", __FILE__, "DasomInputContext::inputDirection");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   return Qt::LayoutDirection ();
 }
 
 void
 DasomInputContext::setFocusObject (QObject *object)
 {
-  qDebug ("%s:%s\n", __FILE__,
-          "DasomInputContext::setFocusObject (QObject *object)");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   QPlatformInputContext::setFocusObject (object);
 
@@ -329,7 +325,7 @@ DasomInputContext::setFocusObject (QObject *object)
   else
     dasom_im_focus_out (m_im);
 
-  update (Qt::ImCursorRectangle);
+  update (Qt::ImCursorRectangle); /* FIXME */
 }
 
 /*
@@ -345,20 +341,17 @@ class DasomInputContextPlugin : public QPlatformInputContextPlugin
 public:
   DasomInputContextPlugin ()
   {
-    qDebug ("%s:%s\n", __FILE__,
-            "DasomInputContextPlugin::QPlatformInputContextPlugin ()");
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
   }
 
   ~DasomInputContextPlugin ()
   {
-    qDebug ("%s:%s\n", __FILE__,
-            "DasomInputContextPlugin::~QPlatformInputContextPlugin ()");
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
   }
 
   virtual QStringList keys () const
   {
-    qDebug ("%s:%s\n", __FILE__,
-            "DasomInputContextPlugin::keys () const");
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
 
     return QStringList () <<  "dasom";
   }
@@ -366,8 +359,7 @@ public:
   virtual QPlatformInputContext *create (const QString     &key,
                                          const QStringList &paramList)
   {
-    qDebug ("%s:%s\n", __FILE__,
-            "DasomInputContextPlugin::create (const QString &key)");
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
 
     return new DasomInputContext ();
   }
