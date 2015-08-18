@@ -58,8 +58,9 @@ public:
                                            gpointer     user_data);
 
 private:
-  DasomIM *m_im;
-  bool     m_isComposing;
+  DasomIM       *m_im;
+  bool           m_isComposing;
+  DasomRectangle m_cursor_area;
 };
 
 /* dasom signal callbacks */
@@ -209,12 +210,19 @@ DasomInputContext::update ()
     QRect  rect  = widget->inputMethodQuery(Qt::ImMicroFocus).toRect();
     QPoint point = widget->mapToGlobal (QPoint(0,0));
     rect.translate (point);
-    DasomRectangle cursor_area = {0};
-    cursor_area.x      = rect.x ();
-    cursor_area.y      = rect.y ();
-    cursor_area.width  = rect.width ();
-    cursor_area.height = rect.height ();
-    dasom_im_set_cursor_location (m_im, &cursor_area);
+
+    if (m_cursor_area.x      != rect.x ()     ||
+        m_cursor_area.y      != rect.y ()     ||
+        m_cursor_area.width  != rect.width () ||
+        m_cursor_area.height != rect.height ())
+    {
+      m_cursor_area.x      = rect.x ();
+      m_cursor_area.y      = rect.y ();
+      m_cursor_area.width  = rect.width ();
+      m_cursor_area.height = rect.height ();
+
+      dasom_im_set_cursor_location (m_im, &m_cursor_area);
+    }
   }
 }
 

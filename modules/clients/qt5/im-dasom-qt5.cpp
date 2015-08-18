@@ -66,7 +66,8 @@ public:
                                            gint         n_chars,
                                            gpointer     user_data);
 private:
-  DasomIM *m_im;
+  DasomIM        *m_im;
+  DasomRectangle  m_cursor_area;
 };
 
 /* dasom signal callbacks */
@@ -200,23 +201,33 @@ DasomInputContext::commit ()
 }
 
 void
-DasomInputContext::update (Qt::InputMethodQueries) /* FIXME */
+DasomInputContext::update (Qt::InputMethodQueries queries) /* FIXME */
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  QWidget *widget = qApp->focusWidget ();
-
-  if (widget)
+  if (queries & Qt::ImCursorRectangle)
   {
-    QRect  rect  = widget->inputMethodQuery(Qt::ImMicroFocus).toRect();
+    QWidget *widget = qApp->focusWidget ();
+
+    if (widget == NULL)
+      return;
+
+    QRect  rect  = widget->inputMethodQuery(Qt::ImCursorRectangle).toRect();
     QPoint point = widget->mapToGlobal (QPoint (0, 0));
     rect.translate (point);
-    DasomRectangle cursor_area = {0};
-    cursor_area.x      = rect.x ();
-    cursor_area.y      = rect.y ();
-    cursor_area.width  = rect.width ();
-    cursor_area.height = rect.height ();
-    dasom_im_set_cursor_location (m_im, &cursor_area);
+
+    if (m_cursor_area.x      != rect.x ()     ||
+        m_cursor_area.y      != rect.y ()     ||
+        m_cursor_area.width  != rect.width () ||
+        m_cursor_area.height != rect.height ())
+    {
+      m_cursor_area.x      = rect.x ();
+      m_cursor_area.y      = rect.y ();
+      m_cursor_area.width  = rect.width ();
+      m_cursor_area.height = rect.height ();
+
+      dasom_im_set_cursor_location (m_im, &m_cursor_area);
+    }
   }
 }
 
@@ -325,7 +336,7 @@ DasomInputContext::setFocusObject (QObject *object)
   else
     dasom_im_focus_out (m_im);
 
-  update (Qt::ImCursorRectangle); /* FIXME */
+  update (Qt::ImCursorRectangle);
 }
 
 /*
