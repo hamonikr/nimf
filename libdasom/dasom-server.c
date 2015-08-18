@@ -51,32 +51,31 @@ on_incoming_message_dasom (GSocket      *socket,
   DasomContext *context = user_data;
   gboolean      retval;
 
-  DasomContext *pushed_context = context->server->target;
-  /* FIXME: target 지정 코드를 에러 처리 아래로 내려보내는 것에 대해 검토 */
-  context->server->target = context;
-
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
+    g_debug (G_STRLOC ": condition & (G_IO_HUP | G_IO_ERR)");
+
     g_socket_close (socket, NULL);
 
     dasom_message_unref (context->reply);
     context->reply = NULL;
 
-    if (pushed_context == context)
-      pushed_context = NULL;
+    if (context->server->target == context)
+      context->server->target = NULL;
 
     if (G_UNLIKELY (context->type == DASOM_CONNECTION_DASOM_AGENT))
-      context->server->agents_list = g_list_remove (context->server->agents_list, context);
+      context->server->agents_list = g_list_remove (context->server->agents_list,
+                                                    context);
 
     g_hash_table_remove (context->server->contexts,
                          GUINT_TO_POINTER (dasom_context_get_id (context)));
 
-    g_debug (G_STRLOC ": %s: condition & (G_IO_HUP | G_IO_ERR)", G_STRFUNC);
-
-    context->server->target = pushed_context;
-
     return G_SOURCE_REMOVE;
   }
+
+  DasomContext *pushed_context = context->server->target;
+
+  context->server->target = context;
 
   if (context->type == DASOM_CONNECTION_DASOM_IM)
     dasom_engine_set_english_mode (context->engine, context->is_english_mode);
