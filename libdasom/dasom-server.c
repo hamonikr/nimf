@@ -191,7 +191,6 @@ on_incoming_message_dasom (GSocket      *socket,
   if (context->type == DASOM_CONNECTION_DASOM_IM)
     context->is_english_mode = dasom_engine_get_english_mode (context->engine);
 
-  /* FIXME */
   if (g_main_depth () > 1)
     context->server->target = pushed_context;
 
@@ -648,6 +647,7 @@ int dasom_server_xim_set_ic_values (DasomServer      *server,
 
   DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
+  server->target = context;
 
   CARD16 i;
 
@@ -750,6 +750,7 @@ int dasom_server_xim_get_ic_values (DasomServer      *server,
 
   DasomContext *context = g_hash_table_lookup (server->contexts,
                                                GUINT_TO_POINTER (data->icid));
+  server->target = context;
 
   CARD16 i;
 
@@ -930,6 +931,8 @@ on_incoming_message_xim (XIMS        xims,
       retval = dasom_server_xim_reset_ic (server, xims, &data->resetic);
       break;
     default:
+      g_warning (G_STRLOC ": %s: major op code %d not handled", G_STRFUNC,
+                 data->major_code);
       retval = 0;
       break;
   }
