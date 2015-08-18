@@ -493,13 +493,7 @@ dasom_jeongeum_set_english_mode (DasomEngine *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
-
-  if (jeongeum->is_english_mode != is_english_mode)
-  {
-    jeongeum->is_english_mode = is_english_mode;
-    dasom_engine_emit_engine_changed (engine);
-  }
+  DASOM_JEONGEUM (engine)->is_english_mode = is_english_mode;
 }
 
 gboolean
