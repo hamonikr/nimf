@@ -49,10 +49,10 @@ on_incoming_message_dasom (GSocket      *socket,
 
   DasomMessage *message;
   DasomContext *context = user_data;
-  gboolean retval;
+  gboolean      retval;
 
   DasomContext *pushed_context = context->server->target;
-
+  /* FIXME: target 지정 코드를 에러 처리 아래로 내려보내는 것에 대해 검토 */
   context->server->target = context;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
@@ -78,7 +78,9 @@ on_incoming_message_dasom (GSocket      *socket,
     return G_SOURCE_REMOVE;
   }
 
-  dasom_engine_set_english_mode (context->engine, context->is_english_mode);
+  if (context->type == DASOM_CONNECTION_DASOM_IM)
+    dasom_engine_set_english_mode (context->engine, context->is_english_mode);
+
   message = dasom_recv_message (socket);
   dasom_message_unref (context->reply);
   context->reply = message;
@@ -187,8 +189,10 @@ on_incoming_message_dasom (GSocket      *socket,
       break;
   }
 
-  context->is_english_mode = dasom_engine_get_english_mode (context->engine);
+  if (context->type == DASOM_CONNECTION_DASOM_IM)
+    context->is_english_mode = dasom_engine_get_english_mode (context->engine);
 
+  /* FIXME */
   if (g_main_depth () > 1)
     context->server->target = pushed_context;
 
