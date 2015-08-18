@@ -44,10 +44,13 @@ else
 fi
 
 AC_ARG_ENABLE([appindicator],
-  AS_HELP_STRING([--disable-appindicator], [Disable feature appindicator]))
+  AS_HELP_STRING([--enable-appindicator],
+                 [Enable dasom-indicator (appindicator)]),
+  [],
+  [enable_appindicator=yes])
 
-AS_IF([test "x$enable_appindicator" != "xno"],
-  [PKG_CHECK_MODULES(APPINDICATOR, [appindicator3-0.1])
+AS_IF([test "x$enable_appindicator" == "xyes"],
+  [PKG_CHECK_MODULES(APPINDICATOR3, [appindicator3-0.1])
 ])
 
 AM_CONDITIONAL([ENABLE_APPINDICATOR], [test "$enable_appindicator" = "yes"])

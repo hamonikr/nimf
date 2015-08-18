@@ -13,7 +13,7 @@ dasom_indicator_CFLAGS = \
 	$(GIO_UNIX_CFLAGS) \
 	$(X11_CFLAGS) \
 	$(GTK3_CFLAGS) \
-	$(APP_INDICATOR_CFLAGS)
+	$(APPINDICATOR3_CFLAGS)
 
 dasom_indicator_LDADD = \
 	$(top_builddir)/libdasom/libdasom.la \
@@ -22,4 +22,4 @@ dasom_indicator_LDADD = \
 	$(GIO_UNIX_LIBS) \
 	$(X11_LIBS) \
 	$(GTK3_LIBS) \
-	$(APP_INDICATOR_LIBS)
+	$(APPINDICATOR3_LIBS)
