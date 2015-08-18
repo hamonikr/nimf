@@ -66,6 +66,8 @@ private:
 void
 DasomInputContext::on_preedit_start (DasomIM *im, gpointer user_data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
   context->m_isComposing = true;
 }
@@ -73,6 +75,8 @@ DasomInputContext::on_preedit_start (DasomIM *im, gpointer user_data)
 void
 DasomInputContext::on_preedit_end (DasomIM *im, gpointer user_data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
   context->m_isComposing = false;
 }
@@ -80,6 +84,8 @@ DasomInputContext::on_preedit_end (DasomIM *im, gpointer user_data)
 void
 DasomInputContext::on_preedit_changed (DasomIM *im, gpointer user_data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
 
   gchar *str;
@@ -108,6 +114,8 @@ DasomInputContext::on_commit (DasomIM     *im,
                               const gchar *text,
                               gpointer     user_data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomInputContext *context = static_cast<DasomInputContext *>(user_data);
   QString str = QString::fromUtf8 (text);
   QInputMethodEvent event;
@@ -118,6 +126,8 @@ DasomInputContext::on_commit (DasomIM     *im,
 gboolean
 DasomInputContext::on_retrieve_surrounding (DasomIM *im, gpointer user_data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   // TODO
   return FALSE;
 }
@@ -128,6 +138,8 @@ DasomInputContext::on_delete_surrounding (DasomIM *im,
                                           gint     n_chars,
                                           gpointer user_data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   // TODO
   return FALSE;
 }
@@ -164,24 +176,32 @@ DasomInputContext::~DasomInputContext ()
 QString
 DasomInputContext::identifierName ()
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   return QString ("dasom");
 }
 
 QString
 DasomInputContext::language ()
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   return QString ("");
 }
 
 void
 DasomInputContext::reset ()
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   dasom_im_reset (m_im);
 }
 
 void
 DasomInputContext::update ()
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   QWidget *widget = focusWidget ();
 
   if (widget)
@@ -201,12 +221,16 @@ DasomInputContext::update ()
 bool
 DasomInputContext::isComposing () const
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   return m_isComposing;
 }
 
 void
 DasomInputContext::setFocusWidget (QWidget *w)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   QInputContext::setFocusWidget (w);
 
   if (w)
@@ -266,34 +290,46 @@ class DasomInputContextPlugin : public QInputContextPlugin
 public:
   DasomInputContextPlugin ()
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
   }
 
   ~DasomInputContextPlugin ()
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
   }
 
   virtual QStringList keys () const
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
+
     return QStringList () <<  "dasom";
   }
 
   virtual QInputContext *create (const QString &key)
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
+
     return new DasomInputContext ();
   }
 
   virtual QStringList languages (const QString &key)
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
+
     return QStringList () << "ko" << "zh" << "ja";
   }
 
   virtual QString displayName (const QString &key)
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
+
     return QString ("dasom");
   }
 
   virtual QString description (const QString &key)
   {
+    g_debug (G_STRLOC ": %s", G_STRFUNC);
+
     return QString ("dasom Qt4 im module");
   }
 };
