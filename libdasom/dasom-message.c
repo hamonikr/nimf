@@ -29,13 +29,7 @@ dasom_message_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomMessage *message;
-
-  message            = g_slice_new0 (DasomMessage);
-  message->header    = g_slice_new0 (DasomMessageHeader);
-  message->ref_count = 1;
-
-  return message;
+  return dasom_message_new_full (DASOM_MESSAGE_NONE, NULL, 0, NULL);
 }
 
 DasomMessage *
