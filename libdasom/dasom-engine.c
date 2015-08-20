@@ -20,7 +20,7 @@
  */
 
 #include "dasom-engine.h"
-#include "dasom-context.h"
+#include "dasom-connection.h"
 #include "dasom-private.h"
 #include "dasom-server.h"
 
@@ -93,10 +93,10 @@ void dasom_engine_reset (DasomEngine *engine)
 
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  if (klass->reset)
-    klass->reset (engine);
+  if (class->reset)
+    class->reset (engine);
 }
 
 void dasom_engine_focus_in (DasomEngine *engine)
@@ -105,10 +105,10 @@ void dasom_engine_focus_in (DasomEngine *engine)
 
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  if (klass->focus_in)
-    klass->focus_in (engine);
+  if (class->focus_in)
+    class->focus_in (engine);
 }
 
 void dasom_engine_focus_out (DasomEngine *engine)
@@ -117,10 +117,10 @@ void dasom_engine_focus_out (DasomEngine *engine)
 
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  if (klass->focus_out)
-    klass->focus_out (engine);
+  if (class->focus_out)
+    class->focus_out (engine);
 }
 
 gboolean dasom_engine_filter_event (DasomEngine *engine,
@@ -128,9 +128,9 @@ gboolean dasom_engine_filter_event (DasomEngine *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  return klass->filter_event (engine, event);
+  return class->filter_event (engine, event);
 }
 
 gboolean dasom_engine_real_filter_event (DasomEngine *engine,
@@ -150,8 +150,8 @@ dasom_engine_get_preedit_string (DasomEngine  *engine,
 
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
-  klass->get_preedit_string (engine, str, cursor_pos);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
+  class->get_preedit_string (engine, str, cursor_pos);
 }
 
 void
@@ -207,10 +207,10 @@ dasom_engine_set_english_mode (DasomEngine *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  if (klass->set_english_mode)
-    klass->set_english_mode (engine, is_english_mode);
+  if (class->set_english_mode)
+    class->set_english_mode (engine, is_english_mode);
 }
 
 gboolean
@@ -218,10 +218,10 @@ dasom_engine_get_english_mode (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  if (klass->get_english_mode)
-    return klass->get_english_mode (engine);
+  if (class->get_english_mode)
+    return class->get_english_mode (engine);
 
   return TRUE;
 }
@@ -231,7 +231,7 @@ dasom_engine_emit_preedit_start (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_preedit_start (engine->priv->server->target);
+  dasom_connection_emit_preedit_start (engine->priv->server->target);
 }
 
 void
@@ -239,7 +239,7 @@ dasom_engine_emit_preedit_changed (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_preedit_changed (engine->priv->server->target);
+  dasom_connection_emit_preedit_changed (engine->priv->server->target);
 }
 
 void
@@ -247,7 +247,7 @@ dasom_engine_emit_preedit_end (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_preedit_end (engine->priv->server->target);
+  dasom_connection_emit_preedit_end (engine->priv->server->target);
 }
 
 void
@@ -255,7 +255,7 @@ dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_context_emit_commit (engine->priv->server->target, text);
+  dasom_connection_emit_commit (engine->priv->server->target, text);
 }
 
 gboolean
@@ -265,8 +265,8 @@ dasom_engine_emit_delete_surrounding (DasomEngine *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_context_emit_delete_surrounding (engine->priv->server->target,
-                                                offset, n_chars);
+  return dasom_connection_emit_delete_surrounding (engine->priv->server->target,
+                                                   offset, n_chars);
 }
 
 gboolean
@@ -274,7 +274,7 @@ dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_context_emit_retrieve_surrounding (engine->priv->server->target);
+  return dasom_connection_emit_retrieve_surrounding (engine->priv->server->target);
 }
 
 void
@@ -404,9 +404,9 @@ dasom_engine_get_name (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomEngineClass *klass = DASOM_ENGINE_GET_CLASS (engine);
+  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  return klass->get_name (engine);
+  return class->get_name (engine);
 }
 
 static const gchar *
@@ -418,23 +418,23 @@ dasom_engine_real_get_name (DasomEngine *engine)
 }
 
 static void
-dasom_engine_class_init (DasomEngineClass *klass)
+dasom_engine_class_init (DasomEngineClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize     = dasom_engine_finalize;
 
   object_class->set_property = dasom_engine_set_property;
   object_class->get_property = dasom_engine_get_property;
 
-  klass->filter_event        = dasom_engine_real_filter_event;
-  klass->get_preedit_string  = dasom_engine_real_get_preedit_string;
-  klass->set_surrounding     = dasom_engine_real_set_surrounding;
-  klass->get_surrounding     = dasom_engine_real_get_surrounding;
+  class->filter_event        = dasom_engine_real_filter_event;
+  class->get_preedit_string  = dasom_engine_real_get_preedit_string;
+  class->set_surrounding     = dasom_engine_real_set_surrounding;
+  class->get_surrounding     = dasom_engine_real_get_surrounding;
  /* FIXME: 나중에  get_engine_info 이런 걸로 추가해야 할지도 모르겠습니다. */
-  klass->get_name            = dasom_engine_real_get_name;
+  class->get_name            = dasom_engine_real_get_name;
 
   g_object_class_install_property (object_class,
                                    PROP_PATH,

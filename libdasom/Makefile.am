@@ -34,8 +34,8 @@ libdasom_la_SOURCES = \
 	dasom-candidate.c \
 	dasom-agent.c \
 	dasom-agent.h \
-	dasom-context.c \
-	dasom-context.h \
+	dasom-connection.c \
+	dasom-connection.h \
 	dasom-server.c \
 	dasom-server.h \
 	$(BUILT_SOURCES) \

@@ -28,18 +28,18 @@
 #include "dasom-types.h"
 #include "dasom-candidate.h"
 #include "dasom-engine.h"
-#include "dasom-context.h"
+#include "dasom-connection.h"
 
 G_BEGIN_DECLS
 
 #define DASOM_TYPE_SERVER             (dasom_server_get_type ())
 #define DASOM_SERVER(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_SERVER, DasomServer))
-#define DASOM_SERVER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), DASOM_TYPE_SERVER, DasomServerClass))
+#define DASOM_SERVER_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), DASOM_TYPE_SERVER, DasomServerClass))
 #define DASOM_IS_SERVER(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), DASOM_TYPE_SERVER))
-#define DASOM_IS_SERVER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_SERVER))
+#define DASOM_IS_SERVER_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), DASOM_TYPE_SERVER))
 #define DASOM_SERVER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_SERVER, DasomServerClass))
 
-typedef struct _DasomContext     DasomContext;
+typedef struct _DasomConnection  DasomConnection;
 typedef struct _DasomCandidate   DasomCandidate;
 
 typedef struct _DasomServer      DasomServer;
@@ -53,11 +53,11 @@ struct _DasomServer
   DasomModuleManager  *module_manager;
   GList               *instances;
   GSocketListener     *listener;
-  GHashTable          *contexts;
+  GHashTable          *connections;
   GList               *agents_list;
   DasomKey           **hotkeys;
   DasomCandidate      *candidate;
-  DasomContext        *target;
+  DasomConnection     *target;
   GSource             *xevent_source;
   guint16              next_id;
 
