@@ -515,7 +515,7 @@ dasom_server_finalize (GObject *object)
     server->instances = NULL;
   }
 
-  /* FIXME: g_object_unref (server->candidate); */
+  g_object_unref (server->candidate);
   g_hash_table_unref (server->contexts);
   g_list_free (server->agents_list);
   dasom_key_freev (server->hotkeys);
