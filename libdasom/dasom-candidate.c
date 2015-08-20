@@ -129,6 +129,8 @@ dasom_candidate_init (DasomCandidate *candidate)
 static void
 dasom_candidate_finalize (GObject *object)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   /*DasomCandidate *candidate = DASOM_CANDIDATE (object);*/
 
   /* FIXME: 콘테이너 윈도우(candidate->window) 제거할 때,
@@ -141,6 +143,8 @@ dasom_candidate_finalize (GObject *object)
 static void
 dasom_candidate_class_init (DasomCandidateClass *class)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   GObjectClass* object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = dasom_candidate_finalize;
@@ -276,6 +280,8 @@ void dasom_candidate_select_next_item (DasomCandidate *candidate)
 
 DasomCandidate *dasom_candidate_new (DasomServer *server)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomCandidate *candidate = g_object_new (DASOM_TYPE_CANDIDATE, NULL);
   candidate->server = server;
   g_signal_connect (candidate->treeview, "row-activated",
