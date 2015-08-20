@@ -54,6 +54,7 @@ dasom_message_new_full (DasomMessageType type,
   message->header->data_len  = data_len;
   message->data              = data;
   message->data_destroy_func = data_destroy_func;
+  message->ref_count = 1;
 
   return message;
 }
@@ -87,20 +88,6 @@ dasom_message_unref (DasomMessage *message)
 
     g_slice_free (DasomMessage, message);
   }
-}
-
-void dasom_message_free (DasomMessage *message)
-{
-
-  if (G_UNLIKELY (message == NULL))
-    return;
-
-  g_slice_free (DasomMessageHeader, message->header);
-
-  if (message->data_destroy_func)
-    message->data_destroy_func (message->data);
-
-  g_slice_free (DasomMessage, message);
 }
 
 const DasomMessageHeader *
