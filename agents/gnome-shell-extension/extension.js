@@ -67,7 +67,7 @@ function enable()
         }
     });
 
-    Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 1, 'right');
+    Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 0, 'right');
 }
 
 // FIXME: 사용 중에 disable() 함수가 호출되는 경우가 있습니다.
