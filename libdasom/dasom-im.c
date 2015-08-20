@@ -411,7 +411,8 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
     return FALSE;
   }
 
-  dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event, sizeof (DasomEvent), (GDestroyNotify) dasom_event_free);
+  dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event,
+                      sizeof (DasomEvent), NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
 
   if (im->reply == NULL)
