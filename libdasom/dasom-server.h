@@ -59,6 +59,7 @@ struct _DasomServer
   DasomCandidate      *candidate;
   DasomContext        *target;
   GSource             *xevent_source;
+  guint16              next_id;
 
   gchar     *address;
   gboolean   active;

@@ -40,14 +40,6 @@ G_DEFINE_TYPE (DasomContext, dasom_context, G_TYPE_OBJECT);
 static void
 dasom_context_init (DasomContext *context)
 {
-  /* FIXME: overflow */
-  static gint id = 0;
-  id++;
-  context->id = id;
-  g_debug (G_STRLOC ": %s, id = %d", G_STRFUNC, context->id);
-
-  context->use_preedit = TRUE;
-  context->preedit_state = DASOM_PREEDIT_STATE_END;
 }
 
 static void
@@ -96,9 +88,6 @@ on_signal_engine_changed (DasomContext *context,
 {
   g_debug (G_STRLOC ": %s: %s: context id = %d", G_STRFUNC, name, context->id);
 
-  /* FIXME: 가끔 에이전트 리스트에 추가적으로 에이전트가 더 들어가 있는 것 같습니다.
-   * 그래서 죽은 에이전트로 패킷을 보내어 g_socket_send 에서 정체가 되는 듯합니다.
-   * 에이전트가 제거되지는 않는지 확인해야 합니다 */
   GList *l = context->server->agents_list;
   while (l != NULL)
   {
@@ -120,6 +109,8 @@ dasom_context_new (DasomConnectionType  type,
   DasomContext *context = g_object_new (DASOM_TYPE_CONTEXT, NULL);
   context->type = type;
   context->engine = engine;
+  context->use_preedit = TRUE;
+  context->preedit_state = DASOM_PREEDIT_STATE_END;
   context->is_english_mode = TRUE;
   context->cb_user_data = cb_user_data;
 

@@ -197,6 +197,23 @@ on_incoming_message_dasom (GSocket      *socket,
   return G_SOURCE_CONTINUE;
 }
 
+static guint16
+dasom_server_add_context (DasomServer  *server,
+                          DasomContext *context)
+{
+  guint16 id;
+
+  do
+    id = server->next_id++;
+  while (id == 0 || g_hash_table_contains (server->contexts,
+                                           GUINT_TO_POINTER (id)));
+  context->id = id;
+  context->server = server;
+  g_hash_table_insert (server->contexts, GUINT_TO_POINTER (id), context);
+
+  return id;
+}
+
 static gboolean
 on_new_connection (GSocketService    *service,
                    GSocketConnection *connection,
@@ -230,15 +247,10 @@ on_new_connection (GSocketService    *service,
   context = dasom_context_new (*(DasomConnectionType *) message->data,
                                dasom_server_get_default_engine (server), NULL);
   dasom_message_unref (message);
-  context->server = user_data;
   context->socket = socket;
-
+  dasom_server_add_context (server, context);
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
    * 시간이 걸리므로, 일단은 ServerContext, on_incoming_message_dasom 에서 처리토록 하자. */
-  g_hash_table_insert (server->contexts,
-                       GUINT_TO_POINTER (dasom_context_get_id (context)),
-                       context);
-
   if (context->type == DASOM_CONNECTION_DASOM_AGENT)
     server->agents_list = g_list_prepend (server->agents_list, context);
 
@@ -716,12 +728,7 @@ int dasom_server_xim_create_ic (DasomServer      *server,
     g_debug (G_STRLOC ": %s: icid = %d", G_STRFUNC, dasom_context_get_id (context));
 
     context->xim_connect_id = data->connect_id;
-    context->server = server;
-
-    g_hash_table_insert (server->contexts,
-                         GUINT_TO_POINTER (dasom_context_get_id (context)),
-                         context);
-    data->icid = dasom_context_get_id (context);
+    data->icid = dasom_server_add_context (server, context);
   }
 
   dasom_server_xim_set_ic_values (server, xims, data);
