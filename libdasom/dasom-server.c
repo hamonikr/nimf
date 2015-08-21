@@ -622,20 +622,6 @@ static gboolean dasom_xevent_source_check (GSource *source)
     return FALSE;
 }
 
-int dasom_server_xim_open (DasomServer *server, XIMS xims, IMOpenStruct *data)
-{
-  g_debug (G_STRLOC ": %s, data->connect_id = %d", G_STRFUNC, data->connect_id);
-
-  return 1;
-}
-
-int dasom_server_xim_close (DasomServer *server, XIMS xims, IMCloseStruct *data)
-{
-  g_debug (G_STRLOC ": %s, data->connect_id = %d", G_STRFUNC, data->connect_id);
-
-  return 1;
-}
-
 int dasom_server_xim_set_ic_values (DasomServer      *server,
                                     XIMS              xims,
                                     IMChangeICStruct *data)
@@ -695,7 +681,7 @@ int dasom_server_xim_create_ic (DasomServer      *server,
                                 XIMS              xims,
                                 IMChangeICStruct *data)
 {
-  g_debug (G_STRLOC ": %s, data->icid = %d", G_STRFUNC, data->icid);
+  g_debug (G_STRLOC ": %s, data->connect_id: %d", G_STRFUNC, data->connect_id);
 
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
@@ -703,17 +689,12 @@ int dasom_server_xim_create_ic (DasomServer      *server,
 
   if (!connection)
   {
-    g_debug (G_STRLOC ": %s: connection == NULL", G_STRFUNC);
-
     connection = dasom_connection_new (DASOM_CONNECTION_XIM,
                                        dasom_server_get_default_engine (server),
                                        xims);
-
-    g_debug (G_STRLOC ": %s: icid = %d", G_STRFUNC,
-             dasom_connection_get_id (connection));
-
     connection->xim_connect_id = data->connect_id;
     data->icid = dasom_server_add_connection (server, connection);
+    g_debug (G_STRLOC ": icid = %d", data->icid);
   }
 
   dasom_server_xim_set_ic_values (server, xims, data);
@@ -727,9 +708,6 @@ int dasom_server_xim_destroy_ic (DasomServer       *server,
 {
   g_debug (G_STRLOC ": %s, data->icid = %d", G_STRFUNC, data->icid);
 
-  /* FIXME: 클라이언트 프로그램이 정상 종료하지 않을 경우 destroy_ic 함수가
-     호출되지 않아 IC가 제거되지 않습니다 */
-  /* FIXME: dasom_xevent_source에서 처리가 가능한지 확인해봅시다 */
   return g_hash_table_remove (server->connections,
                               GUINT_TO_POINTER (data->icid));
 }
@@ -891,10 +869,17 @@ on_incoming_message_xim (XIMS         xims,
   switch (data->major_code)
   {
     case XIM_OPEN:
-      retval = dasom_server_xim_open (server, xims, &data->imopen);
+      g_debug (G_STRLOC ": XIM_OPEN: connect_id: %u", data->imopen.connect_id);
+      retval = 1;
       break;
     case XIM_CLOSE:
-      retval = dasom_server_xim_close (server, xims, &data->imclose);
+      g_debug (G_STRLOC ": XIM_CLOSE: connect_id: %u",
+               data->imclose.connect_id);
+      retval = 1;
+      break;
+    case XIM_PREEDIT_START_REPLY:
+      g_debug (G_STRLOC ": XIM_PREEDIT_START_REPLY");
+      retval = 1;
       break;
     case XIM_CREATE_IC:
       retval = dasom_server_xim_create_ic (server, xims, &data->changeic);
