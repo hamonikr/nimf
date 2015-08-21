@@ -1,10 +1,3 @@
-AM_CPPFLAGS = \
-	-I$(top_srcdir)/libdasom \
-	-DG_LOG_DOMAIN=\"dasom\" \
-	$(GLIB_CFLAGS)
-
-AM_CFLAGS = -Wall -Werror
-
 moduledir = $(libdir)/dasom/modules
 module_LTLIBRARIES = dasom-jeongeum.la
 
@@ -17,8 +10,14 @@ gsettings_SCHEMAS = org.freedesktop.Dasom.engines.jeongeum.gschema.xml
 # gtk3 부분 나중에 없애자
 
 dasom_jeongeum_la_SOURCES = dasom-jeongeum.c dasom-jeongeum.h
-dasom_jeongeum_la_CFLAGS  = $(AM_CFLAGS) $(LIBHANGUL_CFLAGS) $(GTK3_CFLAGS)
-dasom_jeongeum_la_LDFLAGS = -avoid-version -module $(GTK3_LIBS)
+dasom_jeongeum_la_CFLAGS  = \
+	-Wall -Werror \
+	-I$(top_srcdir)/libdasom \
+	-DG_LOG_DOMAIN=\"dasom\" \
+	$(LIBDASOM_DEPS_CFLAGS) \
+	$(LIBHANGUL_CFLAGS)
+
+dasom_jeongeum_la_LDFLAGS = -avoid-version -module
 dasom_jeongeum_la_LIBADD  = \
 	$(top_builddir)/libdasom/libdasom.la \
 	$(top_builddir)/modules/engines/dasom-english/libdasom-english.la \

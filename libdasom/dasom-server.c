@@ -27,13 +27,6 @@
 #include "dasom-module.h"
 #include "IMdkit/Xi18n.h"
 
-/*
-  const gchar *desktop = g_getenv ("XDG_CURRENT_DESKTOP");
-
-  if (g_strcmp0 (desktop, "GNOME") == 0)
-    ;
-*/
-
 enum
 {
   PROP_0,
@@ -41,15 +34,14 @@ enum
 };
 
 static gboolean
-on_incoming_message_dasom (GSocket      *socket,
-                           GIOCondition  condition,
-                           gpointer      user_data)
+on_incoming_message_dasom (GSocket         *socket,
+                           GIOCondition     condition,
+                           DasomConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomMessage    *message;
-  DasomConnection *connection = user_data;
-  gboolean         retval;
+  DasomMessage *message;
+  gboolean      retval;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -60,9 +52,6 @@ on_incoming_message_dasom (GSocket      *socket,
     dasom_message_unref (connection->reply);
     connection->reply = NULL;
 
-    if (connection->server->target == connection)
-      connection->server->target = NULL;
-
     if (G_UNLIKELY (connection->type == DASOM_CONNECTION_DASOM_AGENT))
       connection->server->agents_list =
         g_list_remove (connection->server->agents_list, connection);
@@ -72,10 +61,6 @@ on_incoming_message_dasom (GSocket      *socket,
 
     return G_SOURCE_REMOVE;
   }
-
-  DasomConnection *pushed_connection = connection->server->target;
-
-  connection->server->target = connection;
 
   if (connection->type == DASOM_CONNECTION_DASOM_IM)
     dasom_engine_set_english_mode (connection->engine,
@@ -196,9 +181,6 @@ on_incoming_message_dasom (GSocket      *socket,
     connection->is_english_mode =
       dasom_engine_get_english_mode (connection->engine);
 
-  if (g_main_depth () > 1)
-    connection->server->target = pushed_connection;
-
   return G_SOURCE_CONTINUE;
 }
 
@@ -223,7 +205,7 @@ static gboolean
 on_new_connection (GSocketService    *service,
                    GSocketConnection *socket_connection,
                    GObject           *source_object,
-                   gpointer           user_data)
+                   DasomServer       *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -231,8 +213,6 @@ on_new_connection (GSocketService    *service,
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
    * 시간이 걸리므로, 일단은 DasomConnection, on_incoming_message_dasom 에서 처리토록 하자. */
-
-  DasomServer *server = user_data;
 
   GSocket *socket = g_socket_connection_get_socket (socket_connection);
 
@@ -467,7 +447,7 @@ dasom_server_init (DasomServer *server)
   g_object_unref (settings);
   g_strfreev (hotkeys);
 
-  server->candidate = dasom_candidate_new (server);
+  server->candidate = dasom_candidate_new ();
   server->module_manager = dasom_module_manager_get_default ();
   server->instances = dasom_server_create_module_instances (server);
 
@@ -665,8 +645,6 @@ int dasom_server_xim_set_ic_values (DasomServer      *server,
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  server->target = connection;
-
   CARD16 i;
 
   for (i = 0; i < data->ic_attr_num; i++)
@@ -765,8 +743,6 @@ int dasom_server_xim_get_ic_values (DasomServer      *server,
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  server->target = connection;
-
   CARD16 i;
 
   for (i = 0; i < data->ic_attr_num; i++)
@@ -821,7 +797,6 @@ int dasom_server_xim_set_ic_focus (DasomServer         *server,
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  server->target = connection;
   dasom_connection_focus_in (connection);
 
   return 1;
@@ -836,7 +811,6 @@ int dasom_server_xim_unset_ic_focus (DasomServer         *server,
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  server->target = connection;
   dasom_connection_focus_out (connection);
 
   return 1;
@@ -867,7 +841,6 @@ int dasom_server_xim_forward_event (DasomServer          *server,
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  server->target = connection;
   retval = dasom_connection_filter_event (connection, event);
   dasom_event_free (event);
 
@@ -895,23 +868,21 @@ int dasom_server_xim_reset_ic (DasomServer     *server,
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  server->target = connection;
   dasom_connection_reset (connection);
 
   return 1;
 }
 
 static int
-on_incoming_message_xim (XIMS        xims,
-                         IMProtocol *data,
-                         gpointer    user_data)
+on_incoming_message_xim (XIMS         xims,
+                         IMProtocol  *data,
+                         DasomServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_return_val_if_fail (xims != NULL, True);
   g_return_val_if_fail (data != NULL, True);
 
-  DasomServer *server = user_data;
   if (!DASOM_IS_SERVER (server))
     g_error ("ERROR: IMUserData");
 

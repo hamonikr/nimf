@@ -48,13 +48,10 @@ libdasom_la_CFLAGS = \
 	-DDASOM_COMPILATION \
 	-DG_LOG_DOMAIN=\"dasom\" \
 	-DDASOM_MODULE_DIR=\"$(libdir)/dasom/modules\" \
-	$(GLIB_CFLAGS) \
-	$(GIO_CFLAGS) \
-	$(GIO_UNIX_CFLAGS) \
-	$(GTK3_CFLAGS)
+	$(LIBDASOM_DEPS_CFLAGS)
 
-libdasom_la_LDFLAGS = $(GTK3_LIBS)
-libdasom_la_LIBADD = IMdkit/libIMdkit.la
+libdasom_la_LDFLAGS = $(LIBDASOM_DEPS_LIBS)
+libdasom_la_LIBADD  = IMdkit/libIMdkit.la
 
 dasomincludedir = $(includedir)/dasom
 dasominclude_HEADERS = \

@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 #define DASOM_CONNECTION_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_CONNECTION, DasomConnectionClass))
 
 typedef struct _DasomServer DasomServer;
-typedef struct _DasomEngine DasomEngine;
 
 typedef struct _DasomConnection      DasomConnection;
 typedef struct _DasomConnectionClass DasomConnectionClass;

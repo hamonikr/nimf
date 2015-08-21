@@ -25,7 +25,6 @@
 #include "dasom-private.h"
 #include <string.h>
 #include <X11/Xutil.h>
-
 #include "IMdkit/Xi18n.h"
 
 enum {
@@ -138,7 +137,7 @@ void dasom_connection_reset (DasomConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_engine_reset (connection->engine);
+  dasom_engine_reset (connection->engine, connection);
 }
 
 void dasom_connection_focus_in (DasomConnection *connection)
@@ -155,7 +154,7 @@ void dasom_connection_focus_out (DasomConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_engine_focus_out (connection->engine);
+  dasom_engine_focus_out (connection->engine, connection);
 
   gchar *str = g_strdup ("Dasom");
   g_signal_emit_by_name (connection, "engine-changed", str);
@@ -189,7 +188,7 @@ gboolean dasom_connection_filter_event (DasomConnection *connection,
     return TRUE;
   }
 
-  return dasom_engine_filter_event (connection->engine, event);
+  return dasom_engine_filter_event (connection->engine, connection, event);
 }
 
 void
@@ -231,7 +230,8 @@ dasom_connection_get_surrounding (DasomConnection  *connection,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_engine_get_surrounding (connection->engine, text, cursor_index);
+  return dasom_engine_get_surrounding (connection->engine, connection,
+                                       text, cursor_index);
 }
 
 void

@@ -28,7 +28,6 @@
 #include "dasom-types.h"
 #include "dasom-candidate.h"
 #include "dasom-engine.h"
-#include "dasom-connection.h"
 
 G_BEGIN_DECLS
 
@@ -39,7 +38,7 @@ G_BEGIN_DECLS
 #define DASOM_IS_SERVER_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), DASOM_TYPE_SERVER))
 #define DASOM_SERVER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_SERVER, DasomServerClass))
 
-typedef struct _DasomConnection  DasomConnection;
+typedef struct _DasomEngine      DasomEngine;
 typedef struct _DasomCandidate   DasomCandidate;
 
 typedef struct _DasomServer      DasomServer;
@@ -57,7 +56,6 @@ struct _DasomServer
   GList               *agents_list;
   DasomKey           **hotkeys;
   DasomCandidate      *candidate;
-  DasomConnection     *target;
   GSource             *xevent_source;
   guint16              next_id;
 

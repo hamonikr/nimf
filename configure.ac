@@ -23,8 +23,9 @@ LT_INIT([disable-static])
 
 PKG_CHECK_MODULES(LIBDASOM_DEPS,
                   [glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0
-                   gobject-introspection-1.0])
+                   gobject-introspection-1.0 gtk+-3.0])
 
+PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
 PKG_CHECK_MODULES(GTK3, [gtk+-3.0])
 PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 PKG_CHECK_MODULES(LIBHANGUL, libhangul >= 0.0.12)

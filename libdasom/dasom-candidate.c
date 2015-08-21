@@ -20,8 +20,6 @@
  */
 
 #include "dasom-candidate.h"
-#include "dasom-key-syms.h"
-#include "dasom-marshalers.h"
 
 enum
 {
@@ -44,19 +42,18 @@ static void
 on_tree_view_row_activated (GtkTreeView       *tree_view,
                             GtkTreePath       *path,
                             GtkTreeViewColumn *column,
-                            gpointer           user_data)
+                            DasomCandidate    *candidate)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomServer *server = user_data;
   DasomEngineClass *engine_class;
-  engine_class = DASOM_ENGINE_GET_CLASS (server->target->engine);
+  engine_class = DASOM_ENGINE_GET_CLASS (candidate->target->engine);
 
-  gchar *text = dasom_candidate_get_selected_text (server->candidate);
+  gchar *text = dasom_candidate_get_selected_text (candidate);
 
   if (engine_class->candidate_clicked)
-    engine_class->candidate_clicked (server->target->engine, text);
-
+    engine_class->candidate_clicked (candidate->target->engine,
+                                     candidate->target, text);
   g_free (text);
 }
 
@@ -124,6 +121,9 @@ dasom_candidate_init (DasomCandidate *candidate)
   gtk_container_set_border_width (GTK_CONTAINER (candidate->window), 1);
   gtk_container_add (GTK_CONTAINER (scrolled_window), candidate->treeview);
   gtk_container_add (GTK_CONTAINER (candidate->window), scrolled_window);
+
+  g_signal_connect (candidate->treeview, "row-activated",
+                    (GCallback) on_tree_view_row_activated, candidate);
 }
 
 static void
@@ -175,7 +175,8 @@ dasom_candidate_update_window (DasomCandidate  *candidate,
   gtk_adjustment_set_value (adjustment, 0.0);
 }
 
-void dasom_candidate_show_window (DasomCandidate *candidate)
+void dasom_candidate_show_window (DasomCandidate  *candidate,
+                                  DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -188,9 +189,10 @@ void dasom_candidate_show_window (DasomCandidate *candidate)
     gtk_tree_selection_select_iter (selection, &candidate->iter);
   }
 
+  candidate->target = target;
+
   gtk_window_move (GTK_WINDOW (candidate->window),
-                   candidate->server->target->cursor_area.x,
-                   candidate->server->target->cursor_area.y);
+                   target->cursor_area.x, target->cursor_area.y);
   gtk_widget_show_all (candidate->window);
 }
 
@@ -278,15 +280,11 @@ void dasom_candidate_select_next_item (DasomCandidate *candidate)
   }
 }
 
-DasomCandidate *dasom_candidate_new (DasomServer *server)
+DasomCandidate *dasom_candidate_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomCandidate *candidate = g_object_new (DASOM_TYPE_CANDIDATE, NULL);
-  candidate->server = server;
-  g_signal_connect (candidate->treeview, "row-activated",
-                    (GCallback) on_tree_view_row_activated, candidate->server);
-  return candidate;
+  return g_object_new (DASOM_TYPE_CANDIDATE, NULL);
 }
 
 gchar *dasom_candidate_get_selected_text (DasomCandidate *candidate)

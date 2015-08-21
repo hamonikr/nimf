@@ -11,16 +11,8 @@ dasom_daemon_CFLAGS = \
 	-DDASOM_COMPILATION \
 	-DG_LOG_DOMAIN=\"dasom\" \
 	-DDASOM_MODULE_DIR=\"$(libdir)/dasom/modules\" \
-	$(GLIB_CFLAGS) \
-	$(GIO_CFLAGS) \
-	$(GIO_UNIX_CFLAGS) \
-	$(X11_CFLAGS) \
-	$(GTK3_CFLAGS)
+	$(LIBDASOM_DEPS_CFLAGS)
 
+dasom_daemon_LDFLAGS = $(GOBJECT_LIBS)
 dasom_daemon_LDADD = \
-	$(top_builddir)/libdasom/libdasom.la \
-	$(GLIB_LIBS) \
-	$(GIO_LIBS) \
-	$(GIO_UNIX_LIBS) \
-	$(X11_LIBS) \
-	$(GTK3_LIBS)
+	$(top_builddir)/libdasom/libdasom.la

@@ -261,9 +261,11 @@ DasomInputContext::filterEvent (const QEvent *event)
 
   switch (event->type ())
   {
+#undef KeyPress
     case QEvent::KeyPress:
       type = DASOM_EVENT_KEY_PRESS;
       break;
+#undef KeyRelease
     case QEvent::KeyRelease:
       type = DASOM_EVENT_KEY_RELEASE;
       break;

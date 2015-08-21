@@ -19,13 +19,12 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dasom.h"
 #include "dasom-english.h"
 
 G_DEFINE_DYNAMIC_TYPE (DasomEnglish, dasom_english, DASOM_TYPE_ENGINE);
 
 void
-dasom_english_reset (DasomEngine *engine)
+dasom_english_reset (DasomEngine *engine, DasomConnection  *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
@@ -38,7 +37,9 @@ dasom_english_get_name (DasomEngine *engine)
 }
 
 gboolean
-dasom_english_filter_event (DasomEngine *engine, DasomEvent *event)
+dasom_english_filter_event (DasomEngine     *engine,
+                            DasomConnection *target,
+                            DasomEvent      *event)
 {
   g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
 
@@ -91,7 +92,7 @@ dasom_english_filter_event (DasomEngine *engine, DasomEvent *event)
   if (c)
   {
     gchar *str = g_strdup_printf ("%c", c);
-    dasom_engine_emit_commit (engine, str);
+    dasom_engine_emit_commit (engine, target, str);
     g_free (str);
     retval = TRUE;
   }

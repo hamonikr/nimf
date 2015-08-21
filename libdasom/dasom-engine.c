@@ -20,9 +20,7 @@
  */
 
 #include "dasom-engine.h"
-#include "dasom-connection.h"
 #include "dasom-private.h"
-#include "dasom-server.h"
 
 enum
 {
@@ -87,7 +85,8 @@ dasom_engine_get_property (GObject    *object,
   }
 }
 
-void dasom_engine_reset (DasomEngine *engine)
+void dasom_engine_reset (DasomEngine     *engine,
+                         DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -96,7 +95,7 @@ void dasom_engine_reset (DasomEngine *engine)
   DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
   if (class->reset)
-    class->reset (engine);
+    class->reset (engine, target);
 }
 
 void dasom_engine_focus_in (DasomEngine *engine)
@@ -111,7 +110,8 @@ void dasom_engine_focus_in (DasomEngine *engine)
     class->focus_in (engine);
 }
 
-void dasom_engine_focus_out (DasomEngine *engine)
+void dasom_engine_focus_out (DasomEngine     *engine,
+                             DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -120,21 +120,23 @@ void dasom_engine_focus_out (DasomEngine *engine)
   DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
   if (class->focus_out)
-    class->focus_out (engine);
+    class->focus_out (engine, target);
 }
 
-gboolean dasom_engine_filter_event (DasomEngine *engine,
-                                    DasomEvent  *event)
+gboolean dasom_engine_filter_event (DasomEngine     *engine,
+                                    DasomConnection *target,
+                                    DasomEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
-  return class->filter_event (engine, event);
+  return class->filter_event (engine, target, event);
 }
 
-gboolean dasom_engine_real_filter_event (DasomEngine *engine,
-                                         DasomEvent  *event)
+gboolean dasom_engine_real_filter_event (DasomEngine     *engine,
+                                         DasomConnection *target,
+                                         DasomEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -172,9 +174,10 @@ dasom_engine_set_surrounding (DasomEngine  *engine,
 }
 
 gboolean
-dasom_engine_get_surrounding (DasomEngine  *engine,
-                              gchar       **text,
-                              gint         *cursor_index)
+dasom_engine_get_surrounding (DasomEngine      *engine,
+                              DasomConnection  *target,
+                              gchar           **text,
+                              gint             *cursor_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -182,7 +185,7 @@ dasom_engine_get_surrounding (DasomEngine  *engine,
   DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
 
   if (class->get_surrounding)
-    retval = class->get_surrounding (engine, text, cursor_index);
+    retval = class->get_surrounding (engine, target, text, cursor_index);
 
   return retval;
 }
@@ -227,62 +230,69 @@ dasom_engine_get_english_mode (DasomEngine *engine)
 }
 
 void
-dasom_engine_emit_preedit_start (DasomEngine *engine)
+dasom_engine_emit_preedit_start (DasomEngine     *engine,
+                                 DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_connection_emit_preedit_start (engine->priv->server->target);
+  dasom_connection_emit_preedit_start (target);
 }
 
 void
-dasom_engine_emit_preedit_changed (DasomEngine *engine)
+dasom_engine_emit_preedit_changed (DasomEngine     *engine,
+                                   DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_connection_emit_preedit_changed (engine->priv->server->target);
+  dasom_connection_emit_preedit_changed (target);
 }
 
 void
-dasom_engine_emit_preedit_end (DasomEngine *engine)
+dasom_engine_emit_preedit_end (DasomEngine     *engine,
+                               DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_connection_emit_preedit_end (engine->priv->server->target);
+  dasom_connection_emit_preedit_end (target);
 }
 
 void
-dasom_engine_emit_commit (DasomEngine *engine, const gchar *text)
+dasom_engine_emit_commit (DasomEngine     *engine,
+                          DasomConnection *target,
+                          const gchar     *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_connection_emit_commit (engine->priv->server->target, text);
+  dasom_connection_emit_commit (target, text);
 }
 
 gboolean
-dasom_engine_emit_delete_surrounding (DasomEngine *engine,
-                                      gint         offset,
-                                      gint         n_chars)
+dasom_engine_emit_delete_surrounding (DasomEngine     *engine,
+                                      DasomConnection *target,
+                                      gint             offset,
+                                      gint             n_chars)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_connection_emit_delete_surrounding (engine->priv->server->target,
-                                                   offset, n_chars);
+  return dasom_connection_emit_delete_surrounding (target, offset, n_chars);
 }
 
 gboolean
-dasom_engine_emit_retrieve_surrounding (DasomEngine *engine)
+dasom_engine_emit_retrieve_surrounding (DasomEngine     *engine,
+                                        DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return dasom_connection_emit_retrieve_surrounding (engine->priv->server->target);
+  return dasom_connection_emit_retrieve_surrounding (target);
 }
 
 void
-dasom_engine_emit_engine_changed (DasomEngine *engine)
+dasom_engine_emit_engine_changed (DasomEngine     *engine,
+                                  DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->server->target, "engine-changed",
+  g_signal_emit_by_name (target, "engine-changed",
                          dasom_engine_get_name (engine));
 }
 
@@ -336,13 +346,14 @@ dasom_engine_real_set_surrounding (DasomEngine  *engine,
 }
 
 static gboolean
-dasom_engine_real_get_surrounding (DasomEngine  *engine,
-                                   gchar       **text,
-                                   gint         *cursor_index)
+dasom_engine_real_get_surrounding (DasomEngine      *engine,
+                                   DasomConnection  *target,
+                                   gchar           **text,
+                                   gint             *cursor_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval = dasom_engine_emit_retrieve_surrounding (engine);
+  gboolean retval = dasom_engine_emit_retrieve_surrounding (engine, target);
 
   if (retval)
   {
@@ -370,9 +381,10 @@ dasom_engine_update_candidate_window (DasomEngine  *engine,
 }
 
 void
-dasom_engine_show_candidate_window (DasomEngine *engine)
+dasom_engine_show_candidate_window (DasomEngine     *engine,
+                                    DasomConnection *target)
 {
-  dasom_candidate_show_window (engine->priv->server->candidate);
+  dasom_candidate_show_window (engine->priv->server->candidate, target);
 }
 
 void

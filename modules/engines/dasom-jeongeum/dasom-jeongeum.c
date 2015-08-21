@@ -80,7 +80,7 @@ guint dasom_event_keycode_to_qwerty_keyval (const DasomEvent *event)
 }
 
 void
-dasom_jeongeum_reset (DasomEngine *engine)
+dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -105,11 +105,11 @@ dasom_jeongeum_reset (DasomEngine *engine)
   {
     g_free (jeongeum->preedit_string);
     jeongeum->preedit_string = NULL;
-    dasom_engine_emit_preedit_changed (engine);
-    dasom_engine_emit_preedit_end (engine);
+    dasom_engine_emit_preedit_changed (engine, target);
+    dasom_engine_emit_preedit_end     (engine, target);
   }
 
-  dasom_engine_emit_commit (engine, text);
+  dasom_engine_emit_commit (engine, target, text);
 
   g_free (text);
 }
@@ -123,17 +123,17 @@ dasom_jeongeum_focus_in (DasomEngine *engine)
 }
 
 void
-dasom_jeongeum_focus_out (DasomEngine *engine)
+dasom_jeongeum_focus_out (DasomEngine *engine, DasomConnection  *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
-  dasom_jeongeum_reset (engine);
+  dasom_jeongeum_reset (engine, target);
 }
 
 static void
-on_candidate_clicked (DasomEngine *engine, gchar *text)
+on_candidate_clicked (DasomEngine *engine, DasomConnection *target, gchar *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -147,11 +147,11 @@ on_candidate_clicked (DasomEngine *engine, gchar *text)
     {
       g_free (jeongeum->preedit_string);
       jeongeum->preedit_string = NULL;
-      dasom_engine_emit_preedit_changed (DASOM_ENGINE (jeongeum));
-      dasom_engine_emit_preedit_end (DASOM_ENGINE (jeongeum));
+      dasom_engine_emit_preedit_changed (DASOM_ENGINE (jeongeum), target);
+      dasom_engine_emit_preedit_end     (DASOM_ENGINE (jeongeum), target);
     }
 
-    dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), text);
+    dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), target, text);
   }
 
   dasom_engine_hide_candidate_window (DASOM_ENGINE (jeongeum));
@@ -159,8 +159,9 @@ on_candidate_clicked (DasomEngine *engine, gchar *text)
 }
 
 gboolean
-dasom_jeongeum_filter_event (DasomEngine *engine,
-                             DasomEvent  *event)
+dasom_jeongeum_filter_event (DasomEngine     *engine,
+                             DasomConnection *target,
+                             DasomEvent      *event)
 {
   g_debug (G_STRLOC ": %s:keyval:%d\t hardware_keycode:%d",
            G_STRFUNC,
@@ -179,20 +180,20 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
 
   if (event->key.state & (DASOM_CONTROL_MASK | DASOM_MOD1_MASK))
   {
-    dasom_jeongeum_reset (engine);
+    dasom_jeongeum_reset (engine, target);
     return FALSE;
   }
 
   if (dasom_event_matches (event, (const DasomKey **) jeongeum->hangul_keys))
   {
-    dasom_jeongeum_reset (engine);
+    dasom_jeongeum_reset (engine, target);
     jeongeum->is_english_mode = !jeongeum->is_english_mode;
-    dasom_engine_emit_engine_changed (engine);
+    dasom_engine_emit_engine_changed (engine, target);
     return TRUE;
   }
 
   if (jeongeum->is_english_mode)
-    return dasom_english_filter_event (engine, event);
+    return dasom_english_filter_event (engine, target, event);
 
   if (dasom_event_matches (event, (const DasomKey **) jeongeum->hanja_keys))
   {
@@ -222,7 +223,7 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
 
       dasom_engine_update_candidate_window (engine, (const gchar **) strv);
       g_strfreev (strv);
-      dasom_engine_show_candidate_window (engine);
+      dasom_engine_show_candidate_window (engine, target);
     }
     else
     {
@@ -243,7 +244,7 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
       case DASOM_KEY_KP_Enter:
         {
           gchar *text = dasom_engine_get_selected_candidate_text (engine);
-          on_candidate_clicked (engine, text);
+          on_candidate_clicked (engine, target, text);
           g_free (text);
         }
         break;
@@ -289,11 +290,11 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
       {
         g_free (jeongeum->preedit_string);
         jeongeum->preedit_string = new_preedit;
-        dasom_engine_emit_preedit_changed (engine);
+        dasom_engine_emit_preedit_changed (engine, target);
       }
 
       if (old_preedit != NULL && preedit[0] == 0)
-        dasom_engine_emit_preedit_end (engine);
+        dasom_engine_emit_preedit_end (engine, target);
     }
 
     return retval;
@@ -311,17 +312,17 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
   if (commit[0] == 0)
   {
     if (old_preedit == NULL && preedit[0] != 0)
-      dasom_engine_emit_preedit_start (engine);
+      dasom_engine_emit_preedit_start (engine, target);
 
     if (g_strcmp0 (old_preedit, new_preedit) != 0)
     {
       g_free (jeongeum->preedit_string);
       jeongeum->preedit_string = new_preedit;
-      dasom_engine_emit_preedit_changed (engine);
+      dasom_engine_emit_preedit_changed (engine, target);
     }
 
     if (old_preedit != NULL && preedit[0] == 0)
-      dasom_engine_emit_preedit_end (engine);
+      dasom_engine_emit_preedit_end (engine, target);
   }
 
   if (commit[0] != 0)
@@ -330,18 +331,18 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
     {
       g_free (jeongeum->preedit_string);
       jeongeum->preedit_string = NULL;
-      dasom_engine_emit_preedit_changed (engine);
-      dasom_engine_emit_preedit_end (engine);
+      dasom_engine_emit_preedit_changed (engine, target);
+      dasom_engine_emit_preedit_end     (engine, target);
     }
 
-    dasom_engine_emit_commit (engine, new_commit);
+    dasom_engine_emit_commit (engine, target, new_commit);
 
     if (preedit[0] != 0)
     {
       g_free (jeongeum->preedit_string);
       jeongeum->preedit_string = new_preedit;
-      dasom_engine_emit_preedit_start (engine);
-      dasom_engine_emit_preedit_changed (engine);
+      dasom_engine_emit_preedit_start   (engine, target);
+      dasom_engine_emit_preedit_changed (engine, target);
     }
   }
 
@@ -392,7 +393,7 @@ dasom_jeongeum_filter_event (DasomEngine *engine,
   if (c)
   {
     gchar *str = g_strdup_printf ("%c", c);
-    dasom_engine_emit_commit (engine, str);
+    dasom_engine_emit_commit (engine, target, str);
     g_free (str);
     retval = TRUE;
   }
