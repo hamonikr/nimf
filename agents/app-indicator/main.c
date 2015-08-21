@@ -29,6 +29,8 @@
 static void on_about (GtkWidget *widget,
                       gpointer   data)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   GtkWidget *dialog;
 
   dialog = gtk_message_dialog_new (NULL,
@@ -46,7 +48,7 @@ static void on_about (GtkWidget *widget,
 static void on_exit (GtkWidget *widget,
                       gpointer   data)
 {
-  g_print ("on_exit\n");
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gtk_main_quit ();
 }
@@ -59,24 +61,12 @@ static void on_engine_changed (DasomAgent   *agent,
 {
   g_debug (G_STRLOC ": %s: name: %s", G_STRFUNC, name);
 
-  if (g_strcmp0 (name, "en") == 0)
-  {
+  if (g_strcmp0 (name, "en") == 0 || g_strcmp0 (name, "EN") == 0)
     app_indicator_set_icon_full (indicator, "dasom-en", "english");
-    app_indicator_set_attention_icon (indicator, "dasom-en");
-    app_indicator_set_label  (indicator, name, name);
-  }
   else if (g_strcmp0 (name, "정") == 0)
-  {
     app_indicator_set_icon_full (indicator, "dasom-ko", "korean");
-    app_indicator_set_attention_icon (indicator, "dasom-ko");
-    app_indicator_set_label  (indicator, name, name);
-  }
   else
-  {
-    app_indicator_set_icon_full (indicator, "input-keyboard", "Dasom");
-    app_indicator_set_attention_icon (indicator, "input-keyboard");
-    app_indicator_set_label  (indicator, name, name);
-  }
+    app_indicator_set_icon_full (indicator, "input-keyboard-symbolic", "Dasom");
 }
 
 int
@@ -98,9 +88,9 @@ main (int argc, char **argv)
   GtkWidget    *exit_menu;
   DasomAgent   *agent;
 
-  menu_shell = gtk_menu_new();
-  about_menu = gtk_menu_item_new_with_label(_("About"));
-  exit_menu  = gtk_menu_item_new_with_label(_("Exit"));
+  menu_shell = gtk_menu_new ();
+  about_menu = gtk_menu_item_new_with_label (_("About"));
+  exit_menu  = gtk_menu_item_new_with_label (_("Exit"));
 
   gtk_widget_show_all (about_menu);
   gtk_widget_show_all (exit_menu);
@@ -109,13 +99,11 @@ main (int argc, char **argv)
 
   gtk_widget_show_all (menu_shell);
 
-  indicator = app_indicator_new ("dasom-indicator",
-                                 "input-keyboard",
+  indicator = app_indicator_new ("dasom-indicator", "input-keyboard",
                                  APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
   app_indicator_set_status (indicator, APP_INDICATOR_STATUS_ACTIVE);
-  app_indicator_set_label  (indicator, "Dasom",
-                            "Dasom Indicator for Dasom IM");
-  app_indicator_set_menu   (indicator, GTK_MENU (menu_shell));
+  app_indicator_set_icon_full (indicator, "input-keyboard-symbolic", "Dasom");
+  app_indicator_set_menu (indicator, GTK_MENU (menu_shell));
 
   agent = dasom_agent_new ();
   g_signal_connect (agent, "engine-changed",
