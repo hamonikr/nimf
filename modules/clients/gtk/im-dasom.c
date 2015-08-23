@@ -98,6 +98,8 @@ dasom_gtk_im_context_get_preedit_string (GtkIMContext   *context,
 static DasomEvent *
 translate_gdk_event (GdkEventKey *event)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   DasomEventType type = DASOM_EVENT_NOTHING;
 
   switch (event->type)
@@ -237,9 +239,9 @@ on_commit (DasomIM           *im,
            const gchar       *text,
            DasomGtkIMContext *context)
 {
-  g_debug (G_STRLOC ": %s: START", G_STRFUNC);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   g_signal_emit_by_name (context, "commit", text);
-  g_debug (G_STRLOC ": %s: END", G_STRFUNC);
 }
 
 static gboolean
