@@ -159,6 +159,9 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
     return;
 
   dasom_jeongeum_update_preedit_and_commit (engine, target);
+  gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
+  dasom_engine_emit_commit (engine, target, text);
+  g_free (text);
 }
 
 void
