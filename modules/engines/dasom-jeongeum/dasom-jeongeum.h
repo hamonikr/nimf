@@ -44,6 +44,7 @@ struct _DasomJeongeum
 
   HangulInputContext *context;
   gchar              *preedit_string;
+  DasomPreeditState   preedit_state;
   gchar              *en_name;
   gchar              *ko_name;
 

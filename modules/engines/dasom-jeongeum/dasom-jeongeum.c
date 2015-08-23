@@ -79,6 +79,67 @@ guint dasom_event_keycode_to_qwerty_keyval (const DasomEvent *event)
   return keyval;
 }
 
+static void
+dasom_jeongeum_update_preedit_and_commit (DasomEngine     *engine,
+                                          DasomConnection *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+
+  const ucschar *ucs_commit;
+  const ucschar *ucs_preedit;
+
+  ucs_commit  = hangul_ic_get_commit_string  (jeongeum->context);
+  ucs_preedit = hangul_ic_get_preedit_string (jeongeum->context);
+
+  gchar *new_commit  = g_ucs4_to_utf8 (ucs_commit,  -1, NULL, NULL, NULL);
+  gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
+
+  /* commit */
+  if (ucs_commit[0] != 0)
+  {
+    /* clear preedit string before commit */
+    /* 이유1. ㅁ 을 연속하여 누를 경우 preedit 가 동일하여 preedit-changed 신호가
+     * 발생되지 않기 때문에.
+     * 이유2. 커밋 전에 조합 중인 문자열을 clear 하는 것이 논리적으로 맞는 것
+     * 같기 때문에.
+     */
+    g_free (jeongeum->preedit_string);
+    jeongeum->preedit_string = g_strdup ("");
+    dasom_engine_emit_preedit_changed (engine, target);
+    dasom_engine_emit_commit (engine, target, new_commit);
+  }
+
+  g_free (new_commit);
+
+  /* preedit-start */
+  if (jeongeum->preedit_state == DASOM_PREEDIT_STATE_END &&
+      new_preedit[0] != 0)
+  {
+    jeongeum->preedit_state = DASOM_PREEDIT_STATE_START;
+    dasom_engine_emit_preedit_start (engine, target);
+  }
+
+  /* preedit-changed */
+  if (g_strcmp0 (jeongeum->preedit_string, new_preedit) != 0)
+  {
+    g_free (jeongeum->preedit_string);
+    jeongeum->preedit_string = new_preedit;
+    dasom_engine_emit_preedit_changed (engine, target);
+  }
+  else
+    g_free (new_preedit);
+
+  /* preedit-end */
+  if (jeongeum->preedit_state == DASOM_PREEDIT_STATE_START &&
+      jeongeum->preedit_string[0] == 0)
+  {
+    jeongeum->preedit_state = DASOM_PREEDIT_STATE_END;
+    dasom_engine_emit_preedit_end (engine, target);
+  }
+}
+
 void
 dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
 {
@@ -97,21 +158,7 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
   if (flush[0] == 0)
     return;
 
-  gchar *text = NULL;
-
-  text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
-
-  if (jeongeum->preedit_string != NULL)
-  {
-    g_free (jeongeum->preedit_string);
-    jeongeum->preedit_string = NULL;
-    dasom_engine_emit_preedit_changed (engine, target);
-    dasom_engine_emit_preedit_end     (engine, target);
-  }
-
-  dasom_engine_emit_commit (engine, target, text);
-
-  g_free (text);
+  dasom_jeongeum_update_preedit_and_commit (engine, target);
 }
 
 void
@@ -141,16 +188,10 @@ on_candidate_clicked (DasomEngine *engine, DasomConnection *target, gchar *text)
 
   if (text)
   {
+    /* hangul_ic 내부의 commit text가 사라집니다 */
     hangul_ic_reset (jeongeum->context);
-
-    if (jeongeum->preedit_string != NULL)
-    {
-      g_free (jeongeum->preedit_string);
-      jeongeum->preedit_string = NULL;
-      dasom_engine_emit_preedit_changed (DASOM_ENGINE (jeongeum), target);
-      dasom_engine_emit_preedit_end     (DASOM_ENGINE (jeongeum), target);
-    }
-
+    dasom_jeongeum_update_preedit_and_commit (engine, target);
+    /* text를 commit 합니다*/
     dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), target, text);
   }
 
@@ -168,7 +209,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
            event->key.keyval,
            event->key.hardware_keycode);
 
-  guint keyval;
+  guint    keyval;
   gboolean retval = FALSE;
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
@@ -195,7 +236,8 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   if (jeongeum->is_english_mode)
     return dasom_english_filter_event (engine, target, event);
 
-  if (dasom_event_matches (event, (const DasomKey **) jeongeum->hanja_keys))
+  if (G_UNLIKELY (dasom_event_matches (event,
+                  (const DasomKey **) jeongeum->hanja_keys)))
   {
     if (jeongeum->is_candidate_mode == FALSE)
     {
@@ -234,7 +276,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
     return TRUE;
   }
 
-  if (jeongeum->is_candidate_mode)
+  if (G_UNLIKELY (jeongeum->is_candidate_mode))
   {
     g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -265,37 +307,14 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
     return TRUE;
   }
 
-  const ucschar *commit  = hangul_ic_get_commit_string  (jeongeum->context);
-  const ucschar *preedit = hangul_ic_get_preedit_string (jeongeum->context);
-
-  gchar *new_commit  = NULL;
-  gchar *new_preedit = NULL;
-  gchar *old_preedit = g_strdup (jeongeum->preedit_string);
-
-  if (event->key.keyval == DASOM_KEY_BackSpace ||
-      event->key.keyval == DASOM_KEY_Delete    ||
-      event->key.keyval == DASOM_KEY_KP_Delete)
+  if  (G_UNLIKELY (event->key.keyval == DASOM_KEY_BackSpace ||
+                   event->key.keyval == DASOM_KEY_Delete    ||
+                   event->key.keyval == DASOM_KEY_KP_Delete))
   {
     retval = hangul_ic_backspace (jeongeum->context);
 
     if (retval)
-    {
-      gchar *new_preedit = NULL;
-      const ucschar *preedit = hangul_ic_get_preedit_string (jeongeum->context);
-
-      if (preedit[0] != 0)
-        new_preedit = g_ucs4_to_utf8 (preedit, -1, NULL, NULL, NULL);
-
-      if (g_strcmp0 (old_preedit, new_preedit) != 0)
-      {
-        g_free (jeongeum->preedit_string);
-        jeongeum->preedit_string = new_preedit;
-        dasom_engine_emit_preedit_changed (engine, target);
-      }
-
-      if (old_preedit != NULL && preedit[0] == 0)
-        dasom_engine_emit_preedit_end (engine, target);
-    }
+      dasom_jeongeum_update_preedit_and_commit (engine, target);
 
     return retval;
   }
@@ -303,51 +322,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   keyval = dasom_event_keycode_to_qwerty_keyval (event);
   retval = hangul_ic_process (jeongeum->context, keyval);
 
-  if (commit[0] != 0)
-    new_commit  = g_ucs4_to_utf8 (commit, -1, NULL, NULL, NULL);
-
-  if (preedit[0] != 0)
-    new_preedit = g_ucs4_to_utf8 (preedit, -1, NULL, NULL, NULL);
-
-  if (commit[0] == 0)
-  {
-    if (old_preedit == NULL && preedit[0] != 0)
-      dasom_engine_emit_preedit_start (engine, target);
-
-    if (g_strcmp0 (old_preedit, new_preedit) != 0)
-    {
-      g_free (jeongeum->preedit_string);
-      jeongeum->preedit_string = new_preedit;
-      dasom_engine_emit_preedit_changed (engine, target);
-    }
-
-    if (old_preedit != NULL && preedit[0] == 0)
-      dasom_engine_emit_preedit_end (engine, target);
-  }
-
-  if (commit[0] != 0)
-  {
-    if (old_preedit != NULL)
-    {
-      g_free (jeongeum->preedit_string);
-      jeongeum->preedit_string = NULL;
-      dasom_engine_emit_preedit_changed (engine, target);
-      dasom_engine_emit_preedit_end     (engine, target);
-    }
-
-    dasom_engine_emit_commit (engine, target, new_commit);
-
-    if (preedit[0] != 0)
-    {
-      g_free (jeongeum->preedit_string);
-      jeongeum->preedit_string = new_preedit;
-      dasom_engine_emit_preedit_start   (engine, target);
-      dasom_engine_emit_preedit_changed (engine, target);
-    }
-  }
-
-  g_free (new_commit);
-  g_free (old_preedit);
+  dasom_jeongeum_update_preedit_and_commit (engine, target);
 
   if (retval)
     return TRUE;
