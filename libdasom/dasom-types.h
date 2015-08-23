@@ -91,6 +91,12 @@ typedef struct {
   guint keyval;
 } DasomKey;
 
+typedef enum
+{
+  DASOM_PREEDIT_STATE_START = 1,
+  DASOM_PREEDIT_STATE_END   = 0
+} DasomPreeditState;
+
 DasomKey  *dasom_key_new            (void);
 DasomKey  *dasom_key_new_from_nicks (const gchar **nicks);
 void       dasom_key_free           (DasomKey     *key);

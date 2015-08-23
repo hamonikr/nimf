@@ -44,12 +44,6 @@ typedef struct _DasomServer DasomServer;
 typedef struct _DasomConnection      DasomConnection;
 typedef struct _DasomConnectionClass DasomConnectionClass;
 
-typedef enum
-{
-  DASOM_PREEDIT_STATE_START = 1,
-  DASOM_PREEDIT_STATE_END   = 0
-} DasomPreeditState;
-
 struct _DasomConnection
 {
   GObject parent_instance;
