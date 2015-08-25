@@ -82,7 +82,7 @@ guint dasom_event_keycode_to_qwerty_keyval (const DasomEvent *event)
 static void
 dasom_jeongeum_update_preedit (DasomEngine     *engine,
                                DasomConnection *target,
-                               const gchar     *new_preedit)
+                               gchar           *new_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -100,9 +100,11 @@ dasom_jeongeum_update_preedit (DasomEngine     *engine,
   if (g_strcmp0 (jeongeum->preedit_string, new_preedit) != 0)
   {
     g_free (jeongeum->preedit_string);
-    jeongeum->preedit_string = g_strdup (new_preedit);
+    jeongeum->preedit_string = new_preedit;
     dasom_engine_emit_preedit_changed (engine, target);
   }
+  else
+    g_free (new_preedit);
 
   /* preedit-end */
   if (jeongeum->preedit_state == DASOM_PREEDIT_STATE_START &&
@@ -131,9 +133,7 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
   if (flush[0] == 0)
     return;
 
-  gchar *empty_preedit = g_strdup ("");
-  dasom_jeongeum_update_preedit (engine, target, empty_preedit);
-  g_free (empty_preedit);
+  dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
 
   gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
   dasom_engine_emit_commit (engine, target, text);
@@ -169,9 +169,7 @@ on_candidate_clicked (DasomEngine *engine, DasomConnection *target, gchar *text)
   {
     /* hangul_ic 내부의 commit text가 사라집니다 */
     hangul_ic_reset (jeongeum->context);
-    gchar *empty_preedit = g_strdup ("");
-    dasom_jeongeum_update_preedit (engine, target, empty_preedit);
-    g_free (empty_preedit);
+    dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
     dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), target, text);
   }
 
@@ -301,7 +299,6 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
       ucs_preedit = hangul_ic_get_preedit_string (jeongeum->context);
       gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
       dasom_jeongeum_update_preedit (engine, target, new_preedit);
-      g_free (new_preedit);
     }
 
     return retval;
@@ -314,7 +311,6 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   ucs_preedit = hangul_ic_get_preedit_string (jeongeum->context);
 
   gchar *new_commit  = g_ucs4_to_utf8 (ucs_commit,  -1, NULL, NULL, NULL);
-  gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
 
   /* commit */
   if (ucs_commit[0] != 0)
@@ -325,14 +321,13 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
      * 이유2. 커밋 전에 조합 중인 문자열을 clear 하는 것이 논리적으로 맞는 것
      * 같기 때문에.
      */
-    gchar *empty_preedit = g_strdup ("");
-    dasom_jeongeum_update_preedit (engine, target, empty_preedit);
-    g_free (empty_preedit);
+    dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
     dasom_engine_emit_commit (engine, target, new_commit);
   }
 
   g_free (new_commit);
 
+  gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
   dasom_jeongeum_update_preedit (engine, target, new_preedit);
 
   if (retval)
