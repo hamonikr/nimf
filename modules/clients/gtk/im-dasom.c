@@ -141,11 +141,38 @@ dasom_gtk_im_context_filter_keypress (GtkIMContext *context,
 }
 
 static void
+dasom_gtk_im_context_reset (GtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  dasom_im_reset (DASOM_GTK_IM_CONTEXT (context)->im);
+}
+
+#ifdef ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT
+static void
+on_gdk_event (GdkEvent          *event,
+              DasomGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (event->type == GDK_BUTTON_PRESS &&
+      event->button.window == context->client_window)
+    dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
+
+  gtk_main_do_event (event);
+}
+#endif
+
+static void
 dasom_gtk_im_context_focus_in (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   dasom_im_focus_in (DASOM_GTK_IM_CONTEXT (context)->im);
+
+#ifdef ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT
+  gdk_event_handler_set ((GdkEventFunc) on_gdk_event, context, NULL);
+#endif
 }
 
 static void
@@ -153,15 +180,11 @@ dasom_gtk_im_context_focus_out (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+#ifdef ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT
+  gdk_event_handler_set ((GdkEventFunc) gtk_main_do_event, NULL, NULL);
+#endif
+
   dasom_im_focus_out (DASOM_GTK_IM_CONTEXT (context)->im);
-}
-
-static void
-dasom_gtk_im_context_reset (GtkIMContext *context)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_im_reset (DASOM_GTK_IM_CONTEXT (context)->im);
 }
 
 static void

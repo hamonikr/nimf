@@ -44,6 +44,8 @@ else
   AC_MSG_RESULT(yes)
 fi
 
+dnl build dasom-indicator by default
+
 AC_ARG_ENABLE([appindicator],
   AS_HELP_STRING([--enable-appindicator],
                  [Enable dasom-indicator (appindicator)]),
@@ -51,10 +53,21 @@ AC_ARG_ENABLE([appindicator],
   [enable_appindicator=yes])
 
 AS_IF([test "x$enable_appindicator" == "xyes"],
-  [PKG_CHECK_MODULES(APPINDICATOR3, [appindicator3-0.1])
-])
+  [PKG_CHECK_MODULES(APPINDICATOR3, [appindicator3-0.1])])
 
 AM_CONDITIONAL([ENABLE_APPINDICATOR], [test "$enable_appindicator" = "yes"])
+
+dnl reset on GDK_BUTTON_PRESS event by default
+
+AC_ARG_ENABLE([reset-on-gdk-button-press-event],
+  AS_HELP_STRING([--enable-reset-on-gdk-button-press-event],
+                 [Enable reset on GDK_BUTTON_PRESS event]),
+  [],
+  [enable_reset_on_gdk_button_press_event=yes])
+
+AS_IF([test "x$enable_reset_on_gdk_button_press_event" == "xyes"],
+  [AC_DEFINE(ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT, [1],
+             [enable reset on GDK_BUTTON_PRESS event])])
 
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([0.10.1])
