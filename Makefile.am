@@ -1,4 +1,4 @@
-SUBDIRS = libdasom modules daemon agents im-config-data tests
+SUBDIRS = libdasom modules daemon agents data tests
 
 ACLOCAL_AMFLAGS = -I m4
 

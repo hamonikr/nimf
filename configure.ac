@@ -77,7 +77,8 @@ AC_OUTPUT([
   agents/Makefile
   agents/gnome-shell-extension/Makefile
   agents/app-indicator/Makefile
-  im-config-data/Makefile
+  data/Makefile
+  data/im-config/Makefile
   libdasom/Makefile
   libdasom/IMdkit/Makefile
   libdasom/dasom.pc
