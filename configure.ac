@@ -79,6 +79,7 @@ AC_OUTPUT([
   agents/app-indicator/Makefile
   data/Makefile
   data/im-config/Makefile
+  data/icons/Makefile
   libdasom/Makefile
   libdasom/IMdkit/Makefile
   libdasom/dasom.pc

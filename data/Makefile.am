@@ -1,1 +1,1 @@
-SUBDIRS = im-config
+SUBDIRS = im-config icons

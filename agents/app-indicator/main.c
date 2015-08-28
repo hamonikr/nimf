@@ -62,11 +62,11 @@ static void on_engine_changed (DasomAgent   *agent,
   g_debug (G_STRLOC ": %s: name: %s", G_STRFUNC, name);
 
   if (g_strcmp0 (name, "en") == 0 || g_strcmp0 (name, "EN") == 0)
-    app_indicator_set_icon_full (indicator, "dasom-en", "english");
+    app_indicator_set_icon_full (indicator, "dasom-indicator-en", "english");
   else if (g_strcmp0 (name, "정") == 0)
-    app_indicator_set_icon_full (indicator, "dasom-ko", "korean");
+    app_indicator_set_icon_full (indicator, "dasom-indicator-ko", "korean");
   else
-    app_indicator_set_icon_full (indicator, "input-keyboard-symbolic", "Dasom");
+    app_indicator_set_icon_full (indicator, "dasom-indicator", "Dasom");
 }
 
 int
@@ -102,7 +102,7 @@ main (int argc, char **argv)
   indicator = app_indicator_new ("dasom-indicator", "input-keyboard",
                                  APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
   app_indicator_set_status (indicator, APP_INDICATOR_STATUS_ACTIVE);
-  app_indicator_set_icon_full (indicator, "input-keyboard-symbolic", "Dasom");
+  app_indicator_set_icon_full (indicator, "dasom-indicator", "Dasom");
   app_indicator_set_menu (indicator, GTK_MENU (menu_shell));
 
   agent = dasom_agent_new ();

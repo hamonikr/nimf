@@ -1,9 +1,6 @@
 moduledir = $(libdir)/dasom/modules
 module_LTLIBRARIES = libdasom-english.la
 
-icondir = $(datadir)/icons/hicolor/22x22/status
-icon_DATA = dasom-en.png
-
 libdasom_english_la_SOURCES = dasom-english.c dasom-english.h
 libdasom_english_la_CFLAGS  = \
 	-Wall -Werror \
@@ -13,6 +10,8 @@ libdasom_english_la_CFLAGS  = \
 
 libdasom_english_la_LDFLAGS = -avoid-version
 libdasom_english_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
+
+DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(moduledir)/libdasom-english.so

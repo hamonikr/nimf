@@ -1,9 +1,6 @@
 moduledir = $(libdir)/dasom/modules
 module_LTLIBRARIES = dasom-jeongeum.la
 
-icondir = $(datadir)/icons/hicolor/22x22/status
-icon_DATA = dasom-ko.png
-
 gsettings_SCHEMAS = org.freedesktop.Dasom.engines.jeongeum.gschema.xml
 @GSETTINGS_RULES@
 
@@ -22,6 +19,8 @@ dasom_jeongeum_la_LIBADD  = \
 	$(top_builddir)/libdasom/libdasom.la \
 	$(top_builddir)/modules/engines/dasom-english/libdasom-english.la \
 	$(LIBHANGUL_LIBS)
+
+DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(moduledir)/dasom-jeongeum.so
