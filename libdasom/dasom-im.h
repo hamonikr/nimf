@@ -51,6 +51,7 @@ struct _DasomIM
   DasomEngine       *engine;
   GSocketConnection *connection;
   DasomMessage      *reply;
+  gboolean           is_dispatched;
   GSource           *sockets_context_source;
   GSource           *default_context_source;
 };

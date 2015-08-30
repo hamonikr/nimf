@@ -59,6 +59,7 @@ struct _DasomConnection
   DasomMessage        *reply;
   GSource             *source;
   GSocketConnection   *socket_connection;
+  gboolean             is_dispatched;
   /* XIM */
   guint16              xim_connect_id;
   gint                 xim_preedit_length;

@@ -69,6 +69,7 @@ on_incoming_message_dasom (GSocket         *socket,
   message = dasom_recv_message (socket);
   dasom_message_unref (connection->reply);
   connection->reply = message;
+  connection->is_dispatched = TRUE;
 
   switch (message->header->type)
   {

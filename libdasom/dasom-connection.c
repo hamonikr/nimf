@@ -285,11 +285,10 @@ dasom_connection_iteration_until (DasomConnection  *connection,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean is_dispatched;
-
   do {
-    is_dispatched = g_main_context_iteration (NULL, TRUE);
-  } while (!is_dispatched ||
+    connection->is_dispatched = FALSE;
+    g_main_context_iteration (NULL, TRUE);
+  } while ((connection->is_dispatched == FALSE) ||
            (connection->reply && (connection->reply->header->type != type)));
 
   if (G_UNLIKELY (connection->reply == NULL))
@@ -297,23 +296,6 @@ dasom_connection_iteration_until (DasomConnection  *connection,
     g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
                 dasom_message_get_name_by_type (type));
     return;
-  }
-
-  if (connection->reply->header->type != type)
-  {
-    const gchar *name = dasom_message_get_name (connection->reply);
-    gchar *mesg;
-
-    if (name)
-      mesg = g_strdup (name);
-    else
-      mesg = g_strdup_printf ("unknown type %d",
-                              connection->reply->header->type);
-
-    g_critical ("Reply type does not match.\n"
-                "%s is required, but we received %s\n",
-                dasom_message_get_name_by_type (type), mesg);
-    g_free (mesg);
   }
 }
 

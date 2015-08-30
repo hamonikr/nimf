@@ -82,6 +82,7 @@ on_incoming_message (GSocket      *socket,
   message = dasom_recv_message (socket);
   dasom_message_unref (im->reply);
   im->reply = message;
+  im->is_dispatched = TRUE;
   gboolean retval;
 
   switch (message->header->type)
@@ -144,33 +145,17 @@ dasom_iteration_until (DasomIM          *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean is_dispatched;
-
   do {
-    is_dispatched = g_main_context_iteration (dasom_im_sockets_context, TRUE);
-  } while (!is_dispatched || (im->reply && (im->reply->header->type != type)));
+    im->is_dispatched = FALSE;
+    g_main_context_iteration (dasom_im_sockets_context, TRUE);
+  } while ((im->is_dispatched == FALSE) ||
+           (im->reply && (im->reply->header->type != type)));
 
   if (G_UNLIKELY (im->reply == NULL))
   {
     g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
                 dasom_message_get_name_by_type (type));
     return;
-  }
-
-  if (im->reply->header->type != type)
-  {
-    const gchar *name = dasom_message_get_name (im->reply);
-    gchar *mesg;
-
-    if (name)
-      mesg = g_strdup (name);
-    else
-      mesg = g_strdup_printf ("unknown type %d", im->reply->header->type);
-
-    g_critical ("Reply type does not match.\n"
-                "%s is required, but we received %s\n",
-                dasom_message_get_name_by_type (type), mesg);
-    g_free (mesg);
   }
 }
 
