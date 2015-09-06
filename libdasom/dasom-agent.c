@@ -19,16 +19,14 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
 #include "dasom-agent.h"
-#include <glib/gi18n.h>
-#include <gtk/gtk.h>
 #include "dasom-private.h"
 #include <gio/gunixsocketaddress.h>
 #include "dasom-marshalers.h"
 
 enum {
   ENGINE_CHANGED,
+  DISCONNECTED,
   LAST_SIGNAL
 };
 
@@ -39,16 +37,14 @@ G_DEFINE_TYPE (DasomAgent, dasom_agent, G_TYPE_OBJECT);
 static gboolean
 on_incoming_message (GSocket      *socket,
                      GIOCondition  condition,
-                     gpointer      user_data)
+                     DasomAgent   *agent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomAgent *agent = DASOM_AGENT (user_data);
-
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
-    /* FIXME: g_socket_close () 가 적절하게 사용되었는지 검증해야 합니다. */
     g_socket_close (socket, NULL);
+    g_signal_emit_by_name (agent, "disconnected", NULL);
     g_warning (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
     return G_SOURCE_REMOVE;
   }
@@ -175,6 +171,14 @@ dasom_agent_class_init (DasomAgentClass *class)
                   dasom_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
+  agent_signals[DISCONNECTED] =
+    g_signal_new (g_intern_static_string ("disconnected"),
+                  G_TYPE_FROM_CLASS (class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (DasomAgentClass, disconnected),
+                  NULL, NULL,
+                  dasom_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 DasomAgent *

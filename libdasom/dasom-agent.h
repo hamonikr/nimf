@@ -60,6 +60,7 @@ struct _DasomAgentClass
   /* Signals */
   void (*engine_changed) (DasomAgent  *context,
                           const gchar *str);
+  void (*disconnected)   (DasomAgent  *context);
 };
 
 GType       dasom_agent_get_type (void) G_GNUC_CONST;
