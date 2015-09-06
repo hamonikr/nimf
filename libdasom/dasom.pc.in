@@ -1,13 +1,11 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
-datarootdir=@datarootdir@
-datadir=@datadir@
-includedir=@includedir@/dasom
+includedir=@includedir@
 
-Name: libdasom
-Description: library for Dasom input method framework
+Name: Dasom
+Description: Dasom Input Method Framework Library
 Version: @VERSION@
-Requires:
+Requires: @LIBDASOM_REQUIRES@
 Libs: -L${libdir} -ldasom
-Cflags: -I${includedir}
+Cflags: -I${includedir}/dasom

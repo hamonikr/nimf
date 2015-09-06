@@ -21,10 +21,10 @@ AM_GLIB_DEFINE_LOCALEDIR(DASOM_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-PKG_CHECK_MODULES(LIBDASOM_DEPS,
-                  [glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0
-                   gobject-introspection-1.0 gtk+-3.0])
+LIBDASOM_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 gtk+-3.0"
+AC_SUBST(LIBDASOM_REQUIRES)
 
+PKG_CHECK_MODULES(LIBDASOM_DEPS, $LIBDASOM_REQUIRES)
 PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
 PKG_CHECK_MODULES(GTK3, [gtk+-3.0])
 PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
