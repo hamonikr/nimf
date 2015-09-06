@@ -24,7 +24,6 @@
 
 #include <gtk/gtk.h>
 #include "dasom-message.h"
-#include "dasom-engine.h"
 
 G_BEGIN_DECLS
 
@@ -42,6 +41,7 @@ struct _DasomAgent
 {
   GObject parent_instance;
 
+  /*< private >*/
   GSocketConnection *connection;
   DasomMessage      *reply;
   GSource           *source;
@@ -49,6 +49,7 @@ struct _DasomAgent
 
 struct _DasomAgentClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
   /*< public >*/
@@ -57,9 +58,8 @@ struct _DasomAgentClass
                           const gchar *str);
 };
 
-GType dasom_agent_get_type (void) G_GNUC_CONST;
-
-DasomAgent *dasom_agent_new (void);
+GType       dasom_agent_get_type (void) G_GNUC_CONST;
+DasomAgent *dasom_agent_new      (void);
 
 G_END_DECLS
 
