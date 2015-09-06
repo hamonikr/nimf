@@ -1,6 +1,6 @@
 bin_PROGRAMS = dasom-indicator
 
-dasom_indicator_SOURCES = main.c
+dasom_indicator_SOURCES = dasom-indicator.c
 
 dasom_indicator_CFLAGS = \
 	-Wall \
@@ -23,3 +23,5 @@ dasom_indicator_LDADD = \
 	$(X11_LIBS) \
 	$(GTK3_LIBS) \
 	$(APPINDICATOR3_LIBS)
+
+DISTCLEANFILES = Makefile.in

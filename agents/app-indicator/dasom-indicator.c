@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
- * main.c
+ * dasom-indicator.c
  * This file is part of Dasom.
  *
  * Copyright (C) 2015 Hodong Kim <hodong@cogno.org>
