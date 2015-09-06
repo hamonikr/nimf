@@ -28,7 +28,8 @@ const DasomMenu = new Lang.Class({
 
         this._icon = new St.Icon({ icon_name: 'input-keyboard-symbolic',
                                    style_class: 'system-status-icon' });
-
+        this._warning_icon = new St.Icon({ icon_name: 'dialog-warning-symbolic',
+                                   style_class: 'system-status-icon' });
         this._hbox.add_child(this._icon);
         this.actor.add_child(this._hbox);
 
@@ -65,6 +66,11 @@ function enable()
             if (child != dasom_menu._icon)
                 dasom_menu._hbox.replace_child (child, dasom_menu._icon);
         }
+    });
+
+    dasom_agent.connect('disconnected', function(agent) {
+      child = dasom_menu._hbox.get_child_at_index (0);
+      dasom_menu._hbox.replace_child (child, dasom_menu._warning_icon);
     });
 
     Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 0, 'right');

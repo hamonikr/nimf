@@ -69,6 +69,15 @@ static void on_engine_changed (DasomAgent   *agent,
     app_indicator_set_icon_full (indicator, "dasom-indicator", "Dasom");
 }
 
+static void on_disconnected (DasomAgent   *agent,
+                             AppIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  app_indicator_set_icon_full (indicator,
+                               "dasom-indicator-warning", "disconnected");
+}
+
 int
 main (int argc, char **argv)
 {
@@ -108,6 +117,8 @@ main (int argc, char **argv)
   agent = dasom_agent_new ();
   g_signal_connect (agent, "engine-changed",
                     G_CALLBACK (on_engine_changed), indicator);
+  g_signal_connect (agent, "disconnected",
+                    G_CALLBACK (on_disconnected), indicator);
   g_signal_connect (about_menu, "activate",  G_CALLBACK (on_about), indicator);
   g_signal_connect (exit_menu,  "activate",  G_CALLBACK (on_exit),  indicator);
 
@@ -115,6 +126,7 @@ main (int argc, char **argv)
 
   g_object_unref (agent);
   g_object_unref (indicator);
+  g_object_unref (menu_shell);
 
   return 0;
 }
