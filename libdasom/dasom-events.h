@@ -57,6 +57,7 @@ union _DasomEvent
   DasomEventKey  key;
 };
 
+GType       dasom_event_get_type   (void) G_GNUC_CONST;
 DasomEvent *dasom_event_new        (DasomEventType       type);
 DasomEvent *dasom_event_copy       (DasomEvent          *event);
 void        dasom_event_free       (DasomEvent          *event);
