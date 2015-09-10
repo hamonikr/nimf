@@ -383,17 +383,29 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
 }
 
 static void
+on_layout_changed (GSettings     *settings,
+                   gchar         *key,
+                   DasomJeongeum *jeongeum)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar *layout = g_settings_get_string (settings, key);
+  hangul_ic_select_keyboard (jeongeum->context, layout);
+  g_free (layout);
+}
+
+static void
 dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSettings *settings;
-  gchar     *layout, **hangul_keys, **hanja_keys;
+  gchar *layout, **hangul_keys, **hanja_keys;
 
-  settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
-  layout   = g_settings_get_string (settings, "layout");
-  hangul_keys = g_settings_get_strv (settings, "hangul-keys");
-  hanja_keys  = g_settings_get_strv (settings, "hanja-keys");
+  jeongeum->settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
+
+  layout      = g_settings_get_string (jeongeum->settings, "layout");
+  hangul_keys = g_settings_get_strv   (jeongeum->settings, "hangul-keys");
+  hanja_keys  = g_settings_get_strv   (jeongeum->settings, "hanja-keys");
 
   jeongeum->hangul_keys = dasom_key_newv ((const gchar **) hangul_keys);
   jeongeum->hanja_keys  = dasom_key_newv ((const gchar **) hanja_keys);
@@ -404,10 +416,12 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->hanja_table  = hanja_table_load (NULL);
   jeongeum->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
 
-  g_object_unref (settings);
   g_free (layout);
   g_strfreev (hangul_keys);
   g_strfreev (hanja_keys);
+
+  g_signal_connect (jeongeum->settings, "changed::layout",
+                    G_CALLBACK (on_layout_changed), jeongeum);
 }
 
 static void
@@ -425,6 +439,7 @@ dasom_jeongeum_finalize (GObject *object)
   g_free (jeongeum->ko_name);
   dasom_key_freev (jeongeum->hangul_keys);
   dasom_key_freev (jeongeum->hanja_keys);
+  g_object_unref (jeongeum->settings);
 
   G_OBJECT_CLASS (dasom_jeongeum_parent_class)->finalize (object);
 }
@@ -488,12 +503,12 @@ dasom_jeongeum_get_english_mode (DasomEngine *engine)
 }
 
 static void
-dasom_jeongeum_class_init (DasomJeongeumClass *klass)
+dasom_jeongeum_class_init (DasomJeongeumClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  DasomEngineClass *engine_class = DASOM_ENGINE_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  DasomEngineClass *engine_class = DASOM_ENGINE_CLASS (class);
 
   engine_class->filter_event       = dasom_jeongeum_filter_event;
   engine_class->get_preedit_string = dasom_jeongeum_get_preedit_string;
@@ -511,7 +526,7 @@ dasom_jeongeum_class_init (DasomJeongeumClass *klass)
 }
 
 static void
-dasom_jeongeum_class_finalize (DasomJeongeumClass *klass)
+dasom_jeongeum_class_finalize (DasomJeongeumClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }

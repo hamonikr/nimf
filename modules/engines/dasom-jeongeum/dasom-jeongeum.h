@@ -54,6 +54,7 @@ struct _DasomJeongeum
   HanjaTable         *symbol_table;
   DasomKey          **hangul_keys;
   DasomKey          **hanja_keys;
+  GSettings          *settings;
 };
 
 struct _DasomJeongeumClass
