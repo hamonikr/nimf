@@ -110,7 +110,9 @@ typedef enum
   DASOM_KEY_Alt_L        = 0xffe9,
   DASOM_KEY_Alt_R        = 0xffea,
 
-  DASOM_KEY_Delete       = 0xffff
+  DASOM_KEY_Delete       = 0xffff,
+
+  DASOM_KEY_VoidSymbol   = 0xffffff
 } DasomKeySym;
 
 #endif /* __DASOM_KEY_SYMS_H__ */
