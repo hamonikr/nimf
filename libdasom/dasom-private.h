@@ -37,12 +37,16 @@ struct _DasomEnginePrivate
   gint          surrounding_cursor_index;
 };
 
-void          dasom_send_message (GSocket          *socket,
-                                  DasomMessageType  type,
-                                  gpointer          data,
-                                  guint16           data_len,
-                                  GDestroyNotify    data_destroy_func);
-DasomMessage* dasom_recv_message (GSocket          *socket);
+void          dasom_send_message        (GSocket          *socket,
+                                         DasomMessageType  type,
+                                         gpointer          data,
+                                         guint16           data_len,
+                                         GDestroyNotify    data_destroy_func);
+DasomMessage *dasom_recv_message        (GSocket          *socket);
+void          dasom_log_default_handler (const gchar      *log_domain,
+                                         GLogLevelFlags    log_level,
+                                         const gchar      *message,
+                                         gpointer          user_data);
 
 G_END_DECLS
 

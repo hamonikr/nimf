@@ -2,10 +2,10 @@
 
 if [ "$IM_CONFIG_PHASE" = 2 ]; then
     # start Dasom daemon
-    dasom-daemon &
+    dasom-daemon
 
     if ! test -z `which dasom-indicator`; then
-        dasom-indicator &
+        dasom-indicator
     fi
 fi
 

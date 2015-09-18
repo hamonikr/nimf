@@ -25,9 +25,14 @@
 #include "dasom.h"
 #include <gio/gunixsocketaddress.h>
 #include <libappindicator/app-indicator.h>
+#include <syslog.h>
+#include "dasom-private.h"
+#include <stdlib.h>
 
-static void on_about (GtkWidget *widget,
-                      gpointer   data)
+gboolean syslog_initialized = FALSE;
+
+static void on_about_menu (GtkWidget *widget,
+                           gpointer   data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -45,8 +50,8 @@ static void on_about (GtkWidget *widget,
   gtk_widget_show (dialog);
 }
 
-static void on_exit (GtkWidget *widget,
-                      gpointer   data)
+static void on_exit_menu (GtkWidget *widget,
+                          gpointer   data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -81,13 +86,44 @@ static void on_disconnected (DasomAgent   *agent,
 int
 main (int argc, char **argv)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  GError         *error = NULL;
+  gboolean        no_daemon = FALSE;
+  GOptionContext *context;
+  GOptionEntry    entries[] = {
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, "Do not daemonize", NULL},
+    {NULL}
+  };
+
+  context = g_option_context_new ("- dasom daemon");
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_parse (context, &argc, &argv, &error);
+  g_option_context_free (context);
+
+  if (error != NULL)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, DASOM_LOCALE_DIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 #endif
+
+  if (no_daemon == FALSE)
+  {
+    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
+    syslog_initialized = TRUE;
+    g_log_set_default_handler (dasom_log_default_handler, NULL);
+
+    if (daemon (0, 0) != 0)
+    {
+      g_critical ("Couldn't daemonize.");
+      return EXIT_FAILURE;
+    }
+  }
 
   gtk_init (&argc, &argv);
 
@@ -119,8 +155,8 @@ main (int argc, char **argv)
                     G_CALLBACK (on_engine_changed), indicator);
   g_signal_connect (agent, "disconnected",
                     G_CALLBACK (on_disconnected), indicator);
-  g_signal_connect (about_menu, "activate",  G_CALLBACK (on_about), indicator);
-  g_signal_connect (exit_menu,  "activate",  G_CALLBACK (on_exit),  indicator);
+  g_signal_connect (about_menu, "activate",  G_CALLBACK (on_about_menu), indicator);
+  g_signal_connect (exit_menu,  "activate",  G_CALLBACK (on_exit_menu),  indicator);
 
   gtk_main ();
 
@@ -128,5 +164,8 @@ main (int argc, char **argv)
   g_object_unref (indicator);
   g_object_unref (menu_shell);
 
-  return 0;
+  if (syslog_initialized)
+    closelog ();
+
+  return EXIT_SUCCESS;
 }

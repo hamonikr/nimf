@@ -20,6 +20,7 @@
  */
 
 #include "dasom-private.h"
+#include <syslog.h>
 
 void
 dasom_send_message (GSocket          *socket,
@@ -158,4 +159,47 @@ DasomMessage *dasom_recv_message (GSocket *socket)
     g_error ("unknown message type");
 
   return message;
+}
+
+void dasom_log_default_handler (const gchar    *log_domain,
+                                GLogLevelFlags  log_level,
+                                const gchar    *message,
+                                gpointer        user_data)
+{
+  int priority;
+  const gchar *prefix;
+
+  switch (log_level & G_LOG_LEVEL_MASK)
+  {
+    case G_LOG_LEVEL_ERROR:
+      priority = LOG_ERR;
+      prefix = "ERROR **";
+      break;
+    case G_LOG_LEVEL_CRITICAL:
+      priority = LOG_CRIT;
+      prefix = "CRITICAL **";
+      break;
+    case G_LOG_LEVEL_WARNING:
+      priority = LOG_WARNING;
+      prefix = "WARNING **";
+      break;
+    case G_LOG_LEVEL_MESSAGE:
+      priority = LOG_NOTICE;
+      prefix = "Message";
+      break;
+    case G_LOG_LEVEL_INFO:
+      priority = LOG_INFO;
+      prefix = "INFO";
+      break;
+    case G_LOG_LEVEL_DEBUG:
+      priority = LOG_DEBUG;
+      prefix = "DEBUG";
+      break;
+    default:
+      priority = LOG_NOTICE;
+      prefix = "LOG";
+      break;
+  }
+
+  syslog (priority, "%s-%s: %s", log_domain, prefix, message ? message : "(NULL) message");
 }

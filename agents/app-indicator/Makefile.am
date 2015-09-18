@@ -16,7 +16,9 @@ dasom_indicator_CFLAGS = \
 	$(APPINDICATOR3_CFLAGS)
 
 dasom_indicator_LDADD = \
-	$(top_builddir)/libdasom/libdasom.la \
+	$(top_builddir)/libdasom/libdasom.la
+
+dasom_indicator_LDFLAGS = \
 	$(GLIB_LIBS) \
 	$(GIO_LIBS) \
 	$(GIO_UNIX_LIBS) \
