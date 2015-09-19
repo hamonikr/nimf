@@ -27,3 +27,4 @@ dasom-marshalers.c
 dasom-marshalers.h
 tests/textview
 *.moc
+.dirstamp
