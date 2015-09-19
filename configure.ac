@@ -6,7 +6,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 
-AM_INIT_AUTOMAKE([1.11 -Wall -Werror])
+AM_INIT_AUTOMAKE([1.11 subdir-objects -Wall -Werror])
 
 AM_SILENT_RULES([yes])
 
@@ -81,7 +81,6 @@ AC_OUTPUT([
   data/im-config/Makefile
   data/icons/Makefile
   libdasom/Makefile
-  libdasom/IMdkit/Makefile
   libdasom/dasom.pc
   modules/Makefile
   modules/clients/Makefile
