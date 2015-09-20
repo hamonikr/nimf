@@ -1,3 +1,6 @@
+gsettings_SCHEMAS = org.freedesktop.Dasom.clients.gtk.gschema.xml
+@GSETTINGS_RULES@
+
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/libdasom \
 	-DG_LOG_DOMAIN=\"dasom\" \
@@ -30,6 +33,8 @@ im_dasom_gtk2_la_SOURCES  = im-dasom.c
 im_dasom_gtk2_la_CFLAGS   = $(AM_CFLAGS) $(GTK2_CFLAGS)
 im_dasom_gtk2_la_LDFLAGS  = $(GTK2_LIBS) -avoid-version -module
 im_dasom_gtk2_la_LIBADD   = $(top_builddir)/libdasom/libdasom.la
+
+DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(gtk3_im_moduledir)/im-dasom-gtk3.so

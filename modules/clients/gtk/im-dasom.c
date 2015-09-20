@@ -38,6 +38,8 @@ struct _DasomGtkIMContext
   DasomIM      *im;
   GdkWindow    *client_window;
   GdkRectangle  cursor_area;
+  GSettings    *settings;
+  gboolean      reset_on_gdk_button_press_event;
 };
 
 struct _DasomGtkIMContextClass
@@ -148,7 +150,6 @@ dasom_gtk_im_context_reset (GtkIMContext *context)
   dasom_im_reset (DASOM_GTK_IM_CONTEXT (context)->im);
 }
 
-#ifdef ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT
 static void
 on_gdk_event (GdkEvent          *event,
               DasomGtkIMContext *context)
@@ -160,18 +161,18 @@ on_gdk_event (GdkEvent          *event,
 
   gtk_main_do_event (event);
 }
-#endif
 
 static void
 dasom_gtk_im_context_focus_in (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_im_focus_in (DASOM_GTK_IM_CONTEXT (context)->im);
+  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
 
-#ifdef ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT
-  gdk_event_handler_set ((GdkEventFunc) on_gdk_event, context, NULL);
-#endif
+  dasom_im_focus_in (dasom_context->im);
+
+  if (dasom_context->reset_on_gdk_button_press_event)
+    gdk_event_handler_set ((GdkEventFunc) on_gdk_event, context, NULL);
 }
 
 static void
@@ -179,11 +180,12 @@ dasom_gtk_im_context_focus_out (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-#ifdef ENABLE_RESET_ON_GDK_BUTTON_PRESS_EVENT
-  gdk_event_handler_set ((GdkEventFunc) gtk_main_do_event, NULL, NULL);
-#endif
+  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
 
-  dasom_im_focus_out (DASOM_GTK_IM_CONTEXT (context)->im);
+  if (dasom_context->reset_on_gdk_button_press_event)
+    gdk_event_handler_set ((GdkEventFunc) gtk_main_do_event, NULL, NULL);
+
+  dasom_im_focus_out (dasom_context->im);
 }
 
 static void
@@ -321,6 +323,17 @@ on_retrieve_surrounding (DasomIM           *im,
 }
 
 static void
+on_changed_reset_on_gdk_button_press_event (GSettings         *settings,
+                                            gchar             *key,
+                                            DasomGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  context->reset_on_gdk_button_press_event =
+    g_settings_get_boolean (context->settings, "reset-on-gdk-button-press-event");
+}
+
+static void
 dasom_gtk_im_context_init (DasomGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -351,6 +364,13 @@ dasom_gtk_im_context_init (DasomGtkIMContext *context)
                     "retrieve-surrounding",
                     G_CALLBACK (on_retrieve_surrounding),
                     context);
+
+  context->settings = g_settings_new ("org.freedesktop.Dasom.clients.gtk");
+  context->reset_on_gdk_button_press_event =
+    g_settings_get_boolean (context->settings, "reset-on-gdk-button-press-event");
+
+  g_signal_connect (context->settings, "changed::reset-on-gdk-button-press-event",
+                    G_CALLBACK (on_changed_reset_on_gdk_button_press_event), context);
 }
 
 static void
@@ -363,6 +383,8 @@ dasom_gtk_im_context_finalize (GObject *object)
 
   if (context->client_window)
     g_object_unref (context->client_window);
+
+  g_object_unref (context->settings);
 
   G_OBJECT_CLASS (dasom_gtk_im_context_parent_class)->finalize (object);
 }
