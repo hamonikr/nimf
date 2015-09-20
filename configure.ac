@@ -14,9 +14,15 @@ AM_PROG_AR
 AC_PROG_CC
 AC_PROG_CXX
 
+dnl ***************************************************************************
+dnl Internationalization
+dnl ***************************************************************************
+
+IT_PROG_INTLTOOL(0.35.0)
 GETTEXT_PACKAGE=dasom
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [gettext package name])
 AC_SUBST(GETTEXT_PACKAGE)
+AM_GLIB_GNU_GETTEXT
 AM_GLIB_DEFINE_LOCALEDIR(DASOM_LOCALE_DIR)
 
 LT_INIT([disable-static])
@@ -79,4 +85,5 @@ AC_OUTPUT([
   modules/engines/dasom-english/Makefile
   modules/engines/dasom-jeongeum/Makefile
   daemon/Makefile
+  po/Makefile.in
   tests/Makefile])

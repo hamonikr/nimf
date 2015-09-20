@@ -28,3 +28,6 @@ dasom-marshalers.h
 tests/textview
 *.moc
 .dirstamp
+Makefile.in.in
+POTFILES
+stamp-it
