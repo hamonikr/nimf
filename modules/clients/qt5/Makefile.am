@@ -35,4 +35,4 @@ install-data-hook:
 uninstall-hook:
 	rm -f    $(DESTDIR)$(qt5_im_moduledir)/libqt5im-dasom.so
 
-CLEANFILES = $(BUILT_SOURCES)
+DISTCLEANFILES = Makefile.in $(BUILT_SOURCES)

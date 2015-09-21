@@ -29,3 +29,5 @@ install-data-hook:
 
 uninstall-hook:
 	rm -f    $(DESTDIR)$(qt4_im_moduledir)/libqt4im-dasom.so
+
+DISTCLEANFILES = Makefile.in $(BUILT_SOURCES)

@@ -11,3 +11,5 @@ EXTRA_DIST = $(extension_DATA)
 
 uninstall-local:
 	-rm -r $(extensiondir)
+
+DISTCLEANFILES = Makefile.in
