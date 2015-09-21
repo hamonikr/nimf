@@ -85,5 +85,4 @@ AC_OUTPUT([
   modules/engines/dasom-english/Makefile
   modules/engines/dasom-jeongeum/Makefile
   daemon/Makefile
-  po/Makefile.in
-  tests/Makefile])
+  po/Makefile.in])

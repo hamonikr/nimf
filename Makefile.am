@@ -1,4 +1,4 @@
-SUBDIRS = libdasom modules daemon agents po data tests
+SUBDIRS = libdasom modules daemon agents po data
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -8,6 +8,7 @@ DISTCLEANFILES = \
 	INSTALL \
 	aclocal.m4 \
 	config.h.in \
+	config.h.in~ \
 	configure
 
 distclean-local:
