@@ -239,7 +239,6 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
   dasom_send_message (socket, DASOM_MESSAGE_GET_SURROUNDING, NULL, 0, NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_GET_SURROUNDING_REPLY);
 
-  /* FIXME: 중복 코드 */
   if (im->reply == NULL)
   {
     if (text)
@@ -345,7 +344,6 @@ dasom_im_get_preedit_string (DasomIM  *im,
   dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, 0, NULL);
   dasom_iteration_until (im, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
 
-  /* FIXME: 중복 코드 */
   if (im->reply == NULL)
   {
     if (str)
@@ -414,7 +412,6 @@ dasom_im_new (void)
   return g_object_new (DASOM_TYPE_IM, NULL);
 }
 
-/* TODO: 어떠한 이유로 서버와 접속이 불가할 경우, slave 또는 fallback 모드가 필요합니다 */
 static void
 dasom_im_init (DasomIM *im)
 {
@@ -458,7 +455,7 @@ dasom_im_init (DasomIM *im)
   message = dasom_recv_message (socket);
 
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
-    g_error ("FIXME: error handling");
+    g_error ("Couldn't connect dasom daemon");
 
   dasom_message_unref (message);
 

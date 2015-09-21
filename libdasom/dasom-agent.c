@@ -125,7 +125,7 @@ dasom_agent_init (DasomAgent *agent)
   message = dasom_recv_message (socket);
 
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
-    g_error ("FIXME: error handling");
+    g_error ("Couldn't connect dasom daemon");
 
   dasom_message_unref (message);
 
@@ -192,16 +192,19 @@ dasom_agent_new ()
 void
 dasom_agent_set_engine (gchar *name)
 {
+  /* TODO */
 }
 
 DasomEngineInfo *
 dasom_agent_get_engine_info (gchar *name)
 {
+  /* TODO */
   return NULL;
 }
 
 gchar **
 dasom_agent_list_engines (DasomAgent *agent)
 {
+  /* TODO */
   return NULL;
 }
