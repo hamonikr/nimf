@@ -92,7 +92,7 @@ dasom_candidate_init (DasomCandidate *candidate)
   GtkListStore      *store;
   GtkTreeSelection  *selection;
 
-  gtk_init (0, NULL); /* FIXME */
+  gtk_init (0, NULL);
 
   /* gtk tree view */
   store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
@@ -131,12 +131,7 @@ dasom_candidate_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /*DasomCandidate *candidate = DASOM_CANDIDATE (object);*/
-
-  /* FIXME: 콘테이너 윈도우(candidate->window) 제거할 때,
-    자식들도 함께 제거되는지 확인해야 합니다. */
-  /*g_object_unref (candidate->window);*/ /* FIXME */
-
+  gtk_widget_destroy (DASOM_CANDIDATE (object)->window);
   G_OBJECT_CLASS (dasom_candidate_parent_class)->finalize (object);
 }
 
