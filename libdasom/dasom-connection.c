@@ -119,7 +119,7 @@ dasom_connection_new (DasomConnectionType  type,
   g_signal_connect (connection,
                     "engine-changed",
                     G_CALLBACK (on_signal_engine_changed),
-                    cb_user_data);
+                    NULL);
   return connection;
 }
 
