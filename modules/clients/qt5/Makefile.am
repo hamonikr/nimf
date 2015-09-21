@@ -21,9 +21,8 @@ libqt5im_dasom_la_CXXFLAGS = \
 	-I$(QT5_GUI_INCLUDE_PATH) \
 	-DQT_NO_KEYWORDS
 
-libqt5im_dasom_la_LDFLAGS = -avoid-version -module
-libqt5im_dasom_la_LIBADD = $(QT5_PLATFORM_SUPPORT_CFLAGS) \
-	                         $(top_builddir)/libdasom/libdasom.la
+libqt5im_dasom_la_LDFLAGS = -avoid-version -module $(QT5_PLATFORM_SUPPORT_LIBS)
+libqt5im_dasom_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
 
 im-dasom-qt5.moc: im-dasom-qt5.cpp
 	$(AM_V_GEN) $(QT5_MOC) im-dasom-qt5.cpp -o im-dasom-qt5.moc
