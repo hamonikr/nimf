@@ -11,10 +11,10 @@
       <summary>hotkey for switching input method</summary>
       <description>Binding to change the input method</description>
     </key>
-    <key name="active-modules" type="as">
-      <default>['']</default>
-      <summary>Active modules</summary>
-      <description>List of active modules. It contains the "Location" of the active modules.</description>
+    <key name="enabled-engines" type="as">
+      <default>['dasom-jeongeum']</default>
+      <summary>Enabled engines</summary>
+      <description>List of enabled engines.</description>
     </key>
   </schema>
 </schemalist>
