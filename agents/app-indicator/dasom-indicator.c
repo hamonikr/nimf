@@ -58,8 +58,9 @@ static void on_exit_menu (GtkWidget *widget,
   gtk_main_quit ();
 }
 
-/* TODO: name 대신에 DasomModuleInfo, DasomStatusInfo
- *       이런 걸 받아올 필요가 있습니다. */
+/* FIXME: name 대신에 DasomEngineInfo 또는 id 를 받아올 필요가 있습니다.
+ * 미래에 중국어 엔진을 추가할 때 그때 변경을 고려해 봅시다.
+ */
 static void on_engine_changed (DasomAgent   *agent,
                                gchar        *name,
                                AppIndicator *indicator)

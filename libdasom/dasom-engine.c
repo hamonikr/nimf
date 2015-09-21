@@ -445,7 +445,7 @@ dasom_engine_class_init (DasomEngineClass *class)
   class->get_preedit_string  = dasom_engine_real_get_preedit_string;
   class->set_surrounding     = dasom_engine_real_set_surrounding;
   class->get_surrounding     = dasom_engine_real_get_surrounding;
- /* FIXME: 나중에  get_engine_info 이런 걸로 추가해야 할지도 모르겠습니다. */
+ /* TODO: 나중에  get_engine_info 이런 걸로 추가해야 할지도 모르겠습니다. */
   class->get_name            = dasom_engine_real_get_name;
 
   g_object_class_install_property (object_class,

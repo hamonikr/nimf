@@ -210,7 +210,7 @@ on_new_connection (GSocketService    *service,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /* TODO: simple authentication */
+  /* TODO: simple authentication using GCredentials */
 
   /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
    * 시간이 걸리므로, 일단은 DasomConnection, on_incoming_message_dasom 에서 처리토록 하자. */
@@ -262,7 +262,7 @@ initable_init (GInitable     *initable,
   GSocketAddress *address;
   GError         *local_error = NULL;
 
-  server->listener = G_SOCKET_LISTENER (g_socket_service_new ()); /* FIXME: threaded */
+  server->listener = G_SOCKET_LISTENER (g_socket_service_new ());
   /* server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1)); */
 
   if (g_unix_socket_address_abstract_names_supported ())
@@ -407,8 +407,6 @@ dasom_server_get_default_engine (DasomServer *server)
 
   g_object_unref (settings);
 
-  /* FIXME: 오타, 설정 파일 등으로 인하여 엔진이 NULL 이 나올 수 있습니다.
-   * 이에 대한 처리가 필요합니다. */
   g_assert (engine != NULL);
 
   return engine;
@@ -455,7 +453,7 @@ dasom_server_init (DasomServer *server)
   server->main_context = g_main_context_ref_thread_default ();
   server->connections = g_hash_table_new_full (g_direct_hash,
                                                g_direct_equal,
-                                               NULL, /* FIXME */
+                                               NULL,
                                                (GDestroyNotify) g_object_unref);
   server->agents_list = NULL;
 }
