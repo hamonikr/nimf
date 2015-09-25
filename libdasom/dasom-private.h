@@ -46,7 +46,7 @@ DasomMessage *dasom_recv_message        (GSocket          *socket);
 void          dasom_log_default_handler (const gchar      *log_domain,
                                          GLogLevelFlags    log_level,
                                          const gchar      *message,
-                                         gpointer          user_data);
+                                         gboolean         *debug);
 
 G_END_DECLS
 

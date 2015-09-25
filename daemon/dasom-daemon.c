@@ -25,6 +25,7 @@
 #include <glib-unix.h>
 #include <syslog.h>
 #include "dasom-private.h"
+#include <glib/gi18n.h>
 
 gboolean syslog_initialized = FALSE;
 
@@ -38,13 +39,15 @@ main (int argc, char **argv)
   GError      *error = NULL;
 
   gboolean        no_daemon = FALSE;
+  gboolean        debug     = FALSE;
   GOptionContext *context;
   GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, "Do not daemonize", NULL},
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, N_("Do not daemonize"), NULL},
+    {"debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Log debugging message"), NULL},
     {NULL}
   };
 
-  context = g_option_context_new ("- dasom daemon");
+  context = g_option_context_new ("- Dasom Input Method Daemon");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);
@@ -66,7 +69,7 @@ main (int argc, char **argv)
   {
     openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
     syslog_initialized = TRUE;
-    g_log_set_default_handler (dasom_log_default_handler, NULL);
+    g_log_set_default_handler ((GLogFunc) dasom_log_default_handler, &debug);
 
     if (daemon (0, 0) != 0)
     {

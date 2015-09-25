@@ -164,7 +164,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
 void dasom_log_default_handler (const gchar    *log_domain,
                                 GLogLevelFlags  log_level,
                                 const gchar    *message,
-                                gpointer        user_data)
+                                gboolean       *debug)
 {
   int priority;
   const gchar *prefix;
@@ -200,6 +200,9 @@ void dasom_log_default_handler (const gchar    *log_domain,
       prefix = "LOG";
       break;
   }
+
+  if (priority == LOG_DEBUG && (debug == NULL || *debug == FALSE))
+    return;
 
   syslog (priority, "%s-%s: %s", log_domain, prefix, message ? message : "(NULL) message");
 }

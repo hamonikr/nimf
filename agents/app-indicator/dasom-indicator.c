@@ -87,11 +87,13 @@ static void on_disconnected (DasomAgent   *agent,
 int
 main (int argc, char **argv)
 {
-  GError         *error = NULL;
+  GError         *error     = NULL;
   gboolean        no_daemon = FALSE;
+  gboolean        debug     = FALSE;
   GOptionContext *context;
   GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, "Do not daemonize", NULL},
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, N_("Do not daemonize"), NULL},
+    {"debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Log debugging message"), NULL},
     {NULL}
   };
 
@@ -117,7 +119,7 @@ main (int argc, char **argv)
   {
     openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
     syslog_initialized = TRUE;
-    g_log_set_default_handler (dasom_log_default_handler, NULL);
+    g_log_set_default_handler ((GLogFunc) dasom_log_default_handler, &debug);
 
     if (daemon (0, 0) != 0)
     {
