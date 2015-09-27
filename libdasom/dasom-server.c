@@ -635,9 +635,11 @@ int dasom_server_xim_set_ic_values (DasomServer      *server,
   for (i = 0; i < data->ic_attr_num; i++)
   {
     if (g_strcmp0 (XNInputStyle, data->ic_attr[i].name) == 0)
-      ; /* XNInputStyle is ignored */
+      g_message ("XNInputStyle is ignored");
     else if (g_strcmp0 (XNClientWindow, data->ic_attr[i].name) == 0)
       connection->client_window = *(Window *) data->ic_attr[i].value;
+    else if (g_strcmp0 (XNFocusWindow, data->ic_attr[i].name) == 0)
+      connection->focus_window = *(Window *) data->ic_attr[i].value;
     else
       g_warning (G_STRLOC ": %s %s", G_STRFUNC, data->ic_attr[i].name);
   }
@@ -769,11 +771,13 @@ int dasom_server_xim_set_ic_focus (DasomServer         *server,
                                    XIMS                 xims,
                                    IMChangeFocusStruct *data)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
+
+  g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
+           G_STRFUNC, data->icid, connection->id);
+
   dasom_connection_focus_in (connection);
 
   return 1;
@@ -783,11 +787,13 @@ int dasom_server_xim_unset_ic_focus (DasomServer         *server,
                                      XIMS                 xims,
                                      IMChangeFocusStruct *data)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
   DasomConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
+
+  g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
+           G_STRFUNC, data->icid, connection->id);
+
   dasom_connection_focus_out (connection);
 
   return 1;
