@@ -97,7 +97,6 @@ on_signal_engine_changed (DasomConnection *connection,
                         (gchar *) name, strlen (name) + 1, NULL);
     l = next;
   }
-  g_debug (G_STRLOC ": %s: END", G_STRFUNC);
 }
 
 DasomConnection *
@@ -142,7 +141,7 @@ void dasom_connection_reset (DasomConnection *connection)
 
 void dasom_connection_focus_in (DasomConnection *connection)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC, connection->id);
 
   dasom_engine_focus_in (connection->engine);
 
@@ -152,7 +151,7 @@ void dasom_connection_focus_in (DasomConnection *connection)
 
 void dasom_connection_focus_out (DasomConnection *connection)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC, connection->id);
 
   dasom_engine_focus_out (connection->engine, connection);
 
@@ -388,7 +387,7 @@ dasom_connection_emit_preedit_changed (DasomConnection *connection)
         preedit_cb_data.icid = connection->id;
         preedit_cb_data.todo.draw.caret = len;
         preedit_cb_data.todo.draw.chg_first = 0;
-        preedit_cb_data.todo.draw.chg_length = MIN (len, connection->xim_preedit_length);
+        preedit_cb_data.todo.draw.chg_length = connection->xim_preedit_length;
         preedit_cb_data.todo.draw.text = &text;
 
         text.feedback = feedback;
