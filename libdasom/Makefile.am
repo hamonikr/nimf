@@ -70,7 +70,9 @@ libdasom_la_CFLAGS = \
 	-DDASOM_MODULE_DIR=\"$(libdir)/dasom/modules\" \
 	$(LIBDASOM_DEPS_CFLAGS)
 
-libdasom_la_LDFLAGS = $(LIBDASOM_DEPS_LIBS)
+# TODO: libdasom 에 대한 header 파일과 doc을 배포하기 전까지 libdasom.so 에
+# 버전을 붙이지 않습니다.
+libdasom_la_LDFLAGS = $(LIBDASOM_DEPS_LIBS) -avoid-version
 
 dasomincludedir = $(includedir)/dasom
 dasominclude_HEADERS =
@@ -123,6 +125,9 @@ gir_DATA = $(INTROSPECTION_GIRS)
 
 typelibdir   = $(INTROSPECTION_TYPELIBDIR)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+uninstall-hook:
+	-rmdir $(DESTDIR)$(libdir)/dasom
 
 CLEANFILES = \
 	$(BUILT_SOURCES) \
