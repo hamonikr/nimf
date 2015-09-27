@@ -21,6 +21,7 @@
 
 #include "dasom-jeongeum.h"
 #include "modules/engines/dasom-english/dasom-english.h"
+#include <stdlib.h>
 
 G_DEFINE_DYNAMIC_TYPE (DasomJeongeum, dasom_jeongeum, DASOM_TYPE_ENGINE);
 
@@ -395,6 +396,67 @@ on_layout_changed (GSettings     *settings,
 }
 
 static void
+on_keys_changed (GSettings     *settings,
+                 gchar         *key,
+                 DasomJeongeum *jeongeum)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar **keys = g_settings_get_strv (settings, key);
+
+  if (g_strcmp0 (key, "hangul-keys") == 0)
+  {
+    dasom_key_freev (jeongeum->hangul_keys);
+    jeongeum->hangul_keys = dasom_key_newv ((const gchar **) keys);
+  }
+  else if (g_strcmp0 (key, "hanja-keys") == 0)
+  {
+    dasom_key_freev (jeongeum->hanja_keys);
+    jeongeum->hanja_keys = dasom_key_newv ((const gchar **) keys);
+  }
+
+  g_strfreev (keys);
+}
+
+static void
+on_kr_101_104_key_compatible_changed (GSettings     *settings,
+                                      gchar         *key,
+                                      gpointer       user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (g_settings_get_boolean (settings, key))
+    system ("xmodmap -e 'keycode 105 = Hangul_Hanja' && \
+             xmodmap -e 'keycode 108 = Hangul' && \
+             xmodmap -e 'remove mod1 = Hangul' && \
+             xmodmap -e 'remove control = Hangul_Hanja'");
+  else
+    system ("xmodmap -e 'keycode 105 = Control_R' && \
+             xmodmap -e 'keycode 108 = Alt_R' && \
+             xmodmap -e 'add mod1 = Alt_R' && \
+             xmodmap -e 'add control = Control_R'");
+}
+
+static gboolean on_timeout (GSettings *settings)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  static guint times = 0;
+
+  on_kr_101_104_key_compatible_changed (settings,
+                                        "korean-101-104-key-compatible", NULL);
+  times++;
+
+  if (times == 5)
+  {
+    times = 0;
+    return G_SOURCE_REMOVE;
+  }
+
+  return G_SOURCE_CONTINUE;
+}
+
+static void
 dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -420,8 +482,33 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_strfreev (hangul_keys);
   g_strfreev (hanja_keys);
 
+  /* FIXME: workaround for xkeyboard-config < 2.14
+   * https://bugs.freedesktop.org/show_bug.cgi?id=84404
+   *
+   * xmodmap 의 정확한 적용 시점을 모르겠습니다.
+   * .xprofile .profile .xinitrc .bashrc 에 xmodmap 설정을 넣어도 이상하게도
+   * gnome 에서 이것이 적용되지 않기 때문에, 그래서 dasom-daemon 이 실행하면서
+   * xmodmap 을 맨 처음 1번만 실행하도록 만들었었는데 맨 처음 1번만 실행해서는
+   * 이것이 적용되지 않기 때문에 몇 초 간격으로 5번을 실행합니다.
+   * xmodmap 실헹에 소요되는 시간은 약 0.01초입니다. 따라서 thread 를 도입할
+   * 필요는 없습니다.
+   *
+   * xkeyboard-config >= 2.14 를 사용하시는 경우에는 dasom-daemon 이 아닌
+   * 시스템 설정에서 xkb 옵션을 설정하실 것을 권장합니다.
+   */
+  if (g_settings_get_boolean (jeongeum->settings,
+                              "korean-101-104-key-compatible"))
+    g_timeout_add_seconds (2, (GSourceFunc) on_timeout, jeongeum->settings);
+
   g_signal_connect (jeongeum->settings, "changed::layout",
                     G_CALLBACK (on_layout_changed), jeongeum);
+  g_signal_connect (jeongeum->settings, "changed::hangul-keys",
+                    G_CALLBACK (on_keys_changed), jeongeum);
+  g_signal_connect (jeongeum->settings, "changed::hanja-keys",
+                    G_CALLBACK (on_keys_changed), jeongeum);
+  g_signal_connect (jeongeum->settings,
+                    "changed::korean-101-104-key-compatible",
+                    G_CALLBACK (on_kr_101_104_key_compatible_changed), NULL);
 }
 
 static void

@@ -16,17 +16,32 @@
       </choices>
       <default>'2'</default>
       <summary>Korean keyboard layout</summary>
-      <description>Korean keyboard layout</description>
+      <description>Korean keyboard layout
+'2'   - 두벌식 자판
+'2y'  - 두벌식 옛글 자판
+'ahn' - 안마태 자판
+'3f'  - 세벌식 최종 자판
+'39'  - 세벌식 390 자판
+'3s'  - 세벌식 순아래 자판
+'3y'  - 세벌식 옛글 자판
+'32'  - 세벌식 두벌배열 자판
+'ro'  - 로마자 자판</description>
     </key>
     <key type="as" name="hangul-keys">
-      <default>['hangul', 'shift-mask meta-r', 'alt-r']</default>
+      <default>['hangul']</default>
       <summary>hotkey for switching Korean / English</summary>
       <description>Binding to change Korean / English</description>
     </key>
     <key type="as" name="hanja-keys">
-      <default>['hangul-hanja', 'control-r']</default>
+      <default>['hangul-hanja']</default>
       <summary>hotkey for hanja</summary>
       <description>Binding to Hanja key</description>
+    </key>
+    <key type="b" name="korean-101-104-key-compatible">
+      <default>false</default>
+      <summary>Run xmodmap for Korean (101/104 key compatible)</summary>
+      <description>Run xmodmap for Korean (101/104 key compatible) keyboard.
+ This is a workaround for xkeyboard-config &lt; 2.14</description>
     </key>
   </schema>
 </schemalist>
