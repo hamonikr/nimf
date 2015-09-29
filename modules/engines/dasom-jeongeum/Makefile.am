@@ -24,7 +24,8 @@ DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(moduledir)/dasom-jeongeum.so
-	rm $(DESTDIR)$(moduledir)/dasom-jeongeum.la
+	rm -f $(DESTDIR)$(moduledir)/dasom-jeongeum.la
 
 uninstall-hook:
 	rm -f $(DESTDIR)$(moduledir)/dasom-jeongeum.so
+	-rmdir $(DESTDIR)$(moduledir)
