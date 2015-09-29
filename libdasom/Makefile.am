@@ -14,7 +14,6 @@ IMdkit_SOURCES = \
 	IMdkit/Xi18nX.h \
 	IMdkit/XimFunc.h \
 	IMdkit/XimProto.h \
-	IMdkit/Xtrans.h \
 	IMdkit/FrameMgr.c \
 	IMdkit/i18nAttr.c \
 	IMdkit/i18nClbk.c \
