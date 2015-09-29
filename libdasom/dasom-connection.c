@@ -329,7 +329,7 @@ dasom_connection_emit_preedit_start (DasomConnection *connection)
         preedit_cb_data.major_code = XIM_PREEDIT_START;
         preedit_cb_data.connect_id = connection->xim_connect_id;
         preedit_cb_data.icid       = connection->id;
-        IMCallCallback (xims, (XPointer) & preedit_cb_data);
+        IMCallCallback (xims, (XPointer) &preedit_cb_data);
       }
       break;
     default:
