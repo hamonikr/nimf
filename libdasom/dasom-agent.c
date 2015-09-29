@@ -106,6 +106,7 @@ dasom_agent_init (DasomAgent *agent)
   if (error)
   {
     g_critical ("%s", error->message);
+    g_signal_emit_by_name (agent, "disconnected", NULL);
     return;
   }
 
@@ -114,6 +115,7 @@ dasom_agent_init (DasomAgent *agent)
   if (!socket)
   {
     g_critical (G_STRLOC ": %s: Can't get socket", G_STRFUNC);
+    g_signal_emit_by_name (agent, "disconnected", NULL);
     return;
   }
 
@@ -125,7 +127,11 @@ dasom_agent_init (DasomAgent *agent)
   message = dasom_recv_message (socket);
 
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
-    g_error ("Couldn't connect dasom daemon");
+  {
+    g_critical ("Couldn't connect dasom daemon");
+    g_signal_emit_by_name (agent, "disconnected", NULL);
+    return;
+  }
 
   dasom_message_unref (message);
 
