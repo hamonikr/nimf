@@ -425,16 +425,18 @@ on_kr_101_104_key_compatible_changed (GSettings     *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  int retval G_GNUC_UNUSED;
+
   if (g_settings_get_boolean (settings, key))
-    system ("xmodmap -e 'keycode 105 = Hangul_Hanja' && \
-             xmodmap -e 'keycode 108 = Hangul' && \
-             xmodmap -e 'remove mod1 = Hangul' && \
-             xmodmap -e 'remove control = Hangul_Hanja'");
+    retval = system ("xmodmap -e 'keycode 105 = Hangul_Hanja' && \
+                      xmodmap -e 'keycode 108 = Hangul' && \
+                      xmodmap -e 'remove mod1 = Hangul' && \
+                      xmodmap -e 'remove control = Hangul_Hanja'");
   else
-    system ("xmodmap -e 'keycode 105 = Control_R' && \
-             xmodmap -e 'keycode 108 = Alt_R' && \
-             xmodmap -e 'add mod1 = Alt_R' && \
-             xmodmap -e 'add control = Control_R'");
+    retval = system ("xmodmap -e 'keycode 105 = Control_R' && \
+                      xmodmap -e 'keycode 108 = Alt_R' && \
+                      xmodmap -e 'add mod1 = Alt_R' && \
+                      xmodmap -e 'add control = Control_R'");
 }
 
 static gboolean on_timeout (GSettings *settings)

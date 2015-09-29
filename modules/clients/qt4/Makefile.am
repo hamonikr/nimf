@@ -17,7 +17,8 @@ libqt4im_dasom_la_CXXFLAGS = \
 	$(QT4_GUI_CFLAGS) \
 	-DQT_NO_KEYWORDS
 
-libqt4im_dasom_la_LDFLAGS = -avoid-version -module $(QT4_GUI_LIBS)
+libqt4im_dasom_la_LDFLAGS = -avoid-version -module $(QT4_GUI_LIBS) \
+	                          $(GLIB_LIBS) $(GOBJECT_LIBS)
 libqt4im_dasom_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
 
 im-dasom-qt4.moc: im-dasom-qt4.cpp
@@ -25,7 +26,7 @@ im-dasom-qt4.moc: im-dasom-qt4.cpp
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(qt4_im_moduledir)/libqt4im-dasom.so
-	rm       $(DESTDIR)$(qt4_im_moduledir)/libqt4im-dasom.la
+	rm -f    $(DESTDIR)$(qt4_im_moduledir)/libqt4im-dasom.la
 
 uninstall-hook:
 	rm -f    $(DESTDIR)$(qt4_im_moduledir)/libqt4im-dasom.so

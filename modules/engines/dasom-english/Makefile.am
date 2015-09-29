@@ -8,7 +8,7 @@ libdasom_english_la_CFLAGS  = \
 	-DG_LOG_DOMAIN=\"dasom\" \
 	$(LIBDASOM_DEPS_CFLAGS)
 
-libdasom_english_la_LDFLAGS = -avoid-version
+libdasom_english_la_LDFLAGS = -avoid-version $(GLIB_LIBS) $(GOBJECT_LIBS)
 libdasom_english_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
 
 DISTCLEANFILES = Makefile.in

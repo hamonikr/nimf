@@ -21,7 +21,10 @@ libqt5im_dasom_la_CXXFLAGS = \
 	-I$(QT5_GUI_INCLUDE_PATH) \
 	-DQT_NO_KEYWORDS
 
-libqt5im_dasom_la_LDFLAGS = -avoid-version -module $(QT5_PLATFORM_SUPPORT_LIBS)
+libqt5im_dasom_la_LDFLAGS = -avoid-version -module \
+	                          $(QT5_WIDGETS_LIBS) \
+	                          $(QT5_PLATFORM_SUPPORT_LIBS) \
+	                          $(GLIB_LIBS) $(GOBJECT_LIBS)
 libqt5im_dasom_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
 
 im-dasom-qt5.moc: im-dasom-qt5.cpp
@@ -29,7 +32,7 @@ im-dasom-qt5.moc: im-dasom-qt5.cpp
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(qt5_im_moduledir)/libqt5im-dasom.so
-	rm       $(DESTDIR)$(qt5_im_moduledir)/libqt5im-dasom.la
+	rm -f    $(DESTDIR)$(qt5_im_moduledir)/libqt5im-dasom.la
 
 uninstall-hook:
 	rm -f    $(DESTDIR)$(qt5_im_moduledir)/libqt5im-dasom.so
