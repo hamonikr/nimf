@@ -606,7 +606,7 @@ static gboolean dasom_xevent_source_prepare (GSource *source,
 
   Display *display = ((DasomXEventSource *) source)->display;
   *timeout = -1;
-  return XPending (display);
+  return XPending (display) > 0;
 }
 
 static gboolean dasom_xevent_source_check (GSource *source)
@@ -871,6 +871,24 @@ on_incoming_message_xim (XIMS         xims,
 
   int retval;
 
+  DasomConnection *connection = NULL;
+
+  if (data->major_code == XIM_CREATE_IC      ||
+      data->major_code == XIM_DESTROY_IC     ||
+      data->major_code == XIM_SET_IC_VALUES  ||
+      data->major_code == XIM_GET_IC_VALUES  ||
+      data->major_code == XIM_FORWARD_EVENT  ||
+      data->major_code == XIM_SET_IC_FOCUS   ||
+      data->major_code == XIM_UNSET_IC_FOCUS ||
+      data->major_code == XIM_RESET_IC)
+  {
+    connection = g_hash_table_lookup (server->connections,
+                                      GUINT_TO_POINTER (data->changeic.icid));
+    if (connection)
+      dasom_engine_set_english_mode (connection->engine,
+                                     connection->is_english_mode);
+  }
+
   switch (data->major_code)
   {
     case XIM_OPEN:
@@ -916,6 +934,10 @@ on_incoming_message_xim (XIMS         xims,
       retval = 0;
       break;
   }
+
+  if (connection)
+    connection->is_english_mode =
+      dasom_engine_get_english_mode (connection->engine);
 
   return retval;
 }
