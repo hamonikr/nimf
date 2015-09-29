@@ -39,8 +39,10 @@ DISTCLEANFILES = Makefile.in
 install-data-hook:
 	chmod -x $(DESTDIR)$(gtk3_im_moduledir)/im-dasom-gtk3.so
 	chmod -x $(DESTDIR)$(gtk2_im_moduledir)/im-dasom-gtk2.so
-	rm $(DESTDIR)$(gtk3_im_moduledir)/im-dasom-gtk3.la
-	rm $(DESTDIR)$(gtk2_im_moduledir)/im-dasom-gtk2.la
+	rm -f $(DESTDIR)$(gtk3_im_moduledir)/im-dasom-gtk3.la
+	rm -f $(DESTDIR)$(gtk2_im_moduledir)/im-dasom-gtk2.la
+	$(GTK_QUERY_IMMODULES2) --update-cache
+	$(GTK_QUERY_IMMODULES3) --update-cache
 
 uninstall-hook:
 	rm -f $(DESTDIR)$(gtk3_im_moduledir)/im-dasom-gtk3.so

@@ -2,7 +2,6 @@ QT5_LIB_DIR          = `pkg-config --variable=libdir     Qt5PlatformSupport`
 QT5_GUI_VERSION      = `pkg-config --modversion          Qt5Gui`
 QT5_GUI_INCLUDE_DIR  = `pkg-config --variable=includedir Qt5Gui`
 QT5_GUI_INCLUDE_PATH = $(QT5_GUI_INCLUDE_DIR)/QtGui/$(QT5_GUI_VERSION)/QtGui
-QT5_MOC              = `pkg-config --variable=host_bins Qt5Core`/moc
 
 qt5_im_moduledir = $(QT5_LIB_DIR)/qt5/plugins/platforminputcontexts
 qt5_im_module_LTLIBRARIES = libqt5im-dasom.la

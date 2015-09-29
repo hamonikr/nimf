@@ -42,15 +42,19 @@ PKG_CHECK_MODULES(QT4_GUI, [QtGui])
 PKG_CHECK_MODULES(QT5_WIDGETS, [Qt5Widgets])
 PKG_CHECK_MODULES(QT5_PLATFORM_SUPPORT, [Qt5PlatformSupport])
 
-QT5_HOST_BINS=`pkg-config --variable=host_bins Qt5Core`
-QT5_MOC=`which $QT5_HOST_BINS/moc`
+AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no], [`pkg-config --variable=host_bins Qt5Core`])
+if test "x$QT5_MOC" = "xno"; then
+  AC_MSG_ERROR([moc for qt5 not found])
+fi
 
-AC_MSG_CHECKING([checking for $QT5_HOST_BINS/moc])
-if test -z $QT5_MOC; then
-  AC_MSG_RESULT(no)
-  AC_MSG_ERROR([moc for qt5 is required to build libqt5im-dasom.so])
-else
-  AC_MSG_RESULT(yes)
+AC_PATH_PROG([GTK_QUERY_IMMODULES3], [gtk-query-immodules-3.0], [no], [/usr/bin:/usr/lib/`uname -m`-linux-gnu/libgtk-3-0])
+if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
+  AC_MSG_ERROR([gtk-query-immodules-3.0 not found])
+fi
+
+AC_PATH_PROG([GTK_QUERY_IMMODULES2], [gtk-query-immodules-2.0], [no], [/usr/bin:/usr/lib/`uname -m`-linux-gnu/libgtk2.0-0])
+if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
+  AC_MSG_ERROR([gtk-query-immodules-2.0 not found])
 fi
 
 dnl build dasom-indicator by default
