@@ -2,7 +2,20 @@ What is Dasom?
 --------------
 
 Dasom is an input method framework.
-Now we can test Dasom.
+
+  * Input Method Server
+    * dasom-daemon including XIM
+
+  * Language Engines
+    * Korean: dasom-jeongeum
+    * English: dasom-english
+
+  * Client Modules
+    * gtk2, gtk3, qt4, qt5
+
+  * Indicators
+    * gnome-shell: dasom agent extension
+    * kde, unity, gnome-panel: dasom-indicator (app-indicator)
 
 
 INSTALL
@@ -25,28 +38,9 @@ INSTALL
 
     gnome-shell-extension-tool -e dasom-agent@gnome-shell-extensions.cogno.org
 
-  * Update your gtk module cache
-
-    debian / ubuntu 32-bit
-
-      sudo /usr/lib/i386-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
-      sudo /usr/lib/i386-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
-
-    debian / ubuntu64-bit
-
-      sudo /usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
-      sudo /usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
-
-    Arch Linux
-
-      sudo /usr/bin/gtk-query-immodules-3.0 --update-cache
-      sudo /usr/bin/gtk-query-immodules-2.0 --update-cache
-
   * Configuration im-config
 
-    im-config
-
-  * Then, select Dasom, logout and login.
+    Run im-config, then select Dasom, logout and login.
 
 
 Troubleshoot
@@ -59,7 +53,7 @@ Troubleshoot
 Architecture
 ------------
 
-      +- im modules --+    +--- each processes ----+  +- a process --+
+      +- im modules --+    +---- each process -----+  +- a process --+
       | gtk im module |    | gnome-shell-extension |  |   X server   |
       | qt  im module |    | dasom-indicator       |  +--------------+
       +---------------+    +-----------------------+         ^ |
@@ -87,6 +81,9 @@ Architecture
 
 Debugging
 ---------
+    dasom-daemon --debug
+    tail -f /var/log/daemon.log
+
     export GTK_IM_MODULE="dasom"
     export QT4_IM_MODULE="dasom"
     export QT_IM_MODULE="dasom"
@@ -98,11 +95,16 @@ Debugging
 References
 ----------
   http://www.x.org/releases/X11R7.6/doc/libX11/specs/XIM/xim.html
-  https://github.com/choehwanjin/nabi
-  https://git.gnome.org/browse/gtk+
-  https://github.com/ibus
-  http://docs.enlightenment.org/auto/efl/ecore_main.html
   http://www.w3.org/TR/ime-api/
   https://developer.chrome.com/extensions/input_ime
+  http://docs.enlightenment.org/auto/efl/ecore_main.html
   http://doc.qt.io/qt-4.8/qinputcontext.html
   http://doc.qt.io/qt-5/qinputmethod.html
+  https://git.gnome.org/browse/gtk+
+
+  https://github.com/choehwanjin/nabi
+  https://github.com/choehwanjin/imhangul
+  https://github.com/choehwanjin/ibus-hangul
+  https://github.com/ibus
+  https://github.com/fcitx/fcitx
+  https://github.com/uim/uim
