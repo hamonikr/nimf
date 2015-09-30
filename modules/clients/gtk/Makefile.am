@@ -10,7 +10,6 @@ AM_CFLAGS = -Wall -Werror
 
 # for gtk3
 
-GTK3_LIBDIR = `pkg-config --variable=libdir gtk+-3.0`
 GTK3_BINARY_VERSION = `pkg-config --variable=gtk_binary_version gtk+-3.0`
 
 gtk3_im_moduledir = $(GTK3_LIBDIR)/gtk-3.0/$(GTK3_BINARY_VERSION)/immodules
@@ -23,7 +22,6 @@ im_dasom_gtk3_la_LIBADD   = $(top_builddir)/libdasom/libdasom.la
 
 # for gtk2
 
-GTK2_LIBDIR = `pkg-config --variable=libdir gtk+-2.0`
 GTK2_BINARY_VERSION = `pkg-config --variable=gtk_binary_version gtk+-2.0`
 
 gtk2_im_moduledir = $(GTK2_LIBDIR)/gtk-2.0/$(GTK2_BINARY_VERSION)/immodules

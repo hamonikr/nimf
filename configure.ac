@@ -42,17 +42,24 @@ PKG_CHECK_MODULES(QT4_GUI, [QtGui])
 PKG_CHECK_MODULES(QT5_WIDGETS, [Qt5Widgets])
 PKG_CHECK_MODULES(QT5_PLATFORM_SUPPORT, [Qt5PlatformSupport])
 
-AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no], [`pkg-config --variable=host_bins Qt5Core`])
+AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
+              [`pkg-config --variable=host_bins Qt5Core`])
 if test "x$QT5_MOC" = "xno"; then
   AC_MSG_ERROR([moc for qt5 not found])
 fi
 
-AC_PATH_PROG([GTK_QUERY_IMMODULES3], [gtk-query-immodules-3.0], [no], [/usr/bin:/usr/lib/`uname -m`-linux-gnu/libgtk-3-0])
+GTK3_LIBDIR=`pkg-config --variable=libdir gtk+-3.0`
+AC_SUBST(GTK3_LIBDIR)
+AC_PATH_PROG([GTK_QUERY_IMMODULES3], [gtk-query-immodules-3.0], [no],
+             [/usr/bin:$GTK3_LIBDIR/libgtk-3-0])
 if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-3.0 not found])
 fi
 
-AC_PATH_PROG([GTK_QUERY_IMMODULES2], [gtk-query-immodules-2.0], [no], [/usr/bin:/usr/lib/`uname -m`-linux-gnu/libgtk2.0-0])
+GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
+AC_SUBST(GTK2_LIBDIR)
+AC_PATH_PROG([GTK_QUERY_IMMODULES2], [gtk-query-immodules-2.0], [no],
+             [/usr/bin:$GTK2_LIBDIR/libgtk2.0-0])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 not found])
 fi
