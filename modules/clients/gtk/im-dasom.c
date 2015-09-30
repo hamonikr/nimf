@@ -154,7 +154,8 @@ static void
 on_gdk_event (GdkEvent          *event,
               DasomGtkIMContext *context)
 {
-  g_debug (G_STRLOC ": %s: %p, %ld", G_STRFUNC, context, g_get_real_time ());
+  g_debug (G_STRLOC ": %s: %p, %" G_GINT64_FORMAT, G_STRFUNC, context,
+           g_get_real_time ());
 
   if (event->type == GDK_BUTTON_PRESS)
     dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
