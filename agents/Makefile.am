@@ -1,6 +1,6 @@
 SUBDIRS = gnome-shell-extension
 
-if ENABLE_APPINDICATOR
+if ENABLE_DASOM_INDICATOR
   SUBDIRS += app-indicator
 endif
 

@@ -6,8 +6,8 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 
-AM_INIT_AUTOMAKE([1.11 subdir-objects -Wall -Werror])
-
+AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror])
+AM_MAINTAINER_MODE([disable])
 AM_SILENT_RULES([yes])
 
 AM_PROG_AR
@@ -64,18 +64,18 @@ if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 not found])
 fi
 
+dnl ***************************************************************************
 dnl build dasom-indicator by default
+dnl ***************************************************************************
 
-AC_ARG_ENABLE([appindicator],
-  AS_HELP_STRING([--enable-appindicator],
-                 [Enable dasom-indicator (appindicator)]),
-  [],
-  [enable_appindicator=yes])
+AC_ARG_ENABLE([dasom-indicator],
+  AS_HELP_STRING([--disable-dasom-indicator], [Disable dasom-indicator]))
 
-AS_IF([test "x$enable_appindicator" == "xyes"],
+AS_IF([test "x$enable_dasom_indicator" != "xno"],
   [PKG_CHECK_MODULES(APPINDICATOR3, [appindicator3-0.1])])
 
-AM_CONDITIONAL([ENABLE_APPINDICATOR], [test "$enable_appindicator" = "yes"])
+AM_CONDITIONAL([ENABLE_DASOM_INDICATOR],
+               [test "$enable_dasom_indicator" != "no"])
 
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([0.10.1])
