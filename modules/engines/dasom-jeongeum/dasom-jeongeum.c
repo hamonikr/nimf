@@ -183,10 +183,8 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
                              DasomConnection *target,
                              DasomEvent      *event)
 {
-  g_debug (G_STRLOC ": %s:keyval:%d\t hardware_keycode:%d",
-           G_STRFUNC,
-           event->key.keyval,
-           event->key.hardware_keycode);
+  g_debug (G_STRLOC ": %s:keyval:%d\t hardware_keycode:%d", G_STRFUNC,
+           event->key.keyval, event->key.hardware_keycode);
 
   guint    keyval;
   gboolean retval = FALSE;
@@ -257,8 +255,6 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
 
   if (G_UNLIKELY (jeongeum->is_candidate_mode))
   {
-    g_debug (G_STRLOC ": %s", G_STRFUNC);
-
     switch (event->key.keyval)
     {
       case DASOM_KEY_Return:
@@ -270,10 +266,20 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
         }
         break;
       case DASOM_KEY_Up:
+      case DASOM_KEY_KP_Up:
         dasom_engine_select_previous_candidate_item (engine);
         break;
       case DASOM_KEY_Down:
+      case DASOM_KEY_KP_Down:
         dasom_engine_select_next_candidate_item (engine);
+        break;
+      case DASOM_KEY_Page_Up:
+      case DASOM_KEY_KP_Page_Up:
+        dasom_engine_select_page_up_candidate_item (engine);
+        break;
+      case DASOM_KEY_Page_Down:
+      case DASOM_KEY_KP_Page_Down:
+        dasom_engine_select_page_down_candidate_item (engine);
         break;
       case DASOM_KEY_Escape:
         dasom_engine_hide_candidate_window (engine);

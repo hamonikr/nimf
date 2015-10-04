@@ -405,6 +405,18 @@ dasom_engine_select_next_candidate_item (DasomEngine *engine)
   dasom_candidate_select_next_item (engine->priv->server->candidate);
 }
 
+void
+dasom_engine_select_page_up_candidate_item (DasomEngine *engine)
+{
+  dasom_candidate_select_page_up_item (engine->priv->server->candidate);
+}
+
+void
+dasom_engine_select_page_down_candidate_item (DasomEngine *engine)
+{
+  dasom_candidate_select_page_down_item (engine->priv->server->candidate);
+}
+
 gchar *
 dasom_engine_get_selected_candidate_text (DasomEngine *engine)
 {

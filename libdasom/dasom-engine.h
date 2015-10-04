@@ -139,16 +139,17 @@ gboolean dasom_engine_emit_delete_surrounding   (DasomEngine      *engine,
 void     dasom_engine_emit_engine_changed       (DasomEngine      *engine,
                                                  DasomConnection  *target);
 /* candidate */
-void     dasom_engine_update_candidate_window        (DasomEngine  *engine,
-                                                      const gchar **strv);
-void     dasom_engine_show_candidate_window          (DasomEngine  *engine,
-                                                      DasomConnection *target);
-void     dasom_engine_hide_candidate_window          (DasomEngine  *engine);
-void     dasom_engine_select_previous_candidate_item (DasomEngine  *engine);
-void     dasom_engine_select_next_candidate_item     (DasomEngine  *engine);
-gchar   *dasom_engine_get_selected_candidate_text    (DasomEngine  *engine);
-
-const gchar *dasom_engine_get_name     (DasomEngine      *engine);
+void     dasom_engine_update_candidate_window         (DasomEngine  *engine,
+                                                       const gchar **strv);
+void     dasom_engine_show_candidate_window           (DasomEngine  *engine,
+                                                       DasomConnection *target);
+void     dasom_engine_hide_candidate_window           (DasomEngine  *engine);
+void     dasom_engine_select_previous_candidate_item  (DasomEngine  *engine);
+void     dasom_engine_select_next_candidate_item      (DasomEngine  *engine);
+void     dasom_engine_select_page_up_candidate_item   (DasomEngine  *engine);
+void     dasom_engine_select_page_down_candidate_item (DasomEngine  *engine);
+gchar   *dasom_engine_get_selected_candidate_text     (DasomEngine  *engine);
+const gchar *dasom_engine_get_name                    (DasomEngine  *engine);
 
 G_END_DECLS
 

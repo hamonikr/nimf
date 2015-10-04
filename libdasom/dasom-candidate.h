@@ -57,15 +57,17 @@ struct _DasomCandidateClass
 
 GType dasom_candidate_get_type (void) G_GNUC_CONST;
 
-DasomCandidate *dasom_candidate_new                  (void);
-void            dasom_candidate_update_window        (DasomCandidate  *candidate,
-                                                      const gchar    **strv);
-void            dasom_candidate_show_window          (DasomCandidate  *candidate,
-                                                      DasomConnection *target);
-void            dasom_candidate_hide_window          (DasomCandidate  *candidate);
-void            dasom_candidate_select_previous_item (DasomCandidate  *candidate);
-void            dasom_candidate_select_next_item     (DasomCandidate  *candidate);
-gchar          *dasom_candidate_get_selected_text    (DasomCandidate  *candidate);
+DasomCandidate *dasom_candidate_new                   (void);
+void            dasom_candidate_update_window         (DasomCandidate  *candidate,
+                                                       const gchar    **strv);
+void            dasom_candidate_show_window           (DasomCandidate  *candidate,
+                                                       DasomConnection *target);
+void            dasom_candidate_hide_window           (DasomCandidate  *candidate);
+void            dasom_candidate_select_previous_item  (DasomCandidate  *candidate);
+void            dasom_candidate_select_next_item      (DasomCandidate  *candidate);
+void            dasom_candidate_select_page_up_item   (DasomCandidate  *candidate);
+void            dasom_candidate_select_page_down_item (DasomCandidate  *candidate);
+gchar          *dasom_candidate_get_selected_text     (DasomCandidate  *candidate);
 
 G_END_DECLS
 

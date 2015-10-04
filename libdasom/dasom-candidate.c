@@ -275,6 +275,26 @@ void dasom_candidate_select_next_item (DasomCandidate *candidate)
   }
 }
 
+/* TODO: 최적화 */
+void dasom_candidate_select_page_up_item (DasomCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  guint8 i;
+  for (i = 0; i < 10; i++)
+    dasom_candidate_select_previous_item (candidate);
+}
+
+/* TODO: 최적화 */
+void dasom_candidate_select_page_down_item (DasomCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  guint8 i;
+  for (i = 0; i < 10; i++)
+    dasom_candidate_select_next_item (candidate);
+}
+
 DasomCandidate *dasom_candidate_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -295,6 +315,5 @@ gchar *dasom_candidate_get_selected_text (DasomCandidate *candidate)
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
     gtk_tree_model_get (model, &iter, TITEL_COLUMN, &text, -1);
 
-  g_print ("TEXT: %s\n", text);
   return text;
 }
