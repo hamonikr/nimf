@@ -260,7 +260,6 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
     *cursor_index = *(gint *) (im->reply->data +
                                im->reply->header->data_len -
                                sizeof (gint) - sizeof (gboolean));
-    g_print ("cursor_index: %d\n", *cursor_index);
   }
 
   return *(gboolean *) (im->reply->data - sizeof (gboolean));
