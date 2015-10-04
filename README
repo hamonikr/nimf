@@ -27,6 +27,7 @@ INSTALL
     make
     sudo make install
     sudo ldconfig
+    sudo make update-gtk-im-cache
 
   * For using symbols in Jeongeum Engine
 
@@ -34,11 +35,11 @@ INSTALL
     sudo mv mssymbol.txt /usr/share/libhangul/hanja/
     ls /usr/share/libhangul/hanja/mssymbol.txt
 
-  * Enabling dasom-agent@gnome-shell-extensions.cogno.org
+  * For gnome-shell, enable dasom-agent@gnome-shell-extensions.cogno.org
 
     gnome-shell-extension-tool -e dasom-agent@gnome-shell-extensions.cogno.org
 
-  * Configuration im-config
+  * Configure im-config
 
     Run im-config, then select Dasom, logout and login.
 
