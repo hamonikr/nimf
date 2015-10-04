@@ -4,8 +4,6 @@ module_LTLIBRARIES = dasom-jeongeum.la
 gsettings_SCHEMAS = org.freedesktop.Dasom.engines.jeongeum.gschema.xml
 @GSETTINGS_RULES@
 
-# gtk3 부분 나중에 없애자
-
 dasom_jeongeum_la_SOURCES = dasom-jeongeum.c dasom-jeongeum.h
 dasom_jeongeum_la_CFLAGS  = \
 	-Wall -Werror \
@@ -24,8 +22,7 @@ DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(moduledir)/dasom-jeongeum.so
-	rm -f $(DESTDIR)$(moduledir)/dasom-jeongeum.la
+	rm    -f $(DESTDIR)$(moduledir)/dasom-jeongeum.la
 
 uninstall-hook:
-	rm -f $(DESTDIR)$(moduledir)/dasom-jeongeum.so
-	-rmdir $(DESTDIR)$(moduledir)
+	-rm -r $(DESTDIR)$(libdir)/dasom

@@ -15,8 +15,7 @@ DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(moduledir)/libdasom-english.so
-	rm -f $(DESTDIR)$(moduledir)/libdasom-english.la
+	rm    -f $(DESTDIR)$(moduledir)/libdasom-english.la
 
 uninstall-hook:
-	rm -f $(DESTDIR)$(moduledir)/libdasom-english.so
-	-rmdir $(DESTDIR)$(moduledir)
+	-rm -r $(DESTDIR)$(libdir)/dasom
