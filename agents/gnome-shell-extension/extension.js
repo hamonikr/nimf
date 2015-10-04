@@ -1,15 +1,15 @@
 /* -*- mode: js2; js2-basic-offset: 2; indent-tabs-mode: nil -*- */
 
-const Lang        = imports.lang;
-const St          = imports.gi.St;
-const Clutter     = imports.gi.Clutter;
-const Dasom       = imports.gi.Dasom;
-const Main        = imports.ui.main;
-const PanelMenu   = imports.ui.panelMenu;
-const PopupMenu   = imports.ui.popupMenu;
-const ModalDialog = imports.ui.modalDialog;
-
-const Gettext = imports.gettext.domain('gnome-shell-extensions');
+const Lang           = imports.lang;
+const St             = imports.gi.St;
+const Clutter        = imports.gi.Clutter;
+const Dasom          = imports.gi.Dasom;
+const Main           = imports.ui.main;
+const PanelMenu      = imports.ui.panelMenu;
+const PopupMenu      = imports.ui.popupMenu;
+const ModalDialog    = imports.ui.modalDialog;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Gettext        = imports.gettext;
 const _ = Gettext.gettext;
 
 let dasom_agent, dasom_menu;
@@ -87,6 +87,11 @@ const DasomMenu = new Lang.Class({
 
 function init()
 {
+  let extension = ExtensionUtils.getCurrentExtension();
+  let domain    = extension.metadata['gettext-domain'];
+  let localedir = extension.metadata['localedir']
+  Gettext.bindtextdomain(domain, localedir);
+  Gettext.textdomain(domain);
 }
 
 function enable()

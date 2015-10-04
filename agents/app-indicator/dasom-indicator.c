@@ -42,7 +42,7 @@ static void on_about_menu (GtkWidget *widget,
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
                                    GTK_MESSAGE_INFO,
                                    GTK_BUTTONS_CLOSE,
-                                   "Dasom Indicator for Dasom Input Method");
+                                   _("Dasom Indicator for Dasom Input Method"));
 
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gtk_widget_destroy), NULL);

@@ -32,3 +32,4 @@ Makefile.in.in
 POTFILES
 stamp-it
 agents/gnome-shell-extension/metadata.json
+*.gmo
