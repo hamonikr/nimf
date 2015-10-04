@@ -25,6 +25,7 @@
 #include <glib/gi18n.h>
 #include "dasom.h"
 #include <string.h>
+#include <gdk/gdkkeysyms.h>
 
 #define DASOM_TYPE_GTK_IM_CONTEXT  (dasom_gtk_im_context_get_type ())
 #define DASOM_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_GTK_IM_CONTEXT, DasomGtkIMContext))
@@ -39,7 +40,8 @@ struct _DasomGtkIMContext
   GdkWindow    *client_window;
   GdkRectangle  cursor_area;
   GSettings    *settings;
-  gboolean      reset_on_gdk_button_press_event;
+  gboolean      is_reset_on_gdk_button_press_event;
+  gboolean      is_hook_gdk_event_key;
 };
 
 struct _DasomGtkIMContextClass
@@ -157,10 +159,26 @@ on_gdk_event (GdkEvent          *event,
   g_debug (G_STRLOC ": %s: %p, %" G_GINT64_FORMAT, G_STRFUNC, context,
            g_get_real_time ());
 
-  if (event->type == GDK_BUTTON_PRESS)
-    dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
+  gboolean retval = FALSE;
 
-  gtk_main_do_event (event);
+  switch (event->type)
+  {
+    case GDK_KEY_PRESS:
+    case GDK_KEY_RELEASE:
+      if (context->is_hook_gdk_event_key)
+        retval = dasom_gtk_im_context_filter_keypress (GTK_IM_CONTEXT (context),
+                                                       &event->key);
+      break;
+    case GDK_BUTTON_PRESS:
+      if (context->is_reset_on_gdk_button_press_event)
+        dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
+      break;
+    default:
+      break;
+  }
+
+  if (retval == FALSE)
+    gtk_main_do_event (event);
 }
 
 static void
@@ -172,7 +190,8 @@ dasom_gtk_im_context_focus_in (GtkIMContext *context)
 
   dasom_im_focus_in (dasom_context->im);
 
-  if (dasom_context->reset_on_gdk_button_press_event)
+  if (dasom_context->is_reset_on_gdk_button_press_event ||
+      dasom_context->is_hook_gdk_event_key)
     gdk_event_handler_set ((GdkEventFunc) on_gdk_event, context, NULL);
 }
 
@@ -183,7 +202,8 @@ dasom_gtk_im_context_focus_out (GtkIMContext *context)
 
   DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
 
-  if (dasom_context->reset_on_gdk_button_press_event)
+  if (dasom_context->is_reset_on_gdk_button_press_event ||
+      dasom_context->is_hook_gdk_event_key)
     gdk_event_handler_set ((GdkEventFunc) gtk_main_do_event, NULL, NULL);
 
   dasom_im_focus_out (dasom_context->im);
@@ -330,8 +350,19 @@ on_changed_reset_on_gdk_button_press_event (GSettings         *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->reset_on_gdk_button_press_event =
-    g_settings_get_boolean (context->settings, "reset-on-gdk-button-press-event");
+  context->is_reset_on_gdk_button_press_event =
+    g_settings_get_boolean (context->settings, key);
+}
+
+static void
+on_changed_hook_gdk_event_key (GSettings         *settings,
+                               gchar             *key,
+                               DasomGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  context->is_hook_gdk_event_key = g_settings_get_boolean (context->settings,
+                                                           key);
 }
 
 static void
@@ -367,11 +398,20 @@ dasom_gtk_im_context_init (DasomGtkIMContext *context)
                     context);
 
   context->settings = g_settings_new ("org.freedesktop.Dasom.clients.gtk");
-  context->reset_on_gdk_button_press_event =
-    g_settings_get_boolean (context->settings, "reset-on-gdk-button-press-event");
 
-  g_signal_connect (context->settings, "changed::reset-on-gdk-button-press-event",
-                    G_CALLBACK (on_changed_reset_on_gdk_button_press_event), context);
+  context->is_reset_on_gdk_button_press_event =
+    g_settings_get_boolean (context->settings,
+                            "reset-on-gdk-button-press-event");
+
+  context->is_hook_gdk_event_key =
+    g_settings_get_boolean (context->settings, "hook-gdk-event-key");
+
+  g_signal_connect (context->settings,
+                    "changed::reset-on-gdk-button-press-event",
+                    G_CALLBACK (on_changed_reset_on_gdk_button_press_event),
+                    context);
+  g_signal_connect (context->settings, "changed::hook-gdk-event-key",
+                    G_CALLBACK (on_changed_hook_gdk_event_key), context);
 }
 
 static void
