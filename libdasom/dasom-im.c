@@ -380,6 +380,77 @@ void dasom_im_reset (DasomIM *im)
   dasom_iteration_until (im, DASOM_MESSAGE_RESET_REPLY);
 }
 
+/* TODO: dasom_im_filter_event_fallback() 함수는
+ * gboolean
+ * dasom_english_filter_event (DasomEngine     *engine,
+ *                             DasomConnection *target,
+ *                             DasomEvent      *event);
+ * 의 인수를 약간 수정하여 만들었습니다.
+ * 유지보수를 편하게 하기 위해 두 함수의 중복 부분을 합칠 필요가 있습니다.
+ */
+gboolean
+dasom_im_filter_event_fallback (DasomIM    *im,
+                                DasomEvent *event)
+{
+  g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
+
+  gboolean retval = FALSE;
+
+  if ((event->key.type   == DASOM_EVENT_KEY_RELEASE) ||
+      (event->key.keyval == DASOM_KEY_Shift_L)       ||
+      (event->key.keyval == DASOM_KEY_Shift_R)       ||
+      (event->key.state & (DASOM_CONTROL_MASK | DASOM_MOD1_MASK)))
+    return FALSE;
+
+  gchar c = 0;
+
+  if (event->key.keyval >= 32 && event->key.keyval <= 126)
+    c = event->key.keyval;
+
+  if (!c)
+  {
+    switch (event->key.keyval)
+    {
+      case DASOM_KEY_KP_Multiply: c = '*'; break;
+      case DASOM_KEY_KP_Add:      c = '+'; break;
+      case DASOM_KEY_KP_Subtract: c = '-'; break;
+      case DASOM_KEY_KP_Divide:   c = '/'; break;
+      default:
+        break;
+    }
+  }
+
+  if (!c && (event->key.state & DASOM_MOD2_MASK))
+  {
+    switch (event->key.keyval)
+    {
+      case DASOM_KEY_KP_Decimal:  c = '.'; break;
+      case DASOM_KEY_KP_0:        c = '0'; break;
+      case DASOM_KEY_KP_1:        c = '1'; break;
+      case DASOM_KEY_KP_2:        c = '2'; break;
+      case DASOM_KEY_KP_3:        c = '3'; break;
+      case DASOM_KEY_KP_4:        c = '4'; break;
+      case DASOM_KEY_KP_5:        c = '5'; break;
+      case DASOM_KEY_KP_6:        c = '6'; break;
+      case DASOM_KEY_KP_7:        c = '7'; break;
+      case DASOM_KEY_KP_8:        c = '8'; break;
+      case DASOM_KEY_KP_9:        c = '9'; break;
+      default:
+        break;
+    }
+  }
+
+  if (c)
+  {
+    gchar *str = g_strdup_printf ("%c", c);
+    g_signal_emit_by_name (im, "commit", str);
+    g_free (str);
+    retval = TRUE;
+  }
+
+  return retval;
+}
+
 gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
 {
   g_debug (G_STRLOC ":%s", G_STRFUNC);
@@ -390,7 +461,7 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
   if (!socket || g_socket_is_closed (socket))
   {
     g_warning ("socket is closed");
-    return FALSE;
+    return dasom_im_filter_event_fallback (im, event);
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event,
@@ -398,7 +469,7 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
   dasom_iteration_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
 
   if (im->reply == NULL)
-    return FALSE;
+    return dasom_im_filter_event_fallback (im, event);
 
   return *(gboolean *) (im->reply->data);
 }
