@@ -25,7 +25,7 @@ msgstr "다솜 입력기 표시기"
 
 #: ../agents/app-indicator/dasom-indicator.c:95 ../daemon/dasom-daemon.c:45
 msgid "Do not daemonize"
-msgstr "메몬화하지 않습니다"
+msgstr "데몬화하지 않습니다"
 
 #: ../agents/app-indicator/dasom-indicator.c:96 ../daemon/dasom-daemon.c:46
 msgid "Log debugging message"
