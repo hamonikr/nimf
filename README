@@ -1,21 +1,20 @@
-What is Dasom?
---------------
-
-Dasom is an input method framework.
+Dasom is an input method framework, which provides
 
   * Input Method Server
     * dasom-daemon including XIM
 
   * Language Engines
-    * Korean: dasom-jeongeum
+    * Korean: dasom-jeongeum (using libhangul)
     * English: dasom-english
 
   * Client Modules
-    * gtk2, gtk3, qt4, qt5
+    * GTK+2, GTK+3, Qt4, Qt5
 
   * Indicators
-    * gnome-shell: dasom agent extension
-    * kde, unity, gnome-panel: dasom-indicator (app-indicator)
+    * GNOME shell: dasom agent extension
+    * KDE, Unity, GNOME panel: dasom-indicator (using libappindicator3)
+
+Project Homepage: https://github.com/cogniti/dasom
 
 
 INSTALL
@@ -90,7 +89,7 @@ Debugging
     export QT_IM_MODULE="dasom"
     export G_MESSAGES_DEBUG=dasom
     export XMODIFIERS="@im=dasom"
-    gedit
+    gedit # or kate for Qt4, qtcreator for Qt5
 
 
 References
