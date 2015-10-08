@@ -2,7 +2,7 @@ dasom (1.0) stable; urgency=medium
 
   * Initial Release
 
-  * Dasom is an input method framework, which privides
+  * Dasom is an input method framework, which provides
     - Input Method Server including XIM
     - Language Engines for Korean, English
     - IM Modules for GTK+2, GTK+3, Qt4, Qt5
