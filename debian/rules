@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh $@ --with autoreconf
+
+override_dh_autoreconf:
+	mkdir -p m4
+	intltoolize --copy --force --automake
+	dh_autoreconf
+
+override_dh_auto_install:
+	dh_auto_install
+	find $(CURDIR)/debian/ -name \*.la -delete
