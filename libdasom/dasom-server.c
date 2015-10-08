@@ -106,14 +106,10 @@ on_incoming_message_dasom (GSocket         *socket,
       break;
     case DASOM_MESSAGE_FOCUS_IN:
       dasom_connection_focus_in (connection);
-      g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC,
-               dasom_connection_get_id (connection));
       dasom_send_message (socket, DASOM_MESSAGE_FOCUS_IN_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_FOCUS_OUT:
       dasom_connection_focus_out (connection);
-      g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC,
-               dasom_connection_get_id (connection));
       dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_SET_SURROUNDING:
@@ -354,7 +350,7 @@ dasom_server_get_instance (DasomServer *server,
 DasomEngine *
 dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
 {
-  g_debug (G_STRLOC ": %s: arg: %s", G_STRFUNC, dasom_engine_get_name (engine));
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_assert (engine != NULL);
 
@@ -372,17 +368,12 @@ dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
   list = g_list_next (server->instances);
 
   if (list == NULL)
-  {
-    g_debug (G_STRLOC ": %s: list == NULL", G_STRFUNC);
     list = g_list_first (server->instances);
-    g_debug (G_STRLOC ": %s: g_list_first (server->instances);", G_STRFUNC);
-  }
 
   if (list)
   {
     engine = list->data;
     server->instances = list;
-    g_debug (G_STRLOC ": %s: engine name: %s", G_STRFUNC, dasom_engine_get_name (engine));
   }
 
   g_assert (list != NULL);
