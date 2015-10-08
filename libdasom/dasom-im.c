@@ -392,7 +392,7 @@ gboolean
 dasom_im_filter_event_fallback (DasomIM    *im,
                                 DasomEvent *event)
 {
-  g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gboolean retval = FALSE;
 

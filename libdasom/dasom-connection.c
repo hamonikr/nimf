@@ -466,7 +466,7 @@ void
 dasom_connection_emit_commit (DasomConnection *connection,
                               const gchar     *text)
 {
-  g_debug (G_STRLOC ": %s:%s:id = %d", G_STRFUNC, text, connection->id);
+  g_debug (G_STRLOC ": %s: id = %d", G_STRFUNC, connection->id);
 
   switch (connection->type)
   {
@@ -499,8 +499,6 @@ dasom_connection_emit_commit (DasomConnection *connection,
       g_warning ("Unknown type: %d", connection->type);
       break;
   }
-
-  g_debug (G_STRLOC ":EXIT: %s", G_STRFUNC);
 }
 
 gboolean

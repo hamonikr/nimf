@@ -183,8 +183,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
                              DasomConnection *target,
                              DasomEvent      *event)
 {
-  g_debug (G_STRLOC ": %s:keyval:%d\t hardware_keycode:%d", G_STRFUNC,
-           event->key.keyval, event->key.hardware_keycode);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   guint    keyval;
   gboolean retval = FALSE;

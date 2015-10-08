@@ -121,7 +121,7 @@ DasomInputContext::on_commit (DasomIM     *im,
                               const gchar *text,
                               gpointer     user_data)
 {
-  g_debug (G_STRLOC ": %s: |%s|", G_STRFUNC, text);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   QString str = QString::fromUtf8 (text);
   QInputMethodEvent event;

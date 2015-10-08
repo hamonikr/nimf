@@ -41,7 +41,7 @@ dasom_english_filter_event (DasomEngine     *engine,
                             DasomConnection *target,
                             DasomEvent      *event)
 {
-  g_debug (G_STRLOC ": %s:%d", G_STRFUNC, event->key.keyval);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gboolean retval = FALSE;
 
