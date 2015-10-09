@@ -25,7 +25,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, x11-xserver-utils
 Recommends: im-config, dconf-editor, gnome-tweak-tool
 Suggests: fonts-noto-cjk, fonts-nanum, gnome-shell
 Description: Input Method Framework
- Dasom is an input method framework, which privides
+ Dasom is an input method framework, which provides
  .
   * Input Method Server including XIM
   * Language Engines for Korean, English
