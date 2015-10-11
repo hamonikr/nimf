@@ -48,20 +48,34 @@ if test "x$QT5_MOC" = "xno"; then
   AC_MSG_ERROR([moc for qt5 not found])
 fi
 
+BITS=""
+
+arch=$(uname -m)
+case "$arch" in
+  x86_64)
+    BITS="64"
+    ;;
+  *)
+    BITS="32"
+    ;;
+esac
+
 GTK3_LIBDIR=`pkg-config --variable=libdir gtk+-3.0`
 AC_SUBST(GTK3_LIBDIR)
-AC_PATH_PROG([GTK_QUERY_IMMODULES3], [gtk-query-immodules-3.0], [no],
-             [/usr/bin:$GTK3_LIBDIR/libgtk-3-0])
+AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
+              [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
+              [/usr/bin:$GTK3_LIBDIR/libgtk-3-0])
 if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-3.0 not found])
+  AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
 fi
 
 GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
 AC_SUBST(GTK2_LIBDIR)
-AC_PATH_PROG([GTK_QUERY_IMMODULES2], [gtk-query-immodules-2.0], [no],
-             [/usr/bin:$GTK2_LIBDIR/libgtk2.0-0])
+AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
+              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
+              [/usr/bin:$GTK2_LIBDIR/libgtk2.0-0])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-2.0 not found])
+  AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
 fi
 
 dnl ***************************************************************************
