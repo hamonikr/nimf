@@ -10,7 +10,7 @@ cd "$srcdir"
 mkdir -p m4
 
 INTLTOOLIZE=`which intltoolize`
-if test -z $INTLTOOLIZE=; then
+if test -z $INTLTOOLIZE; then
     echo "intltoolize not found, please install intltool package"
     exit 1
 else
