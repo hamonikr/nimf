@@ -6,6 +6,6 @@
   "localedir": "@prefix@/share/locale",
   "name": "Dasom Agent",
   "description": "Dasom Agent for Dasom Input Method Framework",
-  "shell-version": [ "3.14", "3.16" ],
+  "shell-version": [ "3.14", "3.16", "3.18"],
   "url": "https://github.com/cogniti/dasom"
 }
