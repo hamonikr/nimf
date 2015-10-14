@@ -48,15 +48,12 @@ if test "x$QT5_MOC" = "xno"; then
   AC_MSG_ERROR([moc for qt5 not found])
 fi
 
-BITS=""
-
-arch=$(uname -m)
-case "$arch" in
+case `uname -m` in
   x86_64)
-    BITS="64"
+    BITS=64
     ;;
   *)
-    BITS="32"
+    BITS=32
     ;;
 esac
 
