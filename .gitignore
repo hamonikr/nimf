@@ -33,3 +33,6 @@ POTFILES
 stamp-it
 agents/gnome-shell-extension/metadata.json
 *.gmo
+data/icons/22x22/
+data/icons/24x24/
+data/icons/32x32/

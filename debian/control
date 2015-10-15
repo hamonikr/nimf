@@ -14,7 +14,8 @@ Build-Depends: debhelper,
                libqt4-dev,
                qtbase5-dev,
                qtbase5-private-dev,
-               libappindicator3-dev
+               libappindicator3-dev,
+               librsvg2-bin
 Standards-Version: 3.9.4
 Homepage: https://github.com/cogniti/dasom
 

@@ -75,6 +75,18 @@ if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
 fi
 
+AC_PATH_PROGS([GTK_UPDATE_ICON_CACHE],
+              [gtk-update-icon-cache-3.0 gtk-update-icon-cache], [no],
+              [/usr/bin:$GTK3_LIBDIR/libgtk-3-0:$GTK2_LIBDIR/libgtk2.0-0])
+if test "x$GTK_UPDATE_ICON_CACHE" = "xno"; then
+  AC_MSG_ERROR([gtk-update-icon-cache-3.0 or gtk-update-icon-cache not found])
+fi
+
+AC_PATH_PROGS([RSVG_CONVERT], [rsvg-convert rsvg], [no])
+if test "x$RSVG_CONVERT" = "xno"; then
+  AC_MSG_ERROR([rsvg-convert or rsvg is not found, please install librsvg2-bin])
+fi
+
 dnl ***************************************************************************
 dnl build dasom-indicator by default
 dnl ***************************************************************************
