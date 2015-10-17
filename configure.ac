@@ -38,6 +38,11 @@ PKG_CHECK_MODULES(GTK3, [gtk+-3.0])
 PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 PKG_CHECK_MODULES(LIBHANGUL, libhangul >= 0.0.12)
 PKG_CHECK_MODULES(X11, [x11])
+
+dnl ***************************************************************************
+dnl  Qt
+dnl ***************************************************************************
+
 PKG_CHECK_MODULES(QT4_GUI, [QtGui])
 PKG_CHECK_MODULES(QT5_WIDGETS, [Qt5Widgets])
 PKG_CHECK_MODULES(QT5_PLATFORM_SUPPORT, [Qt5PlatformSupport])
@@ -47,6 +52,26 @@ AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
 if test "x$QT5_MOC" = "xno"; then
   AC_MSG_ERROR([moc for qt5 not found])
 fi
+
+QT5_LIB_DIR=`pkg-config --variable=libdir Qt5PlatformSupport`
+
+case `pkg-config --variable=host_bins Qt5Core` in
+  */qt5/*)
+    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
+    ;;
+  */qt/*)
+    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
+    ;;
+  *)
+    AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
+    ;;
+esac
+
+AC_SUBST(QT5_IM_MODULE_DIR)
+
+dnl ***************************************************************************
+dnl  GTK+
+dnl ***************************************************************************
 
 case `uname -m` in
   x86_64)
@@ -88,7 +113,7 @@ if test "x$RSVG_CONVERT" = "xno"; then
 fi
 
 dnl ***************************************************************************
-dnl build dasom-indicator by default
+dnl Build dasom-indicator by default
 dnl ***************************************************************************
 
 AC_ARG_ENABLE([dasom-indicator],

@@ -348,7 +348,7 @@ class DasomInputContextPlugin : public QPlatformInputContextPlugin
 {
   Q_OBJECT
   Q_PLUGIN_METADATA(IID
-    "org.qt-project.Qt.QPlatformInputContextFactoryInterface"
+    QPlatformInputContextFactoryInterface_iid
     FILE "./dasom.json")
 
 public:
