@@ -27,6 +27,7 @@ INSTALL
     sudo make install
     sudo ldconfig
     sudo make update-gtk-im-cache
+    sudo make update-gtk-icon-cache
 
   * For using symbols in Jeongeum Engine
 
@@ -41,6 +42,16 @@ INSTALL
   * Configure im-config
 
     Run im-config, then select Dasom, logout and login.
+
+  * Configure Hangul, Hanja Key
+
+    If your xkeyboard-config (aka xkb) >= 2.14,
+    select "Right Ctrl as Hangul, Right Alt as Hanja" from gnome-tweak-tool.
+
+    If your xkeyboard-config (aka xkb) < 2.14 and use a keyboard without
+    physical hangul, hanja key, run a following command in terminal.
+
+    gsettings set org.freedesktop.Dasom.engines.jeongeum korean-101-104-key-compatible true
 
 
 Troubleshoot
@@ -105,6 +116,7 @@ References
   https://github.com/choehwanjin/nabi
   https://github.com/choehwanjin/imhangul
   https://github.com/choehwanjin/ibus-hangul
-  https://github.com/ibus
+  https://github.com/ibus/ibus
   https://github.com/fcitx/fcitx
+  https://github.com/fcitx/fcitx-qt5
   https://github.com/uim/uim
