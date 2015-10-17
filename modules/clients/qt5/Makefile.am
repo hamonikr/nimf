@@ -37,6 +37,4 @@ uninstall-hook:
 	 rm    -f $(DESTDIR)$(qt5_im_moduledir)/libqt5im-dasom.so
 	-rmdir -p $(DESTDIR)$(qt5_im_moduledir)
 
-	-$(GTK_UPDATE_ICON_CACHE) -f -t $(icon_themedir)
-
 DISTCLEANFILES = Makefile.in $(BUILT_SOURCES)
