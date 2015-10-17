@@ -220,7 +220,7 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (DASOM_IS_IM (im));
+  g_return_val_if_fail (DASOM_IS_IM (im), FALSE);
 
   GSocket *socket = g_socket_connection_get_socket (im->connection);
   if (!socket || g_socket_is_closed (socket))
