@@ -92,7 +92,7 @@ dasom_event_matches (DasomEvent *event, const DasomKey **keys)
    * 어떤 프로그램에서는 DASOM_META_MASK를 발생시키지 않습니다.
    * DASOM_MOD2_MASK 는 Number 키와 관련이 있습니다. */
   guint mods = event->key.state & (DASOM_MOD2_MASK | DASOM_META_MASK |
-                                   DASOM_RELEASE_MASK);
+                                   DASOM_LOCK_MASK | DASOM_RELEASE_MASK);
 
   for (i = 0; keys[i] != 0; i++)
   {
