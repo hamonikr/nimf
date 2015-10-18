@@ -86,7 +86,8 @@ translate_xkey_event (XEvent *xevent)
   DasomEvent *dasom_event = dasom_event_new (type);
   dasom_event->key.state  = xevent->xkey.state;
   dasom_event->key.keyval = XLookupKeysym (&xevent->xkey,
-                              (xevent->xkey.state & ShiftMask) ? 1 : 0);
+                              (!(xevent->xkey.state & ShiftMask) !=
+                               !(xevent->xkey.state & LockMask)) ? 1 : 0);
   dasom_event->key.hardware_keycode = xevent->xkey.keycode;
 
   return dasom_event;

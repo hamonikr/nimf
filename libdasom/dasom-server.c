@@ -809,7 +809,8 @@ int dasom_server_xim_forward_event (DasomServer          *server,
   event = dasom_event_new (type);
   event->key.state = (DasomModifierType) xevent->state;
   event->key.keyval = XLookupKeysym (xevent,
-                                     (xevent->state & ShiftMask) ? 1 : 0);
+                                     (!(xevent->state & ShiftMask) !=
+                                      !(xevent->state & LockMask)) ? 1 : 0);
   event->key.hardware_keycode = xevent->keycode;
 
   DasomConnection *connection;
