@@ -51,22 +51,128 @@ struct _DasomGtkIMContextClass
 
 G_DEFINE_DYNAMIC_TYPE (DasomGtkIMContext, dasom_gtk_im_context, GTK_TYPE_IM_CONTEXT);
 
+static DasomEvent *
+translate_gdk_event_key (GdkEventKey *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomEventType type;
+
+  if (event->type == GDK_KEY_PRESS)
+    type = DASOM_EVENT_KEY_PRESS;
+  else
+    type = DASOM_EVENT_KEY_RELEASE;
+
+  DasomEvent *dasom_event = dasom_event_new (type);
+  dasom_event->key.state = event->state;
+  dasom_event->key.keyval = event->keyval;
+  dasom_event->key.hardware_keycode = event->hardware_keycode;
+
+  return dasom_event;
+}
+
+static DasomEvent *
+translate_xkey_event (XEvent *xevent)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomEventType type = DASOM_EVENT_NOTHING;
+
+  if (xevent->type == KeyPress)
+    type = DASOM_EVENT_KEY_PRESS;
+  else
+    type = DASOM_EVENT_KEY_RELEASE;
+
+  DasomEvent *dasom_event = dasom_event_new (type);
+  dasom_event->key.state  = xevent->xkey.state;
+  dasom_event->key.keyval = XLookupKeysym (&xevent->xkey,
+                              (xevent->xkey.state & ShiftMask) ? 1 : 0);
+  dasom_event->key.hardware_keycode = xevent->xkey.keycode;
+
+  return dasom_event;
+}
+
+static gboolean
+dasom_gtk_im_context_filter_keypress (GtkIMContext *context,
+                                      GdkEventKey  *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval = FALSE;
+  DasomEvent *dasom_event = translate_gdk_event_key (event);
+
+  retval = dasom_im_filter_event (DASOM_GTK_IM_CONTEXT (context)->im,
+                                  dasom_event);
+  dasom_event_free (dasom_event);
+
+  return retval;
+}
+
+static void
+dasom_gtk_im_context_reset (GtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  dasom_im_reset (DASOM_GTK_IM_CONTEXT (context)->im);
+}
+
+static GdkFilterReturn
+on_gdk_x_event (XEvent            *xevent,
+                GdkEvent          *event,
+                DasomGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s: %p, %" G_GINT64_FORMAT, G_STRFUNC, context,
+           g_get_real_time ());
+
+  gboolean retval = FALSE;
+
+  switch (xevent->type)
+  {
+    case KeyPress:
+    case KeyRelease:
+      if (context->is_hook_gdk_event_key)
+      {
+        DasomEvent *d_event = translate_xkey_event (xevent);
+        retval = dasom_im_filter_event (context->im, d_event);
+        dasom_event_free (d_event);
+      }
+      break;
+    case ButtonPress:
+      if (context->is_reset_on_gdk_button_press_event)
+        dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
+      break;
+    default:
+      break;
+  }
+
+  if (retval == FALSE)
+    return GDK_FILTER_CONTINUE;
+  else
+    return GDK_FILTER_REMOVE;
+}
+
 static void
 dasom_gtk_im_context_set_client_window (GtkIMContext *context,
                                         GdkWindow    *window)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
+  DasomGtkIMContext *ds_context = DASOM_GTK_IM_CONTEXT (context);
 
-  if (dasom_context->client_window)
+  if (ds_context->client_window)
   {
-    g_object_unref (dasom_context->client_window);
-    dasom_context->client_window = NULL;
+    gdk_window_remove_filter (ds_context->client_window,
+                              (GdkFilterFunc) on_gdk_x_event, context);
+    g_object_unref (ds_context->client_window);
+    ds_context->client_window = NULL;
   }
 
   if (window)
-    dasom_context->client_window = g_object_ref (window);
+  {
+    ds_context->client_window = g_object_ref (window);
+    gdk_window_add_filter (ds_context->client_window,
+                           (GdkFilterFunc) on_gdk_x_event, context);
+  }
 }
 
 static void
@@ -99,100 +205,12 @@ dasom_gtk_im_context_get_preedit_string (GtkIMContext   *context,
   }
 }
 
-static DasomEvent *
-translate_gdk_event (GdkEventKey *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  DasomEventType type = DASOM_EVENT_NOTHING;
-
-  switch (event->type)
-  {
-    case GDK_KEY_PRESS:
-      type = DASOM_EVENT_KEY_PRESS;
-      break;
-    case GDK_KEY_RELEASE:
-      type = DASOM_EVENT_KEY_RELEASE;
-      break;
-    default :
-      g_error ("unknown event type");
-      break;
-  }
-
-  DasomEvent *dasom_event = dasom_event_new (type);
-
-  dasom_event->key.state = event->state;
-  dasom_event->key.keyval = event->keyval;
-  dasom_event->key.hardware_keycode = event->hardware_keycode;
-
-  return dasom_event;
-}
-
-static gboolean
-dasom_gtk_im_context_filter_keypress (GtkIMContext *context,
-                                      GdkEventKey  *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gboolean retval = FALSE;
-  DasomEvent *dasom_event = translate_gdk_event (event);
-
-  retval = dasom_im_filter_event (DASOM_GTK_IM_CONTEXT (context)->im,
-                                  dasom_event);
-  dasom_event_free (dasom_event);
-
-  return retval;
-}
-
-static void
-dasom_gtk_im_context_reset (GtkIMContext *context)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_im_reset (DASOM_GTK_IM_CONTEXT (context)->im);
-}
-
-static void
-on_gdk_event (GdkEvent          *event,
-              DasomGtkIMContext *context)
-{
-  g_debug (G_STRLOC ": %s: %p, %" G_GINT64_FORMAT, G_STRFUNC, context,
-           g_get_real_time ());
-
-  gboolean retval = FALSE;
-
-  switch (event->type)
-  {
-    case GDK_KEY_PRESS:
-    case GDK_KEY_RELEASE:
-      if (context->is_hook_gdk_event_key)
-        retval = dasom_gtk_im_context_filter_keypress (GTK_IM_CONTEXT (context),
-                                                       &event->key);
-      break;
-    case GDK_BUTTON_PRESS:
-      if (context->is_reset_on_gdk_button_press_event)
-        dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
-      break;
-    default:
-      break;
-  }
-
-  if (retval == FALSE)
-    gtk_main_do_event (event);
-}
-
 static void
 dasom_gtk_im_context_focus_in (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
-
-  dasom_im_focus_in (dasom_context->im);
-
-  if (dasom_context->is_reset_on_gdk_button_press_event ||
-      dasom_context->is_hook_gdk_event_key)
-    gdk_event_handler_set ((GdkEventFunc) on_gdk_event, context, NULL);
+  dasom_im_focus_in (DASOM_GTK_IM_CONTEXT (context)->im);
 }
 
 static void
@@ -200,13 +218,7 @@ dasom_gtk_im_context_focus_out (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomGtkIMContext *dasom_context = DASOM_GTK_IM_CONTEXT (context);
-
-  if (dasom_context->is_reset_on_gdk_button_press_event ||
-      dasom_context->is_hook_gdk_event_key)
-    gdk_event_handler_set ((GdkEventFunc) gtk_main_do_event, NULL, NULL);
-
-  dasom_im_focus_out (dasom_context->im);
+  dasom_im_focus_out (DASOM_GTK_IM_CONTEXT (context)->im);
 }
 
 static void
