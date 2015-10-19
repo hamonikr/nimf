@@ -43,5 +43,10 @@
       <description>Run xmodmap for Korean (101/104 key compatible) keyboard.
  This is a workaround for xkeyboard-config &lt; 2.14</description>
     </key>
+    <key type="b" name="double-consonant-rule">
+      <default>false</default>
+      <summary>Use a rule composing double consonants</summary>
+      <description>compose a double consonant on pressing same consonant twice</description>
+    </key>
   </schema>
 </schemalist>

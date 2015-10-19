@@ -178,6 +178,46 @@ on_candidate_clicked (DasomEngine *engine, DasomConnection *target, gchar *text)
   jeongeum->is_candidate_mode = FALSE;
 }
 
+static gboolean
+dasom_jeongeum_filter_leading_consonant (DasomEngine     *engine,
+                                         DasomConnection *target,
+                                         guint            keyval)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+
+  const ucschar *ucs_preedit;
+  ucs_preedit = hangul_ic_get_preedit_string (jeongeum->context);
+
+  /* check ㄱ ㄷ ㅂ ㅅ ㅈ */
+  if ((keyval == 'r' && ucs_preedit[0] == 0x3131 && ucs_preedit[1] == 0) ||
+      (keyval == 'e' && ucs_preedit[0] == 0x3137 && ucs_preedit[1] == 0) ||
+      (keyval == 'q' && ucs_preedit[0] == 0x3142 && ucs_preedit[1] == 0) ||
+      (keyval == 't' && ucs_preedit[0] == 0x3145 && ucs_preedit[1] == 0) ||
+      (keyval == 'w' && ucs_preedit[0] == 0x3148 && ucs_preedit[1] == 0))
+  {
+    gchar *preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
+    dasom_engine_emit_commit (engine, target, preedit);
+    g_free (preedit);
+
+    /* TODO: jeongeum->preedit_state 는 XIM 처리부에서 사용하기도 합니다.
+     * dasom_engine_emit_preedit_*() 함수 내에 넣을 수 있는지 검토할 것.
+     */
+    jeongeum->preedit_state = DASOM_PREEDIT_STATE_END;
+    dasom_engine_emit_preedit_end (engine, target);
+
+    jeongeum->preedit_state = DASOM_PREEDIT_STATE_START;
+    dasom_engine_emit_preedit_start (engine, target);
+
+    dasom_engine_emit_preedit_changed (engine, target);
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 gboolean
 dasom_jeongeum_filter_event (DasomEngine     *engine,
                              DasomConnection *target,
@@ -311,6 +351,11 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   }
 
   keyval = dasom_event_keycode_to_qwerty_keyval (event);
+
+  if (!jeongeum->is_double_consonant_rule &&
+      dasom_jeongeum_filter_leading_consonant (engine, target, keyval))
+    return TRUE;
+
   retval = hangul_ic_process (jeongeum->context, keyval);
 
   ucs_commit  = hangul_ic_get_commit_string  (jeongeum->context);
@@ -327,12 +372,38 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
      * 이유2. 커밋 전에 조합 중인 문자열을 clear 하는 것이 논리적으로 맞는 것
      * 같기 때문에.
      */
+    /* libreoffic 와 firefox 는 dasom_engine_emit_commit() 을 하지 않을 경우,
+     * "preedit-end" 신호를 받으면, preedit string 이 있을 경우 그걸 commit
+     * 합니다, 그러나 gedit, geany 같은 프로그램은 그 경우, commit 하지
+     * 않습니다.
+     *
+     * preedit 를 clear 하지 않아도 아래처럼 작성하면 양쪽 모두의 경우 문제가
+     * 없는 것 같습니다만, 다른 GTK 어플, XIM 어플, Qt 어플도 두루 확인해봐야
+     * 합니다.
+     *
+     * dasom_engine_emit_commit (engine, target, preedit);
+     *
+     * jeongeum->preedit_state = DASOM_PREEDIT_STATE_END;
+     * dasom_engine_emit_preedit_end (engine, target);
+     *
+     * if (preedit string 가 있을 경우, 사실상 항상 preedit string이 있죠)
+     * {
+     *   jeongeum->preedit_state = DASOM_PREEDIT_STATE_START;
+     *   dasom_engine_emit_preedit_start (engine, target);
+     *
+     *   dasom_engine_emit_preedit_changed (engine, target);
+     * }
+     */
     dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
     dasom_engine_emit_commit (engine, target, new_commit);
   }
 
   g_free (new_commit);
 
+  /* TODO:
+   * dasom_jeongeum_update_preedit() takes new_preedit because of performance,
+   * but we should consider better solution.
+   */
   gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
   dasom_jeongeum_update_preedit (engine, target, new_preedit);
 
@@ -464,6 +535,16 @@ static gboolean on_timeout (GSettings *settings)
 }
 
 static void
+on_double_consonant_rule_changed (GSettings     *settings,
+                                  gchar         *key,
+                                  DasomJeongeum *jeongeum)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  jeongeum->is_double_consonant_rule = g_settings_get_boolean (settings, key);
+}
+
+static void
 dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -516,6 +597,9 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_signal_connect (jeongeum->settings,
                     "changed::korean-101-104-key-compatible",
                     G_CALLBACK (on_kr_101_104_key_compatible_changed), NULL);
+  g_signal_connect (jeongeum->settings,
+                    "changed::double-consonant-rule",
+                    G_CALLBACK (on_double_consonant_rule_changed), jeongeum);
 }
 
 static void

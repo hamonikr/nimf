@@ -55,6 +55,7 @@ struct _DasomJeongeum
   DasomKey          **hangul_keys;
   DasomKey          **hanja_keys;
   GSettings          *settings;
+  gboolean            is_double_consonant_rule;
 };
 
 struct _DasomJeongeumClass
