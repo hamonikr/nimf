@@ -353,6 +353,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   keyval = dasom_event_keycode_to_qwerty_keyval (event);
 
   if (!jeongeum->is_double_consonant_rule &&
+      (g_strcmp0 (jeongeum->layout, "2") == 0) && /* 두벌식에만 적용 */
       dasom_jeongeum_filter_leading_consonant (engine, target, keyval))
     return TRUE;
 
@@ -466,9 +467,11 @@ on_layout_changed (GSettings     *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar *layout = g_settings_get_string (settings, key);
-  hangul_ic_select_keyboard (jeongeum->context, layout);
-  g_free (layout);
+  g_free (jeongeum->layout);
+  jeongeum->layout = NULL;
+  jeongeum->layout = g_settings_get_string (settings, key);
+  g_return_if_fail (jeongeum->layout != NULL);
+  hangul_ic_select_keyboard (jeongeum->context, jeongeum->layout);
 }
 
 static void
@@ -549,24 +552,23 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar *layout, **hangul_keys, **hanja_keys;
+  gchar **hangul_keys, **hanja_keys;
 
   jeongeum->settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
 
-  layout      = g_settings_get_string (jeongeum->settings, "layout");
+  jeongeum->layout = g_settings_get_string (jeongeum->settings, "layout");
   hangul_keys = g_settings_get_strv   (jeongeum->settings, "hangul-keys");
   hanja_keys  = g_settings_get_strv   (jeongeum->settings, "hanja-keys");
 
   jeongeum->hangul_keys = dasom_key_newv ((const gchar **) hangul_keys);
   jeongeum->hanja_keys  = dasom_key_newv ((const gchar **) hanja_keys);
-  jeongeum->context = hangul_ic_new (layout);
+  jeongeum->context = hangul_ic_new (jeongeum->layout);
   jeongeum->en_name = g_strdup ("EN");
   jeongeum->ko_name = g_strdup ("정");
   jeongeum->is_english_mode = TRUE;
   jeongeum->hanja_table  = hanja_table_load (NULL);
   jeongeum->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
 
-  g_free (layout);
   g_strfreev (hangul_keys);
   g_strfreev (hanja_keys);
 
@@ -615,6 +617,7 @@ dasom_jeongeum_finalize (GObject *object)
   g_free (jeongeum->preedit_string);
   g_free (jeongeum->en_name);
   g_free (jeongeum->ko_name);
+  g_free (jeongeum->layout);
   dasom_key_freev (jeongeum->hangul_keys);
   dasom_key_freev (jeongeum->hanja_keys);
   g_object_unref (jeongeum->settings);
