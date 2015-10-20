@@ -655,7 +655,7 @@ dasom_jeongeum_get_name (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (DASOM_IS_ENGINE (engine));
+  g_return_val_if_fail (DASOM_IS_ENGINE (engine), NULL);
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
 
