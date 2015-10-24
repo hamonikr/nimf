@@ -1,3 +1,16 @@
+dasom (1.0.1) stable; urgency=medium
+
+  * Fixed race condition (closes #18)
+  * Dubeolsik: Compose double consonants only with shift key by default
+  * Fixed CapsLock (closes #15 #16)
+  * Fixed event hooking (closes #9)
+  * Fixed compatibility issue with Qt 5.5 (closes #11)
+  * Modified icon brightness
+    - f9f9f9 (2.5% gray) --> f2f2f2 ( 5% gray)
+    - ffffff (black)     --> 1a1a1a (90% gray)
+
+ -- Hodong Kim <hodong@cogno.org>  Sun, 25 Oct 2015 00:37:29 +0900
+
 dasom (1.0) stable; urgency=medium
 
   * Initial Release

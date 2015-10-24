@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(dasom, 1.0, https://github.com/cogniti/dasom/issues)
+AC_INIT(dasom, 1.0.1, https://github.com/cogniti/dasom/issues)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
