@@ -290,6 +290,8 @@ dasom_connection_iteration_until (DasomConnection  *connection,
   } while ((connection->is_dispatched == FALSE) ||
            (connection->reply && (connection->reply->header->type != type)));
 
+  connection->is_dispatched = FALSE;
+
   if (G_UNLIKELY (connection->reply == NULL))
   {
     g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
