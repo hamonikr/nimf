@@ -88,12 +88,14 @@ int
 main (int argc, char **argv)
 {
   GError         *error     = NULL;
-  gboolean        no_daemon = FALSE;
-  gboolean        debug     = FALSE;
+  gboolean        is_no_daemon = FALSE;
+  gboolean        is_debug     = FALSE;
+  gboolean        is_version   = FALSE;
   GOptionContext *context;
   GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, N_("Do not daemonize"), NULL},
-    {"debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Log debugging message"), NULL},
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
+    {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
+    {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
     {NULL}
   };
 
@@ -115,11 +117,17 @@ main (int argc, char **argv)
   textdomain (GETTEXT_PACKAGE);
 #endif
 
-  if (no_daemon == FALSE)
+  if (is_version)
+  {
+    g_print ("%s %s\n", argv[0], VERSION);
+    exit (EXIT_SUCCESS);
+  }
+
+  if (is_no_daemon == FALSE)
   {
     openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
     syslog_initialized = TRUE;
-    g_log_set_default_handler ((GLogFunc) dasom_log_default_handler, &debug);
+    g_log_set_default_handler ((GLogFunc) dasom_log_default_handler, &is_debug);
 
     if (daemon (0, 0) != 0)
     {
