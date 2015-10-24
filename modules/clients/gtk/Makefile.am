@@ -17,7 +17,7 @@ gtk3_im_module_LTLIBRARIES = im-dasom-gtk3.la
 
 im_dasom_gtk3_la_SOURCES  = im-dasom.c
 im_dasom_gtk3_la_CFLAGS   = $(AM_CFLAGS) $(GTK3_CFLAGS)
-im_dasom_gtk3_la_LDFLAGS  = $(GTK3_LIBS) -avoid-version -module
+im_dasom_gtk3_la_LDFLAGS  = $(GTK3_LIBS) $(X11_LIBS) -avoid-version -module
 im_dasom_gtk3_la_LIBADD   = $(top_builddir)/libdasom/libdasom.la
 
 # for gtk2
@@ -29,7 +29,7 @@ gtk2_im_module_LTLIBRARIES = im-dasom-gtk2.la
 
 im_dasom_gtk2_la_SOURCES  = im-dasom.c
 im_dasom_gtk2_la_CFLAGS   = $(AM_CFLAGS) $(GTK2_CFLAGS)
-im_dasom_gtk2_la_LDFLAGS  = $(GTK2_LIBS) -avoid-version -module
+im_dasom_gtk2_la_LDFLAGS  = $(GTK2_LIBS) $(X11_LIBS) -avoid-version -module
 im_dasom_gtk2_la_LIBADD   = $(top_builddir)/libdasom/libdasom.la
 
 DISTCLEANFILES = Makefile.in
