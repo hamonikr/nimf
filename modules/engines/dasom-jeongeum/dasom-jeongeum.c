@@ -557,6 +557,8 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->settings = g_settings_new ("org.freedesktop.Dasom.engines.jeongeum");
 
   jeongeum->layout = g_settings_get_string (jeongeum->settings, "layout");
+  jeongeum->is_double_consonant_rule =
+    g_settings_get_boolean (jeongeum->settings, "double-consonant-rule");
   hangul_keys = g_settings_get_strv   (jeongeum->settings, "hangul-keys");
   hanja_keys  = g_settings_get_strv   (jeongeum->settings, "hanja-keys");
 
