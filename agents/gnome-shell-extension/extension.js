@@ -12,7 +12,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Gettext        = imports.gettext;
 const _ = Gettext.gettext;
 
-let dasom_agent, dasom_menu;
+let dasom_agent, dasom_menu, extension;
 
 const AboutDialog = new Lang.Class({
   Name: "AboutDialog",
@@ -26,15 +26,14 @@ const AboutDialog = new Lang.Class({
       action:  Lang.bind(this._modal_dialog, this._modal_dialog.close),
       key:     Clutter.Escape,
       default: true }]);
-
+      let version_text  = extension.metadata['version'];
       let title_label   = new St.Label({ style_class: 'title-label',
                                          text: _("Dasom Indicator"),
                                          x_expand: true,
                                          x_align: Clutter.ActorAlign.CENTER});
       let spacing       = new St.Label({ text: "\n" });
       let message_label = new St.Label({
-        text: _("Dasom Indicator for Dasom Input Method") });
-
+        text: _("dasom" + " " + version_text) });
       let content_layout = new St.BoxLayout({ vertical: true });
 
       content_layout.add(title_label);
@@ -87,7 +86,7 @@ const DasomMenu = new Lang.Class({
 
 function init()
 {
-  let extension = ExtensionUtils.getCurrentExtension();
+  extension = ExtensionUtils.getCurrentExtension();
   let domain    = extension.metadata['gettext-domain'];
   let localedir = extension.metadata['localedir']
   Gettext.bindtextdomain(domain, localedir);
