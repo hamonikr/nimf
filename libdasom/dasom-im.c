@@ -151,6 +151,8 @@ dasom_iteration_until (DasomIM          *im,
   } while ((im->is_dispatched == FALSE) ||
            (im->reply && (im->reply->header->type != type)));
 
+  im->is_dispatched = FALSE;
+
   if (G_UNLIKELY (im->reply == NULL))
   {
     g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
