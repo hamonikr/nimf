@@ -42,6 +42,7 @@ struct _DasomGtkIMContext
   GSettings    *settings;
   gboolean      is_reset_on_gdk_button_press_event;
   gboolean      is_hook_gdk_event_key;
+  gboolean      has_focus;
 };
 
 struct _DasomGtkIMContextClass
@@ -127,6 +128,9 @@ on_gdk_x_event (XEvent            *xevent,
 
   gboolean retval = FALSE;
 
+  if (context->has_focus == FALSE)
+    return GDK_FILTER_CONTINUE;
+
   switch (xevent->type)
   {
     case KeyPress:
@@ -140,7 +144,7 @@ on_gdk_x_event (XEvent            *xevent,
       break;
     case ButtonPress:
       if (context->is_reset_on_gdk_button_press_event)
-        dasom_gtk_im_context_reset (GTK_IM_CONTEXT (context));
+        dasom_im_reset (context->im);
       break;
     default:
       break;
@@ -211,7 +215,9 @@ dasom_gtk_im_context_focus_in (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_im_focus_in (DASOM_GTK_IM_CONTEXT (context)->im);
+  DasomGtkIMContext *ds_context = DASOM_GTK_IM_CONTEXT (context);
+  ds_context->has_focus = TRUE;
+  dasom_im_focus_in (ds_context->im);
 }
 
 static void
@@ -219,7 +225,9 @@ dasom_gtk_im_context_focus_out (GtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_im_focus_out (DASOM_GTK_IM_CONTEXT (context)->im);
+  DasomGtkIMContext *ds_context = DASOM_GTK_IM_CONTEXT (context);
+  dasom_im_focus_out (ds_context->im);
+  ds_context->has_focus = FALSE;
 }
 
 static void
