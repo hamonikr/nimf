@@ -98,14 +98,9 @@ dasom_jeongeum_update_preedit (DasomEngine     *engine,
   }
 
   /* preedit-changed */
-  if (g_strcmp0 (jeongeum->preedit_string, new_preedit) != 0)
-  {
-    g_free (jeongeum->preedit_string);
-    jeongeum->preedit_string = new_preedit;
-    dasom_engine_emit_preedit_changed (engine, target);
-  }
-  else
-    g_free (new_preedit);
+  g_free (jeongeum->preedit_string);
+  jeongeum->preedit_string = new_preedit;
+  dasom_engine_emit_preedit_changed (engine, target);
 
   /* preedit-end */
   if (jeongeum->preedit_state == DASOM_PREEDIT_STATE_START &&
@@ -134,11 +129,10 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
   if (flush[0] == 0)
     return;
 
-  dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
-
   gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
   dasom_engine_emit_commit (engine, target, text);
   g_free (text);
+  dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
 }
 
 void
@@ -170,8 +164,8 @@ on_candidate_clicked (DasomEngine *engine, DasomConnection *target, gchar *text)
   {
     /* hangul_ic 내부의 commit text가 사라집니다 */
     hangul_ic_reset (jeongeum->context);
-    dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
     dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), target, text);
+    dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
   }
 
   dasom_engine_hide_candidate_window (DASOM_ENGINE (jeongeum));
@@ -200,16 +194,6 @@ dasom_jeongeum_filter_leading_consonant (DasomEngine     *engine,
     gchar *preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
     dasom_engine_emit_commit (engine, target, preedit);
     g_free (preedit);
-
-    /* TODO: jeongeum->preedit_state 는 XIM 처리부에서 사용하기도 합니다.
-     * dasom_engine_emit_preedit_*() 함수 내에 넣을 수 있는지 검토할 것.
-     */
-    jeongeum->preedit_state = DASOM_PREEDIT_STATE_END;
-    dasom_engine_emit_preedit_end (engine, target);
-
-    jeongeum->preedit_state = DASOM_PREEDIT_STATE_START;
-    dasom_engine_emit_preedit_start (engine, target);
-
     dasom_engine_emit_preedit_changed (engine, target);
 
     return TRUE;
@@ -362,47 +346,11 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
 
   gchar *new_commit  = g_ucs4_to_utf8 (ucs_commit,  -1, NULL, NULL, NULL);
 
-  /* commit */
   if (ucs_commit[0] != 0)
-  {
-    /* clear preedit string before commit */
-    /* 이유1. ㅁ 을 연속하여 누를 경우 preedit 가 동일하여 preedit-changed 신호가
-     * 발생되지 않기 때문에.
-     * 이유2. 커밋 전에 조합 중인 문자열을 clear 하는 것이 논리적으로 맞는 것
-     * 같기 때문에.
-     */
-    /* libreoffic 와 firefox 는 dasom_engine_emit_commit() 을 하지 않을 경우,
-     * "preedit-end" 신호를 받으면, preedit string 이 있을 경우 그걸 commit
-     * 합니다, 그러나 gedit, geany 같은 프로그램은 그 경우, commit 하지
-     * 않습니다.
-     *
-     * preedit 를 clear 하지 않아도 아래처럼 작성하면 양쪽 모두의 경우 문제가
-     * 없는 것 같습니다만, 다른 GTK 어플, XIM 어플, Qt 어플도 두루 확인해봐야
-     * 합니다.
-     *
-     * dasom_engine_emit_commit (engine, target, preedit);
-     *
-     * jeongeum->preedit_state = DASOM_PREEDIT_STATE_END;
-     * dasom_engine_emit_preedit_end (engine, target);
-     *
-     * if (preedit string 가 있을 경우, 사실상 항상 preedit string이 있죠)
-     * {
-     *   jeongeum->preedit_state = DASOM_PREEDIT_STATE_START;
-     *   dasom_engine_emit_preedit_start (engine, target);
-     *
-     *   dasom_engine_emit_preedit_changed (engine, target);
-     * }
-     */
-    dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
     dasom_engine_emit_commit (engine, target, new_commit);
-  }
 
   g_free (new_commit);
 
-  /* TODO:
-   * dasom_jeongeum_update_preedit() takes new_preedit because of performance,
-   * but we should consider better solution.
-   */
   gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
   dasom_jeongeum_update_preedit (engine, target, new_preedit);
 
