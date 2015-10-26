@@ -334,9 +334,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   const ucschar *ucs_commit;
   const ucschar *ucs_preedit;
 
-  if  (G_UNLIKELY (event->key.keyval == DASOM_KEY_BackSpace ||
-                   event->key.keyval == DASOM_KEY_Delete    ||
-                   event->key.keyval == DASOM_KEY_KP_Delete))
+  if (G_UNLIKELY (event->key.keyval == DASOM_KEY_BackSpace))
   {
     retval = hangul_ic_backspace (jeongeum->context);
 
