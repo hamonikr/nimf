@@ -4,7 +4,7 @@ module_LTLIBRARIES = dasom-jeongeum.la
 gsettings_SCHEMAS = org.freedesktop.Dasom.engines.jeongeum.gschema.xml
 @GSETTINGS_RULES@
 
-dasom_jeongeum_la_SOURCES = dasom-jeongeum.c dasom-jeongeum.h
+dasom_jeongeum_la_SOURCES = dasom-jeongeum.c
 dasom_jeongeum_la_CFLAGS  = \
 	-Wall -Werror \
 	-I$(top_srcdir)/libdasom \

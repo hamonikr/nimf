@@ -19,9 +19,47 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dasom-jeongeum.h"
-#include "modules/engines/dasom-english/dasom-english.h"
+#include <dasom.h>
+#include <hangul.h>
 #include <stdlib.h>
+#include "modules/engines/dasom-english/dasom-english.h"
+
+#define DASOM_TYPE_JEONGEUM             (dasom_jeongeum_get_type ())
+#define DASOM_JEONGEUM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_JEONGEUM, DasomJeongeum))
+#define DASOM_JEONGEUM_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), DASOM_TYPE_JEONGEUM, DasomJeongeumClass))
+#define DASOM_IS_JEONGEUM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), DASOM_TYPE_JEONGEUM))
+#define DASOM_IS_JEONGEUM_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), DASOM_TYPE_JEONGEUM))
+#define DASOM_JEONGEUM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_JEONGEUM, DasomJeongeumClass))
+
+typedef struct _DasomJeongeum      DasomJeongeum;
+typedef struct _DasomJeongeumClass DasomJeongeumClass;
+
+struct _DasomJeongeum
+{
+  DasomEngine parent_instance;
+
+  HangulInputContext *context;
+  gchar              *preedit_string;
+  DasomPreeditState   preedit_state;
+  gchar              *en_name;
+  gchar              *ko_name;
+
+  gboolean            is_candidate_mode;
+  gboolean            is_english_mode;
+  HanjaTable         *hanja_table;
+  HanjaTable         *symbol_table;
+  DasomKey          **hangul_keys;
+  DasomKey          **hanja_keys;
+  GSettings          *settings;
+  gboolean            is_double_consonant_rule;
+  gchar              *layout;
+};
+
+struct _DasomJeongeumClass
+{
+  /*< private >*/
+  DasomEngineClass parent_class;
+};
 
 G_DEFINE_DYNAMIC_TYPE (DasomJeongeum, dasom_jeongeum, DASOM_TYPE_ENGINE);
 
