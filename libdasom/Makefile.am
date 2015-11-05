@@ -74,7 +74,24 @@ libdasom_la_CFLAGS = \
 libdasom_la_LDFLAGS = $(LIBDASOM_DEPS_LIBS) -avoid-version
 
 dasomincludedir = $(includedir)/dasom
-dasominclude_HEADERS =
+dasominclude_HEADERS = \
+	dasom.h \
+	dasom-agent.h \
+	dasom-candidate.h \
+	dasom-connection.h \
+	dasom-engine.h \
+	dasom-enum-types.h \
+	dasom-events.h \
+	dasom-im.h \
+	dasom-key-syms.h \
+	dasom-message.h \
+	dasom-module-manager.h \
+	dasom-server.h \
+	dasom-types.h
+
+IMdkitincludedir = $(includedir)/dasom/IMdkit
+IMdkitinclude_HEADERS = \
+	IMdkit/IMdkit.h
 
 dasom-marshalers.h: dasom-marshalers.list
 	$(AM_V_GEN) glib-genmarshal --prefix=dasom_cclosure_marshal \

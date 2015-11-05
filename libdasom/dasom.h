@@ -24,15 +24,14 @@
 
 #define __DASOM_H_INSIDE__
 
-#include "dasom-im.h"
-#include "dasom-types.h"
-#include "dasom-events.h"
-#include "dasom-engine.h"
-#include "dasom-module.h"
-#include "dasom-key-syms.h"
-#include "dasom-enum-types.h"
 #include "dasom-agent.h"
 #include "dasom-candidate.h"
+#include "dasom-engine.h"
+#include "dasom-enum-types.h"
+#include "dasom-events.h"
+#include "dasom-im.h"
+#include "dasom-key-syms.h"
+#include "dasom-types.h"
 
 #undef __DASOM_H_INSIDE__
 
