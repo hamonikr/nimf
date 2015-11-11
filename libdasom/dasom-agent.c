@@ -83,8 +83,8 @@ dasom_agent_init (DasomAgent *agent)
   gint            retry_limit = 5;
   gint            retry_count = 0;
 
-  address = g_unix_socket_address_new_with_type ("unix:abstract=dasom", -1,
-                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+  address = g_unix_socket_address_new_with_type (DASOM_ADDRESS, -1,
+                                                 G_UNIX_SOCKET_ADDRESS_ABSTRACT);
   client = g_socket_client_new ();
 
   for (retry_count = 0; retry_count < retry_limit; retry_count++)

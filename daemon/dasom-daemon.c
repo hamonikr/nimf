@@ -87,7 +87,7 @@ main (int argc, char **argv)
     }
   }
 
-  server = dasom_server_new ("unix:abstract=dasom", &error);
+  server = dasom_server_new (DASOM_ADDRESS, &error);
 
   if (server == NULL)
   {

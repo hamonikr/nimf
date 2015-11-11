@@ -494,7 +494,7 @@ dasom_im_init (DasomIM *im)
   GSocket        *socket;
   GError         *error = NULL;
 
-  address = g_unix_socket_address_new_with_type ("unix:abstract=dasom", -1,
+  address = g_unix_socket_address_new_with_type (DASOM_ADDRESS, -1,
                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
   client = g_socket_client_new ();
   im->connection = g_socket_client_connect (client,

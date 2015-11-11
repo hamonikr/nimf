@@ -30,6 +30,8 @@
 
 G_BEGIN_DECLS
 
+#define DASOM_ADDRESS "unix:abstract=dasom"
+
 typedef enum
 {
   DASOM_CONNECTION_DASOM_IM,
