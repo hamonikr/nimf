@@ -172,7 +172,6 @@ main (int argc, char **argv)
 
   g_object_unref (agent);
   g_object_unref (indicator);
-  g_object_unref (menu_shell);
 
   if (syslog_initialized)
     closelog ();
