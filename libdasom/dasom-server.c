@@ -249,9 +249,9 @@ on_new_connection (GSocketService    *service,
 }
 
 static gboolean
-initable_init (GInitable     *initable,
-               GCancellable  *cancellable,
-               GError       **error)
+dasom_server_initable_init (GInitable     *initable,
+                            GCancellable  *cancellable,
+                            GError       **error)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -299,14 +299,14 @@ initable_init (GInitable     *initable,
 }
 
 static void
-initable_iface_init (GInitableIface *initable_iface)
+dasom_server_initable_iface_init (GInitableIface *initable_iface)
 {
-  initable_iface->init = initable_init;
+  initable_iface->init = dasom_server_initable_init;
 }
 
 G_DEFINE_TYPE_WITH_CODE (DasomServer, dasom_server, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                initable_iface_init));
+                                                dasom_server_initable_iface_init));
 
 static gint
 on_comparing_engine_with_id (DasomEngine *engine, const gchar *id)
