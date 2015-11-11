@@ -35,7 +35,6 @@ typedef struct _DasomEnginePrivate DasomEnginePrivate;
 
 struct _DasomEnginePrivate
 {
-  gchar        *path;
   DasomServer  *server;
   gchar        *surrounding_text;
   gint          surrounding_cursor_index;

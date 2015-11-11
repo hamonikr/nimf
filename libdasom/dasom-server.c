@@ -308,43 +308,28 @@ G_DEFINE_TYPE_WITH_CODE (DasomServer, dasom_server, G_TYPE_OBJECT,
                                                 initable_iface_init));
 
 static gint
-on_comparing_engine_with_path (DasomEngine *engine, const gchar *path)
+on_comparing_engine_with_id (DasomEngine *engine, const gchar *id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  int    retval;
-  gchar *engine_path;
-
-  g_object_get (engine, "path", &engine_path, NULL);
-  retval = g_strcmp0 (engine_path, path);
-
-  g_free (engine_path);
-
-  return retval;
+  return g_strcmp0 (dasom_engine_get_id (engine), id);
 }
 
 DasomEngine *
 dasom_server_get_instance (DasomServer *server,
-                           const gchar *module_name)
+                           const gchar *id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GList *list;
-  DasomEngine *engine = NULL;
-  gchar *soname = g_strdup_printf ("%s.so", module_name);
-  gchar *path = g_build_path (G_DIR_SEPARATOR_S,
-                              DASOM_MODULE_DIR, soname, NULL);
-  g_free (soname);
 
   list = g_list_find_custom (g_list_first (server->instances),
-                             path,
-                             (GCompareFunc) on_comparing_engine_with_path);
-  g_free (path);
-
+                             id,
+                             (GCompareFunc) on_comparing_engine_with_id);
   if (list)
-    engine = list->data;
+    return list->data;
 
-  return engine;
+  return NULL;
 }
 
 DasomEngine *
@@ -387,16 +372,14 @@ dasom_server_get_default_engine (DasomServer *server)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GSettings *settings = g_settings_new ("org.freedesktop.Dasom");
-  gchar *module_name = g_settings_get_string (settings, "default-engine");
+  gchar *engine_id = g_settings_get_string (settings, "default-engine");
+  DasomEngine *engine = dasom_server_get_instance (server, engine_id);
 
-  DasomEngine *engine;
-  engine = dasom_server_get_instance (server, module_name);
-  g_free (module_name);
+  g_free (engine_id);
+  g_object_unref (settings);
 
   if (engine == NULL)
     engine = dasom_server_get_instance (server, "dasom-english");
-
-  g_object_unref (settings);
 
   g_assert (engine != NULL);
 
@@ -418,7 +401,6 @@ static GList *dasom_server_create_module_instances (DasomServer *server)
     DasomModule *module = value;
     instances = g_list_prepend (instances,
                                 g_object_new (module->type,
-                                              "path",   module->path,
                                               "server", server,
                                               NULL));
   }

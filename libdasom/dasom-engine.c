@@ -25,7 +25,6 @@
 enum
 {
   PROP_0,
-  PROP_PATH,
   PROP_SERVER
 };
 
@@ -45,10 +44,6 @@ dasom_engine_set_property (GObject      *object,
 
   switch (prop_id)
   {
-    case PROP_PATH:
-      engine->priv->path = g_strdup (g_value_get_string (value));
-      g_object_notify_by_pspec (object, pspec);
-      break;
     case PROP_SERVER:
       engine->priv->server = g_value_get_object (value);
       g_object_notify_by_pspec (object, pspec);
@@ -73,9 +68,6 @@ dasom_engine_get_property (GObject    *object,
 
   switch (prop_id)
   {
-    case PROP_PATH:
-      g_value_set_string (value, engine->priv->path);
-      break;
     case PROP_SERVER:
       g_value_set_object (value, engine->priv->server);
       break;
@@ -311,7 +303,6 @@ dasom_engine_finalize (GObject *object)
 
   DasomEngine *engine = DASOM_ENGINE (object);
 
-  g_free (engine->priv->path);
   g_free (engine->priv->surrounding_text);
 
   G_OBJECT_CLASS (dasom_engine_parent_class)->finalize (object);
@@ -476,13 +467,6 @@ dasom_engine_class_init (DasomEngineClass *class)
   class->get_id              = dasom_engine_real_get_id;
   class->get_name            = dasom_engine_real_get_name;
 
-  g_object_class_install_property (object_class,
-                                   PROP_PATH,
-                                   g_param_spec_string ("path",
-                                                        "path",
-                                                        "path",
-                                                        NULL,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (object_class,
                                    PROP_SERVER,
                                    g_param_spec_object ("server",
