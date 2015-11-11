@@ -338,18 +338,10 @@ dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_assert (engine != NULL);
-
   GList *list;
 
   server->instances = g_list_first (server->instances);
-
-  g_assert (server->instances != NULL);
-
-
-  server->instances = g_list_find (server->instances, engine);
-
-  g_assert (server->instances != NULL);
+  server->instances = g_list_find  (server->instances, engine);
 
   list = g_list_next (server->instances);
 
@@ -358,8 +350,8 @@ dasom_server_get_next_instance (DasomServer *server, DasomEngine *engine)
 
   if (list)
   {
-    engine = list->data;
     server->instances = list;
+    return list->data;
   }
 
   g_assert (list != NULL);
