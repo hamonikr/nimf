@@ -95,34 +95,34 @@ function init()
 
 function enable()
 {
-    dasom_agent = new Dasom.Agent;
-    dasom_menu  = new DasomMenu;
-    let child;
+  dasom_agent = new Dasom.Agent;
+  dasom_menu  = new DasomMenu;
+  let child;
 
-    dasom_agent.connect('engine-changed', function(agent, text) {
-        child = dasom_menu._hbox.get_child_at_index (0);
+  dasom_agent.connect('engine-changed', function(agent, text) {
+    child = dasom_menu._hbox.get_child_at_index (0);
 
-        if (text != "Dasom")
-        {
-            if (dasom_menu._label.text != text)
-                dasom_menu._label.text = text;
+    if (text == 'focus-out')
+    {
+      if (child != dasom_menu._icon)
+        dasom_menu._hbox.replace_child (child, dasom_menu._icon);
+    }
+    else
+    {
+      if (dasom_menu._label.text != text)
+        dasom_menu._label.text = text;
 
-            if (child != dasom_menu._label)
-                dasom_menu._hbox.replace_child (child, dasom_menu._label);
-        }
-        else
-        {
-            if (child != dasom_menu._icon)
-                dasom_menu._hbox.replace_child (child, dasom_menu._icon);
-        }
-    });
+      if (child != dasom_menu._label)
+        dasom_menu._hbox.replace_child (child, dasom_menu._label);
+    }
+  });
 
-    dasom_agent.connect('disconnected', function(agent) {
-      child = dasom_menu._hbox.get_child_at_index (0);
-      dasom_menu._hbox.replace_child (child, dasom_menu._warning_icon);
-    });
+  dasom_agent.connect('disconnected', function(agent) {
+    child = dasom_menu._hbox.get_child_at_index (0);
+    dasom_menu._hbox.replace_child (child, dasom_menu._warning_icon);
+  });
 
-    Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 0, 'right');
+  Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 0, 'right');
 }
 
 function disable()

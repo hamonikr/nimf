@@ -550,8 +550,8 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->hanja_keys  = dasom_key_newv ((const gchar **) hanja_keys);
   jeongeum->context = hangul_ic_new (jeongeum->layout);
   jeongeum->id      = g_strdup ("dasom-jeongeum");
-  jeongeum->en_name = g_strdup ("EN");
-  jeongeum->ko_name = g_strdup ("정");
+  jeongeum->en_name = g_strdup ("en");
+  jeongeum->ko_name = g_strdup ("ko");
   jeongeum->is_english_mode = TRUE;
   jeongeum->hanja_table  = hanja_table_load (NULL);
   jeongeum->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
