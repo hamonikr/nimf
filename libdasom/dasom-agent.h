@@ -23,7 +23,7 @@
 #define __DASOM_AGENT_H__
 
 #if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
-#error "Only <dasom/dasom.h> can be included directly."
+#error "Only <dasom.h> can be included directly."
 #endif
 
 #include <gtk/gtk.h>

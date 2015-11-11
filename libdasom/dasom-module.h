@@ -20,6 +20,10 @@
 #ifndef __DASOM_MODULE_H__
 #define __DASOM_MODULE_H__
 
+#if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
+#error "Only <dasom.h> can be included directly."
+#endif
+
 #include <glib-object.h>
 #include <gmodule.h>
 #include "dasom-engine.h"

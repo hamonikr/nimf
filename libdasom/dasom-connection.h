@@ -22,6 +22,10 @@
 #ifndef __DASOM_CONNECTION_H__
 #define __DASOM_CONNECTION_H__
 
+#if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
+#error "Only <dasom.h> can be included directly."
+#endif
+
 #include <glib-object.h>
 #include "dasom-engine.h"
 #include "dasom-server.h"

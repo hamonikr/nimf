@@ -22,6 +22,10 @@
 #ifndef __DASOM_MODULE_MANAGER_H__
 #define __DASOM_MODULE_MANAGER_H__
 
+#if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
+#error "Only <dasom.h> can be included directly."
+#endif
+
 #include <glib-object.h>
 
 G_BEGIN_DECLS

@@ -22,6 +22,10 @@
 #ifndef __DASOM_KEY_SYMS_H__
 #define __DASOM_KEY_SYMS_H__
 
+#if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
+#error "Only <dasom.h> can be included directly."
+#endif
+
 typedef enum
 {
   DASOM_KEY_space        = 0x0020,
