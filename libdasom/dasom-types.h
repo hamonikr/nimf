@@ -31,6 +31,12 @@
 G_BEGIN_DECLS
 
 #define DASOM_ADDRESS "unix:abstract=dasom"
+#define DASOM_ERROR   dasom_error_quark ()
+
+typedef enum
+{
+  DASOM_ERROR_FAILED
+} DasomError;
 
 typedef enum
 {
@@ -99,6 +105,7 @@ typedef enum
   DASOM_PREEDIT_STATE_END   = 0
 } DasomPreeditState;
 
+GQuark     dasom_error_quark        (void);
 DasomKey  *dasom_key_new            (void);
 DasomKey  *dasom_key_new_from_nicks (const gchar **nicks);
 void       dasom_key_free           (DasomKey     *key);

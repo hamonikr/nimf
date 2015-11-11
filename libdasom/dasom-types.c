@@ -22,6 +22,8 @@
 #include "dasom-types.h"
 #include "dasom-enum-types.h"
 
+G_DEFINE_QUARK (dasom-error-quark, dasom_error)
+
 DasomKey *
 dasom_key_new ()
 {
