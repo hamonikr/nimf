@@ -15,7 +15,6 @@ dasom_jeongeum_la_CFLAGS  = \
 dasom_jeongeum_la_LDFLAGS = -avoid-version -module $(GLIB_LIBS) $(GIO_LIBS)
 dasom_jeongeum_la_LIBADD  = \
 	$(top_builddir)/libdasom/libdasom.la \
-	$(top_builddir)/modules/engines/dasom-english/libdasom-english.la \
 	$(LIBHANGUL_LIBS)
 
 DISTCLEANFILES = Makefile.in

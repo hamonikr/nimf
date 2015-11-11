@@ -22,8 +22,13 @@
 #ifndef __DASOM_ENGLISH_H__
 #define __DASOM_ENGLISH_H__
 
+#if !defined (__DASOM_H_INSIDE__) && !defined (DASOM_COMPILATION)
+#error "Only <dasom.h> can be included directly."
+#endif
+
 #include <glib-object.h>
-#include "dasom.h"
+#include "dasom-engine.h"
+#include "dasom-key-syms.h"
 
 G_BEGIN_DECLS
 

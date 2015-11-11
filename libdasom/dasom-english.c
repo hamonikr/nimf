@@ -21,7 +21,7 @@
 
 #include "dasom-english.h"
 
-G_DEFINE_DYNAMIC_TYPE (DasomEnglish, dasom_english, DASOM_TYPE_ENGINE);
+G_DEFINE_TYPE (DasomEnglish, dasom_english, DASOM_TYPE_ENGINE);
 
 void
 dasom_english_reset (DasomEngine *engine, DasomConnection  *target)
@@ -144,29 +144,4 @@ dasom_english_class_init (DasomEnglishClass *klass)
   engine_class->get_name     = dasom_english_get_name;
 
   object_class->finalize = dasom_english_finalize;
-}
-
-static void
-dasom_english_class_finalize (DasomEnglishClass *klass)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-}
-
-void module_load (GTypeModule *type_module)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  dasom_english_register_type (type_module);
-}
-
-GType module_get_type ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return dasom_english_get_type ();
-}
-
-void module_unload ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }

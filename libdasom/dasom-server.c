@@ -26,6 +26,7 @@
 #include <gio/gunixsocketaddress.h>
 #include "dasom-module.h"
 #include "IMdkit/Xi18n.h"
+#include "dasom-english.h"
 
 enum
 {
@@ -405,6 +406,10 @@ static GList *dasom_server_create_module_instances (DasomServer *server)
                                               NULL));
   }
 
+  /* add english engine */
+  instances = g_list_prepend (instances,
+                              g_object_new (DASOM_TYPE_ENGLISH,
+                                            "server", server, NULL));
   return instances;
 }
 

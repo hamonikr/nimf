@@ -27,6 +27,7 @@
 #include "dasom-agent.h"
 #include "dasom-candidate.h"
 #include "dasom-engine.h"
+#include "dasom-english.h"
 #include "dasom-enum-types.h"
 #include "dasom-events.h"
 #include "dasom-im.h"

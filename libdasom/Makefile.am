@@ -41,6 +41,8 @@ libdasom_la_SOURCES = \
 	dasom-events.h \
 	dasom-engine.c \
 	dasom-engine.h \
+	dasom-english.c \
+	dasom-english.h \
 	dasom-module.h \
 	dasom-module.c \
 	dasom-module-manager.h \
@@ -80,6 +82,7 @@ dasominclude_HEADERS = \
 	dasom-candidate.h \
 	dasom-connection.h \
 	dasom-engine.h \
+	dasom-english.h \
 	dasom-enum-types.h \
 	dasom-events.h \
 	dasom-im.h \

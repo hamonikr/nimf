@@ -145,7 +145,6 @@ AC_OUTPUT([
   modules/clients/qt4/Makefile
   modules/clients/qt5/Makefile
   modules/engines/Makefile
-  modules/engines/dasom-english/Makefile
   modules/engines/dasom-jeongeum/Makefile
   daemon/Makefile
   po/Makefile.in])
