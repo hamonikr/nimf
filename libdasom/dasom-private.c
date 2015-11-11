@@ -109,7 +109,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
   if (G_UNLIKELY (n_read < dasom_message_get_header_size ()))
   {
     g_critical (G_STRLOC ": %s: received %"G_GSSIZE_FORMAT" less than %d",
-                G_STRFUNC, n_read, message->header->data_len);
+                G_STRFUNC, n_read, dasom_message_get_header_size ());
 
     if (error)
     {
