@@ -40,6 +40,7 @@ typedef struct _DasomEnglishClass DasomEnglishClass;
 struct _DasomEnglish
 {
   DasomEngine parent_instance;
+  gchar *id;
   gchar *name;
 };
 

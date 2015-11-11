@@ -30,10 +30,19 @@ dasom_english_reset (DasomEngine *engine, DasomConnection  *target)
 }
 
 const gchar *
+dasom_english_get_id (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return DASOM_ENGLISH (engine)->id;
+}
+
+const gchar *
 dasom_english_get_name (DasomEngine *engine)
 {
-  DasomEnglish *english = DASOM_ENGLISH (engine);
-  return english->name;
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return DASOM_ENGLISH (engine)->name;
 }
 
 gboolean
@@ -105,6 +114,7 @@ dasom_english_init (DasomEnglish *english)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  english->id   = g_strdup ("dasom-english");
   english->name = g_strdup ("en");
 }
 
@@ -114,6 +124,7 @@ dasom_english_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomEnglish *english = DASOM_ENGLISH (object);
+  g_free (english->id);
   g_free (english->name);
 
   G_OBJECT_CLASS (dasom_english_parent_class)->finalize (object);
@@ -129,6 +140,7 @@ dasom_english_class_init (DasomEnglishClass *klass)
 
   engine_class->filter_event = dasom_english_filter_event;
   engine_class->reset        = dasom_english_reset;
+  engine_class->get_id       = dasom_english_get_id;
   engine_class->get_name     = dasom_english_get_name;
 
   object_class->finalize = dasom_english_finalize;

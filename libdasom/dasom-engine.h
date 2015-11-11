@@ -95,7 +95,8 @@ struct _DasomEngineClass
   void     (* candidate_clicked)  (DasomEngine      *engine,
                                    DasomConnection  *target,
                                    gchar            *text);
-
+  /* info */
+  const gchar * (* get_id)        (DasomEngine      *engine);
   const gchar * (* get_name)      (DasomEngine      *engine);
 };
 
@@ -153,7 +154,9 @@ void     dasom_engine_select_next_candidate_item      (DasomEngine  *engine);
 void     dasom_engine_select_page_up_candidate_item   (DasomEngine  *engine);
 void     dasom_engine_select_page_down_candidate_item (DasomEngine  *engine);
 gchar   *dasom_engine_get_selected_candidate_text     (DasomEngine  *engine);
-const gchar *dasom_engine_get_name                    (DasomEngine  *engine);
+/* info */
+const gchar *dasom_engine_get_id   (DasomEngine *engine);
+const gchar *dasom_engine_get_name (DasomEngine *engine);
 
 G_END_DECLS
 

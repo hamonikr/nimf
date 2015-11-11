@@ -41,6 +41,7 @@ struct _DasomJeongeum
   HangulInputContext *context;
   gchar              *preedit_string;
   DasomPreeditState   preedit_state;
+  gchar              *id;
   gchar              *en_name;
   gchar              *ko_name;
 
@@ -549,6 +550,7 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->hangul_keys = dasom_key_newv ((const gchar **) hangul_keys);
   jeongeum->hanja_keys  = dasom_key_newv ((const gchar **) hanja_keys);
   jeongeum->context = hangul_ic_new (jeongeum->layout);
+  jeongeum->id      = g_strdup ("dasom-jeongeum");
   jeongeum->en_name = g_strdup ("EN");
   jeongeum->ko_name = g_strdup ("정");
   jeongeum->is_english_mode = TRUE;
@@ -601,6 +603,7 @@ dasom_jeongeum_finalize (GObject *object)
   hanja_table_delete (jeongeum->symbol_table);
   hangul_ic_delete   (jeongeum->context);
   g_free (jeongeum->preedit_string);
+  g_free (jeongeum->id);
   g_free (jeongeum->en_name);
   g_free (jeongeum->ko_name);
   g_free (jeongeum->layout);
@@ -637,6 +640,16 @@ dasom_jeongeum_get_preedit_string (DasomEngine  *engine,
     else
       *cursor_pos = 0;
   }
+}
+
+const gchar *
+dasom_jeongeum_get_id (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_val_if_fail (DASOM_IS_ENGINE (engine), NULL);
+
+  return DASOM_JEONGEUM (engine)->id;
 }
 
 const gchar *
@@ -685,6 +698,7 @@ dasom_jeongeum_class_init (DasomJeongeumClass *class)
 
   engine_class->candidate_clicked  = on_candidate_clicked;
 
+  engine_class->get_id             = dasom_jeongeum_get_id;
   engine_class->get_name           = dasom_jeongeum_get_name;
   engine_class->set_english_mode   = dasom_jeongeum_set_english_mode;
   engine_class->get_english_mode   = dasom_jeongeum_get_english_mode;

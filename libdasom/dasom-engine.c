@@ -424,18 +424,33 @@ dasom_engine_get_selected_candidate_text (DasomEngine *engine)
 }
 
 const gchar *
+dasom_engine_get_id (DasomEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return DASOM_ENGINE_GET_CLASS (engine)->get_id (engine);
+}
+
+static const gchar *
+dasom_engine_real_get_id (DasomEngine *engine)
+{
+  g_critical (G_STRLOC ": %s: You should implement your_engine_get_id ()",
+              G_STRFUNC);
+  return NULL;
+}
+
+const gchar *
 dasom_engine_get_name (DasomEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  DasomEngineClass *class = DASOM_ENGINE_GET_CLASS (engine);
-
-  return class->get_name (engine);
+  return DASOM_ENGINE_GET_CLASS (engine)->get_name (engine);
 }
 
 static const gchar *
 dasom_engine_real_get_name (DasomEngine *engine)
 {
+  /* FIXME */
   g_error ("You should implement your_engine_get_name ()");
 
   return NULL;
@@ -457,7 +472,8 @@ dasom_engine_class_init (DasomEngineClass *class)
   class->get_preedit_string  = dasom_engine_real_get_preedit_string;
   class->set_surrounding     = dasom_engine_real_set_surrounding;
   class->get_surrounding     = dasom_engine_real_get_surrounding;
- /* TODO: 나중에  get_engine_info 이런 걸로 추가해야 할지도 모르겠습니다. */
+ /* TODO: maybe get_engine_info */
+  class->get_id              = dasom_engine_real_get_id;
   class->get_name            = dasom_engine_real_get_name;
 
   g_object_class_install_property (object_class,
