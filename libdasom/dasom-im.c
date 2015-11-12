@@ -534,7 +534,7 @@ dasom_im_init (DasomIM *im)
                   message->header->type != DASOM_MESSAGE_CONNECT_REPLY))
   {
     dasom_message_unref (message);
-    g_error ("Couldn't connect dasom daemon");
+    g_error ("Couldn't connect to dasom daemon");
   }
 
   dasom_message_unref (message);
