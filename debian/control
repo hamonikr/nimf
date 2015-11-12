@@ -15,7 +15,8 @@ Build-Depends: debhelper,
                qtbase5-dev,
                qtbase5-private-dev,
                libappindicator3-dev,
-               librsvg2-bin
+               librsvg2-bin,
+               fonts-noto-cjk
 Standards-Version: 3.9.4
 Homepage: https://github.com/cogniti/dasom
 
