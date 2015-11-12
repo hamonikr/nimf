@@ -162,13 +162,19 @@ main (int argc, char **argv)
   app_indicator_set_icon_full (indicator, "dasom-indicator", "Dasom");
   app_indicator_set_menu (indicator, GTK_MENU (menu_shell));
 
+  g_signal_connect (about_menu, "activate",
+                    G_CALLBACK (on_about_menu), indicator);
+  g_signal_connect (exit_menu,  "activate",
+                    G_CALLBACK (on_exit_menu),  indicator);
+
   agent = dasom_agent_new ();
+
   g_signal_connect (agent, "engine-changed",
                     G_CALLBACK (on_engine_changed), indicator);
   g_signal_connect (agent, "disconnected",
                     G_CALLBACK (on_disconnected), indicator);
-  g_signal_connect (about_menu, "activate",  G_CALLBACK (on_about_menu), indicator);
-  g_signal_connect (exit_menu,  "activate",  G_CALLBACK (on_exit_menu),  indicator);
+
+  dasom_agent_connect_to_server (agent);
 
   gtk_main ();
 

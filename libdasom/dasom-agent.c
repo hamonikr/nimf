@@ -70,8 +70,8 @@ on_incoming_message (GSocket      *socket,
   return G_SOURCE_CONTINUE;
 }
 
-static void
-dasom_agent_init (DasomAgent *agent)
+gboolean
+dasom_agent_connect_to_server (DasomAgent *agent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -93,7 +93,6 @@ dasom_agent_init (DasomAgent *agent)
     agent->connection = g_socket_client_connect (client,
                                                  G_SOCKET_CONNECTABLE (address),
                                                  NULL, &error);
-
     if (agent->connection)
       break;
     else
@@ -103,20 +102,21 @@ dasom_agent_init (DasomAgent *agent)
   g_object_unref (address);
   g_object_unref (client);
 
-  if (error)
+  if (agent->connection == NULL)
   {
-    g_critical ("%s", error->message);
+    g_critical (G_STRLOC ": %s", error->message);
+    g_clear_error (&error);
     g_signal_emit_by_name (agent, "disconnected", NULL);
-    return;
+    return FALSE;
   }
 
   socket = g_socket_connection_get_socket (agent->connection);
 
   if (!socket)
   {
-    g_critical (G_STRLOC ": %s: Can't get socket", G_STRFUNC);
+    g_critical (G_STRLOC ": Can't get socket");
     g_signal_emit_by_name (agent, "disconnected", NULL);
-    return;
+    return FALSE;
   }
 
   DasomConnectionType type = DASOM_CONNECTION_DASOM_AGENT;
@@ -130,17 +130,22 @@ dasom_agent_init (DasomAgent *agent)
   {
     g_critical ("Couldn't connect dasom daemon");
     g_signal_emit_by_name (agent, "disconnected", NULL);
-    return;
+    return FALSE;
   }
 
   dasom_message_unref (message);
 
   agent->source = g_socket_create_source (socket, G_IO_IN, NULL);
   g_source_attach (agent->source, NULL);
-  g_source_set_callback (agent->source,
-                         (GSourceFunc) on_incoming_message,
-                         agent,
-                         NULL);
+  g_source_set_callback (agent->source, (GSourceFunc) on_incoming_message,
+                         agent, NULL);
+  return TRUE;
+}
+
+static void
+dasom_agent_init (DasomAgent *agent)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 static void
@@ -150,12 +155,16 @@ dasom_agent_finalize (GObject *object)
 
   DasomAgent *agent = DASOM_AGENT (object);
 
-  g_source_destroy (agent->source);
-  g_source_unref   (agent->source);
-  dasom_message_unref (agent->reply);
+  if (agent->source)
+  {
+    g_source_destroy (agent->source);
+    g_source_unref   (agent->source);
+  }
 
   if (agent->connection)
     g_object_unref (agent->connection);
+
+  dasom_message_unref (agent->reply);
 
   G_OBJECT_CLASS (dasom_agent_parent_class)->finalize (object);
 }

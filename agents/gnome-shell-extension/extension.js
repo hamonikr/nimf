@@ -95,9 +95,13 @@ function init()
 
 function enable()
 {
-  dasom_agent = new Dasom.Agent;
-  dasom_menu  = new DasomMenu;
   let child;
+
+  dasom_menu = new DasomMenu;
+
+  Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 0, 'right');
+
+  dasom_agent = new Dasom.Agent;
 
   dasom_agent.connect('engine-changed', function(agent, text) {
     child = dasom_menu._hbox.get_child_at_index (0);
@@ -122,7 +126,7 @@ function enable()
     dasom_menu._hbox.replace_child (child, dasom_menu._warning_icon);
   });
 
-  Main.panel.addToStatusArea('dasom-agent-extension', dasom_menu, 0, 'right');
+  dasom_agent.connect_to_server();
 }
 
 function disable()

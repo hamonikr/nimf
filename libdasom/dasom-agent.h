@@ -63,8 +63,9 @@ struct _DasomAgentClass
   void (*disconnected)   (DasomAgent  *context);
 };
 
-GType       dasom_agent_get_type (void) G_GNUC_CONST;
-DasomAgent *dasom_agent_new      (void);
+GType       dasom_agent_get_type          (void) G_GNUC_CONST;
+DasomAgent *dasom_agent_new               (void);
+gboolean    dasom_agent_connect_to_server (DasomAgent *agent);
 
 G_END_DECLS
 
