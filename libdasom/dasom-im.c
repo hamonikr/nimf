@@ -57,9 +57,9 @@ on_incoming_message (GSocket      *socket,
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
-    /* 동일 소켓으로 GSource를 2개 만들기 때문에 G_IO_HUP | G_IO_ERR 일 때
-       callback 이 두번 실행될 수 있기 때문에 두 번 실행되는 것을 방지하기 위한
-       코드입니다. */
+    /* Because two GSource is created over one socket,
+     * when G_IO_HUP | G_IO_ERR, callback can run two times.
+     * the following code avoid that callback runs two times. */
     GSource *source = g_main_current_source ();
 
     if (source == im->default_context_source)
@@ -382,13 +382,11 @@ void dasom_im_reset (DasomIM *im)
   dasom_iteration_until (im, DASOM_MESSAGE_RESET_REPLY);
 }
 
-/* TODO: dasom_im_filter_event_fallback() 함수는
- * gboolean
+/* TODO: reduce duplicate code
+ * dasom_im_filter_event_fallback() is made from
  * dasom_english_filter_event (DasomEngine     *engine,
  *                             DasomConnection *target,
  *                             DasomEvent      *event);
- * 의 인수를 약간 수정하여 만들었습니다.
- * 유지보수를 편하게 하기 위해 두 함수의 중복 부분을 합칠 필요가 있습니다.
  */
 gboolean
 dasom_im_filter_event_fallback (DasomIM    *im,
@@ -527,7 +525,10 @@ dasom_im_init (DasomIM *im)
   message = dasom_recv_message (socket);
 
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
+  {
+    dasom_message_unref (message);
     g_error ("Couldn't connect dasom daemon");
+  }
 
   dasom_message_unref (message);
 
@@ -549,7 +550,7 @@ dasom_im_init (DasomIM *im)
 
   g_mutex_unlock (&mutex);
 
-  /* g_main_context_iteration() 할 때 소켓들만 iteration 하기 위함 */
+  /* when g_main_context_iteration(), iterate only sockets */
   im->sockets_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
   g_source_set_can_recurse (im->sockets_context_source, TRUE);
   g_source_attach (im->sockets_context_source, dasom_im_sockets_context);
@@ -557,10 +558,6 @@ dasom_im_init (DasomIM *im)
                          (GSourceFunc) on_incoming_message,
                          im, NULL);
 
-  /* default context 는 응용 프로그램의 default context일 것입니다.
-     default context에 source를 부착하는 이유는, 키보드 말고, 마우스 같은
-     것으로 입력할 때 서버에서 commit 등의 신호를 발생시킬텐데 그에 대응하기
-     위함입니다. */
   im->default_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
   g_source_set_can_recurse (im->default_context_source, TRUE);
   g_source_set_callback (im->default_context_source,

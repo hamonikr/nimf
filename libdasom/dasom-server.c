@@ -207,11 +207,6 @@ on_new_connection (GSocketService    *service,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /* TODO: simple authentication using GCredentials */
-
-  /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 DasomConnection, on_incoming_message_dasom 에서 처리토록 하자. */
-
   GSocket *socket = g_socket_connection_get_socket (socket_connection);
 
   DasomMessage *message;
@@ -221,9 +216,10 @@ on_new_connection (GSocketService    *service,
     dasom_send_message (socket, DASOM_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
   else
   {
-    /* TODO: error 처리 */
+    g_critical (G_STRLOC ": Couldn't connect");
+    dasom_message_unref (message);
     dasom_send_message (socket, DASOM_MESSAGE_ERROR, NULL, 0, NULL);
-    return TRUE; /* TODO: return 값을 FALSE 로 하면 어떻 일이 벌어지는가 */
+    return FALSE;
   }
 
   DasomConnection *connection;
@@ -232,8 +228,7 @@ on_new_connection (GSocketService    *service,
   dasom_message_unref (message);
   connection->socket = socket;
   dasom_server_add_connection (server, connection);
-  /* TODO: agent 처리를 담당할 부분을 따로 만들어주면 좋겠지만,
-   * 시간이 걸리므로, 일단은 DasomConnection, on_incoming_message_dasom 에서 처리토록 하자. */
+
   if (connection->type == DASOM_CONNECTION_DASOM_AGENT)
     server->agents_list = g_list_prepend (server->agents_list, connection);
 

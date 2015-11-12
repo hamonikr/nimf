@@ -128,6 +128,7 @@ dasom_agent_connect_to_server (DasomAgent *agent)
 
   if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
   {
+    dasom_message_unref (message);
     g_critical ("Couldn't connect dasom daemon");
     g_signal_emit_by_name (agent, "disconnected", NULL);
     return FALSE;
