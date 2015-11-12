@@ -145,6 +145,10 @@ gir_DATA = $(INTROSPECTION_GIRS)
 typelibdir   = $(INTROSPECTION_TYPELIBDIR)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
+uninstall-hook:
+	-rmdir -p $(DESTDIR)$(libdir)/dasom
+	-rmdir -p $(DESTDIR)$(IMdkitincludedir)
+
 CLEANFILES = \
 	$(BUILT_SOURCES) \
 	$(gir_DATA) $(typelib_DATA)
