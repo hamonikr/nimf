@@ -72,6 +72,12 @@ on_incoming_message_dasom (GSocket         *socket,
   connection->reply = message;
   connection->is_dispatched = TRUE;
 
+  if (G_UNLIKELY (message == NULL))
+  {
+    g_critical (G_STRLOC ": NULL message");
+    return G_SOURCE_CONTINUE;
+  }
+
   switch (message->header->type)
   {
     case DASOM_MESSAGE_FILTER_EVENT:
@@ -212,15 +218,16 @@ on_new_connection (GSocketService    *service,
   DasomMessage *message;
   message = dasom_recv_message (socket);
 
-  if (message->header->type == DASOM_MESSAGE_CONNECT)
-    dasom_send_message (socket, DASOM_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
-  else
+  if (G_UNLIKELY (message == NULL ||
+                  message->header->type != DASOM_MESSAGE_CONNECT))
   {
     g_critical (G_STRLOC ": Couldn't connect");
     dasom_message_unref (message);
     dasom_send_message (socket, DASOM_MESSAGE_ERROR, NULL, 0, NULL);
     return FALSE;
   }
+
+  dasom_send_message (socket, DASOM_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
 
   DasomConnection *connection;
   connection = dasom_connection_new (*(DasomConnectionType *) message->data,

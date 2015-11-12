@@ -54,6 +54,12 @@ on_incoming_message (GSocket      *socket,
   dasom_message_unref (agent->reply);
   agent->reply = message;
 
+  if (G_UNLIKELY (message == NULL))
+  {
+    g_critical (G_STRLOC ": NULL message");
+    return G_SOURCE_CONTINUE;
+  }
+
   switch (message->header->type)
   {
     /* reply */
@@ -126,7 +132,8 @@ dasom_agent_connect_to_server (DasomAgent *agent)
   g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
   message = dasom_recv_message (socket);
 
-  if (message->header->type != DASOM_MESSAGE_CONNECT_REPLY)
+  if (G_UNLIKELY (message == NULL ||
+                  message->header->type != DASOM_MESSAGE_CONNECT_REPLY))
   {
     dasom_message_unref (message);
     g_critical ("Couldn't connect dasom daemon");
