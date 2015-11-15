@@ -29,8 +29,7 @@
 #include <glib-object.h>
 #include "dasom-engine.h"
 #include "dasom-server.h"
-#include "dasom-message.h"
-#include "dasom-types.h"
+#include "dasom-private.h"
 #include <X11/Xlib.h>
 #include "IMdkit/IMdkit.h"
 
@@ -44,6 +43,8 @@ G_BEGIN_DECLS
 #define DASOM_CONNECTION_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), DASOM_TYPE_CONNECTION, DasomConnectionClass))
 
 typedef struct _DasomServer DasomServer;
+typedef struct _DasomEngine DasomEngine;
+typedef struct _DasomResult DasomResult;
 
 typedef struct _DasomConnection      DasomConnection;
 typedef struct _DasomConnectionClass DasomConnectionClass;
@@ -60,10 +61,9 @@ struct _DasomConnection
   DasomRectangle       cursor_area;
   DasomServer         *server;
   GSocket             *socket;
-  DasomMessage        *reply;
+  DasomResult         *result;
   GSource             *source;
   GSocketConnection   *socket_connection;
-  gboolean             is_dispatched;
   /* XIM */
   guint16              xim_connect_id;
   gint                 xim_preedit_length;

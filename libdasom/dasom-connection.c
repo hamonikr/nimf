@@ -39,6 +39,9 @@ G_DEFINE_TYPE (DasomConnection, dasom_connection, G_TYPE_OBJECT);
 static void
 dasom_connection_init (DasomConnection *connection)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  connection->result = g_slice_new0 (DasomResult);
 }
 
 static void
@@ -47,7 +50,7 @@ dasom_connection_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomConnection *connection = DASOM_CONNECTION (object);
-  dasom_message_unref (connection->reply);
+  dasom_message_unref (connection->result->reply);
 
   if (connection->source)
   {
@@ -57,6 +60,8 @@ dasom_connection_finalize (GObject *object)
 
   if (connection->socket_connection)
     g_object_unref (connection->socket_connection);
+
+  g_slice_free (DasomResult, connection->result);
 
   G_OBJECT_CLASS (dasom_connection_parent_class)->finalize (object);
 }
@@ -280,28 +285,6 @@ dasom_connection_set_use_preedit (DasomConnection *connection,
 }
 
 void
-dasom_connection_iteration_until (DasomConnection  *connection,
-                                  DasomMessageType  type)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  do {
-    connection->is_dispatched = FALSE;
-    g_main_context_iteration (NULL, TRUE);
-  } while ((connection->is_dispatched == FALSE) ||
-           (connection->reply && (connection->reply->header->type != type)));
-
-  connection->is_dispatched = FALSE;
-
-  if (G_UNLIKELY (connection->reply == NULL))
-  {
-    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
-                dasom_message_get_name_by_type (type));
-    return;
-  }
-}
-
-void
 dasom_connection_emit_preedit_start (DasomConnection *connection)
 
 {
@@ -316,8 +299,9 @@ dasom_connection_emit_preedit_start (DasomConnection *connection)
 
       dasom_send_message (connection->socket, DASOM_MESSAGE_PREEDIT_START,
                           NULL, 0, NULL);
-      dasom_connection_iteration_until (connection,
-                                        DASOM_MESSAGE_PREEDIT_START_REPLY);
+      dasom_result_iteration_until (connection->result,
+                                    NULL,
+                                    DASOM_MESSAGE_PREEDIT_START_REPLY);
       connection->preedit_state = DASOM_PREEDIT_STATE_START;
       break;
     case DASOM_CONNECTION_XIM:
@@ -356,8 +340,9 @@ dasom_connection_emit_preedit_changed (DasomConnection *connection)
 
       dasom_send_message (connection->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
                           NULL, 0, NULL);
-      dasom_connection_iteration_until (connection,
-                                        DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
+      dasom_result_iteration_until (connection->result,
+                                    NULL,
+                                    DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
       break;
     case DASOM_CONNECTION_XIM:
       {
@@ -440,8 +425,9 @@ dasom_connection_emit_preedit_end (DasomConnection *connection)
 
       dasom_send_message (connection->socket, DASOM_MESSAGE_PREEDIT_END,
                           NULL, 0, NULL);
-      dasom_connection_iteration_until (connection,
-                                        DASOM_MESSAGE_PREEDIT_END_REPLY);
+      dasom_result_iteration_until (connection->result,
+                                    NULL,
+                                    DASOM_MESSAGE_PREEDIT_END_REPLY);
       connection->preedit_state = DASOM_PREEDIT_STATE_END;
       break;
     case DASOM_CONNECTION_XIM:
@@ -476,8 +462,9 @@ dasom_connection_emit_commit (DasomConnection *connection,
     case DASOM_CONNECTION_DASOM_IM:
       dasom_send_message (connection->socket, DASOM_MESSAGE_COMMIT,
                           (gchar *) text, strlen (text) + 1, NULL);
-      dasom_connection_iteration_until (connection,
-                                        DASOM_MESSAGE_COMMIT_REPLY);
+      dasom_result_iteration_until (connection->result,
+                                    NULL,
+                                    DASOM_MESSAGE_COMMIT_REPLY);
       break;
     case DASOM_CONNECTION_XIM:
       {
@@ -512,13 +499,14 @@ dasom_connection_emit_retrieve_surrounding (DasomConnection *connection)
 
   dasom_send_message (connection->socket, DASOM_MESSAGE_RETRIEVE_SURROUNDING,
                       NULL, 0, NULL);
-  dasom_connection_iteration_until (connection,
-                                    DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
+  dasom_result_iteration_until (connection->result,
+                                NULL,
+                                DASOM_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
 
-  if (connection->reply == NULL)
+  if (connection->result->reply == NULL)
     return FALSE;
 
-  return *(gboolean *) (connection->reply->data);
+  return *(gboolean *) (connection->result->reply->data);
 }
 
 gboolean
@@ -534,13 +522,14 @@ dasom_connection_emit_delete_surrounding (DasomConnection *connection,
 
   dasom_send_message (connection->socket, DASOM_MESSAGE_DELETE_SURROUNDING,
                       data, 2 * sizeof (gint), g_free);
-  dasom_connection_iteration_until (connection,
-                                    DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
+  dasom_result_iteration_until (connection->result,
+                                NULL,
+                                DASOM_MESSAGE_DELETE_SURROUNDING_REPLY);
 
-  if (connection->reply == NULL)
+  if (connection->result->reply == NULL)
     return FALSE;
 
-  return *(gboolean *) (connection->reply->data);
+  return *(gboolean *) (connection->result->reply->data);
 }
 
 void

@@ -31,6 +31,7 @@
 #include "dasom-events.h"
 #include "dasom-engine.h"
 #include "dasom-message.h"
+#include "dasom-private.h"
 
 G_BEGIN_DECLS
 
@@ -50,8 +51,7 @@ struct _DasomIM
 
   DasomEngine       *engine;
   GSocketConnection *connection;
-  DasomMessage      *reply;
-  gboolean           is_dispatched;
+  DasomResult       *result;
   GSource           *sockets_context_source;
   GSource           *default_context_source;
 };

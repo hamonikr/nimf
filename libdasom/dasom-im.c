@@ -54,6 +54,7 @@ on_incoming_message (GSocket      *socket,
   g_debug (G_STRLOC ": %s: socket fd:%d", G_STRFUNC, g_socket_get_fd (socket));
 
   DasomIM *im = DASOM_IM (user_data);
+  dasom_message_unref (im->result->reply);
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -70,8 +71,7 @@ on_incoming_message (GSocket      *socket,
     if (!g_socket_is_closed (socket))
       g_socket_close (socket, NULL);
 
-    dasom_message_unref (im->reply);
-    im->reply = NULL;
+    im->result->reply    = NULL;
 
     g_critical (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
 
@@ -80,9 +80,8 @@ on_incoming_message (GSocket      *socket,
 
   DasomMessage *message;
   message = dasom_recv_message (socket);
-  dasom_message_unref (im->reply);
-  im->reply = message;
-  im->is_dispatched = TRUE;
+  im->result->reply = message;
+  im->result->is_dispatched = TRUE;
   gboolean retval;
 
   if (G_UNLIKELY (message == NULL))
@@ -145,28 +144,6 @@ on_incoming_message (GSocket      *socket,
   return G_SOURCE_CONTINUE;
 }
 
-void
-dasom_iteration_until (DasomIM          *im,
-                       DasomMessageType  type)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  do {
-    im->is_dispatched = FALSE;
-    g_main_context_iteration (dasom_im_sockets_context, TRUE);
-  } while ((im->is_dispatched == FALSE) ||
-           (im->reply && (im->reply->header->type != type)));
-
-  im->is_dispatched = FALSE;
-
-  if (G_UNLIKELY (im->reply == NULL))
-  {
-    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
-                dasom_message_get_name_by_type (type));
-    return;
-  }
-}
-
 void dasom_im_focus_out (DasomIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -181,7 +158,9 @@ void dasom_im_focus_out (DasomIM *im)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_FOCUS_OUT, NULL, 0, NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_OUT_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_FOCUS_OUT_REPLY);
 }
 
 void dasom_im_set_cursor_location (DasomIM              *im,
@@ -200,7 +179,9 @@ void dasom_im_set_cursor_location (DasomIM              *im,
 
   dasom_send_message (socket, DASOM_MESSAGE_SET_CURSOR_LOCATION,
                       (gchar *) area, sizeof (DasomRectangle), NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_SET_CURSOR_LOCATION_REPLY);
 }
 
 void dasom_im_set_use_preedit (DasomIM  *im,
@@ -219,7 +200,9 @@ void dasom_im_set_use_preedit (DasomIM  *im,
 
   dasom_send_message (socket, DASOM_MESSAGE_SET_USE_PREEDIT,
                       (gchar *) &use_preedit, sizeof (gboolean), NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_SET_USE_PREEDIT_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_SET_USE_PREEDIT_REPLY);
 }
 
 gboolean dasom_im_get_surrounding (DasomIM  *im,
@@ -245,9 +228,11 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_GET_SURROUNDING, NULL, 0, NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_GET_SURROUNDING_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_GET_SURROUNDING_REPLY);
 
-  if (im->reply == NULL)
+  if (im->result->reply == NULL)
   {
     if (text)
       *text = g_strdup ("");
@@ -259,18 +244,18 @@ gboolean dasom_im_get_surrounding (DasomIM  *im,
   }
 
   if (text)
-    *text = g_strndup (im->reply->data,
-                       im->reply->header->data_len - 1 -
+    *text = g_strndup (im->result->reply->data,
+                       im->result->reply->header->data_len - 1 -
                        sizeof (gint) - sizeof (gboolean));
 
   if (cursor_index)
   {
-    *cursor_index = *(gint *) (im->reply->data +
-                               im->reply->header->data_len -
+    *cursor_index = *(gint *) (im->result->reply->data +
+                               im->result->reply->header->data_len -
                                sizeof (gint) - sizeof (gboolean));
   }
 
-  return *(gboolean *) (im->reply->data - sizeof (gboolean));
+  return *(gboolean *) (im->result->reply->data - sizeof (gboolean));
 }
 
 void dasom_im_set_surrounding (DasomIM    *im,
@@ -305,7 +290,9 @@ void dasom_im_set_surrounding (DasomIM    *im,
 
   dasom_send_message (socket, DASOM_MESSAGE_SET_SURROUNDING, data,
                       str_len + 1 + 2 * sizeof (gint), g_free);
-  dasom_iteration_until (im, DASOM_MESSAGE_SET_SURROUNDING_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_SET_SURROUNDING_REPLY);
 }
 
 void dasom_im_focus_in (DasomIM *im)
@@ -322,7 +309,9 @@ void dasom_im_focus_in (DasomIM *im)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_FOCUS_IN, NULL, 0, NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_FOCUS_IN_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_FOCUS_IN_REPLY);
 }
 
 void
@@ -349,9 +338,11 @@ dasom_im_get_preedit_string (DasomIM  *im,
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, 0, NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
 
-  if (im->reply == NULL)
+  if (im->result->reply == NULL)
   {
     if (str)
       *str = g_strdup ("");
@@ -363,12 +354,12 @@ dasom_im_get_preedit_string (DasomIM  *im,
   }
 
   if (str)
-    *str = g_strndup (im->reply->data,
-                      im->reply->header->data_len - 1 - sizeof (gint));
+    *str = g_strndup (im->result->reply->data,
+                      im->result->reply->header->data_len - 1 - sizeof (gint));
 
   if (cursor_pos)
-    *cursor_pos = *(gint *) (im->reply->data +
-                             im->reply->header->data_len - sizeof (gint));
+    *cursor_pos = *(gint *) (im->result->reply->data +
+                             im->result->reply->header->data_len - sizeof (gint));
 }
 
 void dasom_im_reset (DasomIM *im)
@@ -385,7 +376,9 @@ void dasom_im_reset (DasomIM *im)
   }
 
   dasom_send_message (socket, DASOM_MESSAGE_RESET, NULL, 0, NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_RESET_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_RESET_REPLY);
 }
 
 /* TODO: reduce duplicate code
@@ -472,12 +465,14 @@ gboolean dasom_im_filter_event (DasomIM *im, DasomEvent *event)
 
   dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT, event,
                       sizeof (DasomEvent), NULL);
-  dasom_iteration_until (im, DASOM_MESSAGE_FILTER_EVENT_REPLY);
+  dasom_result_iteration_until (im->result,
+                                dasom_im_sockets_context,
+                                DASOM_MESSAGE_FILTER_EVENT_REPLY);
 
-  if (im->reply == NULL)
+  if (im->result->reply == NULL)
     return dasom_im_filter_event_fallback (im, event);
 
-  return *(gboolean *) (im->reply->data);
+  return *(gboolean *) (im->result->reply->data);
 }
 
 DasomIM *
@@ -538,6 +533,8 @@ dasom_im_init (DasomIM *im)
   }
 
   dasom_message_unref (message);
+
+  im->result = g_slice_new0 (DasomResult);
 
   GMutex mutex;
 
@@ -609,6 +606,7 @@ dasom_im_finalize (GObject *object)
   }
 
   g_mutex_unlock (&mutex);
+  g_slice_free (DasomResult, im->result);
 
   G_OBJECT_CLASS (dasom_im_parent_class)->finalize (object);
 }

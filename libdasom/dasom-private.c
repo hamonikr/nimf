@@ -206,3 +206,28 @@ void dasom_log_default_handler (const gchar    *log_domain,
 
   syslog (priority, "%s-%s: %s", log_domain, prefix, message ? message : "(NULL) message");
 }
+
+void
+dasom_result_iteration_until (DasomResult      *result,
+                              GMainContext     *main_context,
+                              DasomMessageType  type)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  do {
+    result->is_dispatched = FALSE;
+    g_main_context_iteration (main_context, TRUE);
+  } while ((result->is_dispatched == FALSE) ||
+           (result->reply && (result->reply->header->type != type)));
+
+  /* This prevents not checking reply in the following iteration
+   *                               send commit (wait reply)
+   *                               recv   reset
+   *                               send     commit (wait reply)
+   *                               recv     commit-reply (is_dispatched: TRUE)
+   * `result->is_dispatched = FALSE' prevents breaking loop
+   *                               send   reset-reply
+   *                               recv commit-reply
+   */
+  result->is_dispatched = FALSE;
+}

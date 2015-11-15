@@ -43,6 +43,7 @@ on_incoming_message_dasom (GSocket         *socket,
 
   DasomMessage *message;
   gboolean      retval;
+  dasom_message_unref (connection->result->reply);
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -50,8 +51,7 @@ on_incoming_message_dasom (GSocket         *socket,
 
     g_socket_close (socket, NULL);
 
-    dasom_message_unref (connection->reply);
-    connection->reply = NULL;
+    connection->result->reply   = NULL;
 
     if (G_UNLIKELY (connection->type == DASOM_CONNECTION_DASOM_AGENT))
       connection->server->agents_list =
@@ -68,9 +68,8 @@ on_incoming_message_dasom (GSocket         *socket,
                                    connection->is_english_mode);
 
   message = dasom_recv_message (socket);
-  dasom_message_unref (connection->reply);
-  connection->reply = message;
-  connection->is_dispatched = TRUE;
+  connection->result->reply = message;
+  connection->result->is_dispatched = TRUE;
 
   if (G_UNLIKELY (message == NULL))
   {

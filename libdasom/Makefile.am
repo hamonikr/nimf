@@ -89,6 +89,7 @@ dasominclude_HEADERS = \
 	dasom-key-syms.h \
 	dasom-message.h \
 	dasom-module-manager.h \
+	dasom-private.h \
 	dasom-server.h \
 	dasom-types.h
 

@@ -28,8 +28,11 @@
 
 #include <glib-object.h>
 #include "dasom-server.h"
+#include "dasom-message.h"
 
 G_BEGIN_DECLS
+
+typedef struct _DasomServer DasomServer;
 
 typedef struct _DasomEnginePrivate DasomEnginePrivate;
 
@@ -38,6 +41,14 @@ struct _DasomEnginePrivate
   DasomServer  *server;
   gchar        *surrounding_text;
   gint          surrounding_cursor_index;
+};
+
+typedef struct _DasomResult DasomResult;
+
+struct _DasomResult
+{
+  gboolean      is_dispatched;
+  DasomMessage *reply;
 };
 
 void          dasom_send_message        (GSocket          *socket,
@@ -50,7 +61,9 @@ void          dasom_log_default_handler (const gchar      *log_domain,
                                          GLogLevelFlags    log_level,
                                          const gchar      *message,
                                          gboolean         *debug);
-
+void       dasom_result_iteration_until (DasomResult      *result,
+                                         GMainContext     *main_context,
+                                         DasomMessageType  type);
 G_END_DECLS
 
 #endif /* __DASOM_PRIVATE_H__ */
