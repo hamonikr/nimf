@@ -68,6 +68,9 @@ main (int argc, char **argv)
   textdomain (GETTEXT_PACKAGE);
 #endif
 
+  if (is_debug)
+    g_setenv ("G_MESSAGES_DEBUG", "dasom", TRUE);
+
   if (is_version)
   {
     g_print ("%s %s\n", argv[0], VERSION);
