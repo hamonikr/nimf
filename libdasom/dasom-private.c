@@ -220,6 +220,10 @@ dasom_result_iteration_until (DasomResult      *result,
   } while ((result->is_dispatched == FALSE) ||
            (result->reply && (result->reply->header->type != type)));
 
+  if (G_UNLIKELY (result->is_dispatched == TRUE && result->reply == NULL))
+    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
+                dasom_message_get_name_by_type (type));
+
   /* This prevents not checking reply in the following iteration
    *                               send commit (wait reply)
    *                               recv   reset

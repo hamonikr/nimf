@@ -55,6 +55,7 @@ on_incoming_message (GSocket      *socket,
 
   DasomIM *im = DASOM_IM (user_data);
   dasom_message_unref (im->result->reply);
+  im->result->is_dispatched = TRUE;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -81,7 +82,6 @@ on_incoming_message (GSocket      *socket,
   DasomMessage *message;
   message = dasom_recv_message (socket);
   im->result->reply = message;
-  im->result->is_dispatched = TRUE;
   gboolean retval;
 
   if (G_UNLIKELY (message == NULL))
