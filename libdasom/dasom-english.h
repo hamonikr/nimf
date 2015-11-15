@@ -28,7 +28,6 @@
 
 #include <glib-object.h>
 #include "dasom-engine.h"
-#include "dasom-key-syms.h"
 
 G_BEGIN_DECLS
 
@@ -45,6 +44,7 @@ typedef struct _DasomEnglishClass DasomEnglishClass;
 struct _DasomEnglish
 {
   DasomEngine parent_instance;
+
   gchar *id;
   gchar *name;
 };

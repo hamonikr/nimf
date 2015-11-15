@@ -20,6 +20,7 @@
  */
 
 #include "dasom-english.h"
+#include "dasom-key-syms.h"
 
 G_DEFINE_TYPE (DasomEnglish, dasom_english, DASOM_TYPE_ENGINE);
 
