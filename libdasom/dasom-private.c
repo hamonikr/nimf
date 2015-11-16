@@ -166,8 +166,6 @@ void dasom_log_default_handler (const gchar    *log_domain,
                                 const gchar    *message,
                                 gboolean       *debug)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
   int priority;
   const gchar *prefix;
 
