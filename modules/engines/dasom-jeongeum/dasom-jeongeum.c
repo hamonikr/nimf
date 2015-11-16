@@ -553,6 +553,7 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->en_name = g_strdup ("en");
   jeongeum->ko_name = g_strdup ("ko");
   jeongeum->is_english_mode = TRUE;
+  jeongeum->preedit_string = g_strdup ("");
   jeongeum->hanja_table  = hanja_table_load (NULL);
   jeongeum->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
 
