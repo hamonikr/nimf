@@ -136,9 +136,14 @@ dasom_jeongeum_update_preedit (DasomEngine     *engine,
   }
 
   /* preedit-changed */
-  g_free (jeongeum->preedit_string);
-  jeongeum->preedit_string = new_preedit;
-  dasom_engine_emit_preedit_changed (engine, target);
+  if (jeongeum->preedit_string[0] != 0 || new_preedit[0] != 0)
+  {
+    g_free (jeongeum->preedit_string);
+    jeongeum->preedit_string = new_preedit;
+    dasom_engine_emit_preedit_changed (engine, target);
+  }
+  else
+    g_free (new_preedit);
 
   /* preedit-end */
   if (jeongeum->preedit_state == DASOM_PREEDIT_STATE_START &&
