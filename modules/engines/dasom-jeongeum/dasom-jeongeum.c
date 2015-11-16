@@ -169,12 +169,13 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
   const ucschar *flush;
   flush = hangul_ic_flush (jeongeum->context);
 
-  if (flush[0] == 0)
-    return;
+  if (flush[0] != 0)
+  {
+    gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
+    dasom_engine_emit_commit (engine, target, text);
+    g_free (text);
+  }
 
-  gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
-  dasom_engine_emit_commit (engine, target, text);
-  g_free (text);
   dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
 }
 
