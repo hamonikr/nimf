@@ -88,7 +88,7 @@ dasom_send_message (GSocket          *socket,
   if (name)
     g_debug ("send: %s, fd: %d", name, g_socket_get_fd(socket));
   else
-    g_error ("unknown message type");
+    g_error (G_STRLOC ": unknown message type");
 
   dasom_message_unref (message);
 }
@@ -122,7 +122,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
     return NULL;
   }
 
-  if (message->header->data_len > 1)
+  if (message->header->data_len > 0)
   {
     dasom_message_set_body (message,
                             g_malloc0 (message->header->data_len),
@@ -137,7 +137,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
     if (G_UNLIKELY (n_read < message->header->data_len))
     {
       g_critical (G_STRLOC ": %s: received %"G_GSSIZE_FORMAT" less than %d",
-                G_STRFUNC, n_read, message->header->data_len);
+                  G_STRFUNC, n_read, message->header->data_len);
 
       if (error)
       {
@@ -156,7 +156,7 @@ DasomMessage *dasom_recv_message (GSocket *socket)
   if (name)
     g_debug ("recv: %s, fd: %d", name, g_socket_get_fd (socket));
   else
-    g_error ("unknown message type");
+    g_error (G_STRLOC ": unknown message type");
 
   return message;
 }
@@ -166,6 +166,8 @@ void dasom_log_default_handler (const gchar    *log_domain,
                                 const gchar    *message,
                                 gboolean       *debug)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   int priority;
   const gchar *prefix;
 
