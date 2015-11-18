@@ -140,7 +140,10 @@ dasom_jeongeum_update_preedit (DasomEngine     *engine,
   {
     g_free (jeongeum->preedit_string);
     jeongeum->preedit_string = new_preedit;
-    dasom_engine_emit_preedit_changed (engine, target);
+    dasom_engine_emit_preedit_changed (engine, target,
+                                       jeongeum->preedit_string,
+                                       g_utf8_strlen (jeongeum->preedit_string,
+                                                      -1));
   }
   else
     g_free (new_preedit);
@@ -238,8 +241,10 @@ dasom_jeongeum_filter_leading_consonant (DasomEngine     *engine,
     gchar *preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
     dasom_engine_emit_commit (engine, target, preedit);
     g_free (preedit);
-    dasom_engine_emit_preedit_changed (engine, target);
-
+    dasom_engine_emit_preedit_changed (engine, target,
+                                       jeongeum->preedit_string,
+                                       g_utf8_strlen (jeongeum->preedit_string,
+                                                      -1));
     return TRUE;
   }
 
