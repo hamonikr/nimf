@@ -232,11 +232,13 @@ dasom_engine_emit_preedit_start (DasomEngine     *engine,
 
 void
 dasom_engine_emit_preedit_changed (DasomEngine     *engine,
-                                   DasomConnection *target)
+                                   DasomConnection *target,
+                                   const gchar     *preedit_string,
+                                   gint             cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  dasom_connection_emit_preedit_changed (target);
+  dasom_connection_emit_preedit_changed (target, preedit_string, cursor_pos);
 }
 
 void

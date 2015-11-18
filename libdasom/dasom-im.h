@@ -54,6 +54,8 @@ struct _DasomIM
   DasomResult       *result;
   GSource           *sockets_context_source;
   GSource           *default_context_source;
+  gchar             *preedit_string;
+  gint               cursor_pos;
 };
 
 struct _DasomIMClass

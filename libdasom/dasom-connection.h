@@ -121,7 +121,9 @@ void             dasom_connection_set_use_preedit           (DasomConnection    
                                                              gboolean              use_preedit);
 
 void             dasom_connection_emit_preedit_start        (DasomConnection      *connection);
-void             dasom_connection_emit_preedit_changed      (DasomConnection      *connection);
+void             dasom_connection_emit_preedit_changed      (DasomConnection      *connection,
+                                                             const gchar          *preedit_string,
+                                                             gint                  cursor_pos);
 void             dasom_connection_emit_preedit_end          (DasomConnection      *connection);
 void             dasom_connection_emit_commit               (DasomConnection      *connection,
                                                              const gchar          *text);

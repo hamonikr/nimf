@@ -129,7 +129,9 @@ gboolean dasom_engine_get_english_mode          (DasomEngine      *engine);
 void     dasom_engine_emit_preedit_start        (DasomEngine      *engine,
                                                  DasomConnection  *target);
 void     dasom_engine_emit_preedit_changed      (DasomEngine      *engine,
-                                                 DasomConnection  *target);
+                                                 DasomConnection  *target,
+                                                 const gchar      *preedit_string,
+                                                 gint              cursor_pos);
 void     dasom_engine_emit_preedit_end          (DasomEngine      *engine,
                                                  DasomConnection  *target);
 void     dasom_engine_emit_commit               (DasomEngine      *engine,

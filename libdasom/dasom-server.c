@@ -87,25 +87,6 @@ on_incoming_message_dasom (GSocket         *socket,
       dasom_send_message (socket, DASOM_MESSAGE_FILTER_EVENT_REPLY, &retval,
                           sizeof (gboolean), NULL);
       break;
-    case DASOM_MESSAGE_GET_PREEDIT_STRING:
-      {
-        gchar *data = NULL;
-        gint   cursor_pos;
-        gint   str_len = 0;
-
-        dasom_connection_get_preedit_string (connection, &data, &cursor_pos);
-
-        str_len = strlen (data);
-        data = g_realloc (data, str_len + 1 + sizeof (gint));
-        *(gint *) (data + str_len + 1) = cursor_pos;
-
-        dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY,
-                            data,
-                            str_len + 1 + sizeof (gint),
-                            NULL);
-        g_free (data);
-      }
-      break;
     case DASOM_MESSAGE_RESET:
       dasom_connection_reset (connection);
       dasom_send_message (socket, DASOM_MESSAGE_RESET_REPLY, NULL, 0, NULL);

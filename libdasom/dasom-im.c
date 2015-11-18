@@ -94,7 +94,6 @@ on_incoming_message (GSocket      *socket,
   {
     /* reply */
     case DASOM_MESSAGE_FILTER_EVENT_REPLY:
-    case DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY:
     case DASOM_MESSAGE_RESET_REPLY:
     case DASOM_MESSAGE_FOCUS_IN_REPLY:
     case DASOM_MESSAGE_FOCUS_OUT_REPLY:
@@ -113,8 +112,15 @@ on_incoming_message (GSocket      *socket,
       dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_END_REPLY, NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_PREEDIT_CHANGED:
+      g_free (im->preedit_string);
+      im->preedit_string = g_strndup (message->data,
+                                      message->header->data_len - 1 - sizeof (gint));
+      im->cursor_pos = *(gint *) (message->data +
+                                  message->header->data_len - sizeof (gint));
       g_signal_emit_by_name (im, "preedit-changed");
-      dasom_send_message (socket, DASOM_MESSAGE_PREEDIT_CHANGED_REPLY, NULL, 0, NULL);
+      dasom_send_message (socket,
+                          DASOM_MESSAGE_PREEDIT_CHANGED_REPLY,
+                          NULL, 0, NULL);
       break;
     case DASOM_MESSAGE_COMMIT:
       dasom_message_ref (message);
@@ -323,43 +329,11 @@ dasom_im_get_preedit_string (DasomIM  *im,
 
   g_return_if_fail (DASOM_IS_IM (im));
 
-  GSocket *socket = g_socket_connection_get_socket (im->connection);
-  if (!socket || g_socket_is_closed (socket))
-  {
-    if (str)
-      *str = g_strdup ("");
-
-    if (cursor_pos)
-      *cursor_pos = 0;
-
-    g_warning ("socket is closed");
-
-    return;
-  }
-
-  dasom_send_message (socket, DASOM_MESSAGE_GET_PREEDIT_STRING, NULL, 0, NULL);
-  dasom_result_iteration_until (im->result,
-                                dasom_im_sockets_context,
-                                DASOM_MESSAGE_GET_PREEDIT_STRING_REPLY);
-
-  if (im->result->reply == NULL)
-  {
-    if (str)
-      *str = g_strdup ("");
-
-    if (cursor_pos)
-      *cursor_pos = 0;
-
-    return;
-  }
-
   if (str)
-    *str = g_strndup (im->result->reply->data,
-                      im->result->reply->header->data_len - 1 - sizeof (gint));
+    *str = g_strdup (im->preedit_string);
 
   if (cursor_pos)
-    *cursor_pos = *(gint *) (im->result->reply->data +
-                             im->result->reply->header->data_len - sizeof (gint));
+    *cursor_pos = im->cursor_pos;
 }
 
 void dasom_im_reset (DasomIM *im)
@@ -535,6 +509,7 @@ dasom_im_init (DasomIM *im)
   dasom_message_unref (message);
 
   im->result = g_slice_new0 (DasomResult);
+  im->preedit_string = g_strdup ("");
 
   GMutex mutex;
 
@@ -607,6 +582,7 @@ dasom_im_finalize (GObject *object)
 
   g_mutex_unlock (&mutex);
   g_slice_free (DasomResult, im->result);
+  g_free (im->preedit_string);
 
   G_OBJECT_CLASS (dasom_im_parent_class)->finalize (object);
 }

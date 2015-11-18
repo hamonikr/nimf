@@ -261,26 +261,37 @@ dasom_connection_set_use_preedit (DasomConnection *connection,
 
     if (connection->preedit_state == DASOM_PREEDIT_STATE_START)
     {
-      dasom_connection_emit_preedit_changed (connection);
+      gchar *preedit_string;
+      gint   cursor_pos;
+      dasom_connection_get_preedit_string (connection,
+                                           &preedit_string,
+                                           &cursor_pos);
+      dasom_connection_emit_preedit_changed (connection,
+                                             preedit_string,
+                                             cursor_pos);
       dasom_connection_emit_preedit_end     (connection);
+      g_free (preedit_string);
     }
   }
   else if (connection->use_preedit == FALSE && use_preedit == TRUE)
   {
-    gchar *str = NULL;
+    gchar *preedit_string;
     gint   cursor_pos;
 
     connection->use_preedit = TRUE;
 
-    dasom_connection_get_preedit_string (connection, &str, &cursor_pos);
-
-    if (*str != 0)
+    dasom_connection_get_preedit_string (connection,
+                                         &preedit_string,
+                                         &cursor_pos);
+    if (preedit_string[0] != 0)
     {
       dasom_connection_emit_preedit_start   (connection);
-      dasom_connection_emit_preedit_changed (connection);
+      dasom_connection_emit_preedit_changed (connection,
+                                             preedit_string,
+                                             cursor_pos);
     }
 
-    g_free (str);
+    g_free (preedit_string);
   }
 }
 
@@ -326,7 +337,9 @@ dasom_connection_emit_preedit_start (DasomConnection *connection)
 }
 
 void
-dasom_connection_emit_preedit_changed (DasomConnection *connection)
+dasom_connection_emit_preedit_changed (DasomConnection *connection,
+                                       const gchar     *preedit_string,
+                                       gint             cursor_pos)
 
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -338,11 +351,16 @@ dasom_connection_emit_preedit_changed (DasomConnection *connection)
                       connection->preedit_state == DASOM_PREEDIT_STATE_END))
         return;
 
-      dasom_send_message (connection->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
-                          NULL, 0, NULL);
-      dasom_result_iteration_until (connection->result,
-                                    NULL,
-                                    DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
+      {
+        gsize data_len = strlen (preedit_string) + 1 + sizeof (gint);
+        gchar *data = g_strndup (preedit_string, data_len - 1);
+        *(gint *) (data + data_len - sizeof (gint)) = cursor_pos;
+
+        dasom_send_message (connection->socket, DASOM_MESSAGE_PREEDIT_CHANGED,
+                            data, data_len, g_free);
+        dasom_result_iteration_until (connection->result, NULL,
+                                      DASOM_MESSAGE_PREEDIT_CHANGED_REPLY);
+      }
       break;
     case DASOM_CONNECTION_XIM:
       {
