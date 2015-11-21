@@ -128,7 +128,7 @@ on_gdk_x_event (XEvent            *xevent,
 
   gboolean retval = FALSE;
 
-  if (context->has_focus == FALSE)
+  if (context->has_focus == FALSE || context->client_window == NULL)
     return GDK_FILTER_CONTINUE;
 
   switch (xevent->type)
@@ -166,18 +166,12 @@ dasom_gtk_im_context_set_client_window (GtkIMContext *context,
 
   if (ds_context->client_window)
   {
-    gdk_window_remove_filter (ds_context->client_window,
-                              (GdkFilterFunc) on_gdk_x_event, context);
     g_object_unref (ds_context->client_window);
     ds_context->client_window = NULL;
   }
 
   if (window)
-  {
     ds_context->client_window = g_object_ref (window);
-    gdk_window_add_filter (ds_context->client_window,
-                           (GdkFilterFunc) on_gdk_x_event, context);
-  }
 }
 
 static void
@@ -393,30 +387,18 @@ dasom_gtk_im_context_init (DasomGtkIMContext *context)
 
   context->im = dasom_im_new ();
 
-  g_signal_connect (context->im,
-                    "commit",
-                    G_CALLBACK (on_commit),
-                    context);
-  g_signal_connect (context->im,
-                    "delete-surrounding",
-                    G_CALLBACK (on_delete_surrounding),
-                    context);
-  g_signal_connect (context->im,
-                    "preedit-changed",
-                    G_CALLBACK (on_preedit_changed),
-                    context);
-  g_signal_connect (context->im,
-                    "preedit-end",
-                    G_CALLBACK (on_preedit_end),
-                    context);
-  g_signal_connect (context->im,
-                    "preedit-start",
-                    G_CALLBACK (on_preedit_start),
-                    context);
-  g_signal_connect (context->im,
-                    "retrieve-surrounding",
-                    G_CALLBACK (on_retrieve_surrounding),
-                    context);
+  g_signal_connect (context->im, "commit",
+                    G_CALLBACK (on_commit), context);
+  g_signal_connect (context->im, "delete-surrounding",
+                    G_CALLBACK (on_delete_surrounding), context);
+  g_signal_connect (context->im, "preedit-changed",
+                    G_CALLBACK (on_preedit_changed), context);
+  g_signal_connect (context->im, "preedit-end",
+                    G_CALLBACK (on_preedit_end), context);
+  g_signal_connect (context->im, "preedit-start",
+                    G_CALLBACK (on_preedit_start), context);
+  g_signal_connect (context->im, "retrieve-surrounding",
+                    G_CALLBACK (on_retrieve_surrounding), context);
 
   context->settings = g_settings_new ("org.freedesktop.Dasom.clients.gtk");
 
@@ -433,6 +415,8 @@ dasom_gtk_im_context_init (DasomGtkIMContext *context)
                     context);
   g_signal_connect (context->settings, "changed::hook-gdk-event-key",
                     G_CALLBACK (on_changed_hook_gdk_event_key), context);
+
+  gdk_window_add_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);;
 }
 
 static void
@@ -441,12 +425,14 @@ dasom_gtk_im_context_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   DasomGtkIMContext *context = DASOM_GTK_IM_CONTEXT (object);
+
+  gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
+
   g_object_unref (context->im);
+  g_object_unref (context->settings);
 
   if (context->client_window)
     g_object_unref (context->client_window);
-
-  g_object_unref (context->settings);
 
   G_OBJECT_CLASS (dasom_gtk_im_context_parent_class)->finalize (object);
 }
