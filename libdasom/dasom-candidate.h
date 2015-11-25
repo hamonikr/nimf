@@ -27,7 +27,6 @@
 #endif
 
 #include <glib-object.h>
-#include <gtk/gtk.h>
 #include "dasom-connection.h"
 
 G_BEGIN_DECLS
@@ -43,21 +42,6 @@ typedef struct _DasomConnection      DasomConnection;
 
 typedef struct _DasomCandidate       DasomCandidate;
 typedef struct _DasomCandidateClass  DasomCandidateClass;
-
-struct _DasomCandidate
-{
-  GObject parent_instance;
-
-  GtkWidget       *window;
-  GtkWidget       *treeview;
-  GtkTreeIter      iter;
-  DasomConnection *target;
-};
-
-struct _DasomCandidateClass
-{
-  GObjectClass parent_class;
-};
 
 GType dasom_candidate_get_type (void) G_GNUC_CONST;
 

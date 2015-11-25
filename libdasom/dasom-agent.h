@@ -26,7 +26,7 @@
 #error "Only <dasom.h> can be included directly."
 #endif
 
-#include <gtk/gtk.h>
+#include <gio/gio.h>
 #include "dasom-message.h"
 
 G_BEGIN_DECLS

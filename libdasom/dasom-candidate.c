@@ -20,6 +20,22 @@
  */
 
 #include "dasom-candidate.h"
+#include <gtk/gtk.h>
+
+struct _DasomCandidate
+{
+  GObject parent_instance;
+
+  GtkWidget       *window;
+  GtkWidget       *treeview;
+  GtkTreeIter      iter;
+  DasomConnection *target;
+};
+
+struct _DasomCandidateClass
+{
+  GObjectClass parent_class;
+};
 
 enum
 {
