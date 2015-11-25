@@ -31,7 +31,6 @@
 #include "dasom-server.h"
 #include "dasom-private.h"
 #include <X11/Xlib.h>
-#include "IMdkit/IMdkit.h"
 
 G_BEGIN_DECLS
 
@@ -114,7 +113,7 @@ gboolean         dasom_connection_get_surrounding           (DasomConnection    
                                                              gchar               **text,
                                                              gint                 *cursor_index);
 void             dasom_connection_xim_set_cursor_location   (DasomConnection      *connection,
-                                                             XIMS                  xims);
+                                                             Display              *display);
 void             dasom_connection_set_cursor_location       (DasomConnection      *connection,
                                                              const DasomRectangle *area);
 void             dasom_connection_set_use_preedit           (DasomConnection      *connection,

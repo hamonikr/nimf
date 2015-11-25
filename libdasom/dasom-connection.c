@@ -552,7 +552,7 @@ dasom_connection_emit_delete_surrounding (DasomConnection *connection,
 
 void
 dasom_connection_xim_set_cursor_location (DasomConnection *connection,
-                                          XIMS             xims)
+                                          Display         *display)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -570,8 +570,8 @@ dasom_connection_xim_set_cursor_location (DasomConnection *connection,
     XWindowAttributes xwa;
     Window child;
 
-    XGetWindowAttributes (xims->core.display, target, &xwa);
-    XTranslateCoordinates (xims->core.display, target,
+    XGetWindowAttributes (display, target, &xwa);
+    XTranslateCoordinates (display, target,
                            xwa.root,
                            preedit_area.x,
                            preedit_area.y,

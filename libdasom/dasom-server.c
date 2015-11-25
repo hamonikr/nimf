@@ -625,7 +625,7 @@ int dasom_server_xim_set_ic_values (DasomServer      *server,
                 G_STRFUNC, data->status_attr[i].name);
   }
 
-  dasom_connection_xim_set_cursor_location (connection, xims);
+  dasom_connection_xim_set_cursor_location (connection, xims->core.display);
 
   return 1;
 }

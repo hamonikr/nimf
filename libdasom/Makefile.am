@@ -93,10 +93,6 @@ dasominclude_HEADERS = \
 	dasom-server.h \
 	dasom-types.h
 
-IMdkitincludedir = $(includedir)/dasom/IMdkit
-IMdkitinclude_HEADERS = \
-	IMdkit/IMdkit.h
-
 dasom-marshalers.h: dasom-marshalers.list
 	$(AM_V_GEN) glib-genmarshal --prefix=dasom_cclosure_marshal \
 	                            --header dasom-marshalers.list > dasom-marshalers.h
