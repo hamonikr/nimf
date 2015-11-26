@@ -100,7 +100,7 @@ main (int argc, char **argv)
     {NULL}
   };
 
-  context = g_option_context_new ("- dasom daemon");
+  context = g_option_context_new ("- indicator for Dasom");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);
