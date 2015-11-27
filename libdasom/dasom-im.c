@@ -467,6 +467,8 @@ dasom_im_init (DasomIM *im)
   GSocket        *socket;
   GError         *error = NULL;
 
+  im->preedit_string = g_strdup ("");
+
   address = g_unix_socket_address_new_with_type (DASOM_ADDRESS, -1,
                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
   client = g_socket_client_new ();
@@ -509,7 +511,6 @@ dasom_im_init (DasomIM *im)
   dasom_message_unref (message);
 
   im->result = g_slice_new0 (DasomResult);
-  im->preedit_string = g_strdup ("");
 
   GMutex mutex;
 
@@ -581,8 +582,10 @@ dasom_im_finalize (GObject *object)
   }
 
   g_mutex_unlock (&mutex);
-  g_slice_free (DasomResult, im->result);
   g_free (im->preedit_string);
+
+  if (im->result)
+    g_slice_free (DasomResult, im->result);
 
   G_OBJECT_CLASS (dasom_im_parent_class)->finalize (object);
 }
