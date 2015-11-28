@@ -3,12 +3,12 @@
   <schema id="org.freedesktop.Dasom.clients.gtk"
           path="/org/freedesktop/dasom/clients/gtk/">
     <key type="b" name="hook-gdk-event-key">
-      <default>true</default>
+      <default>false</default>
       <summary>hooking gdk key events</summary>
       <description>filter all key events before delivering them normally, which avoids bugs of many applications</description>
     </key>
     <key type="b" name="reset-on-gdk-button-press-event">
-      <default>true</default>
+      <default>false</default>
       <summary>Reset on gdk button-press-event</summary>
       <description>Reset on gdk button-press-event, which avoids the bug of firefox 38.3</description>
     </key>
