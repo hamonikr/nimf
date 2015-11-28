@@ -43,6 +43,7 @@ struct _DasomGtkIMContext
   gboolean      is_reset_on_gdk_button_press_event;
   gboolean      is_hook_gdk_event_key;
   gboolean      has_focus;
+  gboolean      has_event_filter;
 };
 
 struct _DasomGtkIMContextClass
@@ -359,6 +360,30 @@ on_retrieve_surrounding (DasomIM           *im,
 }
 
 static void
+dasom_gtk_im_context_update_event_filter (DasomGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (context->is_reset_on_gdk_button_press_event ||
+      context->is_hook_gdk_event_key)
+  {
+    if (context->has_event_filter == FALSE)
+    {
+      context->has_event_filter = TRUE;
+      gdk_window_add_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
+    }
+  }
+  else
+  {
+    if (context->has_event_filter == TRUE)
+    {
+      context->has_event_filter = FALSE;
+      gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
+    }
+  }
+}
+
+static void
 on_changed_reset_on_gdk_button_press_event (GSettings         *settings,
                                             gchar             *key,
                                             DasomGtkIMContext *context)
@@ -367,6 +392,8 @@ on_changed_reset_on_gdk_button_press_event (GSettings         *settings,
 
   context->is_reset_on_gdk_button_press_event =
     g_settings_get_boolean (context->settings, key);
+
+  dasom_gtk_im_context_update_event_filter (context);
 }
 
 static void
@@ -376,8 +403,10 @@ on_changed_hook_gdk_event_key (GSettings         *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context->is_hook_gdk_event_key = g_settings_get_boolean (context->settings,
-                                                           key);
+  context->is_hook_gdk_event_key =
+    g_settings_get_boolean (context->settings, key);
+
+  dasom_gtk_im_context_update_event_filter (context);
 }
 
 static void
@@ -409,14 +438,14 @@ dasom_gtk_im_context_init (DasomGtkIMContext *context)
   context->is_hook_gdk_event_key =
     g_settings_get_boolean (context->settings, "hook-gdk-event-key");
 
+  dasom_gtk_im_context_update_event_filter (context);
+
   g_signal_connect (context->settings,
                     "changed::reset-on-gdk-button-press-event",
                     G_CALLBACK (on_changed_reset_on_gdk_button_press_event),
                     context);
   g_signal_connect (context->settings, "changed::hook-gdk-event-key",
                     G_CALLBACK (on_changed_hook_gdk_event_key), context);
-
-  gdk_window_add_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);;
 }
 
 static void
@@ -426,7 +455,8 @@ dasom_gtk_im_context_finalize (GObject *object)
 
   DasomGtkIMContext *context = DASOM_GTK_IM_CONTEXT (object);
 
-  gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
+  if (context->has_event_filter)
+    gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
 
   g_object_unref (context->im);
   g_object_unref (context->settings);
