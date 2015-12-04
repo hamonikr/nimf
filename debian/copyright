@@ -1,5 +1,4 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Name: dasom
 Source: https://github.com/cogniti/dasom
 
 Files:     *
