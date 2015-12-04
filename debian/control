@@ -17,7 +17,7 @@ Build-Depends: debhelper (>= 9),
                libappindicator3-dev,
                librsvg2-bin,
                fonts-noto-cjk
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 Homepage: https://github.com/cogniti/dasom
 
 Package: dasom
