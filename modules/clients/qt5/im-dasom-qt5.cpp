@@ -331,12 +331,13 @@ DasomInputContext::setFocusObject (QObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (!object)
+    dasom_im_focus_out (m_im);
+
   QPlatformInputContext::setFocusObject (object);
 
   if (object)
     dasom_im_focus_in (m_im);
-  else
-    dasom_im_focus_out (m_im);
 
   update (Qt::ImCursorRectangle);
 }

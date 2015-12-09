@@ -239,12 +239,13 @@ DasomInputContext::setFocusWidget (QWidget *w)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (!w)
+    dasom_im_focus_out (m_im);
+
   QInputContext::setFocusWidget (w);
 
   if (w)
     dasom_im_focus_in (m_im);
-  else
-    dasom_im_focus_out (m_im);
 
   update ();
 }
