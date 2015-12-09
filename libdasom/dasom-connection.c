@@ -160,9 +160,6 @@ void dasom_connection_focus_out (DasomConnection *connection)
 
   dasom_engine_focus_out (connection->engine, connection);
 
-  /* FIXME: in case of "", g_socket_recieve() returns any number of bytes, up
-   * to size, I don't know the reason.
-   * Maybe there is something wrong somewhere. */
   g_signal_emit_by_name (connection, "engine-changed", "focus-out");
 }
 
