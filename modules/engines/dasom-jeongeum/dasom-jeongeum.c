@@ -477,7 +477,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
 }
 
 static void
-on_layout_changed (GSettings     *settings,
+on_changed_layout (GSettings     *settings,
                    gchar         *key,
                    DasomJeongeum *jeongeum)
 {
@@ -491,7 +491,7 @@ on_layout_changed (GSettings     *settings,
 }
 
 static void
-on_keys_changed (GSettings     *settings,
+on_changed_keys (GSettings     *settings,
                  gchar         *key,
                  DasomJeongeum *jeongeum)
 {
@@ -514,7 +514,7 @@ on_keys_changed (GSettings     *settings,
 }
 
 static void
-on_kr_101_104_key_compatible_changed (GSettings     *settings,
+on_changed_kr_101_104_key_compatible (GSettings     *settings,
                                       gchar         *key,
                                       gpointer       user_data)
 {
@@ -540,7 +540,7 @@ static gboolean on_timeout (GSettings *settings)
 
   static guint times = 0;
 
-  on_kr_101_104_key_compatible_changed (settings,
+  on_changed_kr_101_104_key_compatible (settings,
                                         "korean-101-104-key-compatible", NULL);
   times++;
 
@@ -554,7 +554,7 @@ static gboolean on_timeout (GSettings *settings)
 }
 
 static void
-on_double_consonant_rule_changed (GSettings     *settings,
+on_changed_double_consonant_rule (GSettings     *settings,
                                   gchar         *key,
                                   DasomJeongeum *jeongeum)
 {
@@ -564,9 +564,9 @@ on_double_consonant_rule_changed (GSettings     *settings,
 }
 
 static void
-on_avoid_reset_in_commit_cb (GSettings     *settings,
-                             gchar         *key,
-                             DasomJeongeum *jeongeum)
+on_changed_avoid_reset_in_commit_cb (GSettings     *settings,
+                                     gchar         *key,
+                                     DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -625,20 +625,20 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
     g_timeout_add_seconds (2, (GSourceFunc) on_timeout, jeongeum->settings);
 
   g_signal_connect (jeongeum->settings, "changed::layout",
-                    G_CALLBACK (on_layout_changed), jeongeum);
+                    G_CALLBACK (on_changed_layout), jeongeum);
   g_signal_connect (jeongeum->settings, "changed::hangul-keys",
-                    G_CALLBACK (on_keys_changed), jeongeum);
+                    G_CALLBACK (on_changed_keys), jeongeum);
   g_signal_connect (jeongeum->settings, "changed::hanja-keys",
-                    G_CALLBACK (on_keys_changed), jeongeum);
+                    G_CALLBACK (on_changed_keys), jeongeum);
   g_signal_connect (jeongeum->settings,
                     "changed::korean-101-104-key-compatible",
-                    G_CALLBACK (on_kr_101_104_key_compatible_changed), NULL);
+                    G_CALLBACK (on_changed_kr_101_104_key_compatible), NULL);
   g_signal_connect (jeongeum->settings,
                     "changed::double-consonant-rule",
-                    G_CALLBACK (on_double_consonant_rule_changed), jeongeum);
+                    G_CALLBACK (on_changed_double_consonant_rule), jeongeum);
   g_signal_connect (jeongeum->settings,
                     "changed::avoid-reset-in-commit-callback",
-                    G_CALLBACK (on_avoid_reset_in_commit_cb), jeongeum);
+                    G_CALLBACK (on_changed_avoid_reset_in_commit_cb), jeongeum);
 }
 
 static void
