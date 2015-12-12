@@ -53,6 +53,9 @@ struct _DasomJeongeum
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
   gchar              *layout;
+  /* workaround: avoid reset called by commit callback in application */
+  gboolean            avoid_reset_in_commit_cb;
+  gboolean            is_committing;
 };
 
 struct _DasomJeongeumClass
@@ -158,6 +161,19 @@ dasom_jeongeum_update_preedit (DasomEngine     *engine,
 }
 
 void
+dasom_jeongeum_emit_commit (DasomEngine     *engine,
+                            DasomConnection *target,
+                            const gchar     *text)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+  jeongeum->is_committing = TRUE;
+  dasom_engine_emit_commit (engine, target, text);
+  jeongeum->is_committing = FALSE;
+}
+
+void
 dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -165,6 +181,11 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
   g_return_if_fail (DASOM_IS_ENGINE (engine));
 
   DasomJeongeum *jeongeum = DASOM_JEONGEUM (engine);
+
+  /* workaround: avoid reset called by commit callback in application */
+  if (G_UNLIKELY (jeongeum->avoid_reset_in_commit_cb &&
+                  jeongeum->is_committing))
+    return;
 
   dasom_engine_hide_candidate_window (engine);
   jeongeum->is_candidate_mode = FALSE;
@@ -175,7 +196,7 @@ dasom_jeongeum_reset (DasomEngine *engine, DasomConnection *target)
   if (flush[0] != 0)
   {
     gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
-    dasom_engine_emit_commit (engine, target, text);
+    dasom_jeongeum_emit_commit (engine, target, text);
     g_free (text);
   }
 
@@ -211,7 +232,7 @@ on_candidate_clicked (DasomEngine *engine, DasomConnection *target, gchar *text)
   {
     /* hangul_ic 내부의 commit text가 사라집니다 */
     hangul_ic_reset (jeongeum->context);
-    dasom_engine_emit_commit (DASOM_ENGINE (jeongeum), target, text);
+    dasom_jeongeum_emit_commit (engine, target, text);
     dasom_jeongeum_update_preedit (engine, target, g_strdup (""));
   }
 
@@ -239,7 +260,7 @@ dasom_jeongeum_filter_leading_consonant (DasomEngine     *engine,
       (keyval == 'w' && ucs_preedit[0] == 0x3148 && ucs_preedit[1] == 0))
   {
     gchar *preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
-    dasom_engine_emit_commit (engine, target, preedit);
+    dasom_jeongeum_emit_commit (engine, target, preedit);
     g_free (preedit);
     dasom_engine_emit_preedit_changed (engine, target,
                                        jeongeum->preedit_string,
@@ -396,7 +417,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   gchar *new_commit  = g_ucs4_to_utf8 (ucs_commit,  -1, NULL, NULL, NULL);
 
   if (ucs_commit[0] != 0)
-    dasom_engine_emit_commit (engine, target, new_commit);
+    dasom_jeongeum_emit_commit (engine, target, new_commit);
 
   g_free (new_commit);
 
@@ -447,7 +468,7 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   if (c)
   {
     gchar *str = g_strdup_printf ("%c", c);
-    dasom_engine_emit_commit (engine, target, str);
+    dasom_jeongeum_emit_commit (engine, target, str);
     g_free (str);
     retval = TRUE;
   }
@@ -543,6 +564,16 @@ on_double_consonant_rule_changed (GSettings     *settings,
 }
 
 static void
+on_avoid_reset_in_commit_cb (GSettings     *settings,
+                             gchar         *key,
+                             DasomJeongeum *jeongeum)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  jeongeum->avoid_reset_in_commit_cb = g_settings_get_boolean (settings, key);
+}
+
+static void
 dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -554,6 +585,10 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->layout = g_settings_get_string (jeongeum->settings, "layout");
   jeongeum->is_double_consonant_rule =
     g_settings_get_boolean (jeongeum->settings, "double-consonant-rule");
+  jeongeum->avoid_reset_in_commit_cb =
+    g_settings_get_boolean (jeongeum->settings,
+                            "avoid-reset-in-commit-callback");
+
   hangul_keys = g_settings_get_strv   (jeongeum->settings, "hangul-keys");
   hanja_keys  = g_settings_get_strv   (jeongeum->settings, "hanja-keys");
 
@@ -601,6 +636,9 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_signal_connect (jeongeum->settings,
                     "changed::double-consonant-rule",
                     G_CALLBACK (on_double_consonant_rule_changed), jeongeum);
+  g_signal_connect (jeongeum->settings,
+                    "changed::avoid-reset-in-commit-callback",
+                    G_CALLBACK (on_avoid_reset_in_commit_cb), jeongeum);
 }
 
 static void

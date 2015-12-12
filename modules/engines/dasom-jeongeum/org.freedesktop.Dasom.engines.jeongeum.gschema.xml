@@ -48,5 +48,10 @@
       <summary>Use a rule composing double consonants</summary>
       <description>compose a double consonant on pressing same consonant twice</description>
     </key>
+    <key type="b" name="avoid-reset-in-commit-callback">
+      <default>true</default>
+      <summary>Avoid reset() in commit callback</summary>
+      <description>Avoid reset() called by commit callback in application</description>
+    </key>
   </schema>
 </schemalist>
