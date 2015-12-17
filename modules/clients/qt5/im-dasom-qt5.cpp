@@ -242,7 +242,7 @@ DasomInputContext::filterEvent (const QEvent *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!inputMethodAccepted()))
+  if (G_UNLIKELY (!qApp->focusObject() || !inputMethodAccepted()))
     return false;
 
   gboolean         retval;
@@ -263,9 +263,6 @@ DasomInputContext::filterEvent (const QEvent *event)
     case QEvent::MouseButtonPress:
       /* TODO: Provide as a option */
       dasom_im_reset (m_im);
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseButtonDblClick:
-    case QEvent::MouseMove:
     default:
       return false;
   }
@@ -333,12 +330,12 @@ DasomInputContext::setFocusObject (QObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (!object)
+  if (!object || !inputMethodAccepted())
     dasom_im_focus_out (m_im);
 
   QPlatformInputContext::setFocusObject (object);
 
-  if (object)
+  if (object && inputMethodAccepted())
     dasom_im_focus_in (m_im);
 
   update (Qt::ImCursorRectangle);
