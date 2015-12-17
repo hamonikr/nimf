@@ -271,14 +271,10 @@ DasomInputContext::filterEvent (const QEvent *event)
       type = DASOM_EVENT_KEY_RELEASE;
       break;
     case QEvent::MouseButtonPress:
+      /* TODO: Provide as a option */
       dasom_im_reset (m_im);
-      return false;
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseButtonDblClick:
-    case QEvent::MouseMove:
-      return false;
     default:
-      break;
+      return false;
   }
 
   dasom_event = dasom_event_new (type);
