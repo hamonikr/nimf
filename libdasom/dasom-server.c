@@ -757,11 +757,10 @@ int dasom_server_xim_forward_event (DasomServer          *server,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  XKeyEvent            *xevent;
-  DasomEvent           *event;
-  DasomEventType        type;
-  IMForwardEventStruct *fw_event;
-  gboolean              retval;
+  XKeyEvent      *xevent;
+  DasomEvent     *event;
+  DasomEventType  type;
+  gboolean        retval;
 
   xevent = (XKeyEvent*) &(data->event);
 
@@ -780,17 +779,8 @@ int dasom_server_xim_forward_event (DasomServer          *server,
   retval = dasom_connection_filter_event (connection, event);
   dasom_event_free (event);
 
-  if (retval)
-    return 1;
-
-  /* forward event */
-  fw_event = g_slice_new0 (IMForwardEventStruct);
-  *fw_event = *data;
-  fw_event->sync_bit = 0;
-
-  IMForwardEvent (xims, (XPointer) fw_event);
-
-  g_slice_free (IMForwardEventStruct, fw_event);
+  if (G_UNLIKELY (!retval))
+    IMForwardEvent (xims, (XPointer) data);
 
   return 1;
 }
