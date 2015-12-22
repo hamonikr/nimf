@@ -56,6 +56,7 @@ struct _DasomJeongeum
   /* workaround: avoid reset called by commit callback in application */
   gboolean            avoid_reset_in_commit_cb;
   gboolean            is_committing;
+  gboolean            workaround_for_wine;
 };
 
 struct _DasomJeongeumClass
@@ -304,7 +305,13 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
   }
 
   if (jeongeum->is_english_mode)
-    return dasom_english_filter_event (engine, target, event);
+  {
+    if (G_UNLIKELY ((jeongeum->workaround_for_wine &&
+                     target->type == DASOM_CONNECTION_XIM)))
+      return FALSE;
+    else
+      return dasom_english_filter_event (engine, target, event);
+  }
 
   if (G_UNLIKELY (dasom_event_matches (event,
                   (const DasomKey **) jeongeum->hanja_keys)))
@@ -426,6 +433,9 @@ dasom_jeongeum_filter_event (DasomEngine     *engine,
 
   if (retval)
     return TRUE;
+  else if (G_UNLIKELY ((jeongeum->workaround_for_wine &&
+                        target->type == DASOM_CONNECTION_XIM)))
+    return FALSE;
 
   gchar c = 0;
 
@@ -574,6 +584,16 @@ on_changed_avoid_reset_in_commit_cb (GSettings     *settings,
 }
 
 static void
+on_changed_workaround_for_wine (GSettings     *settings,
+                                gchar         *key,
+                                DasomJeongeum *jeongeum)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  jeongeum->workaround_for_wine = g_settings_get_boolean (settings, key);
+}
+
+static void
 dasom_jeongeum_init (DasomJeongeum *jeongeum)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -588,6 +608,8 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   jeongeum->avoid_reset_in_commit_cb =
     g_settings_get_boolean (jeongeum->settings,
                             "avoid-reset-in-commit-callback");
+  jeongeum->workaround_for_wine =
+    g_settings_get_boolean (jeongeum->settings, "workaround-for-wine");
 
   hangul_keys = g_settings_get_strv   (jeongeum->settings, "hangul-keys");
   hanja_keys  = g_settings_get_strv   (jeongeum->settings, "hanja-keys");
@@ -639,6 +661,8 @@ dasom_jeongeum_init (DasomJeongeum *jeongeum)
   g_signal_connect (jeongeum->settings,
                     "changed::avoid-reset-in-commit-callback",
                     G_CALLBACK (on_changed_avoid_reset_in_commit_cb), jeongeum);
+  g_signal_connect (jeongeum->settings, "changed::workaround-for-wine",
+                    G_CALLBACK (on_changed_workaround_for_wine), jeongeum);
 }
 
 static void
