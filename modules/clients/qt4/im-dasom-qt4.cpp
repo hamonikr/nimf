@@ -22,7 +22,7 @@
 #include <QTextFormat>
 #include <QInputContext>
 #include <QInputContextPlugin>
-#include "dasom-im.h"
+#include <dasom.h>
 
 class DasomInputContext : public QInputContext
 {

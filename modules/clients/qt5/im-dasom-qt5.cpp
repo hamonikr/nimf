@@ -25,7 +25,7 @@
 #include <qpa/qplatforminputcontextplugin_p.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
-#include "dasom-im.h"
+#include <dasom.h>
 
 class DasomInputContext : public QPlatformInputContext
 {
