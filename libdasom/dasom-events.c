@@ -51,35 +51,6 @@ static const DasomModifierInfo mod_info_list[] = {
   {"Release",  DASOM_RELEASE_MASK}
 };
 
-guint dasom_keyval_from_name (const gchar *keyval_name)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  guint keyval = 0;
-
-  if (g_strcmp0 (keyval_name, "space")  == 0) keyval = DASOM_KEY_space;
-  if (g_strcmp0 (keyval_name, "Hangul") == 0) keyval = DASOM_KEY_Hangul;
-
-  return keyval;
-}
-
-gchar *dasom_keyval_name (guint keyval)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gchar *name;
-
-  switch (keyval)
-  {
-    case DASOM_KEY_space:  name = g_strdup ("space"); break;
-    case DASOM_KEY_Hangul: name = g_strdup ("Hangul"); break;
-    default:
-      name = g_strdup ("");
-      break;
-  }
-  return name;
-}
-
 gboolean
 dasom_event_matches (DasomEvent *event, const DasomKey **keys)
 {
@@ -88,9 +59,9 @@ dasom_event_matches (DasomEvent *event, const DasomKey **keys)
   gboolean retval = FALSE;
   gint i;
 
-  /* Alt키를 눌렀을 때, 어떤 프로그램에서는 DASOM_META_MASK를 발생시키고
-   * 어떤 프로그램에서는 DASOM_META_MASK를 발생시키지 않습니다.
-   * DASOM_MOD2_MASK 는 Number 키와 관련이 있습니다. */
+  /* When pressing Alt key, some programs generate DASOM_META_MASK,
+   * while some programs don't generate DASOM_META_MASK.
+   * DASOM_MOD2_MASK related to Number key */
   guint mods = event->key.state & (DASOM_MOD2_MASK | DASOM_META_MASK |
                                    DASOM_LOCK_MASK | DASOM_RELEASE_MASK);
 

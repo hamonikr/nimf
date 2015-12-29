@@ -63,8 +63,6 @@ DasomEvent *dasom_event_copy       (DasomEvent          *event);
 void        dasom_event_free       (DasomEvent          *event);
 gboolean    dasom_event_matches    (DasomEvent          *event,
                                     const DasomKey     **keys);
-guint       dasom_keyval_from_name (const gchar         *keyval_name);
-gchar      *dasom_keyval_name      (guint                keyval);
 
 G_END_DECLS
 
