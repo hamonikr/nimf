@@ -1,18 +1,17 @@
-bin_PROGRAMS = dasom-daemon
+bin_PROGRAMS = nimf-daemon
 
-dasom_daemon_SOURCES = dasom-daemon.c
+nimf_daemon_SOURCES = nimf-daemon.c
 
-dasom_daemon_CFLAGS = \
+nimf_daemon_CFLAGS = \
 	-Wall \
 	-Werror \
-	-I$(top_srcdir)/libdasom \
-	-DDASOM_COMPILATION \
-	-DG_LOG_DOMAIN=\"dasom\" \
-	-DDASOM_MODULE_DIR=\"$(libdir)/dasom/modules\" \
-	$(LIBDASOM_DEPS_CFLAGS)
+	-I$(top_srcdir)/libnimf \
+	-DNIMF_COMPILATION \
+	-DG_LOG_DOMAIN=\"nimf\" \
+	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
+	$(LIBNIMF_DEPS_CFLAGS)
 
-dasom_daemon_LDFLAGS = $(GOBJECT_LIBS)
-dasom_daemon_LDADD = \
-	$(top_builddir)/libdasom/libdasom.la
+nimf_daemon_LDFLAGS = $(GOBJECT_LIBS)
+nimf_daemon_LDADD   = $(top_builddir)/libnimf/libnimf.la
 
 DISTCLEANFILES = Makefile.in

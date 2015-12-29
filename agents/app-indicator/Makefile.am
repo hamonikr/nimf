@@ -1,13 +1,13 @@
-bin_PROGRAMS = dasom-indicator
+bin_PROGRAMS = nimf-indicator
 
-dasom_indicator_SOURCES = dasom-indicator.c
+nimf_indicator_SOURCES = nimf-indicator.c
 
-dasom_indicator_CFLAGS = \
+nimf_indicator_CFLAGS = \
 	-Wall \
 	-Werror \
-	-I$(top_srcdir)/libdasom \
-	-DDASOM_COMPILATION \
-	-DG_LOG_DOMAIN=\"dasom\" \
+	-I$(top_srcdir)/libnimf \
+	-DNIMF_COMPILATION \
+	-DG_LOG_DOMAIN=\"nimf\" \
 	$(GLIB_CFLAGS) \
 	$(GIO_CFLAGS) \
 	$(GIO_UNIX_CFLAGS) \
@@ -15,10 +15,9 @@ dasom_indicator_CFLAGS = \
 	$(GTK3_CFLAGS) \
 	$(APPINDICATOR3_CFLAGS)
 
-dasom_indicator_LDADD = \
-	$(top_builddir)/libdasom/libdasom.la
+nimf_indicator_LDADD = $(top_builddir)/libnimf/libnimf.la
 
-dasom_indicator_LDFLAGS = \
+nimf_indicator_LDFLAGS = \
 	$(GLIB_LIBS) \
 	$(GIO_LIBS) \
 	$(GIO_UNIX_LIBS) \

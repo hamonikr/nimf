@@ -1,51 +1,51 @@
-# Korean translation for dasom 1.0.1
-# Copyright (C) 2015 Hodong Kim <hodong@cogno.org>
-# This file is distributed under the same license as the dasom project.
-# Hodong Kim <hodong@cogno.org>, 2015.
+# Korean translation for Nimf
+# Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+# This file is distributed under the same license as the nimf project.
+# Hodong Kim <cogniti@gmail.com>, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: dasom 1.0.1\n"
+"Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2015-10-25 19:07+0900\n"
-"Last-Translator: Hodong Kim <hodong@cogno.org>\n"
-"Language-Team: Hodong Kim <hodong@cogno.org>\n"
+"PO-Revision-Date: 2015-12-29 21:43+0900\n"
+"Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
+"Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../agents/app-indicator/dasom-indicator.c:45
+#: ../agents/app-indicator/nimf-indicator.c:45
 #, c-format
-msgid "dasom %s"
-msgstr "다솜 %s"
+msgid "nimf %s"
+msgstr ""
 
-#: ../agents/app-indicator/dasom-indicator.c:47
+#: ../agents/app-indicator/nimf-indicator.c:47
 #: ../agents/gnome-shell-extension/extension.js:31
-msgid "Dasom Indicator"
-msgstr "다솜 표시기"
+msgid "Nimf Indicator"
+msgstr "님프 표시기"
 
-#: ../agents/app-indicator/dasom-indicator.c:95 ../daemon/dasom-daemon.c:47
+#: ../agents/app-indicator/nimf-indicator.c:97 ../daemon/nimf-daemon.c:47
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../agents/app-indicator/dasom-indicator.c:96 ../daemon/dasom-daemon.c:48
+#: ../agents/app-indicator/nimf-indicator.c:98 ../daemon/nimf-daemon.c:48
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../agents/app-indicator/dasom-indicator.c:97 ../daemon/dasom-daemon.c:49
+#: ../agents/app-indicator/nimf-indicator.c:99 ../daemon/nimf-daemon.c:49
 msgid "Version"
 msgstr "버전"
 
-#: ../agents/app-indicator/dasom-indicator.c:147
+#: ../agents/app-indicator/nimf-indicator.c:152
 #: ../agents/gnome-shell-extension/extension.js:80
 msgid "About"
 msgstr "정보"
 
-#: ../agents/app-indicator/dasom-indicator.c:148
+#: ../agents/app-indicator/nimf-indicator.c:153
 msgid "Exit"
 msgstr "종료"
 
@@ -54,12 +54,12 @@ msgid "Close"
 msgstr "닫기"
 
 #: ../agents/gnome-shell-extension/extension.js:36
-msgid "dasom "
-msgstr "다솜"
+msgid "nimf "
+msgstr ""
 
 #. ID
 #: ../agents/gnome-shell-extension/extension.js:65
 #: ../agents/gnome-shell-extension/extension.js:68
-#: ../modules/clients/gtk/im-dasom.c:484
-msgid "Dasom"
-msgstr "다솜"
+#: ../modules/clients/gtk/im-nimf.c:492
+msgid "Nimf"
+msgstr "님프"

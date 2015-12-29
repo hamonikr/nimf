@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(dasom, 1.0.1, https://github.com/cogniti/dasom/issues)
+AC_INIT(nimf, 0.1, https://github.com/cogniti/nimf/issues)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -19,20 +19,20 @@ dnl Internationalization
 dnl ***************************************************************************
 
 IT_PROG_INTLTOOL(0.35.0)
-GETTEXT_PACKAGE=dasom
+GETTEXT_PACKAGE=nimf
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [gettext package name])
 AC_SUBST(GETTEXT_PACKAGE)
 AM_GLIB_GNU_GETTEXT
-AM_GLIB_DEFINE_LOCALEDIR(DASOM_LOCALE_DIR)
+AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-LIBDASOM_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 x11"
-LIBDASOM_PRIVATE="gtk+-3.0"
-AC_SUBST(LIBDASOM_REQUIRES)
-AC_SUBST(LIBDASOM_PRIVATE)
+LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 x11"
+LIBNIMF_PRIVATE="gtk+-3.0"
+AC_SUBST(LIBNIMF_REQUIRES)
+AC_SUBST(LIBNIMF_PRIVATE)
 
-PKG_CHECK_MODULES(LIBDASOM_DEPS, [$LIBDASOM_REQUIRES $LIBDASOM_PRIVATE])
+PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
 PKG_CHECK_MODULES(GLIB, [glib-2.0])
 PKG_CHECK_MODULES(GIO, [gio-2.0])
 PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
@@ -123,17 +123,17 @@ if test "x$RSVG_CONVERT" = "xno"; then
 fi
 
 dnl ***************************************************************************
-dnl Build dasom-indicator by default
+dnl Build nimf-indicator by default
 dnl ***************************************************************************
 
-AC_ARG_ENABLE([dasom-indicator],
-  AS_HELP_STRING([--disable-dasom-indicator], [Disable dasom-indicator]))
+AC_ARG_ENABLE([nimf-indicator],
+  AS_HELP_STRING([--disable-nimf-indicator], [Disable nimf-indicator]))
 
-AS_IF([test "x$enable_dasom_indicator" != "xno"],
+AS_IF([test "x$enable_nimf_indicator" != "xno"],
   [PKG_CHECK_MODULES(APPINDICATOR3, [appindicator3-0.1])])
 
-AM_CONDITIONAL([ENABLE_DASOM_INDICATOR],
-               [test "$enable_dasom_indicator" != "no"])
+AM_CONDITIONAL([ENABLE_NIMF_INDICATOR],
+               [test "$enable_nimf_indicator" != "no"])
 
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([0.10.1])
@@ -147,15 +147,15 @@ AC_OUTPUT([
   data/Makefile
   data/im-config/Makefile
   data/icons/Makefile
-  libdasom/Makefile
-  libdasom/dasom.pc
+  libnimf/Makefile
+  libnimf/nimf.pc
   modules/Makefile
   modules/clients/Makefile
   modules/clients/gtk/Makefile
   modules/clients/qt4/Makefile
   modules/clients/qt5/Makefile
   modules/engines/Makefile
-  modules/engines/dasom-jeongeum/Makefile
+  modules/engines/nimf-jeongeum/Makefile
   daemon/Makefile
   po/Makefile.in
 ])

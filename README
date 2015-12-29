@@ -1,20 +1,20 @@
-Dasom is an input method framework, which provides
+Nimf is an input method framework, which provides
 
   * Input Method Server
-    * dasom-daemon including XIM
+    * nimf-daemon including XIM
 
   * Language Engines
-    * Korean: dasom-jeongeum (using libhangul)
-    * English: dasom-english
+    * Korean: nimf-jeongeum (based on libhangul)
+    * English: nimf-english
 
   * Client Modules
     * GTK+2, GTK+3, Qt4, Qt5
 
   * Indicators
-    * GNOME shell: dasom agent extension
-    * KDE, Unity, GNOME panel: dasom-indicator (using libappindicator3)
+    * GNOME shell: nimf-agent extension
+    * KDE, Unity, GNOME panel: nimf-indicator (based on libappindicator3)
 
-Project Homepage: https://github.com/cogniti/dasom
+Project Homepage: https://github.com/cogniti/nimf
 
 
 INSTALL
@@ -35,13 +35,13 @@ INSTALL
     sudo mv mssymbol.txt /usr/share/libhangul/hanja/
     ls /usr/share/libhangul/hanja/mssymbol.txt
 
-  * For gnome-shell, enable dasom-agent@gnome-shell-extensions.cogno.org
+  * For gnome-shell, enable nimf-agent@gnome-shell-extensions.cogno.org
 
-    gnome-shell-extension-tool -e dasom-agent@gnome-shell-extensions.cogno.org
+    gnome-shell-extension-tool -e nimf-agent@gnome-shell-extensions.cogno.org
 
   * Configure im-config
 
-    Run im-config, then select Dasom, logout and login.
+    Run im-config, then select Nimf, logout and login.
 
   * Configure Hangul, Hanja Key
 
@@ -51,7 +51,7 @@ INSTALL
     If your xkeyboard-config (aka xkb) < 2.14 and use a keyboard without
     physical hangul, hanja key, run a following command in terminal.
 
-    gsettings set org.freedesktop.Dasom.engines.jeongeum korean-101-104-key-compatible true
+    gsettings set org.nimf.engines.jeongeum korean-101-104-key-compatible true
 
 
 Troubleshoot
@@ -66,18 +66,18 @@ Architecture
 
       +- im modules --+    +---- each process -----+  +- a process --+
       | gtk im module |    | gnome-shell-extension |  |   X server   |
-      | qt  im module |    | dasom-indicator       |  +--------------+
+      | qt  im module |    | nimf-indicator        |  +--------------+
       +---------------+    +-----------------------+         ^ |
               | calls                  | calls               | |
-    +------------------+    +---------------------+          | |
-    | dasom IM library |    | dasom agent library |          | | communicates
-    +------------------+    +---------------------+          | |
+     +-----------------+     +--------------------+          | |
+     | nimf IM library |     | nimf agent library |          | | communicates
+     +-----------------+     +--------------------+          | |
              ^ |                      ^ |                    | |
              | |   communicates       | |                    | |
              | |   via Unix Socket    | |                    | |
              | v                      | v                    | v
           +---------------------- a process ----------------------+
-          |                     dasom-daemon (including XIM)      |
+          |              nimf-daemon (including XIM)              |
           +-------------------------------------------------------+
                           | calls                  | create instance
                           | singleton instance     | (not module yet)
@@ -86,21 +86,21 @@ Architecture
                 |   interface   | ---------> |    interface     |
                 +---------------+            +------------------+
                   |                            |
-                  +- dasom-english             +- dasom-candidate (gtk3)
-                  +- dasom-jeongeum
+                  +- nimf-english (embedded)   +- nimf-candidate (gtk3)
+                  +- nimf-jeongeum
 
 
 Debugging
 ---------
-    dasom-daemon --debug
+    nimf-daemon --debug
     tail -f /var/log/daemon.log
 
-    export GTK_IM_MODULE="dasom"
-    export QT4_IM_MODULE="dasom"
-    export QT_IM_MODULE="dasom"
-    export G_MESSAGES_DEBUG=dasom
-    export XMODIFIERS="@im=dasom"
-    gedit # or kate for Qt4, qtcreator for Qt5
+    export GTK_IM_MODULE="nimf"
+    export QT4_IM_MODULE="nimf"
+    export QT_IM_MODULE="nimf"
+    export G_MESSAGES_DEBUG=nimf
+    export XMODIFIERS="@im=nimf"
+    gedit # or kate for Qt
 
 
 References
@@ -108,7 +108,7 @@ References
   http://www.x.org/releases/X11R7.6/doc/libX11/specs/XIM/xim.html
   http://www.w3.org/TR/ime-api/
   https://developer.chrome.com/extensions/input_ime
-  http://docs.enlightenment.org/auto/efl/ecore_main.html
+  https://docs.enlightenment.org/stable/efl/group__Ecore__IMF__Lib__Group.html
   http://doc.qt.io/qt-4.8/qinputcontext.html
   http://doc.qt.io/qt-5/qinputmethod.html
   https://git.gnome.org/browse/gtk+

@@ -1,8 +1,8 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://github.com/cogniti/dasom
+Source: https://github.com/cogniti/nimf
 
 Files:     *
-Copyright: 2015 Hodong Kim <hodong@cogno.org>
+Copyright: 2015 Hodong Kim <cogniti@gmail.com>
 License:   LGPL-3+
  This library is free software: you can redistribute it and/or modify it
  under the terms of the GNU Lesser General Public License as published
@@ -20,7 +20,7 @@ License:   LGPL-3+
  On Debian systems, the complete text of the GNU Library General
  Public License version 3 can be found in "/usr/share/common-licenses/LGPL-3".
 
-Files:     libdasom/IMdkit/FrameMgr.*
+Files:     libnimf/IMdkit/FrameMgr.*
 Copyright: 1993, 1994 Digital Equipment Corporation, Maynard, Massachusetts
 License:   FrameMgr
  Permission to use, copy, modify, and distribute this software and its
@@ -39,17 +39,17 @@ License:   FrameMgr
  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
  SOFTWARE.
 
-Files:     libdasom/IMdkit/i18nAttr.c
-           libdasom/IMdkit/i18nClbk.c
-           libdasom/IMdkit/i18nIc.c
-           libdasom/IMdkit/i18nMethod.c
-           libdasom/IMdkit/i18nPtHdr.c
-           libdasom/IMdkit/IMConn.c
-           libdasom/IMdkit/IMdkit.h
-           libdasom/IMdkit/IMMethod.c
-           libdasom/IMdkit/IMValues.c
-           libdasom/IMdkit/Xi18nX.h
-           libdasom/IMdkit/XimFunc.h
+Files:     libnimf/IMdkit/i18nAttr.c
+           libnimf/IMdkit/i18nClbk.c
+           libnimf/IMdkit/i18nIc.c
+           libnimf/IMdkit/i18nMethod.c
+           libnimf/IMdkit/i18nPtHdr.c
+           libnimf/IMdkit/IMConn.c
+           libnimf/IMdkit/IMdkit.h
+           libnimf/IMdkit/IMMethod.c
+           libnimf/IMdkit/IMValues.c
+           libnimf/IMdkit/Xi18nX.h
+           libnimf/IMdkit/XimFunc.h
 Copyright: 1993, 1994 Hewlett-Packard Company
            1994, 1995 Sun Microsystems, Inc.
 License:   HP-SUN
@@ -73,7 +73,7 @@ License:   HP-SUN
  CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
  IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Files:     libdasom/IMdkit/i18nIMProto.c
+Files:     libnimf/IMdkit/i18nIMProto.c
 Copyright: 1993, 1994 Digital Equipment Corporation, Maynard, Massachusetts
            1993, 1994 Hewlett-Packard Company
            1994, 1995 Sun Microsystems, Inc.
@@ -94,7 +94,7 @@ License:   i18nIMProto
  CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Files:     libdasom/IMdkit/i18nOffsetCache.c
+Files:     libnimf/IMdkit/i18nOffsetCache.c
 Copyright: 2014 Peng Huang <shawn.p.huang@gmail.com>
            2014 Red Hat, Inc.
 License:   i18nOffsetCache
@@ -119,9 +119,9 @@ License:   i18nOffsetCache
  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
  THIS SOFTWARE.
 
-Files:     libdasom/IMdkit/i18nUtil.c
-           libdasom/IMdkit/i18nX.c
-           libdasom/IMdkit/Xi18n.h
+Files:     libnimf/IMdkit/i18nUtil.c
+           libnimf/IMdkit/i18nX.c
+           libnimf/IMdkit/Xi18n.h
 Copyright: 1993, 1994 Hewlett-Packard Company
            1994, 1995 Sun Microsystems, Inc.
            2014 Peng Huang <shawn.p.huang@gmail.com>
@@ -147,7 +147,7 @@ License:   i18nUtil-i18nX-Xi18n
  CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
  IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-Files:     libdasom/IMdkit/XimProto.h
+Files:     libnimf/IMdkit/XimProto.h
 Copyright: 1992-1994 FUJITSU LIMITED
 License:   XimProto
  Permission to use, copy, modify, distribute, and sell this software

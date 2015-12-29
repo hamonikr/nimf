@@ -1,4 +1,4 @@
-uuid = dasom-agent@gnome-shell-extensions.cogno.org
+uuid = nimf-agent@gnome-shell-extensions.cogno.org
 
 extensiondir = /usr/share/gnome-shell/extensions/$(uuid)
 
