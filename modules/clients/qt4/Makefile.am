@@ -13,12 +13,11 @@ libqt4im_dasom_la_CXXFLAGS = \
 	$(LIBDASOM_DEPS_CFLAGS) \
 	-I$(top_srcdir)/libdasom \
 	-DG_LOG_DOMAIN=\"dasom\" \
-	-DDASOM_COMPILATION \
 	$(QT4_GUI_CFLAGS) \
 	-DQT_NO_KEYWORDS
 
 libqt4im_dasom_la_LDFLAGS = -avoid-version -module $(QT4_GUI_LIBS) \
-	                          $(GLIB_LIBS) $(GOBJECT_LIBS)
+	                          $(LIBDASOM_DEPS_LIBS)
 libqt4im_dasom_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
 
 im-dasom-qt4.moc: im-dasom-qt4.cpp

@@ -27,10 +27,12 @@ AM_GLIB_DEFINE_LOCALEDIR(DASOM_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-LIBDASOM_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 gtk+-3.0 x11"
+LIBDASOM_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 x11"
+LIBDASOM_PRIVATE="gtk+-3.0"
 AC_SUBST(LIBDASOM_REQUIRES)
+AC_SUBST(LIBDASOM_PRIVATE)
 
-PKG_CHECK_MODULES(LIBDASOM_DEPS, $LIBDASOM_REQUIRES)
+PKG_CHECK_MODULES(LIBDASOM_DEPS, [$LIBDASOM_REQUIRES $LIBDASOM_PRIVATE])
 PKG_CHECK_MODULES(GLIB, [glib-2.0])
 PKG_CHECK_MODULES(GIO, [gio-2.0])
 PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
@@ -83,7 +85,9 @@ case `uname -m` in
 esac
 
 GTK3_LIBDIR=`pkg-config --variable=libdir gtk+-3.0`
+GTK3_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-3.0`
 AC_SUBST(GTK3_LIBDIR)
+AC_SUBST(GTK3_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
               [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
               [/usr/bin:$GTK3_LIBDIR/libgtk-3-0])
@@ -92,13 +96,19 @@ if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
 fi
 
 GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
+GTK2_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-2.0`
 AC_SUBST(GTK2_LIBDIR)
+AC_SUBST(GTK2_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
               [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
               [/usr/bin:$GTK2_LIBDIR/libgtk2.0-0])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
 fi
+
+dnl ***************************************************************************
+dnl  icon cache
+dnl ***************************************************************************
 
 AC_PATH_PROGS([GTK_UPDATE_ICON_CACHE],
               [gtk-update-icon-cache-3.0 gtk-update-icon-cache], [no],
@@ -147,4 +157,5 @@ AC_OUTPUT([
   modules/engines/Makefile
   modules/engines/dasom-jeongeum/Makefile
   daemon/Makefile
-  po/Makefile.in])
+  po/Makefile.in
+])

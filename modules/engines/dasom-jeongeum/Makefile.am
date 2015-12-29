@@ -12,10 +12,9 @@ dasom_jeongeum_la_CFLAGS  = \
 	$(LIBDASOM_DEPS_CFLAGS) \
 	$(LIBHANGUL_CFLAGS)
 
-dasom_jeongeum_la_LDFLAGS = -avoid-version -module $(GLIB_LIBS) $(GIO_LIBS)
-dasom_jeongeum_la_LIBADD  = \
-	$(top_builddir)/libdasom/libdasom.la \
-	$(LIBHANGUL_LIBS)
+dasom_jeongeum_la_LDFLAGS = -avoid-version -module \
+	$(LIBDASOM_DEPS_LIBS) $(LIBHANGUL_LIBS)
+dasom_jeongeum_la_LIBADD  = $(top_builddir)/libdasom/libdasom.la
 
 DISTCLEANFILES = Makefile.in
 
@@ -24,4 +23,5 @@ install-data-hook:
 	rm    -f $(DESTDIR)$(moduledir)/dasom-jeongeum.la
 
 uninstall-hook:
-	-rm -r $(DESTDIR)$(libdir)/dasom
+	 rm    -f $(DESTDIR)$(moduledir)/dasom-jeongeum.so
+	-rmdir -p $(DESTDIR)$(moduledir)

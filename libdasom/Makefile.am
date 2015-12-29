@@ -71,8 +71,6 @@ libdasom_la_CFLAGS = \
 	-DDASOM_MODULE_DIR=\"$(libdir)/dasom/modules\" \
 	$(LIBDASOM_DEPS_CFLAGS)
 
-# TODO: libdasom 에 대한 header 파일과 doc을 배포하기 전까지 libdasom.so 에
-# 버전을 붙이지 않습니다.
 libdasom_la_LDFLAGS = $(LIBDASOM_DEPS_LIBS) -avoid-version
 
 dasomincludedir = $(includedir)/dasom

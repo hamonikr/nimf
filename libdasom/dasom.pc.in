@@ -8,4 +8,5 @@ Description: Dasom Input Method Framework Library
 Version: @VERSION@
 Requires: @LIBDASOM_REQUIRES@
 Libs: -L${libdir} -ldasom
+Libs.private: @LIBDASOM_PRIVATE@
 Cflags: -I${includedir}/dasom

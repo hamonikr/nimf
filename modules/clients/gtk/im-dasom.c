@@ -23,12 +23,12 @@
 #include <gtk/gtk.h>
 #include <gtk/gtkimmodule.h>
 #include <glib/gi18n.h>
-#include "dasom.h"
+#include <dasom.h>
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
-#define DASOM_TYPE_GTK_IM_CONTEXT  (dasom_gtk_im_context_get_type ())
-#define DASOM_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_TYPE_GTK_IM_CONTEXT, DasomGtkIMContext))
+#define DASOM_GTK_TYPE_IM_CONTEXT  (dasom_gtk_im_context_get_type ())
+#define DASOM_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), DASOM_GTK_TYPE_IM_CONTEXT, DasomGtkIMContext))
 
 typedef struct _DasomGtkIMContext      DasomGtkIMContext;
 typedef struct _DasomGtkIMContextClass DasomGtkIMContextClass;
@@ -36,6 +36,7 @@ typedef struct _DasomGtkIMContextClass DasomGtkIMContextClass;
 struct _DasomGtkIMContext
 {
   GtkIMContext  parent_instance;
+
   DasomIM      *im;
   GdkWindow    *client_window;
   GdkRectangle  cursor_area;
@@ -292,7 +293,7 @@ dasom_gtk_im_context_new (void)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return (GtkIMContext *) g_object_new (DASOM_TYPE_GTK_IM_CONTEXT, NULL);
+  return g_object_new (DASOM_GTK_TYPE_IM_CONTEXT, NULL);
 }
 
 static void
@@ -468,12 +469,12 @@ dasom_gtk_im_context_finalize (GObject *object)
 }
 
 static void
-dasom_gtk_im_context_class_init (DasomGtkIMContextClass *klass)
+dasom_gtk_im_context_class_init (DasomGtkIMContextClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
 
   im_context_class->set_client_window   = dasom_gtk_im_context_set_client_window;
   im_context_class->get_preedit_string  = dasom_gtk_im_context_get_preedit_string;
@@ -490,7 +491,7 @@ dasom_gtk_im_context_class_init (DasomGtkIMContextClass *klass)
 }
 
 static void
-dasom_gtk_im_context_class_finalize (DasomGtkIMContextClass *klass)
+dasom_gtk_im_context_class_finalize (DasomGtkIMContextClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
