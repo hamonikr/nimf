@@ -17,7 +17,7 @@ Nimf is an input method framework, which provides
 Project Homepage: https://github.com/cogniti/nimf
 
 
-INSTALL
+Install
 -------
 
   * Compile
@@ -29,11 +29,15 @@ INSTALL
     sudo make update-gtk-im-cache
     sudo make update-gtk-icon-cache
 
-  * For using symbols in Jeongeum Engine
+  * To use symbols in Jeongeum Engine
 
     wget https://raw.githubusercontent.com/choehwanjin/libhangul/master/data/hanja/mssymbol.txt
     sudo mv mssymbol.txt /usr/share/libhangul/hanja/
     ls /usr/share/libhangul/hanja/mssymbol.txt
+
+
+Configure
+---------
 
   * For gnome-shell, enable nimf-agent@gnome-shell-extensions.cogno.org
 
@@ -43,15 +47,12 @@ INSTALL
 
     Run im-config, then select Nimf, logout and login.
 
-  * Configure Hangul, Hanja Key
+  * Configure Hangul/Hanja Key if you use a keyborad
+    without hardware Hangul/Hanja key
 
-    If your xkeyboard-config (aka xkb) >= 2.14,
-    select "Right Ctrl as Hangul, Right Alt as Hanja" from gnome-tweak-tool.
-
-    If your xkeyboard-config (aka xkb) < 2.14 and use a keyboard without
-    physical hangul, hanja key, run a following command in terminal.
-
-    gsettings set org.nimf.engines.jeongeum korean-101-104-key-compatible true
+    Use xkb-data >= 2.14, then
+    Select "Right Alt as Hangul, right Ctrl as Hanja" or
+           "Right Ctrl as Hangul, right Alt as Hanja" from gnome-tweak-tool.
 
 
 Troubleshoot
@@ -98,8 +99,8 @@ Debugging
     export GTK_IM_MODULE="nimf"
     export QT4_IM_MODULE="nimf"
     export QT_IM_MODULE="nimf"
-    export G_MESSAGES_DEBUG=nimf
     export XMODIFIERS="@im=nimf"
+    export G_MESSAGES_DEBUG=nimf
     gedit # or kate for Qt
 
 
