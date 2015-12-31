@@ -2,7 +2,7 @@
 <schemalist>
   <schema id="org.nimf" path="/org/nimf/">
     <key type="s" name="default-engine">
-      <default>'nimf-jeongeum'</default>
+      <default>'nimf-libhangul'</default>
       <summary>default input method engine</summary>
       <description>default input method engine</description>
     </key>
@@ -12,7 +12,7 @@
       <description>Binding to change the input method</description>
     </key>
     <key name="enabled-engines" type="as">
-      <default>['nimf-jeongeum']</default>
+      <default>['nimf-libhangul']</default>
       <summary>Enabled engines</summary>
       <description>List of enabled engines.</description>
     </key>

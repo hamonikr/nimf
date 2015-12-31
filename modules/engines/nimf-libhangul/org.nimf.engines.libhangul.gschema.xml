@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.nimf.engines.jeongeum"
-          path="/org/nimf/engines/jeongeum/">
+  <schema id="org.nimf.engines.libhangul"
+          path="/org/nimf/engines/libhangul/">
     <key type="s" name="layout">
       <choices>
         <choice value='2'   /> <!-- 두벌식 자판          -->

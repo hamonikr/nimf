@@ -1,3 +1,3 @@
-SUBDIRS = nimf-jeongeum
+SUBDIRS = nimf-libhangul
 
 DISTCLEANFILES = Makefile.in

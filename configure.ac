@@ -155,7 +155,7 @@ AC_OUTPUT([
   modules/clients/qt4/Makefile
   modules/clients/qt5/Makefile
   modules/engines/Makefile
-  modules/engines/nimf-jeongeum/Makefile
+  modules/engines/nimf-libhangul/Makefile
   daemon/Makefile
   po/Makefile.in
 ])

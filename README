@@ -4,7 +4,7 @@ Nimf is an input method framework, which provides
     * nimf-daemon including XIM
 
   * Language Engines
-    * Korean: nimf-jeongeum (based on libhangul)
+    * Korean: nimf-libhangul (based on libhangul)
     * English: nimf-english
 
   * Client Modules
@@ -29,7 +29,7 @@ Install
     sudo make update-gtk-im-cache
     sudo make update-gtk-icon-cache
 
-  * To use symbols in Jeongeum Engine
+  * To use symbols in libhangul engine
 
     wget https://raw.githubusercontent.com/choehwanjin/libhangul/master/data/hanja/mssymbol.txt
     sudo mv mssymbol.txt /usr/share/libhangul/hanja/
@@ -88,7 +88,7 @@ Architecture
                 +---------------+            +------------------+
                   |                            |
                   +- nimf-english (embedded)   +- nimf-candidate (gtk3)
-                  +- nimf-jeongeum
+                  +- nimf-libhangul
 
 
 Debugging
