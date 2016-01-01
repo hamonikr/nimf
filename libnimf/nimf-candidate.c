@@ -133,7 +133,6 @@ nimf_candidate_init (NimfCandidate *candidate)
 
   /* gtk window */
   candidate->window = gtk_window_new (GTK_WINDOW_POPUP);
-  gtk_window_set_position (GTK_WINDOW (candidate->window), GTK_WIN_POS_MOUSE);
   gtk_container_set_border_width (GTK_CONTAINER (candidate->window), 1);
   gtk_container_add (GTK_CONTAINER (scrolled_window), candidate->treeview);
   gtk_container_add (GTK_CONTAINER (candidate->window), scrolled_window);
@@ -191,6 +190,8 @@ void nimf_candidate_show_window (NimfCandidate  *candidate,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  int x, y, w, h;
+
   GtkTreeModel *model;
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
 
@@ -202,9 +203,18 @@ void nimf_candidate_show_window (NimfCandidate  *candidate,
 
   candidate->target = target;
 
-  gtk_window_move (GTK_WINDOW (candidate->window),
-                   target->cursor_area.x, target->cursor_area.y +
-                                          target->cursor_area.height);
+  gtk_window_get_size (GTK_WINDOW (candidate->window), &w, &h);
+
+  x = target->cursor_area.x - target->cursor_area.width;
+  y = target->cursor_area.y + target->cursor_area.height;
+
+  if (x + w > gdk_screen_width ())
+    x = gdk_screen_width () - w;
+
+  if (y + h > gdk_screen_height ())
+    y = target->cursor_area.y - h;
+
+  gtk_window_move (GTK_WINDOW (candidate->window), x, y);
   gtk_widget_show_all (candidate->window);
 }
 
