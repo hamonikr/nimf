@@ -203,7 +203,8 @@ void nimf_candidate_show_window (NimfCandidate  *candidate,
   candidate->target = target;
 
   gtk_window_move (GTK_WINDOW (candidate->window),
-                   target->cursor_area.x, target->cursor_area.y);
+                   target->cursor_area.x, target->cursor_area.y +
+                                          target->cursor_area.height);
   gtk_widget_show_all (candidate->window);
 }
 
