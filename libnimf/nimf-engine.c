@@ -386,6 +386,11 @@ nimf_engine_hide_candidate_window (NimfEngine *engine)
   nimf_candidate_hide_window (engine->priv->server->candidate);
 }
 
+gboolean nimf_engine_is_candidate_window_visible (NimfEngine *engine)
+{
+  return nimf_candidate_is_window_visible (engine->priv->server->candidate);
+}
+
 void
 nimf_engine_select_previous_candidate_item (NimfEngine *engine)
 {

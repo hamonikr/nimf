@@ -50,6 +50,7 @@ void           nimf_candidate_update_window         (NimfCandidate  *candidate,
                                                      const gchar   **strv);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
                                                      NimfConnection *target);
+gboolean      nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);
 void           nimf_candidate_select_previous_item  (NimfCandidate  *candidate);
 void           nimf_candidate_select_next_item      (NimfCandidate  *candidate);

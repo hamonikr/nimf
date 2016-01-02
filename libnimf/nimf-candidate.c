@@ -227,6 +227,13 @@ void nimf_candidate_hide_window (NimfCandidate *candidate)
   gtk_widget_hide (candidate->window);
 }
 
+gboolean nimf_candidate_is_window_visible (NimfCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return gtk_widget_is_visible (candidate->window);
+}
+
 void nimf_candidate_select_previous_item (NimfCandidate *candidate)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

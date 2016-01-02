@@ -152,6 +152,7 @@ void     nimf_engine_update_candidate_window         (NimfEngine      *engine,
 void     nimf_engine_show_candidate_window           (NimfEngine      *engine,
                                                       NimfConnection  *target);
 void     nimf_engine_hide_candidate_window           (NimfEngine      *engine);
+gboolean nimf_engine_is_candidate_window_visible     (NimfEngine  *engine);
 void     nimf_engine_select_previous_candidate_item  (NimfEngine      *engine);
 void     nimf_engine_select_next_candidate_item      (NimfEngine      *engine);
 void     nimf_engine_select_page_up_candidate_item   (NimfEngine      *engine);
