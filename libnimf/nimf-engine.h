@@ -94,7 +94,8 @@ struct _NimfEngineClass
 
   void     (* candidate_clicked)  (NimfEngine          *engine,
                                    NimfConnection      *target,
-                                   gchar               *text);
+                                   gchar          *text,
+                                   gint            index);
   /* info */
   const gchar * (* get_id)        (NimfEngine          *engine);
   const gchar * (* get_name)      (NimfEngine          *engine);

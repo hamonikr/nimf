@@ -66,10 +66,12 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
   engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
 
   gchar *text = nimf_candidate_get_selected_text (candidate);
+  gint *indices = gtk_tree_path_get_indices (path);
 
   if (engine_class->candidate_clicked)
     engine_class->candidate_clicked (candidate->target->engine,
-                                     candidate->target, text);
+                                     candidate->target, text,
+                                     indices[0]);
   g_free (text);
 }
 

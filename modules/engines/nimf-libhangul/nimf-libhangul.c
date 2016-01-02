@@ -221,7 +221,10 @@ nimf_libhangul_focus_out (NimfEngine *engine, NimfConnection  *target)
 }
 
 static void
-on_candidate_clicked (NimfEngine *engine, NimfConnection *target, gchar *text)
+on_candidate_clicked (NimfEngine     *engine,
+                      NimfConnection *target,
+                      gchar          *text,
+                      gint            index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -359,7 +362,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
       case NIMF_KEY_KP_Enter:
         {
           gchar *text = nimf_engine_get_selected_candidate_text (engine);
-          on_candidate_clicked (engine, target, text);
+          on_candidate_clicked (engine, target, text, -1);
           g_free (text);
         }
         break;
