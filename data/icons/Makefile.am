@@ -5,7 +5,8 @@ status_scalable_icon_DATA = \
 	scalable/nimf-indicator.svg \
 	scalable/nimf-indicator-warning.svg \
 	scalable/nimf-indicator-en.svg \
-	scalable/nimf-indicator-ko.svg
+	scalable/nimf-indicator-ko.svg \
+	scalable/nimf-indicator-zh.svg
 
 # 22x22 icons
 
