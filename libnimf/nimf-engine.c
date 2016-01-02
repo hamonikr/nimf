@@ -416,6 +416,12 @@ nimf_engine_get_selected_candidate_text (NimfEngine *engine)
   return nimf_candidate_get_selected_text (engine->priv->server->candidate);
 }
 
+gint
+nimf_engine_get_selected_candidate_index (NimfEngine *engine)
+{
+  return nimf_candidate_get_selected_index (engine->priv->server->candidate);
+}
+
 const gchar *
 nimf_engine_get_id (NimfEngine *engine)
 {

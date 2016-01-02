@@ -56,6 +56,7 @@ void           nimf_candidate_select_next_item      (NimfCandidate  *candidate);
 void           nimf_candidate_select_page_up_item   (NimfCandidate  *candidate);
 void           nimf_candidate_select_page_down_item (NimfCandidate  *candidate);
 gchar         *nimf_candidate_get_selected_text     (NimfCandidate  *candidate);
+gint          nimf_candidate_get_selected_index    (NimfCandidate  *candidate);
 
 G_END_DECLS
 

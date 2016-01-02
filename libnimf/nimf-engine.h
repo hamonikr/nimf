@@ -157,6 +157,7 @@ void     nimf_engine_select_next_candidate_item      (NimfEngine      *engine);
 void     nimf_engine_select_page_up_candidate_item   (NimfEngine      *engine);
 void     nimf_engine_select_page_down_candidate_item (NimfEngine      *engine);
 gchar   *nimf_engine_get_selected_candidate_text     (NimfEngine      *engine);
+gint     nimf_engine_get_selected_candidate_index    (NimfEngine  *engine);
 /* info */
 const gchar *nimf_engine_get_id   (NimfEngine *engine);
 const gchar *nimf_engine_get_name (NimfEngine *engine);

@@ -339,10 +339,36 @@ gchar *nimf_candidate_get_selected_text (NimfCandidate *candidate)
   GtkTreeModel *model;
   gchar        *text = NULL;
 
-  GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+  GtkTreeSelection *selection;
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
     gtk_tree_model_get (model, &iter, TITEL_COLUMN, &text, -1);
 
   return text;
+}
+
+gint nimf_candidate_get_selected_index (NimfCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GtkTreeIter       iter;
+  GtkTreeModel     *model;
+  GtkTreeSelection *selection;
+  gint              index = -1;
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter))
+  {
+    GtkTreePath *path = gtk_tree_model_get_path (model, &iter);
+    gint *indices = gtk_tree_path_get_indices (path);
+
+    if (indices)
+      index = indices[0];
+
+    gtk_tree_path_free (path);
+  }
+
+  return index;
 }
