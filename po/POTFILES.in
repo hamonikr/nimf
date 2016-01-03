@@ -1,5 +1,4 @@
 # List of source files containing translatable strings.
 agents/app-indicator/nimf-indicator.c
-agents/gnome-shell-extension/extension.js
 daemon/nimf-daemon.c
 modules/clients/gtk/im-nimf.c

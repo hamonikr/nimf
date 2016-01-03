@@ -1,4 +1,4 @@
-Nimf is an input method framework, which provides
+Nimf is an input method framework.
 
   * Input Method Server
     * nimf-daemon including XIM
@@ -10,9 +10,8 @@ Nimf is an input method framework, which provides
   * Client Modules
     * GTK+2, GTK+3, Qt4, Qt5
 
-  * Indicators
-    * GNOME shell: nimf-agent extension
-    * KDE, Unity, GNOME panel: nimf-indicator (based on libappindicator3)
+  * Indicator
+    * Unity, GNOME Panel, KDE: nimf-indicator (based on libappindicator3)
 
 Project Homepage: https://github.com/cogniti/nimf
 
@@ -39,15 +38,16 @@ Install
 Configure
 ---------
 
-  * For gnome-shell, enable nimf-agent@gnome-shell-extensions.cogno.org
+  * For GNOME Shell, use 3rd party gnome-shell-extension-appindicator
 
-    gnome-shell-extension-tool -e nimf-agent@gnome-shell-extensions.cogno.org
+    https://extensions.gnome.org/extension/615/appindicator-support/
+    https://github.com/rgcjonas/gnome-shell-extension-appindicator
 
   * Configure im-config
 
     Run im-config, then select Nimf, logout and login.
 
-  * Configure Hangul/Hanja Key if you use a keyborad
+  * Configure Hangul/Hanja key if you use a keyboard
     without hardware Hangul/Hanja key
 
     Use xkb-data >= 2.14, then
@@ -65,18 +65,18 @@ Troubleshoot
 Architecture
 ------------
 
-      +- im modules --+    +---- each process -----+  +- a process --+
-      | gtk im module |    | gnome-shell-extension |  |   X server   |
-      | qt  im module |    | nimf-indicator        |  +--------------+
-      +---------------+    +-----------------------+         ^ |
-              | calls                  | calls               | |
-     +-----------------+     +--------------------+          | |
-     | nimf IM library |     | nimf agent library |          | | communicates
-     +-----------------+     +--------------------+          | |
-             ^ |                      ^ |                    | |
-             | |   communicates       | |                    | |
-             | |   via Unix Socket    | |                    | |
-             | v                      | v                    | v
+      +- im modules --+      +-- each process ---+  +- a process --+
+      | gtk im module |      |   nimf-indicator  |  |   X server   |
+      | qt  im module |      +-------------------+  +--------------+
+      +---------------+                |                   ^ |
+              | calls                  | calls             | |
+     +-----------------+     +--------------------+        | |
+     | nimf IM library |     | nimf agent library |        | | communicates
+     +-----------------+     +--------------------+        | |
+             ^ |                      ^ |                  | |
+             | |   communicates       | |                  | |
+             | |   via Unix Socket    | |                  | |
+             | v                      | v                  | v
           +---------------------- a process ----------------------+
           |              nimf-daemon (including XIM)              |
           +-------------------------------------------------------+

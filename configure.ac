@@ -141,8 +141,6 @@ GOBJECT_INTROSPECTION_CHECK([0.10.1])
 AC_OUTPUT([
   Makefile
   agents/Makefile
-  agents/gnome-shell-extension/Makefile
-  agents/gnome-shell-extension/metadata.json
   agents/app-indicator/Makefile
   data/Makefile
   data/im-config/Makefile
