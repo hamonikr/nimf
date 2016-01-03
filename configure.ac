@@ -140,11 +140,11 @@ GOBJECT_INTROSPECTION_CHECK([0.10.1])
 
 AC_OUTPUT([
   Makefile
-  agents/Makefile
-  agents/app-indicator/Makefile
+  daemon/Makefile
   data/Makefile
   data/im-config/Makefile
   data/icons/Makefile
+  indicator/Makefile
   libnimf/Makefile
   libnimf/nimf.pc
   modules/Makefile
@@ -154,6 +154,5 @@ AC_OUTPUT([
   modules/clients/qt5/Makefile
   modules/engines/Makefile
   modules/engines/nimf-libhangul/Makefile
-  daemon/Makefile
   po/Makefile.in
 ])

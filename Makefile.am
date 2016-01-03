@@ -1,4 +1,8 @@
-SUBDIRS = libnimf modules daemon agents po data
+SUBDIRS = libnimf modules daemon po data
+
+if ENABLE_NIMF_INDICATOR
+  SUBDIRS += indicator
+endif
 
 ACLOCAL_AMFLAGS = -I m4
 
