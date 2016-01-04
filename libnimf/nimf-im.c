@@ -457,15 +457,28 @@ nimf_im_init (NimfIM *im)
   GSocketAddress *address;
   GSocket        *socket;
   GError         *error = NULL;
+  gint            retry_limit = 5;
+  gint            retry_count = 0;
 
   im->preedit_string = g_strdup ("");
 
   address = g_unix_socket_address_new_with_type (NIMF_ADDRESS, -1,
                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
   client = g_socket_client_new ();
-  im->connection = g_socket_client_connect (client,
-                                            G_SOCKET_CONNECTABLE (address),
-                                            NULL, &error);
+
+  for (retry_count = 0; retry_count < retry_limit; retry_count++)
+  {
+    g_clear_error (&error);
+    im->connection = g_socket_client_connect (client,
+                                              G_SOCKET_CONNECTABLE (address),
+                                              NULL, &error);
+    if (im->connection)
+      break;
+    else
+      g_usleep (G_USEC_PER_SEC);;
+  }
+
+
   g_object_unref (address);
   g_object_unref (client);
 
