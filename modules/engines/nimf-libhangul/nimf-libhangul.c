@@ -54,8 +54,8 @@ struct _NimfLibhangul
   gboolean            is_double_consonant_rule;
   gboolean            is_auto_correction;
   gchar              *layout;
-  /* workaround: avoid reset called by commit callback in application */
-  gboolean            avoid_reset_in_commit_cb;
+  /* workaround: ignore reset called by commit callback in application */
+  gboolean            ignore_reset_in_commit_cb;
   gboolean            is_committing;
   gboolean            workaround_for_wine;
 };
@@ -183,8 +183,8 @@ nimf_libhangul_reset (NimfEngine *engine, NimfConnection *target)
 
   NimfLibhangul *hangul = NIMF_LIBHANGUL (engine);
 
-  /* workaround: avoid reset called by commit callback in application */
-  if (G_UNLIKELY (hangul->avoid_reset_in_commit_cb && hangul->is_committing))
+  /* workaround: ignore reset called by commit callback in application */
+  if (G_UNLIKELY (hangul->ignore_reset_in_commit_cb && hangul->is_committing))
     return;
 
   nimf_engine_hide_candidate_window (engine);
@@ -574,13 +574,13 @@ on_changed_double_consonant_rule (GSettings     *settings,
 }
 
 static void
-on_changed_avoid_reset_in_commit_cb (GSettings     *settings,
-                                     gchar         *key,
-                                     NimfLibhangul *hangul)
+on_changed_ignore_reset_in_commit_cb (GSettings     *settings,
+                                      gchar         *key,
+                                      NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  hangul->avoid_reset_in_commit_cb = g_settings_get_boolean (settings, key);
+  hangul->ignore_reset_in_commit_cb = g_settings_get_boolean (settings, key);
 }
 
 static void
@@ -607,8 +607,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
   hangul->is_auto_correction =
     g_settings_get_boolean (hangul->settings, "auto-correction");
-  hangul->avoid_reset_in_commit_cb =
-    g_settings_get_boolean (hangul->settings, "avoid-reset-in-commit-callback");
+  hangul->ignore_reset_in_commit_cb =
+    g_settings_get_boolean (hangul->settings, "ignore-reset-in-commit-cb");
   hangul->workaround_for_wine =
     g_settings_get_boolean (hangul->settings, "workaround-for-wine");
 
@@ -642,8 +642,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
                     G_CALLBACK (on_changed_double_consonant_rule), hangul);
   g_signal_connect (hangul->settings, "changed::auto-correction",
                     G_CALLBACK (on_changed_auto_correction), hangul);
-  g_signal_connect (hangul->settings, "changed::avoid-reset-in-commit-callback",
-                    G_CALLBACK (on_changed_avoid_reset_in_commit_cb), hangul);
+  g_signal_connect (hangul->settings, "changed::ignore-reset-in-commit-cb",
+                    G_CALLBACK (on_changed_ignore_reset_in_commit_cb), hangul);
   g_signal_connect (hangul->settings, "changed::workaround-for-wine",
                     G_CALLBACK (on_changed_workaround_for_wine), hangul);
 }
