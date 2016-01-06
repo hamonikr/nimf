@@ -42,6 +42,11 @@
       <summary>Use a rule composing double consonants</summary>
       <description>compose a double consonant on pressing same consonant twice</description>
     </key>
+    <key type="b" name="auto-correction">
+      <default>false</default>
+      <summary>auto-correction in Dubeolsik</summary>
+      <description>auto-correction in Dubeolsik</description>
+    </key>
     <key type="b" name="avoid-reset-in-commit-callback">
       <default>true</default>
       <summary>Avoid reset() in commit callback</summary>

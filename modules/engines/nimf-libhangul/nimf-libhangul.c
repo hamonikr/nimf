@@ -52,6 +52,7 @@ struct _NimfLibhangul
   NimfKey           **hanja_keys;
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
+  gboolean            is_auto_correction;
   gchar              *layout;
   /* workaround: avoid reset called by commit callback in application */
   gboolean            avoid_reset_in_commit_cb;
@@ -487,6 +488,34 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
   return retval;
 }
 
+static bool
+on_libhangul_transition (HangulInputContext *ic,
+                         ucschar             c,
+                         const ucschar      *preedit,
+                         void               *data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if ((hangul_is_choseong (c) && (hangul_ic_has_jungseong (ic) ||
+                                  hangul_ic_has_jongseong (ic))) ||
+      (hangul_is_jungseong (c) && hangul_ic_has_jongseong (ic)))
+    return false;
+
+  return true;
+}
+
+static void
+nimf_libhangul_update_transition_cb (NimfLibhangul *hangul)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if ((g_strcmp0 (hangul->layout, "2") == 0) && !hangul->is_auto_correction)
+    hangul_ic_connect_callback (hangul->context, "transition",
+                                on_libhangul_transition, NULL);
+  else
+    hangul_ic_connect_callback (hangul->context, "transition", NULL, NULL);
+}
+
 static void
 on_changed_layout (GSettings     *settings,
                    gchar         *key,
@@ -495,10 +524,20 @@ on_changed_layout (GSettings     *settings,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_free (hangul->layout);
-  hangul->layout = NULL;
   hangul->layout = g_settings_get_string (settings, key);
-  g_return_if_fail (hangul->layout != NULL);
   hangul_ic_select_keyboard (hangul->context, hangul->layout);
+  nimf_libhangul_update_transition_cb (hangul);
+}
+
+static void
+on_changed_auto_correction (GSettings     *settings,
+                            gchar         *key,
+                            NimfLibhangul *hangul)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  hangul->is_auto_correction = g_settings_get_boolean (settings, key);
+  nimf_libhangul_update_transition_cb (hangul);
 }
 
 static void
@@ -566,9 +605,10 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->layout = g_settings_get_string (hangul->settings, "layout");
   hangul->is_double_consonant_rule =
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
+  hangul->is_auto_correction =
+    g_settings_get_boolean (hangul->settings, "auto-correction");
   hangul->avoid_reset_in_commit_cb =
-    g_settings_get_boolean (hangul->settings,
-                            "avoid-reset-in-commit-callback");
+    g_settings_get_boolean (hangul->settings, "avoid-reset-in-commit-callback");
   hangul->workaround_for_wine =
     g_settings_get_boolean (hangul->settings, "workaround-for-wine");
 
@@ -578,6 +618,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->hangul_keys = nimf_key_newv ((const gchar **) hangul_keys);
   hangul->hanja_keys  = nimf_key_newv ((const gchar **) hanja_keys);
   hangul->context = hangul_ic_new (hangul->layout);
+
   hangul->id      = g_strdup ("nimf-libhangul");
   hangul->en_name = g_strdup ("en");
   hangul->ko_name = g_strdup ("ko");
@@ -589,6 +630,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   g_strfreev (hangul_keys);
   g_strfreev (hanja_keys);
 
+  nimf_libhangul_update_transition_cb (hangul);
+
   g_signal_connect (hangul->settings, "changed::layout",
                     G_CALLBACK (on_changed_layout), hangul);
   g_signal_connect (hangul->settings, "changed::hangul-keys",
@@ -597,6 +640,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
                     G_CALLBACK (on_changed_keys), hangul);
   g_signal_connect (hangul->settings, "changed::double-consonant-rule",
                     G_CALLBACK (on_changed_double_consonant_rule), hangul);
+  g_signal_connect (hangul->settings, "changed::auto-correction",
+                    G_CALLBACK (on_changed_auto_correction), hangul);
   g_signal_connect (hangul->settings, "changed::avoid-reset-in-commit-callback",
                     G_CALLBACK (on_changed_avoid_reset_in_commit_cb), hangul);
   g_signal_connect (hangul->settings, "changed::workaround-for-wine",
