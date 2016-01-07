@@ -3,7 +3,7 @@
  * nimf-server.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -387,15 +387,32 @@ static GList *nimf_server_create_module_instances (NimfServer *server)
 }
 
 static void
+on_changed_hotkeys (GSettings  *settings,
+                    gchar      *key,
+                    NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar **keys = g_settings_get_strv (settings, key);
+
+  nimf_key_freev (server->hotkeys);
+  server->hotkeys = nimf_key_newv ((const gchar **) keys);
+
+  g_strfreev (keys);
+}
+
+static void
 nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSettings *settings = g_settings_new ("org.nimf");
-  gchar **hotkeys = g_settings_get_strv (settings, "hotkeys");
+  server->settings = g_settings_new ("org.nimf");
+  gchar **hotkeys = g_settings_get_strv (server->settings, "hotkeys");
   server->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
-  g_object_unref (settings);
   g_strfreev (hotkeys);
+
+  g_signal_connect (server->settings, "changed::hotkeys",
+                    G_CALLBACK (on_changed_hotkeys), server);
 
   server->candidate = nimf_candidate_new ();
   server->module_manager = nimf_module_manager_get_default ();
@@ -453,6 +470,7 @@ nimf_server_finalize (GObject *object)
   g_object_unref (server->candidate);
   g_hash_table_unref (server->connections);
   g_list_free (server->agents_list);
+  g_object_unref (server->settings);
   nimf_key_freev (server->hotkeys);
   g_free (server->address);
 
