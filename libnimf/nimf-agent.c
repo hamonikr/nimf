@@ -3,7 +3,7 @@
  * nimf-agent.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -23,6 +23,7 @@
 #include "nimf-private.h"
 #include <gio/gunixsocketaddress.h>
 #include "nimf-marshalers.h"
+#include <string.h>
 
 enum {
   ENGINE_CHANGED,
@@ -69,13 +70,14 @@ on_incoming_message (GSocket      *socket,
 
   switch (message->header->type)
   {
-    /* reply */
-    case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY:
-      break;
     case NIMF_MESSAGE_ENGINE_CHANGED:
       nimf_message_ref (agent->result->reply);
       g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->result->reply->data);
       nimf_message_unref (agent->result->reply);
+      break;
+    /* reply */
+    case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY:
+    case NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY:
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
@@ -227,10 +229,30 @@ nimf_agent_new ()
 }
 
 void
-nimf_agent_set_engine_by_id (NimfAgent *agent, gchar *id)
+nimf_agent_set_engine_by_id (NimfAgent   *agent,
+                             const gchar *id,
+                             gboolean     is_english_mode)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-  /* TODO */
+
+  /* TODO: 요 코드 정상 작동 여부 반드시 확인할 것 */
+  if (agent->connection == NULL ||
+      !g_socket_connection_is_connected (agent->connection))
+    return;
+
+  GSocket *socket = g_socket_connection_get_socket (agent->connection);
+
+  gchar *data     = NULL;
+  gint   str_len  = strlen (id);
+  gint   data_len = str_len + 1 + sizeof (gboolean);
+
+  data = g_strndup (id, data_len - 1);
+  *(gboolean *) (data + str_len + 1) = is_english_mode;
+
+  nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID, data,
+                     data_len, g_free);
+  nimf_result_iteration_until (agent->result, NULL,
+                               NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY);
 }
 
 NimfEngineInfo *

@@ -149,13 +149,6 @@ on_incoming_message_nimf (GSocket        *socket,
       nimf_send_message (socket, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
                          NULL, 0, NULL);
       break;
-    case NIMF_MESSAGE_PREEDIT_START_REPLY:
-    case NIMF_MESSAGE_PREEDIT_CHANGED_REPLY:
-    case NIMF_MESSAGE_PREEDIT_END_REPLY:
-    case NIMF_MESSAGE_COMMIT_REPLY:
-    case NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_DELETE_SURROUNDING_REPLY:
-      break;
     case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS:
       {
         GString *string;
@@ -179,6 +172,36 @@ on_incoming_message_nimf (GSocket        *socket,
                            string->str, string->len + 1, NULL);
         g_string_free (string, TRUE);
       }
+      break;
+    case NIMF_MESSAGE_SET_ENGINE_BY_ID:
+      {
+        nimf_message_ref (message);
+
+        GHashTableIter iter;
+        gpointer       conn;
+
+        gboolean is_english_mode =
+          *(gboolean *) (message->data + message->header->data_len - sizeof (gboolean));
+
+        g_hash_table_iter_init (&iter, connection->server->connections);
+
+        while (g_hash_table_iter_next (&iter, NULL, &conn))
+          if (NIMF_CONNECTION (conn)->type != NIMF_CONNECTION_NIMF_AGENT)
+          {
+            NIMF_CONNECTION (conn)->is_english_mode = FALSE;
+            nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
+                                              message->data, is_english_mode);
+          }
+        nimf_message_unref (message);
+        nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY, NULL, 0, NULL);
+      }
+      break;
+    case NIMF_MESSAGE_PREEDIT_START_REPLY:
+    case NIMF_MESSAGE_PREEDIT_CHANGED_REPLY:
+    case NIMF_MESSAGE_PREEDIT_END_REPLY:
+    case NIMF_MESSAGE_COMMIT_REPLY:
+    case NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
+    case NIMF_MESSAGE_DELETE_SURROUNDING_REPLY:
       break;
     default:
       g_warning ("Unknown message type: %d", message->header->type);

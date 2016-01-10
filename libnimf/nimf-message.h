@@ -3,7 +3,7 @@
  * nimf-message.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -59,6 +59,8 @@ typedef enum
   /* agent methods */
   NIMF_MESSAGE_GET_LOADED_ENGINE_IDS,
   NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY,
+  NIMF_MESSAGE_SET_ENGINE_BY_ID,
+  NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY,
   /* context signals */
   NIMF_MESSAGE_PREEDIT_START,
   NIMF_MESSAGE_PREEDIT_START_REPLY,

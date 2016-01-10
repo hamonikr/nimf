@@ -3,7 +3,7 @@
  * nimf-connection.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -169,6 +169,19 @@ void nimf_connection_set_next_engine (NimfConnection *connection)
 
   connection->engine = nimf_server_get_next_instance (connection->server,
                                                       connection->engine);
+  g_signal_emit_by_name (connection, "engine-changed",
+                         nimf_engine_get_name (connection->engine));
+}
+
+void
+nimf_connection_set_engine_by_id (NimfConnection *connection,
+                                  const gchar    *id,
+                                  gboolean        is_english_mode)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  connection->engine = nimf_server_get_instance (connection->server, id);
+  connection->is_english_mode = is_english_mode;
   g_signal_emit_by_name (connection, "engine-changed",
                          nimf_engine_get_name (connection->engine));
 }

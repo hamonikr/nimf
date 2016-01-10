@@ -3,7 +3,7 @@
  * nimf-connection.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -94,8 +94,9 @@ GType           nimf_connection_get_type                  (void) G_GNUC_CONST;
 NimfConnection *nimf_connection_new                       (NimfConnectionType   type,
                                                            NimfEngine          *engine,
                                                            gpointer             cb_user_data);
-void            nimf_connection_set_engine                (NimfConnection      *connection,
-                                                           NimfEngine          *engine);
+void           nimf_connection_set_engine_by_id           (NimfConnection    *connection,
+                                                           const gchar       *id,
+                                                           gboolean           is_english_mode);
 guint16         nimf_connection_get_id                    (NimfConnection      *connection);
 gboolean        nimf_connection_filter_event              (NimfConnection      *connection,
                                                            NimfEvent           *event);

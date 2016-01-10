@@ -31,6 +31,17 @@
 
 gboolean syslog_initialized = FALSE;
 
+static void on_engine_menu (GtkWidget *widget,
+                            NimfAgent *agent)
+{
+  /* FIXME: id */
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_agent_set_engine_by_id (agent,
+                               gtk_menu_item_get_label (GTK_MENU_ITEM (widget)),
+                               FALSE);
+}
+
 static void on_about_menu (GtkWidget *widget,
                            gpointer   data)
 {
@@ -172,10 +183,12 @@ main (int argc, char **argv)
 
   for (i = 0; i < g_strv_length (engine_ids); i++)
   {
-    engine_menu  = gtk_menu_item_new_with_label (_(engine_ids[i]));
+    engine_menu = gtk_menu_item_new_with_label (_(engine_ids[i]));
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
+    /* FIXME: id */
+    g_signal_connect (engine_menu, "activate",
+                      G_CALLBACK (on_engine_menu), agent);
   }
-  g_strfreev (engine_ids);
 
   about_menu = gtk_menu_item_new_with_label (_("About"));
   exit_menu  = gtk_menu_item_new_with_label (_("Exit"));
@@ -194,6 +207,7 @@ main (int argc, char **argv)
 
   g_object_unref (agent);
   g_object_unref (indicator);
+  g_strfreev (engine_ids);
 
   if (syslog_initialized)
     closelog ();

@@ -3,7 +3,7 @@
  * nimf-agent.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -66,9 +66,11 @@ struct _NimfAgentClass
 
 GType       nimf_agent_get_type              (void) G_GNUC_CONST;
 NimfAgent  *nimf_agent_new                   (void);
-gboolean    nimf_agent_connect_to_server     (NimfAgent *agent);
-gchar     **nimf_agent_get_loaded_engine_ids (NimfAgent *agent);
-
+gboolean   nimf_agent_connect_to_server     (NimfAgent   *agent);
+gchar    **nimf_agent_get_loaded_engine_ids (NimfAgent   *agent);
+void       nimf_agent_set_engine_by_id      (NimfAgent   *agent,
+                                             const gchar *id,
+                                             gboolean     is_english_mode);
 G_END_DECLS
 
 #endif /* __NIMF_AGENT_H__ */
