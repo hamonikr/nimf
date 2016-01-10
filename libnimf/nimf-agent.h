@@ -28,6 +28,7 @@
 
 #include <gio/gio.h>
 #include "nimf-message.h"
+#include "nimf-private.h"
 
 G_BEGIN_DECLS
 
@@ -47,8 +48,8 @@ struct _NimfAgent
 
   /*< private >*/
   GSocketConnection *connection;
-  NimfMessage       *reply;
   GSource           *source;
+  NimfResult        *result;
 };
 
 struct _NimfAgentClass
@@ -63,9 +64,10 @@ struct _NimfAgentClass
   void (*disconnected)   (NimfAgent   *context);
 };
 
-GType      nimf_agent_get_type          (void) G_GNUC_CONST;
-NimfAgent *nimf_agent_new               (void);
-gboolean   nimf_agent_connect_to_server (NimfAgent *agent);
+GType       nimf_agent_get_type              (void) G_GNUC_CONST;
+NimfAgent  *nimf_agent_new                   (void);
+gboolean    nimf_agent_connect_to_server     (NimfAgent *agent);
+gchar     **nimf_agent_get_loaded_engine_ids (NimfAgent *agent);
 
 G_END_DECLS
 

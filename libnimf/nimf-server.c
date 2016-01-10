@@ -156,6 +156,30 @@ on_incoming_message_nimf (GSocket        *socket,
     case NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
     case NIMF_MESSAGE_DELETE_SURROUNDING_REPLY:
       break;
+    case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS:
+      {
+        GString *string;
+        GList *list = g_list_first (connection->server->instances);
+        const gchar *id;
+
+        string = g_string_new (NULL);
+
+        while (list)
+        {
+          id = nimf_engine_get_id (list->data);
+          g_string_append (string, id);
+
+          if ((list = list->next) == NULL)
+            break;
+          /* 0x1e is RS (record separator) */
+          g_string_append_c (string, 0x1e);
+        }
+
+        nimf_send_message (socket, NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY,
+                           string->str, string->len + 1, NULL);
+        g_string_free (string, TRUE);
+      }
+      break;
     default:
       g_warning ("Unknown message type: %d", message->header->type);
       break;

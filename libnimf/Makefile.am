@@ -124,7 +124,7 @@ INTROSPECTION_SCANNER_ARGS  = --add-include-path=$(srcdir) \
                               --identifier-prefix=Nimf --symbol-prefix=nimf
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
-introspection_sources = nimf-agent.h
+introspection_sources = nimf-agent.c nimf-agent.h
 
 Nimf-0.1.gir: libnimf.la
 Nimf_0_1_gir_INCLUDES = GObject-2.0

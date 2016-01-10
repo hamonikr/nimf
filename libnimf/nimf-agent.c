@@ -41,18 +41,25 @@ on_incoming_message (GSocket      *socket,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  NimfMessage *message;
+  nimf_message_unref (agent->result->reply);
+  agent->result->is_dispatched = TRUE;
+
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
-    g_socket_close (socket, NULL);
+    if (!g_socket_is_closed (socket))
+      g_socket_close (socket, NULL);
+
+    agent->result->reply = NULL;
     g_signal_emit_by_name (agent, "disconnected", NULL);
+
     g_warning (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
+
     return G_SOURCE_REMOVE;
   }
 
-  NimfMessage *message;
   message = nimf_recv_message (socket);
-  nimf_message_unref (agent->reply);
-  agent->reply = message;
+  agent->result->reply = message;
 
   if (G_UNLIKELY (message == NULL))
   {
@@ -63,10 +70,12 @@ on_incoming_message (GSocket      *socket,
   switch (message->header->type)
   {
     /* reply */
+    case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY:
+      break;
     case NIMF_MESSAGE_ENGINE_CHANGED:
-      nimf_message_ref (agent->reply);
-      g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->reply->data);
-      nimf_message_unref (agent->reply);
+      nimf_message_ref (agent->result->reply);
+      g_signal_emit_by_name (agent, "engine-changed", (gchar *) agent->result->reply->data);
+      nimf_message_unref (agent->result->reply);
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
@@ -154,6 +163,8 @@ static void
 nimf_agent_init (NimfAgent *agent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  agent->result = g_slice_new0 (NimfResult);
 }
 
 static void
@@ -172,7 +183,10 @@ nimf_agent_finalize (GObject *object)
   if (agent->connection)
     g_object_unref (agent->connection);
 
-  nimf_message_unref (agent->reply);
+  nimf_message_unref (agent->result->reply);
+
+  if (agent->result)
+    g_slice_free (NimfResult, agent->result);
 
   G_OBJECT_CLASS (nimf_agent_parent_class)->finalize (object);
 }
@@ -213,8 +227,9 @@ nimf_agent_new ()
 }
 
 void
-nimf_agent_set_engine (gchar *name)
+nimf_agent_set_engine_by_id (NimfAgent *agent, gchar *id)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
   /* TODO */
 }
 
@@ -225,9 +240,29 @@ nimf_agent_get_engine_info (gchar *name)
   return NULL;
 }
 
+/**
+ * nimf_agent_get_loaded_engine_ids:
+ * @agent: a #NimfAgent.
+ *
+ * Returns: (transfer full): gchar **
+ */
 gchar **
-nimf_agent_list_engines (NimfAgent *agent)
+nimf_agent_get_loaded_engine_ids (NimfAgent *agent)
 {
-  /* TODO */
-  return NULL;
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* TODO: 요 코드 정상 작동 여부 반드시 확인할 것 */
+  if (agent->connection == NULL ||
+      !g_socket_connection_is_connected (agent->connection))
+    return NULL;
+
+  GSocket *socket = g_socket_connection_get_socket (agent->connection);
+
+  nimf_send_message (socket, NIMF_MESSAGE_GET_LOADED_ENGINE_IDS, NULL, 0, NULL);
+  nimf_result_iteration_until (agent->result, NULL,
+                               NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY);
+  if (agent->result->reply == NULL)
+    return NULL;
+  /* 0x1e is RS (record separator) */
+  return g_strsplit (agent->result->reply->data, "\x1e", -1);
 }

@@ -43,9 +43,10 @@ static void on_about_menu (GtkWidget *widget,
                                    GTK_MESSAGE_INFO,
                                    GTK_BUTTONS_CLOSE,
                                    _("nimf %s"), VERSION);
-
   gtk_window_set_title (GTK_WINDOW (dialog), _("Nimf Indicator"));
+
   gtk_dialog_run (GTK_DIALOG (dialog));
+
   gtk_widget_destroy (dialog);
 }
 
@@ -88,7 +89,7 @@ static void on_disconnected (NimfAgent    *agent,
 int
 main (int argc, char **argv)
 {
-  GError         *error     = NULL;
+  GError         *error        = NULL;
   gboolean        is_no_daemon = FALSE;
   gboolean        is_debug     = FALSE;
   gboolean        is_version   = FALSE;
@@ -149,26 +150,11 @@ main (int argc, char **argv)
   NimfAgent    *agent;
 
   menu_shell = gtk_menu_new ();
-  about_menu = gtk_menu_item_new_with_label (_("About"));
-  exit_menu  = gtk_menu_item_new_with_label (_("Exit"));
-
-  gtk_widget_show_all (about_menu);
-  gtk_widget_show_all (exit_menu);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), exit_menu);
-
-  gtk_widget_show_all (menu_shell);
-
   indicator = app_indicator_new ("nimf-indicator", "input-keyboard",
                                  APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
   app_indicator_set_status (indicator, APP_INDICATOR_STATUS_ACTIVE);
   app_indicator_set_icon_full (indicator, "nimf-indicator", "Nimf");
   app_indicator_set_menu (indicator, GTK_MENU (menu_shell));
-
-  g_signal_connect (about_menu, "activate",
-                    G_CALLBACK (on_about_menu), indicator);
-  g_signal_connect (exit_menu,  "activate",
-                    G_CALLBACK (on_exit_menu),  indicator);
 
   agent = nimf_agent_new ();
 
@@ -178,6 +164,31 @@ main (int argc, char **argv)
                     G_CALLBACK (on_disconnected), indicator);
 
   nimf_agent_connect_to_server (agent);
+
+  /* menu */
+  gchar **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
+  GtkWidget *engine_menu;
+  guint i;
+
+  for (i = 0; i < g_strv_length (engine_ids); i++)
+  {
+    engine_menu  = gtk_menu_item_new_with_label (_(engine_ids[i]));
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
+  }
+  g_strfreev (engine_ids);
+
+  about_menu = gtk_menu_item_new_with_label (_("About"));
+  exit_menu  = gtk_menu_item_new_with_label (_("Exit"));
+
+  g_signal_connect (about_menu, "activate",
+                    G_CALLBACK (on_about_menu), NULL);
+  g_signal_connect (exit_menu,  "activate",
+                    G_CALLBACK (on_exit_menu),  NULL);
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), exit_menu);
+
+  gtk_widget_show_all (menu_shell);
 
   gtk_main ();
 
