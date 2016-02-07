@@ -71,7 +71,7 @@ libnimf_la_CFLAGS = \
 	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	$(LIBNIMF_DEPS_CFLAGS)
 
-libnimf_la_LDFLAGS = $(LIBNIMF_DEPS_LIBS) -avoid-version
+libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
 
 nimfincludedir = $(includedir)/nimf
 nimfinclude_HEADERS = \
