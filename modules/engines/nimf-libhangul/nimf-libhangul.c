@@ -3,7 +3,7 @@
  * nimf-libhangul.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -57,7 +57,6 @@ struct _NimfLibhangul
   /* workaround: ignore reset called by commit callback in application */
   gboolean            ignore_reset_in_commit_cb;
   gboolean            is_committing;
-  gboolean            workaround_for_wine;
 };
 
 struct _NimfLibhangulClass
@@ -307,13 +306,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
   }
 
   if (hangul->is_english_mode)
-  {
-    if (G_UNLIKELY ((hangul->workaround_for_wine &&
-                     target->type == NIMF_CONNECTION_XIM)))
-      return FALSE;
-    else
-      return nimf_english_filter_event (engine, target, event);
-  }
+    return nimf_english_filter_event (engine, target, event);
 
   if (G_UNLIKELY (nimf_event_matches (event,
                   (const NimfKey **) hangul->hanja_keys)))
@@ -435,9 +428,6 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
 
   if (retval)
     return TRUE;
-  else if (G_UNLIKELY ((hangul->workaround_for_wine &&
-                        target->type == NIMF_CONNECTION_XIM)))
-    return FALSE;
 
   gchar c = 0;
 
@@ -584,16 +574,6 @@ on_changed_ignore_reset_in_commit_cb (GSettings     *settings,
 }
 
 static void
-on_changed_workaround_for_wine (GSettings     *settings,
-                                gchar         *key,
-                                NimfLibhangul *hangul)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  hangul->workaround_for_wine = g_settings_get_boolean (settings, key);
-}
-
-static void
 nimf_libhangul_init (NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -609,8 +589,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
     g_settings_get_boolean (hangul->settings, "auto-correction");
   hangul->ignore_reset_in_commit_cb =
     g_settings_get_boolean (hangul->settings, "ignore-reset-in-commit-cb");
-  hangul->workaround_for_wine =
-    g_settings_get_boolean (hangul->settings, "workaround-for-wine");
 
   hangul_keys = g_settings_get_strv (hangul->settings, "hangul-keys");
   hanja_keys  = g_settings_get_strv (hangul->settings, "hanja-keys");
@@ -644,8 +622,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
                     G_CALLBACK (on_changed_auto_correction), hangul);
   g_signal_connect (hangul->settings, "changed::ignore-reset-in-commit-cb",
                     G_CALLBACK (on_changed_ignore_reset_in_commit_cb), hangul);
-  g_signal_connect (hangul->settings, "changed::workaround-for-wine",
-                    G_CALLBACK (on_changed_workaround_for_wine), hangul);
 }
 
 static void

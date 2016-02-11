@@ -52,10 +52,5 @@
       <summary>Ignore reset() in commit callback</summary>
       <description>Ignore reset() called by commit callback in application</description>
     </key>
-    <key type="b" name="workaround-for-wine">
-      <default>true</default>
-      <summary>workaround for Wine</summary>
-      <description>workaround for Wine</description>
-    </key>
   </schema>
 </schemalist>
