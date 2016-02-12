@@ -5,7 +5,6 @@ Nimf is an input method framework.
 
   * Language Engines
     * Korean: nimf-libhangul (based on libhangul)
-    * English: nimf-english
 
   * Client Modules
     * GTK+2, GTK+3, Qt4, Qt5
@@ -87,8 +86,7 @@ Architecture
                 |   interface   | ---------> |    interface     |
                 +---------------+            +------------------+
                   |                            |
-                  +- nimf-english (embedded)   +- nimf-candidate (gtk3)
-                  +- nimf-libhangul
+                  +- nimf-libhangul            +- nimf-candidate (gtk3)
 
 
 Debugging

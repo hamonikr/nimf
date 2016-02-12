@@ -306,7 +306,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
   }
 
   if (hangul->is_english_mode)
-    return nimf_english_filter_event (engine, target, event);
+    return FALSE;
 
   if (G_UNLIKELY (nimf_event_matches (event,
                   (const NimfKey **) hangul->hanja_keys)))
@@ -425,55 +425,6 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
 
   gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
   nimf_libhangul_update_preedit (engine, target, new_preedit);
-
-  if (retval)
-    return TRUE;
-
-  gchar c = 0;
-
-  if (event->key.keyval == NIMF_KEY_space)
-    c = ' ';
-
-  if (!c)
-  {
-    switch (event->key.keyval)
-    {
-      case NIMF_KEY_KP_Multiply: c = '*'; break;
-      case NIMF_KEY_KP_Add:      c = '+'; break;
-      case NIMF_KEY_KP_Subtract: c = '-'; break;
-      case NIMF_KEY_KP_Divide:   c = '/'; break;
-      default:
-        break;
-    }
-  }
-
-  if (!c && (event->key.state & NIMF_MOD2_MASK))
-  {
-    switch (event->key.keyval)
-    {
-      case NIMF_KEY_KP_Decimal:  c = '.'; break;
-      case NIMF_KEY_KP_0:        c = '0'; break;
-      case NIMF_KEY_KP_1:        c = '1'; break;
-      case NIMF_KEY_KP_2:        c = '2'; break;
-      case NIMF_KEY_KP_3:        c = '3'; break;
-      case NIMF_KEY_KP_4:        c = '4'; break;
-      case NIMF_KEY_KP_5:        c = '5'; break;
-      case NIMF_KEY_KP_6:        c = '6'; break;
-      case NIMF_KEY_KP_7:        c = '7'; break;
-      case NIMF_KEY_KP_8:        c = '8'; break;
-      case NIMF_KEY_KP_9:        c = '9'; break;
-      default:
-        break;
-    }
-  }
-
-  if (c)
-  {
-    gchar *str = g_strdup_printf ("%c", c);
-    nimf_libhangul_emit_commit (engine, target, str);
-    g_free (str);
-    retval = TRUE;
-  }
 
   return retval;
 }

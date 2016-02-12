@@ -90,47 +90,50 @@ struct _NimfConnectionClass
                                     const gchar    *str);
 };
 
-GType           nimf_connection_get_type                  (void) G_GNUC_CONST;
-NimfConnection *nimf_connection_new                       (NimfConnectionType   type,
-                                                           NimfEngine          *engine,
-                                                           gpointer             cb_user_data);
-void           nimf_connection_set_engine_by_id           (NimfConnection    *connection,
-                                                           const gchar       *id,
-                                                           gboolean           is_english_mode);
-guint16         nimf_connection_get_id                    (NimfConnection      *connection);
-gboolean        nimf_connection_filter_event              (NimfConnection      *connection,
-                                                           NimfEvent           *event);
-void            nimf_connection_get_preedit_string        (NimfConnection      *connection,
-                                                           gchar              **str,
-                                                           gint                *cursor_pos);
-void            nimf_connection_reset                     (NimfConnection      *connection);
-void            nimf_connection_focus_in                  (NimfConnection      *connection);
-void            nimf_connection_focus_out                 (NimfConnection      *connection);
-void            nimf_connection_set_surrounding           (NimfConnection      *connection,
-                                                           const char          *text,
-                                                           gint                 len,
-                                                           gint                 cursor_index);
-gboolean        nimf_connection_get_surrounding           (NimfConnection      *connection,
-                                                           gchar              **text,
-                                                           gint                *cursor_index);
-void            nimf_connection_xim_set_cursor_location   (NimfConnection      *connection,
-                                                           Display             *display);
-void            nimf_connection_set_cursor_location       (NimfConnection      *connection,
-                                                           const NimfRectangle *area);
-void            nimf_connection_set_use_preedit           (NimfConnection      *connection,
-                                                           gboolean             use_preedit);
+GType           nimf_connection_get_type                (void) G_GNUC_CONST;
+NimfConnection *nimf_connection_new                     (NimfConnectionType   type,
+                                                         NimfEngine          *engine,
+                                                         gpointer             cb_user_data);
+void            nimf_connection_set_engine_by_id        (NimfConnection      *connection,
+                                                         const gchar         *id,
+                                                         gboolean             is_english_mode);
+guint16         nimf_connection_get_id                  (NimfConnection      *connection);
+gboolean        nimf_connection_filter_event            (NimfConnection      *connection,
+                                                         NimfEvent           *event);
+void            nimf_connection_get_preedit_string      (NimfConnection      *connection,
+                                                         gchar              **str,
+                                                         gint                *cursor_pos);
+void            nimf_connection_reset                   (NimfConnection      *connection);
+void            nimf_connection_focus_in                (NimfConnection      *connection);
+void            nimf_connection_focus_out               (NimfConnection      *connection);
+void            nimf_connection_set_surrounding         (NimfConnection      *connection,
+                                                         const char          *text,
+                                                         gint                 len,
+                                                         gint                 cursor_index);
+gboolean        nimf_connection_get_surrounding         (NimfConnection      *connection,
+                                                         gchar              **text,
+                                                         gint                *cursor_index);
+void            nimf_connection_xim_set_cursor_location (NimfConnection      *connection,
+                                                         Display             *display);
+void            nimf_connection_set_cursor_location     (NimfConnection      *connection,
+                                                         const NimfRectangle *area);
+void            nimf_connection_set_use_preedit         (NimfConnection      *connection,
+                                                         gboolean             use_preedit);
+void            nimf_connection_set_english_mode        (NimfConnection      *connection,
+                                                         gboolean             is_english_mode);
+gboolean        nimf_connection_get_english_mode        (NimfConnection      *connection);
 /* signals */
-void            nimf_connection_emit_preedit_start        (NimfConnection *connection);
-void            nimf_connection_emit_preedit_changed      (NimfConnection *connection,
-                                                           const gchar    *preedit_string,
-                                                           gint            cursor_pos);
-void            nimf_connection_emit_preedit_end          (NimfConnection *connection);
-void            nimf_connection_emit_commit               (NimfConnection *connection,
-                                                           const gchar    *text);
-gboolean        nimf_connection_emit_retrieve_surrounding (NimfConnection *connection);
-gboolean        nimf_connection_emit_delete_surrounding   (NimfConnection *connection,
-                                                           gint            offset,
-                                                           gint            n_chars);
+void     nimf_connection_emit_preedit_start        (NimfConnection *connection);
+void     nimf_connection_emit_preedit_changed      (NimfConnection *connection,
+                                                    const gchar    *preedit_string,
+                                                    gint            cursor_pos);
+void     nimf_connection_emit_preedit_end          (NimfConnection *connection);
+void     nimf_connection_emit_commit               (NimfConnection *connection,
+                                                    const gchar    *text);
+gboolean nimf_connection_emit_retrieve_surrounding (NimfConnection *connection);
+gboolean nimf_connection_emit_delete_surrounding   (NimfConnection *connection,
+                                                    gint            offset,
+                                                    gint            n_chars);
 G_END_DECLS
 
 #endif /* __NIMF_CONNECTION_H__ */

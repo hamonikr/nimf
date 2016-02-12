@@ -41,8 +41,6 @@ libnimf_la_SOURCES = \
 	nimf-events.h \
 	nimf-engine.c \
 	nimf-engine.h \
-	nimf-english.c \
-	nimf-english.h \
 	nimf-module.h \
 	nimf-module.c \
 	nimf-module-manager.h \
@@ -80,7 +78,6 @@ nimfinclude_HEADERS = \
 	nimf-candidate.h \
 	nimf-connection.h \
 	nimf-engine.h \
-	nimf-english.h \
 	nimf-enum-types.h \
 	nimf-events.h \
 	nimf-im.h \

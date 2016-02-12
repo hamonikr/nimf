@@ -120,10 +120,9 @@ nimf_connection_new (NimfConnectionType  type,
   connection->is_english_mode = TRUE;
   connection->cb_user_data    = cb_user_data;
 
-  g_signal_connect (connection,
-                    "engine-changed",
-                    G_CALLBACK (on_signal_engine_changed),
-                    NULL);
+  g_signal_connect (connection, "engine-changed",
+                    G_CALLBACK (on_signal_engine_changed), NULL);
+
   return connection;
 }
 
@@ -141,15 +140,18 @@ void nimf_connection_reset (NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_engine_reset (connection->engine, connection);
+  if (G_LIKELY (connection->engine))
+    nimf_engine_reset (connection->engine, connection);
 }
 
 void nimf_connection_focus_in (NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC, connection->id);
 
-  nimf_engine_focus_in (connection->engine);
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
 
+  nimf_engine_focus_in (connection->engine);
   g_signal_emit_by_name (connection, "engine-changed",
                          nimf_engine_get_name (connection->engine));
 }
@@ -158,14 +160,19 @@ void nimf_connection_focus_out (NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC, connection->id);
 
-  nimf_engine_focus_out (connection->engine, connection);
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
 
+  nimf_engine_focus_out (connection->engine, connection);
   g_signal_emit_by_name (connection, "engine-changed", "focus-out");
 }
 
 void nimf_connection_set_next_engine (NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
 
   connection->engine = nimf_server_get_next_instance (connection->server,
                                                       connection->engine);
@@ -181,6 +188,10 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   connection->engine = nimf_server_get_instance (connection->server, id);
+
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
+
   connection->is_english_mode = is_english_mode;
   g_signal_emit_by_name (connection, "engine-changed",
                          nimf_engine_get_name (connection->engine));
@@ -190,6 +201,9 @@ gboolean nimf_connection_filter_event (NimfConnection *connection,
                                        NimfEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (connection->engine == NULL))
+    return FALSE;
 
   if (nimf_event_matches (event,
                           (const NimfKey **) connection->server->hotkeys))
@@ -213,7 +227,7 @@ nimf_connection_get_preedit_string (NimfConnection  *connection,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_LIKELY (connection->use_preedit == TRUE))
+  if (G_LIKELY (connection->engine && connection->use_preedit == TRUE))
     nimf_engine_get_preedit_string (connection->engine, str, cursor_pos);
   else
   {
@@ -233,6 +247,9 @@ nimf_connection_set_surrounding (NimfConnection *connection,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
+
   nimf_engine_set_surrounding (connection->engine, text, len, cursor_index);
 }
 
@@ -243,6 +260,9 @@ nimf_connection_get_surrounding (NimfConnection  *connection,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (G_UNLIKELY (connection->engine == NULL))
+    return FALSE;
+
   return nimf_engine_get_surrounding (connection->engine, connection,
                                       text, cursor_index);
 }
@@ -252,6 +272,9 @@ nimf_connection_set_cursor_location (NimfConnection      *connection,
                                      const NimfRectangle *area)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
 
   connection->cursor_area = *area;
   nimf_engine_set_cursor_location (connection->engine, area);
@@ -301,6 +324,30 @@ nimf_connection_set_use_preedit (NimfConnection *connection,
 
     g_free (preedit_string);
   }
+}
+
+void
+nimf_connection_set_english_mode (NimfConnection *connection,
+                                  gboolean        is_english_mode)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (connection->engine == NULL))
+    return;
+
+  nimf_engine_set_english_mode (connection->engine,
+                                connection->is_english_mode);
+}
+
+gboolean
+nimf_connection_get_english_mode (NimfConnection *connection)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (connection->engine == NULL))
+    return TRUE;
+
+  return nimf_engine_get_english_mode (connection->engine);;
 }
 
 void

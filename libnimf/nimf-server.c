@@ -26,7 +26,6 @@
 #include <gio/gunixsocketaddress.h>
 #include "nimf-module.h"
 #include "IMdkit/Xi18n.h"
-#include "nimf-english.h"
 
 enum
 {
@@ -65,8 +64,7 @@ on_incoming_message_nimf (GSocket        *socket,
   }
 
   if (connection->type == NIMF_CONNECTION_NIMF_IM)
-    nimf_engine_set_english_mode (connection->engine,
-                                  connection->is_english_mode);
+    nimf_connection_set_english_mode (connection, connection->is_english_mode);
 
   message = nimf_recv_message (socket);
   connection->result->reply = message;
@@ -111,7 +109,8 @@ on_incoming_message_nimf (GSocket        *socket,
         nimf_connection_set_surrounding (connection, data, str_len,
                                          cursor_index);
         nimf_message_unref (message);
-        nimf_send_message (socket, NIMF_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
+        nimf_send_message (socket, NIMF_MESSAGE_SET_SURROUNDING_REPLY,
+                           NULL, 0, NULL);
       }
       break;
     case NIMF_MESSAGE_GET_SURROUNDING:
@@ -193,7 +192,8 @@ on_incoming_message_nimf (GSocket        *socket,
                                               message->data, is_english_mode);
           }
         nimf_message_unref (message);
-        nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY, NULL, 0, NULL);
+        nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY,
+                           NULL, 0, NULL);
       }
       break;
     case NIMF_MESSAGE_PREEDIT_START_REPLY:
@@ -209,8 +209,7 @@ on_incoming_message_nimf (GSocket        *socket,
   }
 
   if (connection->type == NIMF_CONNECTION_NIMF_IM)
-    connection->is_english_mode =
-      nimf_engine_get_english_mode (connection->engine);
+    connection->is_english_mode = nimf_connection_get_english_mode (connection);
 
   return G_SOURCE_CONTINUE;
 }
@@ -258,7 +257,8 @@ on_new_connection (GSocketService    *service,
 
   NimfConnection *connection;
   connection = nimf_connection_new (*(NimfConnectionType *) message->data,
-                                    nimf_server_get_default_engine (server), NULL);
+                                    nimf_server_get_default_engine (server),
+                                    NULL);
   nimf_message_unref (message);
   connection->socket = socket;
   nimf_server_add_connection (server, connection);
@@ -353,8 +353,7 @@ nimf_server_get_instance (NimfServer  *server,
 
   GList *list;
 
-  list = g_list_find_custom (g_list_first (server->instances),
-                             id,
+  list = g_list_find_custom (g_list_first (server->instances), id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -400,11 +399,6 @@ nimf_server_get_default_engine (NimfServer *server)
   g_free (engine_id);
   g_object_unref (settings);
 
-  if (engine == NULL)
-    engine = nimf_server_get_instance (server, "nimf-english");
-
-  g_assert (engine != NULL);
-
   return engine;
 }
 
@@ -426,10 +420,6 @@ static GList *nimf_server_create_module_instances (NimfServer *server)
                                                           NULL));
   }
 
-  /* add english engine */
-  instances = g_list_prepend (instances,
-                              g_object_new (NIMF_TYPE_ENGLISH,
-                                            "server", server, NULL));
   return instances;
 }
 
@@ -892,8 +882,7 @@ on_incoming_message_xim (XIMS        xims,
     connection = g_hash_table_lookup (server->connections,
                                       GUINT_TO_POINTER (data->changeic.icid));
     if (connection)
-      nimf_engine_set_english_mode (connection->engine,
-                                    connection->is_english_mode);
+      nimf_connection_set_english_mode (connection, connection->is_english_mode);
   }
 
   switch (data->major_code)
@@ -924,13 +913,15 @@ on_incoming_message_xim (XIMS        xims,
       retval = nimf_server_xim_get_ic_values (server, xims, &data->changeic);
       break;
     case XIM_FORWARD_EVENT:
-      retval = nimf_server_xim_forward_event (server, xims, &data->forwardevent);
+      retval = nimf_server_xim_forward_event (server, xims,
+                                              &data->forwardevent);
       break;
     case XIM_SET_IC_FOCUS:
       retval = nimf_server_xim_set_ic_focus (server, xims, &data->changefocus);
       break;
     case XIM_UNSET_IC_FOCUS:
-      retval = nimf_server_xim_unset_ic_focus (server, xims, &data->changefocus);
+      retval = nimf_server_xim_unset_ic_focus (server, xims,
+                                               &data->changefocus);
       break;
     case XIM_RESET_IC:
       retval = nimf_server_xim_reset_ic (server, xims, &data->resetic);
@@ -943,8 +934,7 @@ on_incoming_message_xim (XIMS        xims,
   }
 
   if (connection)
-    connection->is_english_mode =
-      nimf_engine_get_english_mode (connection->engine);
+    connection->is_english_mode = nimf_connection_get_english_mode (connection);
 
   return retval;
 }
