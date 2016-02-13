@@ -46,6 +46,7 @@ libnimf_la_SOURCES = \
 	nimf-module-manager.h \
 	nimf-module-manager.c \
 	nimf-key-syms.h \
+	nimf-key-syms.c \
 	nimf-message.h \
 	nimf-message.c \
 	nimf-candidate.h \

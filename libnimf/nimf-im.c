@@ -3,7 +3,7 @@
  * nimf-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -105,11 +105,13 @@ on_incoming_message (GSocket      *socket,
     /* signals */
     case NIMF_MESSAGE_PREEDIT_START:
       g_signal_emit_by_name (im, "preedit-start");
-      nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_START_REPLY, NULL, 0, NULL);
+      nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_START_REPLY,
+                         NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_PREEDIT_END:
       g_signal_emit_by_name (im, "preedit-end");
-      nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_END_REPLY, NULL, 0, NULL);
+      nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_END_REPLY,
+                         NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_PREEDIT_CHANGED:
       g_free (im->preedit_string);
@@ -347,19 +349,11 @@ void nimf_im_reset (NimfIM *im)
                                NIMF_MESSAGE_RESET_REPLY);
 }
 
-/* TODO: reduce duplicate code
- * nimf_im_filter_event_fallback() is made from
- * nimf_english_filter_event (NimfEngine     *engine,
- *                            NimfConnection *target,
- *                            NimfEvent      *event);
- */
 gboolean
 nimf_im_filter_event_fallback (NimfIM    *im,
                                NimfEvent *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gboolean retval = FALSE;
 
   if ((event->key.type   == NIMF_EVENT_KEY_RELEASE) ||
       (event->key.keyval == NIMF_KEY_Shift_L)       ||
@@ -367,53 +361,25 @@ nimf_im_filter_event_fallback (NimfIM    *im,
       (event->key.state & (NIMF_CONTROL_MASK | NIMF_MOD1_MASK)))
     return FALSE;
 
-  gchar c = 0;
+  gunichar ch;
+  gchar buf[10];
+  gint len;
 
-  if (event->key.keyval >= 32 && event->key.keyval <= 126)
-    c = event->key.keyval;
+  ch = nimf_keyval_to_unicode (event->key.keyval);
+  g_return_val_if_fail (g_unichar_validate (ch), FALSE);
 
-  if (!c)
+  len = g_unichar_to_utf8 (ch, buf);
+  buf[len] = '\0';
+
+  if (ch != 0 && !g_unichar_iscntrl (ch))
   {
-    switch (event->key.keyval)
-    {
-      case NIMF_KEY_KP_Multiply: c = '*'; break;
-      case NIMF_KEY_KP_Add:      c = '+'; break;
-      case NIMF_KEY_KP_Subtract: c = '-'; break;
-      case NIMF_KEY_KP_Divide:   c = '/'; break;
-      default:
-        break;
-    }
+    g_signal_emit_by_name (im, "commit", &buf);
+    return TRUE;
   }
-
-  if (!c && (event->key.state & NIMF_MOD2_MASK))
+  else
   {
-    switch (event->key.keyval)
-    {
-      case NIMF_KEY_KP_Decimal:  c = '.'; break;
-      case NIMF_KEY_KP_0:        c = '0'; break;
-      case NIMF_KEY_KP_1:        c = '1'; break;
-      case NIMF_KEY_KP_2:        c = '2'; break;
-      case NIMF_KEY_KP_3:        c = '3'; break;
-      case NIMF_KEY_KP_4:        c = '4'; break;
-      case NIMF_KEY_KP_5:        c = '5'; break;
-      case NIMF_KEY_KP_6:        c = '6'; break;
-      case NIMF_KEY_KP_7:        c = '7'; break;
-      case NIMF_KEY_KP_8:        c = '8'; break;
-      case NIMF_KEY_KP_9:        c = '9'; break;
-      default:
-        break;
-    }
+    return FALSE;
   }
-
-  if (c)
-  {
-    gchar *str = g_strdup_printf ("%c", c);
-    g_signal_emit_by_name (im, "commit", str);
-    g_free (str);
-    retval = TRUE;
-  }
-
-  return retval;
 }
 
 gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
@@ -441,17 +407,11 @@ gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
 }
 
 NimfIM *
-nimf_im_new (void)
+nimf_im_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_object_new (NIMF_TYPE_IM, NULL);
-}
-
-static void
-nimf_im_init (NimfIM *im)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  NimfIM *im = g_object_new (NIMF_TYPE_IM, NULL);
 
   GSocketClient  *client;
   GSocketAddress *address;
@@ -459,8 +419,6 @@ nimf_im_init (NimfIM *im)
   GError         *error = NULL;
   gint            retry_limit = 5;
   gint            retry_count = 0;
-
-  im->preedit_string = g_strdup ("");
 
   address = g_unix_socket_address_new_with_type (NIMF_ADDRESS, -1,
                                                  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
@@ -478,7 +436,6 @@ nimf_im_init (NimfIM *im)
       g_usleep (G_USEC_PER_SEC);;
   }
 
-
   g_object_unref (address);
   g_object_unref (client);
 
@@ -486,7 +443,7 @@ nimf_im_init (NimfIM *im)
   {
     g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
     g_clear_error (&error);
-    return;
+    return im;
   }
 
   socket = g_socket_connection_get_socket (im->connection);
@@ -494,14 +451,14 @@ nimf_im_init (NimfIM *im)
   if (!socket)
   {
     g_critical (G_STRLOC ": %s: %s", G_STRFUNC, "Can't get socket");
-    return;
+    return im;
   }
 
   NimfMessage *message;
-
   NimfConnectionType type = NIMF_CONNECTION_NIMF_IM;
 
-  nimf_send_message (socket, NIMF_MESSAGE_CONNECT, &type, sizeof (NimfConnectionType), NULL);
+  nimf_send_message (socket, NIMF_MESSAGE_CONNECT, &type,
+                     sizeof (NimfConnectionType), NULL);
   g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
   message = nimf_recv_message (socket);
 
@@ -513,8 +470,6 @@ nimf_im_init (NimfIM *im)
   }
 
   nimf_message_unref (message);
-
-  im->result = g_slice_new0 (NimfResult);
 
   GMutex mutex;
 
@@ -539,14 +494,24 @@ nimf_im_init (NimfIM *im)
   g_source_set_can_recurse (im->sockets_context_source, TRUE);
   g_source_attach (im->sockets_context_source, nimf_im_sockets_context);
   g_source_set_callback (im->sockets_context_source,
-                         (GSourceFunc) on_incoming_message,
-                         im, NULL);
+                         (GSourceFunc) on_incoming_message, im, NULL);
 
   im->default_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
   g_source_set_can_recurse (im->default_context_source, TRUE);
   g_source_set_callback (im->default_context_source,
                          (GSourceFunc) on_incoming_message, im, NULL);
   g_source_attach (im->default_context_source, NULL);
+
+  return im;
+}
+
+static void
+nimf_im_init (NimfIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  im->preedit_string = g_strdup ("");
+  im->result = g_slice_new0 (NimfResult);
 }
 
 static void
