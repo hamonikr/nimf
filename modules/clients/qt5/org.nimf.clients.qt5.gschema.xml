@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.clients.qt5"
+          path="/org/nimf/clients/qt5/">
+    <key type="b" name="disable-fallback-filter">
+      <default>true</default>
+      <summary>Disable fallback filter</summary>
+      <description>Disable fallback filter</description>
+    </key>
+  </schema>
+</schemalist>

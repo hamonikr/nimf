@@ -26,6 +26,7 @@
 #include <gio/gunixsocketaddress.h>
 #include "nimf-module.h"
 #include "IMdkit/Xi18n.h"
+#include "nimf-key-syms.h"
 
 enum
 {
@@ -439,17 +440,36 @@ on_changed_hotkeys (GSettings  *settings,
 }
 
 static void
+on_changed_disable_fallback_filter_for_xim (GSettings  *settings,
+                                            gchar      *key,
+                                            NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  server->disable_fallback_filter_for_xim =
+    g_settings_get_boolean (server->settings,
+                            "disable-fallback-filter-for-xim");
+}
+
+static void
 nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   server->settings = g_settings_new ("org.nimf");
+  server->disable_fallback_filter_for_xim =
+    g_settings_get_boolean (server->settings,
+                            "disable-fallback-filter-for-xim");
   gchar **hotkeys = g_settings_get_strv (server->settings, "hotkeys");
   server->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
   g_strfreev (hotkeys);
 
   g_signal_connect (server->settings, "changed::hotkeys",
                     G_CALLBACK (on_changed_hotkeys), server);
+  g_signal_connect (server->settings,
+                    "changed::disable-fallback-filter-for-xim",
+                    G_CALLBACK (on_changed_disable_fallback_filter_for_xim),
+                    server);
 
   server->candidate = nimf_candidate_new ();
   server->module_manager = nimf_module_manager_get_default ();
@@ -832,6 +852,29 @@ int nimf_server_xim_forward_event (NimfServer           *server,
                                     GUINT_TO_POINTER (data->icid));
   retval = nimf_connection_filter_event (connection, event);
   nimf_event_free (event);
+
+  if (!retval && !server->disable_fallback_filter_for_xim)
+  {
+    gunichar ch;
+    gchar buf[10];
+    gint len;
+
+    ch = nimf_keyval_to_unicode (event->key.keyval);
+    g_return_val_if_fail (g_unichar_validate (ch), 0);
+
+    len = g_unichar_to_utf8 (ch, buf);
+    buf[len] = '\0';
+
+    if (ch != 0 && !g_unichar_iscntrl (ch))
+    {
+      nimf_connection_emit_commit (connection, buf);
+      retval = TRUE;
+    }
+    else
+    {
+      retval = FALSE;
+    }
+  }
 
   if (G_UNLIKELY (!retval))
     IMForwardEvent (xims, (XPointer) data);

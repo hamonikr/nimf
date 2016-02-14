@@ -1,3 +1,6 @@
+gsettings_SCHEMAS = org.nimf.clients.qt5.gschema.xml
+@GSETTINGS_RULES@
+
 QT5_GUI_VERSION      = `pkg-config --modversion          Qt5Gui`
 QT5_GUI_INCLUDE_DIR  = `pkg-config --variable=includedir Qt5Gui`
 QT5_GUI_INCLUDE_PATH = $(QT5_GUI_INCLUDE_DIR)/QtGui/$(QT5_GUI_VERSION)/QtGui

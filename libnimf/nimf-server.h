@@ -58,8 +58,7 @@ struct _NimfServer
   GSocketListener    *listener;
   GHashTable         *connections;
   GList              *agents_list;
-  GSettings         *settings;
-  NimfKey           **hotkeys;
+
   NimfCandidate      *candidate;
   GSource            *xevent_source;
   guint16             next_id;
@@ -68,6 +67,10 @@ struct _NimfServer
   gboolean   active;
   gboolean   is_using_listener;
   gulong     run_signal_handler_id;
+
+  GSettings  *settings;
+  NimfKey   **hotkeys;
+  gboolean    disable_fallback_filter_for_xim;
 };
 
 struct _NimfServerClass
@@ -76,7 +79,6 @@ struct _NimfServerClass
 };
 
 GType       nimf_server_get_type           (void) G_GNUC_CONST;
-
 NimfServer *nimf_server_new                (const gchar  *address,
                                             GError      **error);
 void        nimf_server_start              (NimfServer   *server);

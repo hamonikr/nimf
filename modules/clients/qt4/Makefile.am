@@ -1,3 +1,6 @@
+gsettings_SCHEMAS = org.nimf.clients.qt4.gschema.xml
+@GSETTINGS_RULES@
+
 QT4_LIB_DIR = `pkg-config --variable=libdir       QtCore`
 QT4_MOC     = `pkg-config --variable=moc_location QtCore`
 
