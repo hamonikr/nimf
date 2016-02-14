@@ -3,7 +3,7 @@
  * nimf-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -56,6 +56,7 @@ struct _NimfIM
   GSource           *default_context_source;
   gchar             *preedit_string;
   gint               cursor_pos;
+  gboolean           use_fallback_filter;
 };
 
 struct _NimfIMClass
@@ -75,27 +76,29 @@ struct _NimfIMClass
                                     gint    n_chars);
 };
 
-GType     nimf_im_get_type            (void) G_GNUC_CONST;
-NimfIM   *nimf_im_new                 (void);
-void      nimf_im_focus_in            (NimfIM              *im);
-void      nimf_im_focus_out           (NimfIM              *im);
-void      nimf_im_reset               (NimfIM              *im);
-gboolean  nimf_im_filter_event        (NimfIM              *im,
-                                       NimfEvent           *event);
-void      nimf_im_get_preedit_string  (NimfIM              *im,
-                                       gchar              **str,
-                                       gint                *cursor_pos);
-void      nimf_im_set_cursor_location (NimfIM              *im,
-                                       const NimfRectangle *area);
-void      nimf_im_set_use_preedit     (NimfIM              *im,
-                                       gboolean             use_preedit);
-gboolean  nimf_im_get_surrounding     (NimfIM              *im,
-                                       gchar              **text,
-                                       gint                *cursor_index);
-void      nimf_im_set_surrounding     (NimfIM              *im,
-                                       const char          *text,
-                                       gint                 len,
-                                       gint                 cursor_index);
+GType     nimf_im_get_type                (void) G_GNUC_CONST;
+NimfIM   *nimf_im_new                     (void);
+void      nimf_im_focus_in                (NimfIM              *im);
+void      nimf_im_focus_out               (NimfIM              *im);
+void      nimf_im_reset                   (NimfIM              *im);
+gboolean  nimf_im_filter_event            (NimfIM              *im,
+                                           NimfEvent           *event);
+void      nimf_im_get_preedit_string      (NimfIM              *im,
+                                           gchar              **str,
+                                           gint                *cursor_pos);
+void      nimf_im_set_cursor_location     (NimfIM              *im,
+                                           const NimfRectangle *area);
+void      nimf_im_set_use_preedit         (NimfIM              *im,
+                                           gboolean             use_preedit);
+void      nimf_im_set_use_fallback_filter (NimfIM              *im,
+                                           gboolean             use_fallback_filter);
+gboolean  nimf_im_get_surrounding         (NimfIM              *im,
+                                           gchar              **text,
+                                           gint                *cursor_index);
+void      nimf_im_set_surrounding         (NimfIM              *im,
+                                           const char          *text,
+                                           gint                 len,
+                                           gint                 cursor_index);
 
 G_END_DECLS
 

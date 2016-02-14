@@ -22,6 +22,7 @@
 #include "nimf-im.h"
 #include "nimf-events.h"
 #include "nimf-types.h"
+#include "nimf-enum-types.h"
 #include "nimf-module-manager.h"
 #include "nimf-key-syms.h"
 #include "nimf-marshalers.h"
@@ -209,6 +210,16 @@ void nimf_im_set_use_preedit (NimfIM   *im,
                                NIMF_MESSAGE_SET_USE_PREEDIT_REPLY);
 }
 
+void nimf_im_set_use_fallback_filter (NimfIM   *im,
+                                      gboolean  use_fallback_filter)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (NIMF_IS_IM (im));
+
+  im->use_fallback_filter = use_fallback_filter;
+}
+
 gboolean nimf_im_get_surrounding (NimfIM  *im,
                                   gchar  **text,
                                   gint    *cursor_index)
@@ -392,7 +403,11 @@ gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
   if (!socket || g_socket_is_closed (socket))
   {
     g_warning ("socket is closed");
-    return nimf_im_filter_event_fallback (im, event);
+
+    if (im->use_fallback_filter)
+      return nimf_im_filter_event_fallback (im, event);
+    else
+      return FALSE;
   }
 
   nimf_send_message (socket, NIMF_MESSAGE_FILTER_EVENT, event,
@@ -400,10 +415,13 @@ gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
   nimf_result_iteration_until (im->result, nimf_im_sockets_context,
                                NIMF_MESSAGE_FILTER_EVENT_REPLY);
 
-  if (im->result->reply == NULL)
-    return nimf_im_filter_event_fallback (im, event);
+  if (im->result->reply && *(gboolean *) (im->result->reply->data))
+    return TRUE;
 
-  return *(gboolean *) (im->result->reply->data);
+  if (im->use_fallback_filter)
+    return nimf_im_filter_event_fallback (im, event);
+  else
+    return FALSE;
 }
 
 NimfIM *
@@ -512,6 +530,7 @@ nimf_im_init (NimfIM *im)
 
   im->preedit_string = g_strdup ("");
   im->result = g_slice_new0 (NimfResult);
+  im->use_fallback_filter = TRUE;
 }
 
 static void
