@@ -1,4 +1,7 @@
 # List of source files containing translatable strings.
-agents/app-indicator/nimf-indicator.c
 daemon/nimf-daemon.c
+indicator/nimf-indicator.c
+libnimf/org.nimf.gschema.xml
 modules/clients/gtk/im-nimf.c
+modules/clients/gtk/org.nimf.clients.gtk.gschema.xml
+modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml

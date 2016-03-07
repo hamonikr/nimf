@@ -1,7 +1,7 @@
 # Korean translation for Nimf
-# Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
-# This file is distributed under the same license as the nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015.
+# Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+# This file is distributed under the same license as the Nimf project.
+# Hodong Kim <cogniti@gmail.com>, 2015,2016.
 #
 #, fuzzy
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2015-12-29 21:43+0900\n"
+"PO-Revision-Date: 2016-03-08 00:55+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,48 +18,128 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../agents/app-indicator/nimf-indicator.c:45
-#, c-format
-msgid "nimf %s"
-msgstr ""
-
-#: ../agents/app-indicator/nimf-indicator.c:47
-#: ../agents/gnome-shell-extension/extension.js:31
-msgid "Nimf Indicator"
-msgstr "님프 표시기"
-
-#: ../agents/app-indicator/nimf-indicator.c:97 ../daemon/nimf-daemon.c:47
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:121
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../agents/app-indicator/nimf-indicator.c:98 ../daemon/nimf-daemon.c:48
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:122
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../agents/app-indicator/nimf-indicator.c:99 ../daemon/nimf-daemon.c:49
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:123
 msgid "Version"
 msgstr "버전"
 
-#: ../agents/app-indicator/nimf-indicator.c:152
-#: ../agents/gnome-shell-extension/extension.js:80
+#: ../indicator/nimf-indicator.c:51 ../indicator/nimf-indicator.c:52
+#: ../indicator/nimf-indicator.c:53 ../indicator/nimf-indicator.c:66
+msgid "Hodong Kim <cogniti@gmail.com>"
+msgstr "김호동 <cogniti@gmail.com>"
+
+#: ../indicator/nimf-indicator.c:60
+msgid "An indicator for Nimf"
+msgstr "님프를 위한 표시기"
+
+#: ../indicator/nimf-indicator.c:61
+msgid "Copyright (c) 2015,2016 Hodong Kim"
+msgstr "저작권 (c) 2015,2016 김호동"
+
+#: ../indicator/nimf-indicator.c:65
+msgid "Nimf Indicator"
+msgstr "님프 표시기"
+
+#: ../indicator/nimf-indicator.c:69
+msgid "Website"
+msgstr "웹사이트"
+
+#: ../indicator/nimf-indicator.c:205
 msgid "About"
 msgstr "정보"
 
-#: ../agents/app-indicator/nimf-indicator.c:153
+#: ../indicator/nimf-indicator.c:206
 msgid "Exit"
 msgstr "종료"
 
-#: ../agents/gnome-shell-extension/extension.js:25
-msgid "Close"
-msgstr "닫기"
+#: ../libnimf/org.nimf.gschema.xml.h:1
+msgid "default input method engine"
+msgstr "기본 입력 엔진"
 
-#: ../agents/gnome-shell-extension/extension.js:36
-msgid "nimf "
+#: ../libnimf/org.nimf.gschema.xml.h:2
+msgid "Hotkeys for switching input method engine"
+msgstr "입력 엔진을 전환하기 위한 핫키"
+
+#: ../libnimf/org.nimf.gschema.xml.h:3
+msgid "Disable fallback filter for XIM"
 msgstr ""
 
 #. ID
-#: ../agents/gnome-shell-extension/extension.js:65
-#: ../agents/gnome-shell-extension/extension.js:68
 #: ../modules/clients/gtk/im-nimf.c:492
 msgid "Nimf"
 msgstr "님프"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:1
+msgid "hooking gdk key events"
+msgstr ""
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
+msgid ""
+"filter all key events before delivering them normally, which avoids bugs of "
+"many applications"
+msgstr ""
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
+msgid "Reset on gdk button-press-event"
+msgstr ""
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:4
+msgid "Reset on gdk button-press-event, which avoids the bug of firefox 38.3"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:1
+msgid "Korean keyboard layout"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:2
+msgid ""
+"Korean keyboard layout '2' - Dubeolsik '2y' - Dubeolsik Yetgeul 'ahn' - "
+"Ahnmatae '3f' - Sebeolsik Final '39' - Sebeolsik 390 '3s' - Sebeolsik "
+"Noshift '3y' - Sebeolsik Yetgeul '32' - Sebeolsik Dubeol Layout 'ro' - Romaja"
+msgstr ""
+"Korean keyboard layout '2' - 두벌식 '2y' - 두벌식 옛글 'ahn' - "
+"안마태 '3f' - 세벌식 최종 '39' - 세벌식 390 '3s' - 세벌식 "
+"순아래 '3y' - 세벌식 옛글 '32' - 세벌식 두벌 자판 'ro' - 로마자"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:3
+msgid "hotkey for switching Korean / English"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:4
+msgid "Binding to change Korean / English"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:5
+msgid "hotkey for hanja"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:6
+msgid "Binding to Hanja key"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:7
+msgid "Use a rule composing double consonants"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:8
+msgid "compose a double consonant on pressing same consonant twice"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:9
+msgid "auto-correction in Dubeolsik"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:10
+msgid "Ignore reset() in commit callback"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:11
+msgid "Ignore reset() called by commit callback in application"
+msgstr ""
