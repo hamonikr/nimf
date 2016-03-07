@@ -10,9 +10,26 @@ Nimf is an input method framework.
     * GTK+2, GTK+3, Qt4, Qt5
 
   * Indicator
-    * Unity, GNOME Panel, KDE: nimf-indicator (based on libappindicator3)
+    * nimf-indicator (based on libappindicator3) for Unity, GNOME Panel, KDE
 
 Project Homepage: https://github.com/cogniti/nimf
+
+
+License
+-------
+
+  Nimf is free software: you can redistribute it and/or modify it
+  under the terms of the GNU Lesser General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Nimf is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with this program;  If not, see <http://www.gnu.org/licenses/>.
 
 
 Install
@@ -64,20 +81,20 @@ Troubleshoot
 Architecture
 ------------
 
-      +- im modules --+      +-- each process ---+  +- a process --+
-      | gtk im module |      |   nimf-indicator  |  |   X server   |
-      | qt  im module |      +-------------------+  +--------------+
-      +---------------+                |                   ^ |
-              | calls                  | calls             | |
-     +-----------------+     +--------------------+        | |
-     | nimf IM library |     | nimf agent library |        | | communicates
-     +-----------------+     +--------------------+        | |
-             ^ |                      ^ |                  | |
-             | |   communicates       | |                  | |
-             | |   via Unix Socket    | |                  | |
-             | v                      | v                  | v
+      +- im modules --+       +-- each process ---+   +- a process --+
+      | gtk im module |       |  nimf-indicator   |   |   X server   |
+      | qt  im module |       +-------------------+   +--------------+
+      +---------------+                |                    ^ |
+              | calls                  | calls              | |
+     +-----------------+      +--------------------+        | |
+     | nimf IM library |      | nimf agent library |        | | communicates
+     +-----------------+      +--------------------+        | |
+             ^ |                      ^ |                   | |
+             | |   communicates       | |                   | |
+             | |   via Unix Socket    | |                   | |
+             | v                      | v                   | v
           +---------------------- a process ----------------------+
-          |              nimf-daemon (including XIM)              |
+          |               nimf-daemon (including XIM)             |
           +-------------------------------------------------------+
                           | calls                  | create instance
                           | singleton instance     | (not module yet)
@@ -104,6 +121,9 @@ Debugging
 
 References
 ----------
+
+  * API
+
   http://www.x.org/releases/X11R7.6/doc/libX11/specs/XIM/xim.html
   http://www.w3.org/TR/ime-api/
   https://developer.chrome.com/extensions/input_ime
@@ -111,6 +131,12 @@ References
   http://doc.qt.io/qt-4.8/qinputcontext.html
   http://doc.qt.io/qt-5/qinputmethod.html
   https://git.gnome.org/browse/gtk+
+
+  * Language Engines
+
+  https://github.com/choehwanjin/libhangul
+
+  * Implementations
 
   https://github.com/choehwanjin/nabi
   https://github.com/choehwanjin/imhangul
