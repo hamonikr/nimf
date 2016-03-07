@@ -9,11 +9,9 @@ nimf_libhangul_la_CFLAGS  = \
 	-Wall -Werror \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
-	$(LIBNIMF_DEPS_CFLAGS) \
-	$(LIBHANGUL_CFLAGS)
+	$(NIMF_LIBHANGUL_DEPS_CFLAGS)
 
-nimf_libhangul_la_LDFLAGS = -avoid-version -module \
-	$(LIBNIMF_DEPS_LIBS) $(LIBHANGUL_LIBS)
+nimf_libhangul_la_LDFLAGS = -avoid-version -module $(NIMF_LIBHANGUL_DEPS_LIBS)
 nimf_libhangul_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
 
 DISTCLEANFILES = Makefile.in

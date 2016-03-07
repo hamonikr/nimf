@@ -47,13 +47,18 @@ AC_SUBST(LIBNIMF_REQUIRES)
 AC_SUBST(LIBNIMF_PRIVATE)
 
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
-PKG_CHECK_MODULES(GLIB, [glib-2.0])
-PKG_CHECK_MODULES(GIO, [gio-2.0])
+PKG_CHECK_MODULES(GLIB,    [glib-2.0])
+PKG_CHECK_MODULES(GIO,     [gio-2.0])
 PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
-PKG_CHECK_MODULES(GTK3, [gtk+-3.0])
-PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
-PKG_CHECK_MODULES(LIBHANGUL, libhangul >= 0.0.12)
-PKG_CHECK_MODULES(X11, [x11])
+PKG_CHECK_MODULES(GTK3,    [gtk+-3.0])
+PKG_CHECK_MODULES(GTK2,    [gtk+-2.0])
+PKG_CHECK_MODULES(X11,     [x11])
+
+dnl ***************************************************************************
+dnl engines
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
 dnl  Qt
