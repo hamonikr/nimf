@@ -47,18 +47,30 @@ static void on_about_menu (GtkWidget *widget,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GtkWidget *dialog;
+  GtkWidget *about_dialog;
+  gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
+  gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
+  gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
 
-  dialog = gtk_message_dialog_new (NULL,
-                                   GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   GTK_MESSAGE_INFO,
-                                   GTK_BUTTONS_CLOSE,
-                                   _("nimf %s"), VERSION);
-  gtk_window_set_title (GTK_WINDOW (dialog), _("Nimf Indicator"));
+  about_dialog = gtk_about_dialog_new ();
+  gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf-indicator");
+  g_object_set (about_dialog,
+    "artists",            artists,
+    "authors",            authors,
+    "comments",           _("An indicator for Nimf"),
+    "copyright",          _("Copyright (c) 2015,2016 Hodong Kim"),
+    "documenters",        documenters,
+    "license-type",       GTK_LICENSE_LGPL_3_0,
+    "logo-icon-name",     "nimf-indicator",
+    "program-name",       _("Nimf Indicator"),
+    "translator-credits", _("Hodong Kim <cogniti@gmail.com>"),
+    "version",            VERSION,
+    "website",            "https://github.com/cogniti/nimf",
+    "website-label",      _("Website"),
+    NULL);
 
-  gtk_dialog_run (GTK_DIALOG (dialog));
-
-  gtk_widget_destroy (dialog);
+  gtk_dialog_run (GTK_DIALOG (about_dialog));
+  gtk_widget_destroy (about_dialog);
 }
 
 static void on_exit_menu (GtkWidget *widget,
