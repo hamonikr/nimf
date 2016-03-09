@@ -2,6 +2,7 @@ icon_themedir = $(datadir)/icons/hicolor
 
 status_scalable_icondir   = $(icon_themedir)/scalable/status/
 status_scalable_icon_DATA = \
+	scalable/nimf.svg \
 	scalable/nimf-indicator.svg \
 	scalable/nimf-indicator-warning.svg \
 	scalable/nimf-indicator-en.svg \

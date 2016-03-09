@@ -53,7 +53,7 @@ static void on_about_menu (GtkWidget *widget,
   gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
 
   about_dialog = gtk_about_dialog_new ();
-  gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf-indicator");
+  gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf");
   g_object_set (about_dialog,
     "artists",            artists,
     "authors",            authors,
@@ -61,7 +61,7 @@ static void on_about_menu (GtkWidget *widget,
     "copyright",          _("Copyright (c) 2015,2016 Hodong Kim"),
     "documenters",        documenters,
     "license-type",       GTK_LICENSE_LGPL_3_0,
-    "logo-icon-name",     "nimf-indicator",
+    "logo-icon-name",     "nimf",
     "program-name",       _("Nimf Indicator"),
     "translator-credits", _("Hodong Kim <cogniti@gmail.com>"),
     "version",            VERSION,
