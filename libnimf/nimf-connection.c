@@ -27,13 +27,6 @@
 #include <X11/Xutil.h>
 #include "IMdkit/Xi18n.h"
 
-enum {
-  ENGINE_CHANGED,
-  LAST_SIGNAL
-};
-
-static guint connection_signals[LAST_SIGNAL] = { 0 };
-
 G_DEFINE_TYPE (NimfConnection, nimf_connection, G_TYPE_OBJECT);
 
 static void
@@ -73,35 +66,6 @@ nimf_connection_class_init (NimfConnectionClass *class)
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   object_class->finalize = nimf_connection_finalize;
-
-  connection_signals[ENGINE_CHANGED] =
-    g_signal_new (g_intern_static_string ("engine-changed"),
-                  G_TYPE_FROM_CLASS (class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (NimfConnectionClass, engine_changed),
-                  NULL, NULL,
-                  nimf_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_STRING);
-}
-
-void
-on_signal_engine_changed (NimfConnection *connection,
-                          const gchar    *name,
-                          gpointer        user_data)
-{
-  g_debug (G_STRLOC ": %s: %s: connection id = %d", G_STRFUNC,
-           name, connection->id);
-
-  GList *l = connection->server->agents_list;
-  while (l != NULL)
-  {
-    GList *next = l->next;
-    nimf_send_message (NIMF_CONNECTION (l->data)->socket,
-                       NIMF_MESSAGE_ENGINE_CHANGED,
-                       (gchar *) name, strlen (name) + 1, NULL);
-    l = next;
-  }
 }
 
 NimfConnection *
@@ -119,9 +83,6 @@ nimf_connection_new (NimfConnectionType  type,
   connection->preedit_state   = NIMF_PREEDIT_STATE_END;
   connection->is_english_mode = TRUE;
   connection->cb_user_data    = cb_user_data;
-
-  g_signal_connect (connection, "engine-changed",
-                    G_CALLBACK (on_signal_engine_changed), NULL);
 
   return connection;
 }
@@ -152,8 +113,7 @@ void nimf_connection_focus_in (NimfConnection *connection)
     return;
 
   nimf_engine_focus_in (connection->engine);
-  g_signal_emit_by_name (connection, "engine-changed",
-                         nimf_engine_get_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection, nimf_engine_get_name (connection->engine));
 }
 
 void nimf_connection_focus_out (NimfConnection *connection)
@@ -164,7 +124,7 @@ void nimf_connection_focus_out (NimfConnection *connection)
     return;
 
   nimf_engine_focus_out (connection->engine, connection);
-  g_signal_emit_by_name (connection, "engine-changed", "focus-out");
+  nimf_connection_emit_engine_changed (connection, "focus-out");
 }
 
 void nimf_connection_set_next_engine (NimfConnection *connection)
@@ -176,8 +136,7 @@ void nimf_connection_set_next_engine (NimfConnection *connection)
 
   connection->engine = nimf_server_get_next_instance (connection->server,
                                                       connection->engine);
-  g_signal_emit_by_name (connection, "engine-changed",
-                         nimf_engine_get_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection, nimf_engine_get_name (connection->engine));
 }
 
 void
@@ -193,8 +152,7 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
     return;
 
   connection->is_english_mode = is_english_mode;
-  g_signal_emit_by_name (connection, "engine-changed",
-                         nimf_engine_get_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection, nimf_engine_get_name (connection->engine));
 }
 
 gboolean nimf_connection_filter_event (NimfConnection *connection,
@@ -594,6 +552,24 @@ nimf_connection_emit_delete_surrounding (NimfConnection *connection,
     return FALSE;
 
   return *(gboolean *) (connection->result->reply->data);
+}
+
+void
+nimf_connection_emit_engine_changed (NimfConnection *connection,
+                                     const gchar    *name)
+{
+  g_debug (G_STRLOC ": %s: %s: connection id = %d", G_STRFUNC,
+           name, connection->id);
+
+  GList *l = connection->server->agents_list;
+  while (l != NULL)
+  {
+    GList *next = l->next;
+    nimf_send_message (NIMF_CONNECTION (l->data)->socket,
+                       NIMF_MESSAGE_ENGINE_CHANGED,
+                       (gchar *) name, strlen (name) + 1, NULL);
+    l = next;
+  }
 }
 
 void

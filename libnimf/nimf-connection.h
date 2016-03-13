@@ -75,19 +75,6 @@ struct _NimfConnection
 struct _NimfConnectionClass
 {
   GObjectClass parent_class;
-  /*< public >*/
-  /* Signals */
-  void     (*preedit_start)        (NimfConnection *connection);
-  void     (*preedit_end)          (NimfConnection *connection);
-  void     (*preedit_changed)      (NimfConnection *connection);
-  void     (*commit)               (NimfConnection *connection,
-                                    const gchar    *str);
-  gboolean (*retrieve_surrounding) (NimfConnection *connection);
-  gboolean (*delete_surrounding)   (NimfConnection *connection,
-                                    gint            offset,
-                                    gint            n_chars);
-  void     (*engine_changed)       (NimfConnection *connection,
-                                    const gchar    *str);
 };
 
 GType           nimf_connection_get_type                (void) G_GNUC_CONST;
@@ -134,6 +121,8 @@ gboolean nimf_connection_emit_retrieve_surrounding (NimfConnection *connection);
 gboolean nimf_connection_emit_delete_surrounding   (NimfConnection *connection,
                                                     gint            offset,
                                                     gint            n_chars);
+void     nimf_connection_emit_engine_changed       (NimfConnection *connection,
+                                                    const gchar    *name);
 G_END_DECLS
 
 #endif /* __NIMF_CONNECTION_H__ */

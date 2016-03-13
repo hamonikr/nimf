@@ -3,7 +3,7 @@
  * nimf-engine.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -286,8 +286,7 @@ nimf_engine_emit_engine_changed (NimfEngine     *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (target, "engine-changed",
-                         nimf_engine_get_name (engine));
+  nimf_connection_emit_engine_changed (target, nimf_engine_get_name (engine));
 }
 
 static void
