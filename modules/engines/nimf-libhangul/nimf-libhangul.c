@@ -41,7 +41,6 @@ struct _NimfLibhangul
   gchar              *preedit_string;
   NimfPreeditState    preedit_state;
   gchar              *id;
-  gchar              *en_name;
   gchar              *ko_name;
 
   gboolean            is_candidate_mode;
@@ -549,7 +548,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->context = hangul_ic_new (hangul->layout);
 
   hangul->id      = g_strdup ("nimf-libhangul");
-  hangul->en_name = g_strdup ("en");
   hangul->ko_name = g_strdup ("ko");
   hangul->is_english_mode = TRUE;
   hangul->preedit_string = g_strdup ("");
@@ -587,7 +585,6 @@ nimf_libhangul_finalize (GObject *object)
   hangul_ic_delete   (hangul->context);
   g_free (hangul->preedit_string);
   g_free (hangul->id);
-  g_free (hangul->en_name);
   g_free (hangul->ko_name);
   g_free (hangul->layout);
   nimf_key_freev (hangul->hangul_keys);
@@ -642,9 +639,7 @@ nimf_libhangul_get_name (NimfEngine *engine)
 
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
-  NimfLibhangul *hangul = NIMF_LIBHANGUL (engine);
-
-  return hangul->is_english_mode ? hangul->en_name : hangul->ko_name;
+  return NIMF_LIBHANGUL (engine)->ko_name;
 }
 
 void

@@ -447,7 +447,14 @@ nimf_engine_get_name (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return NIMF_ENGINE_GET_CLASS (engine)->get_name (engine);
+  const gchar *icon_name;
+
+  if (nimf_engine_get_english_mode (engine))
+    icon_name = "keyboard";
+  else
+    icon_name = NIMF_ENGINE_GET_CLASS (engine)->get_name (engine);
+
+  return icon_name;
 }
 
 static const gchar *
