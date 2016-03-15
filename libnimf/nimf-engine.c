@@ -286,7 +286,7 @@ nimf_engine_emit_engine_changed (NimfEngine     *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_connection_emit_engine_changed (target, nimf_engine_get_name (engine));
+  nimf_connection_emit_engine_changed (target, nimf_engine_get_icon_name (engine));
 }
 
 static void
@@ -443,7 +443,7 @@ nimf_engine_real_get_id (NimfEngine *engine)
 }
 
 const gchar *
-nimf_engine_get_name (NimfEngine *engine)
+nimf_engine_get_icon_name (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -452,16 +452,16 @@ nimf_engine_get_name (NimfEngine *engine)
   if (nimf_engine_get_english_mode (engine))
     icon_name = "keyboard";
   else
-    icon_name = NIMF_ENGINE_GET_CLASS (engine)->get_name (engine);
+    icon_name = NIMF_ENGINE_GET_CLASS (engine)->get_icon_name (engine);
 
   return icon_name;
 }
 
 static const gchar *
-nimf_engine_real_get_name (NimfEngine *engine)
+nimf_engine_real_get_icon_name (NimfEngine *engine)
 {
   /* FIXME */
-  g_error ("You should implement your_engine_get_name ()");
+  g_error ("You should implement your_engine_get_icon_name ()");
 
   return NULL;
 }
@@ -484,7 +484,7 @@ nimf_engine_class_init (NimfEngineClass *class)
   class->get_surrounding     = nimf_engine_real_get_surrounding;
  /* TODO: maybe get_engine_info */
   class->get_id              = nimf_engine_real_get_id;
-  class->get_name            = nimf_engine_real_get_name;
+  class->get_icon_name       = nimf_engine_real_get_icon_name;
 
   g_object_class_install_property (object_class,
                                    PROP_SERVER,

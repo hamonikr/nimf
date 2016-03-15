@@ -113,7 +113,7 @@ void nimf_connection_focus_in (NimfConnection *connection)
     return;
 
   nimf_engine_focus_in (connection->engine);
-  nimf_connection_emit_engine_changed (connection, nimf_engine_get_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection, nimf_engine_get_icon_name (connection->engine));
 }
 
 void nimf_connection_focus_out (NimfConnection *connection)
@@ -136,7 +136,7 @@ void nimf_connection_set_next_engine (NimfConnection *connection)
 
   connection->engine = nimf_server_get_next_instance (connection->server,
                                                       connection->engine);
-  nimf_connection_emit_engine_changed (connection, nimf_engine_get_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection, nimf_engine_get_icon_name (connection->engine));
 }
 
 void
@@ -152,7 +152,7 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
     return;
 
   connection->is_english_mode = is_english_mode;
-  nimf_connection_emit_engine_changed (connection, nimf_engine_get_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection, nimf_engine_get_icon_name (connection->engine));
 }
 
 gboolean nimf_connection_filter_event (NimfConnection *connection,

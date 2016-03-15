@@ -633,7 +633,7 @@ nimf_libhangul_get_id (NimfEngine *engine)
 }
 
 const gchar *
-nimf_libhangul_get_name (NimfEngine *engine)
+nimf_libhangul_get_icon_name (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -676,7 +676,7 @@ nimf_libhangul_class_init (NimfLibhangulClass *class)
   engine_class->candidate_clicked  = on_candidate_clicked;
 
   engine_class->get_id             = nimf_libhangul_get_id;
-  engine_class->get_name           = nimf_libhangul_get_name;
+  engine_class->get_icon_name      = nimf_libhangul_get_icon_name;
   engine_class->set_english_mode   = nimf_libhangul_set_english_mode;
   engine_class->get_english_mode   = nimf_libhangul_get_english_mode;
 

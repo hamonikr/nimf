@@ -3,7 +3,7 @@
  * nimf-engine.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -98,7 +98,7 @@ struct _NimfEngineClass
                                    gint            index);
   /* info */
   const gchar * (* get_id)        (NimfEngine          *engine);
-  const gchar * (* get_name)      (NimfEngine          *engine);
+  const gchar * (* get_icon_name) (NimfEngine          *engine);
 };
 
 GType    nimf_engine_get_type                  (void) G_GNUC_CONST;
@@ -160,8 +160,8 @@ void     nimf_engine_select_page_down_candidate_item (NimfEngine      *engine);
 gchar   *nimf_engine_get_selected_candidate_text     (NimfEngine      *engine);
 gint     nimf_engine_get_selected_candidate_index    (NimfEngine  *engine);
 /* info */
-const gchar *nimf_engine_get_id   (NimfEngine *engine);
-const gchar *nimf_engine_get_name (NimfEngine *engine);
+const gchar *nimf_engine_get_id        (NimfEngine *engine);
+const gchar *nimf_engine_get_icon_name (NimfEngine *engine);
 
 G_END_DECLS
 
