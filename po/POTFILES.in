@@ -5,3 +5,4 @@ libnimf/org.nimf.gschema.xml
 modules/clients/gtk/im-nimf.c
 modules/clients/gtk/org.nimf.clients.gtk.gschema.xml
 modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml
+modules/engines/nimf-sunpinyin/org.nimf.engines.sunpinyin.gschema.xml

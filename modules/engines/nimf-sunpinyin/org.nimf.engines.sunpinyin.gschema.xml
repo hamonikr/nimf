@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.sunpinyin"
+          path="/org/nimf/engines/sunpinyin/">
+    <key type="as" name="zh-en-keys">
+      <default>['shift-mask space']</default>
+      <summary>hotkey for switching Chinese / English</summary>
+      <description>hotkey for switching Chinese / English</description>
+    </key>
+  </schema>
+</schemalist>

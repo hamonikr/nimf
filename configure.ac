@@ -59,6 +59,7 @@ dnl engines
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0       $LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
 dnl  Qt
@@ -173,5 +174,6 @@ AC_OUTPUT([
   modules/clients/qt5/Makefile
   modules/engines/Makefile
   modules/engines/nimf-libhangul/Makefile
+  modules/engines/nimf-sunpinyin/Makefile
   po/Makefile.in
 ])
