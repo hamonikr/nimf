@@ -152,6 +152,8 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
     return;
 
   connection->is_english_mode = is_english_mode;
+  nimf_engine_set_english_mode (connection->engine,
+                                connection->is_english_mode);
   nimf_connection_emit_engine_changed (connection, nimf_engine_get_icon_name (connection->engine));
 }
 

@@ -188,11 +188,9 @@ on_incoming_message_nimf (GSocket        *socket,
 
         while (g_hash_table_iter_next (&iter, NULL, &conn))
           if (NIMF_CONNECTION (conn)->type != NIMF_CONNECTION_NIMF_AGENT)
-          {
-            NIMF_CONNECTION (conn)->is_english_mode = FALSE;
             nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
                                               message->data, is_english_mode);
-          }
+
         nimf_message_unref (message);
         nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY,
                            NULL, 0, NULL);
