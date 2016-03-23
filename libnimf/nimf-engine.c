@@ -218,7 +218,7 @@ nimf_engine_get_english_mode (NimfEngine *engine)
   if (class->get_english_mode)
     return class->get_english_mode (engine);
 
-  return TRUE;
+  return FALSE;
 }
 
 void
