@@ -65,7 +65,8 @@ on_incoming_message_nimf (GSocket        *socket,
   }
 
   if (connection->type == NIMF_CONNECTION_NIMF_IM)
-    nimf_connection_set_english_mode (connection, connection->is_english_mode);
+    nimf_engine_set_english_mode (connection->engine,
+                                  connection->is_english_mode);
 
   message = nimf_recv_message (socket);
   connection->result->reply = message;
@@ -210,7 +211,7 @@ on_incoming_message_nimf (GSocket        *socket,
   }
 
   if (connection->type == NIMF_CONNECTION_NIMF_IM)
-    connection->is_english_mode = nimf_connection_get_english_mode (connection);
+    connection->is_english_mode = nimf_engine_get_english_mode (connection->engine);
 
   return G_SOURCE_CONTINUE;
 }
@@ -925,7 +926,8 @@ on_incoming_message_xim (XIMS        xims,
     connection = g_hash_table_lookup (server->connections,
                                       GUINT_TO_POINTER (data->changeic.icid));
     if (connection)
-      nimf_connection_set_english_mode (connection, connection->is_english_mode);
+      nimf_engine_set_english_mode (connection->engine,
+                                    connection->is_english_mode);
   }
 
   switch (data->major_code)
@@ -977,7 +979,7 @@ on_incoming_message_xim (XIMS        xims,
   }
 
   if (connection)
-    connection->is_english_mode = nimf_connection_get_english_mode (connection);
+    connection->is_english_mode = nimf_engine_get_english_mode (connection->engine);
 
   return retval;
 }

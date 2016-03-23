@@ -106,9 +106,6 @@ void            nimf_connection_set_cursor_location     (NimfConnection      *co
                                                          const NimfRectangle *area);
 void            nimf_connection_set_use_preedit         (NimfConnection      *connection,
                                                          gboolean             use_preedit);
-void            nimf_connection_set_english_mode        (NimfConnection      *connection,
-                                                         gboolean             is_english_mode);
-gboolean        nimf_connection_get_english_mode        (NimfConnection      *connection);
 /* signals */
 void     nimf_connection_emit_preedit_start        (NimfConnection *connection);
 void     nimf_connection_emit_preedit_changed      (NimfConnection *connection,

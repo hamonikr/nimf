@@ -285,30 +285,6 @@ nimf_connection_set_use_preedit (NimfConnection *connection,
 }
 
 void
-nimf_connection_set_english_mode (NimfConnection *connection,
-                                  gboolean        is_english_mode)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_UNLIKELY (connection->engine == NULL))
-    return;
-
-  nimf_engine_set_english_mode (connection->engine,
-                                connection->is_english_mode);
-}
-
-gboolean
-nimf_connection_get_english_mode (NimfConnection *connection)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_UNLIKELY (connection->engine == NULL))
-    return TRUE;
-
-  return nimf_engine_get_english_mode (connection->engine);;
-}
-
-void
 nimf_connection_emit_preedit_start (NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
