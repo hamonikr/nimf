@@ -4,7 +4,8 @@ Nimf is an input method framework.
     * nimf-daemon including XIM
 
   * Language Engines
-    * Chinese:  nimf-sunpinyin (based on sunpinyin)
+    * Chinese:  nimf-sunpinyin (based on sunpinyin, under the development)
+    * Japanese: nimf-anthy     (based on anthy, under the development)
     * Korean:   nimf-libhangul (based on libhangul)
 
   * Client Modules
@@ -105,6 +106,7 @@ Architecture
                 +---------------+            +------------------+
                   |                            |
                   +- nimf-sunpinyin            +- nimf-candidate (gtk3)
+                  +- nimf-anthy
                   +- nimf-libhangul
 
 

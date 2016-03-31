@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.anthy"
+          path="/org/nimf/engines/anthy/">
+  </schema>
+</schemalist>
