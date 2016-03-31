@@ -269,6 +269,12 @@ nimf_sunpinyin_focus_in (NimfEngine *engine)
 
   NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
 
+  /* FIXME: This is a workaround for a bug of nimf-sunpinyin
+   * "focus-in" may be the next "focus-out". So I put the code that performs
+   * the clearIC(). And if you remove the following code gnome-terminal may
+   * stop when you click the candidate item or another gnome-terminal window.
+   */
+  pinyin->view->updateWindows(pinyin->view->clearIC());
   pinyin->view->updateWindows(CIMIView::PREEDIT_MASK |
                               CIMIView::CANDIDATE_MASK);
 }
