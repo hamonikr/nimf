@@ -67,8 +67,18 @@ dnl  Qt
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(QT4_GUI, [QtGui])
-PKG_CHECK_MODULES(QT5_WIDGETS, [Qt5Widgets])
-PKG_CHECK_MODULES(QT5_PLATFORM_SUPPORT, [Qt5PlatformSupport])
+PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Gui Qt5Widgets])
+
+QT5_GUI_VERSION=`pkg-config --modversion Qt5Gui`
+QT5_GUI_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Gui`
+QT5_GUI_INCLUDE_PATH=$QT5_GUI_INCLUDE_DIR/QtGui/$QT5_GUI_VERSION/QtGui
+
+AC_CHECK_FILES(
+   [$QT5_GUI_INCLUDE_PATH/qpa/qplatforminputcontext.h
+    $QT5_GUI_INCLUDE_PATH/qpa/qplatforminputcontextplugin_p.h], [],
+    AC_MSG_ERROR([Qt 5 base private development files are not found.]))
+
+AC_SUBST(QT5_GUI_INCLUDE_PATH)
 
 AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
               [`pkg-config --variable=host_bins Qt5Core`])
@@ -76,7 +86,7 @@ if test "x$QT5_MOC" = "xno"; then
   AC_MSG_ERROR([moc for qt5 not found])
 fi
 
-QT5_LIB_DIR=`pkg-config --variable=libdir Qt5PlatformSupport`
+QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
 
 case `pkg-config --variable=host_bins Qt5Core` in
   */qt5/*)

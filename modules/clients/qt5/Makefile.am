@@ -1,10 +1,6 @@
 gsettings_SCHEMAS = org.nimf.clients.qt5.gschema.xml
 @GSETTINGS_RULES@
 
-QT5_GUI_VERSION      = `pkg-config --modversion          Qt5Gui`
-QT5_GUI_INCLUDE_DIR  = `pkg-config --variable=includedir Qt5Gui`
-QT5_GUI_INCLUDE_PATH = $(QT5_GUI_INCLUDE_DIR)/QtGui/$(QT5_GUI_VERSION)/QtGui
-
 qt5_im_moduledir = $(QT5_IM_MODULE_DIR)
 qt5_im_module_LTLIBRARIES = libqt5im-nimf.la
 
@@ -17,13 +13,12 @@ libqt5im_nimf_la_CXXFLAGS = \
 	$(LIBNIMF_DEPS_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
-	$(QT5_PLATFORM_SUPPORT_CFLAGS) \
+	$(NIMF_QT5_DEPS_CFLAGS) \
 	-I$(QT5_GUI_INCLUDE_PATH) \
 	-DQT_NO_KEYWORDS
 
 libqt5im_nimf_la_LDFLAGS = -avoid-version -module \
-	                         $(QT5_WIDGETS_LIBS) \
-	                         $(QT5_PLATFORM_SUPPORT_LIBS) \
+	                         $(NIMF_QT5_DEPS_LIBS) \
 	                         $(LIBNIMF_DEPS_LIBS)
 libqt5im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
 
