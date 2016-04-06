@@ -173,6 +173,7 @@ AC_OUTPUT([
   Makefile
   daemon/Makefile
   data/Makefile
+  data/apparmor-abstractions/Makefile
   data/im-config/Makefile
   data/icons/Makefile
   indicator/Makefile
