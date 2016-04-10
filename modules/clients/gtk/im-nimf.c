@@ -3,7 +3,7 @@
  * im-nimf.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -26,6 +26,11 @@
 #include <nimf.h>
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
+#include <X11/XKBlib.h>
+#if GTK_CHECK_VERSION (3, 6, 0)
+  #include <gdk/gdkx.h>
+#endif
+
 
 #define NIMF_GTK_TYPE_IM_CONTEXT  (nimf_gtk_im_context_get_type ())
 #define NIMF_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_GTK_TYPE_IM_CONTEXT, NimfGtkIMContext))
@@ -59,15 +64,14 @@ translate_gdk_event_key (GdkEventKey *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEventType type;
+  NimfEvent *nimf_event = nimf_event_new (NIMF_EVENT_NOTHING);
 
   if (event->type == GDK_KEY_PRESS)
-    type = NIMF_EVENT_KEY_PRESS;
+    nimf_event->key.type = NIMF_EVENT_KEY_PRESS;
   else
-    type = NIMF_EVENT_KEY_RELEASE;
+    nimf_event->key.type = NIMF_EVENT_KEY_RELEASE;
 
-  NimfEvent *nimf_event = nimf_event_new (type);
-  nimf_event->key.state = event->state;
+  nimf_event->key.state  = event->state;
   nimf_event->key.keyval = event->keyval;
   nimf_event->key.hardware_keycode = event->hardware_keycode;
 
@@ -79,19 +83,37 @@ translate_xkey_event (XEvent *xevent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEventType type = NIMF_EVENT_NOTHING;
+  GdkKeymap *keymap = gdk_keymap_get_default ();
+  GdkModifierType consumed, state;
+
+  NimfEvent *nimf_event = nimf_event_new (NIMF_EVENT_NOTHING);
 
   if (xevent->type == KeyPress)
-    type = NIMF_EVENT_KEY_PRESS;
+    nimf_event->key.type = NIMF_EVENT_KEY_PRESS;
   else
-    type = NIMF_EVENT_KEY_RELEASE;
+    nimf_event->key.type = NIMF_EVENT_KEY_RELEASE;
 
-  NimfEvent *nimf_event = nimf_event_new (type);
-  nimf_event->key.state  = xevent->xkey.state;
-  nimf_event->key.keyval = XLookupKeysym (&xevent->xkey,
-                             (!(xevent->xkey.state & ShiftMask) !=
-                              !(xevent->xkey.state & LockMask)) ? 1 : 0);
+  nimf_event->key.state = (NimfModifierType) xevent->xkey.state;
+
+#if GTK_CHECK_VERSION (3, 6, 0)
+  gint group = gdk_x11_keymap_get_group_for_state (keymap, xevent->xkey.state);
+#else
+  gint group = XkbGroupForCoreState (xevent->xkey.state);
+#endif
+
   nimf_event->key.hardware_keycode = xevent->xkey.keycode;
+  nimf_event->key.keyval = NIMF_KEY_VoidSymbol;
+
+  gdk_keymap_translate_keyboard_state (keymap,
+                                       nimf_event->key.hardware_keycode,
+                                       nimf_event->key.state,
+                                       group,
+                                       &nimf_event->key.keyval,
+                                       NULL, NULL, &consumed);
+
+  state = nimf_event->key.state & ~consumed;
+  gdk_keymap_add_virtual_modifiers (keymap, &state);
+  nimf_event->key.state |= (NimfModifierType) state;
 
   return nimf_event;
 }
@@ -138,9 +160,9 @@ on_gdk_x_event (XEvent           *xevent,
     case KeyRelease:
       if (context->is_hook_gdk_event_key)
       {
-        NimfEvent *d_event = translate_xkey_event (xevent);
-        retval = nimf_im_filter_event (context->im, d_event);
-        nimf_event_free (d_event);
+        NimfEvent *nimf_event = translate_xkey_event (xevent);
+        retval = nimf_im_filter_event (context->im, nimf_event);
+        nimf_event_free (nimf_event);
       }
       break;
     case ButtonPress:

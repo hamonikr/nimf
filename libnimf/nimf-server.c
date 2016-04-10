@@ -27,6 +27,7 @@
 #include "nimf-module.h"
 #include "IMdkit/Xi18n.h"
 #include "nimf-key-syms.h"
+#include <X11/XKBlib.h>
 
 enum
 {
@@ -830,21 +831,34 @@ int nimf_server_xim_forward_event (NimfServer           *server,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  XKeyEvent     *xevent;
-  NimfEvent     *event;
-  NimfEventType  type;
-  gboolean       retval;
+  XKeyEvent        *xevent;
+  NimfEvent        *event;
+  gboolean          retval;
+  KeySym            keysym;
+  unsigned int      consumed;
+  NimfModifierType  state;
 
   xevent = (XKeyEvent*) &(data->event);
 
-  type = (xevent->type == KeyPress) ? NIMF_EVENT_KEY_PRESS : NIMF_EVENT_KEY_RELEASE;
+  event = nimf_event_new (NIMF_EVENT_NOTHING);
 
-  event = nimf_event_new (type);
+  if (xevent->type == KeyPress)
+    event->key.type = NIMF_EVENT_KEY_PRESS;
+  else
+    event->key.type = NIMF_EVENT_KEY_RELEASE;
+
   event->key.state = (NimfModifierType) xevent->state;
-  event->key.keyval = XLookupKeysym (xevent,
-                                     (!(xevent->state & ShiftMask) !=
-                                      !(xevent->state & LockMask)) ? 1 : 0);
+  event->key.keyval = NIMF_KEY_VoidSymbol;
   event->key.hardware_keycode = xevent->keycode;
+
+  XkbLookupKeySym (xims->core.display,
+                   event->key.hardware_keycode,
+                   event->key.state,
+                   &consumed, &keysym);
+  event->key.keyval = (guint) keysym;
+
+  state = event->key.state & ~consumed;
+  event->key.state |= (NimfModifierType) state;
 
   NimfConnection *connection;
   connection = g_hash_table_lookup (server->connections,
@@ -1109,7 +1123,7 @@ nimf_server_init_xims (NimfServer *server)
             IMModifiers,        "Xi18n",
             IMServerWindow,     window,
             IMServerName,       PACKAGE,
-            IMLocale,           "C,en,ko",
+            IMLocale,           "C,en,ko", /* FIXME: Make get_supported_locales() */
             IMServerTransport,  "X/",
             IMInputStyles,      &styles,
             IMEncodingList,     &encodings,

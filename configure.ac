@@ -103,8 +103,10 @@ esac
 AC_SUBST(QT5_IM_MODULE_DIR)
 
 dnl ***************************************************************************
-dnl  GTK+
+dnl  Check for im-nimf-gtk
 dnl ***************************************************************************
+
+PKG_CHECK_MODULES(IM_NIMF_GTK3_DEPS, [gtk+-3.0 gdk-x11-3.0])
 
 case `uname -m` in
   x86_64)

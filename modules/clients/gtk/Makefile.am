@@ -13,8 +13,8 @@ gtk3_im_moduledir = $(GTK3_LIBDIR)/gtk-3.0/$(GTK3_BINARY_VERSION)/immodules
 gtk3_im_module_LTLIBRARIES = im-nimf-gtk3.la
 
 im_nimf_gtk3_la_SOURCES  = im-nimf.c
-im_nimf_gtk3_la_CFLAGS   = $(AM_CFLAGS) $(GTK3_CFLAGS)
-im_nimf_gtk3_la_LDFLAGS  = $(GTK3_LIBS) -avoid-version -module
+im_nimf_gtk3_la_CFLAGS   = $(IM_NIMF_GTK3_DEPS_CFLAGS) $(AM_CFLAGS)
+im_nimf_gtk3_la_LDFLAGS  = $(IM_NIMF_GTK3_DEPS_LIBS) -avoid-version -module
 im_nimf_gtk3_la_LIBADD   = $(top_builddir)/libnimf/libnimf.la
 
 # for gtk2
