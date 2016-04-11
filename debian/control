@@ -11,13 +11,15 @@ Build-Depends: debhelper (>= 9),
                libgtk-3-dev,
                libgtk-3-bin,
                libgtk2.0-dev,
-               libhangul-dev,
                libqt4-dev,
                qtbase5-dev,
                qtbase5-private-dev,
                libappindicator3-dev,
                librsvg2-bin,
-               fonts-noto-cjk
+               fonts-noto-cjk,
+               libsunpinyin-dev,
+               libhangul-dev,
+               libanthy-dev
 Standards-Version: 3.9.6
 Homepage: https://github.com/cogniti/nimf
 
@@ -25,51 +27,21 @@ Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: nimf-gtk, nimf-qt, im-config, dconf-editor
-Suggests: nimf-jeongeum, gnome-tweak-tool, fonts-noto-cjk
+Recommends: im-config, dconf-editor, gnome-tweak-tool
+Suggests: fonts-noto-cjk
 Description: Input Method Framework
  Nimf is an input method framework, which provides
  .
-  * Input Method Server including XIM
-  * English engine module embedded
-  * Indicators for GNOME Shell, Unity, KDE, GNOME panel
-
-Package: nimf-dev
-Section: libdevel
-Architecture: any
-Depends: ${misc:Depends},
-         nimf (= ${binary:Version}),
-         libgirepository1.0-dev,
-         libx11-dev
-Description: Input Method Framework (development files)
- Nimf is a multilingual input method framework, which provides
+  * Input Method Server
+    * nimf-daemon including XIM
  .
-  * Input Method Server including XIM
-  * English engine module embedded
-  * Indicators for GNOME Shell, Unity, KDE, GNOME panel
+  * Language Engines
+    * Chinese:  nimf-sunpinyin (based on sunpinyin, under the development)
+    * Japanese: nimf-anthy     (based on anthy, under the development)
+    * Korean:   nimf-libhangul (based on libhangul)
  .
- This package contains the development files.
-
-Package: nimf-jeongeum
-Architecture: any
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, nimf, x11-xserver-utils
-Recommends: im-config, dconf-editor
-Suggests: gnome-tweak-tool, fonts-noto-cjk, fonts-nanum
-Description: Korean language engine module for Nimf
- nimf-jeongeum is a Korean language engine module based on libhangul.
-
-Package: nimf-gtk
-Architecture: any
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
-Recommends: dconf-editor
-Description: GTK+ IM modules for Nimf
- nimf-gtk provides GTK+2, GTK+3 IM modules for Nimf
-
-Package: nimf-qt
-Architecture: any
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
-Description: Qt IM modules for Nimf
- nimf-qt provides Qt4, Qt5 IM modules for Nimf
+  * Client Modules
+    * GTK+2, GTK+3, Qt4, Qt5
+ .
+  * Indicator
+    * nimf-indicator (based on libappindicator3) for Unity, GNOME Panel, KDE

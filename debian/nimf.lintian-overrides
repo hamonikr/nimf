@@ -1,4 +1,4 @@
 package-name-doesnt-match-sonames
 binary-without-manpage
-shlib-without-versioned-soname
-pkg-has-shlibs-control-file-but-no-actual-shared-libs
+non-dev-pkg-with-shlib-symlink
+unused-shlib-entry-in-control-file
