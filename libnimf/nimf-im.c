@@ -484,7 +484,12 @@ nimf_im_new ()
                   message->header->type != NIMF_MESSAGE_CONNECT_REPLY))
   {
     nimf_message_unref (message);
-    g_error ("Couldn't connect to nimf daemon");
+    g_critical ("Couldn't connect to nimf-daemon");
+
+    if (message)
+      nimf_message_unref (message);
+
+    return im;
   }
 
   nimf_message_unref (message);
