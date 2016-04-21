@@ -28,6 +28,7 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
+#include "nimf-client.h"
 #include "nimf-events.h"
 #include "nimf-engine.h"
 #include "nimf-message.h"
@@ -47,22 +48,18 @@ typedef struct _NimfIMClass NimfIMClass;
 
 struct _NimfIM
 {
-  GObject parent_instance;
+  NimfClient parent_instance;
 
-  NimfEngine        *engine;
-  GSocketConnection *connection;
-  NimfResult        *result;
-  GSource           *sockets_context_source;
-  GSource           *default_context_source;
-  gchar             *preedit_string;
-  gint               cursor_pos;
-  gboolean           use_fallback_filter;
+  NimfEngine *engine;
+  gchar      *preedit_string;
+  gint        cursor_pos;
+  gboolean    use_fallback_filter;
 };
 
 struct _NimfIMClass
 {
   /*< private >*/
-  GObjectClass parent_class;
+  NimfClientClass parent_class;
 
   /*< public >*/
   /* Signals */

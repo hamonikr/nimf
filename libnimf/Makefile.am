@@ -31,6 +31,8 @@ IMdkit_SOURCES = \
 
 libnimf_la_SOURCES = \
 	nimf.h \
+	nimf-client.h \
+	nimf-client.c \
 	nimf-private.h \
 	nimf-private.c \
 	nimf-im.c \
@@ -77,6 +79,7 @@ nimfinclude_HEADERS = \
 	nimf.h \
 	nimf-agent.h \
 	nimf-candidate.h \
+	nimf-client.h \
 	nimf-connection.h \
 	nimf-engine.h \
 	nimf-enum-types.h \

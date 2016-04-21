@@ -26,9 +26,8 @@
 #error "Only <nimf.h> can be included directly."
 #endif
 
-#include <gio/gio.h>
-#include "nimf-message.h"
-#include "nimf-private.h"
+#include <glib-object.h>
+#include "nimf-client.h"
 
 G_BEGIN_DECLS
 
@@ -44,33 +43,20 @@ typedef struct _NimfAgentClass NimfAgentClass;
 
 struct _NimfAgent
 {
-  GObject parent_instance;
-
-  /*< private >*/
-  GSocketConnection *connection;
-  GSource           *source;
-  NimfResult        *result;
+  NimfClient parent_instance;
 };
 
 struct _NimfAgentClass
 {
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /*< public >*/
-  /* Signals */
-  void (*engine_changed) (NimfAgent   *context,
-                          const gchar *str);
-  void (*disconnected)   (NimfAgent   *context);
+  NimfClientClass parent_class;
 };
 
 GType       nimf_agent_get_type              (void) G_GNUC_CONST;
 NimfAgent  *nimf_agent_new                   (void);
-gboolean   nimf_agent_connect_to_server     (NimfAgent   *agent);
-gchar    **nimf_agent_get_loaded_engine_ids (NimfAgent   *agent);
-void       nimf_agent_set_engine_by_id      (NimfAgent   *agent,
-                                             const gchar *id,
-                                             gboolean     is_english_mode);
+gchar     **nimf_agent_get_loaded_engine_ids (NimfAgent   *agent);
+void        nimf_agent_set_engine_by_id      (NimfAgent   *agent,
+                                              const gchar *id,
+                                              gboolean     is_english_mode);
 G_END_DECLS
 
 #endif /* __NIMF_AGENT_H__ */

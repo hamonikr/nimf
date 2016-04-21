@@ -186,8 +186,6 @@ main (int argc, char **argv)
   g_signal_connect (agent, "disconnected",
                     G_CALLBACK (on_disconnected), indicator);
 
-  nimf_agent_connect_to_server (agent);
-
   /* menu */
   gchar **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
   GtkWidget *engine_menu;
