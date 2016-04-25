@@ -3,7 +3,7 @@
  * nimf-message.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -29,11 +29,12 @@ nimf_message_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_message_new_full (NIMF_MESSAGE_NONE, NULL, 0, NULL);
+  return nimf_message_new_full (NIMF_MESSAGE_NONE, 0, NULL, 0, NULL);
 }
 
 NimfMessage *
 nimf_message_new_full (NimfMessageType type,
+                       guint16         client_id,
                        gpointer        data,
                        guint16         data_len,
                        GDestroyNotify  data_destroy_func)
@@ -44,6 +45,7 @@ nimf_message_new_full (NimfMessageType type,
 
   message                    = g_slice_new0 (NimfMessage);
   message->header            = g_slice_new0 (NimfMessageHeader);
+  message->header->client_id = client_id;
   message->header->type      = type;
   message->header->data_len  = data_len;
   message->data              = data;

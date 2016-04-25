@@ -3,7 +3,7 @@
  * nimf-private.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -52,6 +52,7 @@ struct _NimfResult
 };
 
 void         nimf_send_message           (GSocket         *socket,
+                                          guint16          im_id,
                                           NimfMessageType  type,
                                           gpointer         data,
                                           guint16          data_len,
@@ -63,6 +64,7 @@ void         nimf_log_default_handler    (const gchar     *log_domain,
                                           gboolean        *debug);
 void         nimf_result_iteration_until (NimfResult      *result,
                                           GMainContext    *main_context,
+                                          guint16          client_id,
                                           NimfMessageType  type);
 G_END_DECLS
 

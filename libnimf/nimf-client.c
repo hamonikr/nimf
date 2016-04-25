@@ -38,9 +38,13 @@ enum {
   LAST_SIGNAL
 };
 
-static guint  nimf_client_signals[LAST_SIGNAL] = { 0 };
-GMainContext *nimf_client_sockets_context = NULL;
-static guint  nimf_client_sockets_context_ref_count = 0;
+static guint       nimf_client_signals[LAST_SIGNAL] = { 0 };
+static GSource    *nimf_client_socket_source  = NULL;
+static GSource    *nimf_client_default_source = NULL;
+static GHashTable *nimf_client_table          = NULL;
+GMainContext      *nimf_client_socket_context = NULL;
+NimfResult        *nimf_client_result         = NULL;
+GSocketConnection *nimf_client_connection     = NULL;
 
 G_DEFINE_ABSTRACT_TYPE (NimfClient, nimf_client, G_TYPE_OBJECT);
 
@@ -51,9 +55,8 @@ on_incoming_message (GSocket      *socket,
 {
   g_debug (G_STRLOC ": %s: socket fd:%d", G_STRFUNC, g_socket_get_fd (socket));
 
-  NimfClient *client = NIMF_CLIENT (user_data);
-  nimf_message_unref (client->result->reply);
-  client->result->is_dispatched = TRUE;
+  nimf_message_unref (nimf_client_result->reply);
+  nimf_client_result->is_dispatched = TRUE;
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -62,16 +65,25 @@ on_incoming_message (GSocket      *socket,
      * the following code avoid that callback runs two times. */
     GSource *source = g_main_current_source ();
 
-    if (source == client->default_context_source)
-      g_source_destroy (client->sockets_context_source);
-    else if (source == client->sockets_context_source)
-      g_source_destroy (client->default_context_source);
+    if (source == nimf_client_default_source)
+      g_source_destroy (nimf_client_socket_source);
+    else if (source == nimf_client_socket_source)
+      g_source_destroy (nimf_client_default_source);
 
     if (!g_socket_is_closed (socket))
       g_socket_close (socket, NULL);
 
-    client->result->reply    = NULL;
-    g_signal_emit_by_name (client, "disconnected", NULL);
+    nimf_client_result->reply = NULL;
+
+    if (nimf_client_table)
+    {
+      GHashTableIter iter;
+      gpointer       value;
+      g_hash_table_iter_init (&iter, nimf_client_table);
+
+      while (g_hash_table_iter_next (&iter, NULL, &value))
+        g_signal_emit_by_name (NIMF_CLIENT (value), "disconnected", NULL);
+    }
 
     g_critical (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
 
@@ -80,7 +92,7 @@ on_incoming_message (GSocket      *socket,
 
   NimfMessage *message;
   message = nimf_recv_message (socket);
-  client->result->reply = message;
+  nimf_client_result->reply = message;
   gboolean retval;
 
   if (G_UNLIKELY (message == NULL))
@@ -88,6 +100,10 @@ on_incoming_message (GSocket      *socket,
     g_critical (G_STRLOC ": NULL message");
     return G_SOURCE_CONTINUE;
   }
+
+  NimfClient *client;
+  client = g_hash_table_lookup (nimf_client_table,
+                                GUINT_TO_POINTER (message->header->client_id));
 
   switch (message->header->type)
   {
@@ -104,12 +120,12 @@ on_incoming_message (GSocket      *socket,
     /* signals */
     case NIMF_MESSAGE_PREEDIT_START:
       g_signal_emit_by_name (NIMF_IM (client), "preedit-start");
-      nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_START_REPLY,
+      nimf_send_message (socket, client->id, NIMF_MESSAGE_PREEDIT_START_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_PREEDIT_END:
       g_signal_emit_by_name (NIMF_IM (client), "preedit-end");
-      nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_END_REPLY,
+      nimf_send_message (socket, client->id, NIMF_MESSAGE_PREEDIT_END_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_PREEDIT_CHANGED:
@@ -121,19 +137,21 @@ on_incoming_message (GSocket      *socket,
         im->cursor_pos = *(gint *) (message->data +
                                     message->header->data_len - sizeof (gint));
         g_signal_emit_by_name (im, "preedit-changed");
-        nimf_send_message (socket, NIMF_MESSAGE_PREEDIT_CHANGED_REPLY,
-                           NULL, 0, NULL);
+        nimf_send_message (socket, client->id,
+                           NIMF_MESSAGE_PREEDIT_CHANGED_REPLY, NULL, 0, NULL);
       }
       break;
     case NIMF_MESSAGE_COMMIT:
       nimf_message_ref (message);
       g_signal_emit_by_name (NIMF_IM (client), "commit", (const gchar *) message->data);
       nimf_message_unref (message);
-      nimf_send_message (socket, NIMF_MESSAGE_COMMIT_REPLY, NULL, 0, NULL);
+      nimf_send_message (socket, client->id, NIMF_MESSAGE_COMMIT_REPLY,
+                         NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_RETRIEVE_SURROUNDING:
       g_signal_emit_by_name (NIMF_IM (client), "retrieve-surrounding", &retval);
-      nimf_send_message (socket, NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
+      nimf_send_message (socket, client->id,
+                         NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
                          &retval, sizeof (gboolean), NULL);
       break;
     case NIMF_MESSAGE_DELETE_SURROUNDING:
@@ -142,14 +160,26 @@ on_incoming_message (GSocket      *socket,
                              ((gint *) message->data)[0],
                              ((gint *) message->data)[1], &retval);
       nimf_message_unref (message);
-      nimf_send_message (socket, NIMF_MESSAGE_DELETE_SURROUNDING_REPLY,
+      nimf_send_message (socket, client->id,
+                         NIMF_MESSAGE_DELETE_SURROUNDING_REPLY,
                          &retval, sizeof (gboolean), NULL);
       break;
     /* for agent */
     case NIMF_MESSAGE_ENGINE_CHANGED:
-      nimf_message_ref (client->result->reply);
-      g_signal_emit_by_name (client, "engine-changed", (gchar *) client->result->reply->data);
-      nimf_message_unref (client->result->reply);
+      nimf_message_ref (message);
+
+      if (nimf_client_table)
+      {
+        GHashTableIter iter;
+        gpointer       value;
+        g_hash_table_iter_init (&iter, nimf_client_table);
+
+        while (g_hash_table_iter_next (&iter, NULL, &value))
+          g_signal_emit_by_name (NIMF_CLIENT (value), "engine-changed",
+                                 (gchar *) message->data);
+      }
+
+      nimf_message_unref (message);
       break;
     case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY:
     case NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY:
@@ -166,6 +196,24 @@ static void
 nimf_client_init (NimfClient *client)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  static guint16 next_id = 0;
+  guint16 id;
+
+  if (nimf_client_table == NULL)
+    nimf_client_table = g_hash_table_new_full (g_direct_hash,
+                                               g_direct_equal,
+                                               NULL,
+                                               (GDestroyNotify) g_object_unref);
+  do
+    id = next_id++;
+  while (id == 0 || g_hash_table_contains (nimf_client_table,
+                                           GUINT_TO_POINTER (id)));
+  client->id = id;
+
+  g_hash_table_insert (nimf_client_table,
+                       GUINT_TO_POINTER (client->id), client);
+  g_hash_table_ref (nimf_client_table);
 }
 
 static void
@@ -174,104 +222,105 @@ nimf_client_constructed (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfClient *client = NIMF_CLIENT (object);
-
-  client->result = g_slice_new0 (NimfResult);
-
-  GSocketClient  *socket_client;
-  GSocketAddress *address;
-  GSocket        *socket;
-  GError         *error = NULL;
-  gint            retry_limit = 5;
-  gint            retry_count = 0;
-
-  address = g_unix_socket_address_new_with_type (NIMF_ADDRESS, -1,
-                                                 G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-  socket_client = g_socket_client_new ();
-
-  for (retry_count = 0; retry_count < retry_limit; retry_count++)
-  {
-    g_clear_error (&error);
-    client->connection =
-      g_socket_client_connect (socket_client, G_SOCKET_CONNECTABLE (address),
-                               NULL, &error);
-    if (client->connection)
-      break;
-    else
-      g_usleep (G_USEC_PER_SEC);;
-  }
-
-  g_object_unref (address);
-  g_object_unref (socket_client);
-
-  if (client->connection == NULL)
-  {
-    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
-    g_clear_error (&error);
-    g_signal_emit_by_name (client, "disconnected", NULL);
-    return;
-  }
-
-  socket = g_socket_connection_get_socket (client->connection);
-
-  if (!socket)
-  {
-    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, "Can't get socket");
-    g_signal_emit_by_name (client, "disconnected", NULL);
-    return;
-  }
-
-  NimfMessage *message;
-
-  nimf_send_message (socket, NIMF_MESSAGE_CONNECT, &client->type,
-                     sizeof (NimfConnectionType), NULL);
-  g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
-  message = nimf_recv_message (socket);
-
-  if (G_UNLIKELY (message == NULL ||
-                  message->header->type != NIMF_MESSAGE_CONNECT_REPLY))
-  {
-    nimf_message_unref (message);
-    g_critical ("Couldn't connect to nimf-daemon");
-    g_signal_emit_by_name (client, "disconnected", NULL);
-
-    if (message)
-      nimf_message_unref (message);
-
-    return;
-  }
-
-  nimf_message_unref (message);
-
   GMutex mutex;
 
   g_mutex_init (&mutex);
   g_mutex_lock (&mutex);
 
-  if (G_UNLIKELY (nimf_client_sockets_context == NULL))
+  if (nimf_client_result == NULL)
+    nimf_client_result = g_slice_new0 (NimfResult);
+
+  if (nimf_client_connection == NULL)
   {
-    nimf_client_sockets_context = g_main_context_new ();
-    nimf_client_sockets_context_ref_count++;
+    GSocketClient  *socket_client;
+    GSocketAddress *address;
+    gint            retry_limit = 5;
+    gint            retry_count = 0;
+    GSocket    *socket;
+    GError     *error = NULL;
+
+    address = g_unix_socket_address_new_with_type (NIMF_ADDRESS, -1,
+                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+    socket_client = g_socket_client_new ();
+
+    for (retry_count = 0; retry_count < retry_limit; retry_count++)
+    {
+      g_clear_error (&error);
+      nimf_client_connection =
+        g_socket_client_connect (socket_client, G_SOCKET_CONNECTABLE (address),
+                                 NULL, &error);
+      if (nimf_client_connection)
+        break;
+      else
+        g_usleep (G_USEC_PER_SEC);;
+    }
+
+    g_object_unref (address);
+    g_object_unref (socket_client);
+
+    if (nimf_client_connection == NULL)
+    {
+      g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+      g_clear_error (&error);
+      g_signal_emit_by_name (client, "disconnected", NULL);
+      return;
+    }
+
+    g_object_add_weak_pointer (G_OBJECT (nimf_client_connection),
+                               (gpointer) &nimf_client_connection);
+    socket = g_socket_connection_get_socket (nimf_client_connection);
+
+    if (!socket)
+    {
+      g_critical (G_STRLOC ": %s: %s", G_STRFUNC, "Can't get socket");
+      g_signal_emit_by_name (client, "disconnected", NULL);
+      return;
+    }
+
+    NimfMessage *message;
+
+    nimf_send_message (socket, client->id, NIMF_MESSAGE_CONNECT, &client->type,
+                       sizeof (NimfConnectionType), NULL);
+    g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
+    message = nimf_recv_message (socket);
+
+    if (G_UNLIKELY (message == NULL ||
+                    message->header->type != NIMF_MESSAGE_CONNECT_REPLY))
+    {
+      nimf_message_unref (message);
+      g_critical ("Couldn't connect to nimf-daemon");
+      g_signal_emit_by_name (client, "disconnected", NULL);
+
+      if (message)
+        nimf_message_unref (message);
+
+      return;
+    }
+
+    nimf_message_unref (message);
+
+    if (G_UNLIKELY (nimf_client_socket_context == NULL))
+    {
+      nimf_client_socket_context = g_main_context_new ();
+
+      /* when g_main_context_iteration(), iterate only socket */
+      nimf_client_socket_source = g_socket_create_source (socket, G_IO_IN, NULL);
+      g_source_set_can_recurse (nimf_client_socket_source, TRUE);
+      g_source_set_callback (nimf_client_socket_source,
+                             (GSourceFunc) on_incoming_message, NULL, NULL);
+      g_source_attach (nimf_client_socket_source, nimf_client_socket_context);
+
+      nimf_client_default_source = g_socket_create_source (socket, G_IO_IN, NULL);
+      g_source_set_can_recurse (nimf_client_default_source, TRUE);
+      g_source_set_callback (nimf_client_default_source,
+                             (GSourceFunc) on_incoming_message, NULL, NULL);
+      g_source_attach (nimf_client_default_source, NULL);
+    }
   }
   else
-  {
-    nimf_client_sockets_context = g_main_context_ref (nimf_client_sockets_context);
-    nimf_client_sockets_context_ref_count++;
-  }
+    g_object_ref (nimf_client_connection);
 
   g_mutex_unlock (&mutex);
-
-  /* when g_main_context_iteration(), iterate only sockets */
-  client->sockets_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
-  g_source_set_can_recurse (client->sockets_context_source, TRUE);
-  g_source_attach (client->sockets_context_source, nimf_client_sockets_context);
-  g_source_set_callback (client->sockets_context_source,
-                         (GSourceFunc) on_incoming_message, client, NULL);
-
-  client->default_context_source = g_socket_create_source (socket, G_IO_IN, NULL);
-  g_source_set_can_recurse (client->default_context_source, TRUE);
-  g_source_set_callback (client->default_context_source,
-                         (GSourceFunc) on_incoming_message, client, NULL);
-  g_source_attach (client->default_context_source, NULL);
 
   return;
 }
@@ -283,39 +332,29 @@ nimf_client_finalize (GObject *object)
 
   NimfClient *client = NIMF_CLIENT (object);
 
-  if (client->sockets_context_source)
+  if (nimf_client_table)
+    g_hash_table_steal (nimf_client_table, GUINT_TO_POINTER (client->id));
+
+  if (nimf_client_connection)
   {
-    g_source_destroy (client->sockets_context_source);
-    g_source_unref   (client->sockets_context_source);
+    g_object_unref (nimf_client_connection);
+
+    if (nimf_client_connection == NULL)
+    {
+      g_source_destroy (nimf_client_socket_source);
+      g_source_destroy (nimf_client_default_source);
+      g_source_unref (nimf_client_socket_source);
+      g_source_unref (nimf_client_default_source);
+      g_main_context_unref (nimf_client_socket_context);
+      g_slice_free (NimfResult, nimf_client_result);
+      g_hash_table_unref (nimf_client_table);
+      nimf_client_socket_source  = NULL;
+      nimf_client_default_source = NULL;
+      nimf_client_socket_context = NULL;
+      nimf_client_result = NULL;
+      nimf_client_table  = NULL;
+    }
   }
-
-  if (client->default_context_source)
-  {
-    g_source_destroy (client->default_context_source);
-    g_source_unref   (client->default_context_source);
-  }
-
-  if (client->connection)
-    g_object_unref (client->connection);
-
-  GMutex mutex;
-
-  g_mutex_init (&mutex);
-  g_mutex_lock (&mutex);
-
-  if (nimf_client_sockets_context)
-  {
-    g_main_context_unref (nimf_client_sockets_context);
-    nimf_client_sockets_context_ref_count--;
-
-    if (nimf_client_sockets_context_ref_count == 0)
-      nimf_client_sockets_context = NULL;
-  }
-
-  g_mutex_unlock (&mutex);
-
-  if (client->result)
-    g_slice_free (NimfResult, client->result);
 
   G_OBJECT_CLASS (nimf_client_parent_class)->finalize (object);
 }

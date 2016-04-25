@@ -103,6 +103,7 @@ NimfWinHandler::commit(const TWCHAR* wstr)
 static void
 nimf_sunpinyin_update_preedit (NimfEngine     *engine,
                                NimfConnection *target,
+                               guint16         client_id,
                                gchar          *new_preedit,
                                int             cursor_pos)
 {
@@ -114,7 +115,7 @@ nimf_sunpinyin_update_preedit (NimfEngine     *engine,
   if (pinyin->preedit_state == NIMF_PREEDIT_STATE_END && new_preedit[0] != 0)
   {
     pinyin->preedit_state = NIMF_PREEDIT_STATE_START;
-    nimf_engine_emit_preedit_start (engine, target);
+    nimf_engine_emit_preedit_start (engine, target, client_id);
   }
 
   /* preedit-changed */
@@ -122,7 +123,7 @@ nimf_sunpinyin_update_preedit (NimfEngine     *engine,
   {
     g_free (pinyin->preedit_string);
     pinyin->preedit_string = new_preedit;
-    nimf_engine_emit_preedit_changed (engine, target,
+    nimf_engine_emit_preedit_changed (engine, target, client_id,
                                       pinyin->preedit_string, cursor_pos);
   }
   else
@@ -133,7 +134,7 @@ nimf_sunpinyin_update_preedit (NimfEngine     *engine,
       pinyin->preedit_string[0] == 0)
   {
     pinyin->preedit_state = NIMF_PREEDIT_STATE_END;
-    nimf_engine_emit_preedit_end (engine, target);
+    nimf_engine_emit_preedit_end (engine, target, client_id);
   }
 }
 
@@ -249,7 +250,9 @@ nimf_sunpinyin_get_icon_name (NimfEngine *engine)
 }
 
 void
-nimf_sunpinyin_reset (NimfEngine *engine, NimfConnection *target)
+nimf_sunpinyin_reset (NimfEngine     *engine,
+                      NimfConnection *target,
+                      guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -280,16 +283,20 @@ nimf_sunpinyin_focus_in (NimfEngine *engine)
 }
 
 void
-nimf_sunpinyin_focus_out (NimfEngine *engine, NimfConnection *target)
+nimf_sunpinyin_focus_out (NimfEngine     *engine,
+                          NimfConnection *target,
+                          guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_return_if_fail (NIMF_IS_ENGINE (engine));
 
-  nimf_sunpinyin_reset (engine, target);
+  nimf_sunpinyin_reset (engine, target, client_id);
 }
 
-void nimf_sunpinyin_update (NimfEngine *engine, NimfConnection *target)
+void nimf_sunpinyin_update (NimfEngine     *engine,
+                            NimfConnection *target,
+                            guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -298,7 +305,8 @@ void nimf_sunpinyin_update (NimfEngine *engine, NimfConnection *target)
   /* commit */
   if (pinyin->commit_str)
   {
-    nimf_engine_emit_commit (NIMF_ENGINE (pinyin), target, pinyin->commit_str);
+    nimf_engine_emit_commit (NIMF_ENGINE (pinyin), target, client_id,
+                             pinyin->commit_str);
     g_free (pinyin->commit_str);
     pinyin->commit_str = NULL;
   }
@@ -310,7 +318,7 @@ void nimf_sunpinyin_update (NimfEngine *engine, NimfConnection *target)
 
     const TWCHAR *wstr = pinyin->ppd->string();
     /* nimf_sunpinyin_update_preedit takes text */
-    nimf_sunpinyin_update_preedit (engine, target,
+    nimf_sunpinyin_update_preedit (engine, target, client_id,
                                    g_ucs4_to_utf8 (wstr, -1, NULL, NULL, NULL),
                                    pinyin->ppd->caret());
     pinyin->ppd = NULL;
@@ -337,7 +345,7 @@ void nimf_sunpinyin_update (NimfEngine *engine, NimfConnection *target)
     g_strfreev (strv);
 
     if (pinyin->pcl->size() > 0)
-      nimf_engine_show_candidate_window (engine, target);
+      nimf_engine_show_candidate_window (engine, target, client_id);
     else
       nimf_engine_hide_candidate_window (engine);
 
@@ -348,6 +356,7 @@ void nimf_sunpinyin_update (NimfEngine *engine, NimfConnection *target)
 gboolean
 nimf_sunpinyin_filter_event (NimfEngine     *engine,
                              NimfConnection *target,
+                             guint16         client_id,
                              NimfEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -360,7 +369,7 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
 
   if (nimf_event_matches (event, (const NimfKey **) pinyin->zh_en_keys))
   {
-    nimf_sunpinyin_reset (engine, target);
+    nimf_sunpinyin_reset (engine, target, client_id);
     pinyin->is_english_mode = !pinyin->is_english_mode;
     nimf_engine_emit_engine_changed (engine, target);
     return TRUE;
@@ -380,7 +389,7 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
         if (G_LIKELY (index >= 0))
         {
           pinyin->view->onCandidateSelectRequest(index);
-          nimf_sunpinyin_update (engine, target);
+          nimf_sunpinyin_update (engine, target, client_id);
 
           return TRUE;
         }
@@ -405,7 +414,7 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
   retval = pinyin->view->onKeyEvent(CKeyEvent(event->key.keyval,
                                               event->key.keyval,
                                               event->key.state));
-  nimf_sunpinyin_update (engine, target);
+  nimf_sunpinyin_update (engine, target, client_id);
 
   return retval;
 }
@@ -413,13 +422,14 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
 static void
 on_candidate_clicked (NimfEngine     *engine,
                       NimfConnection *target,
+                      guint16         client_id,
                       gchar          *text,
                       gint            index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NIMF_SUNPINYIN (engine)->view->onCandidateSelectRequest(index);
-  nimf_sunpinyin_update (engine, target);
+  nimf_sunpinyin_update (engine, target, client_id);
 }
 
 void

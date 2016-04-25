@@ -86,18 +86,22 @@ void            nimf_connection_set_engine_by_id        (NimfConnection      *co
                                                          gboolean             is_english_mode);
 guint16         nimf_connection_get_id                  (NimfConnection      *connection);
 gboolean        nimf_connection_filter_event            (NimfConnection      *connection,
+                                                         guint16              client_id,
                                                          NimfEvent           *event);
 void            nimf_connection_get_preedit_string      (NimfConnection      *connection,
                                                          gchar              **str,
                                                          gint                *cursor_pos);
-void            nimf_connection_reset                   (NimfConnection      *connection);
+void            nimf_connection_reset                   (NimfConnection      *connection,
+                                                         guint16              client_id);
 void            nimf_connection_focus_in                (NimfConnection      *connection);
-void            nimf_connection_focus_out               (NimfConnection      *connection);
+void            nimf_connection_focus_out               (NimfConnection      *connection,
+                                                         guint16              client_id);
 void            nimf_connection_set_surrounding         (NimfConnection      *connection,
                                                          const char          *text,
                                                          gint                 len,
                                                          gint                 cursor_index);
 gboolean        nimf_connection_get_surrounding         (NimfConnection      *connection,
+                                                         guint16              client_id,
                                                          gchar              **text,
                                                          gint                *cursor_index);
 void            nimf_connection_xim_set_cursor_location (NimfConnection      *connection,
@@ -105,17 +109,24 @@ void            nimf_connection_xim_set_cursor_location (NimfConnection      *co
 void            nimf_connection_set_cursor_location     (NimfConnection      *connection,
                                                          const NimfRectangle *area);
 void            nimf_connection_set_use_preedit         (NimfConnection      *connection,
+                                                         guint16              client_id,
                                                          gboolean             use_preedit);
 /* signals */
-void     nimf_connection_emit_preedit_start        (NimfConnection *connection);
+void     nimf_connection_emit_preedit_start        (NimfConnection *connection,
+                                                    guint16         client_id);
 void     nimf_connection_emit_preedit_changed      (NimfConnection *connection,
+                                                    guint16         client_id,
                                                     const gchar    *preedit_string,
                                                     gint            cursor_pos);
-void     nimf_connection_emit_preedit_end          (NimfConnection *connection);
+void     nimf_connection_emit_preedit_end          (NimfConnection *connection,
+                                                    guint16         client_id);
 void     nimf_connection_emit_commit               (NimfConnection *connection,
+                                                    guint16         client_id,
                                                     const gchar    *text);
-gboolean nimf_connection_emit_retrieve_surrounding (NimfConnection *connection);
+gboolean nimf_connection_emit_retrieve_surrounding (NimfConnection *connection,
+                                                    guint16         client_id);
 gboolean nimf_connection_emit_delete_surrounding   (NimfConnection *connection,
+                                                    guint16         client_id,
                                                     gint            offset,
                                                     gint            n_chars);
 void     nimf_connection_emit_engine_changed       (NimfConnection *connection,

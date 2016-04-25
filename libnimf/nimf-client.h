@@ -43,11 +43,8 @@ struct _NimfClient
 {
   GObject parent_instance;
 
-  GSocketConnection  *connection;
-  NimfConnectionType  type;
-  NimfResult         *result;
-  GSource            *sockets_context_source;
-  GSource            *default_context_source;
+  NimfConnectionType type;
+  guint16            id;
 };
 
 struct _NimfClientClass

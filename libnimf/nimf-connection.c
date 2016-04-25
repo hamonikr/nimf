@@ -97,12 +97,13 @@ nimf_connection_get_id (NimfConnection *connection)
   return connection->id;
 }
 
-void nimf_connection_reset (NimfConnection *connection)
+void nimf_connection_reset (NimfConnection *connection,
+                            guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   if (G_LIKELY (connection->engine))
-    nimf_engine_reset (connection->engine, connection);
+    nimf_engine_reset (connection->engine, connection, client_id);
 }
 
 void nimf_connection_focus_in (NimfConnection *connection)
@@ -116,18 +117,20 @@ void nimf_connection_focus_in (NimfConnection *connection)
   nimf_connection_emit_engine_changed (connection, nimf_engine_get_icon_name (connection->engine));
 }
 
-void nimf_connection_focus_out (NimfConnection *connection)
+void nimf_connection_focus_out (NimfConnection *connection,
+                                guint16         client_id)
 {
   g_debug (G_STRLOC ": %s: connection id = %d", G_STRFUNC, connection->id);
 
   if (G_UNLIKELY (connection->engine == NULL))
     return;
 
-  nimf_engine_focus_out (connection->engine, connection);
+  nimf_engine_focus_out (connection->engine, connection, client_id);
   nimf_connection_emit_engine_changed (connection, "focus-out");
 }
 
-void nimf_connection_set_next_engine (NimfConnection *connection)
+void nimf_connection_set_next_engine (NimfConnection *connection,
+                                      guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -158,6 +161,7 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
 }
 
 gboolean nimf_connection_filter_event (NimfConnection *connection,
+                                       guint16         client_id,
                                        NimfEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -170,14 +174,15 @@ gboolean nimf_connection_filter_event (NimfConnection *connection,
   {
     if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     {
-      nimf_connection_reset (connection);
-      nimf_connection_set_next_engine (connection);
+      nimf_connection_reset (connection, client_id);
+      nimf_connection_set_next_engine (connection, client_id);
     }
 
     return TRUE;
   }
 
-  return nimf_engine_filter_event (connection->engine, connection, event);
+  return nimf_engine_filter_event (connection->engine, connection,
+                                   client_id, event);
 }
 
 void
@@ -215,6 +220,7 @@ nimf_connection_set_surrounding (NimfConnection *connection,
 
 gboolean
 nimf_connection_get_surrounding (NimfConnection  *connection,
+                                 guint16          client_id,
                                  gchar          **text,
                                  gint            *cursor_index)
 {
@@ -224,7 +230,7 @@ nimf_connection_get_surrounding (NimfConnection  *connection,
     return FALSE;
 
   return nimf_engine_get_surrounding (connection->engine, connection,
-                                      text, cursor_index);
+                                      client_id, text, cursor_index);
 }
 
 void
@@ -242,6 +248,7 @@ nimf_connection_set_cursor_location (NimfConnection      *connection,
 
 void
 nimf_connection_set_use_preedit (NimfConnection *connection,
+                                 guint16         client_id,
                                  gboolean        use_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -257,10 +264,9 @@ nimf_connection_set_use_preedit (NimfConnection *connection,
       nimf_connection_get_preedit_string   (connection,
                                             &preedit_string,
                                             &cursor_pos);
-      nimf_connection_emit_preedit_changed (connection,
-                                            preedit_string,
-                                            cursor_pos);
-      nimf_connection_emit_preedit_end     (connection);
+      nimf_connection_emit_preedit_changed (connection, client_id,
+                                            preedit_string, cursor_pos);
+      nimf_connection_emit_preedit_end     (connection, client_id);
       g_free (preedit_string);
     }
   }
@@ -276,10 +282,9 @@ nimf_connection_set_use_preedit (NimfConnection *connection,
                                         &cursor_pos);
     if (preedit_string[0] != 0)
     {
-      nimf_connection_emit_preedit_start   (connection);
-      nimf_connection_emit_preedit_changed (connection,
-                                            preedit_string,
-                                            cursor_pos);
+      nimf_connection_emit_preedit_start   (connection, client_id);
+      nimf_connection_emit_preedit_changed (connection, client_id,
+                                            preedit_string, cursor_pos);
     }
 
     g_free (preedit_string);
@@ -287,7 +292,8 @@ nimf_connection_set_use_preedit (NimfConnection *connection,
 }
 
 void
-nimf_connection_emit_preedit_start (NimfConnection *connection)
+nimf_connection_emit_preedit_start (NimfConnection *connection,
+                                    guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -298,9 +304,9 @@ nimf_connection_emit_preedit_start (NimfConnection *connection)
                       connection->preedit_state == NIMF_PREEDIT_STATE_END))
         return;
 
-      nimf_send_message (connection->socket, NIMF_MESSAGE_PREEDIT_START,
-                         NULL, 0, NULL);
-      nimf_result_iteration_until (connection->result, NULL,
+      nimf_send_message (connection->socket, client_id,
+                         NIMF_MESSAGE_PREEDIT_START, NULL, 0, NULL);
+      nimf_result_iteration_until (connection->result, NULL, client_id,
                                    NIMF_MESSAGE_PREEDIT_START_REPLY);
       connection->preedit_state = NIMF_PREEDIT_STATE_START;
       break;
@@ -327,6 +333,7 @@ nimf_connection_emit_preedit_start (NimfConnection *connection)
 
 void
 nimf_connection_emit_preedit_changed (NimfConnection *connection,
+                                      guint16         client_id,
                                       const gchar    *preedit_string,
                                       gint            cursor_pos)
 {
@@ -344,9 +351,10 @@ nimf_connection_emit_preedit_changed (NimfConnection *connection,
         gchar *data = g_strndup (preedit_string, data_len - 1);
         *(gint *) (data + data_len - sizeof (gint)) = cursor_pos;
 
-        nimf_send_message (connection->socket, NIMF_MESSAGE_PREEDIT_CHANGED,
+        nimf_send_message (connection->socket, client_id,
+                           NIMF_MESSAGE_PREEDIT_CHANGED,
                            data, data_len, g_free);
-        nimf_result_iteration_until (connection->result, NULL,
+        nimf_result_iteration_until (connection->result, NULL, client_id,
                                      NIMF_MESSAGE_PREEDIT_CHANGED_REPLY);
       }
       break;
@@ -417,7 +425,8 @@ nimf_connection_emit_preedit_changed (NimfConnection *connection,
 }
 
 void
-nimf_connection_emit_preedit_end (NimfConnection *connection)
+nimf_connection_emit_preedit_end (NimfConnection *connection,
+                                  guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -428,9 +437,9 @@ nimf_connection_emit_preedit_end (NimfConnection *connection)
                       connection->preedit_state == NIMF_PREEDIT_STATE_END))
         return;
 
-      nimf_send_message (connection->socket, NIMF_MESSAGE_PREEDIT_END,
-                         NULL, 0, NULL);
-      nimf_result_iteration_until (connection->result, NULL,
+      nimf_send_message (connection->socket, client_id,
+                         NIMF_MESSAGE_PREEDIT_END, NULL, 0, NULL);
+      nimf_result_iteration_until (connection->result, NULL, client_id,
                                    NIMF_MESSAGE_PREEDIT_END_REPLY);
       connection->preedit_state = NIMF_PREEDIT_STATE_END;
       break;
@@ -457,6 +466,7 @@ nimf_connection_emit_preedit_end (NimfConnection *connection)
 
 void
 nimf_connection_emit_commit (NimfConnection *connection,
+                             guint16         client_id,
                              const gchar    *text)
 {
   g_debug (G_STRLOC ": %s: id = %d", G_STRFUNC, connection->id);
@@ -464,9 +474,9 @@ nimf_connection_emit_commit (NimfConnection *connection,
   switch (connection->type)
   {
     case NIMF_CONNECTION_NIMF_IM:
-      nimf_send_message (connection->socket, NIMF_MESSAGE_COMMIT,
+      nimf_send_message (connection->socket, client_id, NIMF_MESSAGE_COMMIT,
                          (gchar *) text, strlen (text) + 1, NULL);
-      nimf_result_iteration_until (connection->result, NULL,
+      nimf_result_iteration_until (connection->result, NULL, client_id,
                                    NIMF_MESSAGE_COMMIT_REPLY);
       break;
     case NIMF_CONNECTION_XIM:
@@ -495,13 +505,14 @@ nimf_connection_emit_commit (NimfConnection *connection,
 }
 
 gboolean
-nimf_connection_emit_retrieve_surrounding (NimfConnection *connection)
+nimf_connection_emit_retrieve_surrounding (NimfConnection *connection,
+                                           guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_send_message (connection->socket, NIMF_MESSAGE_RETRIEVE_SURROUNDING,
-                     NULL, 0, NULL);
-  nimf_result_iteration_until (connection->result, NULL,
+  nimf_send_message (connection->socket, client_id,
+                     NIMF_MESSAGE_RETRIEVE_SURROUNDING, NULL, 0, NULL);
+  nimf_result_iteration_until (connection->result, NULL, client_id,
                                NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
 
   if (connection->result->reply == NULL)
@@ -512,6 +523,7 @@ nimf_connection_emit_retrieve_surrounding (NimfConnection *connection)
 
 gboolean
 nimf_connection_emit_delete_surrounding (NimfConnection *connection,
+                                         guint16         client_id,
                                          gint            offset,
                                          gint            n_chars)
 {
@@ -521,9 +533,10 @@ nimf_connection_emit_delete_surrounding (NimfConnection *connection,
   data[0] = offset;
   data[1] = n_chars;
 
-  nimf_send_message (connection->socket, NIMF_MESSAGE_DELETE_SURROUNDING,
+  nimf_send_message (connection->socket, client_id,
+                     NIMF_MESSAGE_DELETE_SURROUNDING,
                      data, 2 * sizeof (gint), g_free);
-  nimf_result_iteration_until (connection->result, NULL,
+  nimf_result_iteration_until (connection->result, NULL, client_id,
                                NIMF_MESSAGE_DELETE_SURROUNDING_REPLY);
 
   if (connection->result->reply == NULL)
@@ -543,7 +556,7 @@ nimf_connection_emit_engine_changed (NimfConnection *connection,
   while (l != NULL)
   {
     GList *next = l->next;
-    nimf_send_message (NIMF_CONNECTION (l->data)->socket,
+    nimf_send_message (NIMF_CONNECTION (l->data)->socket, 0,
                        NIMF_MESSAGE_ENGINE_CHANGED,
                        (gchar *) name, strlen (name) + 1, NULL);
     l = next;

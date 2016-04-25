@@ -78,7 +78,8 @@ nimf_engine_get_property (GObject    *object,
 }
 
 void nimf_engine_reset (NimfEngine     *engine,
-                        NimfConnection *target)
+                        NimfConnection *connection,
+                        guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -87,7 +88,7 @@ void nimf_engine_reset (NimfEngine     *engine,
   NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
 
   if (class->reset)
-    class->reset (engine, target);
+    class->reset (engine, connection, client_id);
 }
 
 void nimf_engine_focus_in (NimfEngine *engine)
@@ -103,7 +104,8 @@ void nimf_engine_focus_in (NimfEngine *engine)
 }
 
 void nimf_engine_focus_out (NimfEngine     *engine,
-                            NimfConnection *target)
+                            NimfConnection *connection,
+                            guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -112,22 +114,24 @@ void nimf_engine_focus_out (NimfEngine     *engine,
   NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
 
   if (class->focus_out)
-    class->focus_out (engine, target);
+    class->focus_out (engine, connection, client_id);
 }
 
 gboolean nimf_engine_filter_event (NimfEngine     *engine,
-                                   NimfConnection *target,
+                                   NimfConnection *connection,
+                                   guint16         client_id,
                                    NimfEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
 
-  return class->filter_event (engine, target, event);
+  return class->filter_event (engine, connection, client_id, event);
 }
 
 gboolean nimf_engine_real_filter_event (NimfEngine     *engine,
-                                        NimfConnection *target,
+                                        NimfConnection *connection,
+                                        guint16         client_id,
                                         NimfEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -167,7 +171,8 @@ nimf_engine_set_surrounding (NimfEngine *engine,
 
 gboolean
 nimf_engine_get_surrounding (NimfEngine      *engine,
-                             NimfConnection  *target,
+                             NimfConnection  *connection,
+                             guint16          client_id,
                              gchar          **text,
                              gint            *cursor_index)
 {
@@ -177,7 +182,8 @@ nimf_engine_get_surrounding (NimfEngine      *engine,
   NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
 
   if (class->get_surrounding)
-    retval = class->get_surrounding (engine, target, text, cursor_index);
+    retval = class->get_surrounding (engine, connection, client_id,
+                                     text, cursor_index);
 
   return retval;
 }
@@ -223,70 +229,79 @@ nimf_engine_get_english_mode (NimfEngine *engine)
 
 void
 nimf_engine_emit_preedit_start (NimfEngine     *engine,
-                                NimfConnection *target)
+                                NimfConnection *connection,
+                                guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_connection_emit_preedit_start (target);
+  nimf_connection_emit_preedit_start (connection, client_id);
 }
 
 void
 nimf_engine_emit_preedit_changed (NimfEngine     *engine,
-                                  NimfConnection *target,
+                                  NimfConnection *connection,
+                                  guint16         client_id,
                                   const gchar    *preedit_string,
                                   gint            cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_connection_emit_preedit_changed (target, preedit_string, cursor_pos);
+  nimf_connection_emit_preedit_changed (connection, client_id,
+                                        preedit_string, cursor_pos);
 }
 
 void
 nimf_engine_emit_preedit_end (NimfEngine     *engine,
-                              NimfConnection *target)
+                              NimfConnection *connection,
+                              guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_connection_emit_preedit_end (target);
+  nimf_connection_emit_preedit_end (connection, client_id);
 }
 
 void
 nimf_engine_emit_commit (NimfEngine     *engine,
-                         NimfConnection *target,
+                         NimfConnection *connection,
+                         guint16         client_id,
                          const gchar    *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_connection_emit_commit (target, text);
+  nimf_connection_emit_commit (connection, client_id, text);
 }
 
 gboolean
 nimf_engine_emit_delete_surrounding (NimfEngine     *engine,
-                                     NimfConnection *target,
+                                     NimfConnection *connection,
+                                     guint16         client_id,
                                      gint            offset,
                                      gint            n_chars)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_connection_emit_delete_surrounding (target, offset, n_chars);
+  return nimf_connection_emit_delete_surrounding (connection, client_id,
+                                                  offset, n_chars);
 }
 
 gboolean
 nimf_engine_emit_retrieve_surrounding (NimfEngine     *engine,
-                                       NimfConnection *target)
+                                       NimfConnection *connection,
+                                       guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_connection_emit_retrieve_surrounding (target);
+  return nimf_connection_emit_retrieve_surrounding (connection, client_id);
 }
 
 void
 nimf_engine_emit_engine_changed (NimfEngine     *engine,
-                                 NimfConnection *target)
+                                 NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_connection_emit_engine_changed (target, nimf_engine_get_icon_name (engine));
+  nimf_connection_emit_engine_changed (connection,
+                                       nimf_engine_get_icon_name (engine));
 }
 
 static void
@@ -339,14 +354,15 @@ nimf_engine_real_set_surrounding (NimfEngine *engine,
 
 static gboolean
 nimf_engine_real_get_surrounding (NimfEngine      *engine,
-                                  NimfConnection  *target,
+                                  NimfConnection  *connection,
+                                  guint16          client_id,
                                   gchar          **text,
                                   gint            *cursor_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval = nimf_engine_emit_retrieve_surrounding (engine, target);
-
+  gboolean retval = nimf_engine_emit_retrieve_surrounding (engine, connection,
+                                                           client_id);
   if (retval)
   {
     if (engine->priv->surrounding_text)
@@ -374,9 +390,11 @@ nimf_engine_update_candidate_window (NimfEngine   *engine,
 
 void
 nimf_engine_show_candidate_window (NimfEngine     *engine,
-                                   NimfConnection *target)
+                                   NimfConnection *connection,
+                                   guint16         client_id)
 {
-  nimf_candidate_show_window (engine->priv->server->candidate, target);
+  nimf_candidate_show_window (engine->priv->server->candidate, connection,
+                              client_id);
 }
 
 void

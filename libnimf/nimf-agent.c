@@ -25,6 +25,10 @@
 #include "nimf-marshalers.h"
 #include <string.h>
 
+extern GMainContext      *nimf_client_socket_context;
+extern NimfResult        *nimf_client_result;
+extern GSocketConnection *nimf_client_connection;
+
 G_DEFINE_TYPE (NimfAgent, nimf_agent, NIMF_TYPE_CLIENT);
 
 static void
@@ -69,11 +73,11 @@ nimf_agent_set_engine_by_id (NimfAgent   *agent,
   NimfClient *client = NIMF_CLIENT (agent);
 
   /* TODO: 요 코드 정상 작동 여부 반드시 확인할 것 */
-  if (client->connection == NULL ||
-      !g_socket_connection_is_connected (client->connection))
+  if (nimf_client_connection == NULL ||
+      !g_socket_connection_is_connected (nimf_client_connection))
     return;
 
-  GSocket *socket = g_socket_connection_get_socket (client->connection);
+  GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);
 
   gchar *data     = NULL;
   gint   str_len  = strlen (id);
@@ -82,9 +86,10 @@ nimf_agent_set_engine_by_id (NimfAgent   *agent,
   data = g_strndup (id, data_len - 1);
   *(gboolean *) (data + str_len + 1) = is_english_mode;
 
-  nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID, data,
-                     data_len, g_free);
-  nimf_result_iteration_until (client->result, NULL,
+  nimf_send_message (socket, client->id, NIMF_MESSAGE_SET_ENGINE_BY_ID,
+                     data, data_len, g_free);
+  nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+                               client->id,
                                NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY);
 }
 
@@ -109,17 +114,19 @@ nimf_agent_get_loaded_engine_ids (NimfAgent *agent)
   NimfClient *client = NIMF_CLIENT (agent);
 
   /* TODO: 요 코드 정상 작동 여부 반드시 확인할 것 */
-  if (client->connection == NULL ||
-      !g_socket_connection_is_connected (client->connection))
+  if (nimf_client_connection == NULL ||
+      !g_socket_connection_is_connected (nimf_client_connection))
     return NULL;
 
-  GSocket *socket = g_socket_connection_get_socket (client->connection);
+  GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);
 
-  nimf_send_message (socket, NIMF_MESSAGE_GET_LOADED_ENGINE_IDS, NULL, 0, NULL);
-  nimf_result_iteration_until (client->result, NULL,
+  nimf_send_message (socket, client->id, NIMF_MESSAGE_GET_LOADED_ENGINE_IDS,
+                     NULL, 0, NULL);
+  nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+                               client->id,
                                NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY);
-  if (client->result->reply == NULL)
+  if (nimf_client_result->reply == NULL)
     return NULL;
   /* 0x1e is RS (record separator) */
-  return g_strsplit (client->result->reply->data, "\x1e", -1);
+  return g_strsplit (nimf_client_result->reply->data, "\x1e", -1);
 }

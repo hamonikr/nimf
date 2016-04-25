@@ -3,7 +3,7 @@
  * nimf-candidate.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -30,6 +30,7 @@ struct _NimfCandidate
   GtkWidget      *treeview;
   GtkTreeIter     iter;
   NimfConnection *target;
+  guint16         client_id;
 };
 
 struct _NimfCandidateClass
@@ -70,8 +71,8 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
 
   if (engine_class->candidate_clicked)
     engine_class->candidate_clicked (candidate->target->engine,
-                                     candidate->target, text,
-                                     indices[0]);
+                                     candidate->target, candidate->client_id,
+                                     text, indices[0]);
   g_free (text);
 }
 
@@ -188,7 +189,8 @@ nimf_candidate_update_window (NimfCandidate  *candidate,
 }
 
 void nimf_candidate_show_window (NimfCandidate  *candidate,
-                                 NimfConnection *target)
+                                 NimfConnection *target,
+                                 guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -203,7 +205,8 @@ void nimf_candidate_show_window (NimfCandidate  *candidate,
     gtk_tree_selection_select_iter (selection, &candidate->iter);
   }
 
-  candidate->target = target;
+  candidate->target    = target;
+  candidate->client_id = client_id;
 
   gtk_window_get_size (GTK_WINDOW (candidate->window), &w, &h);
 

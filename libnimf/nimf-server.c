@@ -78,27 +78,32 @@ on_incoming_message_nimf (GSocket        *socket,
     return G_SOURCE_CONTINUE;
   }
 
+  guint16 client_id = message->header->client_id;
+
   switch (message->header->type)
   {
     case NIMF_MESSAGE_FILTER_EVENT:
       nimf_message_ref (message);
-      retval = nimf_connection_filter_event (connection,
+      retval = nimf_connection_filter_event (connection, client_id,
                                              (NimfEvent *) message->data);
       nimf_message_unref (message);
-      nimf_send_message (socket, NIMF_MESSAGE_FILTER_EVENT_REPLY, &retval,
-                         sizeof (gboolean), NULL);
+      nimf_send_message (socket, client_id, NIMF_MESSAGE_FILTER_EVENT_REPLY,
+                         &retval, sizeof (gboolean), NULL);
       break;
     case NIMF_MESSAGE_RESET:
-      nimf_connection_reset (connection);
-      nimf_send_message (socket, NIMF_MESSAGE_RESET_REPLY, NULL, 0, NULL);
+      nimf_connection_reset (connection, client_id);
+      nimf_send_message (socket, client_id, NIMF_MESSAGE_RESET_REPLY,
+                         NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_FOCUS_IN:
       nimf_connection_focus_in (connection);
-      nimf_send_message (socket, NIMF_MESSAGE_FOCUS_IN_REPLY, NULL, 0, NULL);
+      nimf_send_message (socket, client_id, NIMF_MESSAGE_FOCUS_IN_REPLY,
+                         NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_FOCUS_OUT:
-      nimf_connection_focus_out (connection);
-      nimf_send_message (socket, NIMF_MESSAGE_FOCUS_OUT_REPLY, NULL, 0, NULL);
+      nimf_connection_focus_out (connection, client_id);
+      nimf_send_message (socket, client_id, NIMF_MESSAGE_FOCUS_OUT_REPLY,
+                         NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_SET_SURROUNDING:
       {
@@ -112,8 +117,8 @@ on_incoming_message_nimf (GSocket        *socket,
         nimf_connection_set_surrounding (connection, data, str_len,
                                          cursor_index);
         nimf_message_unref (message);
-        nimf_send_message (socket, NIMF_MESSAGE_SET_SURROUNDING_REPLY,
-                           NULL, 0, NULL);
+        nimf_send_message (socket, client_id,
+                           NIMF_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
       }
       break;
     case NIMF_MESSAGE_GET_SURROUNDING:
@@ -122,15 +127,15 @@ on_incoming_message_nimf (GSocket        *socket,
         gint   cursor_index;
         gint   str_len = 0;
 
-        retval = nimf_connection_get_surrounding (connection, &data,
+        retval = nimf_connection_get_surrounding (connection, client_id, &data,
                                                   &cursor_index);
         str_len = strlen (data);
         data = g_realloc (data, str_len + 1 + sizeof (gint) + sizeof (gboolean));
         *(gint *) (data + str_len + 1) = cursor_index;
         *(gboolean *) (data + str_len + 1 + sizeof (gint)) = retval;
 
-        nimf_send_message (socket, NIMF_MESSAGE_GET_SURROUNDING_REPLY,
-                           data,
+        nimf_send_message (socket, client_id,
+                           NIMF_MESSAGE_GET_SURROUNDING_REPLY, data,
                            str_len + 1 + sizeof (gint) + sizeof (gboolean),
                            NULL);
         g_free (data);
@@ -141,14 +146,16 @@ on_incoming_message_nimf (GSocket        *socket,
       nimf_connection_set_cursor_location (connection,
                                            (NimfRectangle *) message->data);
       nimf_message_unref (message);
-      nimf_send_message (socket, NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY,
+      nimf_send_message (socket, client_id,
+                         NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_SET_USE_PREEDIT:
       nimf_message_ref (message);
-      nimf_connection_set_use_preedit (connection, *(gboolean *) message->data);
+      nimf_connection_set_use_preedit (connection, client_id,
+                                       *(gboolean *) message->data);
       nimf_message_unref (message);
-      nimf_send_message (socket, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
+      nimf_send_message (socket, client_id, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS:
@@ -170,7 +177,8 @@ on_incoming_message_nimf (GSocket        *socket,
           g_string_append_c (string, 0x1e);
         }
 
-        nimf_send_message (socket, NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY,
+        nimf_send_message (socket, client_id,
+                           NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY,
                            string->str, string->len + 1, NULL);
         g_string_free (string, TRUE);
       }
@@ -193,8 +201,8 @@ on_incoming_message_nimf (GSocket        *socket,
                                               message->data, is_english_mode);
 
         nimf_message_unref (message);
-        nimf_send_message (socket, NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY,
-                           NULL, 0, NULL);
+        nimf_send_message (socket, client_id,
+                           NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY, NULL, 0, NULL);
       }
       break;
     case NIMF_MESSAGE_PREEDIT_START_REPLY:
@@ -250,11 +258,11 @@ on_new_connection (GSocketService    *service,
   {
     g_critical (G_STRLOC ": Couldn't connect");
     nimf_message_unref (message);
-    nimf_send_message (socket, NIMF_MESSAGE_ERROR, NULL, 0, NULL);
+    nimf_send_message (socket, 0, NIMF_MESSAGE_ERROR, NULL, 0, NULL);
     return FALSE;
   }
 
-  nimf_send_message (socket, NIMF_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
+  nimf_send_message (socket, 0, NIMF_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
 
   NimfConnection *connection;
   connection = nimf_connection_new (*(NimfConnectionType *) message->data,
@@ -318,13 +326,6 @@ nimf_server_initable_init (GInitable     *initable,
   server->run_signal_handler_id =
     g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
                       (GCallback) on_new_connection, server);
-/*
-  server->run_signal_handler_id = g_signal_connect (G_SOCKET_SERVICE (server->listener),
-                                                    "run",
-                                                    G_CALLBACK (on_run),
-                                                    server);
-*/
-
   return TRUE;
 }
 
@@ -678,10 +679,10 @@ int nimf_server_xim_set_ic_values (NimfServer       *server,
       switch (state)
       {
         case XIMPreeditEnable:
-          nimf_connection_set_use_preedit (connection, TRUE);
+          nimf_connection_set_use_preedit (connection, data->icid, TRUE);
           break;
         case XIMPreeditDisable:
-          nimf_connection_set_use_preedit (connection, FALSE);
+          nimf_connection_set_use_preedit (connection, data->icid, FALSE);
           break;
         default:
           g_message ("XIMPreeditState: %ld is ignored", state);
@@ -820,7 +821,7 @@ int nimf_server_xim_unset_ic_focus (NimfServer          *server,
   g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
            G_STRFUNC, data->icid, connection->id);
 
-  nimf_connection_focus_out (connection);
+  nimf_connection_focus_out (connection, data->icid);
 
   return 1;
 }
@@ -863,7 +864,7 @@ int nimf_server_xim_forward_event (NimfServer           *server,
   NimfConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  retval = nimf_connection_filter_event (connection, event);
+  retval = nimf_connection_filter_event (connection, data->icid, event);
   nimf_event_free (event);
 
   if (!retval && !server->disable_fallback_filter_for_xim)
@@ -880,7 +881,7 @@ int nimf_server_xim_forward_event (NimfServer           *server,
 
     if (ch != 0 && !g_unichar_iscntrl (ch))
     {
-      nimf_connection_emit_commit (connection, buf);
+      nimf_connection_emit_commit (connection, data->icid, buf);
       retval = TRUE;
     }
     else
@@ -904,7 +905,7 @@ int nimf_server_xim_reset_ic (NimfServer      *server,
   NimfConnection *connection;
   connection = g_hash_table_lookup (server->connections,
                                     GUINT_TO_POINTER (data->icid));
-  nimf_connection_reset (connection);
+  nimf_connection_reset (connection, data->icid);
 
   return 1;
 }

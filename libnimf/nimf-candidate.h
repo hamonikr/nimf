@@ -3,7 +3,7 @@
  * nimf-candidate.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -49,15 +49,16 @@ NimfCandidate *nimf_candidate_new                   (void);
 void           nimf_candidate_update_window         (NimfCandidate  *candidate,
                                                      const gchar   **strv);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
-                                                     NimfConnection *target);
-gboolean      nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
+                                                     NimfConnection *target,
+                                                     guint16         client_id);
+gboolean       nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);
 void           nimf_candidate_select_previous_item  (NimfCandidate  *candidate);
 void           nimf_candidate_select_next_item      (NimfCandidate  *candidate);
 void           nimf_candidate_select_page_up_item   (NimfCandidate  *candidate);
 void           nimf_candidate_select_page_down_item (NimfCandidate  *candidate);
 gchar         *nimf_candidate_get_selected_text     (NimfCandidate  *candidate);
-gint          nimf_candidate_get_selected_index    (NimfCandidate  *candidate);
+gint           nimf_candidate_get_selected_index    (NimfCandidate  *candidate);
 
 G_END_DECLS
 

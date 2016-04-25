@@ -3,7 +3,7 @@
  * nimf-private.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -24,6 +24,7 @@
 
 void
 nimf_send_message (GSocket         *socket,
+                   guint16          client_id,
                    NimfMessageType  type,
                    gpointer         data,
                    guint16          data_len,
@@ -36,7 +37,8 @@ nimf_send_message (GSocket         *socket,
   GError *error = NULL;
   gssize n_written;
 
-  message = nimf_message_new_full (type, data, data_len, data_destroy_func);
+  message = nimf_message_new_full (type, client_id,
+                                   data, data_len, data_destroy_func);
   header  = nimf_message_get_header (message);
 
   n_written = g_socket_send (socket,
@@ -210,6 +212,7 @@ void nimf_log_default_handler (const gchar    *log_domain,
 void
 nimf_result_iteration_until (NimfResult      *result,
                              GMainContext    *main_context,
+                             guint16          client_id,
                              NimfMessageType  type)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -218,7 +221,8 @@ nimf_result_iteration_until (NimfResult      *result,
     result->is_dispatched = FALSE;
     g_main_context_iteration (main_context, TRUE);
   } while ((result->is_dispatched == FALSE) ||
-           (result->reply && (result->reply->header->type != type)));
+           (result->reply && ((result->reply->header->type != type) ||
+                              (result->reply->header->client_id != client_id))));
 
   if (G_UNLIKELY (result->is_dispatched == TRUE && result->reply == NULL))
     g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,

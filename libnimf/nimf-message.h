@@ -81,6 +81,7 @@ typedef enum
 
 struct _NimfMessageHeader
 {
+  guint16         client_id;
   NimfMessageType type;
   guint16         data_len;
 };
@@ -95,6 +96,7 @@ struct _NimfMessage
 
 NimfMessage  *nimf_message_new              (void);
 NimfMessage  *nimf_message_new_full         (NimfMessageType  type,
+                                             guint16          im_id,
                                              gpointer         data,
                                              guint16          data_len,
                                              GDestroyNotify   data_destroy_func);

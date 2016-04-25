@@ -124,6 +124,7 @@ guint nimf_event_keycode_to_qwerty_keyval (const NimfEvent *event)
 static void
 nimf_libhangul_update_preedit (NimfEngine     *engine,
                                NimfConnection *target,
+                               guint16         client_id,
                                gchar          *new_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -134,46 +135,47 @@ nimf_libhangul_update_preedit (NimfEngine     *engine,
   if (hangul->preedit_state == NIMF_PREEDIT_STATE_END && new_preedit[0] != 0)
   {
     hangul->preedit_state = NIMF_PREEDIT_STATE_START;
-    nimf_engine_emit_preedit_start (engine, target);
+    nimf_engine_emit_preedit_start (engine, target, client_id);
   }
-
   /* preedit-changed */
   if (hangul->preedit_string[0] != 0 || new_preedit[0] != 0)
   {
     g_free (hangul->preedit_string);
     hangul->preedit_string = new_preedit;
-    nimf_engine_emit_preedit_changed (engine, target,
+    nimf_engine_emit_preedit_changed (engine, target, client_id,
                                       hangul->preedit_string,
                                       g_utf8_strlen (hangul->preedit_string,
                                                      -1));
   }
   else
     g_free (new_preedit);
-
   /* preedit-end */
   if (hangul->preedit_state == NIMF_PREEDIT_STATE_START &&
       hangul->preedit_string[0] == 0)
   {
     hangul->preedit_state = NIMF_PREEDIT_STATE_END;
-    nimf_engine_emit_preedit_end (engine, target);
+    nimf_engine_emit_preedit_end (engine, target, client_id);
   }
 }
 
 void
 nimf_libhangul_emit_commit (NimfEngine     *engine,
                             NimfConnection *target,
+                            guint16         client_id,
                             const gchar    *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfLibhangul *hangul = NIMF_LIBHANGUL (engine);
   hangul->is_committing = TRUE;
-  nimf_engine_emit_commit (engine, target, text);
+  nimf_engine_emit_commit (engine, target, client_id, text);
   hangul->is_committing = FALSE;
 }
 
 void
-nimf_libhangul_reset (NimfEngine *engine, NimfConnection *target)
+nimf_libhangul_reset (NimfEngine     *engine,
+                      NimfConnection *target,
+                      guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -194,11 +196,11 @@ nimf_libhangul_reset (NimfEngine *engine, NimfConnection *target)
   if (flush[0] != 0)
   {
     gchar *text = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
-    nimf_libhangul_emit_commit (engine, target, text);
+    nimf_libhangul_emit_commit (engine, target, client_id, text);
     g_free (text);
   }
 
-  nimf_libhangul_update_preedit (engine, target, g_strdup (""));
+  nimf_libhangul_update_preedit (engine, target, client_id, g_strdup (""));
 }
 
 void
@@ -210,18 +212,21 @@ nimf_libhangul_focus_in (NimfEngine *engine)
 }
 
 void
-nimf_libhangul_focus_out (NimfEngine *engine, NimfConnection  *target)
+nimf_libhangul_focus_out (NimfEngine     *engine,
+                          NimfConnection *target,
+                          guint16         client_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_return_if_fail (NIMF_IS_ENGINE (engine));
 
-  nimf_libhangul_reset (engine, target);
+  nimf_libhangul_reset (engine, target, client_id);
 }
 
 static void
 on_candidate_clicked (NimfEngine     *engine,
                       NimfConnection *target,
+                      guint16         client_id,
                       gchar          *text,
                       gint            index)
 {
@@ -233,8 +238,8 @@ on_candidate_clicked (NimfEngine     *engine,
   {
     /* hangul_ic 내부의 commit text가 사라집니다 */
     hangul_ic_reset (hangul->context);
-    nimf_libhangul_emit_commit (engine, target, text);
-    nimf_libhangul_update_preedit (engine, target, g_strdup (""));
+    nimf_libhangul_emit_commit (engine, target, client_id, text);
+    nimf_libhangul_update_preedit (engine, target, client_id, g_strdup (""));
   }
 
   nimf_engine_hide_candidate_window (NIMF_ENGINE (hangul));
@@ -244,6 +249,7 @@ on_candidate_clicked (NimfEngine     *engine,
 static gboolean
 nimf_libhangul_filter_leading_consonant (NimfEngine     *engine,
                                          NimfConnection *target,
+                                         guint16         client_id,
                                          guint           keyval)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -261,9 +267,9 @@ nimf_libhangul_filter_leading_consonant (NimfEngine     *engine,
       (keyval == 'w' && ucs_preedit[0] == 0x3148 && ucs_preedit[1] == 0))
   {
     gchar *preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
-    nimf_libhangul_emit_commit (engine, target, preedit);
+    nimf_libhangul_emit_commit (engine, target, client_id, preedit);
     g_free (preedit);
-    nimf_engine_emit_preedit_changed (engine, target,
+    nimf_engine_emit_preedit_changed (engine, target, client_id,
                                       hangul->preedit_string,
                                       g_utf8_strlen (hangul->preedit_string,
                                                      -1));
@@ -276,6 +282,7 @@ nimf_libhangul_filter_leading_consonant (NimfEngine     *engine,
 gboolean
 nimf_libhangul_filter_event (NimfEngine     *engine,
                              NimfConnection *target,
+                             guint16         client_id,
                              NimfEvent      *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -292,13 +299,13 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
 
   if (event->key.state & (NIMF_CONTROL_MASK | NIMF_MOD1_MASK))
   {
-    nimf_libhangul_reset (engine, target);
+    nimf_libhangul_reset (engine, target, client_id);
     return FALSE;
   }
 
   if (nimf_event_matches (event, (const NimfKey **) hangul->hangul_keys))
   {
-    nimf_libhangul_reset (engine, target);
+    nimf_libhangul_reset (engine, target, client_id);
     hangul->is_english_mode = !hangul->is_english_mode;
     nimf_engine_emit_engine_changed (engine, target);
     return TRUE;
@@ -336,7 +343,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
 
       nimf_engine_update_candidate_window (engine, (const gchar **) strv);
       g_strfreev (strv);
-      nimf_engine_show_candidate_window (engine, target);
+      nimf_engine_show_candidate_window (engine, target, client_id);
     }
     else
     {
@@ -355,7 +362,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
       case NIMF_KEY_KP_Enter:
         {
           gchar *text = nimf_engine_get_selected_candidate_text (engine);
-          on_candidate_clicked (engine, target, text, -1);
+          on_candidate_clicked (engine, target, client_id, text, -1);
           g_free (text);
         }
         break;
@@ -397,7 +404,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
     {
       ucs_preedit = hangul_ic_get_preedit_string (hangul->context);
       gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
-      nimf_libhangul_update_preedit (engine, target, new_preedit);
+      nimf_libhangul_update_preedit (engine, target, client_id, new_preedit);
     }
 
     return retval;
@@ -407,7 +414,8 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
 
   if (!hangul->is_double_consonant_rule &&
       (g_strcmp0 (hangul->layout, "2") == 0) && /* 두벌식에만 적용 */
-      nimf_libhangul_filter_leading_consonant (engine, target, keyval))
+      nimf_libhangul_filter_leading_consonant (engine, target,
+                                               client_id, keyval))
     return TRUE;
 
   retval = hangul_ic_process (hangul->context, keyval);
@@ -418,12 +426,12 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
   gchar *new_commit  = g_ucs4_to_utf8 (ucs_commit,  -1, NULL, NULL, NULL);
 
   if (ucs_commit[0] != 0)
-    nimf_libhangul_emit_commit (engine, target, new_commit);
+    nimf_libhangul_emit_commit (engine, target, client_id, new_commit);
 
   g_free (new_commit);
 
   gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
-  nimf_libhangul_update_preedit (engine, target, new_preedit);
+  nimf_libhangul_update_preedit (engine, target, client_id, new_preedit);
 
   return retval;
 }
