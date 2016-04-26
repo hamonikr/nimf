@@ -23,7 +23,6 @@
 #include "nimf-events.h"
 #include "nimf-types.h"
 #include "nimf-enum-types.h"
-#include "nimf-module-manager.h"
 #include "nimf-key-syms.h"
 #include "nimf-marshalers.h"
 #include <gio/gunixsocketaddress.h>

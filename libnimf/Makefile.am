@@ -45,8 +45,6 @@ libnimf_la_SOURCES = \
 	nimf-engine.h \
 	nimf-module.h \
 	nimf-module.c \
-	nimf-module-manager.h \
-	nimf-module-manager.c \
 	nimf-key-syms.h \
 	nimf-key-syms.c \
 	nimf-message.h \
@@ -87,7 +85,6 @@ nimfinclude_HEADERS = \
 	nimf-im.h \
 	nimf-key-syms.h \
 	nimf-message.h \
-	nimf-module-manager.h \
 	nimf-private.h \
 	nimf-server.h \
 	nimf-types.h

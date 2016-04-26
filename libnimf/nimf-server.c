@@ -22,11 +22,11 @@
 #include "config.h"
 #include "nimf-server.h"
 #include "nimf-private.h"
-#include <string.h>
-#include <gio/gunixsocketaddress.h>
 #include "nimf-module.h"
-#include "IMdkit/Xi18n.h"
 #include "nimf-key-syms.h"
+#include "nimf-candidate.h"
+#include <gio/gunixsocketaddress.h>
+#include "IMdkit/Xi18n.h"
 #include <X11/XKBlib.h>
 
 enum
@@ -413,7 +413,7 @@ static GList *nimf_server_create_module_instances (NimfServer *server)
   GHashTableIter iter;
   gpointer value;
 
-  g_hash_table_iter_init (&iter, server->module_manager->modules);
+  g_hash_table_iter_init (&iter, server->modules);
   while (g_hash_table_iter_next (&iter, NULL, &value))
   {
     NimfModule *module = value;
@@ -453,6 +453,57 @@ on_changed_disable_fallback_filter_for_xim (GSettings  *settings,
 }
 
 static void
+nimf_server_load_module (NimfServer  *server,
+                         const gchar *path)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfModule *module;
+
+  module = nimf_module_new (path);
+
+  if (!g_type_module_use (G_TYPE_MODULE (module)))
+  {
+    g_warning (G_STRLOC ":" "Failed to load module: %s", path);
+    g_object_unref (module);
+    return;
+  }
+
+  g_hash_table_insert (server->modules, g_strdup (path), module);
+
+  g_type_module_unuse (G_TYPE_MODULE (module));
+}
+
+static void
+nimf_server_load_modules (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GDir        *dir;
+  GError      *error = NULL;
+  const gchar *filename;
+  gchar       *path;
+
+  dir = g_dir_open (NIMF_MODULE_DIR, 0, &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  while ((filename = g_dir_read_name (dir)))
+  {
+    path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, filename, NULL);
+    nimf_server_load_module (server, path);
+    g_free (path);
+  }
+
+  g_dir_close (dir);
+}
+
+static void
 nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -473,7 +524,11 @@ nimf_server_init (NimfServer *server)
                     server);
 
   server->candidate = nimf_candidate_new ();
-  server->module_manager = nimf_module_manager_get_default ();
+
+  server->modules = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                           g_free, NULL);
+  nimf_server_load_modules (server);
+
   server->instances = nimf_server_create_module_instances (server);
 
   server->main_context = g_main_context_ref_thread_default ();
@@ -517,7 +572,7 @@ nimf_server_finalize (GObject *object)
   if (server->listener != NULL)
     g_object_unref (server->listener);
 
-  g_object_unref (server->module_manager);
+  g_hash_table_unref (server->modules);
 
   if (server->instances)
   {

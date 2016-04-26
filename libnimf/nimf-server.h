@@ -27,7 +27,6 @@
 #endif
 
 #include <glib-object.h>
-#include "nimf-module-manager.h"
 #include <gio/gio.h>
 #include "nimf-types.h"
 #include "nimf-candidate.h"
@@ -52,16 +51,16 @@ struct _NimfServer
 {
   GObject parent_instance;
 
-  GMainContext       *main_context;
-  NimfModuleManager  *module_manager;
-  GList              *instances;
-  GSocketListener    *listener;
-  GHashTable         *connections;
-  GList              *agents_list;
+  GMainContext    *main_context;
+  GHashTable      *modules;
+  GList           *instances;
+  GSocketListener *listener;
+  GHashTable      *connections;
+  GList           *agents_list;
 
-  NimfCandidate      *candidate;
-  GSource            *xevent_source;
-  guint16             next_id;
+  NimfCandidate   *candidate;
+  GSource         *xevent_source;
+  guint16          next_id;
 
   gchar     *address;
   gboolean   active;
