@@ -61,6 +61,7 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(NIMF_ANTHY_DEPS,     [anthy               $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0       $LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,               [$LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
 dnl  Qt
@@ -190,5 +191,6 @@ AC_OUTPUT([
   modules/engines/nimf-anthy/Makefile
   modules/engines/nimf-libhangul/Makefile
   modules/engines/nimf-sunpinyin/Makefile
+  modules/engines/nimf-system-keyboard/Makefile
   po/Makefile.in
 ])

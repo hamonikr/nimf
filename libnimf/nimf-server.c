@@ -475,6 +475,22 @@ nimf_server_load_module (NimfServer  *server,
 }
 
 static void
+nimf_server_load_system_keyboard_engine (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar *soname;
+  gchar *path;
+
+  soname = g_strdup_printf ("%s.so", NIMF_SYSTEM_KEYBOARD_ID);
+  path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, soname, NULL);
+  nimf_server_load_module (server, path);
+
+  g_free (soname);
+  g_free (path);
+}
+
+static void
 nimf_server_load_active_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -528,6 +544,7 @@ nimf_server_init (NimfServer *server)
 
   server->modules = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free, NULL);
+  nimf_server_load_system_keyboard_engine (server);
   nimf_server_load_active_engines (server);
 
   server->instances = nimf_server_create_module_instances (server);

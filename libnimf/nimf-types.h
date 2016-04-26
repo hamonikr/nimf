@@ -30,8 +30,9 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_ADDRESS "unix:abstract=nimf"
-#define NIMF_ERROR   nimf_error_quark ()
+#define NIMF_ADDRESS            "unix:abstract=nimf"
+#define NIMF_SYSTEM_KEYBOARD_ID "nimf-system-keyboard"
+#define NIMF_ERROR               nimf_error_quark ()
 
 typedef enum
 {
