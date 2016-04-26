@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema id="org.nimf" path="/org/nimf/">
-    <key type="s" name="default-engine">
-      <default>'nimf-libhangul'</default>
-      <summary>default input method engine</summary>
-      <description>default input method engine</description>
-    </key>
     <key type="as" name="hotkeys">
       <default>['control-mask space']</default>
       <summary>Hotkeys for switching input method engine</summary>
@@ -15,6 +10,13 @@
       <default>true</default>
       <summary>Disable fallback filter for XIM</summary>
       <description>Disable fallback filter for XIM</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines" path="/org/nimf/engines/">
+    <key type="s" name="default-engine">
+      <default>'nimf-libhangul'</default>
+      <summary>default input method engine</summary>
+      <description>default input method engine</description>
     </key>
   </schema>
 </schemalist>

@@ -394,7 +394,7 @@ nimf_server_get_default_engine (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSettings *settings = g_settings_new ("org.nimf");
+  GSettings *settings = g_settings_new ("org.nimf.engines");
   gchar *engine_id = g_settings_get_string (settings, "default-engine");
   NimfEngine *engine = nimf_server_get_instance (server, engine_id);
 
