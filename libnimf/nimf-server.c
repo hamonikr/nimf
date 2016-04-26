@@ -475,32 +475,33 @@ nimf_server_load_module (NimfServer  *server,
 }
 
 static void
-nimf_server_load_modules (NimfServer *server)
+nimf_server_load_active_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GDir        *dir;
-  GError      *error = NULL;
-  const gchar *filename;
+  GSettings   *settings;
+  gchar      **ids;
+  gchar       *soname;
   gchar       *path;
+  const gchar *id;
+  gint         i;
 
-  dir = g_dir_open (NIMF_MODULE_DIR, 0, &error);
+  settings = g_settings_new ("org.nimf.engines");
+  ids      = g_settings_get_strv (settings, "active-engines");
 
-  if (error)
+  for (i = 0; ids[i] != NULL; i++)
   {
-    g_warning (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
-    g_clear_error (&error);
-    return;
-  }
-
-  while ((filename = g_dir_read_name (dir)))
-  {
-    path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, filename, NULL);
+    id = ids[i];
+    soname = g_strdup_printf ("%s.so", id);
+    path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, soname, NULL);
     nimf_server_load_module (server, path);
+
+    g_free (soname);
     g_free (path);
   }
 
-  g_dir_close (dir);
+  g_object_unref (settings);
+  g_strfreev (ids);
 }
 
 static void
@@ -527,7 +528,7 @@ nimf_server_init (NimfServer *server)
 
   server->modules = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free, NULL);
-  nimf_server_load_modules (server);
+  nimf_server_load_active_engines (server);
 
   server->instances = nimf_server_create_module_instances (server);
 

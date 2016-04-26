@@ -18,5 +18,10 @@
       <summary>default input method engine</summary>
       <description>default input method engine</description>
     </key>
+    <key type="as" name="active-engines">
+      <default>['nimf-sunpinyin', 'nimf-libhangul']</default>
+      <summary>Active engines</summary>
+      <description>A list of the IDs of the active engines. These engines will be loaded on startup if available.</description>
+    </key>
   </schema>
 </schemalist>
