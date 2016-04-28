@@ -1,3 +1,12 @@
+nimf (2016.04.28) stable; urgency=medium
+
+  * Added nimf-system-keyboard engine
+  * Added "active-engines" key
+  * Integrated NimfModuleManager into NimfServer
+  * Moved "default-engine" key to /org/nimf/engines/
+
+ -- hodong <cogniti@gmail.com>  Thu, 28 Apr 2016 12:51:54 +0900
+
 nimf (2016.04.26) stable; urgency=medium
 
   * Initial Release

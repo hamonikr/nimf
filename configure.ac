@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2016.04.26, https://github.com/cogniti/nimf/issues)
+AC_INIT(nimf, 2016.04.28, https://github.com/cogniti/nimf/issues)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
