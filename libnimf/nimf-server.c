@@ -479,14 +479,11 @@ nimf_server_load_system_keyboard_engine (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar *soname;
   gchar *path;
 
-  soname = g_strdup_printf ("%s.so", NIMF_SYSTEM_KEYBOARD_ID);
-  path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, soname, NULL);
+  path = g_module_build_path (NIMF_MODULE_DIR, NIMF_SYSTEM_KEYBOARD_ID);
   nimf_server_load_module (server, path);
 
-  g_free (soname);
   g_free (path);
 }
 
@@ -497,7 +494,6 @@ nimf_server_load_active_engines (NimfServer *server)
 
   GSettings   *settings;
   gchar      **ids;
-  gchar       *soname;
   gchar       *path;
   const gchar *id;
   gint         i;
@@ -508,11 +504,9 @@ nimf_server_load_active_engines (NimfServer *server)
   for (i = 0; ids[i] != NULL; i++)
   {
     id = ids[i];
-    soname = g_strdup_printf ("%s.so", id);
-    path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, soname, NULL);
+    path = g_module_build_path (NIMF_MODULE_DIR, id);
     nimf_server_load_module (server, path);
 
-    g_free (soname);
     g_free (path);
   }
 
