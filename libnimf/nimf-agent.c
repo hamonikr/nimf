@@ -93,13 +93,6 @@ nimf_agent_set_engine_by_id (NimfAgent   *agent,
                                NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY);
 }
 
-NimfEngineInfo *
-nimf_agent_get_engine_info (gchar *name)
-{
-  /* TODO */
-  return NULL;
-}
-
 /**
  * nimf_agent_get_loaded_engine_ids:
  * @agent: a #NimfAgent.

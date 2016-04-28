@@ -4,5 +4,9 @@ indicator/nimf-indicator.c
 libnimf/org.nimf.gschema.xml
 modules/clients/gtk/im-nimf.c
 modules/clients/gtk/org.nimf.clients.gtk.gschema.xml
+modules/engines/nimf-anthy/nimf-anthy.c
+modules/engines/nimf-libhangul/nimf-libhangul.c
 modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml
+modules/engines/nimf-sunpinyin/nimf-sunpinyin.cpp
 modules/engines/nimf-sunpinyin/org.nimf.engines.sunpinyin.gschema.xml
+modules/engines/nimf-system-keyboard/nimf-system-keyboard.c

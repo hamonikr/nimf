@@ -21,7 +21,7 @@
 
 #include <nimf.h>
 #include <hangul.h>
-#include <stdlib.h>
+#include <glib/gi18n.h>
 
 #define NIMF_TYPE_LIBHANGUL             (nimf_libhangul_get_type ())
 #define NIMF_LIBHANGUL(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_LIBHANGUL, NimfLibhangul))
@@ -695,6 +695,19 @@ static void
 nimf_libhangul_class_finalize (NimfLibhangulClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+static const NimfEngineInfo engine_info = {
+  "nimf-libhangul",      /* ID */
+  N_("Korean (Hangul)"), /* Human readable name */
+  "nimf-indicator-ko"    /* icon name */
+};
+
+const NimfEngineInfo *module_get_info ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)

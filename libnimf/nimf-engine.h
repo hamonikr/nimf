@@ -42,10 +42,11 @@ G_BEGIN_DECLS
 
 typedef struct _NimfEngineInfo NimfEngineInfo;
 
-/* TODO */
 struct _NimfEngineInfo
 {
-  const gchar *engine_name;
+  const gchar *engine_id;        /* ID is module name */
+  const gchar *engine_name;      /* Human readable name */
+  const gchar *engine_icon_name; /* icon name */
 };
 
 typedef struct _NimfConnection    NimfConnection;
@@ -176,8 +177,9 @@ void     nimf_engine_select_page_down_candidate_item (NimfEngine      *engine);
 gchar   *nimf_engine_get_selected_candidate_text     (NimfEngine      *engine);
 gint     nimf_engine_get_selected_candidate_index    (NimfEngine      *engine);
 /* info */
-const gchar *nimf_engine_get_id        (NimfEngine *engine);
-const gchar *nimf_engine_get_icon_name (NimfEngine *engine);
+const gchar    *nimf_engine_get_id         (NimfEngine *engine);
+const gchar    *nimf_engine_get_icon_name  (NimfEngine *engine);
+NimfEngineInfo *nimf_engine_get_info_by_id (gchar      *engine_id);
 
 G_END_DECLS
 

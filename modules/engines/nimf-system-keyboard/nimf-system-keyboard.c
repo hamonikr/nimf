@@ -20,6 +20,7 @@
  */
 
 #include <nimf.h>
+#include <glib/gi18n.h>
 
 #define NIMF_TYPE_SYSTEM_KEYBOARD               (nimf_system_keyboard_get_type ())
 #define NIMF_SYSTEM_KEYBOARD(object)            (G_TYPE_CHECK_INSTANCE_CAST ((object), NIMF_TYPE_SYSTEM_KEYBOARD, NimfSystemKeyboard))
@@ -105,6 +106,19 @@ static void
 nimf_system_keyboard_class_finalize (NimfSystemKeyboardClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+static const NimfEngineInfo engine_info = {
+  "nimf-system-keyboard",   /* ID */
+  N_("System Keyboard"),    /* Human readable name */
+  "nimf-indicator-keyboard" /* icon name */
+};
+
+const NimfEngineInfo *module_get_info ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)

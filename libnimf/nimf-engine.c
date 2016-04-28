@@ -484,6 +484,48 @@ nimf_engine_real_get_icon_name (NimfEngine *engine)
   return NULL;
 }
 
+NimfEngineInfo *nimf_engine_get_info_by_id (gchar *engine_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GModule *library;
+  gchar   *path;
+  NimfEngineInfo * (* get_info_func) (void);
+  NimfEngineInfo *info;
+  NimfEngineInfo *retval;
+
+  path    = g_module_build_path (NIMF_MODULE_DIR, engine_id);
+  library = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+
+  g_free (path);
+
+  if (library == NULL)
+  {
+    g_warning (G_STRLOC ": %s", g_module_error ());
+    return NULL;
+  }
+
+  if (!g_module_symbol (library, "module_get_info",
+                        (gpointer *) &get_info_func))
+  {
+    g_warning (G_STRLOC ": %s", g_module_error ());
+    g_module_close (library);
+
+    return NULL;
+  }
+
+  info = get_info_func ();
+  retval = g_slice_new (NimfEngineInfo);
+
+  retval->engine_id        = g_strdup (info->engine_id);
+  retval->engine_name      = g_strdup (info->engine_name);
+  retval->engine_icon_name = g_strdup (info->engine_icon_name);
+
+  g_module_close (library);
+
+  return retval;
+}
+
 static void
 nimf_engine_class_init (NimfEngineClass *class)
 {
@@ -500,7 +542,6 @@ nimf_engine_class_init (NimfEngineClass *class)
   class->get_preedit_string  = nimf_engine_real_get_preedit_string;
   class->set_surrounding     = nimf_engine_real_set_surrounding;
   class->get_surrounding     = nimf_engine_real_get_surrounding;
- /* TODO: maybe get_engine_info */
   class->get_id              = nimf_engine_real_get_id;
   class->get_icon_name       = nimf_engine_real_get_icon_name;
 

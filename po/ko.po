@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-03-08 00:55+0900\n"
+"PO-Revision-Date: 2016-04-29 04:43\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,61 +18,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:121
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:119
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:122
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:120
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:123
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:121
 msgid "Version"
 msgstr "버전"
 
-#: ../indicator/nimf-indicator.c:51 ../indicator/nimf-indicator.c:52
-#: ../indicator/nimf-indicator.c:53 ../indicator/nimf-indicator.c:66
+#: ../indicator/nimf-indicator.c:49 ../indicator/nimf-indicator.c:50
+#: ../indicator/nimf-indicator.c:51 ../indicator/nimf-indicator.c:64
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../indicator/nimf-indicator.c:60
+#: ../indicator/nimf-indicator.c:58
 msgid "An indicator for Nimf"
 msgstr "님프를 위한 표시기"
 
-#: ../indicator/nimf-indicator.c:61
+#: ../indicator/nimf-indicator.c:59
 msgid "Copyright (c) 2015,2016 Hodong Kim"
 msgstr "저작권 (c) 2015,2016 김호동"
 
-#: ../indicator/nimf-indicator.c:65
+#: ../indicator/nimf-indicator.c:63
 msgid "Nimf Indicator"
 msgstr "님프 표시기"
 
-#: ../indicator/nimf-indicator.c:69
+#: ../indicator/nimf-indicator.c:67
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../indicator/nimf-indicator.c:205
+#: ../indicator/nimf-indicator.c:203
 msgid "About"
 msgstr "정보"
 
-#: ../indicator/nimf-indicator.c:206
+#: ../indicator/nimf-indicator.c:204
 msgid "Exit"
 msgstr "종료"
 
 #: ../libnimf/org.nimf.gschema.xml.h:1
-msgid "default input method engine"
-msgstr "기본 입력 엔진"
-
-#: ../libnimf/org.nimf.gschema.xml.h:2
 msgid "Hotkeys for switching input method engine"
 msgstr "입력 엔진을 전환하기 위한 핫키"
 
-#: ../libnimf/org.nimf.gschema.xml.h:3
+#: ../libnimf/org.nimf.gschema.xml.h:2
 msgid "Disable fallback filter for XIM"
 msgstr ""
 
+#: ../libnimf/org.nimf.gschema.xml.h:3
+msgid "default input method engine"
+msgstr "기본 입력 엔진"
+
+#: ../libnimf/org.nimf.gschema.xml.h:4
+msgid "Active engines"
+msgstr ""
+
+#: ../libnimf/org.nimf.gschema.xml.h:5
+msgid ""
+"A list of the IDs of the active engines. These engines will be loaded on "
+"startup if available."
+msgstr ""
+
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:492
+#: ../modules/clients/gtk/im-nimf.c:514
 msgid "Nimf"
 msgstr "님프"
 
@@ -94,9 +104,19 @@ msgstr ""
 msgid "Reset on gdk button-press-event, which avoids the bug of firefox 38.3"
 msgstr ""
 
+#. ID
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:227
+msgid "Japanese (Anthy)"
+msgstr "일본어 (Anthy)"
+
+#. ID
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:702
+msgid "Korean (Hangul)"
+msgstr "한국어 (한글)"
+
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:1
 msgid "Korean keyboard layout"
-msgstr ""
+msgstr "한국어 키보드 배열"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:2
 msgid ""
@@ -143,3 +163,17 @@ msgstr ""
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:11
 msgid "Ignore reset() called by commit callback in application"
 msgstr ""
+
+#. ID
+#: ../modules/engines/nimf-sunpinyin/nimf-sunpinyin.cpp:483
+msgid "Chinese (Pinyin)"
+msgstr "중국어 (병음)"
+
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.sunpinyin.gschema.xml.h:1
+msgid "hotkey for switching Chinese / English"
+msgstr ""
+
+#. ID
+#: ../modules/engines/nimf-system-keyboard/nimf-system-keyboard.c:113
+msgid "System Keyboard"
+msgstr "시스템 키보드"

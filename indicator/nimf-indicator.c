@@ -29,17 +29,15 @@
 #include "nimf-private.h"
 #include <stdlib.h>
 
-gboolean syslog_initialized = FALSE;
+static gboolean syslog_initialized = FALSE;
+static NimfAgent *agent = NULL;
 
 static void on_engine_menu (GtkWidget *widget,
-                            NimfAgent *agent)
+                            gchar     *engine_id)
 {
-  /* FIXME: id */
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_agent_set_engine_by_id (agent,
-                               gtk_menu_item_get_label (GTK_MENU_ITEM (widget)),
-                               FALSE);
+  nimf_agent_set_engine_by_id (agent, engine_id, FALSE);
 }
 
 static void on_about_menu (GtkWidget *widget,
@@ -170,7 +168,6 @@ main (int argc, char **argv)
   GtkWidget    *menu_shell;
   GtkWidget    *about_menu;
   GtkWidget    *exit_menu;
-  NimfAgent    *agent;
 
   menu_shell = gtk_menu_new ();
   indicator = app_indicator_new ("nimf-indicator", "input-keyboard",
@@ -187,17 +184,20 @@ main (int argc, char **argv)
                     G_CALLBACK (on_disconnected), indicator);
 
   /* menu */
-  gchar **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
-  GtkWidget *engine_menu;
+  gchar         **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
+  GtkWidget      *engine_menu;
+  NimfEngineInfo *info;
+
   guint i;
 
   for (i = 0; i < g_strv_length (engine_ids); i++)
   {
-    engine_menu = gtk_menu_item_new_with_label (_(engine_ids[i]));
+    info = nimf_engine_get_info_by_id (engine_ids[i]);
+    engine_menu = gtk_menu_item_new_with_label (_(info->engine_name));
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
-    /* FIXME: id */
     g_signal_connect (engine_menu, "activate",
-                      G_CALLBACK (on_engine_menu), agent);
+                      G_CALLBACK (on_engine_menu), engine_ids[i]);
+    g_slice_free (NimfEngineInfo, info);
   }
 
   about_menu = gtk_menu_item_new_with_label (_("About"));

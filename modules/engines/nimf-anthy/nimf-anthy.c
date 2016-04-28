@@ -21,6 +21,7 @@
 
 #include <nimf.h>
 #include <anthy/anthy.h>
+#include <glib/gi18n.h>
 
 #define NIMF_TYPE_ANTHY             (nimf_anthy_get_type ())
 #define NIMF_ANTHY(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_ANTHY, NimfAnthy))
@@ -219,6 +220,19 @@ static void
 nimf_anthy_class_finalize (NimfAnthyClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+static const NimfEngineInfo engine_info = {
+  "nimf-anthy",           /* ID */
+  N_("Japanese (Anthy)"), /* Human readable name */
+  "nimf-indicator-ja"     /* icon name */
+};
+
+const NimfEngineInfo *module_get_info ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)

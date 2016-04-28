@@ -21,6 +21,7 @@
 
 #include <nimf.h>
 #include <sunpinyin.h>
+#include <glib/gi18n.h>
 
 G_BEGIN_DECLS
 
@@ -475,6 +476,19 @@ static void
 nimf_sunpinyin_class_finalize (NimfSunpinyinClass *klass)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+static const NimfEngineInfo engine_info = {
+  "nimf-sunpinyin",      /* ID */
+  N_("Chinese (Pinyin)"), /* Human readable name */
+  "nimf-indicator-zh"    /* icon name */
+};
+
+const NimfEngineInfo *module_get_info ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)
