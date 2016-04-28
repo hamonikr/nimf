@@ -36,18 +36,12 @@ Description: Input Method Framework
  .
  Nimf provides
  .
-  * Input Method Server
-    * nimf-daemon including XIM
+  * Input Method Server: nimf-daemon including XIM
  .
-  * Language Engines
-    * Chinese:  nimf-sunpinyin (based on sunpinyin, under the development)
-    * Japanese: nimf-anthy     (based on anthy, under the development)
-    * Korean:   nimf-libhangul (based on libhangul)
+  * Language Engines for Chinese, Korean, Japanese (not yet)
  .
-  * Client Modules
-    * GTK+2, GTK+3, Qt4, Qt5
+  * Client Modules: GTK+2, GTK+3, Qt4, Qt5
  .
-  * Indicator
-    * nimf-indicator (based on libappindicator3) for Unity, GNOME Panel, KDE
+  * Indicator: nimf-indicator for Unity, GNOME Panel, KDE
  .
   * Development files

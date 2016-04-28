@@ -1,3 +1,16 @@
+nimf (2016.04.29) stable; urgency=medium
+
+  * Added NimfEngineInfo
+  * Fixed a possible fault
+  * Used g_module_build_path instead of g_build_path
+    Renamed nimf-anthy.so to libnimf-anthy.so
+    Renamed nimf-libhangul.so to libnimf-libhangul.so
+    Renamed nimf-sunpinyin.so to libnimf-sunpinyin.so
+    Renamed nimf-system-keyboard.so to libnimf-system-keyboard.so
+  * Generate 16x16 and 48x48 icons
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 29 Apr 2016 05:28:22 +0900
+
 nimf (2016.04.28) stable; urgency=medium
 
   * Added nimf-system-keyboard engine
