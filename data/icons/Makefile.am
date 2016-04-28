@@ -10,6 +10,16 @@ status_scalable_icon_DATA = \
 	scalable/nimf-indicator-zh.svg \
 	scalable/nimf-indicator-ja.svg
 
+# 16x16 icons
+
+status_16_icondir   = $(icon_themedir)/16x16/status/
+status_16_icon_tmp  = $(status_scalable_icon_DATA:scalable/%=16x16/%)
+status_16_icon_DATA = $(status_16_icon_tmp:.svg=.png)
+
+$(status_16_icon_DATA): $(status_scalable_icon_DATA)
+	$(AM_V_GEN) $(MKDIR_P) 16x16; \
+	  $(RSVG_CONVERT) -w 16 -h 16 scalable/`basename "$@" .png`.svg -o $@
+
 # 22x22 icons
 
 status_22_icondir   = $(icon_themedir)/22x22/status/
@@ -48,19 +58,33 @@ update-gtk-icon-cache:
 	  exit 1; \
 	fi
 
+# 48x48 icons
+
+status_48_icondir   = $(icon_themedir)/48x48/status/
+status_48_icon_tmp  = $(status_scalable_icon_DATA:scalable/%=48x48/%)
+status_48_icon_DATA = $(status_48_icon_tmp:.svg=.png)
+
+$(status_48_icon_DATA): $(status_scalable_icon_DATA)
+	$(AM_V_GEN) $(MKDIR_P) 48x48; \
+	  $(RSVG_CONVERT) -w 48 -h 48 scalable/`basename "$@" .png`.svg -o $@
+
 clean-local:
-	-rmdir 22x22 24x24 32x32
+	-rmdir 16x16 22x22 24x24 32x32 48x48
 
 uninstall-hook:
 	 rm    -f $(DESTDIR)$(icon_themedir)/icon-theme.cache
+	-rmdir -p $(DESTDIR)$(icon_themedir)/16x16/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/22x22/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/24x24/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/32x32/status
+	-rmdir -p $(DESTDIR)$(icon_themedir)/48x48/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/scalable/status
 	-$(GTK_UPDATE_ICON_CACHE) -f -t $(icon_themedir)
 
-CLEANFILES = $(status_22_icon_DATA) \
+CLEANFILES = $(status_16_icon_DATA) \
+	           $(status_22_icon_DATA) \
 	           $(status_24_icon_DATA) \
-	           $(status_32_icon_DATA)
+	           $(status_32_icon_DATA) \
+	           $(status_48_icon_DATA)
 
 DISTCLEANFILES = Makefile.in
