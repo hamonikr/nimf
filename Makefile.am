@@ -19,7 +19,7 @@ clean-local:
 	-debian/rules clean
 
 distclean-local:
-	rm -rf autom4te.cache build-aux m4
+	rm -rf autom4te.cache build-aux m4 .anjuta .anjuta_sym_db.db
 
 update-gtk-im-cache:
 	$(GTK_QUERY_IMMODULES2) --update-cache
