@@ -221,7 +221,7 @@ nimf_anthy_class_finalize (NimfAnthyClass *class)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
-void module_load (GTypeModule *type_module)
+void module_register_type (GTypeModule *type_module)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -233,9 +233,4 @@ GType module_get_type ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   return nimf_anthy_get_type ();
-}
-
-void module_unload ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }

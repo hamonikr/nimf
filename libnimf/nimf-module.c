@@ -3,7 +3,7 @@
  * nimf-module.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -56,14 +56,11 @@ nimf_module_load (GTypeModule *gmodule)
   }
 
   if (!g_module_symbol (module->library,
-                        "module_load",
-                        (gpointer *) &module->load) ||
+                        "module_register_type",
+                        (gpointer *) &module->register_type) ||
       !g_module_symbol (module->library,
                         "module_get_type",
-                        (gpointer *) &module->get_type) ||
-      !g_module_symbol (module->library,
-                        "module_unload",
-                        (gpointer *) &module->unload))
+                        (gpointer *) &module->get_type))
   {
     g_warning (G_STRLOC ": %s", g_module_error ());
     g_module_close (module->library);
@@ -71,7 +68,7 @@ nimf_module_load (GTypeModule *gmodule)
     return FALSE;
   }
 
-  module->load (gmodule);
+  module->register_type (gmodule);
   module->type = module->get_type ();
 
   return TRUE;
@@ -84,12 +81,9 @@ nimf_module_unload (GTypeModule *gmodule)
 
   NimfModule *module = NIMF_MODULE (gmodule);
 
-  module->unload ();
-
   g_module_close (module->library);
-
-  module->load   = NULL;
-  module->unload = NULL;
+  module->library = NULL;
+  module->register_type = NULL;
 }
 
 static void

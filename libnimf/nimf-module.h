@@ -1,7 +1,9 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
  * nimf-module.h
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * This file is part of Nimf.
+ *
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -48,9 +50,8 @@ struct _NimfModule
   GModule  *library;
   GType     type;
 
-  void  (* load)     (GTypeModule *module);
-  GType (* get_type) (void);
-  void  (* unload)   (void);
+  void  (* register_type) (GTypeModule *module);
+  GType (* get_type)      (void);
 };
 
 struct _NimfModuleClass
