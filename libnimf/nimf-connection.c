@@ -149,11 +149,11 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  connection->engine = nimf_server_get_instance (connection->server, id);
+  NimfEngine *engine = nimf_server_get_instance (connection->server, id);
 
-  if (G_UNLIKELY (connection->engine == NULL))
-    return;
+  g_return_if_fail (engine != NULL);
 
+  connection->engine = engine;
   connection->is_english_mode = is_english_mode;
   nimf_engine_set_english_mode (connection->engine,
                                 connection->is_english_mode);
