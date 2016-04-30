@@ -1,3 +1,12 @@
+nimf (2016.05.01) stable; urgency=high
+
+  * Fixed a segmentation fault
+    nimf-sunpinyin depends on sunpinyin-data
+  * Check pkg-config, libglib2.0-dev
+    Related issue https://github.com/dasom-im/dasom-jeongeum/issues/9
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 01 May 2016 00:34:51 +0900
+
 nimf (2016.04.29) stable; urgency=medium
 
   * Added NimfEngineInfo

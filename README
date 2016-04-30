@@ -8,8 +8,8 @@ Nimf provides
     * nimf-daemon including XIM
 
   * Language Engines
-    * Chinese:  nimf-sunpinyin (based on sunpinyin, under the development)
-    * Japanese: nimf-anthy     (based on anthy, under the development)
+    * Chinese:  nimf-sunpinyin (in alpha stage, based on sunpinyin)
+    * Japanese: nimf-anthy     (not yet, based on anthy)
     * Korean:   nimf-libhangul (based on libhangul)
 
   * Client Modules
