@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 9),
                librsvg2-bin,
                fonts-noto-cjk,
                libsunpinyin-dev,
+               sunpinyin-data,
                libhangul-dev,
                libanthy-dev
 Standards-Version: 3.9.6
