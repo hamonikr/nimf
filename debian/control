@@ -26,7 +26,7 @@ Homepage: https://github.com/cogniti/nimf
 Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, sunpinyin-data
 Recommends: im-config, dconf-editor, gnome-tweak-tool
 Suggests: fonts-noto-cjk
 Description: Input Method Framework
@@ -38,7 +38,7 @@ Description: Input Method Framework
  .
   * Input Method Server: nimf-daemon including XIM
  .
-  * Language Engines for Chinese, Korean, Japanese (not yet)
+  * Language Engines for Chinese (in alpha stage), Korean, Japanese (not yet)
  .
   * Client Modules: GTK+2, GTK+3, Qt4, Qt5
  .

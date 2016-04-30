@@ -193,7 +193,8 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
 
   if (!pinyin->view)
   {
-    g_warning (G_STRLOC ": %s: factory.createSession() failed", G_STRFUNC);
+    g_warning (G_STRLOC ": %s: factory.createSession() failed.\n"
+               "You probably need to install sunpinyin-data", G_STRFUNC);
     return;
   }
 
@@ -257,9 +258,9 @@ nimf_sunpinyin_reset (NimfEngine     *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
   NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
+
+  g_return_if_fail (pinyin->view != NULL);
 
   pinyin->view->updateWindows(pinyin->view->clearIC());
 }
@@ -269,9 +270,9 @@ nimf_sunpinyin_focus_in (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
   NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
+
+  g_return_if_fail (pinyin->view != NULL);
 
   /* FIXME: This is a workaround for a bug of nimf-sunpinyin
    * "focus-in" may be the next "focus-out". So I put the code that performs
@@ -302,6 +303,8 @@ void nimf_sunpinyin_update (NimfEngine     *engine,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
+
+  g_return_if_fail (pinyin->view != NULL);
 
   /* commit */
   if (pinyin->commit_str)
@@ -362,8 +365,11 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval = FALSE;
   NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
+
+  g_return_val_if_fail (pinyin->view != NULL, FALSE);
+
+  gboolean retval = FALSE;
 
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;

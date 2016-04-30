@@ -63,6 +63,13 @@ PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0       $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,               [$LIBNIMF_REQUIRES])
 
+SUNPINYIN_DATA_LIBDIR=`pkg-config --variable=libdir sunpinyin-2.0`
+
+AC_CHECK_FILES(
+   [$SUNPINYIN_DATA_LIBDIR/sunpinyin/data/lm_sc.t3g
+    $SUNPINYIN_DATA_LIBDIR/sunpinyin/data/pydict_sc.bin], [],
+    AC_MSG_ERROR([sunpinyin-data files are not found.]))
+
 dnl ***************************************************************************
 dnl  Qt
 dnl ***************************************************************************
