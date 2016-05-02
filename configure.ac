@@ -63,12 +63,21 @@ PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0       $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,               [$LIBNIMF_REQUIRES])
 
-SUNPINYIN_DATA_LIBDIR=`pkg-config --variable=libdir sunpinyin-2.0`
+dnl Check sunpinyin-data for Debian-like distributions
+
+SUNPINYIN_DATA_DIR=`pkg-config --variable=libdir sunpinyin-2.0`/sunpinyin/data
 
 AC_CHECK_FILES(
-   [$SUNPINYIN_DATA_LIBDIR/sunpinyin/data/lm_sc.t3g
-    $SUNPINYIN_DATA_LIBDIR/sunpinyin/data/pydict_sc.bin], [],
-    AC_MSG_ERROR([sunpinyin-data files are not found.]))
+   [$SUNPINYIN_DATA_DIR/lm_sc.t3g
+    $SUNPINYIN_DATA_DIR/pydict_sc.bin], [], HAVE_SUNPINYIN_DATA="no")
+
+dnl Check sunpinyin-data for Arch Linux, Fedora
+if test "x$HAVE_SUNPINYIN_DATA" = "xno"; then
+  AC_CHECK_FILES(
+     [/usr/share/sunpinyin/lm_sc.t3g
+      /usr/share/sunpinyin/pydict_sc.bin], [],
+      AC_MSG_ERROR([sunpinyin-data files are not found.]))
+fi
 
 dnl ***************************************************************************
 dnl  Qt
