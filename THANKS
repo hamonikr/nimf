@@ -4,8 +4,6 @@ https://github.com/dasom-im/dasom/issues/64
 JH (nemonein) reported a bug that Caps Lock doesn't work correctly.
 https://github.com/cogniti/nimf/issues/2
 
-Jognhoon Won <k9200544 at hanmail net> reported a bug about not typing a password. https://github.com/dasom-im/dasom/issues/28
-
 Youngbin Han <sukso96100 at gmail com> reported a race condition.
 https://github.com/dasom-im/dasom/issues/18
 
