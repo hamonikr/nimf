@@ -1,25 +1,19 @@
-Nimf is an input method framework, it has a module-based client-server
-architecture where applications act as clients and communicate with the Nimf
-server via toolkit-specific input context modules and one socket per process.
+Nimf is an input method framework which has a module-based client-server
+architecture. An application acts as a client and communicates synchronously
+with the Nimf server via a unix socket.
 
-Nimf provides
-
-  * Input Method Server
-    * nimf-daemon including XIM
-
-  * Language Engines
-    * Chinese:  nimf-sunpinyin (in alpha stage, based on sunpinyin)
-    * Japanese: nimf-anthy     (not yet, based on anthy)
-    * Korean:   nimf-libhangul (based on libhangul)
-
-  * Client Modules
+Nimf provides:
+ * Input Method Server:
+    * nimf-daemon including IMdkit(XIM)
+ * Language Engines:
+    * Chinese (in alpha stage, based on sunpinyin)
+    * Japanese (not yet, based on anthy)
+    * Korean (based on libhangul)
+ * Client Modules:
     * GTK+2, GTK+3, Qt4, Qt5
-
-  * Indicator
-    * nimf-indicator (based on libappindicator3) for Unity, GNOME Panel, KDE
-
-  * Development files
-
+ * Indicator:
+    * nimf-indicator for Unity, GNOME Panel, KDE
+ * Development files
 
 Project Homepage: https://github.com/cogniti/nimf
 
@@ -146,6 +140,7 @@ References
   * Language Engines
 
   https://github.com/sunpinyin/sunpinyin
+  http://anonscm.debian.org/cgit/collab-maint/anthy.git
   https://github.com/choehwanjin/libhangul
 
   * Implementations
