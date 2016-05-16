@@ -1,0 +1,13 @@
+etc
+usr/bin
+usr/lib/*/girepository-1.0
+usr/lib/*/gtk-2.0
+usr/lib/*/gtk-3.0
+usr/lib/*/libnimf.so.*
+usr/lib/*/nimf
+usr/lib/*/qt4
+usr/lib/*/qt5
+usr/share/glib-2.0
+usr/share/icons
+usr/share/im-config
+usr/share/locale

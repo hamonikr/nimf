@@ -1,4 +1,3 @@
 package-name-doesnt-match-sonames
 binary-without-manpage
-non-dev-pkg-with-shlib-symlink
 unused-shlib-entry-in-control-file
