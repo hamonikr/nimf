@@ -3,7 +3,7 @@
  * nimf-events.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -23,33 +23,6 @@
 #include "nimf-types.h"
 #include "nimf-key-syms.h"
 #include <string.h>
-
-typedef struct _nimf_mod_info NimfModifierInfo;
-
-struct _nimf_mod_info {
-  gchar *name;
-  NimfModifierType mod;
-};
-
-static const NimfModifierInfo mod_info_list[] = {
-  {"Shift",    NIMF_SHIFT_MASK},
-  {"Lock",     NIMF_LOCK_MASK},
-  {"Control",  NIMF_CONTROL_MASK},
-  {"Mod1",     NIMF_MOD1_MASK},
-  {"Mod2",     NIMF_MOD2_MASK}, /* Num Lock */
-  {"Mod3",     NIMF_MOD3_MASK},
-  {"Mod4",     NIMF_MOD4_MASK},
-  {"Mod5",     NIMF_MOD5_MASK},
-  {"Button1",  NIMF_BUTTON1_MASK},
-  {"Button2",  NIMF_BUTTON2_MASK},
-  {"Button3",  NIMF_BUTTON3_MASK},
-  {"Button4",  NIMF_BUTTON4_MASK},
-  {"Button5",  NIMF_BUTTON5_MASK},
-  {"Super",    NIMF_SUPER_MASK},
-  {"Hyper",    NIMF_HYPER_MASK},
-  {"Meta",     NIMF_META_MASK},
-  {"Release",  NIMF_RELEASE_MASK}
-};
 
 gboolean
 nimf_event_matches (NimfEvent *event, const NimfKey **keys)
