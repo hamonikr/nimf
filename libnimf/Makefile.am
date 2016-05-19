@@ -140,7 +140,7 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 uninstall-hook:
 	-rmdir -p $(DESTDIR)$(libdir)/nimf
-	-rmdir -p $(DESTDIR)$(IMdkitincludedir)
+	-rmdir -p $(DESTDIR)$(nimfincludedir)
 
 CLEANFILES = \
 	$(BUILT_SOURCES) \
