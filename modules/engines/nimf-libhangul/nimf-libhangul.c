@@ -410,7 +410,10 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
     return retval;
   }
 
-  keyval = nimf_event_keycode_to_qwerty_keyval (event);
+  if (G_UNLIKELY (g_strcmp0 (hangul->layout, "ro") == 0))
+    keyval = event->key.keyval;
+  else
+    keyval = nimf_event_keycode_to_qwerty_keyval (event);
 
   if (!hangul->is_double_consonant_rule &&
       (g_strcmp0 (hangul->layout, "2") == 0) && /* 두벌식에만 적용 */
