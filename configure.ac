@@ -32,7 +32,7 @@ dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************
 
-IT_PROG_INTLTOOL(0.35.0)
+IT_PROG_INTLTOOL(0.50.1)
 GETTEXT_PACKAGE=nimf
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [gettext package name])
 AC_SUBST(GETTEXT_PACKAGE)
