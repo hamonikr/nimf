@@ -2,5 +2,10 @@
 <schemalist>
   <schema id="org.nimf.engines.anthy"
           path="/org/nimf/engines/anthy/">
+    <key type="b" name="active">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
   </schema>
 </schemalist>

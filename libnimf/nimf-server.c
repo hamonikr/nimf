@@ -492,26 +492,41 @@ nimf_server_load_active_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSettings   *settings;
-  gchar      **ids;
-  gchar       *path;
-  const gchar *id;
-  gint         i;
+  GSettingsSchemaSource *source; /* do not free */
+  gchar **schemas;
+  gboolean active;
+  gint i;
 
-  settings = g_settings_new ("org.nimf.engines");
-  ids      = g_settings_get_strv (settings, "active-engines");
+  source = g_settings_schema_source_get_default ();
+  g_settings_schema_source_list_schemas (source, TRUE, &schemas, NULL);
 
-  for (i = 0; ids[i] != NULL; i++)
+  for (i = 0; schemas[i] != NULL; i++)
   {
-    id = ids[i];
-    path = g_module_build_path (NIMF_MODULE_DIR, id);
-    nimf_server_load_module (server, path);
+    if (g_str_has_prefix (schemas[i], "org.nimf.engines."))
+    {
+      GSettings *settings;
 
-    g_free (path);
-  }
+      settings = g_settings_new (schemas[i]);
+      active = g_settings_get_boolean (settings, "active");
 
-  g_object_unref (settings);
-  g_strfreev (ids);
+      if (active)
+      {
+        gchar *id;
+        gchar *path;
+
+        id = g_strdup_printf ("nimf-%s", schemas[i] + strlen ("org.nimf.engines."));
+        path = g_module_build_path (NIMF_MODULE_DIR, id);
+        nimf_server_load_module (server, path);
+
+        g_free (path);
+        g_free (id);
+      }
+
+      g_object_unref (settings);
+    }
+  } /* for */
+
+  g_strfreev (schemas);
 }
 
 static void
