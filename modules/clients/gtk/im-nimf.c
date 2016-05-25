@@ -280,7 +280,9 @@ nimf_gtk_im_context_set_use_preedit (GtkIMContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (NIMF_GTK_IM_CONTEXT (context)->always_use_preedit == FALSE)
+  if (NIMF_GTK_IM_CONTEXT (context)->always_use_preedit == TRUE)
+    nimf_im_set_use_preedit (NIMF_GTK_IM_CONTEXT (context)->im, TRUE);
+  else
     nimf_im_set_use_preedit (NIMF_GTK_IM_CONTEXT (context)->im, use_preedit);
 }
 
@@ -434,6 +436,9 @@ on_changed_always_use_preedit (GSettings        *settings,
 
   context->always_use_preedit =
     g_settings_get_boolean (context->settings, key);
+
+  if (context->always_use_preedit)
+    nimf_im_set_use_preedit (context->im, TRUE);
 }
 
 static void
