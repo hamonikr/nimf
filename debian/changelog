@@ -1,3 +1,13 @@
+nimf (2016.05.25) stable; urgency=medium
+
+  * Added an option "always-use-preedit" (issue #5)
+  * Use event->key.keyval in the case of Romaja layout
+  * Changed the method of loading active engines
+  * Removed an unused variable
+  * Added nimf-dev.install, nimf.install
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 25 May 2016 23:14:42 +0900
+
 nimf (2016.05.01) stable; urgency=high
 
   * Fixed a segmentation fault
