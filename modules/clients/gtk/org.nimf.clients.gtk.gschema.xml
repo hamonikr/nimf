@@ -12,5 +12,10 @@
       <summary>Reset on gdk button-press-event</summary>
       <description>Reset on gdk button-press-event, which avoids the bug of firefox 38.3</description>
     </key>
+    <key type="b" name="always-use-preedit">
+      <default>true</default>
+      <summary>Always use preedit string</summary>
+      <description>Whether or not to ignore gtk_im_context_set_use_preedit()</description>
+    </key>
   </schema>
 </schemalist>

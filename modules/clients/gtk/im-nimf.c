@@ -48,6 +48,7 @@ struct _NimfGtkIMContext
   GSettings    *settings;
   gboolean      is_reset_on_gdk_button_press_event;
   gboolean      is_hook_gdk_event_key;
+  gboolean      always_use_preedit;
   gboolean      has_focus;
   gboolean      has_event_filter;
 };
@@ -279,7 +280,8 @@ nimf_gtk_im_context_set_use_preedit (GtkIMContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_im_set_use_preedit (NIMF_GTK_IM_CONTEXT (context)->im, use_preedit);
+  if (NIMF_GTK_IM_CONTEXT (context)->always_use_preedit == FALSE)
+    nimf_im_set_use_preedit (NIMF_GTK_IM_CONTEXT (context)->im, use_preedit);
 }
 
 static gboolean
@@ -424,6 +426,17 @@ on_changed_hook_gdk_event_key (GSettings        *settings,
 }
 
 static void
+on_changed_always_use_preedit (GSettings        *settings,
+                               gchar            *key,
+                               NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  context->always_use_preedit =
+    g_settings_get_boolean (context->settings, key);
+}
+
+static void
 nimf_gtk_im_context_init (NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -452,6 +465,9 @@ nimf_gtk_im_context_init (NimfGtkIMContext *context)
   context->is_hook_gdk_event_key =
     g_settings_get_boolean (context->settings, "hook-gdk-event-key");
 
+  context->always_use_preedit =
+    g_settings_get_boolean (context->settings, "always-use-preedit");
+
   nimf_gtk_im_context_update_event_filter (context);
 
   g_signal_connect (context->settings,
@@ -460,6 +476,8 @@ nimf_gtk_im_context_init (NimfGtkIMContext *context)
                     context);
   g_signal_connect (context->settings, "changed::hook-gdk-event-key",
                     G_CALLBACK (on_changed_hook_gdk_event_key), context);
+  g_signal_connect (context->settings, "changed::always-use-preedit",
+                    G_CALLBACK (on_changed_always_use_preedit), context);
 }
 
 static void
