@@ -1,9 +1,9 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-types.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -21,6 +21,7 @@
 
 #include "nimf-types.h"
 #include "nimf-enum-types.h"
+#include "nimf-key-syms.h"
 
 G_DEFINE_QUARK (nimf-error-quark, nimf_error)
 

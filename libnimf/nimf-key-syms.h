@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-key-syms.h
  * This file is part of Nimf.
@@ -26,7 +26,11 @@
 #error "Only <nimf.h> can be included directly."
 #endif
 
-#include <glib.h>
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+#define NIMF_TYPE_KEY_SYM (nimf_key_sym_get_type ())
 
 typedef enum
 {
@@ -954,6 +958,9 @@ static const struct {
   { 0xFFFF /* Delete */, '\177' }
 };
 
+GType   nimf_key_sym_get_type (void) G_GNUC_CONST;
 guint32 nimf_keyval_to_unicode (guint keyval);
+
+G_END_DECLS
 
 #endif /* __NIMF_KEY_SYMS_H__ */

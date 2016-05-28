@@ -100,12 +100,12 @@ nimf-marshalers.c: nimf-marshalers.list
 nimf-enum-types.h: nimf-message.h nimf-types.h nimf-enum-types.h.template
 	$(AM_V_GEN) glib-mkenums --identifier-prefix Nimf \
 	                         --template nimf-enum-types.h.template \
-	                           nimf-message.h nimf-key-syms.h nimf-types.h > nimf-enum-types.h
+	                           nimf-message.h nimf-types.h > nimf-enum-types.h
 
 nimf-enum-types.c: nimf-message.h nimf-types.h nimf-enum-types.c.template
 	$(AM_V_GEN) glib-mkenums --identifier-prefix Nimf \
 	                         --template nimf-enum-types.c.template \
-	                           nimf-message.h nimf-key-syms.h nimf-types.h > nimf-enum-types.c
+	                           nimf-message.h nimf-types.h > nimf-enum-types.c
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = nimf.pc
