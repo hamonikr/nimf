@@ -41,7 +41,7 @@ static void on_engine_menu (GtkWidget *widget,
 }
 
 static void on_settings_menu (GtkWidget *widget,
-                              gpointer   data)
+                              gpointer   user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -49,16 +49,22 @@ static void on_settings_menu (GtkWidget *widget,
 }
 
 static void on_about_menu (GtkWidget *widget,
-                           gpointer   data)
+                           gpointer   user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GtkWidget *about_dialog;
+  GtkWidget *parent;
+
   gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
   gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
   gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
 
+  parent = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   about_dialog = gtk_about_dialog_new ();
+  gtk_window_set_transient_for (GTK_WINDOW (about_dialog),
+                                GTK_WINDOW (parent));
+  gtk_window_set_destroy_with_parent (GTK_WINDOW (about_dialog), TRUE);
   gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf");
   g_object_set (about_dialog,
     "artists",            artists,
@@ -76,11 +82,12 @@ static void on_about_menu (GtkWidget *widget,
     NULL);
 
   gtk_dialog_run (GTK_DIALOG (about_dialog));
-  gtk_widget_destroy (about_dialog);
+
+  gtk_widget_destroy (parent);
 }
 
 static void on_exit_menu (GtkWidget *widget,
-                          gpointer   data)
+                          gpointer   user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
