@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-indicator.c
  * This file is part of Nimf.
@@ -38,6 +38,14 @@ static void on_engine_menu (GtkWidget *widget,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   nimf_agent_set_engine_by_id (agent, engine_id, FALSE);
+}
+
+static void on_settings_menu (GtkWidget *widget,
+                              gpointer   data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_spawn_command_line_async ("nimf-settings", NULL);
 }
 
 static void on_about_menu (GtkWidget *widget,
@@ -166,6 +174,7 @@ main (int argc, char **argv)
 
   AppIndicator *indicator;
   GtkWidget    *menu_shell;
+  GtkWidget    *settings_menu;
   GtkWidget    *about_menu;
   GtkWidget    *exit_menu;
 
@@ -200,14 +209,18 @@ main (int argc, char **argv)
     g_slice_free (NimfEngineInfo, info);
   }
 
-  about_menu = gtk_menu_item_new_with_label (_("About"));
-  exit_menu  = gtk_menu_item_new_with_label (_("Exit"));
+  settings_menu = gtk_menu_item_new_with_label (_("Settings"));
+  about_menu    = gtk_menu_item_new_with_label (_("About"));
+  exit_menu     = gtk_menu_item_new_with_label (_("Exit"));
 
+  g_signal_connect (settings_menu, "activate",
+                    G_CALLBACK (on_settings_menu), NULL);
   g_signal_connect (about_menu, "activate",
                     G_CALLBACK (on_about_menu), NULL);
   g_signal_connect (exit_menu,  "activate",
                     G_CALLBACK (on_exit_menu),  NULL);
 
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), settings_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), exit_menu);
 

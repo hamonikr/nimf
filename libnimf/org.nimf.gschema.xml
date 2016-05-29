@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.nimf" path="/org/nimf/">
+  <schema id="org.nimf" path="/org/nimf/" gettext-domain="nimf">
+    <child schema="org.nimf.clients" name="clients"/>
+    <child schema="org.nimf.engines" name="engines"/>
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Nimf'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
     <key type="as" name="hotkeys">
       <default>['control-mask space']</default>
       <summary>Hotkeys for switching input method engine</summary>
@@ -12,11 +19,23 @@
       <description>Disable fallback filter for XIM</description>
     </key>
   </schema>
-  <schema id="org.nimf.engines" path="/org/nimf/engines/">
+  <schema id="org.nimf.clients" path="/org/nimf/clients/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Clients'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines" path="/org/nimf/engines/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Engines'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
     <key type="s" name="default-engine">
       <default>'nimf-libhangul'</default>
-      <summary>default input method engine</summary>
-      <description>default input method engine</description>
+      <summary>Default language engine</summary>
+      <description>Default language engine on startup</description>
     </key>
   </schema>
 </schemalist>

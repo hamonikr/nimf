@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema id="org.nimf.engines.libhangul"
-          path="/org/nimf/engines/libhangul/">
+          path="/org/nimf/engines/libhangul/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Korean (libhangul)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
     <key type="b" name="active">
       <default>true</default>
       <summary>Active engine</summary>
@@ -9,28 +14,64 @@
     </key>
     <key type="s" name="layout">
       <choices>
-        <choice value='2'   /> <!-- 두벌식 자판          -->
-        <choice value='2y'  /> <!-- 두벌식 옛글 자판     -->
-        <choice value='ahn' /> <!-- 안마태 자판          -->
-        <choice value='3f'  /> <!-- 세벌식 최종 자판     -->
-        <choice value='39'  /> <!-- 세벌식 390 자판      -->
-        <choice value='3s'  /> <!-- 세벌식 순아래 자판   -->
-        <choice value='3y'  /> <!-- 세벌식 옛글 자판     -->
-        <choice value='32'  /> <!-- 세벌식 두벌배열 자판 -->
-        <choice value='ro'  /> <!-- 로마자 자판          -->
+        <choice value='2'   /> <!-- Dubeolsik -->
+        <choice value='2y'  /> <!-- Dubeolsik Yetgeul -->
+        <choice value='ahn' /> <!-- Ahnmatae -->
+        <choice value='3f'  /> <!-- Sebeolsik Final -->
+        <choice value='39'  /> <!-- Sebeolsik 390 -->
+        <choice value='3s'  /> <!-- Sebeolsik Noshift -->
+        <choice value='3y'  /> <!-- Sebeolsik Yetgeul -->
+        <choice value='32'  /> <!-- Sebeolsik Dubeol Layout -->
+        <choice value='ro'  /> <!-- Romaja -->
       </choices>
       <default>'2'</default>
       <summary>Korean keyboard layout</summary>
-      <description>Korean keyboard layout
-'2'   - Dubeolsik
-'2y'  - Dubeolsik Yetgeul
-'ahn' - Ahnmatae
-'3f'  - Sebeolsik Final
-'39'  - Sebeolsik 390
-'3s'  - Sebeolsik Noshift
-'3y'  - Sebeolsik Yetgeul
-'32'  - Sebeolsik Dubeol Layout
-'ro'  - Romaja</description>
+      <description>Korean keyboard layout</description>
+    </key>
+    <key type="s" name="hidden-layout-2">
+      <default l10n="messages">'Dubeolsik'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-2y">
+      <default l10n="messages">'Dubeolsik Yetgeul'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-ahn">
+      <default l10n="messages">'Ahnmatae'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-3f">
+      <default l10n="messages">'Sebeolsik Final'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-39">
+      <default l10n="messages">'Sebeolsik 390'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-3s">
+      <default l10n="messages">'Sebeolsik Noshift'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-3y">
+      <default l10n="messages">'Sebeolsik Yetgeul'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-32">
+      <default l10n="messages">'Sebeolsik Dubeol Layout'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-layout-ro">
+      <default l10n="messages">'Romaja'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
     </key>
     <key type="as" name="hangul-keys">
       <default>['hangul']</default>

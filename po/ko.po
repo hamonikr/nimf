@@ -68,8 +68,8 @@ msgid "Disable fallback filter for XIM"
 msgstr ""
 
 #: ../libnimf/org.nimf.gschema.xml.h:3
-msgid "default input method engine"
-msgstr "기본 입력 엔진"
+msgid "Default language engine"
+msgstr "기본 언어 엔진"
 
 #: ../libnimf/org.nimf.gschema.xml.h:4
 msgid "Active engines"

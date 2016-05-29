@@ -185,6 +185,16 @@ AS_IF([test "x$enable_nimf_indicator" != "xno"],
 AM_CONDITIONAL([ENABLE_NIMF_INDICATOR],
                [test "$enable_nimf_indicator" != "no"])
 
+dnl ***************************************************************************
+dnl nimf-settings
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS, [gtk+-3.0 gio-2.0 gmodule-2.0])
+GLIB_COMPILE_RESOURCES=`pkg-config --variable=glib_compile_resources gio-2.0`
+AC_SUBST(GLIB_COMPILE_RESOURCES)
+
+dnl ***************************************************************************
+
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([0.10.1])
 
@@ -209,4 +219,5 @@ AC_OUTPUT([
   modules/engines/nimf-sunpinyin/Makefile
   modules/engines/nimf-system-keyboard/Makefile
   po/Makefile.in
+  settings/Makefile
 ])

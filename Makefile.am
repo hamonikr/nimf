@@ -1,4 +1,4 @@
-SUBDIRS = libnimf modules daemon po data
+SUBDIRS = libnimf modules daemon settings po data
 
 if ENABLE_NIMF_INDICATOR
   SUBDIRS += indicator

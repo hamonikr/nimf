@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema id="org.nimf.engines.anthy"
-          path="/org/nimf/engines/anthy/">
+          path="/org/nimf/engines/anthy/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Japanese (anthy)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
     <key type="b" name="active">
       <default>false</default>
       <summary>Active engine</summary>

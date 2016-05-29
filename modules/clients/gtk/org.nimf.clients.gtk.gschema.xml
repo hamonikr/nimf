@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema id="org.nimf.clients.gtk"
-          path="/org/nimf/clients/gtk/">
+          path="/org/nimf/clients/gtk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'GTK+'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
     <key type="b" name="hook-gdk-event-key">
       <default>false</default>
       <summary>hooking gdk key events</summary>

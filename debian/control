@@ -46,6 +46,8 @@ Description: Input Method Framework
      * GTK+2, GTK+3, Qt4, Qt5
   * Indicator:
      * nimf-indicator for Unity, GNOME Panel, KDE
+  * Settings tool to configure the Nimf:
+     * nimf-settings
 
 Package: nimf-dev
 Section: libdevel

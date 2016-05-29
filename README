@@ -13,6 +13,8 @@ Nimf provides:
     * GTK+2, GTK+3, Qt4, Qt5
  * Indicator:
     * nimf-indicator for Unity, GNOME Panel, KDE
+ * Settings tool to configure the Nimf:
+    * nimf-settings
  * Development files
 
 Project Homepage: https://github.com/cogniti/nimf
