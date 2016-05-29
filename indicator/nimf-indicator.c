@@ -192,6 +192,9 @@ main (int argc, char **argv)
   g_signal_connect (agent, "disconnected",
                     G_CALLBACK (on_disconnected), indicator);
 
+  if (G_UNLIKELY (nimf_client_is_connected () == FALSE))
+    app_indicator_set_icon_full (indicator,
+                                 "nimf-indicator-warning", "disconnected");
   /* menu */
   gchar         **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
   GtkWidget      *engine_menu;
@@ -199,7 +202,7 @@ main (int argc, char **argv)
 
   guint i;
 
-  for (i = 0; i < g_strv_length (engine_ids); i++)
+  for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
   {
     info = nimf_engine_get_info_by_id (engine_ids[i]);
     engine_menu = gtk_menu_item_new_with_label (_(info->engine_name));
