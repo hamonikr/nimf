@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-client.h
  * This file is part of Nimf.
@@ -59,7 +59,8 @@ struct _NimfClientClass
   void (*disconnected)   (NimfClient  *client);
 };
 
-GType nimf_client_get_type (void) G_GNUC_CONST;
+GType    nimf_client_get_type     (void) G_GNUC_CONST;
+gboolean nimf_client_is_connected (void);
 
 G_END_DECLS
 

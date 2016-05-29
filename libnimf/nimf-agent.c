@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-agent.c
  * This file is part of Nimf.
@@ -72,9 +72,7 @@ nimf_agent_set_engine_by_id (NimfAgent   *agent,
 
   NimfClient *client = NIMF_CLIENT (agent);
 
-  /* TODO: 요 코드 정상 작동 여부 반드시 확인할 것 */
-  if (nimf_client_connection == NULL ||
-      !g_socket_connection_is_connected (nimf_client_connection))
+  if (nimf_client_is_connected () == FALSE)
     return;
 
   GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);

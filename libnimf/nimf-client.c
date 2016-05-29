@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-client.c
  * This file is part of Nimf.
@@ -192,6 +192,15 @@ on_incoming_message (GSocket      *socket,
   return G_SOURCE_CONTINUE;
 }
 
+gboolean
+nimf_client_is_connected ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return nimf_client_connection != NULL &&
+         g_socket_connection_is_connected (nimf_client_connection);
+}
+
 static void
 nimf_client_init (NimfClient *client)
 {
@@ -262,7 +271,6 @@ nimf_client_constructed (GObject *object)
     {
       g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
       g_clear_error (&error);
-      g_signal_emit_by_name (client, "disconnected", NULL);
       return;
     }
 
