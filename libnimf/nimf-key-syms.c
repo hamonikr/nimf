@@ -148,3 +148,13 @@ nimf_keyval_to_unicode (guint keyval)
   /* No matching Unicode value found */
   return 0;
 }
+
+const gchar *
+nimf_keyval_to_string (guint keyval)
+{
+  GEnumClass *enum_class = (GEnumClass *) g_type_class_ref (NIMF_TYPE_KEY_SYM);
+  GEnumValue *enum_value = g_enum_get_value (enum_class, keyval);
+  g_type_class_unref (enum_class);
+
+  return enum_value ? enum_value->value_nick : NULL;
+}
