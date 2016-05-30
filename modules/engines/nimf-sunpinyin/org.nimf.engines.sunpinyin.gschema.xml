@@ -13,7 +13,7 @@
       <description>The engine will be loaded on startup if available. Restart required</description>
     </key>
     <key type="as" name="zh-en-keys">
-      <default>['shift-mask space']</default>
+      <default>['&lt;Shift&gt; space']</default>
       <summary>hotkey for switching Chinese / English</summary>
       <description>hotkey for switching Chinese / English</description>
     </key>

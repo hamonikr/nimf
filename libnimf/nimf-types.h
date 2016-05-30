@@ -49,19 +49,19 @@ typedef enum
 /* copied from GdkModifierType in gdktypes.h for compatibility */
 typedef enum
 {
-  NIMF_SHIFT_MASK    = 1 << 0,
-  NIMF_LOCK_MASK     = 1 << 1,
-  NIMF_CONTROL_MASK  = 1 << 2,
-  NIMF_MOD1_MASK     = 1 << 3,
-  NIMF_MOD2_MASK     = 1 << 4,
-  NIMF_MOD3_MASK     = 1 << 5,
-  NIMF_MOD4_MASK     = 1 << 6,
-  NIMF_MOD5_MASK     = 1 << 7,
-  NIMF_BUTTON1_MASK  = 1 << 8,
-  NIMF_BUTTON2_MASK  = 1 << 9,
-  NIMF_BUTTON3_MASK  = 1 << 10,
-  NIMF_BUTTON4_MASK  = 1 << 11,
-  NIMF_BUTTON5_MASK  = 1 << 12,
+  NIMF_SHIFT_MASK    = 1 << 0, /*< nick=<Shift> >*/
+  NIMF_LOCK_MASK     = 1 << 1, /*< nick=<Lock> >*/
+  NIMF_CONTROL_MASK  = 1 << 2, /*< nick=<Control> >*/
+  NIMF_MOD1_MASK     = 1 << 3, /*< nick=<Mod1> >*/
+  NIMF_MOD2_MASK     = 1 << 4, /*< nick=<Mod2> >*/
+  NIMF_MOD3_MASK     = 1 << 5, /*< nick=<Mod3> >*/
+  NIMF_MOD4_MASK     = 1 << 6, /*< nick=<Mod4> >*/
+  NIMF_MOD5_MASK     = 1 << 7, /*< nick=<Mod5> >*/
+  NIMF_BUTTON1_MASK  = 1 << 8, /*< nick=<Button1> >*/
+  NIMF_BUTTON2_MASK  = 1 << 9, /*< nick=<Button2> >*/
+  NIMF_BUTTON3_MASK  = 1 << 10, /*< nick=<Button3> >*/
+  NIMF_BUTTON4_MASK  = 1 << 11, /*< nick=<Button4> >*/
+  NIMF_BUTTON5_MASK  = 1 << 12, /*< nick=<Button5> >*/
 
   NIMF_MODIFIER_RESERVED_13_MASK  = 1 << 13,
   NIMF_MODIFIER_RESERVED_14_MASK  = 1 << 14,
@@ -77,13 +77,13 @@ typedef enum
   NIMF_MODIFIER_RESERVED_24_MASK  = 1 << 24,
   NIMF_MODIFIER_RESERVED_25_MASK  = 1 << 25,
 
-  NIMF_SUPER_MASK    = 1 << 26,
-  NIMF_HYPER_MASK    = 1 << 27,
-  NIMF_META_MASK     = 1 << 28,
+  NIMF_SUPER_MASK    = 1 << 26, /*< nick=<Super> >*/
+  NIMF_HYPER_MASK    = 1 << 27, /*< nick=<Hyper> >*/
+  NIMF_META_MASK     = 1 << 28, /*< nick=<Meta> >*/
 
   NIMF_MODIFIER_RESERVED_29_MASK  = 1 << 29,
 
-  NIMF_RELEASE_MASK  = 1 << 30,
+  NIMF_RELEASE_MASK  = 1 << 30, /*< nick=<Release> >*/
 
   /* Combination of NIMF_SHIFT_MASK..NIMF_BUTTON5_MASK + NIMF_SUPER_MASK
      + NIMF_HYPER_MASK + NIMF_META_MASK + NIMF_RELEASE_MASK */

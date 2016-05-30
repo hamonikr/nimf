@@ -46,7 +46,7 @@ nimf_key_new_from_nicks (const gchar **nicks)
   gint i;
   for (i = 0; nicks[i] != NULL; i++)
   {
-    if (g_str_has_suffix (nicks[i], "mask"))
+    if (g_str_has_prefix (nicks[i], "<"))
     {
       flags_value = g_flags_get_value_by_nick (flags_class, nicks[i]);
 

@@ -9,7 +9,7 @@
       <description>This key is intended for nimf-settings.</description>
     </key>
     <key type="as" name="hotkeys">
-      <default>['control-mask space']</default>
+      <default>['&lt;Control&gt; space']</default>
       <summary>Hotkeys for switching input method engine</summary>
       <description>Hotkeys for switching input method engine</description>
     </key>
