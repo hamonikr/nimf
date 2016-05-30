@@ -1,5 +1,6 @@
 /*** BEGIN file-header ***/
 #include "nimf-enum-types.h"
+#include "nimf-key-syms.h"
 #include "nimf-message.h"
 #include "nimf-types.h"
 
