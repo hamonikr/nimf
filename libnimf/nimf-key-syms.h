@@ -32,95 +32,95 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-  NIMF_KEY_space        = 0x0020,
+  NIMF_KEY_space        = 0x0020, /*< nick=space >*/
 
-  NIMF_KEY_0            = 0x030,
-  NIMF_KEY_1            = 0x031,
-  NIMF_KEY_2            = 0x032,
-  NIMF_KEY_3            = 0x033,
-  NIMF_KEY_4            = 0x034,
-  NIMF_KEY_5            = 0x035,
-  NIMF_KEY_6            = 0x036,
-  NIMF_KEY_7            = 0x037,
-  NIMF_KEY_8            = 0x038,
-  NIMF_KEY_9            = 0x039,
+  NIMF_KEY_0            = 0x030, /*< nick=0 >*/
+  NIMF_KEY_1            = 0x031, /*< nick=1 >*/
+  NIMF_KEY_2            = 0x032, /*< nick=2 >*/
+  NIMF_KEY_3            = 0x033, /*< nick=3 >*/
+  NIMF_KEY_4            = 0x034, /*< nick=4 >*/
+  NIMF_KEY_5            = 0x035, /*< nick=5 >*/
+  NIMF_KEY_6            = 0x036, /*< nick=6 >*/
+  NIMF_KEY_7            = 0x037, /*< nick=7 >*/
+  NIMF_KEY_8            = 0x038, /*< nick=8 >*/
+  NIMF_KEY_9            = 0x039, /*< nick=9 >*/
 
-  NIMF_KEY_h            = 0x068,
+  NIMF_KEY_h            = 0x068, /*< nick=h >*/
 
-  NIMF_KEY_j            = 0x06a,
-  NIMF_KEY_k            = 0x06b,
-  NIMF_KEY_l            = 0x06c,
+  NIMF_KEY_j            = 0x06a, /*< nick=j >*/
+  NIMF_KEY_k            = 0x06b, /*< nick=k >*/
+  NIMF_KEY_l            = 0x06c, /*< nick=l >*/
 
-  NIMF_KEY_BackSpace    = 0xff08,
-  NIMF_KEY_Return       = 0xff0d,
+  NIMF_KEY_BackSpace    = 0xff08, /*< nick=BackSpace >*/
+  NIMF_KEY_Return       = 0xff0d, /*< nick=Return >*/
 
-  NIMF_KEY_Escape       = 0xff1b,
+  NIMF_KEY_Escape       = 0xff1b, /*< nick=Escape >*/
 
-  NIMF_KEY_Hangul       = 0xff31,
+  NIMF_KEY_Hangul       = 0xff31, /*< nick=Hangul >*/
 
-  NIMF_KEY_Hangul_Hanja = 0xff34,
+  NIMF_KEY_Hangul_Hanja = 0xff34, /*< nick=Hangul_Hanja >*/
 
-  NIMF_KEY_Left         = 0xff51,
-  NIMF_KEY_Up           = 0xff52,
-  NIMF_KEY_Right        = 0xff53,
-  NIMF_KEY_Down         = 0xff54,
-  NIMF_KEY_Page_Up      = 0xff55,
-  NIMF_KEY_Page_Down    = 0xff56,
+  NIMF_KEY_Left         = 0xff51, /*< nick=Left >*/
+  NIMF_KEY_Up           = 0xff52, /*< nick=Up >*/
+  NIMF_KEY_Right        = 0xff53, /*< nick=Right >*/
+  NIMF_KEY_Down         = 0xff54, /*< nick=Down >*/
+  NIMF_KEY_Page_Up      = 0xff55, /*< nick=Page_Up >*/
+  NIMF_KEY_Page_Down    = 0xff56, /*< nick=Page_Down >*/
 
-  NIMF_KEY_KP_Enter     = 0xff8d,
+  NIMF_KEY_KP_Enter     = 0xff8d, /*< nick=KP_Enter >*/
 
-  NIMF_KEY_KP_Left      = 0xff96,
-  NIMF_KEY_KP_Up        = 0xff97,
-  NIMF_KEY_KP_Right     = 0xff98,
-  NIMF_KEY_KP_Down      = 0xff99,
-  NIMF_KEY_KP_Page_Up   = 0xff9a,
-  NIMF_KEY_KP_Page_Down = 0xff9b,
+  NIMF_KEY_KP_Left      = 0xff96, /*< nick=KP_Left >*/
+  NIMF_KEY_KP_Up        = 0xff97, /*< nick=KP_Up >*/
+  NIMF_KEY_KP_Right     = 0xff98, /*< nick=KP_Right >*/
+  NIMF_KEY_KP_Down      = 0xff99, /*< nick=KP_Down >*/
+  NIMF_KEY_KP_Page_Up   = 0xff9a, /*< nick=KP_Page_Up >*/
+  NIMF_KEY_KP_Page_Down = 0xff9b, /*< nick=KP_Page_Down >*/
 
-  NIMF_KEY_KP_Delete    = 0xff9f,
+  NIMF_KEY_KP_Delete    = 0xff9f, /*< nick=KP_Delete >*/
 
-  NIMF_KEY_KP_Multiply  = 0xffaa,
-  NIMF_KEY_KP_Add       = 0xffab,
+  NIMF_KEY_KP_Multiply  = 0xffaa, /*< nick=KP_Multiply >*/
+  NIMF_KEY_KP_Add       = 0xffab, /*< nick=KP_Add >*/
 
-  NIMF_KEY_KP_Subtract  = 0xffad,
-  NIMF_KEY_KP_Decimal   = 0xffae,
-  NIMF_KEY_KP_Divide    = 0xffaf,
-  NIMF_KEY_KP_0         = 0xffb0,
-  NIMF_KEY_KP_1         = 0xffb1,
-  NIMF_KEY_KP_2         = 0xffb2,
-  NIMF_KEY_KP_3         = 0xffb3,
-  NIMF_KEY_KP_4         = 0xffb4,
-  NIMF_KEY_KP_5         = 0xffb5,
-  NIMF_KEY_KP_6         = 0xffb6,
-  NIMF_KEY_KP_7         = 0xffb7,
-  NIMF_KEY_KP_8         = 0xffb8,
-  NIMF_KEY_KP_9         = 0xffb9,
+  NIMF_KEY_KP_Subtract  = 0xffad, /*< nick=KP_Subtract >*/
+  NIMF_KEY_KP_Decimal   = 0xffae, /*< nick=KP_Decimal >*/
+  NIMF_KEY_KP_Divide    = 0xffaf, /*< nick=KP_Divide >*/
+  NIMF_KEY_KP_0         = 0xffb0, /*< nick=KP_0 >*/
+  NIMF_KEY_KP_1         = 0xffb1, /*< nick=KP_1 >*/
+  NIMF_KEY_KP_2         = 0xffb2, /*< nick=KP_2 >*/
+  NIMF_KEY_KP_3         = 0xffb3, /*< nick=KP_3 >*/
+  NIMF_KEY_KP_4         = 0xffb4, /*< nick=KP_4 >*/
+  NIMF_KEY_KP_5         = 0xffb5, /*< nick=KP_5 >*/
+  NIMF_KEY_KP_6         = 0xffb6, /*< nick=KP_6 >*/
+  NIMF_KEY_KP_7         = 0xffb7, /*< nick=KP_7 >*/
+  NIMF_KEY_KP_8         = 0xffb8, /*< nick=KP_8 >*/
+  NIMF_KEY_KP_9         = 0xffb9, /*< nick=KP_9 >*/
 
-  NIMF_KEY_F1           = 0xffbe,
-  NIMF_KEY_F2           = 0xffbf,
-  NIMF_KEY_F3           = 0xffc0,
-  NIMF_KEY_F4           = 0xffc1,
-  NIMF_KEY_F5           = 0xffc2,
-  NIMF_KEY_F6           = 0xffc3,
-  NIMF_KEY_F7           = 0xffc4,
-  NIMF_KEY_F8           = 0xffc5,
-  NIMF_KEY_F9           = 0xffc6,
-  NIMF_KEY_F10          = 0xffc7,
-  NIMF_KEY_F11          = 0xffc8,
-  NIMF_KEY_F12          = 0xffc9,
+  NIMF_KEY_F1           = 0xffbe, /*< nick=F1 >*/
+  NIMF_KEY_F2           = 0xffbf, /*< nick=F2 >*/
+  NIMF_KEY_F3           = 0xffc0, /*< nick=F3 >*/
+  NIMF_KEY_F4           = 0xffc1, /*< nick=F4 >*/
+  NIMF_KEY_F5           = 0xffc2, /*< nick=F5 >*/
+  NIMF_KEY_F6           = 0xffc3, /*< nick=F6 >*/
+  NIMF_KEY_F7           = 0xffc4, /*< nick=F7 >*/
+  NIMF_KEY_F8           = 0xffc5, /*< nick=F8 >*/
+  NIMF_KEY_F9           = 0xffc6, /*< nick=F9 >*/
+  NIMF_KEY_F10          = 0xffc7, /*< nick=F10 >*/
+  NIMF_KEY_F11          = 0xffc8, /*< nick=F11 >*/
+  NIMF_KEY_F12          = 0xffc9, /*< nick=F12 >*/
 
-  NIMF_KEY_Shift_L      = 0xffe1,
-  NIMF_KEY_Shift_R      = 0xffe2,
-  NIMF_KEY_Control_L    = 0xffe3,
-  NIMF_KEY_Control_R    = 0xffe4,
+  NIMF_KEY_Shift_L      = 0xffe1, /*< nick=Shift_L >*/
+  NIMF_KEY_Shift_R      = 0xffe2, /*< nick=Shift_R >*/
+  NIMF_KEY_Control_L    = 0xffe3, /*< nick=Control_L >*/
+  NIMF_KEY_Control_R    = 0xffe4, /*< nick=Control_R >*/
 
-  NIMF_KEY_Meta_L       = 0xffe7,
-  NIMF_KEY_Meta_R       = 0xffe8,
-  NIMF_KEY_Alt_L        = 0xffe9,
-  NIMF_KEY_Alt_R        = 0xffea,
+  NIMF_KEY_Meta_L       = 0xffe7, /*< nick=Meta_L >*/
+  NIMF_KEY_Meta_R       = 0xffe8, /*< nick=Meta_R >*/
+  NIMF_KEY_Alt_L        = 0xffe9, /*< nick=Alt_L >*/
+  NIMF_KEY_Alt_R        = 0xffea, /*< nick=Alt_R >*/
 
-  NIMF_KEY_Delete       = 0xffff,
+  NIMF_KEY_Delete       = 0xffff, /*< nick=Delete >*/
 
-  NIMF_KEY_VoidSymbol   = 0xffffff
+  NIMF_KEY_VoidSymbol   = 0xffffff /*< nick=VoidSymbol >*/
 } NimfKeySym;
 
 /* Thanks to Markus G. Kuhn <mkuhn@acm.org> for the keysym to Unicode

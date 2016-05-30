@@ -74,12 +74,12 @@
       <description>This key is intended for nimf-settings.</description>
     </key>
     <key type="as" name="hangul-keys">
-      <default>['hangul']</default>
+      <default>['Hangul']</default>
       <summary>hotkey for switching Korean / English</summary>
       <description>Binding to change Korean / English</description>
     </key>
     <key type="as" name="hanja-keys">
-      <default>['hangul-hanja']</default>
+      <default>['Hangul_Hanja']</default>
       <summary>hotkey for hanja</summary>
       <description>Binding to Hanja key</description>
     </key>
