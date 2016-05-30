@@ -956,8 +956,8 @@ static const struct {
   { 0xFFFF /* Delete */, '\177' }
 };
 
-guint32      nimf_keyval_to_unicode (guint keyval);
-const gchar *nimf_keyval_to_string  (guint keyval);
+guint32      nimf_keyval_to_unicode     (guint keyval);
+const gchar *nimf_keyval_to_keysym_name (guint keyval);
 
 G_END_DECLS
 

@@ -62,7 +62,7 @@ nimf_keyval_to_unicode (guint keyval)
 }
 
 const gchar *
-nimf_keyval_to_string (guint keyval)
+nimf_keyval_to_keysym_name (guint keyval)
 {
   GEnumClass *enum_class = (GEnumClass *) g_type_class_ref (NIMF_TYPE_KEY_SYM);
   GEnumValue *enum_value = g_enum_get_value (enum_class, keyval);

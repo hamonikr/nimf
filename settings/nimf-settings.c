@@ -352,7 +352,7 @@ on_key_press_event (GtkWidget *widget,
 
   g_type_class_unref (flags_class);
 
-  keystr = nimf_keyval_to_string (event->key.keyval);
+  keystr = nimf_keyval_to_keysym_name (event->key.keyval);
 
   if (keystr == NULL)
   {
