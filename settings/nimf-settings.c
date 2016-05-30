@@ -593,7 +593,11 @@ nimf_settings_page_new (NimfSettings *nsettings,
 
   schema = g_settings_schema_source_lookup (nsettings->schema_source,
                                             schema_id, TRUE);
+#if GLIB_CHECK_VERSION(2, 46, 0)
+  keys = g_settings_schema_list_keys (schema);
+#else
   keys = g_settings_list_keys (page->gsettings);
+#endif
 
   for (i = 0; keys[i] != NULL; i++)
     key_list = g_list_prepend (key_list, keys[i]);
