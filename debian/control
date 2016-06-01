@@ -28,7 +28,7 @@ Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}, sunpinyin-data
-Recommends: im-config, dconf-editor, gnome-tweak-tool
+Recommends: im-config, gnome-tweak-tool
 Suggests: fonts-noto-cjk
 Description: Input Method Framework
  Nimf is an input method framework which has a module-based client-server
