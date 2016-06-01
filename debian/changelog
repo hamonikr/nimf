@@ -1,3 +1,11 @@
+nimf (2016.06.02) stable; urgency=medium
+
+  * Removed dconf-editor from Recommends field
+  * Set treeview size
+  * Don't use gtk_switch_set_state() for backward compatibility
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 02 Jun 2016 00:32:30 +0900
+
 nimf (2016.06.01) stable; urgency=medium
 
   * Added missing keysyms
