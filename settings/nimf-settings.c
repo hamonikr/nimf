@@ -79,8 +79,11 @@ on_gsettings_changed (GSettings *settings,
 {
   if (GTK_IS_SWITCH (widget))
   {
-    gboolean state = g_settings_get_boolean (settings, key);
-    gtk_switch_set_active (GTK_SWITCH (widget), state);
+    gboolean active1 = g_settings_get_boolean (settings, key);
+    gboolean active2 = gtk_switch_get_active (GTK_SWITCH (widget));
+
+    if (active1 != active2)
+      gtk_switch_set_active (GTK_SWITCH (widget), active1);
   }
   else if (GTK_IS_COMBO_BOX (widget))
   {
@@ -129,15 +132,19 @@ on_combo_box_changd (GtkComboBox         *widget,
   g_settings_set_string (page_key->gsettings, page_key->key, id);
 }
 
-static gboolean
-on_switch_state_set (GtkSwitch           *widget,
-                     gboolean             state,
-                     NimfSettingsPageKey *page_key)
+static void
+on_notify_active (GtkSwitch           *widget,
+                  GParamSpec          *pspec,
+                  NimfSettingsPageKey *page_key)
 {
-  g_settings_set_boolean (page_key->gsettings, page_key->key, state);
-  gtk_switch_set_state (GTK_SWITCH (widget), state);
+  gboolean active1;
+  gboolean active2;
 
-  return TRUE;
+  active1 = gtk_switch_get_active (GTK_SWITCH (widget));
+  active2 = g_settings_get_boolean (page_key->gsettings, page_key->key);
+
+  if (active1 != active2)
+    g_settings_set_boolean (page_key->gsettings, page_key->key, active1);
 }
 
 void
@@ -197,8 +204,8 @@ nimf_settings_page_key_build_boolean (NimfSettingsPageKey *page_key)
   gtk_widget_set_halign  (gswitch, GTK_ALIGN_END);
   detailed_signal = g_strdup_printf ("changed::%s", page_key->key);
 
-  g_signal_connect (gswitch, "state-set",
-                    G_CALLBACK (on_switch_state_set), page_key);
+  g_signal_connect (gswitch, "notify::active",
+                    G_CALLBACK (on_notify_active), page_key);
   g_signal_connect (page_key->gsettings, detailed_signal,
                     G_CALLBACK (on_gsettings_changed), gswitch);
 
