@@ -483,6 +483,18 @@ on_button_clicked_remove (GtkButton           *button,
   }
 }
 
+static void
+on_tree_view_realize (GtkWidget         *tree_view,
+                      GtkScrolledWindow *scrolled_w)
+{
+  GtkTreeViewColumn *column;
+  gint height;
+
+  column = gtk_tree_view_get_column (GTK_TREE_VIEW (tree_view), 0);
+  gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
+  gtk_widget_set_size_request (GTK_WIDGET (scrolled_w), -1, height * 3 );
+}
+
 static GtkWidget *
 nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
 {
@@ -542,6 +554,8 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   page_key->treeview = treeview;
   detailed_signal = g_strdup_printf ("changed::%s", page_key->key);
 
+  g_signal_connect (treeview, "realize",
+                    G_CALLBACK (on_tree_view_realize), scrolled_w);
   g_signal_connect (button1, "clicked", G_CALLBACK (on_button_clicked_add), page_key);
   g_signal_connect (button2, "clicked", G_CALLBACK (on_button_clicked_remove), page_key);
   g_signal_connect (page_key->gsettings, detailed_signal,
