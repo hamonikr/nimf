@@ -11,4 +11,3 @@ settings/nimf-settings.c
 [type: gettext/gsettings]modules/clients/gtk/org.nimf.clients.gtk.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-sunpinyin/org.nimf.engines.sunpinyin.gschema.xml
-[type: gettext/glade]settings/nimf-settings.ui
