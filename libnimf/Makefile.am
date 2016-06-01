@@ -134,13 +134,13 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = nimf-agent.c nimf-agent.h
 
-Nimf-2016.05.gir: libnimf.la
-Nimf_2016_05_gir_INCLUDES = GObject-2.0
-Nimf_2016_05_gir_CFLAGS   = $(libnimf_la_CFLAGS) -I$(top_srcdir)
-Nimf_2016_05_gir_LIBS     = libnimf.la
-Nimf_2016_05_gir_FILES    = $(introspection_sources)
+Nimf-2016.06.gir: libnimf.la
+Nimf_2016_06_gir_INCLUDES = GObject-2.0
+Nimf_2016_06_gir_CFLAGS   = $(libnimf_la_CFLAGS) -I$(top_srcdir)
+Nimf_2016_06_gir_LIBS     = libnimf.la
+Nimf_2016_06_gir_FILES    = $(introspection_sources)
 
-INTROSPECTION_GIRS += Nimf-2016.05.gir
+INTROSPECTION_GIRS += Nimf-2016.06.gir
 
 girdir   = $(INTROSPECTION_GIRDIR)
 gir_DATA = $(INTROSPECTION_GIRS)

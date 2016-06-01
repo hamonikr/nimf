@@ -1,3 +1,17 @@
+nimf (2016.06.01) stable; urgency=medium
+
+  * Added missing keysyms
+  * Use a naming convention for NimfModifierType
+    <Name> instead of name-mask
+  * Use correct keysym names
+  * Check if (nimf_client_is_connected () == FALSE)
+  * Added nimf_client_is_connected()
+  * Added nimf-settings
+    Related issue https://github.com/dasom-im/dasom-settings/issues/1
+  * Apply an option "always-use-preedit" at runtime
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 01 Jun 2016 19:38:38 +0900
+
 nimf (2016.05.25) stable; urgency=medium
 
   * Added an option "always-use-preedit" (issue #5)
