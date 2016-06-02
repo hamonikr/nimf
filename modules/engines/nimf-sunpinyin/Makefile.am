@@ -1,7 +1,7 @@
 moduledir = $(libdir)/nimf/modules
 module_LTLIBRARIES = libnimf-sunpinyin.la
 
-gsettings_SCHEMAS = org.nimf.engines.sunpinyin.gschema.xml
+gsettings_SCHEMAS = org.nimf.engines.nimf-sunpinyin.gschema.xml
 @GSETTINGS_RULES@
 
 libnimf_sunpinyin_la_SOURCES = nimf-sunpinyin.cpp

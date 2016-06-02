@@ -1,7 +1,7 @@
 moduledir = $(libdir)/nimf/modules
 module_LTLIBRARIES = libnimf-libhangul.la
 
-gsettings_SCHEMAS = org.nimf.engines.libhangul.gschema.xml
+gsettings_SCHEMAS = org.nimf.engines.nimf-libhangul.gschema.xml
 @GSETTINGS_RULES@
 
 libnimf_libhangul_la_SOURCES = nimf-libhangul.c

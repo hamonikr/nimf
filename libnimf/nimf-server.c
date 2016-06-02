@@ -511,15 +511,13 @@ nimf_server_load_active_engines (NimfServer *server)
 
       if (active)
       {
-        gchar *id;
         gchar *path;
 
-        id = g_strdup_printf ("nimf-%s", schemas[i] + strlen ("org.nimf.engines."));
-        path = g_module_build_path (NIMF_MODULE_DIR, id);
+        path = g_module_build_path (NIMF_MODULE_DIR,
+                                    schemas[i] + strlen ("org.nimf.engines."));
         nimf_server_load_module (server, path);
 
         g_free (path);
-        g_free (id);
       }
 
       g_object_unref (settings);

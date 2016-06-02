@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.nimf.engines.libhangul"
-          path="/org/nimf/engines/libhangul/" gettext-domain="nimf">
+  <schema id="org.nimf.engines.nimf-libhangul"
+          path="/org/nimf/engines/nimf-libhangul/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">
       <default l10n="messages">'Korean (libhangul)'</default>
       <summary>schema name for nimf-settings</summary>

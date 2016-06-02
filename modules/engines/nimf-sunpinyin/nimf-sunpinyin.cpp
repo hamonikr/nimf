@@ -176,7 +176,7 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
 
   gchar **zh_en_keys;
 
-  pinyin->settings = g_settings_new ("org.nimf.engines.sunpinyin");
+  pinyin->settings = g_settings_new ("org.nimf.engines.nimf-sunpinyin");
   zh_en_keys = g_settings_get_strv (pinyin->settings, "zh-en-keys");
   pinyin->zh_en_keys = nimf_key_newv ((const gchar **) zh_en_keys);
   g_strfreev (zh_en_keys);

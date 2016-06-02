@@ -541,7 +541,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   gchar **hangul_keys, **hanja_keys;
 
-  hangul->settings = g_settings_new ("org.nimf.engines.libhangul");
+  hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
 
   hangul->layout = g_settings_get_string (hangul->settings, "layout");
   hangul->is_double_consonant_rule =

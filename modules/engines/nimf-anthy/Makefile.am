@@ -1,7 +1,7 @@
 moduledir = $(libdir)/nimf/modules
 module_LTLIBRARIES = libnimf-anthy.la
 
-gsettings_SCHEMAS = org.nimf.engines.anthy.gschema.xml
+gsettings_SCHEMAS = org.nimf.engines.nimf-anthy.gschema.xml
 @GSETTINGS_RULES@
 
 libnimf_anthy_la_SOURCES = nimf-anthy.c
