@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-system-keyboard.c
  * This file is part of Nimf.
@@ -36,6 +36,7 @@ struct _NimfSystemKeyboard
 {
   NimfEngine parent_instance;
 
+  gchar *id;
   gchar *icon_name;
 };
 
@@ -55,7 +56,7 @@ nimf_system_keyboard_get_id (NimfEngine *engine)
 
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
-  return NIMF_SYSTEM_KEYBOARD_ID;
+  return NIMF_SYSTEM_KEYBOARD (engine)->id;
 }
 
 const gchar *
@@ -73,6 +74,7 @@ nimf_system_keyboard_init (NimfSystemKeyboard *keyboard)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  keyboard->id        = g_strdup ("nimf-system-keyboard");
   keyboard->icon_name = g_strdup ("keyboard");
 }
 
@@ -83,6 +85,7 @@ nimf_system_keyboard_finalize (GObject *object)
 
   NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (object);
 
+  g_free (keyboard->id);
   g_free (keyboard->icon_name);
 
   G_OBJECT_CLASS (nimf_system_keyboard_parent_class)->finalize (object);

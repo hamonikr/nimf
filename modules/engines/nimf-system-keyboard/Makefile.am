@@ -1,6 +1,9 @@
 moduledir = $(libdir)/nimf/modules
 module_LTLIBRARIES = libnimf-system-keyboard.la
 
+gsettings_SCHEMAS = org.nimf.engines.nimf-system-keyboard.gschema.xml
+@GSETTINGS_RULES@
+
 libnimf_system_keyboard_la_SOURCES = nimf-system-keyboard.c
 libnimf_system_keyboard_la_CFLAGS  = \
 	-Wall -Werror \

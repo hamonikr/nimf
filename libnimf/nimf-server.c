@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-server.c
  * This file is part of Nimf.
@@ -394,9 +394,21 @@ nimf_server_get_default_engine (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSettings *settings = g_settings_new ("org.nimf.engines");
-  gchar *engine_id = g_settings_get_string (settings, "default-engine");
-  NimfEngine *engine = nimf_server_get_instance (server, engine_id);
+  GSettings  *settings;
+  gchar      *engine_id;
+  NimfEngine *engine;
+
+  settings  = g_settings_new ("org.nimf.engines");
+  engine_id = g_settings_get_string (settings, "default-engine");
+  engine    = nimf_server_get_instance (server, engine_id);
+
+  if (G_UNLIKELY (engine == NULL))
+  {
+    g_settings_reset (settings, "default-engine");
+    g_free (engine_id);
+    engine_id = g_settings_get_string (settings, "default-engine");
+    engine = nimf_server_get_instance (server, engine_id);
+  }
 
   g_free (engine_id);
   g_object_unref (settings);
@@ -475,56 +487,48 @@ nimf_server_load_module (NimfServer  *server,
 }
 
 static void
-nimf_server_load_system_keyboard_engine (NimfServer *server)
+nimf_server_load_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar *path;
-
-  path = g_module_build_path (NIMF_MODULE_DIR, NIMF_SYSTEM_KEYBOARD_ID);
-  nimf_server_load_module (server, path);
-
-  g_free (path);
-}
-
-static void
-nimf_server_load_active_engines (NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GSettingsSchemaSource *source; /* do not free */
-  gchar **schemas;
-  gboolean active;
-  gint i;
+  GSettingsSchemaSource  *source; /* do not free */
+  gchar                 **schema_ids;
+  gint                    i;
 
   source = g_settings_schema_source_get_default ();
-  g_settings_schema_source_list_schemas (source, TRUE, &schemas, NULL);
+  g_settings_schema_source_list_schemas (source, TRUE, &schema_ids, NULL);
 
-  for (i = 0; schemas[i] != NULL; i++)
+  for (i = 0; schema_ids[i] != NULL; i++)
   {
-    if (g_str_has_prefix (schemas[i], "org.nimf.engines."))
+    if (g_str_has_prefix (schema_ids[i], "org.nimf.engines."))
     {
-      GSettings *settings;
+      GSettingsSchema *schema;
+      GSettings       *settings;
+      gboolean         active = TRUE;
 
-      settings = g_settings_new (schemas[i]);
-      active = g_settings_get_boolean (settings, "active");
+      schema = g_settings_schema_source_lookup (source, schema_ids[i], TRUE);
+      settings = g_settings_new (schema_ids[i]);
+
+      if (g_settings_schema_has_key (schema, "active"))
+        active = g_settings_get_boolean (settings, "active");
 
       if (active)
       {
         gchar *path;
 
         path = g_module_build_path (NIMF_MODULE_DIR,
-                                    schemas[i] + strlen ("org.nimf.engines."));
+                                    schema_ids[i] + strlen ("org.nimf.engines."));
         nimf_server_load_module (server, path);
 
         g_free (path);
       }
 
       g_object_unref (settings);
+      g_settings_schema_unref (schema);
     }
-  } /* for */
+  }
 
-  g_strfreev (schemas);
+  g_strfreev (schema_ids);
 }
 
 static void
@@ -551,8 +555,7 @@ nimf_server_init (NimfServer *server)
 
   server->modules = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free, NULL);
-  nimf_server_load_system_keyboard_engine (server);
-  nimf_server_load_active_engines (server);
+  nimf_server_load_engines (server);
 
   server->instances = nimf_server_create_module_instances (server);
 
