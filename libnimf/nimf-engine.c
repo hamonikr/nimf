@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-engine.c
  * This file is part of Nimf.
@@ -482,48 +482,6 @@ nimf_engine_real_get_icon_name (NimfEngine *engine)
   g_error ("You should implement your_engine_get_icon_name ()");
 
   return NULL;
-}
-
-NimfEngineInfo *nimf_engine_get_info_by_id (gchar *engine_id)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GModule *library;
-  gchar   *path;
-  NimfEngineInfo * (* get_info_func) (void);
-  NimfEngineInfo *info;
-  NimfEngineInfo *retval;
-
-  path    = g_module_build_path (NIMF_MODULE_DIR, engine_id);
-  library = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-
-  g_free (path);
-
-  if (library == NULL)
-  {
-    g_warning (G_STRLOC ": %s", g_module_error ());
-    return NULL;
-  }
-
-  if (!g_module_symbol (library, "module_get_info",
-                        (gpointer *) &get_info_func))
-  {
-    g_warning (G_STRLOC ": %s", g_module_error ());
-    g_module_close (library);
-
-    return NULL;
-  }
-
-  info = get_info_func ();
-  retval = g_slice_new (NimfEngineInfo);
-
-  retval->engine_id        = g_strdup (info->engine_id);
-  retval->engine_name      = g_strdup (info->engine_name);
-  retval->engine_icon_name = g_strdup (info->engine_icon_name);
-
-  g_module_close (library);
-
-  return retval;
 }
 
 static void

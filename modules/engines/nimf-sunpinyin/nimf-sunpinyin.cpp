@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-sunpinyin.cpp
  * This file is part of Nimf.
@@ -482,19 +482,6 @@ static void
 nimf_sunpinyin_class_finalize (NimfSunpinyinClass *klass)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-}
-
-static const NimfEngineInfo engine_info = {
-  "nimf-sunpinyin",      /* ID */
-  N_("Chinese (Pinyin)"), /* Human readable name */
-  "nimf-indicator-zh"    /* icon name */
-};
-
-const NimfEngineInfo *module_get_info ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)

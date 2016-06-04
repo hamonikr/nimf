@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-libhangul.c
  * This file is part of Nimf.
@@ -698,19 +698,6 @@ static void
 nimf_libhangul_class_finalize (NimfLibhangulClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-}
-
-static const NimfEngineInfo engine_info = {
-  "nimf-libhangul",      /* ID */
-  N_("Korean (Hangul)"), /* Human readable name */
-  "nimf-indicator-ko"    /* icon name */
-};
-
-const NimfEngineInfo *module_get_info ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)

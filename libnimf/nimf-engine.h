@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-engine.h
  * This file is part of Nimf.
@@ -39,15 +39,6 @@ G_BEGIN_DECLS
 #define NIMF_IS_ENGINE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_ENGINE))
 #define NIMF_IS_ENGINE_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_ENGINE))
 #define NIMF_ENGINE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
-
-typedef struct _NimfEngineInfo NimfEngineInfo;
-
-struct _NimfEngineInfo
-{
-  const gchar *engine_id;        /* ID is module name */
-  const gchar *engine_name;      /* Human readable name */
-  const gchar *engine_icon_name; /* icon name */
-};
 
 typedef struct _NimfConnection    NimfConnection;
 
@@ -177,9 +168,8 @@ void     nimf_engine_select_page_down_candidate_item (NimfEngine      *engine);
 gchar   *nimf_engine_get_selected_candidate_text     (NimfEngine      *engine);
 gint     nimf_engine_get_selected_candidate_index    (NimfEngine      *engine);
 /* info */
-const gchar    *nimf_engine_get_id         (NimfEngine *engine);
-const gchar    *nimf_engine_get_icon_name  (NimfEngine *engine);
-NimfEngineInfo *nimf_engine_get_info_by_id (gchar      *engine_id);
+const gchar *nimf_engine_get_id        (NimfEngine *engine);
+const gchar *nimf_engine_get_icon_name (NimfEngine *engine);
 
 G_END_DECLS
 

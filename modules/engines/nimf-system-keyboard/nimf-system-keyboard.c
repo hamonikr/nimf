@@ -111,19 +111,6 @@ nimf_system_keyboard_class_finalize (NimfSystemKeyboardClass *class)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
-static const NimfEngineInfo engine_info = {
-  "nimf-system-keyboard",   /* ID */
-  N_("System Keyboard"),    /* Human readable name */
-  "nimf-indicator-keyboard" /* icon name */
-};
-
-const NimfEngineInfo *module_get_info ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return &engine_info;
-}
-
 void module_register_type (GTypeModule *type_module)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

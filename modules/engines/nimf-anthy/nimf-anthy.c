@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-anthy.c
  * This file is part of Nimf.
@@ -220,19 +220,6 @@ static void
 nimf_anthy_class_finalize (NimfAnthyClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-}
-
-static const NimfEngineInfo engine_info = {
-  "nimf-anthy",           /* ID */
-  N_("Japanese (Anthy)"), /* Human readable name */
-  "nimf-indicator-ja"     /* icon name */
-};
-
-const NimfEngineInfo *module_get_info ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return &engine_info;
 }
 
 void module_register_type (GTypeModule *type_module)
