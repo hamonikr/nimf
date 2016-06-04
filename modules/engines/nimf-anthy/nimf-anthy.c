@@ -37,9 +37,8 @@ struct _NimfAnthy
 {
   NimfEngine parent_instance;
 
-  gchar    *preedit_string;
-  gchar    *id;
-  gboolean  is_english_mode;
+  gchar *preedit_string;
+  gchar *id;
 
   anthy_context_t context;
 };
@@ -102,7 +101,6 @@ nimf_anthy_init (NimfAnthy *anthy)
 
   anthy->preedit_string  = g_strdup ("");
   anthy->id              = g_strdup ("nimf-anthy");
-  anthy->is_english_mode = TRUE;
 
   anthy_init ();
   anthy->context = anthy_create_context ();
@@ -174,23 +172,6 @@ nimf_anthy_get_icon_name (NimfEngine *engine)
   return NIMF_ANTHY (engine)->id;
 }
 
-void
-nimf_anthy_set_english_mode (NimfEngine *engine,
-                             gboolean    is_english_mode)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NIMF_ANTHY (engine)->is_english_mode = is_english_mode;
-}
-
-gboolean
-nimf_anthy_get_english_mode (NimfEngine *engine)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return NIMF_ANTHY (engine)->is_english_mode;
-}
-
 static void
 nimf_anthy_class_init (NimfAnthyClass *class)
 {
@@ -209,8 +190,6 @@ nimf_anthy_class_init (NimfAnthyClass *class)
 
   engine_class->get_id             = nimf_anthy_get_id;
   engine_class->get_icon_name      = nimf_anthy_get_icon_name;
-  engine_class->set_english_mode   = nimf_anthy_set_english_mode;
-  engine_class->get_english_mode   = nimf_anthy_get_english_mode;
 
   object_class->finalize = nimf_anthy_finalize;
 }

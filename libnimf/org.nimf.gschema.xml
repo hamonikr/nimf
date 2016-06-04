@@ -33,7 +33,7 @@
       <description>This key is intended for nimf-settings.</description>
     </key>
     <key type="s" name="default-engine">
-      <default>'nimf-libhangul'</default>
+      <default>'nimf-system-keyboard'</default>
       <summary>Default language engine</summary>
       <description>Default language engine on startup</description>
     </key>

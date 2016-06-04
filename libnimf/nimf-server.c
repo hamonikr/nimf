@@ -25,6 +25,7 @@
 #include "nimf-module.h"
 #include "nimf-key-syms.h"
 #include "nimf-candidate.h"
+#include "nimf-types.h"
 #include <gio/gunixsocketaddress.h>
 #include "IMdkit/Xi18n.h"
 #include <X11/XKBlib.h>
@@ -64,10 +65,6 @@ on_incoming_message_nimf (GSocket        *socket,
 
     return G_SOURCE_REMOVE;
   }
-
-  if (connection->type == NIMF_CONNECTION_NIMF_IM)
-    nimf_engine_set_english_mode (connection->engine,
-                                  connection->is_english_mode);
 
   message = nimf_recv_message (socket);
   connection->result->reply = message;
@@ -190,15 +187,12 @@ on_incoming_message_nimf (GSocket        *socket,
         GHashTableIter iter;
         gpointer       conn;
 
-        gboolean is_english_mode =
-          *(gboolean *) (message->data + message->header->data_len - sizeof (gboolean));
-
         g_hash_table_iter_init (&iter, connection->server->connections);
 
         while (g_hash_table_iter_next (&iter, NULL, &conn))
           if (NIMF_CONNECTION (conn)->type != NIMF_CONNECTION_NIMF_AGENT)
             nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
-                                              message->data, is_english_mode);
+                                              message->data);
 
         nimf_message_unref (message);
         nimf_send_message (socket, client_id,
@@ -216,9 +210,6 @@ on_incoming_message_nimf (GSocket        *socket,
       g_warning ("Unknown message type: %d", message->header->type);
       break;
   }
-
-  if (connection->type == NIMF_CONNECTION_NIMF_IM)
-    connection->is_english_mode = nimf_engine_get_english_mode (connection->engine);
 
   return G_SOURCE_CONTINUE;
 }
@@ -416,25 +407,33 @@ nimf_server_get_default_engine (NimfServer *server)
   return engine;
 }
 
-static GList *nimf_server_create_module_instances (NimfServer *server)
+static void
+on_changed_trigger_keys (GSettings  *settings,
+                         gchar      *key,
+                         NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GList *instances = NULL;
-
   GHashTableIter iter;
-  gpointer value;
+  gpointer       engine_id;
+  gpointer       gsettings;
 
-  g_hash_table_iter_init (&iter, server->modules);
-  while (g_hash_table_iter_next (&iter, NULL, &value))
+  g_hash_table_remove_all (server->trigger_keys);
+
+  g_hash_table_iter_init (&iter, server->trigger_gsettings);
+
+  while (g_hash_table_iter_next (&iter, &engine_id, &gsettings))
   {
-    NimfModule *module = value;
-    instances = g_list_prepend (instances, g_object_new (module->type,
-                                                          "server", server,
-                                                          NULL));
-  }
+    NimfKey **trigger_keys;
+    gchar   **strv;
 
-  return instances;
+    strv = g_settings_get_strv (gsettings, "trigger-keys");
+    trigger_keys = nimf_key_newv ((const gchar **) strv);
+    g_hash_table_insert (server->trigger_keys, trigger_keys,
+      nimf_server_get_instance (server, engine_id));
+
+    g_strfreev (strv);
+  }
 }
 
 static void
@@ -465,28 +464,6 @@ on_changed_disable_fallback_filter_for_xim (GSettings  *settings,
 }
 
 static void
-nimf_server_load_module (NimfServer  *server,
-                         const gchar *path)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfModule *module;
-
-  module = nimf_module_new (path);
-
-  if (!g_type_module_use (G_TYPE_MODULE (module)))
-  {
-    g_warning (G_STRLOC ":" "Failed to load module: %s", path);
-    g_object_unref (module);
-    return;
-  }
-
-  g_hash_table_insert (server->modules, g_strdup (path), module);
-
-  g_type_module_unuse (G_TYPE_MODULE (module));
-}
-
-static void
 nimf_server_load_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -504,8 +481,10 @@ nimf_server_load_engines (NimfServer *server)
     {
       GSettingsSchema *schema;
       GSettings       *settings;
+      const gchar     *engine_id;
       gboolean         active = TRUE;
 
+      engine_id = schema_ids[i] + strlen ("org.nimf.engines.");
       schema = g_settings_schema_source_lookup (source, schema_ids[i], TRUE);
       settings = g_settings_new (schema_ids[i]);
 
@@ -514,16 +493,45 @@ nimf_server_load_engines (NimfServer *server)
 
       if (active)
       {
-        gchar *path;
+        NimfModule *module;
+        NimfEngine *engine;
+        gchar      *path;
 
-        path = g_module_build_path (NIMF_MODULE_DIR,
-                                    schema_ids[i] + strlen ("org.nimf.engines."));
-        nimf_server_load_module (server, path);
+        path = g_module_build_path (NIMF_MODULE_DIR, engine_id);
+        module = nimf_module_new (path);
+
+        if (!g_type_module_use (G_TYPE_MODULE (module)))
+        {
+          g_warning (G_STRLOC ":" "Failed to load module: %s", path);
+
+          g_free (path);
+          g_object_unref (module);
+          break;
+        }
+
+        g_hash_table_insert (server->modules, g_strdup (path), module);
+        engine = g_object_new (module->type, "server", server, NULL);
+        server->instances = g_list_prepend (server->instances, engine);
+        g_type_module_unuse (G_TYPE_MODULE (module));
+
+        if (g_settings_schema_has_key (schema, "trigger-keys"))
+        {
+          NimfKey **trigger_keys;
+          gchar   **strv;
+
+          strv = g_settings_get_strv (settings, "trigger-keys");
+          trigger_keys = nimf_key_newv ((const gchar **) strv);
+          g_hash_table_insert (server->trigger_keys, trigger_keys, engine);
+          g_hash_table_insert (server->trigger_gsettings,
+                               g_strdup (engine_id), settings);
+          g_signal_connect (settings, "changed::trigger-keys",
+                            G_CALLBACK (on_changed_trigger_keys), server);
+          g_strfreev (strv);
+        }
 
         g_free (path);
       }
 
-      g_object_unref (settings);
       g_settings_schema_unref (schema);
     }
   }
@@ -540,6 +548,10 @@ nimf_server_init (NimfServer *server)
   server->disable_fallback_filter_for_xim =
     g_settings_get_boolean (server->settings,
                             "disable-fallback-filter-for-xim");
+  server->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                     g_free, g_object_unref);
+  server->trigger_keys = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                                (GDestroyNotify) nimf_key_freev, NULL);
   gchar **hotkeys = g_settings_get_strv (server->settings, "hotkeys");
   server->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
   g_strfreev (hotkeys);
@@ -556,9 +568,6 @@ nimf_server_init (NimfServer *server)
   server->modules = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free, NULL);
   nimf_server_load_engines (server);
-
-  server->instances = nimf_server_create_module_instances (server);
-
   server->main_context = g_main_context_ref_thread_default ();
   server->connections = g_hash_table_new_full (g_direct_hash,
                                                g_direct_equal,
@@ -612,6 +621,8 @@ nimf_server_finalize (GObject *object)
   g_hash_table_unref (server->connections);
   g_list_free (server->agents_list);
   g_object_unref (server->settings);
+  g_hash_table_unref (server->trigger_gsettings);
+  g_hash_table_unref (server->trigger_keys);
   nimf_key_freev (server->hotkeys);
   g_free (server->address);
 
@@ -1008,24 +1019,6 @@ on_incoming_message_xim (XIMS        xims,
 
   int retval;
 
-  NimfConnection *connection = NULL;
-
-  if (data->major_code == XIM_CREATE_IC      ||
-      data->major_code == XIM_DESTROY_IC     ||
-      data->major_code == XIM_SET_IC_VALUES  ||
-      data->major_code == XIM_GET_IC_VALUES  ||
-      data->major_code == XIM_FORWARD_EVENT  ||
-      data->major_code == XIM_SET_IC_FOCUS   ||
-      data->major_code == XIM_UNSET_IC_FOCUS ||
-      data->major_code == XIM_RESET_IC)
-  {
-    connection = g_hash_table_lookup (server->connections,
-                                      GUINT_TO_POINTER (data->changeic.icid));
-    if (connection)
-      nimf_engine_set_english_mode (connection->engine,
-                                    connection->is_english_mode);
-  }
-
   switch (data->major_code)
   {
     case XIM_OPEN:
@@ -1073,9 +1066,6 @@ on_incoming_message_xim (XIMS        xims,
       retval = 0;
       break;
   }
-
-  if (connection)
-    connection->is_english_mode = nimf_engine_get_english_mode (connection->engine);
 
   return retval;
 }

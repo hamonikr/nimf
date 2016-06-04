@@ -59,12 +59,8 @@ struct _NimfSunpinyin
   NimfEngine parent_instance;
 
   gchar            *id;
-  gboolean          is_english_mode;
   gchar            *preedit_string;
   NimfPreeditState  preedit_state;
-
-  GSettings       *settings;
-  NimfKey         **trigger_keys;
 
   CIMIView       *view;
   CHotkeyProfile *hotkey_profile;
@@ -173,15 +169,7 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar **trigger_keys;
-
-  pinyin->settings = g_settings_new ("org.nimf.engines.nimf-sunpinyin");
-  trigger_keys = g_settings_get_strv (pinyin->settings, "trigger-keys");
-  pinyin->trigger_keys = nimf_key_newv ((const gchar **) trigger_keys);
-  g_strfreev (trigger_keys);
-
   pinyin->id = g_strdup ("nimf-sunpinyin");
-  pinyin->is_english_mode = TRUE;
   pinyin->preedit_string = g_strdup ("");
 
   CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
@@ -213,8 +201,6 @@ nimf_sunpinyin_finalize (GObject *object)
   g_free (pinyin->id);
   g_free (pinyin->preedit_string);
   g_free (pinyin->commit_str);
-  nimf_key_freev (pinyin->trigger_keys);
-  g_object_unref (pinyin->settings);
 
   if (pinyin->view)
   {
@@ -371,17 +357,6 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
 
-  if (nimf_event_matches (event, (const NimfKey **) pinyin->trigger_keys))
-  {
-    nimf_sunpinyin_reset (engine, target, client_id);
-    pinyin->is_english_mode = !pinyin->is_english_mode;
-    nimf_engine_emit_engine_changed (engine, target);
-    return TRUE;
-  }
-
-  if (pinyin->is_english_mode)
-    return FALSE;
-
   switch (event->key.keyval)
   {
     case NIMF_KEY_Return:
@@ -436,23 +411,6 @@ on_candidate_clicked (NimfEngine     *engine,
   nimf_sunpinyin_update (engine, target, client_id);
 }
 
-void
-nimf_sunpinyin_set_english_mode (NimfEngine *engine,
-                                 gboolean    is_english_mode)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NIMF_SUNPINYIN (engine)->is_english_mode = is_english_mode;
-}
-
-gboolean
-nimf_sunpinyin_get_english_mode (NimfEngine *engine)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return NIMF_SUNPINYIN (engine)->is_english_mode;
-}
-
 static void
 nimf_sunpinyin_class_init (NimfSunpinyinClass *klass)
 {
@@ -463,8 +421,6 @@ nimf_sunpinyin_class_init (NimfSunpinyinClass *klass)
 
   engine_class->get_id            = nimf_sunpinyin_get_id;
   engine_class->get_icon_name     = nimf_sunpinyin_get_icon_name;
-  engine_class->set_english_mode  = nimf_sunpinyin_set_english_mode;
-  engine_class->get_english_mode  = nimf_sunpinyin_get_english_mode;
   engine_class->candidate_clicked = on_candidate_clicked;
 
   engine_class->focus_in          = nimf_sunpinyin_focus_in;

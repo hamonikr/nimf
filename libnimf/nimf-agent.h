@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-agent.h
  * This file is part of Nimf.
@@ -55,8 +55,7 @@ GType       nimf_agent_get_type              (void) G_GNUC_CONST;
 NimfAgent  *nimf_agent_new                   (void);
 gchar     **nimf_agent_get_loaded_engine_ids (NimfAgent   *agent);
 void        nimf_agent_set_engine_by_id      (NimfAgent   *agent,
-                                              const gchar *id,
-                                              gboolean     is_english_mode);
+                                              const gchar *id);
 G_END_DECLS
 
 #endif /* __NIMF_AGENT_H__ */

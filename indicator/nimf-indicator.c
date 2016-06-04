@@ -37,7 +37,7 @@ static void on_engine_menu (GtkWidget *widget,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_agent_set_engine_by_id (agent, engine_id, FALSE);
+  nimf_agent_set_engine_by_id (agent, engine_id);
 }
 
 static void on_settings_menu (GtkWidget *widget,

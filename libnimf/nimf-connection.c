@@ -81,7 +81,6 @@ nimf_connection_new (NimfConnectionType  type,
   connection->engine          = engine;
   connection->use_preedit     = TRUE;
   connection->preedit_state   = NIMF_PREEDIT_STATE_END;
-  connection->is_english_mode = TRUE;
   connection->cb_user_data    = cb_user_data;
 
   return connection;
@@ -144,8 +143,7 @@ void nimf_connection_set_next_engine (NimfConnection *connection,
 
 void
 nimf_connection_set_engine_by_id (NimfConnection *connection,
-                                  const gchar    *id,
-                                  gboolean        is_english_mode)
+                                  const gchar    *id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -154,10 +152,8 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   g_return_if_fail (engine != NULL);
 
   connection->engine = engine;
-  connection->is_english_mode = is_english_mode;
-  nimf_engine_set_english_mode (connection->engine,
-                                connection->is_english_mode);
-  nimf_connection_emit_engine_changed (connection, nimf_engine_get_icon_name (connection->engine));
+  nimf_connection_emit_engine_changed (connection,
+                                       nimf_engine_get_icon_name (connection->engine));
 }
 
 gboolean nimf_connection_filter_event (NimfConnection *connection,
@@ -168,6 +164,34 @@ gboolean nimf_connection_filter_event (NimfConnection *connection,
 
   if (G_UNLIKELY (connection->engine == NULL))
     return FALSE;
+
+  GHashTableIter iter;
+  gpointer       trigger_keys;
+  gpointer       engine;
+
+  g_hash_table_iter_init (&iter, connection->server->trigger_keys);
+
+  while (g_hash_table_iter_next (&iter, &trigger_keys, &engine))
+  {
+    if (nimf_event_matches (event, trigger_keys))
+    {
+      if (event->key.type == NIMF_EVENT_KEY_RELEASE)
+      {
+        nimf_connection_reset (connection, client_id);
+
+        if (connection->engine != engine)
+          connection->engine = engine;
+        else
+          connection->engine = nimf_server_get_instance (connection->server,
+                                                         "nimf-system-keyboard");
+
+        nimf_connection_emit_engine_changed (connection,
+                                             nimf_engine_get_icon_name (connection->engine));
+      }
+
+      return TRUE;
+    }
+  }
 
   if (nimf_event_matches (event,
                           (const NimfKey **) connection->server->hotkeys))

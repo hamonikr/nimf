@@ -65,8 +65,7 @@ nimf_agent_new ()
 
 void
 nimf_agent_set_engine_by_id (NimfAgent   *agent,
-                             const gchar *id,
-                             gboolean     is_english_mode)
+                             const gchar *id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -78,11 +77,9 @@ nimf_agent_set_engine_by_id (NimfAgent   *agent,
   GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);
 
   gchar *data     = NULL;
-  gint   str_len  = strlen (id);
-  gint   data_len = str_len + 1 + sizeof (gboolean);
+  gint   data_len = strlen (id) + 1;
 
-  data = g_strndup (id, data_len - 1);
-  *(gboolean *) (data + str_len + 1) = is_english_mode;
+  data = g_strdup (id);
 
   nimf_send_message (socket, client->id, NIMF_MESSAGE_SET_ENGINE_BY_ID,
                      data, data_len, g_free);

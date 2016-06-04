@@ -43,10 +43,8 @@ struct _NimfLibhangul
   gchar              *id;
 
   gboolean            is_candidate_mode;
-  gboolean            is_english_mode;
   HanjaTable         *hanja_table;
   HanjaTable         *symbol_table;
-  NimfKey           **trigger_keys;
   NimfKey           **hanja_keys;
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
@@ -302,17 +300,6 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
     return FALSE;
   }
 
-  if (nimf_event_matches (event, (const NimfKey **) hangul->trigger_keys))
-  {
-    nimf_libhangul_reset (engine, target, client_id);
-    hangul->is_english_mode = !hangul->is_english_mode;
-    nimf_engine_emit_engine_changed (engine, target);
-    return TRUE;
-  }
-
-  if (hangul->is_english_mode)
-    return FALSE;
-
   if (G_UNLIKELY (nimf_event_matches (event,
                   (const NimfKey **) hangul->hanja_keys)))
   {
@@ -499,12 +486,7 @@ on_changed_keys (GSettings     *settings,
 
   gchar **keys = g_settings_get_strv (settings, key);
 
-  if (g_strcmp0 (key, "trigger-keys") == 0)
-  {
-    nimf_key_freev (hangul->trigger_keys);
-    hangul->trigger_keys = nimf_key_newv ((const gchar **) keys);
-  }
-  else if (g_strcmp0 (key, "hanja-keys") == 0)
+  if (g_strcmp0 (key, "hanja-keys") == 0)
   {
     nimf_key_freev (hangul->hanja_keys);
     hangul->hanja_keys = nimf_key_newv ((const gchar **) keys);
@@ -554,12 +536,10 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   trigger_keys = g_settings_get_strv (hangul->settings, "trigger-keys");
   hanja_keys   = g_settings_get_strv (hangul->settings, "hanja-keys");
 
-  hangul->trigger_keys = nimf_key_newv ((const gchar **) trigger_keys);
   hangul->hanja_keys   = nimf_key_newv ((const gchar **) hanja_keys);
   hangul->context = hangul_ic_new (hangul->layout);
 
   hangul->id = g_strdup ("nimf-libhangul");
-  hangul->is_english_mode = TRUE;
   hangul->preedit_string = g_strdup ("");
   hangul->hanja_table  = hanja_table_load (NULL);
   hangul->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
@@ -596,7 +576,6 @@ nimf_libhangul_finalize (GObject *object)
   g_free (hangul->preedit_string);
   g_free (hangul->id);
   g_free (hangul->layout);
-  nimf_key_freev (hangul->trigger_keys);
   nimf_key_freev (hangul->hanja_keys);
   g_object_unref (hangul->settings);
 
@@ -651,23 +630,6 @@ nimf_libhangul_get_icon_name (NimfEngine *engine)
   return NIMF_LIBHANGUL (engine)->id;
 }
 
-void
-nimf_libhangul_set_english_mode (NimfEngine *engine,
-                                 gboolean    is_english_mode)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NIMF_LIBHANGUL (engine)->is_english_mode = is_english_mode;
-}
-
-gboolean
-nimf_libhangul_get_english_mode (NimfEngine *engine)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return NIMF_LIBHANGUL (engine)->is_english_mode;
-}
-
 static void
 nimf_libhangul_class_init (NimfLibhangulClass *class)
 {
@@ -686,8 +648,6 @@ nimf_libhangul_class_init (NimfLibhangulClass *class)
 
   engine_class->get_id             = nimf_libhangul_get_id;
   engine_class->get_icon_name      = nimf_libhangul_get_icon_name;
-  engine_class->set_english_mode   = nimf_libhangul_set_english_mode;
-  engine_class->get_english_mode   = nimf_libhangul_get_english_mode;
 
   object_class->finalize = nimf_libhangul_finalize;
 }

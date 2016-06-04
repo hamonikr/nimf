@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-connection.h
  * This file is part of Nimf.
@@ -56,7 +56,6 @@ struct _NimfConnection
   NimfEngine         *engine;
   guint16             id;
   gboolean            use_preedit;
-  gboolean            is_english_mode;
   NimfRectangle       cursor_area;
   NimfServer         *server;
   GSocket            *socket;
@@ -82,8 +81,7 @@ NimfConnection *nimf_connection_new                     (NimfConnectionType   ty
                                                          NimfEngine          *engine,
                                                          gpointer             cb_user_data);
 void            nimf_connection_set_engine_by_id        (NimfConnection      *connection,
-                                                         const gchar         *id,
-                                                         gboolean             is_english_mode);
+                                                         const gchar         *id);
 guint16         nimf_connection_get_id                  (NimfConnection      *connection);
 gboolean        nimf_connection_filter_event            (NimfConnection      *connection,
                                                          guint16              client_id,

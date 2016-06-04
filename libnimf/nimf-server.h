@@ -69,6 +69,8 @@ struct _NimfServer
 
   GSettings  *settings;
   NimfKey   **hotkeys;
+  GHashTable *trigger_gsettings;
+  GHashTable *trigger_keys;
   gboolean    disable_fallback_filter_for_xim;
 };
 

@@ -203,31 +203,6 @@ nimf_engine_set_cursor_location (NimfEngine          *engine,
 }
 
 void
-nimf_engine_set_english_mode (NimfEngine *engine,
-                              gboolean    is_english_mode)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
-
-  if (class->set_english_mode)
-    class->set_english_mode (engine, is_english_mode);
-}
-
-gboolean
-nimf_engine_get_english_mode (NimfEngine *engine)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
-
-  if (class->get_english_mode)
-    return class->get_english_mode (engine);
-
-  return FALSE;
-}
-
-void
 nimf_engine_emit_preedit_start (NimfEngine     *engine,
                                 NimfConnection *connection,
                                 guint16         client_id)
@@ -465,14 +440,7 @@ nimf_engine_get_icon_name (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  const gchar *icon_name;
-
-  if (nimf_engine_get_english_mode (engine))
-    icon_name = "nimf-system-keyboard";
-  else
-    icon_name = NIMF_ENGINE_GET_CLASS (engine)->get_icon_name (engine);
-
-  return icon_name;
+  return NIMF_ENGINE_GET_CLASS (engine)->get_icon_name (engine);
 }
 
 static const gchar *

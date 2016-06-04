@@ -84,10 +84,6 @@ struct _NimfEngineClass
                                    gint                *cursor_index);
   void     (* set_cursor_location)(NimfEngine          *engine,
                                    const NimfRectangle *area);
-  void     (* set_english_mode)   (NimfEngine          *engine,
-                                   gboolean             is_english_mode);
-  gboolean (* get_english_mode)   (NimfEngine          *engine);
-
   void     (* candidate_clicked)  (NimfEngine          *engine,
                                    NimfConnection      *connection,
                                    guint16              client_id,
@@ -124,9 +120,6 @@ gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
                                                 gint                *cursor_index);
 void     nimf_engine_set_cursor_location       (NimfEngine          *engine,
                                                 const NimfRectangle *area);
-void     nimf_engine_set_english_mode          (NimfEngine          *engine,
-                                                gboolean             is_english_mode);
-gboolean nimf_engine_get_english_mode          (NimfEngine          *engine);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine      *engine,
                                                 NimfConnection  *connection,
