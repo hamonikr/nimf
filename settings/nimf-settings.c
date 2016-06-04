@@ -504,10 +504,17 @@ on_button_clicked_add (GtkButton           *button,
   GtkWidget *dialog;
   GtkWidget *entry;
   GtkWidget *content_area;
+  GtkDialogFlags flags;
+
+#if GTK_CHECK_VERSION(3, 12, 0)
+  flags = GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR;
+#else
+  flags = GTK_DIALOG_MODAL;
+#endif
 
   dialog = gtk_dialog_new_with_buttons (_("Press key combination..."),
                                         GTK_WINDOW (nimf_settings_window),
-                                        GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR,
+                                        flags,
                                         _("_OK"),     GTK_RESPONSE_ACCEPT,
                                         _("_Cancel"), GTK_RESPONSE_REJECT,
                                         NULL);
@@ -600,7 +607,11 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   gtk_button_set_relief (GTK_BUTTON (button2), GTK_RELIEF_NONE);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#if GTK_CHECK_VERSION(3, 12, 0)
   gtk_widget_set_margin_end (page_key->label, 15);
+#else
+  gtk_widget_set_margin_right (page_key->label, 15);
+#endif
   gtk_box_pack_start (GTK_BOX (hbox), page_key->label,   FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (hbox), button2, FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (hbox), button1, FALSE, FALSE, 0);
@@ -689,8 +700,13 @@ nimf_settings_page_new (NimfSettings *nsettings,
   page->label = nimf_settings_page_build_label (page, schema_id);
   page->box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 15);
   page->page_keys = g_ptr_array_new_with_free_func ((GDestroyNotify) nimf_settings_page_key_free);
+#if GTK_CHECK_VERSION(3, 12, 0)
   gtk_widget_set_margin_start  (page->box, 15);
   gtk_widget_set_margin_end    (page->box, 15);
+#else
+  gtk_widget_set_margin_left   (page->box, 15);
+  gtk_widget_set_margin_right  (page->box, 15);
+#endif
   gtk_widget_set_margin_top    (page->box, 15);
   gtk_widget_set_margin_bottom (page->box, 15);
 
