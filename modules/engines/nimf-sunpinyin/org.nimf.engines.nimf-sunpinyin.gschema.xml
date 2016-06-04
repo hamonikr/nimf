@@ -12,10 +12,10 @@
       <summary>Active engine</summary>
       <description>The engine will be loaded on startup if available. Restart required</description>
     </key>
-    <key type="as" name="zh-en-keys">
+    <key type="as" name="trigger-keys">
       <default>['&lt;Shift&gt; space']</default>
-      <summary>hotkey for switching Chinese / English</summary>
-      <description>hotkey for switching Chinese / English</description>
+      <summary>Trigger keys for switching Chinese / System</summary>
+      <description>Trigger keys for switching Chinese / System</description>
     </key>
   </schema>
 </schemalist>

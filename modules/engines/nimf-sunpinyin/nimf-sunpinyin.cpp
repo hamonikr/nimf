@@ -64,7 +64,7 @@ struct _NimfSunpinyin
   NimfPreeditState  preedit_state;
 
   GSettings       *settings;
-  NimfKey         **zh_en_keys;
+  NimfKey         **trigger_keys;
 
   CIMIView       *view;
   CHotkeyProfile *hotkey_profile;
@@ -173,12 +173,12 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar **zh_en_keys;
+  gchar **trigger_keys;
 
   pinyin->settings = g_settings_new ("org.nimf.engines.nimf-sunpinyin");
-  zh_en_keys = g_settings_get_strv (pinyin->settings, "zh-en-keys");
-  pinyin->zh_en_keys = nimf_key_newv ((const gchar **) zh_en_keys);
-  g_strfreev (zh_en_keys);
+  trigger_keys = g_settings_get_strv (pinyin->settings, "trigger-keys");
+  pinyin->trigger_keys = nimf_key_newv ((const gchar **) trigger_keys);
+  g_strfreev (trigger_keys);
 
   pinyin->id = g_strdup ("nimf-sunpinyin");
   pinyin->is_english_mode = TRUE;
@@ -213,7 +213,7 @@ nimf_sunpinyin_finalize (GObject *object)
   g_free (pinyin->id);
   g_free (pinyin->preedit_string);
   g_free (pinyin->commit_str);
-  nimf_key_freev (pinyin->zh_en_keys);
+  nimf_key_freev (pinyin->trigger_keys);
   g_object_unref (pinyin->settings);
 
   if (pinyin->view)
@@ -371,7 +371,7 @@ nimf_sunpinyin_filter_event (NimfEngine     *engine,
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
 
-  if (nimf_event_matches (event, (const NimfKey **) pinyin->zh_en_keys))
+  if (nimf_event_matches (event, (const NimfKey **) pinyin->trigger_keys))
   {
     nimf_sunpinyin_reset (engine, target, client_id);
     pinyin->is_english_mode = !pinyin->is_english_mode;

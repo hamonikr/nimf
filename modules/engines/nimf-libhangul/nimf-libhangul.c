@@ -46,7 +46,7 @@ struct _NimfLibhangul
   gboolean            is_english_mode;
   HanjaTable         *hanja_table;
   HanjaTable         *symbol_table;
-  NimfKey           **hangul_keys;
+  NimfKey           **trigger_keys;
   NimfKey           **hanja_keys;
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
@@ -302,7 +302,7 @@ nimf_libhangul_filter_event (NimfEngine     *engine,
     return FALSE;
   }
 
-  if (nimf_event_matches (event, (const NimfKey **) hangul->hangul_keys))
+  if (nimf_event_matches (event, (const NimfKey **) hangul->trigger_keys))
   {
     nimf_libhangul_reset (engine, target, client_id);
     hangul->is_english_mode = !hangul->is_english_mode;
@@ -499,10 +499,10 @@ on_changed_keys (GSettings     *settings,
 
   gchar **keys = g_settings_get_strv (settings, key);
 
-  if (g_strcmp0 (key, "hangul-keys") == 0)
+  if (g_strcmp0 (key, "trigger-keys") == 0)
   {
-    nimf_key_freev (hangul->hangul_keys);
-    hangul->hangul_keys = nimf_key_newv ((const gchar **) keys);
+    nimf_key_freev (hangul->trigger_keys);
+    hangul->trigger_keys = nimf_key_newv ((const gchar **) keys);
   }
   else if (g_strcmp0 (key, "hanja-keys") == 0)
   {
@@ -538,7 +538,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar **hangul_keys, **hanja_keys;
+  gchar **trigger_keys;
+  gchar **hanja_keys;
 
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
 
@@ -550,11 +551,11 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->ignore_reset_in_commit_cb =
     g_settings_get_boolean (hangul->settings, "ignore-reset-in-commit-cb");
 
-  hangul_keys = g_settings_get_strv (hangul->settings, "hangul-keys");
-  hanja_keys  = g_settings_get_strv (hangul->settings, "hanja-keys");
+  trigger_keys = g_settings_get_strv (hangul->settings, "trigger-keys");
+  hanja_keys   = g_settings_get_strv (hangul->settings, "hanja-keys");
 
-  hangul->hangul_keys = nimf_key_newv ((const gchar **) hangul_keys);
-  hangul->hanja_keys  = nimf_key_newv ((const gchar **) hanja_keys);
+  hangul->trigger_keys = nimf_key_newv ((const gchar **) trigger_keys);
+  hangul->hanja_keys   = nimf_key_newv ((const gchar **) hanja_keys);
   hangul->context = hangul_ic_new (hangul->layout);
 
   hangul->id = g_strdup ("nimf-libhangul");
@@ -563,14 +564,14 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->hanja_table  = hanja_table_load (NULL);
   hangul->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
 
-  g_strfreev (hangul_keys);
+  g_strfreev (trigger_keys);
   g_strfreev (hanja_keys);
 
   nimf_libhangul_update_transition_cb (hangul);
 
   g_signal_connect (hangul->settings, "changed::layout",
                     G_CALLBACK (on_changed_layout), hangul);
-  g_signal_connect (hangul->settings, "changed::hangul-keys",
+  g_signal_connect (hangul->settings, "changed::trigger-keys",
                     G_CALLBACK (on_changed_keys), hangul);
   g_signal_connect (hangul->settings, "changed::hanja-keys",
                     G_CALLBACK (on_changed_keys), hangul);
@@ -595,7 +596,7 @@ nimf_libhangul_finalize (GObject *object)
   g_free (hangul->preedit_string);
   g_free (hangul->id);
   g_free (hangul->layout);
-  nimf_key_freev (hangul->hangul_keys);
+  nimf_key_freev (hangul->trigger_keys);
   nimf_key_freev (hangul->hanja_keys);
   g_object_unref (hangul->settings);
 

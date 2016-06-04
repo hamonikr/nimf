@@ -73,10 +73,10 @@
       <summary>key value for UI l10n</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
-    <key type="as" name="hangul-keys">
+    <key type="as" name="trigger-keys">
       <default>['Hangul']</default>
-      <summary>hotkey for switching Korean / English</summary>
-      <description>Binding to change Korean / English</description>
+      <summary>Trigger keys for switching Korean / System</summary>
+      <description>Binding to change Korean / System</description>
     </key>
     <key type="as" name="hanja-keys">
       <default>['Hangul_Hanja']</default>
