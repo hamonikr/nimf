@@ -37,7 +37,6 @@ struct _NimfSystemKeyboard
   NimfEngine parent_instance;
 
   gchar *id;
-  gchar *icon_name;
 };
 
 struct _NimfSystemKeyboardClass
@@ -66,7 +65,7 @@ nimf_system_keyboard_get_icon_name (NimfEngine *engine)
 
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
-  return NIMF_SYSTEM_KEYBOARD (engine)->icon_name;
+  return NIMF_SYSTEM_KEYBOARD (engine)->id;
 }
 
 static void
@@ -74,8 +73,7 @@ nimf_system_keyboard_init (NimfSystemKeyboard *keyboard)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  keyboard->id        = g_strdup ("nimf-system-keyboard");
-  keyboard->icon_name = g_strdup ("keyboard");
+  keyboard->id = g_strdup ("nimf-system-keyboard");
 }
 
 static void
@@ -83,10 +81,7 @@ nimf_system_keyboard_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (object);
-
-  g_free (keyboard->id);
-  g_free (keyboard->icon_name);
+  g_free (NIMF_SYSTEM_KEYBOARD (object)->id);
 
   G_OBJECT_CLASS (nimf_system_keyboard_parent_class)->finalize (object);
 }

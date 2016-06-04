@@ -94,23 +94,13 @@ static void on_exit_menu (GtkWidget *widget,
   gtk_main_quit ();
 }
 
-/* FIXME: need NimfEngineInfo or id instead of name */
 static void on_engine_changed (NimfAgent    *agent,
-                               gchar        *name,
+                               gchar        *icon_name,
                                AppIndicator *indicator)
 {
-  g_debug (G_STRLOC ": %s: name: %s", G_STRFUNC, name);
+  g_debug (G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
 
-  gchar *icon_name;
-
-  if (g_strcmp0 (name, "focus-out") == 0)
-    icon_name = g_strdup ("nimf-indicator");
-  else
-    icon_name = g_strdup_printf ("nimf-indicator-%s", name);
-
-  app_indicator_set_icon_full (indicator, icon_name, name);
-
-  g_free (icon_name);
+  app_indicator_set_icon_full (indicator, icon_name, icon_name);
 }
 
 static void on_disconnected (NimfAgent    *agent,

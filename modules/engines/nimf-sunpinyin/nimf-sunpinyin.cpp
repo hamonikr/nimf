@@ -59,7 +59,6 @@ struct _NimfSunpinyin
   NimfEngine parent_instance;
 
   gchar            *id;
-  gchar            *zh_name;
   gboolean          is_english_mode;
   gchar            *preedit_string;
   NimfPreeditState  preedit_state;
@@ -182,7 +181,6 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
   g_strfreev (zh_en_keys);
 
   pinyin->id = g_strdup ("nimf-sunpinyin");
-  pinyin->zh_name = g_strdup ("zh");
   pinyin->is_english_mode = TRUE;
   pinyin->preedit_string = g_strdup ("");
 
@@ -213,7 +211,6 @@ nimf_sunpinyin_finalize (GObject *object)
   NimfSunpinyin *pinyin = NIMF_SUNPINYIN (object);
 
   g_free (pinyin->id);
-  g_free (pinyin->zh_name);
   g_free (pinyin->preedit_string);
   g_free (pinyin->commit_str);
   nimf_key_freev (pinyin->zh_en_keys);
@@ -248,7 +245,7 @@ nimf_sunpinyin_get_icon_name (NimfEngine *engine)
 
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
-  return NIMF_SUNPINYIN (engine)->zh_name;
+  return NIMF_SUNPINYIN (engine)->id;
 }
 
 void

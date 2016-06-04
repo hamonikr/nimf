@@ -4,11 +4,11 @@ status_scalable_icondir   = $(icon_themedir)/scalable/status/
 status_scalable_icon_DATA = \
 	scalable/nimf.svg \
 	scalable/nimf-indicator.svg \
-	scalable/nimf-indicator-keyboard.svg \
+	scalable/nimf-system-keyboard.svg \
 	scalable/nimf-indicator-warning.svg \
-	scalable/nimf-indicator-ko.svg \
-	scalable/nimf-indicator-zh.svg \
-	scalable/nimf-indicator-ja.svg
+	scalable/nimf-libhangul.svg \
+	scalable/nimf-sunpinyin.svg \
+	scalable/nimf-anthy.svg
 
 # 16x16 icons
 

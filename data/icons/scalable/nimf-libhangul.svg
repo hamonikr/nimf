@@ -14,7 +14,7 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="nimf-indicator-zh.svg">
+   sodipodi:docname="nimf-libhangul.svg">
   <defs
      id="defs2987" />
   <sodipodi:namedview
@@ -25,16 +25,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="12"
-     inkscape:cx="8"
+     inkscape:cx="7.9166667"
      inkscape:cy="8"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
-     inkscape:window-width="531"
+     inkscape:window-width="746"
      inkscape:window-height="438"
-     inkscape:window-x="591"
-     inkscape:window-y="64"
+     inkscape:window-x="1105"
+     inkscape:window-y="377"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -76,6 +76,6 @@
          sodipodi:role="line"
          id="tspan2989"
          x="3"
-         y="12">拼</tspan></text>
+         y="12">한</tspan></text>
   </g>
 </svg>

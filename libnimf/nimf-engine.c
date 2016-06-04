@@ -468,7 +468,7 @@ nimf_engine_get_icon_name (NimfEngine *engine)
   const gchar *icon_name;
 
   if (nimf_engine_get_english_mode (engine))
-    icon_name = "keyboard";
+    icon_name = "nimf-system-keyboard";
   else
     icon_name = NIMF_ENGINE_GET_CLASS (engine)->get_icon_name (engine);
 
@@ -478,7 +478,6 @@ nimf_engine_get_icon_name (NimfEngine *engine)
 static const gchar *
 nimf_engine_real_get_icon_name (NimfEngine *engine)
 {
-  /* FIXME */
   g_error ("You should implement your_engine_get_icon_name ()");
 
   return NULL;

@@ -39,7 +39,6 @@ struct _NimfAnthy
 
   gchar    *preedit_string;
   gchar    *id;
-  gchar    *ja_name;
   gboolean  is_english_mode;
 
   anthy_context_t context;
@@ -101,9 +100,8 @@ nimf_anthy_init (NimfAnthy *anthy)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  anthy->preedit_string = g_strdup ("");
-  anthy->id      = g_strdup ("nimf-anthy");
-  anthy->ja_name = g_strdup ("ja");
+  anthy->preedit_string  = g_strdup ("");
+  anthy->id              = g_strdup ("nimf-anthy");
   anthy->is_english_mode = TRUE;
 
   anthy_init ();
@@ -120,6 +118,7 @@ nimf_anthy_finalize (GObject *object)
   NimfAnthy *anthy = NIMF_ANTHY (object);
 
   g_free (anthy->preedit_string);
+  g_free (anthy->id);
 /* commented due to segmentation fault
   anthy_release_context (anthy->context);
   anthy_quit (); */
@@ -172,7 +171,7 @@ nimf_anthy_get_icon_name (NimfEngine *engine)
 
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
-  return NIMF_ANTHY (engine)->ja_name;
+  return NIMF_ANTHY (engine)->id;
 }
 
 void

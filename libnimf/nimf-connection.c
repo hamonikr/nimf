@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-connection.c
  * This file is part of Nimf.
@@ -126,7 +126,7 @@ void nimf_connection_focus_out (NimfConnection *connection,
     return;
 
   nimf_engine_focus_out (connection->engine, connection, client_id);
-  nimf_connection_emit_engine_changed (connection, "focus-out");
+  nimf_connection_emit_engine_changed (connection, "nimf-indicator");
 }
 
 void nimf_connection_set_next_engine (NimfConnection *connection,
