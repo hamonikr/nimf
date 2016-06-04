@@ -203,20 +203,29 @@ main (int argc, char **argv)
     app_indicator_set_icon_full (indicator,
                                  "nimf-indicator-warning", "disconnected");
   /* menu */
-  gchar         **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
-  GtkWidget      *engine_menu;
-  NimfEngineInfo *info;
+  gchar     **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
+  GtkWidget  *engine_menu;
 
   guint i;
 
   for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
   {
-    info = nimf_engine_get_info_by_id (engine_ids[i]);
-    engine_menu = gtk_menu_item_new_with_label (_(info->engine_name));
+    GSettings *settings;
+    gchar     *schema_id;
+    gchar     *name;
+
+    schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
+    settings = g_settings_new (schema_id);
+    name = g_settings_get_string (settings, "hidden-schema-name");
+
+    engine_menu = gtk_menu_item_new_with_label (name);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
     g_signal_connect (engine_menu, "activate",
                       G_CALLBACK (on_engine_menu), engine_ids[i]);
-    g_slice_free (NimfEngineInfo, info);
+
+    g_free (name);
+    g_free (schema_id);
+    g_object_unref (settings);
   }
 
   settings_menu = gtk_menu_item_new_with_label (_("Settings"));
