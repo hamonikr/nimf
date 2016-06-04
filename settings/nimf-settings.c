@@ -87,10 +87,14 @@ on_gsettings_changed (GSettings *settings,
   }
   else if (GTK_IS_COMBO_BOX (widget))
   {
-    gchar *id;
+    gchar    *id;
+    gboolean  retval;
 
     id = g_settings_get_string (settings, key);
-    gtk_combo_box_set_active_id (GTK_COMBO_BOX (widget), id);
+    retval = gtk_combo_box_set_active_id (GTK_COMBO_BOX (widget), id);
+
+    if (retval == FALSE && g_strcmp0 (key, "default-engine") == 0)
+      g_settings_set_string (settings, key, "nimf-system-keyboard");
 
     g_free (id);
   }
@@ -129,7 +133,9 @@ on_combo_box_changd (GtkComboBox         *widget,
   const gchar *id;
 
   id = gtk_combo_box_get_active_id (GTK_COMBO_BOX (widget));
-  g_settings_set_string (page_key->gsettings, page_key->key, id);
+
+  if (id)
+    g_settings_set_string (page_key->gsettings, page_key->key, id);
 }
 
 static void
@@ -218,6 +224,66 @@ nimf_settings_page_key_build_boolean (NimfSettingsPageKey *page_key)
   return hbox;
 }
 
+static void
+on_gsettings_changed_active (GSettings *settings,
+                             gchar     *key,
+                             GtkWidget *widget)
+{
+  GtkListStore          *store;
+  GSettingsSchemaSource *schema_source;
+  GList                 *schema_list = NULL;
+  gchar                **non_relocatable;
+  const gchar           *id1;
+  GtkTreeIter            iter;
+  gint                   i;
+
+  id1 = gtk_combo_box_get_active_id (GTK_COMBO_BOX (widget));
+  store = (GtkListStore *) gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
+  gtk_list_store_clear (store);
+
+  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
+  schema_source = g_settings_schema_source_get_default ();
+  g_settings_schema_source_list_schemas (schema_source, TRUE,
+                                         &non_relocatable, NULL);
+
+  for (i = 0; non_relocatable[i] != NULL; i++)
+    if (g_str_has_prefix (non_relocatable[i], "org.nimf.engines."))
+      schema_list = g_list_prepend (schema_list, non_relocatable[i]);
+
+  for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison);
+       schema_list != NULL;
+       schema_list = schema_list->next)
+  {
+    GSettingsSchema *schema;
+    GSettings       *gsettings;
+    gchar           *name;
+    const gchar     *id2;
+
+    schema = g_settings_schema_source_lookup (schema_source,
+                                              schema_list->data, TRUE);
+    gsettings = g_settings_new (schema_list->data);
+    name = g_settings_get_string (gsettings, "hidden-schema-name");
+    id2 = schema_list->data + strlen ("org.nimf.engines.");
+
+    if (g_settings_schema_has_key (schema, "active") == FALSE ||
+        g_settings_get_boolean (gsettings, "active"))
+    {
+      gtk_list_store_append (store, &iter);
+      gtk_list_store_set (store, &iter, 0, name, 1, id2, -1);
+    }
+
+    g_settings_schema_unref (schema);
+    g_free (name);
+    g_object_unref (gsettings);
+  }
+
+  if (gtk_combo_box_set_active_id (GTK_COMBO_BOX (widget), id1) == FALSE)
+    gtk_combo_box_set_active_id (GTK_COMBO_BOX (widget), "nimf-system-keyboard");
+
+  g_strfreev (non_relocatable);
+  g_list_free (schema_list);
+}
+
 static GtkWidget *
 nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
                                      const gchar         *schema_id,
@@ -239,47 +305,63 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
   if (g_strcmp0 (schema_id, "org.nimf.engines") == 0 &&
       g_strcmp0 (page_key->key, "default-engine") == 0)
   {
-    gchar                *engine_id;
-    GDir                 *dir;
-    const gchar          *filename;
-    const NimfEngineInfo *info;
-    GError               *error = NULL;
-    NimfEngineInfo *(* module_get_info) (void);
+    GSettingsSchemaSource *schema_source;
+    GList                 *schema_list = NULL;
+    gchar                **non_relocatable;
+    gchar                 *id1;
+    gint                   i;
 
-    dir = g_dir_open (NIMF_MODULE_DIR, 0, &error);
+    id1 = g_settings_get_string (page_key->gsettings, page_key->key);
+    schema_source = g_settings_schema_source_get_default ();
+    g_settings_schema_source_list_schemas (schema_source, TRUE,
+                                           &non_relocatable, NULL);
 
-    if (error)
-      g_error (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+    for (i = 0; non_relocatable[i] != NULL; i++)
+      if (g_str_has_prefix (non_relocatable[i], "org.nimf.engines."))
+        schema_list = g_list_prepend (schema_list, non_relocatable[i]);
 
-    engine_id = g_settings_get_string (page_key->gsettings, page_key->key);
-
-    while ((filename = g_dir_read_name (dir)))
+    for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison);
+         schema_list != NULL;
+         schema_list = schema_list->next)
     {
-      gchar   *path;
-      GModule *library;
+      GSettingsSchema *schema;
+      GSettings       *gsettings;
+      gchar           *name;
+      const gchar     *id2;
 
-      path = g_build_path (G_DIR_SEPARATOR_S, NIMF_MODULE_DIR, filename, NULL);
-      library = g_module_open (path, G_MODULE_BIND_LAZY |
-                                     G_MODULE_BIND_LOCAL);
+      schema = g_settings_schema_source_lookup (schema_source,
+                                                schema_list->data, TRUE);
+      gsettings = g_settings_new (schema_list->data);
+      name = g_settings_get_string (gsettings, "hidden-schema-name");
+      id2 = schema_list->data + strlen ("org.nimf.engines.");
 
-      if (!g_module_symbol (library, "module_get_info",
-                            (gpointer *) &module_get_info))
-        g_error (G_STRLOC ": %s", g_module_error ());
+      if (g_settings_schema_has_key (schema, "active") == FALSE ||
+          g_settings_get_boolean (gsettings, "active"))
+      {
+        gtk_list_store_append (store, &iter);
+        gtk_list_store_set (store, &iter, 0, name, 1, id2, -1);
+      }
 
-      info = module_get_info ();
-      gtk_list_store_append (store, &iter);
-      gtk_list_store_set (store, &iter, 0, info->engine_name,
-                                        1, info->engine_id, -1);
+      if (g_settings_schema_has_key (schema, "active"))
+        g_signal_connect (gsettings, "changed::active",
+                          G_CALLBACK (on_gsettings_changed_active), combo);
 
-      if (g_strcmp0 (engine_id, info->engine_id) == 0)
-        gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo), &iter);
-
-      g_module_close (library);
-      g_free (path);
+      g_settings_schema_unref (schema);
+      g_free (name);
+      /*g_object_unref (gsettings);*/ /*** FIXME ***/
     }
 
-    g_dir_close (dir);
-    g_free (engine_id);
+    if (gtk_combo_box_set_active_id (GTK_COMBO_BOX (combo), id1) == FALSE)
+    {
+      g_settings_set_string (page_key->gsettings, "default-engine",
+                             "nimf-system-keyboard");
+      gtk_combo_box_set_active_id (GTK_COMBO_BOX (combo),
+                                   "nimf-system-keyboard");
+    }
+
+    g_strfreev (non_relocatable);
+    g_list_free (schema_list);
+    g_free (id1);
   }
   else if (g_str_has_prefix (page_key->key, "hidden-") == FALSE)
   {
