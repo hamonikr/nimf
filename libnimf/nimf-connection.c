@@ -69,9 +69,9 @@ nimf_connection_class_init (NimfConnectionClass *class)
 }
 
 NimfConnection *
-nimf_connection_new (NimfConnectionType  type,
-                     NimfEngine         *engine,
-                     gpointer            cb_user_data)
+nimf_connection_new (NimfContextType  type,
+                     NimfEngine      *engine,
+                     gpointer         cb_user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -323,7 +323,7 @@ nimf_connection_emit_preedit_start (NimfConnection *connection,
 
   switch (connection->type)
   {
-    case NIMF_CONNECTION_NIMF_IM:
+    case NIMF_CONTEXT_NIMF_IM:
       if (G_UNLIKELY (connection->use_preedit == FALSE &&
                       connection->preedit_state == NIMF_PREEDIT_STATE_END))
         return;
@@ -334,7 +334,7 @@ nimf_connection_emit_preedit_start (NimfConnection *connection,
                                    NIMF_MESSAGE_PREEDIT_START_REPLY);
       connection->preedit_state = NIMF_PREEDIT_STATE_START;
       break;
-    case NIMF_CONNECTION_XIM:
+    case NIMF_CONTEXT_XIM:
       {
         XIMS xims = connection->cb_user_data;
         IMPreeditStateStruct preedit_state_data = {0};
@@ -365,7 +365,7 @@ nimf_connection_emit_preedit_changed (NimfConnection *connection,
 
   switch (connection->type)
   {
-    case NIMF_CONNECTION_NIMF_IM:
+    case NIMF_CONTEXT_NIMF_IM:
       if (G_UNLIKELY (connection->use_preedit == FALSE &&
                       connection->preedit_state == NIMF_PREEDIT_STATE_END))
         return;
@@ -382,7 +382,7 @@ nimf_connection_emit_preedit_changed (NimfConnection *connection,
                                      NIMF_MESSAGE_PREEDIT_CHANGED_REPLY);
       }
       break;
-    case NIMF_CONNECTION_XIM:
+    case NIMF_CONTEXT_XIM:
       {
         XIMS xims = connection->cb_user_data;
         gchar *preedit_string;
@@ -456,7 +456,7 @@ nimf_connection_emit_preedit_end (NimfConnection *connection,
 
   switch (connection->type)
   {
-    case NIMF_CONNECTION_NIMF_IM:
+    case NIMF_CONTEXT_NIMF_IM:
       if (G_UNLIKELY (connection->use_preedit == FALSE &&
                       connection->preedit_state == NIMF_PREEDIT_STATE_END))
         return;
@@ -467,7 +467,7 @@ nimf_connection_emit_preedit_end (NimfConnection *connection,
                                    NIMF_MESSAGE_PREEDIT_END_REPLY);
       connection->preedit_state = NIMF_PREEDIT_STATE_END;
       break;
-    case NIMF_CONNECTION_XIM:
+    case NIMF_CONTEXT_XIM:
       {
         XIMS xims = connection->cb_user_data;
         IMPreeditStateStruct preedit_state_data = {0};
@@ -497,13 +497,13 @@ nimf_connection_emit_commit (NimfConnection *connection,
 
   switch (connection->type)
   {
-    case NIMF_CONNECTION_NIMF_IM:
+    case NIMF_CONTEXT_NIMF_IM:
       nimf_send_message (connection->socket, icid, NIMF_MESSAGE_COMMIT,
                          (gchar *) text, strlen (text) + 1, NULL);
       nimf_result_iteration_until (connection->result, NULL, icid,
                                    NIMF_MESSAGE_COMMIT_REPLY);
       break;
-    case NIMF_CONNECTION_XIM:
+    case NIMF_CONTEXT_XIM:
       {
         XIMS xims = connection->cb_user_data;
         XTextProperty property;

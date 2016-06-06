@@ -52,23 +52,23 @@ struct _NimfConnection
 {
   GObject parent_instance;
 
-  NimfConnectionType  type;
-  NimfEngine         *engine;
-  guint16             id;
-  gboolean            use_preedit;
-  NimfRectangle       cursor_area;
-  NimfServer         *server;
-  GSocket            *socket;
-  NimfResult         *result;
-  GSource            *source;
-  GSocketConnection  *socket_connection;
+  NimfContextType    type;
+  NimfEngine        *engine;
+  guint16            id;
+  gboolean           use_preedit;
+  NimfRectangle      cursor_area;
+  NimfServer        *server;
+  GSocket           *socket;
+  NimfResult        *result;
+  GSource           *source;
+  GSocketConnection *socket_connection;
   /* XIM */
-  guint16             xim_connect_id;
-  gint                xim_preedit_length;
-  NimfPreeditState    preedit_state;
-  gpointer            cb_user_data;
-  Window              client_window;
-  Window              focus_window;
+  guint16            xim_connect_id;
+  gint               xim_preedit_length;
+  NimfPreeditState   preedit_state;
+  gpointer           cb_user_data;
+  Window             client_window;
+  Window             focus_window;
 };
 
 struct _NimfConnectionClass
@@ -77,7 +77,7 @@ struct _NimfConnectionClass
 };
 
 GType           nimf_connection_get_type                (void) G_GNUC_CONST;
-NimfConnection *nimf_connection_new                     (NimfConnectionType   type,
+NimfConnection *nimf_connection_new                     (NimfContextType      type,
                                                          NimfEngine          *engine,
                                                          gpointer             cb_user_data);
 void            nimf_connection_set_engine_by_id        (NimfConnection      *connection,

@@ -344,7 +344,7 @@ nimf_im_new ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   return g_object_new (NIMF_TYPE_IM,
-                       "connection-type", NIMF_CONNECTION_NIMF_IM, NULL);
+                       "connection-type", NIMF_CONTEXT_NIMF_IM, NULL);
 }
 
 static void

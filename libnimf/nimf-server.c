@@ -56,7 +56,7 @@ on_incoming_message_nimf (GSocket        *socket,
 
     connection->result->reply   = NULL;
 
-    if (G_UNLIKELY (connection->type == NIMF_CONNECTION_NIMF_AGENT))
+    if (G_UNLIKELY (connection->type == NIMF_CONTEXT_NIMF_AGENT))
       connection->server->agents_list =
         g_list_remove (connection->server->agents_list, connection);
 
@@ -189,7 +189,7 @@ on_incoming_message_nimf (GSocket        *socket,
         g_hash_table_iter_init (&iter, connection->server->connections);
 
         while (g_hash_table_iter_next (&iter, NULL, &conn))
-          if (NIMF_CONNECTION (conn)->type != NIMF_CONNECTION_NIMF_AGENT)
+          if (NIMF_CONNECTION (conn)->type != NIMF_CONTEXT_NIMF_AGENT)
             nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
                                               message->data);
 
@@ -255,14 +255,14 @@ on_new_connection (GSocketService    *service,
   nimf_send_message (socket, 0, NIMF_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
 
   NimfConnection *connection;
-  connection = nimf_connection_new (*(NimfConnectionType *) message->data,
+  connection = nimf_connection_new (*(NimfContextType *) message->data,
                                     nimf_server_get_default_engine (server),
                                     NULL);
   nimf_message_unref (message);
   connection->socket = socket;
   nimf_server_add_connection (server, connection);
 
-  if (connection->type == NIMF_CONNECTION_NIMF_AGENT)
+  if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
     server->agents_list = g_list_prepend (server->agents_list, connection);
 
   connection->source = g_socket_create_source (socket, G_IO_IN, NULL);
@@ -810,7 +810,7 @@ int nimf_server_xim_create_ic (NimfServer       *server,
 
   if (!connection)
   {
-    connection = nimf_connection_new (NIMF_CONNECTION_XIM,
+    connection = nimf_connection_new (NIMF_CONTEXT_XIM,
                                       nimf_server_get_default_engine (server),
                                       xims);
     connection->xim_connect_id = data->connect_id;

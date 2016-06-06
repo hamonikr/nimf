@@ -288,7 +288,7 @@ nimf_client_constructed (GObject *object)
     NimfMessage *message;
 
     nimf_send_message (socket, client->id, NIMF_MESSAGE_CONNECT, &client->type,
-                       sizeof (NimfConnectionType), NULL);
+                       sizeof (NimfContextType), NULL);
     g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
     message = nimf_recv_message (socket);
 
@@ -426,8 +426,8 @@ nimf_client_class_init (NimfClientClass *class)
                                    g_param_spec_enum ("connection-type",
                                                       "connection type",
                                                       "connection type",
-                                                      NIMF_TYPE_CONNECTION_TYPE,
-                                                      NIMF_CONNECTION_NIMF_IM,
+                                                      NIMF_TYPE_CONTEXT_TYPE,
+                                                      NIMF_CONTEXT_NIMF_IM,
                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   nimf_client_signals[ENGINE_CHANGED] =
     g_signal_new (g_intern_static_string ("engine-changed"),

@@ -43,8 +43,8 @@ struct _NimfClient
 {
   GObject parent_instance;
 
-  NimfConnectionType type;
-  guint16            id;
+  NimfContextType type;
+  guint16         id;
 };
 
 struct _NimfClientClass
