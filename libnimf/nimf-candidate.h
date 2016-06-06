@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-candidate.h
  * This file is part of Nimf.
@@ -50,7 +50,7 @@ void           nimf_candidate_update_window         (NimfCandidate  *candidate,
                                                      const gchar   **strv);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
                                                      NimfConnection *target,
-                                                     guint16         client_id);
+                                                     guint16         icid);
 gboolean       nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);
 void           nimf_candidate_select_previous_item  (NimfCandidate  *candidate);

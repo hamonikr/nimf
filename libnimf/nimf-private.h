@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-private.h
  * This file is part of Nimf.
@@ -64,7 +64,7 @@ void         nimf_log_default_handler    (const gchar     *log_domain,
                                           gboolean        *debug);
 void         nimf_result_iteration_until (NimfResult      *result,
                                           GMainContext    *main_context,
-                                          guint16          client_id,
+                                          guint16          icid,
                                           NimfMessageType  type);
 G_END_DECLS
 

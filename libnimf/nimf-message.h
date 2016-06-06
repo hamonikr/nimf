@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-message.h
  * This file is part of Nimf.
@@ -81,7 +81,7 @@ typedef enum
 
 struct _NimfMessageHeader
 {
-  guint16         client_id;
+  guint16         icid;
   NimfMessageType type;
   guint16         data_len;
 };

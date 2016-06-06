@@ -103,7 +103,7 @@ on_incoming_message (GSocket      *socket,
 
   NimfClient *client;
   client = g_hash_table_lookup (nimf_client_table,
-                                GUINT_TO_POINTER (message->header->client_id));
+                                GUINT_TO_POINTER (message->header->icid));
 
   switch (message->header->type)
   {

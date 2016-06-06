@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-candidate.c
  * This file is part of Nimf.
@@ -30,7 +30,7 @@ struct _NimfCandidate
   GtkWidget      *treeview;
   GtkTreeIter     iter;
   NimfConnection *target;
-  guint16         client_id;
+  guint16         icid;
 };
 
 struct _NimfCandidateClass
@@ -71,7 +71,7 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
 
   if (engine_class->candidate_clicked)
     engine_class->candidate_clicked (candidate->target->engine,
-                                     candidate->target, candidate->client_id,
+                                     candidate->target, candidate->icid,
                                      text, indices[0]);
   g_free (text);
 }
@@ -190,7 +190,7 @@ nimf_candidate_update_window (NimfCandidate  *candidate,
 
 void nimf_candidate_show_window (NimfCandidate  *candidate,
                                  NimfConnection *target,
-                                 guint16         client_id)
+                                 guint16         icid)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -205,8 +205,8 @@ void nimf_candidate_show_window (NimfCandidate  *candidate,
     gtk_tree_selection_select_iter (selection, &candidate->iter);
   }
 
-  candidate->target    = target;
-  candidate->client_id = client_id;
+  candidate->target = target;
+  candidate->icid   = icid;
 
   gtk_window_get_size (GTK_WINDOW (candidate->window), &w, &h);
 

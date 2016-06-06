@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-private.c
  * This file is part of Nimf.
@@ -24,7 +24,7 @@
 
 void
 nimf_send_message (GSocket         *socket,
-                   guint16          client_id,
+                   guint16          icid,
                    NimfMessageType  type,
                    gpointer         data,
                    guint16          data_len,
@@ -37,7 +37,7 @@ nimf_send_message (GSocket         *socket,
   GError *error = NULL;
   gssize n_written;
 
-  message = nimf_message_new_full (type, client_id,
+  message = nimf_message_new_full (type, icid,
                                    data, data_len, data_destroy_func);
   header  = nimf_message_get_header (message);
 
@@ -212,7 +212,7 @@ void nimf_log_default_handler (const gchar    *log_domain,
 void
 nimf_result_iteration_until (NimfResult      *result,
                              GMainContext    *main_context,
-                             guint16          client_id,
+                             guint16          icid,
                              NimfMessageType  type)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -222,7 +222,7 @@ nimf_result_iteration_until (NimfResult      *result,
     g_main_context_iteration (main_context, TRUE);
   } while ((result->is_dispatched == FALSE) ||
            (result->reply && ((result->reply->header->type != type) ||
-                              (result->reply->header->client_id != client_id))));
+                              (result->reply->header->icid != icid))));
 
   if (G_UNLIKELY (result->is_dispatched == TRUE && result->reply == NULL))
     g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,

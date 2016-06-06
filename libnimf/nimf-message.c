@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-message.c
  * This file is part of Nimf.
@@ -34,7 +34,7 @@ nimf_message_new ()
 
 NimfMessage *
 nimf_message_new_full (NimfMessageType type,
-                       guint16         client_id,
+                       guint16         icid,
                        gpointer        data,
                        guint16         data_len,
                        GDestroyNotify  data_destroy_func)
@@ -45,7 +45,7 @@ nimf_message_new_full (NimfMessageType type,
 
   message                    = g_slice_new0 (NimfMessage);
   message->header            = g_slice_new0 (NimfMessageHeader);
-  message->header->client_id = client_id;
+  message->header->icid      = icid;
   message->header->type      = type;
   message->header->data_len  = data_len;
   message->data              = data;
