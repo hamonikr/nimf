@@ -175,7 +175,7 @@ gboolean nimf_connection_filter_event (NimfConnection *connection,
   {
     if (nimf_event_matches (event, trigger_keys))
     {
-      if (event->key.type == NIMF_EVENT_KEY_RELEASE)
+      if (event->key.type == NIMF_EVENT_KEY_PRESS)
       {
         nimf_connection_reset (connection, icid);
 
@@ -196,7 +196,7 @@ gboolean nimf_connection_filter_event (NimfConnection *connection,
   if (nimf_event_matches (event,
                           (const NimfKey **) connection->server->hotkeys))
   {
-    if (event->key.type == NIMF_EVENT_KEY_RELEASE)
+    if (event->key.type == NIMF_EVENT_KEY_PRESS)
     {
       nimf_connection_reset (connection, icid);
       nimf_connection_set_next_engine (connection, icid);
