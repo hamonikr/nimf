@@ -27,7 +27,7 @@
 #endif
 
 #include <glib-object.h>
-#include "nimf-connection.h"
+#include "nimf-context.h"
 
 G_BEGIN_DECLS
 
@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 #define NIMF_IS_CANDIDATE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_CANDIDATE))
 #define NIMF_CANDIDATE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_CANDIDATE, NimfCandidateClass))
 
-typedef struct _NimfConnection      NimfConnection;
+typedef struct _NimfContext NimfContext;
 
 typedef struct _NimfCandidate       NimfCandidate;
 typedef struct _NimfCandidateClass  NimfCandidateClass;
@@ -49,8 +49,7 @@ NimfCandidate *nimf_candidate_new                   (void);
 void           nimf_candidate_update_window         (NimfCandidate  *candidate,
                                                      const gchar   **strv);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
-                                                     NimfConnection *target,
-                                                     guint16         icid);
+                                                     NimfContext    *context);
 gboolean       nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);
 void           nimf_candidate_select_previous_item  (NimfCandidate  *candidate);

@@ -52,42 +52,39 @@ struct _NimfAnthyClass
 G_DEFINE_DYNAMIC_TYPE (NimfAnthy, nimf_anthy, NIMF_TYPE_ENGINE);
 
 void
-nimf_anthy_reset (NimfEngine     *engine,
-                  NimfConnection *target,
-                  guint16         icid)
+nimf_anthy_reset (NimfEngine  *engine,
+                  NimfContext *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
-nimf_anthy_focus_in (NimfEngine *engine)
+nimf_anthy_focus_in (NimfEngine  *engine,
+                     NimfContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
-nimf_anthy_focus_out (NimfEngine     *engine,
-                      NimfConnection *target,
-                      guint16         icid)
+nimf_anthy_focus_out (NimfEngine  *engine,
+                      NimfContext *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 static void
-on_candidate_clicked (NimfEngine     *engine,
-                      NimfConnection *target,
-                      guint16         icid,
-                      gchar          *text,
-                      gint            index)
+on_candidate_clicked (NimfEngine  *engine,
+                      NimfContext *target,
+                      gchar       *text,
+                      gint         index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 gboolean
-nimf_anthy_filter_event (NimfEngine     *engine,
-                         NimfConnection *target,
-                         guint16         icid,
-                         NimfEvent      *event)
+nimf_anthy_filter_event (NimfEngine  *engine,
+                         NimfContext *target,
+                         NimfEvent   *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

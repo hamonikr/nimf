@@ -33,6 +33,8 @@ libnimf_la_SOURCES = \
 	nimf.h \
 	nimf-client.h \
 	nimf-client.c \
+	nimf-context.h \
+	nimf-context.c \
 	nimf-private.h \
 	nimf-private.c \
 	nimf-im.c \

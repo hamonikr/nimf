@@ -26,11 +26,10 @@ struct _NimfCandidate
 {
   GObject parent_instance;
 
-  GtkWidget      *window;
-  GtkWidget      *treeview;
-  GtkTreeIter     iter;
-  NimfConnection *target;
-  guint16         icid;
+  GtkWidget   *window;
+  GtkWidget   *treeview;
+  GtkTreeIter  iter;
+  NimfContext *target;
 };
 
 struct _NimfCandidateClass
@@ -71,7 +70,7 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
 
   if (engine_class->candidate_clicked)
     engine_class->candidate_clicked (candidate->target->engine,
-                                     candidate->target, candidate->icid,
+                                     candidate->target,
                                      text, indices[0]);
   g_free (text);
 }
@@ -188,9 +187,8 @@ nimf_candidate_update_window (NimfCandidate  *candidate,
   gtk_adjustment_set_value (adjustment, 0.0);
 }
 
-void nimf_candidate_show_window (NimfCandidate  *candidate,
-                                 NimfConnection *target,
-                                 guint16         icid)
+void nimf_candidate_show_window (NimfCandidate *candidate,
+                                 NimfContext   *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -206,7 +204,6 @@ void nimf_candidate_show_window (NimfCandidate  *candidate,
   }
 
   candidate->target = target;
-  candidate->icid   = icid;
 
   gtk_window_get_size (GTK_WINDOW (candidate->window), &w, &h);
 

@@ -56,11 +56,13 @@ struct _NimfServer
   GList           *instances;
   GSocketListener *listener;
   GHashTable      *connections;
+  GHashTable      *xim_contexts;
   GList           *agents_list;
 
   NimfCandidate   *candidate;
   GSource         *xevent_source;
   guint16          next_id;
+  guint16          next_icid;
 
   gchar     *address;
   gboolean   active;

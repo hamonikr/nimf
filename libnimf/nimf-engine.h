@@ -29,7 +29,7 @@
 #include <glib-object.h>
 #include "nimf-events.h"
 #include "nimf-types.h"
-#include "nimf-connection.h"
+#include "nimf-context.h"
 
 G_BEGIN_DECLS
 
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 #define NIMF_IS_ENGINE_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_ENGINE))
 #define NIMF_ENGINE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
 
-typedef struct _NimfConnection    NimfConnection;
+typedef struct _NimfContext NimfContext;
 
 typedef struct _NimfEngine        NimfEngine;
 typedef struct _NimfEngineClass   NimfEngineClass;
@@ -60,33 +60,29 @@ struct _NimfEngineClass
   /*< public >*/
   /* Virtual functions */
   gboolean (* filter_event)       (NimfEngine          *engine,
-                                   NimfConnection      *connection,
-                                   guint16              icid,
+                                   NimfContext         *context,
                                    NimfEvent           *event);
   void     (* get_preedit_string) (NimfEngine          *engine,
                                    gchar              **str,
                                    gint                *cursor_pos);
   void     (* reset)              (NimfEngine          *engine,
-                                   NimfConnection      *connection,
-                                   guint16              icid);
-  void     (* focus_in)           (NimfEngine          *engine);
+                                   NimfContext         *context);
+  void     (* focus_in)           (NimfEngine          *engine,
+                                   NimfContext         *context);
   void     (* focus_out)          (NimfEngine          *engine,
-                                   NimfConnection      *connection,
-                                   guint16              icid);
+                                   NimfContext         *context);
   void     (* set_surrounding)    (NimfEngine          *engine,
                                    const char          *text,
                                    gint                 len,
                                    gint                 cursor_index);
   gboolean (* get_surrounding)    (NimfEngine          *engine,
-                                   NimfConnection      *connection,
-                                   guint16              icid,
+                                   NimfContext         *context,
                                    gchar              **text,
                                    gint                *cursor_index);
   void     (* set_cursor_location)(NimfEngine          *engine,
                                    const NimfRectangle *area);
   void     (* candidate_clicked)  (NimfEngine          *engine,
-                                   NimfConnection      *connection,
-                                   guint16              icid,
+                                   NimfContext         *context,
                                    gchar               *text,
                                    gint                 index);
   /* info */
@@ -96,16 +92,14 @@ struct _NimfEngineClass
 
 GType    nimf_engine_get_type                  (void) G_GNUC_CONST;
 gboolean nimf_engine_filter_event              (NimfEngine          *engine,
-                                                NimfConnection      *connection,
-                                                guint16              icid,
+                                                NimfContext         *context,
                                                 NimfEvent           *event);
 void     nimf_engine_reset                     (NimfEngine          *engine,
-                                                NimfConnection      *connection,
-                                                guint16              icid);
-void     nimf_engine_focus_in                  (NimfEngine          *engine);
+                                                NimfContext         *context);
+void     nimf_engine_focus_in                  (NimfEngine          *engine,
+                                                NimfContext         *context);
 void     nimf_engine_focus_out                 (NimfEngine          *engine,
-                                                NimfConnection      *connection,
-                                                guint16              icid);
+                                                NimfContext         *context);
 void     nimf_engine_get_preedit_string        (NimfEngine          *engine,
                                                 gchar              **str,
                                                 gint                *cursor_pos);
@@ -114,44 +108,36 @@ void     nimf_engine_set_surrounding           (NimfEngine          *engine,
                                                 gint                 len,
                                                 gint                 cursor_index);
 gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
-                                                NimfConnection      *connection,
-                                                guint16              icid,
+                                                NimfContext         *context,
                                                 gchar             **text,
                                                 gint                *cursor_index);
 void     nimf_engine_set_cursor_location       (NimfEngine          *engine,
                                                 const NimfRectangle *area);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine      *engine,
-                                                NimfConnection  *connection,
-                                                guint16          icid);
+                                                NimfContext     *context);
 void     nimf_engine_emit_preedit_changed      (NimfEngine      *engine,
-                                                NimfConnection  *connection,
-                                                guint16          icid,
+                                                NimfContext     *context,
                                                 const gchar     *preedit_string,
                                                 gint             cursor_pos);
 void     nimf_engine_emit_preedit_end          (NimfEngine      *engine,
-                                                NimfConnection  *connection,
-                                                guint16          icid);
+                                                NimfContext     *context);
 void     nimf_engine_emit_commit               (NimfEngine      *engine,
-                                                NimfConnection  *connection,
-                                                guint16          icid,
+                                                NimfContext     *context,
                                                 gchar const     *text);
 gboolean nimf_engine_emit_retrieve_surrounding (NimfEngine      *engine,
-                                                NimfConnection  *connection,
-                                                guint16          icid);
+                                                NimfContext     *context);
 gboolean nimf_engine_emit_delete_surrounding   (NimfEngine      *engine,
-                                                NimfConnection  *connection,
-                                                guint16          icid,
+                                                NimfContext     *context,
                                                 gint             offset,
                                                 gint             n_chars);
 void     nimf_engine_emit_engine_changed       (NimfEngine      *engine,
-                                                NimfConnection  *connection);
+                                                NimfContext     *context);
 /* candidate */
 void     nimf_engine_update_candidate_window         (NimfEngine      *engine,
                                                       const gchar    **strv);
 void     nimf_engine_show_candidate_window           (NimfEngine      *engine,
-                                                      NimfConnection  *connection,
-                                                      guint16          icid);
+                                                      NimfContext     *context);
 void     nimf_engine_hide_candidate_window           (NimfEngine      *engine);
 gboolean nimf_engine_is_candidate_window_visible     (NimfEngine      *engine);
 void     nimf_engine_select_previous_candidate_item  (NimfEngine      *engine);
