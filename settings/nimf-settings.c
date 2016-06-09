@@ -421,13 +421,12 @@ on_key_press_event (GtkWidget *widget,
                     GtkWidget *dialog)
 {
   const gchar *keystr;
-  GString     *string;
-  gchar       *combination;
+  GString     *combination;
   GFlagsClass *flags_class; /* do not free */
   guint        mod;
   guint        i;
 
-  string = g_string_new ("");
+  combination = g_string_new ("");
   mod = event->key.state & NIMF_MODIFIER_MASK;
   flags_class = (GFlagsClass *) g_type_class_ref (NIMF_TYPE_MODIFIER_TYPE);
 
@@ -436,7 +435,7 @@ on_key_press_event (GtkWidget *widget,
     GFlagsValue *flags_value = g_flags_get_first_value (flags_class, mod & i);
 
     if (flags_value)
-      g_string_append_printf (string, "%s ", flags_value->value_nick);
+      g_string_append_printf (combination, "%s ", flags_value->value_nick);
   }
 
   g_type_class_unref (flags_class);
@@ -447,7 +446,7 @@ on_key_press_event (GtkWidget *widget,
   {
     gchar *text;
 
-    g_string_free (string, TRUE);
+    g_string_free (combination, TRUE);
     gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
                                        GTK_RESPONSE_ACCEPT, FALSE);
     text = g_strdup_printf (_("Please report a bug. (keyval: %d)"),
@@ -459,13 +458,12 @@ on_key_press_event (GtkWidget *widget,
     g_return_val_if_fail (keystr, TRUE);
   }
 
-  g_string_append_printf (string, "%s", keystr);
-  combination = g_string_free (string, FALSE);
-  gtk_entry_set_text (GTK_ENTRY (widget), combination);
+  g_string_append_printf (combination, "%s", keystr);
+  gtk_entry_set_text (GTK_ENTRY (widget), combination->str);
   gtk_editable_set_position (GTK_EDITABLE (widget), -1);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
                                      GTK_RESPONSE_ACCEPT, TRUE);
-  g_free (combination);
+  g_string_free (combination, TRUE);
 
   return TRUE;
 }
@@ -506,7 +504,7 @@ on_button_clicked_add (GtkButton           *button,
   GtkWidget *content_area;
   GtkDialogFlags flags;
 
-#if GTK_CHECK_VERSION(3, 12, 0)
+#if GTK_CHECK_VERSION (3, 12, 0)
   flags = GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR;
 #else
   flags = GTK_DIALOG_MODAL;
@@ -607,11 +605,13 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   gtk_button_set_relief (GTK_BUTTON (button2), GTK_RELIEF_NONE);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-#if GTK_CHECK_VERSION(3, 12, 0)
-  gtk_widget_set_margin_end (page_key->label, 15);
+
+#if GTK_CHECK_VERSION (3, 12, 0)
+  gtk_widget_set_margin_end   (page_key->label, 15);
 #else
   gtk_widget_set_margin_right (page_key->label, 15);
 #endif
+
   gtk_box_pack_start (GTK_BOX (hbox), page_key->label,   FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (hbox), button2, FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (hbox), button1, FALSE, FALSE, 0);
@@ -669,17 +669,16 @@ nimf_settings_page_build_label (NimfSettingsPage *page, const gchar *schema_id)
 
   str = g_settings_get_string (page->gsettings, "hidden-schema-name");
   string = g_string_new (str);
-  g_free (str);
 
   for (p = (gchar *) schema_id; *p != 0; p++)
     if (*p == '.')
       g_string_prepend (string, "  ");
 
-  str = g_string_free (string, FALSE);
-  tab_label = gtk_label_new (str);
+  tab_label = gtk_label_new (string->str);
   gtk_widget_set_halign (tab_label, GTK_ALIGN_START);
 
   g_free (str);
+  g_string_free (string, TRUE);
 
   return tab_label;
 }
@@ -700,19 +699,21 @@ nimf_settings_page_new (NimfSettings *nsettings,
   page->label = nimf_settings_page_build_label (page, schema_id);
   page->box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 15);
   page->page_keys = g_ptr_array_new_with_free_func ((GDestroyNotify) nimf_settings_page_key_free);
-#if GTK_CHECK_VERSION(3, 12, 0)
+
+#if GTK_CHECK_VERSION (3, 12, 0)
   gtk_widget_set_margin_start  (page->box, 15);
   gtk_widget_set_margin_end    (page->box, 15);
 #else
   gtk_widget_set_margin_left   (page->box, 15);
   gtk_widget_set_margin_right  (page->box, 15);
 #endif
+
   gtk_widget_set_margin_top    (page->box, 15);
   gtk_widget_set_margin_bottom (page->box, 15);
 
   schema = g_settings_schema_source_lookup (nsettings->schema_source,
                                             schema_id, TRUE);
-#if GLIB_CHECK_VERSION(2, 46, 0)
+#if GLIB_CHECK_VERSION (2, 46, 0)
   keys = g_settings_schema_list_keys (schema);
 #else
   keys = g_settings_list_keys (page->gsettings);
