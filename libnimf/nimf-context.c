@@ -285,15 +285,15 @@ nimf_context_emit_engine_changed (NimfContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GList *l = context->server->agents_list;
-  while (l != NULL)
-  {
-    GList *next = l->next;
-    nimf_send_message (NIMF_CONNECTION (l->data)->socket, 0,
+  gpointer       conn;
+  GHashTableIter iter;
+
+  g_hash_table_iter_init (&iter, context->server->agents);
+
+  while (g_hash_table_iter_next (&iter, NULL, &conn))
+    nimf_send_message (NIMF_CONNECTION (conn)->socket, 0,
                        NIMF_MESSAGE_ENGINE_CHANGED,
                        (gchar *) name, strlen (name) + 1, NULL);
-    l = next;
-  }
 }
 
 void nimf_context_focus_in (NimfContext *context)

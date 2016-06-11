@@ -58,8 +58,8 @@ on_incoming_message_nimf (GSocket        *socket,
     connection->result->reply   = NULL;
 
     if (G_UNLIKELY (connection->type == NIMF_CONTEXT_NIMF_AGENT))
-      connection->server->agents_list =
-        g_list_remove (connection->server->agents_list, connection);
+        g_hash_table_remove (connection->server->agents,
+                             GUINT_TO_POINTER (connection->id));
 
     g_hash_table_remove (connection->server->connections,
                          GUINT_TO_POINTER (nimf_connection_get_id (connection)));
@@ -297,7 +297,8 @@ on_new_connection (GSocketService    *service,
   nimf_server_add_connection (server, connection);
 
   if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
-    server->agents_list = g_list_prepend (server->agents_list, connection);
+    g_hash_table_insert (server->agents,
+                         GUINT_TO_POINTER (connection->id), connection);
 
   connection->source = g_socket_create_source (socket, G_IO_IN, NULL);
   connection->socket_connection = g_object_ref (socket_connection);
@@ -610,7 +611,7 @@ nimf_server_init (NimfServer *server)
                                                 g_direct_equal,
                                                 NULL,
                                                 (GDestroyNotify) nimf_context_free);
-  server->agents_list = NULL;
+  server->agents = g_hash_table_new (g_direct_hash, g_direct_equal);
 }
 
 void
@@ -657,7 +658,7 @@ nimf_server_finalize (GObject *object)
   g_object_unref (server->candidate);
   g_hash_table_unref (server->connections);
   g_hash_table_unref (server->xim_contexts);
-  g_list_free (server->agents_list);
+  g_hash_table_unref (server->agents);
   g_object_unref (server->settings);
   g_hash_table_unref (server->trigger_gsettings);
   g_hash_table_unref (server->trigger_keys);

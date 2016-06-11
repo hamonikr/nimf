@@ -57,7 +57,7 @@ struct _NimfServer
   GSocketListener *listener;
   GHashTable      *connections;
   GHashTable      *xim_contexts;
-  GList           *agents_list;
+  GHashTable      *agents;
 
   NimfCandidate   *candidate;
   GSource         *xevent_source;
