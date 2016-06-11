@@ -9,14 +9,6 @@ cd "$srcdir"
 
 mkdir -p m4
 
-INTLTOOLIZE=`which intltoolize`
-if test -z $INTLTOOLIZE; then
-    echo "intltoolize not found, please install intltool package"
-    exit 1
-else
-    intltoolize --force --copy --automake || exit $?
-fi
-
 PKGCONFIG=`which pkg-config`
 if test -z "$PKGCONFIG"; then
     echo "pkg-config not found, please install pkg-config"
@@ -25,8 +17,22 @@ fi
 
 pkg-config --print-errors glib-2.0
 if [ $? != 0 ]; then
-    echo "You probably need to install 'libglib2.0-dev'"
+    echo "You probably need to install libglib2.0-dev or glib2-devel"
     exit 1
+fi
+
+LIBTOOLIZE=`which libtoolize`
+if test -z $LIBTOOLIZE; then
+    echo "libtoolize not found, please install libtool package"
+    exit 1
+fi
+
+INTLTOOLIZE=`which intltoolize`
+if test -z $INTLTOOLIZE; then
+    echo "intltoolize not found, please install intltool package"
+    exit 1
+else
+    intltoolize --force --copy --automake || exit $?
 fi
 
 AUTORECONF=`which autoreconf`
