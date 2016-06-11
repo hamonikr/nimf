@@ -204,6 +204,8 @@ AC_OUTPUT([
   data/Makefile
   data/apparmor-abstractions/Makefile
   data/im-config/Makefile
+  data/imsettings/Makefile
+  data/imsettings/nimf.conf
   data/icons/Makefile
   indicator/Makefile
   libnimf/Makefile
