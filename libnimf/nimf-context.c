@@ -285,13 +285,14 @@ nimf_context_emit_engine_changed (NimfContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gpointer       conn;
+  gpointer       agent;
   GHashTableIter iter;
 
   g_hash_table_iter_init (&iter, context->server->agents);
 
-  while (g_hash_table_iter_next (&iter, NULL, &conn))
-    nimf_send_message (NIMF_CONNECTION (conn)->socket, 0,
+  while (g_hash_table_iter_next (&iter, NULL, &agent))
+    nimf_send_message (((NimfContext *) agent)->connection->socket,
+                       ((NimfContext *) agent)->icid,
                        NIMF_MESSAGE_ENGINE_CHANGED,
                        (gchar *) name, strlen (name) + 1, NULL);
 }
@@ -565,6 +566,10 @@ NimfContext *nimf_context_new (NimfContextType  type,
 void nimf_context_free (NimfContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (context->type == NIMF_CONTEXT_NIMF_AGENT)
+    g_hash_table_steal (context->server->agents,
+                        GUINT_TO_POINTER (context->icid));
 
   g_slice_free (NimfContext, context);
 }

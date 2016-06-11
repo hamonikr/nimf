@@ -107,16 +107,6 @@ on_incoming_message (GSocket      *socket,
 
   switch (message->header->type)
   {
-    /* reply */
-    case NIMF_MESSAGE_FILTER_EVENT_REPLY:
-    case NIMF_MESSAGE_RESET_REPLY:
-    case NIMF_MESSAGE_FOCUS_IN_REPLY:
-    case NIMF_MESSAGE_FOCUS_OUT_REPLY:
-    case NIMF_MESSAGE_SET_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_GET_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY:
-    case NIMF_MESSAGE_SET_USE_PREEDIT_REPLY:
-      break;
     /* signals */
     case NIMF_MESSAGE_PREEDIT_START:
       g_signal_emit_by_name (NIMF_IM (client), "preedit-start");
@@ -181,6 +171,17 @@ on_incoming_message (GSocket      *socket,
 
       nimf_message_unref (message);
       break;
+    /* reply */
+    case NIMF_MESSAGE_CREATE_CONTEXT_REPLY:
+    case NIMF_MESSAGE_DESTROY_CONTEXT_REPLY:
+    case NIMF_MESSAGE_FILTER_EVENT_REPLY:
+    case NIMF_MESSAGE_RESET_REPLY:
+    case NIMF_MESSAGE_FOCUS_IN_REPLY:
+    case NIMF_MESSAGE_FOCUS_OUT_REPLY:
+    case NIMF_MESSAGE_SET_SURROUNDING_REPLY:
+    case NIMF_MESSAGE_GET_SURROUNDING_REPLY:
+    case NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY:
+    case NIMF_MESSAGE_SET_USE_PREEDIT_REPLY:
     case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY:
     case NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY:
       break;
@@ -245,8 +246,8 @@ nimf_client_constructed (GObject *object)
     GSocketAddress *address;
     gint            retry_limit = 5;
     gint            retry_count = 0;
-    GSocket    *socket;
-    GError     *error = NULL;
+    GSocket        *socket;
+    GError         *error = NULL;
 
     address = g_unix_socket_address_new_with_type (NIMF_ADDRESS, -1,
                                                    G_UNIX_SOCKET_ADDRESS_ABSTRACT);
@@ -328,6 +329,18 @@ nimf_client_constructed (GObject *object)
   else
     g_object_ref (nimf_client_connection);
 
+  GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);
+  if (!socket || g_socket_is_closed (socket))
+  {
+    g_warning ("socket is closed");
+    return;
+  }
+
+  nimf_send_message (socket, client->id, NIMF_MESSAGE_CREATE_CONTEXT,
+                     &client->type, sizeof (NimfContextType), NULL);
+  nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+                               client->id, NIMF_MESSAGE_CREATE_CONTEXT_REPLY);
+
   g_mutex_unlock (&mutex);
 
   return;
@@ -339,6 +352,18 @@ nimf_client_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfClient *client = NIMF_CLIENT (object);
+
+  GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);
+  if (!socket || g_socket_is_closed (socket))
+  {
+    g_warning ("socket is closed");
+    return;
+  }
+
+  nimf_send_message (socket, client->id, NIMF_MESSAGE_DESTROY_CONTEXT,
+                     NULL, 0, NULL);
+  nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+                               client->id, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY);
 
   if (nimf_client_table)
     g_hash_table_steal (nimf_client_table, GUINT_TO_POINTER (client->id));

@@ -55,12 +55,7 @@ on_incoming_message_nimf (GSocket        *socket,
 
     g_socket_close (socket, NULL);
 
-    connection->result->reply   = NULL;
-
-    if (G_UNLIKELY (connection->type == NIMF_CONTEXT_NIMF_AGENT))
-        g_hash_table_remove (connection->server->agents,
-                             GUINT_TO_POINTER (connection->id));
-
+    connection->result->reply = NULL;
     g_hash_table_remove (connection->server->connections,
                          GUINT_TO_POINTER (nimf_connection_get_id (connection)));
 
@@ -81,17 +76,32 @@ on_incoming_message_nimf (GSocket        *socket,
 
   context = g_hash_table_lookup (connection->contexts,
                                  GUINT_TO_POINTER (icid));
-  if (context == NULL)
-  {
-    context = nimf_context_new (connection->type, connection,
-                                connection->server, NULL);
-    context->icid = icid;
-    g_hash_table_insert (connection->contexts,
-                         GUINT_TO_POINTER (icid), context);
-  }
 
   switch (message->header->type)
   {
+    case NIMF_MESSAGE_CREATE_CONTEXT:
+      context = nimf_context_new (connection->type, connection,
+                                  connection->server, NULL);
+      context->icid = icid;
+      g_hash_table_insert (connection->contexts,
+                           GUINT_TO_POINTER (icid), context);
+      if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
+        g_hash_table_insert (connection->server->agents,
+                             GUINT_TO_POINTER (icid), context);
+
+      nimf_send_message (socket, icid, NIMF_MESSAGE_CREATE_CONTEXT_REPLY,
+                         NULL, 0, NULL);
+      break;
+    case NIMF_MESSAGE_DESTROY_CONTEXT:
+      g_hash_table_remove (connection->contexts, GUINT_TO_POINTER (icid));
+
+      if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
+        g_hash_table_remove (connection->server->agents,
+                             GUINT_TO_POINTER (icid));
+
+      nimf_send_message (socket, icid, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY,
+                         NULL, 0, NULL);
+      break;
     case NIMF_MESSAGE_FILTER_EVENT:
       nimf_message_ref (message);
       retval = nimf_context_filter_event (context, (NimfEvent *) message->data);
@@ -295,10 +305,6 @@ on_new_connection (GSocketService    *service,
   nimf_message_unref (message);
   connection->socket = socket;
   nimf_server_add_connection (server, connection);
-
-  if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
-    g_hash_table_insert (server->agents,
-                         GUINT_TO_POINTER (connection->id), connection);
 
   connection->source = g_socket_create_source (socket, G_IO_IN, NULL);
   connection->socket_connection = g_object_ref (socket_connection);
