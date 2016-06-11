@@ -599,8 +599,8 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   GtkTreeIter        iter;
   gint               j;
 
-  button1 = gtk_button_new_from_icon_name ("gtk-add",    GTK_ICON_SIZE_SMALL_TOOLBAR);
-  button2 = gtk_button_new_from_icon_name ("gtk-remove", GTK_ICON_SIZE_SMALL_TOOLBAR);
+  button1 = gtk_button_new_from_icon_name ("list-add",    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  button2 = gtk_button_new_from_icon_name ("list-remove", GTK_ICON_SIZE_SMALL_TOOLBAR);
   gtk_button_set_relief (GTK_BUTTON (button1), GTK_RELIEF_NONE);
   gtk_button_set_relief (GTK_BUTTON (button2), GTK_RELIEF_NONE);
 
