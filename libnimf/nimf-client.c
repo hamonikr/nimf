@@ -29,7 +29,7 @@
 enum
 {
   PROP_0,
-  PROP_CONNECTION_TYPE,
+  PROP_CONTEXT_TYPE,
 };
 
 enum {
@@ -382,7 +382,7 @@ nimf_client_set_property (GObject      *object,
 
   switch (prop_id)
   {
-    case PROP_CONNECTION_TYPE:
+    case PROP_CONTEXT_TYPE:
       client->type = g_value_get_enum (value);
       break;
     default:
@@ -403,7 +403,7 @@ nimf_client_get_property (GObject    *object,
 
   switch (prop_id)
   {
-    case PROP_CONNECTION_TYPE:
+    case PROP_CONTEXT_TYPE:
       g_value_set_enum (value, client->type);
       break;
     default:
@@ -425,10 +425,10 @@ nimf_client_class_init (NimfClientClass *class)
   object_class->constructed  = nimf_client_constructed;
 
   g_object_class_install_property (object_class,
-                                   PROP_CONNECTION_TYPE,
-                                   g_param_spec_enum ("connection-type",
-                                                      "connection type",
-                                                      "connection type",
+                                   PROP_CONTEXT_TYPE,
+                                   g_param_spec_enum ("context-type",
+                                                      "context type",
+                                                      "context type",
                                                       NIMF_TYPE_CONTEXT_TYPE,
                                                       NIMF_CONTEXT_NIMF_IM,
                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));

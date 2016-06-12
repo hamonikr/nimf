@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-im.c
  * This file is part of Nimf.
@@ -344,7 +344,7 @@ nimf_im_new ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   return g_object_new (NIMF_TYPE_IM,
-                       "connection-type", NIMF_CONTEXT_NIMF_IM, NULL);
+                       "context-type", NIMF_CONTEXT_NIMF_IM, NULL);
 }
 
 static void
