@@ -42,7 +42,7 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   g_hash_table_iter_init (&iter, connection->contexts);
 
   while (g_hash_table_iter_next (&iter, NULL, &context))
-    if (((NimfContext *) context)->connection->type != NIMF_CONTEXT_NIMF_AGENT)
+    if (((NimfContext *) context)->type != NIMF_CONTEXT_NIMF_AGENT)
       nimf_context_set_engine_by_id (context, engine_id);
 }
 
@@ -90,15 +90,11 @@ nimf_connection_class_init (NimfConnectionClass *class)
 }
 
 NimfConnection *
-nimf_connection_new (NimfContextType type)
+nimf_connection_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfConnection *connection = g_object_new (NIMF_TYPE_CONNECTION, NULL);
-
-  connection->type = type;
-
-  return connection;
+  return g_object_new (NIMF_TYPE_CONNECTION, NULL);
 }
 
 guint16

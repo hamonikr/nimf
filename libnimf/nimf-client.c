@@ -286,28 +286,6 @@ nimf_client_constructed (GObject *object)
       return;
     }
 
-    NimfMessage *message;
-
-    nimf_send_message (socket, client->id, NIMF_MESSAGE_CONNECT, &client->type,
-                       sizeof (NimfContextType), NULL);
-    g_socket_condition_wait (socket, G_IO_IN, NULL, NULL);
-    message = nimf_recv_message (socket);
-
-    if (G_UNLIKELY (message == NULL ||
-                    message->header->type != NIMF_MESSAGE_CONNECT_REPLY))
-    {
-      nimf_message_unref (message);
-      g_critical ("Couldn't connect to nimf-daemon");
-      g_signal_emit_by_name (client, "disconnected", NULL);
-
-      if (message)
-        nimf_message_unref (message);
-
-      return;
-    }
-
-    nimf_message_unref (message);
-
     if (G_UNLIKELY (nimf_client_socket_context == NULL))
     {
       nimf_client_socket_context = g_main_context_new ();

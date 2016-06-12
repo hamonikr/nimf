@@ -80,12 +80,13 @@ on_incoming_message_nimf (GSocket        *socket,
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      context = nimf_context_new (connection->type, connection,
-                                  connection->server, NULL);
+      context = nimf_context_new (*(NimfContextType *) message->data,
+                                  connection, connection->server, NULL);
       context->icid = icid;
       g_hash_table_insert (connection->contexts,
                            GUINT_TO_POINTER (icid), context);
-      if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
+
+      if (context->type == NIMF_CONTEXT_NIMF_AGENT)
         g_hash_table_insert (connection->server->agents,
                              GUINT_TO_POINTER (icid), context);
 
@@ -95,7 +96,7 @@ on_incoming_message_nimf (GSocket        *socket,
     case NIMF_MESSAGE_DESTROY_CONTEXT:
       g_hash_table_remove (connection->contexts, GUINT_TO_POINTER (icid));
 
-      if (connection->type == NIMF_CONTEXT_NIMF_AGENT)
+      if (context->type == NIMF_CONTEXT_NIMF_AGENT)
         g_hash_table_remove (connection->server->agents,
                              GUINT_TO_POINTER (icid));
 
@@ -209,9 +210,8 @@ on_incoming_message_nimf (GSocket        *socket,
         g_hash_table_iter_init (&iter, connection->server->connections);
 
         while (g_hash_table_iter_next (&iter, NULL, &conn))
-          if (NIMF_CONNECTION (conn)->type != NIMF_CONTEXT_NIMF_AGENT)
-            nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
-                                              message->data);
+          nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
+                                            message->data);
 
         g_hash_table_iter_init (&iter, connection->server->xim_contexts);
 
@@ -284,29 +284,12 @@ on_new_connection (GSocketService    *service,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GSocket *socket = g_socket_connection_get_socket (socket_connection);
-
-  NimfMessage *message;
-  message = nimf_recv_message (socket);
-
-  if (G_UNLIKELY (message == NULL ||
-                  message->header->type != NIMF_MESSAGE_CONNECT))
-  {
-    g_critical (G_STRLOC ": Couldn't connect");
-    nimf_message_unref (message);
-    nimf_send_message (socket, 0, NIMF_MESSAGE_ERROR, NULL, 0, NULL);
-    return FALSE;
-  }
-
-  nimf_send_message (socket, 0, NIMF_MESSAGE_CONNECT_REPLY, NULL, 0, NULL);
-
   NimfConnection *connection;
-  connection = nimf_connection_new (*(NimfContextType *) message->data);
-  nimf_message_unref (message);
-  connection->socket = socket;
+  connection = nimf_connection_new ();
+  connection->socket = g_socket_connection_get_socket (socket_connection);
   nimf_server_add_connection (server, connection);
 
-  connection->source = g_socket_create_source (socket, G_IO_IN, NULL);
+  connection->source = g_socket_create_source (connection->socket, G_IO_IN, NULL);
   connection->socket_connection = g_object_ref (socket_connection);
   g_source_set_can_recurse (connection->source, TRUE);
   g_source_set_callback (connection->source,
