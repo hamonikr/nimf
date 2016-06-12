@@ -343,11 +343,11 @@ gboolean nimf_context_filter_event (NimfContext *context,
 
   GHashTableIter iter;
   gpointer       trigger_keys;
-  gpointer       engine;
+  gpointer       engine_id;
 
   g_hash_table_iter_init (&iter, context->server->trigger_keys);
 
-  while (g_hash_table_iter_next (&iter, &trigger_keys, &engine))
+  while (g_hash_table_iter_next (&iter, &trigger_keys, &engine_id))
   {
     if (nimf_event_matches (event, trigger_keys))
     {
@@ -355,8 +355,9 @@ gboolean nimf_context_filter_event (NimfContext *context,
       {
         nimf_context_reset (context);
 
-        if (context->engine != engine)
-          context->engine = engine;
+        if (g_strcmp0 (nimf_engine_get_id (context->engine), engine_id) != 0)
+          context->engine = nimf_server_get_instance (context->server,
+                                                      engine_id);
         else
           context->engine = nimf_server_get_instance (context->server,
                                                       "nimf-system-keyboard");

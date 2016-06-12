@@ -452,9 +452,8 @@ on_changed_trigger_keys (GSettings  *settings,
 
     strv = g_settings_get_strv (gsettings, "trigger-keys");
     trigger_keys = nimf_key_newv ((const gchar **) strv);
-    g_hash_table_insert (server->trigger_keys, trigger_keys,
-      nimf_server_get_instance (server, engine_id));
-
+    g_hash_table_insert (server->trigger_keys,
+                         trigger_keys, g_strdup (engine_id));
     g_strfreev (strv);
   }
 }
@@ -544,7 +543,8 @@ nimf_server_load_engines (NimfServer *server)
 
           strv = g_settings_get_strv (settings, "trigger-keys");
           trigger_keys = nimf_key_newv ((const gchar **) strv);
-          g_hash_table_insert (server->trigger_keys, trigger_keys, engine);
+          g_hash_table_insert (server->trigger_keys,
+                               trigger_keys, g_strdup (engine_id));
           g_hash_table_insert (server->trigger_gsettings,
                                g_strdup (engine_id), settings);
           g_signal_connect (settings, "changed::trigger-keys",
@@ -574,7 +574,8 @@ nimf_server_init (NimfServer *server)
   server->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                      g_free, g_object_unref);
   server->trigger_keys = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                (GDestroyNotify) nimf_key_freev, NULL);
+                                                (GDestroyNotify) nimf_key_freev,
+                                                g_free);
   gchar **hotkeys = g_settings_get_strv (server->settings, "hotkeys");
   server->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
   g_strfreev (hotkeys);
