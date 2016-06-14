@@ -102,7 +102,7 @@ Architecture
           |               nimf-daemon (including XIM)             |
           +-------------------------------------------------------+
                           | calls                  | create instance
-                          | singleton instance     | (not module yet)
+                          | an instance            | (not module yet)
                 +---------------+            +------------------+
                 | engine module |   calls    | candidate module |
                 |   interface   | ---------> |    interface     |

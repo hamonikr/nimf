@@ -1,8 +1,9 @@
+JH (nemonein) reported issues.
+Side effect about singleton mode https://github.com/cogniti/nimf/issues/7
+Caps Lock doesn't work correctly https://github.com/cogniti/nimf/issues/2
+
 madhwang reported an issue about the open files limit.
 https://github.com/dasom-im/dasom/issues/64
-
-JH (nemonein) reported a bug that Caps Lock doesn't work correctly.
-https://github.com/cogniti/nimf/issues/2
 
 Youngbin Han <sukso96100 at gmail com> reported a race condition.
 https://github.com/dasom-im/dasom/issues/18

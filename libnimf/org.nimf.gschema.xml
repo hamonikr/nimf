@@ -18,6 +18,11 @@
       <summary>Disable fallback filter for XIM</summary>
       <description>Disable fallback filter for XIM</description>
     </key>
+    <key type="b" name="use-singleton">
+      <default>false</default>
+      <summary>Use singleton mode</summary>
+      <description>Use singleton</description>
+    </key>
   </schema>
   <schema id="org.nimf.clients" path="/org/nimf/clients/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">

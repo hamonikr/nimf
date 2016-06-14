@@ -44,6 +44,7 @@ struct _NimfContext
   NimfServer      *server;
   gboolean         use_preedit;
   NimfRectangle    cursor_area;
+  GList           *engines;
   /* XIM */
   guint16          xim_connect_id;
   gint             xim_preedit_length;

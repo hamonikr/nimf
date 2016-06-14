@@ -20,6 +20,7 @@
  */
 
 #include "nimf-context.h"
+#include "nimf-module.h"
 #include <string.h>
 #include <X11/Xutil.h>
 #include "IMdkit/Xi18n.h"
@@ -320,17 +321,79 @@ void nimf_context_focus_out (NimfContext *context)
   nimf_context_emit_engine_changed (context, "nimf-indicator");
 }
 
-static void nimf_context_set_next_engine (NimfContext *context)
+static gint
+on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (context->engine == NULL))
-    return;
+  return g_strcmp0 (nimf_engine_get_id (engine), id);
+}
 
-  context->engine = nimf_server_get_next_instance (context->server,
-                                                   context->engine);
-  nimf_context_emit_engine_changed (context,
-                                    nimf_engine_get_icon_name (context->engine));
+static GList *
+nimf_context_create_engines (NimfContext *context)
+{
+  GList *engines = NULL;
+  GHashTableIter iter;
+  gpointer       module;
+
+  g_hash_table_iter_init (&iter, context->server->modules);
+
+  while (g_hash_table_iter_next (&iter, NULL, &module))
+  {
+    NimfEngine *engine;
+    engine = g_object_new (NIMF_MODULE (module)->type, "server",
+                           context->server, NULL);
+    engines = g_list_prepend (engines, engine);
+  }
+
+  return engines;
+}
+
+static NimfEngine *
+nimf_context_get_instance (NimfContext *context, const gchar *engine_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GList *list;
+
+  if (context->engines == NULL)
+    context->engines = nimf_context_create_engines (context);
+
+  list = g_list_find_custom (g_list_first (context->engines), engine_id,
+                             (GCompareFunc) on_comparing_engine_with_id);
+  if (list)
+    return list->data;
+
+  return NULL;
+}
+
+static NimfEngine *
+nimf_context_get_next_instance (NimfContext *context, NimfEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GList *list;
+
+  if (context->engines == NULL)
+    context->engines = nimf_context_create_engines (context);
+
+  context->engines = g_list_first (context->engines);
+  context->engines = g_list_find  (context->engines, engine);
+
+  list = g_list_next (context->engines);
+
+  if (list == NULL)
+    list = g_list_first (context->engines);
+
+  if (list)
+  {
+    context->engines = list;
+    return list->data;
+  }
+
+  g_assert (list != NULL);
+
+  return engine;
 }
 
 gboolean nimf_context_filter_event (NimfContext *context,
@@ -356,11 +419,22 @@ gboolean nimf_context_filter_event (NimfContext *context,
         nimf_context_reset (context);
 
         if (g_strcmp0 (nimf_engine_get_id (context->engine), engine_id) != 0)
-          context->engine = nimf_server_get_instance (context->server,
-                                                      engine_id);
+        {
+          if (context->server->use_singleton)
+            context->engine = nimf_server_get_instance (context->server,
+                                                        engine_id);
+          else
+            context->engine = nimf_context_get_instance (context, engine_id);
+        }
         else
-          context->engine = nimf_server_get_instance (context->server,
-                                                      "nimf-system-keyboard");
+        {
+          if (context->server->use_singleton)
+            context->engine = nimf_server_get_instance (context->server,
+                                                        "nimf-system-keyboard");
+          else
+            context->engine = nimf_context_get_instance (context,
+                                                         "nimf-system-keyboard");
+        }
 
         nimf_context_emit_engine_changed (context,
                                           nimf_engine_get_icon_name (context->engine));
@@ -376,7 +450,16 @@ gboolean nimf_context_filter_event (NimfContext *context,
     if (event->key.type == NIMF_EVENT_KEY_PRESS)
     {
       nimf_context_reset (context);
-      nimf_context_set_next_engine (context);
+
+      if (context->server->use_singleton)
+        context->engine = nimf_server_get_next_instance (context->server,
+                                                         context->engine);
+      else
+        context->engine = nimf_context_get_next_instance (context,
+                                                          context->engine);
+
+      nimf_context_emit_engine_changed (context,
+                                        nimf_engine_get_icon_name (context->engine));
     }
 
     return TRUE;
@@ -534,13 +617,43 @@ nimf_context_set_engine_by_id (NimfContext *context,
 
   NimfEngine *engine;
 
-  engine = nimf_server_get_instance (context->server, engine_id);
+  if (context->server->use_singleton)
+    engine = nimf_server_get_instance (context->server, engine_id);
+  else
+    engine = nimf_context_get_instance (context, engine_id);
 
   g_return_if_fail (engine != NULL);
 
   context->engine = engine;
   nimf_context_emit_engine_changed (context,
                                     nimf_engine_get_icon_name (context->engine));
+}
+
+static NimfEngine *
+nimf_context_get_default_engine (NimfContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GSettings  *settings;
+  gchar      *engine_id;
+  NimfEngine *engine;
+
+  settings  = g_settings_new ("org.nimf.engines");
+  engine_id = g_settings_get_string (settings, "default-engine");
+  engine    = nimf_context_get_instance (context, engine_id);
+
+  if (G_UNLIKELY (engine == NULL))
+  {
+    g_settings_reset (settings, "default-engine");
+    g_free (engine_id);
+    engine_id = g_settings_get_string (settings, "default-engine");
+    engine = nimf_context_get_instance (context, engine_id);
+  }
+
+  g_free (engine_id);
+  g_object_unref (settings);
+
+  return engine;
 }
 
 NimfContext *nimf_context_new (NimfContextType  type,
@@ -557,9 +670,18 @@ NimfContext *nimf_context_new (NimfContextType  type,
   context->connection    = connection;
   context->server        = server;
   context->cb_user_data  = cb_user_data;
-  context->engine        = nimf_server_get_default_engine (server);
   context->use_preedit   = TRUE;
   context->preedit_state = NIMF_PREEDIT_STATE_END;
+
+  if (server->use_singleton)
+  {
+    context->engine = nimf_server_get_default_engine (server);
+  }
+  else
+  {
+    context->engines = nimf_context_create_engines (context);
+    context->engine = nimf_context_get_default_engine (context);
+  }
 
   return context;
 }
@@ -571,6 +693,9 @@ void nimf_context_free (NimfContext *context)
   if (context->type == NIMF_CONTEXT_NIMF_AGENT)
     g_hash_table_steal (context->server->agents,
                         GUINT_TO_POINTER (context->icid));
+
+  if (context->engines)
+    g_list_free_full (context->engines, g_object_unref);
 
   g_slice_free (NimfContext, context);
 }

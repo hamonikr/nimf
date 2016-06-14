@@ -486,6 +486,17 @@ on_changed_disable_fallback_filter_for_xim (GSettings  *settings,
 }
 
 static void
+on_use_singleton (GSettings  *settings,
+                  gchar      *key,
+                  NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  server->use_singleton = g_settings_get_boolean (server->settings,
+                                                  "use-singleton");
+}
+
+static void
 nimf_server_load_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -571,6 +582,8 @@ nimf_server_init (NimfServer *server)
   server->disable_fallback_filter_for_xim =
     g_settings_get_boolean (server->settings,
                             "disable-fallback-filter-for-xim");
+  server->use_singleton = g_settings_get_boolean (server->settings,
+                                                  "use-singleton");
   server->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                      g_free, g_object_unref);
   server->trigger_keys = g_hash_table_new_full (g_direct_hash, g_direct_equal,
@@ -586,6 +599,8 @@ nimf_server_init (NimfServer *server)
                     "changed::disable-fallback-filter-for-xim",
                     G_CALLBACK (on_changed_disable_fallback_filter_for_xim),
                     server);
+  g_signal_connect (server->settings, "changed::use-singleton",
+                    G_CALLBACK (on_use_singleton), server);
 
   server->candidate = nimf_candidate_new ();
 

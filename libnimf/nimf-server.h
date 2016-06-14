@@ -64,16 +64,17 @@ struct _NimfServer
   guint16          next_id;
   guint16          next_icid;
 
-  gchar     *address;
-  gboolean   active;
-  gboolean   is_using_listener;
-  gulong     run_signal_handler_id;
+  gchar           *address;
+  gboolean         active;
+  gboolean         is_using_listener;
+  gulong           run_signal_handler_id;
 
-  GSettings  *settings;
-  NimfKey   **hotkeys;
-  GHashTable *trigger_gsettings;
-  GHashTable *trigger_keys;
-  gboolean    disable_fallback_filter_for_xim;
+  GSettings       *settings;
+  NimfKey        **hotkeys;
+  GHashTable      *trigger_gsettings;
+  GHashTable      *trigger_keys;
+  gboolean         disable_fallback_filter_for_xim;
+  gboolean         use_singleton;
 };
 
 struct _NimfServerClass
