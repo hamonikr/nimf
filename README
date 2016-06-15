@@ -1,6 +1,6 @@
 Nimf is an input method framework which has a module-based client-server
-architecture. An application acts as a client and communicates synchronously
-with the Nimf server via a unix socket.
+architecture in which an application acts as a client and communicates
+synchronously with the Nimf server via a unix socket.
 
 Nimf provides:
  * Input Method Server:
@@ -48,12 +48,18 @@ Install
     sudo ldconfig
     sudo make update-gtk-im-cache
     sudo make update-gtk-icon-cache
+    nimf-daemon
+    nimf-indicator
+    export GTK_IM_MODULE="nimf"
+    export QT4_IM_MODULE="nimf"
+    export QT_IM_MODULE="nimf"
+    export XMODIFIERS="@im=nimf"
+    gedit # or kate
 
   * To use symbols in libhangul engine
 
     wget https://raw.githubusercontent.com/choehwanjin/libhangul/master/data/hanja/mssymbol.txt
     sudo mv mssymbol.txt /usr/share/libhangul/hanja/
-    ls /usr/share/libhangul/hanja/mssymbol.txt
 
 
 Configure
@@ -63,10 +69,6 @@ Configure
 
     https://extensions.gnome.org/extension/615/appindicator-support/
     https://github.com/rgcjonas/gnome-shell-extension-appindicator
-
-  * Configure im-config
-
-    Run im-config, then select Nimf, logout and login.
 
   * Configure Hangul/Hanja key if you use a keyboard
     without hardware Hangul/Hanja key

@@ -1,3 +1,3 @@
-SUBDIRS = im-config imsettings icons apparmor-abstractions
+SUBDIRS = icons apparmor-abstractions
 
 DISTCLEANFILES = Makefile.in

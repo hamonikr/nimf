@@ -1,8 +1,0 @@
-XIM=nimf
-XIM_PROGRAM=@prefix@/bin/nimf-daemon
-AUXILIARY_PROGRAM=@prefix@/bin/nimf-indicator
-PREFERENCE_PROGRAM=@prefix@/bin/nimf-settings
-ICON=nimf
-SHORT_DESC=Nimf
-GTK_IM_MODULE=nimf
-QT_IM_MODULE=nimf
