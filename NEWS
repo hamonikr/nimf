@@ -1,1 +1,111 @@
-debian/changelog
+nimf (2016.06.02) stable; urgency=medium
+
+  * Removed dconf-editor from Recommends field
+  * Set treeview size
+  * Don't use gtk_switch_set_state() for backward compatibility
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 02 Jun 2016 00:32:30 +0900
+
+nimf (2016.06.01) stable; urgency=medium
+
+  * Added missing keysyms
+  * Use a naming convention for NimfModifierType
+    <Name> instead of name-mask
+  * Use correct keysym names
+  * Check if (nimf_client_is_connected () == FALSE)
+  * Added nimf_client_is_connected()
+  * Added nimf-settings
+    Related issue https://github.com/dasom-im/dasom-settings/issues/1
+  * Apply an option "always-use-preedit" at runtime
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 01 Jun 2016 19:38:38 +0900
+
+nimf (2016.05.25) stable; urgency=medium
+
+  * Added an option "always-use-preedit" (issue #5)
+  * Use event->key.keyval in the case of Romaja layout
+  * Changed the method of loading active engines
+  * Removed an unused variable
+  * Added nimf-dev.install, nimf.install
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 25 May 2016 23:14:42 +0900
+
+nimf (2016.05.01) stable; urgency=high
+
+  * Fixed a segmentation fault
+    nimf-sunpinyin depends on sunpinyin-data
+  * Check pkg-config, libglib2.0-dev
+    Related issue https://github.com/dasom-im/dasom-jeongeum/issues/9
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 01 May 2016 00:34:51 +0900
+
+nimf (2016.04.29) stable; urgency=medium
+
+  * Added NimfEngineInfo
+  * Fixed a possible fault
+  * Used g_module_build_path instead of g_build_path
+    Renamed nimf-anthy.so to libnimf-anthy.so
+    Renamed nimf-libhangul.so to libnimf-libhangul.so
+    Renamed nimf-sunpinyin.so to libnimf-sunpinyin.so
+    Renamed nimf-system-keyboard.so to libnimf-system-keyboard.so
+  * Generate 16x16 and 48x48 icons
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 29 Apr 2016 05:28:22 +0900
+
+nimf (2016.04.28) stable; urgency=medium
+
+  * Added nimf-system-keyboard engine
+  * Added "active-engines" key
+  * Integrated NimfModuleManager into NimfServer
+  * Moved "default-engine" key to /org/nimf/engines/
+
+ -- hodong <cogniti@gmail.com>  Thu, 28 Apr 2016 12:51:54 +0900
+
+nimf (2016.04.26) stable; urgency=medium
+
+  * Initial Release
+
+  * Nimf is an input method framework, it has a module-based client-server
+    architecture where applications act as clients and communicate with the
+    Nimf server via toolkit-specific input context modules and one socket per
+    process.
+
+  * Nimf provides
+    + Input Method Server
+      - nimf-daemon including XIM
+    + Language Engines
+      - Chinese:  nimf-sunpinyin (based on sunpinyin, under the development)
+      - Japanese: nimf-anthy     (based on anthy, under the development)
+      - Korean:   nimf-libhangul (based on libhangul)
+    + Client Modules
+      - GTK+2, GTK+3, Qt4, Qt5
+    + Indicator
+      - nimf-indicator (based on libappindicator3) for Unity, GNOME Panel, KDE
+    + Development files
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 26 Apr 2016 06:31:55 +0900
+
+dasom (1.0.1) stable; urgency=medium
+
+  * Fixed race condition (closes #18)
+  * Dubeolsik: Compose double consonants only with shift key by default
+  * Fixed CapsLock (closes #15 #16)
+  * Fixed event hooking (closes #9)
+  * Fixed compatibility issue with Qt 5.5 (closes #11)
+  * Modified icon brightness
+    - f9f9f9 (2.5% gray) --> f2f2f2 ( 5% gray)
+    - ffffff (black)     --> 1a1a1a (90% gray)
+
+ -- Hodong Kim <hodong@cogno.org>  Sun, 25 Oct 2015 00:37:29 +0900
+
+dasom (1.0) stable; urgency=medium
+
+  * Initial Release
+
+  * Dasom is an input method framework, which provides
+    - Input Method Server including XIM
+    - Language Engines for Korean, English
+    - IM Modules for GTK+2, GTK+3, Qt4, Qt5
+    - Indicators for GNOME Shell, Unity, KDE, GNOME panel
+
+ -- Hodong Kim <hodong@cogno.org>  Fri, 09 Oct 2015 01:21:10 +0900

@@ -15,9 +15,6 @@ DISTCLEANFILES = \
 	config.h.in~ \
 	configure
 
-clean-local:
-	-debian/rules clean
-
 distclean-local:
 	rm -rf autom4te.cache build-aux m4 .anjuta .anjuta_sym_db.db
 
