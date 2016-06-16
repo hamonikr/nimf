@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-04-29 04:43\n"
+"PO-Revision-Date: 2016-06-16 22:15+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,162 +18,291 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:119
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:124
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:120
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:125
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:121
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:126
 msgid "Version"
 msgstr "버전"
 
-#: ../indicator/nimf-indicator.c:49 ../indicator/nimf-indicator.c:50
-#: ../indicator/nimf-indicator.c:51 ../indicator/nimf-indicator.c:64
+#: ../indicator/nimf-indicator.c:59 ../indicator/nimf-indicator.c:60
+#: ../indicator/nimf-indicator.c:61 ../indicator/nimf-indicator.c:78
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../indicator/nimf-indicator.c:58
+#: ../indicator/nimf-indicator.c:72
 msgid "An indicator for Nimf"
 msgstr "님프를 위한 표시기"
 
-#: ../indicator/nimf-indicator.c:59
+#: ../indicator/nimf-indicator.c:73
 msgid "Copyright (c) 2015,2016 Hodong Kim"
 msgstr "저작권 (c) 2015,2016 김호동"
 
-#: ../indicator/nimf-indicator.c:63
+#: ../indicator/nimf-indicator.c:77
 msgid "Nimf Indicator"
 msgstr "님프 표시기"
 
-#: ../indicator/nimf-indicator.c:67
+#: ../indicator/nimf-indicator.c:81
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../indicator/nimf-indicator.c:203
+#: ../indicator/nimf-indicator.c:221
+msgid "Settings"
+msgstr "설정"
+
+#: ../indicator/nimf-indicator.c:222
 msgid "About"
 msgstr "정보"
 
-#: ../indicator/nimf-indicator.c:204
+#: ../indicator/nimf-indicator.c:223
 msgid "Exit"
 msgstr "종료"
 
-#: ../libnimf/org.nimf.gschema.xml.h:1
-msgid "Hotkeys for switching input method engine"
-msgstr "입력 엔진을 전환하기 위한 핫키"
-
-#: ../libnimf/org.nimf.gschema.xml.h:2
-msgid "Disable fallback filter for XIM"
-msgstr ""
-
-#: ../libnimf/org.nimf.gschema.xml.h:3
-msgid "Default language engine"
-msgstr "기본 언어 엔진"
-
-#: ../libnimf/org.nimf.gschema.xml.h:4
-msgid "Active engines"
-msgstr ""
-
-#: ../libnimf/org.nimf.gschema.xml.h:5
-msgid ""
-"A list of the IDs of the active engines. These engines will be loaded on "
-"startup if available."
-msgstr ""
-
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:514
+#: ../modules/clients/gtk/im-nimf.c:537
 msgid "Nimf"
 msgstr "님프"
 
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:1
-msgid "hooking gdk key events"
-msgstr ""
+#: ../settings/nimf-settings.c:453
+#, c-format
+msgid "Please report a bug. (keyval: %d)"
+msgstr "버그를 보고해 주세요. (keyval: %d)"
 
+#: ../settings/nimf-settings.c:514
+msgid "Press key combination..."
+msgstr "키 조합을 누르세요..."
+
+#: ../settings/nimf-settings.c:517
+msgid "_OK"
+msgstr "예 (_O)"
+
+#: ../settings/nimf-settings.c:518
+msgid "_Cancel"
+msgstr "취소 (_C)"
+
+#: ../settings/nimf-settings.c:527
+msgid "Press the combination of the keys"
+msgstr "키 조합을 누르세요"
+
+#: ../settings/nimf-settings.c:796
+msgid "Nimf Settings"
+msgstr "님프 설정"
+
+#: ../libnimf/org.nimf.gschema.xml.h:1
+msgid "'Nimf'"
+msgstr "'님프'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
-msgid ""
-"filter all key events before delivering them normally, which avoids bugs of "
-"many applications"
-msgstr ""
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:2
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
+msgid "schema name for nimf-settings"
+msgstr "nimf-settings 를 위한 스키마 이름"
 
+#: ../libnimf/org.nimf.gschema.xml.h:3
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
-msgid "Reset on gdk button-press-event"
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:3
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
+msgid "This key is intended for nimf-settings."
+msgstr "이 키는 nimf-settings 를 위해 고안되었습니다."
+
+#: ../libnimf/org.nimf.gschema.xml.h:4
+msgid "Hotkeys for switching input method engine"
+msgstr "입력 엔진을 전환하기 위한 핫키"
+
+#: ../libnimf/org.nimf.gschema.xml.h:5
+msgid "Disable fallback filter for XIM"
+msgstr "XIM 을 위한 예비 필터를 사용하지 않습니다"
+
+#: ../libnimf/org.nimf.gschema.xml.h:6
+msgid "Use singleton mode"
+msgstr "싱글톤 모드를 사용합니다"
+
+#: ../libnimf/org.nimf.gschema.xml.h:7
+msgid "Use singleton"
+msgstr "싱글톤 모드를 사용합니다"
+
+#: ../libnimf/org.nimf.gschema.xml.h:8
+msgid "'Clients'"
+msgstr "'클라이언트'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:9
+msgid "'Engines'"
+msgstr "'엔진'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:10
+msgid "Default language engine"
+msgstr "기본 언어 엔진"
+
+#: ../libnimf/org.nimf.gschema.xml.h:11
+msgid "Default language engine on startup"
+msgstr "시작할 때의 기본 언어 엔진"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:1
+msgid "'GTK+'"
 msgstr ""
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:4
+msgid "hooking gdk key events"
+msgstr "gdk key events 후킹하기"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:5
+msgid ""
+"filter all key events before delivering them normally, which avoids bugs of "
+"many applications"
+msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니다."
+" 이것은 많은 응용 프로그램의 버그를 회피합니다."
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
+msgid "Reset on gdk button-press-event"
+msgstr "gdk button-press-event 일 때 리셋합니다"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:7
 msgid "Reset on gdk button-press-event, which avoids the bug of firefox 38.3"
+msgstr "gdk button-press-event 일 때 리셋합니다. 이것은 firefox 38.3 의 버그를 회피합니다"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
+msgid "Always use preedit string"
+msgstr "조합 문자열을 항상 사용합니다"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:9
+msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
+msgstr "gtk_im_context_set_use_preedit()를 무시할지 말지 결정합니다"
+
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:1
+msgid "'Qt4'"
 msgstr ""
 
-#. ID
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:227
-msgid "Japanese (Anthy)"
-msgstr "일본어 (Anthy)"
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:4
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
+msgid "Disable fallback filter"
+msgstr "예비 필터를 사용하지 않습니다"
 
-#. ID
-#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:702
-msgid "Korean (Hangul)"
-msgstr "한국어 (한글)"
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
+msgid "'Qt5'"
+msgstr ""
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:1
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:1
+msgid "'Japanese (anthy)'"
+msgstr "'일본어 (anthy)'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:4
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:4
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:4
+msgid "Active engine"
+msgstr "엔진 활성화"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:5
+msgid "The engine will be loaded on startup if available. Restart required"
+msgstr "만약 가능하다면 이 엔진은 시작할 때 로드될 것입니다. 재시작이 필요합니다."
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
+msgid "'Korean (libhangul)'"
+msgstr "'한국어 (libhangul)'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
 msgid "Korean keyboard layout"
 msgstr "한국어 키보드 배열"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:2
-msgid ""
-"Korean keyboard layout '2' - Dubeolsik '2y' - Dubeolsik Yetgeul 'ahn' - "
-"Ahnmatae '3f' - Sebeolsik Final '39' - Sebeolsik 390 '3s' - Sebeolsik "
-"Noshift '3y' - Sebeolsik Yetgeul '32' - Sebeolsik Dubeol Layout 'ro' - Romaja"
-msgstr ""
-"Korean keyboard layout '2' - 두벌식 '2y' - 두벌식 옛글 'ahn' - "
-"안마태 '3f' - 세벌식 최종 '39' - 세벌식 390 '3s' - 세벌식 "
-"순아래 '3y' - 세벌식 옛글 '32' - 세벌식 두벌 자판 'ro' - 로마자"
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
+msgid "'Dubeolsik'"
+msgstr "'두벌식'"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:3
-msgid "hotkey for switching Korean / English"
-msgstr ""
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
+msgid "key value for UI l10n"
+msgstr "UI l10n 을 위한 키 값"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:4
-msgid "Binding to change Korean / English"
-msgstr ""
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
+msgid "'Dubeolsik Yetgeul'"
+msgstr "'두벌식 옛글'"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:5
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:10
+msgid "'Ahnmatae'"
+msgstr "'안마태'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
+msgid "'Sebeolsik Final'"
+msgstr "'세벌식 최종'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
+msgid "'Sebeolsik 390'"
+msgstr "'세벌식 390'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
+msgid "'Sebeolsik Noshift'"
+msgstr "'세벌식 순아래'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:14
+msgid "'Sebeolsik Yetgeul'"
+msgstr "'세벌식 옛글'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:15
+msgid "'Sebeolsik Dubeol Layout'"
+msgstr "'세벌식 두벌 배열'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:16
+msgid "'Romaja'"
+msgstr "'로마자'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:17
+msgid "Trigger keys for switching Korean / System"
+msgstr "한국어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:18
+msgid "Binding to change Korean / System"
+msgstr "한국어 / 시스템 전환하기 위한 바인딩"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:19
 msgid "hotkey for hanja"
-msgstr ""
+msgstr "한자를 위한 핫키"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:6
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:20
 msgid "Binding to Hanja key"
-msgstr ""
+msgstr "한자키에 대한 바인딩"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:7
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:21
 msgid "Use a rule composing double consonants"
-msgstr ""
+msgstr "겹자음 조합 규칙을 사용합니다"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:8
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:22
 msgid "compose a double consonant on pressing same consonant twice"
-msgstr ""
+msgstr "같은 자음을 두 번 누를 때 겹자음을 조합합니다"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:9
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:23
 msgid "auto-correction in Dubeolsik"
-msgstr ""
+msgstr "두벌식에서 자동 교정"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:10
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:24
 msgid "Ignore reset() in commit callback"
-msgstr ""
+msgstr "commit 콜백에서 reset()을 무시합니다"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.libhangul.gschema.xml.h:11
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
-msgstr ""
+msgstr "응용 어플리케이션에서 commit 콜백에 의해 호출되는 reset()을 무시합니다"
 
-#. ID
-#: ../modules/engines/nimf-sunpinyin/nimf-sunpinyin.cpp:483
-msgid "Chinese (Pinyin)"
-msgstr "중국어 (병음)"
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
+msgid "'Chinese (sunpinyin)'"
+msgstr "'중국어 (sunpinyin)'"
 
-#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.sunpinyin.gschema.xml.h:1
-msgid "hotkey for switching Chinese / English"
-msgstr ""
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:6
+msgid "Trigger keys for switching Chinese / System"
+msgstr "중국어 / 시스템 전환을 위한 작동 키"
 
-#. ID
-#: ../modules/engines/nimf-system-keyboard/nimf-system-keyboard.c:113
-msgid "System Keyboard"
-msgstr "시스템 키보드"
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:1
+msgid "'System Keyboard'"
+msgstr "'시스템 키보드'"

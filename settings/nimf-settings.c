@@ -21,6 +21,7 @@
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include "config.h"
 #include "nimf.h"
 
 #define NIMF_TYPE_SETTINGS             (nimf_settings_get_type ())
@@ -902,6 +903,12 @@ int main (int argc, char **argv)
 {
   NimfSettings *nsettings;
   int status;
+
+#ifdef ENABLE_NLS
+  bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+#endif
 
   nsettings = nimf_settings_new ();
   status = nimf_settings_run (nsettings, argc, argv);
