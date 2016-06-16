@@ -1,3 +1,14 @@
+nimf (2016.06.16) stable; urgency=medium
+
+  * Updated translation
+  * Added "use-singleton" option (closes #7)
+    Default value is true
+  * Changed the method of switching engine (issue #8)
+  * Update default language engine list (issue #8)
+  * Added nimf-system-keyboard schema for consistency
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 16 Jun 2016 22:57:21 +0900
+
 nimf (2016.06.02) stable; urgency=medium
 
   * Removed dconf-editor from Recommends field
