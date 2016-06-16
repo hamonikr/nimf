@@ -19,7 +19,7 @@
       <description>Disable fallback filter for XIM</description>
     </key>
     <key type="b" name="use-singleton">
-      <default>false</default>
+      <default>true</default>
       <summary>Use singleton mode</summary>
       <description>Use singleton</description>
     </key>
