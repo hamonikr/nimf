@@ -1,3 +1,9 @@
+nimf (2016.06.18) stable; urgency=medium
+
+  * Fixed infinite loop (reported by nemonein)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 18 Jun 2016 00:29:58 +0900
+
 nimf (2016.06.16) stable; urgency=medium
 
   * Updated translation
