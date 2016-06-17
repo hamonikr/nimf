@@ -128,15 +128,19 @@ on_comparison (const char *a,
 }
 
 static void
-on_combo_box_changd (GtkComboBox         *widget,
+on_combo_box_changed (GtkComboBox        *widget,
                      NimfSettingsPageKey *page_key)
 {
-  const gchar *id;
+  const gchar *id1;
+  gchar       *id2;
 
-  id = gtk_combo_box_get_active_id (GTK_COMBO_BOX (widget));
+  id1 = gtk_combo_box_get_active_id (GTK_COMBO_BOX (widget));
+  id2 = g_settings_get_string (page_key->gsettings, page_key->key);
 
-  if (id)
-    g_settings_set_string (page_key->gsettings, page_key->key, id);
+  if (id1 && g_strcmp0 (id1, id2) != 0)
+    g_settings_set_string (page_key->gsettings, page_key->key, id1);
+
+  g_free (id2);
 }
 
 static void
@@ -407,7 +411,7 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
   detailed_signal = g_strdup_printf ("changed::%s", page_key->key);
 
   g_signal_connect (combo, "changed",
-                    G_CALLBACK (on_combo_box_changd), page_key);
+                    G_CALLBACK (on_combo_box_changed), page_key);
   g_signal_connect (page_key->gsettings, detailed_signal,
                     G_CALLBACK (on_gsettings_changed), combo);
 
