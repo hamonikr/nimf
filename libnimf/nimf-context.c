@@ -150,6 +150,7 @@ nimf_context_emit_preedit_changed (NimfContext *context,
 
         context->xim_preedit_length = len;
         g_free (feedback);
+        g_free (preedit_string);
       }
       break;
     default:
