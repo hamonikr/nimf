@@ -74,7 +74,7 @@ nimf_key_new_from_nicks (const gchar **nicks)
 
 NimfKey **nimf_key_newv (const gchar **keys)
 {
-  NimfKey **nimf_keys = g_malloc0_n (sizeof (NimfKey *), 1);
+  NimfKey **nimf_keys = g_malloc0_n (1, sizeof (NimfKey *));
 
   gint i;
   for (i = 0; keys[i] != NULL; i++)

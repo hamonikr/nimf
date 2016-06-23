@@ -481,7 +481,7 @@ nimf_settings_page_key_update_gsettings_strv (NimfSettingsPageKey *page_key,
   GtkTreeIter   iter;
   gint          i;
 
-  vals = g_malloc0_n (sizeof (gchar *), 1);
+  vals = g_malloc0_n (1, sizeof (gchar *));
 
   if (gtk_tree_model_get_iter_first (model, &iter))
   {
