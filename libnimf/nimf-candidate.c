@@ -63,6 +63,10 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfEngineClass *engine_class;
+
+  g_return_if_fail (candidate->target &&
+                    NIMF_IS_ENGINE (candidate->target->engine));
+
   engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
 
   gchar *text = nimf_candidate_get_selected_text (candidate);
