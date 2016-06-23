@@ -192,7 +192,8 @@ nimf_candidate_update_window (NimfCandidate  *candidate,
 }
 
 void nimf_candidate_show_window (NimfCandidate *candidate,
-                                 NimfContext   *target)
+                                 NimfContext   *target,
+                                 gboolean       select_first)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -201,9 +202,12 @@ void nimf_candidate_show_window (NimfCandidate *candidate,
   GtkTreeModel *model;
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
 
-  if (gtk_tree_model_get_iter_first (model, &candidate->iter))
+  if (select_first)
   {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+    GtkTreeSelection *selection;
+
+    gtk_tree_model_get_iter_first (model, &candidate->iter);
+    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
     gtk_tree_selection_select_iter (selection, &candidate->iter);
   }
 
@@ -242,12 +246,23 @@ void nimf_candidate_select_previous_item (NimfCandidate *candidate)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GtkTreeModel *model;
+  GtkTreeModel     *model;
+  GtkTreeSelection *selection;
+  GtkTreeIter       iter;
+
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter) == FALSE)
+  {
+    gtk_tree_model_get_iter_first (model, &candidate->iter);
+    gtk_tree_selection_select_iter (selection, &candidate->iter);
+
+    return;
+  }
 
   if (gtk_tree_model_iter_previous (model, &candidate->iter))
   {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
     gtk_tree_selection_select_iter (selection, &candidate->iter);
 
     GtkAdjustment *adjustment;
@@ -277,21 +292,31 @@ void nimf_candidate_select_next_item (NimfCandidate *candidate)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GtkTreeModel *model;
+  GtkTreeModel     *model;
+  GtkTreeSelection *selection;
+  GtkTreeIter       iter;
+
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter) == FALSE)
+  {
+    gtk_tree_model_get_iter_first (model, &candidate->iter);
+    gtk_tree_selection_select_iter (selection, &candidate->iter);
+
+    return;
+  }
 
   if (gtk_tree_model_iter_next (model, &candidate->iter))
   {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
-    gtk_tree_selection_select_iter (selection, &candidate->iter);
-
     GtkAdjustment *adjustment;
+    GtkTreePath   *path = NULL;
+    GdkRectangle   rect = {0};
+    gint          *index; /* DO NOT FREE *index */
+
     adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
     gdouble page_increment = gtk_adjustment_get_page_increment (adjustment);
     gtk_adjustment_set_step_increment (adjustment, page_increment);
-
-    GtkTreePath *path = NULL;
-    GdkRectangle rect = {0};
 
     gtk_tree_selection_select_iter (selection, &candidate->iter);
     path = gtk_tree_model_get_path (model, &candidate->iter);
@@ -299,8 +324,7 @@ void nimf_candidate_select_next_item (NimfCandidate *candidate)
                                        path,
                                        NULL,
                                        &rect);
-
-    gint *index = gtk_tree_path_get_indices (path); /* DO NOT FREE *index */
+    index = gtk_tree_path_get_indices (path);
     gtk_adjustment_set_value (adjustment, rect.height * 10 * (index[0] / 10));
 
     gtk_tree_path_free (path);
@@ -308,10 +332,8 @@ void nimf_candidate_select_next_item (NimfCandidate *candidate)
   else
   {
     gint n_row = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (model), NULL);
-    gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (model),
-                                   &candidate->iter,
-                                   NULL,
-                                   n_row - 1);
+    gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (model), &candidate->iter,
+                                   NULL, n_row - 1);
   }
 }
 

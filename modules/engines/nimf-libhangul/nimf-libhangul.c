@@ -321,7 +321,7 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
 
       nimf_engine_update_candidate_window (engine, (const gchar **) strv);
       g_strfreev (strv);
-      nimf_engine_show_candidate_window (engine, target);
+      nimf_engine_show_candidate_window (engine, target, TRUE);
     }
     else
     {

@@ -328,7 +328,7 @@ void nimf_sunpinyin_update (NimfEngine  *engine,
     g_strfreev (strv);
 
     if (pinyin->pcl->size() > 0)
-      nimf_engine_show_candidate_window (engine, target);
+      nimf_engine_show_candidate_window (engine, target, TRUE);
     else
       nimf_engine_hide_candidate_window (engine);
 

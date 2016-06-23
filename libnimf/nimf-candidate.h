@@ -49,7 +49,8 @@ NimfCandidate *nimf_candidate_new                   (void);
 void           nimf_candidate_update_window         (NimfCandidate  *candidate,
                                                      const gchar   **strv);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
-                                                     NimfContext    *context);
+                                                     NimfContext    *context,
+                                                     gboolean        select_first);
 gboolean       nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);
 void           nimf_candidate_select_previous_item  (NimfCandidate  *candidate);

@@ -137,7 +137,8 @@ void     nimf_engine_emit_engine_changed       (NimfEngine      *engine,
 void     nimf_engine_update_candidate_window         (NimfEngine      *engine,
                                                       const gchar    **strv);
 void     nimf_engine_show_candidate_window           (NimfEngine      *engine,
-                                                      NimfContext     *context);
+                                                      NimfContext     *context,
+                                                      gboolean         select_first);
 void     nimf_engine_hide_candidate_window           (NimfEngine      *engine);
 gboolean nimf_engine_is_candidate_window_visible     (NimfEngine      *engine);
 void     nimf_engine_select_previous_candidate_item  (NimfEngine      *engine);

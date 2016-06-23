@@ -351,9 +351,11 @@ nimf_engine_update_candidate_window (NimfEngine   *engine,
 
 void
 nimf_engine_show_candidate_window (NimfEngine  *engine,
-                                   NimfContext *context)
+                                   NimfContext *context,
+                                   gboolean     select_first)
 {
-  nimf_candidate_show_window (engine->priv->server->candidate, context);
+  nimf_candidate_show_window (engine->priv->server->candidate, context,
+                              select_first);
 }
 
 void
