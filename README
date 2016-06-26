@@ -7,7 +7,7 @@ Nimf provides:
     * nimf-daemon including IMdkit(XIM)
  * Language Engines:
     * Chinese (in alpha stage, based on sunpinyin)
-    * Japanese (not yet, based on anthy)
+    * Japanese (in alpha stage, based on anthy)
     * Korean (based on libhangul)
  * Client Modules:
     * GTK+2, GTK+3, Qt4, Qt5

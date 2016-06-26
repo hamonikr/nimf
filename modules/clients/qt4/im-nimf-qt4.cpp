@@ -19,6 +19,7 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QTextFormat>
 #include <QInputContext>
 #include <QInputContextPlugin>
@@ -94,25 +95,48 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
 
   NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
 
-  gchar *str;
-  gint   cursor_pos;
-  nimf_im_get_preedit_string (im, &str, &cursor_pos);
+  NimfPreeditAttr **preedit_attrs;
+  gchar            *str;
+  gint              cursor_pos;
+  gint              i;
 
+  nimf_im_get_preedit_string (im, &str, &preedit_attrs, &cursor_pos);
   QString preeditText = QString::fromUtf8 (str);
   g_free (str);
-
   QList <QInputMethodEvent::Attribute> attrs;
   // preedit text attribute
-  QInputMethodEvent::Attribute attr (QInputMethodEvent::TextFormat,
-                                     0, preeditText.length (),
-                                     context->standardFormat (PreeditFormat));
-  attrs << attr;
+  for (i = 0; preedit_attrs[i] != NULL; i++)
+  {
+    QTextCharFormat format;
+
+    switch (preedit_attrs[i]->type)
+    {
+      case NIMF_PREEDIT_ATTR_HIGHLIGHT:
+        format.setBackground(Qt::green);
+        format.setForeground(Qt::black);
+        break;
+      case NIMF_PREEDIT_ATTR_UNDERLINE:
+        format.setUnderlineStyle(QTextCharFormat::DashUnderline);
+        break;
+      default:
+        format.setUnderlineStyle(QTextCharFormat::DashUnderline);
+        break;
+    }
+
+    QInputMethodEvent::Attribute attr (QInputMethodEvent::TextFormat,
+                                       preedit_attrs[i]->start_index,
+                                       preedit_attrs[i]->end_index,
+                                       QVariant (format));
+    attrs << attr;
+  }
   // cursor attribute
   attrs << QInputMethodEvent::Attribute (QInputMethodEvent::Cursor,
                                          cursor_pos, true, 0);
 
   QInputMethodEvent event (preeditText, attrs);
   context->sendEvent (event);
+
+  nimf_preedit_attr_freev (preedit_attrs);
 }
 
 void

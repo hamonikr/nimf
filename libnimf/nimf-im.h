@@ -50,10 +50,11 @@ struct _NimfIM
 {
   NimfClient parent_instance;
 
-  NimfEngine *engine;
-  gchar      *preedit_string;
-  gint        cursor_pos;
-  gboolean    use_fallback_filter;
+  NimfEngine       *engine;
+  gchar            *preedit_string;
+  NimfPreeditAttr **preedit_attrs;
+  gint              cursor_pos;
+  gboolean          use_fallback_filter;
 };
 
 struct _NimfIMClass
@@ -82,6 +83,7 @@ gboolean  nimf_im_filter_event            (NimfIM              *im,
                                            NimfEvent           *event);
 void      nimf_im_get_preedit_string      (NimfIM              *im,
                                            gchar              **str,
+                                           NimfPreeditAttr   ***attrs,
                                            gint                *cursor_pos);
 void      nimf_im_set_cursor_location     (NimfIM              *im,
                                            const NimfRectangle *area);

@@ -236,9 +236,10 @@ void nimf_im_focus_in (NimfIM *im)
 }
 
 void
-nimf_im_get_preedit_string (NimfIM  *im,
-                            gchar  **str,
-                            gint    *cursor_pos)
+nimf_im_get_preedit_string (NimfIM            *im,
+                            gchar            **str,
+                            NimfPreeditAttr ***attrs,
+                            gint              *cursor_pos)
 {
   g_debug (G_STRLOC ":%s", G_STRFUNC);
 
@@ -246,6 +247,9 @@ nimf_im_get_preedit_string (NimfIM  *im,
 
   if (str)
     *str = g_strdup (im->preedit_string);
+
+  if (attrs)
+    *attrs = nimf_preedit_attrs_copy (im->preedit_attrs);
 
   if (cursor_pos)
     *cursor_pos = im->cursor_pos;
@@ -353,6 +357,7 @@ nimf_im_init (NimfIM *im)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   im->preedit_string = g_strdup ("");
+  im->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
   im->use_fallback_filter = TRUE;
 }
 
@@ -361,7 +366,10 @@ nimf_im_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_free (NIMF_IM (object)->preedit_string);
+  NimfIM *im = NIMF_IM (object);
+
+  g_free (im->preedit_string);
+  nimf_preedit_attr_freev (im->preedit_attrs);
 
   G_OBJECT_CLASS (nimf_im_parent_class)->finalize (object);
 }

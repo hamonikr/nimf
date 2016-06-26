@@ -37,10 +37,12 @@ struct _NimfAnthy
 {
   NimfEngine parent_instance;
 
-  GString    *preedit1;
-  GString    *preedit2;
-  gchar      *id;
-  GHashTable *romaji;
+  GString          *preedit1;
+  GString          *preedit2;
+  NimfPreeditAttr **preedit_attrs;
+  glong             offset;
+  gchar            *id;
+  GHashTable       *romaji;
 
   anthy_context_t context;
 };
@@ -51,6 +53,8 @@ struct _NimfAnthyClass
   NimfEngineClass parent_class;
 };
 
+static gint anthy_ref_count = 0;
+
 G_DEFINE_DYNAMIC_TYPE (NimfAnthy, nimf_anthy, NIMF_TYPE_ENGINE);
 
 void
@@ -58,6 +62,33 @@ nimf_anthy_reset (NimfEngine  *engine,
                   NimfContext *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  nimf_engine_hide_candidate_window (engine);
+  anthy->offset = 0;
+
+  if (g_utf8_strlen (anthy->preedit1->str, -1) > 0 ||
+      g_utf8_strlen (anthy->preedit2->str, -1) > 0)
+  {
+    gchar *commit_str;
+
+    commit_str = g_strjoin (NULL, anthy->preedit1->str,
+                                  anthy->preedit2->str, NULL);
+    nimf_engine_emit_commit (engine, target, commit_str);
+    g_string_assign (anthy->preedit1, "");
+    g_string_assign (anthy->preedit2, "");
+    anthy->preedit_attrs[0]->start_index = 0;
+    anthy->preedit_attrs[0]->end_index   = 0;
+    anthy->preedit_attrs[1]->start_index = 0;
+    anthy->preedit_attrs[1]->end_index   = 0;
+    nimf_engine_emit_preedit_changed (engine, target, "", anthy->preedit_attrs, 0);
+    nimf_engine_emit_preedit_end (engine, target);
+
+    g_free (commit_str);
+  }
+
+  anthy_reset_context(NIMF_ANTHY (engine)->context);
 }
 
 void
@@ -72,6 +103,9 @@ nimf_anthy_focus_out (NimfEngine  *engine,
                       NimfContext *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_engine_hide_candidate_window (engine);
+  nimf_anthy_reset (engine, target);
 }
 
 static void
@@ -81,6 +115,34 @@ on_candidate_clicked (NimfEngine  *engine,
                       gint         index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+  gchar     *preedit_str;
+  gchar     *tmp;
+  struct anthy_conv_stat conv_stat;
+
+  tmp = g_utf8_substring (anthy->preedit1->str, 0, anthy->offset);
+
+  g_string_assign (anthy->preedit1, "");
+  g_string_append (anthy->preedit1, tmp);
+  g_string_append (anthy->preedit1, text);
+
+  preedit_str = g_strjoin (NULL, anthy->preedit1->str,
+                                 anthy->preedit2->str, NULL);
+  anthy->preedit_attrs[0]->start_index = 0;
+  anthy->preedit_attrs[0]->end_index   = g_utf8_strlen (preedit_str, -1);
+  anthy->preedit_attrs[1]->start_index = 0;
+  anthy->preedit_attrs[1]->end_index   = 0;
+  nimf_engine_emit_preedit_changed (engine, target, preedit_str,
+                                    anthy->preedit_attrs,
+                                    g_utf8_strlen (preedit_str, -1));
+  nimf_engine_hide_candidate_window (engine);
+
+  anthy_get_stat (anthy->context, &conv_stat);
+  anthy_commit_segment(anthy->context, conv_stat.nr_segment - 1, index);
+
+  g_free (tmp);
+  g_free (preedit_str);
 }
 
 gboolean
@@ -92,30 +154,59 @@ nimf_anthy_filter_event (NimfEngine  *engine,
 
   NimfAnthy   *anthy = NIMF_ANTHY (engine);
   const gchar *str;
-  gchar       *commit_str;
+  gchar       *preedit_str;
   gchar      **strv = NULL;
 
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
 
-  if (event->key.keyval <  'a' || event->key.keyval == 'l' ||
-      event->key.keyval == 'q' || event->key.keyval == 'v' ||
-      event->key.keyval == 'x' || event->key.keyval >  'z' ||
-      event->key.keyval == NIMF_KEY_Return)
+  switch (event->key.keyval)
+  {
+    case NIMF_KEY_Return:
+    case NIMF_KEY_KP_Enter:
+    case NIMF_KEY_space:
+      {
+        if (nimf_engine_is_candidate_window_visible (engine) == FALSE)
+          break;
+
+        gint index = nimf_engine_get_selected_candidate_index (engine);
+
+        if (G_LIKELY (index >= 0))
+        {
+          gchar *text = nimf_engine_get_selected_candidate_text (engine);
+          on_candidate_clicked (engine, target, text, index);
+          g_free (text);
+
+          return TRUE;
+        }
+      }
+      break;
+    case NIMF_KEY_Up:
+    case NIMF_KEY_KP_Up:
+      if (!nimf_engine_is_candidate_window_visible (engine))
+        return FALSE;
+      nimf_engine_select_previous_candidate_item (engine);
+      return TRUE;
+    case NIMF_KEY_Down:
+    case NIMF_KEY_KP_Down:
+      if (!nimf_engine_is_candidate_window_visible (engine))
+        return FALSE;
+      nimf_engine_select_next_candidate_item (engine);
+      return TRUE;
+    default:
+      break;
+  }
+
+  if ((event->key.keyval != ',' && event->key.keyval != '.') &&
+      (event->key.keyval <  'a' || event->key.keyval == 'l'  ||
+       event->key.keyval == 'q' || event->key.keyval == 'v'  ||
+       event->key.keyval == 'x' || event->key.keyval >  'z'  ||
+       event->key.keyval == NIMF_KEY_Return))
   {
     if (g_utf8_strlen (anthy->preedit1->str, -1) > 0 ||
         g_utf8_strlen (anthy->preedit2->str, -1) > 0)
     {
-      nimf_engine_emit_preedit_changed (engine, target, "", 0);
-      nimf_engine_emit_preedit_end (engine, target);
-
-      commit_str = g_strjoin (NULL, anthy->preedit1->str,
-                                    anthy->preedit2->str, NULL);
-      nimf_engine_emit_commit (engine, target, commit_str);
-      g_string_assign (anthy->preedit1, "");
-      g_string_assign (anthy->preedit2, "");
-
-      g_free (commit_str);
+      nimf_anthy_reset (engine, target);
 
       if (event->key.keyval == NIMF_KEY_Return)
         return TRUE;
@@ -169,13 +260,58 @@ nimf_anthy_filter_event (NimfEngine  *engine,
     }
   }
 
-  commit_str = g_strjoin (NULL, anthy->preedit1->str,
-                                anthy->preedit2->str, NULL);
-  nimf_engine_emit_preedit_changed (engine, target, commit_str,
-                                    g_utf8_strlen (commit_str, -1));
+  struct anthy_conv_stat    conv_stat;
+  struct anthy_segment_stat segment_stat;
+  gint  i;
+  gchar buf[4096];
+
+  anthy_set_string (anthy->context, anthy->preedit1->str);
+  anthy_get_stat (anthy->context, &conv_stat);
+
+  /* calculate offset */
+  anthy->offset = 0;
+
+  for (i = 0; i < conv_stat.nr_segment - 1; i++)
+  {
+    anthy_get_segment_stat (anthy->context, i, &segment_stat);
+    anthy->offset += segment_stat.seg_len;
+  }
+
+  preedit_str = g_strjoin (NULL, anthy->preedit1->str,
+                                 anthy->preedit2->str, NULL);
+  anthy->preedit_attrs[0]->start_index = 0;
+  anthy->preedit_attrs[0]->end_index = anthy->offset;
+  anthy->preedit_attrs[1]->start_index = anthy->offset;
+  anthy->preedit_attrs[1]->end_index = g_utf8_strlen (preedit_str, -1);
+  nimf_engine_emit_preedit_changed (engine, target, preedit_str,
+                                    anthy->preedit_attrs,
+                                    g_utf8_strlen (preedit_str, -1));
+
+  if (conv_stat.nr_segment > 0)
+  {
+    gchar **candidates;
+    gint    i;
+
+    anthy_get_segment_stat (anthy->context, conv_stat.nr_segment - 1,
+                            &segment_stat);
+
+    candidates = g_malloc0_n (segment_stat.nr_candidate + 1, sizeof (gchar *));
+
+    for (i = 0; i < segment_stat.nr_candidate; i++)
+    {
+      anthy_get_segment (anthy->context, conv_stat.nr_segment - 1, i, buf, 4096);
+      candidates[i] = g_strdup (buf);
+    }
+
+    candidates[segment_stat.nr_candidate] = NULL;
+    nimf_engine_update_candidate_window (engine, (const gchar **) candidates);
+    nimf_engine_show_candidate_window (engine, target, FALSE);
+
+    g_strfreev (candidates);
+  }
 
   g_strfreev (strv);
-  g_free (commit_str);
+  g_free (preedit_str);
 
   return TRUE;
 }
@@ -188,6 +324,10 @@ nimf_anthy_init (NimfAnthy *anthy)
   anthy->id       = g_strdup ("nimf-anthy");
   anthy->preedit1 = g_string_new ("");
   anthy->preedit2 = g_string_new ("");
+  anthy->preedit_attrs  = g_malloc0_n (3, sizeof (NimfPreeditAttr *));
+  anthy->preedit_attrs[0] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_UNDERLINE, 0, 0);
+  anthy->preedit_attrs[1] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_HIGHLIGHT, 0, 0);
+  anthy->preedit_attrs[2] = NULL;
   anthy->romaji   = g_hash_table_new_full (g_str_hash, g_str_equal,
                                           NULL, g_free);
   g_hash_table_insert (anthy->romaji, "a", g_strdup ("あ\x1eア"));
@@ -330,10 +470,14 @@ nimf_anthy_init (NimfAnthy *anthy)
   g_hash_table_insert (anthy->romaji, "zo", g_strdup ("ぞ\x1eゾ"));
   g_hash_table_insert (anthy->romaji, "zu", g_strdup ("ず\x1eズ"));
   g_hash_table_insert (anthy->romaji, "zu", g_strdup ("づ\x1eヅ"));
+  g_hash_table_insert (anthy->romaji, ",", g_strdup ("、\x1e、"));
+  g_hash_table_insert (anthy->romaji, ".", g_strdup ("。\x1e。"));
 
-  anthy_init ();
+  if (anthy_init () < 0)
+    g_error (G_STRLOC ": %s: anthy is not initialized", G_STRFUNC);
+
   anthy->context = anthy_create_context ();
-  /* experimental and unstable api */
+  g_atomic_int_inc (&anthy_ref_count);
   anthy_context_set_encoding(anthy->context, ANTHY_UTF8_ENCODING);
 }
 
@@ -346,19 +490,24 @@ nimf_anthy_finalize (GObject *object)
 
   g_string_free (anthy->preedit1, TRUE);
   g_string_free (anthy->preedit2, TRUE);
+  nimf_preedit_attr_freev (anthy->preedit_attrs);
   g_free (anthy->id);
   g_hash_table_unref (anthy->romaji);
-/* commented due to segmentation fault
-  anthy_release_context (anthy->context);
-  anthy_quit (); */
+
+  if (g_atomic_int_dec_and_test (&anthy_ref_count))
+  {
+    anthy_release_context (anthy->context);
+    anthy_quit ();
+  }
 
   G_OBJECT_CLASS (nimf_anthy_parent_class)->finalize (object);
 }
 
 void
-nimf_anthy_get_preedit_string (NimfEngine  *engine,
-                               gchar      **str,
-                               gint        *cursor_pos)
+nimf_anthy_get_preedit_string (NimfEngine        *engine,
+                               gchar            **str,
+                               NimfPreeditAttr ***attrs,
+                               gint              *cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -368,6 +517,9 @@ nimf_anthy_get_preedit_string (NimfEngine  *engine,
 
   if (str)
     *str = g_strjoin (NULL, anthy->preedit1->str, anthy->preedit2->str, NULL);
+
+  if (attrs)
+    *attrs = nimf_preedit_attrs_copy (anthy->preedit_attrs);
 
   if (cursor_pos)
     *cursor_pos = g_utf8_strlen (*str, -1);

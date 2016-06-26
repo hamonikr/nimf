@@ -115,3 +115,61 @@ nimf_key_free (NimfKey *key)
 
   g_slice_free (NimfKey, key);
 }
+
+NimfPreeditAttr *nimf_preedit_attr_new (NimfPreeditAttrType type,
+                                        guint               start_index,
+                                        guint               end_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfPreeditAttr *attr;
+
+  attr = g_new (NimfPreeditAttr, 1);
+  attr->type        = type;
+  attr->start_index = start_index;
+  attr->end_index   = end_index;
+
+  return attr;
+}
+
+NimfPreeditAttr **nimf_preedit_attrs_copy (NimfPreeditAttr **attrs)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfPreeditAttr **preedit_attrs;
+  gint              i;
+
+  g_return_val_if_fail (attrs, NULL);
+
+  preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
+
+  for (i = 0; attrs[i] != NULL; i++)
+  {
+    preedit_attrs = g_realloc_n (preedit_attrs, 1 + i + 1, sizeof (NimfPreeditAttr *));
+    preedit_attrs[i] = g_memdup (attrs[i], sizeof (NimfPreeditAttr));
+    preedit_attrs[i + 1] = NULL;
+  }
+
+  return preedit_attrs;
+}
+
+void nimf_preedit_attr_free (NimfPreeditAttr *attr)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_free (attr);
+}
+
+void nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (attrs)
+  {
+    int i;
+    for (i = 0; attrs[i] != NULL; i++)
+      nimf_preedit_attr_free (attrs[i]);
+
+    g_free (attrs);
+  }
+}

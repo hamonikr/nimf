@@ -58,9 +58,10 @@ struct _NimfSunpinyin
 {
   NimfEngine parent_instance;
 
-  gchar            *id;
-  gchar            *preedit_string;
-  NimfPreeditState  preedit_state;
+  gchar             *id;
+  gchar             *preedit_string;
+  NimfPreeditAttr  **preedit_attrs;
+  NimfPreeditState   preedit_state;
 
   CIMIView       *view;
   CHotkeyProfile *hotkey_profile;
@@ -118,8 +119,10 @@ nimf_sunpinyin_update_preedit (NimfEngine  *engine,
   {
     g_free (pinyin->preedit_string);
     pinyin->preedit_string = new_preedit;
+    pinyin->preedit_attrs[0]->end_index = g_utf8_strlen (pinyin->preedit_string, -1);
     nimf_engine_emit_preedit_changed (engine, target,
-                                      pinyin->preedit_string, cursor_pos);
+                                      pinyin->preedit_string,
+                                      pinyin->preedit_attrs, cursor_pos);
   }
   else
     g_free (new_preedit);
@@ -169,7 +172,10 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   pinyin->id = g_strdup ("nimf-sunpinyin");
-  pinyin->preedit_string = g_strdup ("");
+  pinyin->preedit_string   = g_strdup ("");
+  pinyin->preedit_attrs    = (NimfPreeditAttr **) g_malloc0_n (2, sizeof (NimfPreeditAttr *));
+  pinyin->preedit_attrs[0] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_UNDERLINE, 0, 0);
+  pinyin->preedit_attrs[1] = NULL;
 
   CSunpinyinSessionFactory& factory = CSunpinyinSessionFactory::getFactory();
   factory.setPinyinScheme(CSunpinyinSessionFactory::QUANPIN);
@@ -199,6 +205,7 @@ nimf_sunpinyin_finalize (GObject *object)
 
   g_free (pinyin->id);
   g_free (pinyin->preedit_string);
+  nimf_preedit_attr_freev (pinyin->preedit_attrs);
   g_free (pinyin->commit_str);
 
   if (pinyin->view)
@@ -393,6 +400,28 @@ nimf_sunpinyin_filter_event (NimfEngine  *engine,
   return retval;
 }
 
+void
+nimf_sunpinyin_get_preedit_string (NimfEngine        *engine,
+                                   gchar            **str,
+                                   NimfPreeditAttr ***attrs,
+                                   gint              *cursor_pos)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (NIMF_IS_ENGINE (engine));
+
+  NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
+
+  if (str)
+    *str = g_strdup (pinyin->preedit_string);
+
+  if (attrs)
+    *attrs = nimf_preedit_attrs_copy (pinyin->preedit_attrs);
+
+  if (cursor_pos)
+    *cursor_pos = g_utf8_strlen (pinyin->preedit_string, -1);
+}
+
 static void
 on_candidate_clicked (NimfEngine  *engine,
                       NimfContext *target,
@@ -410,19 +439,20 @@ nimf_sunpinyin_class_init (NimfSunpinyinClass *klass)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  NimfEngineClass *engine_class = NIMF_ENGINE_CLASS (klass);
+  GObjectClass    *object_class    = G_OBJECT_CLASS (klass);
+  NimfEngineClass *engine_class    = NIMF_ENGINE_CLASS (klass);
 
-  engine_class->get_id            = nimf_sunpinyin_get_id;
-  engine_class->get_icon_name     = nimf_sunpinyin_get_icon_name;
-  engine_class->candidate_clicked = on_candidate_clicked;
+  engine_class->get_id             = nimf_sunpinyin_get_id;
+  engine_class->get_icon_name      = nimf_sunpinyin_get_icon_name;
+  engine_class->candidate_clicked  = on_candidate_clicked;
 
-  engine_class->focus_in          = nimf_sunpinyin_focus_in;
-  engine_class->focus_out         = nimf_sunpinyin_focus_out;
-  engine_class->reset             = nimf_sunpinyin_reset;
-  engine_class->filter_event      = nimf_sunpinyin_filter_event;
+  engine_class->focus_in           = nimf_sunpinyin_focus_in;
+  engine_class->focus_out          = nimf_sunpinyin_focus_out;
+  engine_class->reset              = nimf_sunpinyin_reset;
+  engine_class->filter_event       = nimf_sunpinyin_filter_event;
+  engine_class->get_preedit_string = nimf_sunpinyin_get_preedit_string;
 
-  object_class->finalize          = nimf_sunpinyin_finalize;
+  object_class->finalize           = nimf_sunpinyin_finalize;
 }
 
 static void

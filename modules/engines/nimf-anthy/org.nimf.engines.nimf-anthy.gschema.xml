@@ -8,9 +8,14 @@
       <description>This key is intended for nimf-settings.</description>
     </key>
     <key type="b" name="active">
-      <default>false</default>
+      <default>true</default>
       <summary>Active engine</summary>
       <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['&lt;Mod4&gt; j']</default>
+      <summary>Trigger keys for switching Japanese / System</summary>
+      <description>Trigger keys for switching Japanese / System</description>
     </key>
   </schema>
 </schemalist>

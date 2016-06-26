@@ -79,6 +79,13 @@ if test "x$HAVE_SUNPINYIN_DATA" = "xno"; then
       AC_MSG_ERROR([sunpinyin-data files are not found.]))
 fi
 
+dnl Check anthy.dic
+
+AC_CHECK_FILE([/var/lib/anthy/anthy.dic],   [HAVE_ANTHY_DIC="yes"])
+AC_CHECK_FILE([/usr/share/anthy/anthy.dic], [HAVE_ANTHY_DIC="yes"])
+AS_IF([test "x$HAVE_ANTHY_DIC" != "xyes"],
+      AC_MSG_ERROR([anthy.dic is not found.]))
+
 dnl ***************************************************************************
 dnl  Qt
 dnl ***************************************************************************

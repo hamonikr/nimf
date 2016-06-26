@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * im-nimf.c
  * This file is part of Nimf.
@@ -206,25 +206,54 @@ nimf_gtk_im_context_get_preedit_string (GtkIMContext   *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  PangoAttribute *attr;
+  NimfPreeditAttr **preedit_attrs;
+  gchar *preedit_str;
 
   nimf_im_get_preedit_string (NIMF_GTK_IM_CONTEXT (context)->im,
-                              str, cursor_pos);
+                              &preedit_str, &preedit_attrs, cursor_pos);
+
+  if (str)
+    *str = preedit_str;
 
   if (attrs)
   {
+    PangoAttribute *attr;
+    gchar          *ptr1;
+    gchar          *ptr2;
+    gint            i;
+
     *attrs = pango_attr_list_new ();
 
-    attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
-
-    if (str)
+    for (i = 0; preedit_attrs[i] != NULL; i++)
     {
-      attr->start_index = 0;
-      attr->end_index   = strlen (*str);
-    }
+      ptr1 = g_utf8_offset_to_pointer (preedit_str, preedit_attrs[i]->start_index);
+      ptr2 = g_utf8_offset_to_pointer (preedit_str, preedit_attrs[i]->end_index);
 
-    pango_attr_list_change (*attrs, attr);
+      switch (preedit_attrs[i]->type)
+      {
+        case NIMF_PREEDIT_ATTR_UNDERLINE:
+          attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+          break;
+        case NIMF_PREEDIT_ATTR_HIGHLIGHT:
+          attr = pango_attr_background_new (0, 0xffff, 0);
+          attr->start_index = ptr1 - preedit_str;
+          attr->end_index   = ptr2 - preedit_str;
+          pango_attr_list_insert (*attrs, attr);
+
+          attr = pango_attr_foreground_new (0, 0, 0);
+          break;
+        default:
+          attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+          break;
+      }
+
+      attr->start_index = ptr1 - preedit_str;
+      attr->end_index   = ptr2 - preedit_str;
+      pango_attr_list_insert (*attrs, attr);
+    }
   }
+
+  nimf_preedit_attr_freev (preedit_attrs);
 }
 
 static void

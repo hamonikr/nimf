@@ -39,6 +39,7 @@ struct _NimfLibhangul
 
   HangulInputContext *context;
   gchar              *preedit_string;
+  NimfPreeditAttr   **preedit_attrs;
   NimfPreeditState    preedit_state;
   gchar              *id;
 
@@ -138,7 +139,9 @@ nimf_libhangul_update_preedit (NimfEngine  *engine,
   {
     g_free (hangul->preedit_string);
     hangul->preedit_string = new_preedit;
+    hangul->preedit_attrs[0]->end_index = g_utf8_strlen (hangul->preedit_string, -1);
     nimf_engine_emit_preedit_changed (engine, target, hangul->preedit_string,
+                                      hangul->preedit_attrs,
                                       g_utf8_strlen (hangul->preedit_string,
                                                      -1));
   }
@@ -261,6 +264,7 @@ nimf_libhangul_filter_leading_consonant (NimfEngine  *engine,
     nimf_libhangul_emit_commit (engine, target, preedit);
     g_free (preedit);
     nimf_engine_emit_preedit_changed (engine, target, hangul->preedit_string,
+                                      hangul->preedit_attrs,
                                       g_utf8_strlen (hangul->preedit_string,
                                                      -1));
     return TRUE;
@@ -532,6 +536,9 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   hangul->id = g_strdup ("nimf-libhangul");
   hangul->preedit_string = g_strdup ("");
+  hangul->preedit_attrs  = g_malloc0_n (2, sizeof (NimfPreeditAttr *));
+  hangul->preedit_attrs[0] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_UNDERLINE, 0, 0);
+  hangul->preedit_attrs[1] = NULL;
   hangul->hanja_table  = hanja_table_load (NULL);
   hangul->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
 
@@ -565,6 +572,7 @@ nimf_libhangul_finalize (GObject *object)
   hanja_table_delete (hangul->symbol_table);
   hangul_ic_delete   (hangul->context);
   g_free (hangul->preedit_string);
+  nimf_preedit_attr_freev (hangul->preedit_attrs);
   g_free (hangul->id);
   g_free (hangul->layout);
   nimf_key_freev (hangul->hanja_keys);
@@ -574,9 +582,10 @@ nimf_libhangul_finalize (GObject *object)
 }
 
 void
-nimf_libhangul_get_preedit_string (NimfEngine  *engine,
-                                   gchar      **str,
-                                   gint        *cursor_pos)
+nimf_libhangul_get_preedit_string (NimfEngine        *engine,
+                                   gchar            **str,
+                                   NimfPreeditAttr ***attrs,
+                                   gint              *cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -585,20 +594,13 @@ nimf_libhangul_get_preedit_string (NimfEngine  *engine,
   NimfLibhangul *hangul = NIMF_LIBHANGUL (engine);
 
   if (str)
-  {
-    if (hangul->preedit_string)
-      *str = g_strdup (hangul->preedit_string);
-    else
-      *str = g_strdup ("");
-  }
+    *str = g_strdup (hangul->preedit_string);
+
+  if (attrs)
+    *attrs = nimf_preedit_attrs_copy (hangul->preedit_attrs);
 
   if (cursor_pos)
-  {
-    if (hangul->preedit_string)
-      *cursor_pos = g_utf8_strlen (hangul->preedit_string, -1);
-    else
-      *cursor_pos = 0;
-  }
+    *cursor_pos = g_utf8_strlen (hangul->preedit_string, -1);
 }
 
 const gchar *

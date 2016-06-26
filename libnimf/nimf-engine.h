@@ -64,6 +64,7 @@ struct _NimfEngineClass
                                    NimfEvent           *event);
   void     (* get_preedit_string) (NimfEngine          *engine,
                                    gchar              **str,
+                                   NimfPreeditAttr   ***attrs,
                                    gint                *cursor_pos);
   void     (* reset)              (NimfEngine          *engine,
                                    NimfContext         *context);
@@ -102,6 +103,7 @@ void     nimf_engine_focus_out                 (NimfEngine          *engine,
                                                 NimfContext         *context);
 void     nimf_engine_get_preedit_string        (NimfEngine          *engine,
                                                 gchar              **str,
+                                                NimfPreeditAttr   ***attrs,
                                                 gint                *cursor_pos);
 void     nimf_engine_set_surrounding           (NimfEngine          *engine,
                                                 const char          *text,
@@ -114,25 +116,26 @@ gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
 void     nimf_engine_set_cursor_location       (NimfEngine          *engine,
                                                 const NimfRectangle *area);
 /* signals */
-void     nimf_engine_emit_preedit_start        (NimfEngine      *engine,
-                                                NimfContext     *context);
-void     nimf_engine_emit_preedit_changed      (NimfEngine      *engine,
-                                                NimfContext     *context,
-                                                const gchar     *preedit_string,
-                                                gint             cursor_pos);
-void     nimf_engine_emit_preedit_end          (NimfEngine      *engine,
-                                                NimfContext     *context);
-void     nimf_engine_emit_commit               (NimfEngine      *engine,
-                                                NimfContext     *context,
-                                                gchar const     *text);
-gboolean nimf_engine_emit_retrieve_surrounding (NimfEngine      *engine,
-                                                NimfContext     *context);
-gboolean nimf_engine_emit_delete_surrounding   (NimfEngine      *engine,
-                                                NimfContext     *context,
-                                                gint             offset,
-                                                gint             n_chars);
-void     nimf_engine_emit_engine_changed       (NimfEngine      *engine,
-                                                NimfContext     *context);
+void     nimf_engine_emit_preedit_start        (NimfEngine       *engine,
+                                                NimfContext      *context);
+void     nimf_engine_emit_preedit_changed      (NimfEngine       *engine,
+                                                NimfContext      *context,
+                                                const gchar      *preedit_string,
+                                                NimfPreeditAttr **attrs,
+                                                gint              cursor_pos);
+void     nimf_engine_emit_preedit_end          (NimfEngine       *engine,
+                                                NimfContext      *context);
+void     nimf_engine_emit_commit               (NimfEngine       *engine,
+                                                NimfContext      *context,
+                                                gchar const      *text);
+gboolean nimf_engine_emit_retrieve_surrounding (NimfEngine       *engine,
+                                                NimfContext      *context);
+gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
+                                                NimfContext      *context,
+                                                gint              offset,
+                                                gint              n_chars);
+void     nimf_engine_emit_engine_changed       (NimfEngine       *engine,
+                                                NimfContext      *context);
 /* candidate */
 void     nimf_engine_update_candidate_window         (NimfEngine      *engine,
                                                       const gchar    **strv);

@@ -64,9 +64,10 @@ void         nimf_context_focus_in           (NimfContext  *context);
 void         nimf_context_focus_out          (NimfContext  *context);
 gboolean     nimf_context_filter_event       (NimfContext  *context,
                                               NimfEvent    *event);
-void         nimf_context_get_preedit_string (NimfContext  *context,
-                                              gchar       **str,
-                                              gint         *cursor_pos);
+void         nimf_context_get_preedit_string (NimfContext       *context,
+                                              gchar            **str,
+                                              NimfPreeditAttr ***attrs,
+                                              gint              *cursor_pos);
 void         nimf_context_set_surrounding         (NimfContext         *context,
                                                    const char          *text,
                                                    gint                 len,
@@ -84,19 +85,20 @@ void         nimf_context_reset              (NimfContext  *context);
 void         nimf_context_set_engine_by_id   (NimfContext  *context,
                                               const gchar  *engine_id);
 /* signals */
-void     nimf_context_emit_preedit_start        (NimfContext *context);
-void     nimf_context_emit_preedit_changed      (NimfContext *context,
-                                                 const gchar *preedit_string,
-                                                 gint         cursor_pos);
-void     nimf_context_emit_preedit_end          (NimfContext *context);
-void     nimf_context_emit_commit               (NimfContext *context,
-                                                 const gchar *text);
-gboolean nimf_context_emit_retrieve_surrounding (NimfContext *context);
-gboolean nimf_context_emit_delete_surrounding   (NimfContext *context,
-                                                 gint         offset,
-                                                 gint         n_chars);
-void     nimf_context_emit_engine_changed       (NimfContext *context,
-                                                 const gchar *name);
+void     nimf_context_emit_preedit_start        (NimfContext      *context);
+void     nimf_context_emit_preedit_changed      (NimfContext      *context,
+                                                 const gchar      *preedit_string,
+                                                 NimfPreeditAttr **attrs,
+                                                 gint              cursor_pos);
+void     nimf_context_emit_preedit_end          (NimfContext      *context);
+void     nimf_context_emit_commit               (NimfContext      *context,
+                                                 const gchar      *text);
+gboolean nimf_context_emit_retrieve_surrounding (NimfContext      *context);
+gboolean nimf_context_emit_delete_surrounding   (NimfContext      *context,
+                                                 gint              offset,
+                                                 gint              n_chars);
+void     nimf_context_emit_engine_changed       (NimfContext      *context,
+                                                 const gchar      *name);
 G_END_DECLS
 
 #endif /* __NIMF_CONTEXT_H__ */

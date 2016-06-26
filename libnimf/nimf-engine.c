@@ -137,16 +137,19 @@ gboolean nimf_engine_real_filter_event (NimfEngine  *engine,
 }
 
 void
-nimf_engine_get_preedit_string (NimfEngine  *engine,
-                                gchar      **str,
-                                gint        *cursor_pos)
+nimf_engine_get_preedit_string (NimfEngine        *engine,
+                                gchar            **str,
+                                NimfPreeditAttr ***attrs,
+                                gint              *cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_return_if_fail (NIMF_IS_ENGINE (engine));
 
   NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
-  class->get_preedit_string (engine, str, cursor_pos);
+
+  if (class->get_preedit_string)
+    class->get_preedit_string (engine, str, attrs, cursor_pos);
 }
 
 void
@@ -207,14 +210,15 @@ nimf_engine_emit_preedit_start (NimfEngine  *engine,
 }
 
 void
-nimf_engine_emit_preedit_changed (NimfEngine  *engine,
-                                  NimfContext *context,
-                                  const gchar *preedit_string,
-                                  gint         cursor_pos)
+nimf_engine_emit_preedit_changed (NimfEngine       *engine,
+                                  NimfContext      *context,
+                                  const gchar      *preedit_string,
+                                  NimfPreeditAttr **attrs,
+                                  gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_context_emit_preedit_changed (context, preedit_string, cursor_pos);
+  nimf_context_emit_preedit_changed (context, preedit_string, attrs, cursor_pos);
 }
 
 void
@@ -288,14 +292,18 @@ nimf_engine_finalize (GObject *object)
 
 
 static void
-nimf_engine_real_get_preedit_string (NimfEngine  *engine,
-                                     gchar      **str,
-                                     gint        *cursor_pos)
+nimf_engine_real_get_preedit_string (NimfEngine        *engine,
+                                     gchar            **str,
+                                     NimfPreeditAttr ***attrs,
+                                     gint              *cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   if (str)
     *str = g_strdup ("");
+
+  if (attrs)
+    *attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
 
   if (cursor_pos)
     *cursor_pos = 0;

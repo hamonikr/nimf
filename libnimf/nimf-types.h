@@ -105,12 +105,31 @@ typedef enum
   NIMF_PREEDIT_STATE_END   = 0
 } NimfPreeditState;
 
+typedef enum
+{
+  NIMF_PREEDIT_ATTR_UNDERLINE,
+  NIMF_PREEDIT_ATTR_HIGHLIGHT
+} NimfPreeditAttrType;
+
+typedef struct {
+  NimfPreeditAttrType type;
+  guint start_index;
+  guint end_index; /* The character at this index is not included */
+} NimfPreeditAttr;
+
 GQuark    nimf_error_quark        (void);
 NimfKey  *nimf_key_new            (void);
 NimfKey  *nimf_key_new_from_nicks (const gchar **nicks);
 void      nimf_key_free           (NimfKey      *key);
 NimfKey **nimf_key_newv           (const gchar **keys);
 void      nimf_key_freev          (NimfKey     **keys);
+
+NimfPreeditAttr  *nimf_preedit_attr_new   (NimfPreeditAttrType type,
+                                           guint               start_index,
+                                           guint               end_index);
+NimfPreeditAttr **nimf_preedit_attrs_copy (NimfPreeditAttr   **attrs);
+void              nimf_preedit_attr_free  (NimfPreeditAttr    *attr);
+void              nimf_preedit_attr_freev (NimfPreeditAttr   **attrs);
 
 G_END_DECLS
 

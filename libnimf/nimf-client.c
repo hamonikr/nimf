@@ -25,6 +25,7 @@
 #include "nimf-marshalers.h"
 #include "nimf-enum-types.h"
 #include <gio/gunixsocketaddress.h>
+#include <string.h>
 
 enum
 {
@@ -121,9 +122,25 @@ on_incoming_message (GSocket      *socket,
     case NIMF_MESSAGE_PREEDIT_CHANGED:
       {
         NimfIM *im = NIMF_IM (client);
+        gint    i;
+
         g_free (im->preedit_string);
         im->preedit_string = g_strndup (message->data,
                                         message->header->data_len - 1 - sizeof (gint));
+
+        gint str_len = strlen (message->data);
+        gint n_attr = (message->header->data_len - str_len - 1 - sizeof (gint)) /
+                       sizeof (NimfPreeditAttr);
+
+        nimf_preedit_attr_freev (im->preedit_attrs);
+        im->preedit_attrs = g_malloc0_n (n_attr + 1, sizeof (NimfPreeditAttr *));
+
+        for (i = 0; i < n_attr; i++)
+          im->preedit_attrs[i] = g_memdup (message->data + str_len + 1 + i * sizeof (NimfPreeditAttr),
+                                           sizeof (NimfPreeditAttr));
+
+        im->preedit_attrs[n_attr] = NULL;
+
         im->cursor_pos = *(gint *) (message->data +
                                     message->header->data_len - sizeof (gint));
         g_signal_emit_by_name (im, "preedit-changed");
