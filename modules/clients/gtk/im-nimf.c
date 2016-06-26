@@ -24,8 +24,6 @@
 #include <gtk/gtkimmodule.h>
 #include <glib/gi18n.h>
 #include <nimf.h>
-#include <string.h>
-#include <gdk/gdkkeysyms.h>
 #include <X11/XKBlib.h>
 #if GTK_CHECK_VERSION (3, 6, 0)
   #include <gdk/gdkx.h>
@@ -113,7 +111,6 @@ translate_xkey_event (XEvent *xevent)
                                        NULL, NULL, &consumed);
 
   state = nimf_event->key.state & ~consumed;
-  gdk_keymap_add_virtual_modifiers (keymap, &state);
   nimf_event->key.state |= (NimfModifierType) state;
 
   return nimf_event;

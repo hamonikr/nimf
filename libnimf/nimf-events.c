@@ -1,9 +1,9 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
  * nimf-events.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -29,26 +29,27 @@ nimf_event_matches (NimfEvent *event, const NimfKey **keys)
 {
   g_debug (G_STRLOC ": %s: event->key.state: %d", G_STRFUNC, event->key.state);
 
-  gboolean retval = FALSE;
   gint i;
 
-  /* When pressing Alt key, some programs generate NIMF_META_MASK,
-   * while some programs don't generate NIMF_META_MASK.
-   * NIMF_MOD2_MASK related to Number key */
-  guint mods = event->key.state & (NIMF_MOD2_MASK | NIMF_META_MASK |
-                                   NIMF_LOCK_MASK | NIMF_RELEASE_MASK);
+  /* Ignore NIMF_MOD2_MASK (Number),
+   *        NIMF_LOCK_MASK (CapsLock),
+   *        virtual modifiers
+   */
+  guint mods_mask = NIMF_SHIFT_MASK   |
+                    NIMF_CONTROL_MASK |
+                    NIMF_MOD1_MASK    |
+                    NIMF_MOD3_MASK    |
+                    NIMF_MOD4_MASK    |
+                    NIMF_MOD5_MASK;
 
   for (i = 0; keys[i] != 0; i++)
   {
-    if ((event->key.state & NIMF_MODIFIER_MASK) == (keys[i]->mods | mods) &&
+    if ((event->key.state & mods_mask) == (keys[i]->mods & mods_mask) &&
         event->key.keyval == keys[i]->keyval)
-    {
-      retval = TRUE;
-      break;
-    }
+      return TRUE;
   }
 
-  return retval;
+  return FALSE;
 }
 
 NimfEvent *

@@ -435,10 +435,11 @@ on_key_press_event (GtkWidget *widget,
   mod = event->key.state & NIMF_MODIFIER_MASK;
   flags_class = (GFlagsClass *) g_type_class_ref (NIMF_TYPE_MODIFIER_TYPE);
 
-  for (i = 1; i <= (1 << 30); i = i << 1)
+  /* does not use virtual modifiers */
+  for (i = 0; i <= 12; i++)
   {
-    GFlagsValue *flags_value = g_flags_get_first_value (flags_class, mod & i);
-
+    GFlagsValue *flags_value = g_flags_get_first_value (flags_class,
+                                                        mod & (1 << i));
     if (flags_value)
       g_string_append_printf (combination, "%s ", flags_value->value_nick);
   }
