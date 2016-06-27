@@ -112,62 +112,10 @@ static void on_disconnected (NimfAgent    *agent,
                                "nimf-indicator-warning", "disconnected");
 }
 
-int
-main (int argc, char **argv)
+static void
+on_startup (GApplication *app, gpointer user_data)
 {
-  GError         *error        = NULL;
-  gboolean        is_no_daemon = FALSE;
-  gboolean        is_debug     = FALSE;
-  gboolean        is_version   = FALSE;
-  GOptionContext *context;
-  GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
-    {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
-    {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
-    {NULL}
-  };
-
-  context = g_option_context_new ("- indicator for Nimf");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-  g_option_context_parse (context, &argc, &argv, &error);
-  g_option_context_free (context);
-
-  if (error != NULL)
-  {
-    g_warning ("%s", error->message);
-    g_error_free (error);
-    return EXIT_FAILURE;
-  }
-
-#ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-#endif
-
-  if (is_debug)
-    g_setenv ("G_MESSAGES_DEBUG", "nimf", TRUE);
-
-  if (is_version)
-  {
-    g_print ("%s %s\n", argv[0], VERSION);
-    exit (EXIT_SUCCESS);
-  }
-
-  if (is_no_daemon == FALSE)
-  {
-    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
-    syslog_initialized = TRUE;
-    g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
-
-    if (daemon (0, 0) != 0)
-    {
-      g_critical ("Couldn't daemonize.");
-      return EXIT_FAILURE;
-    }
-  }
-
-  gtk_init (&argc, &argv);
+  gtk_init (NULL, NULL);
 
   AppIndicator *indicator;
   GtkWidget    *menu_shell;
@@ -241,8 +189,73 @@ main (int argc, char **argv)
   g_object_unref (indicator);
   g_strfreev (engine_ids);
 
+  g_application_quit (app);
+}
+
+int
+main (int argc, char **argv)
+{
+  GApplication   *app;
+  int             status;
+  GError         *error        = NULL;
+  gboolean        is_no_daemon = FALSE;
+  gboolean        is_debug     = FALSE;
+  gboolean        is_version   = FALSE;
+  GOptionContext *context;
+  GOptionEntry    entries[] = {
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
+    {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
+    {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
+    {NULL}
+  };
+
+  context = g_option_context_new ("- indicator for Nimf");
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_parse (context, &argc, &argv, &error);
+  g_option_context_free (context);
+
+  if (error != NULL)
+  {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
+  }
+
+#ifdef ENABLE_NLS
+  bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+#endif
+
+  if (is_debug)
+    g_setenv ("G_MESSAGES_DEBUG", "nimf", TRUE);
+
+  if (is_version)
+  {
+    g_print ("%s %s\n", argv[0], VERSION);
+    exit (EXIT_SUCCESS);
+  }
+
+  if (is_no_daemon == FALSE)
+  {
+    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
+    syslog_initialized = TRUE;
+    g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
+
+    if (daemon (0, 0) != 0)
+    {
+      g_critical ("Couldn't daemonize.");
+      return EXIT_FAILURE;
+    }
+  }
+
+  app = g_application_new ("org.nimf.indicator", G_APPLICATION_IS_SERVICE);
+  g_signal_connect (app, "startup",  G_CALLBACK (on_startup),  NULL);
+  status = g_application_run (app, argc, argv);
+  g_object_unref (app);
+
   if (syslog_initialized)
     closelog ();
 
-  return EXIT_SUCCESS;
+  return status;
 }
