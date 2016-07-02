@@ -44,8 +44,6 @@ struct _NimfLibhangul
   gchar              *id;
 
   gboolean            is_candidate_mode;
-  HanjaTable         *hanja_table;
-  HanjaTable         *symbol_table;
   NimfKey           **hanja_keys;
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
@@ -61,6 +59,10 @@ struct _NimfLibhangulClass
   /*< private >*/
   NimfEngineClass parent_class;
 };
+
+static HanjaTable *nimf_libhangul_hanja_table  = NULL;
+static HanjaTable *nimf_libhangul_symbol_table = NULL;
+static gint        nimf_libhangul_hanja_table_ref_count = 0;
 
 G_DEFINE_DYNAMIC_TYPE (NimfLibhangul, nimf_libhangul, NIMF_TYPE_ENGINE);
 
@@ -302,10 +304,10 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
     if (hangul->is_candidate_mode == FALSE)
     {
       hangul->is_candidate_mode = TRUE;
-      HanjaList *list = hanja_table_match_exact (hangul->hanja_table,
+      HanjaList *list = hanja_table_match_exact (nimf_libhangul_hanja_table,
                                                  hangul->preedit_string);
       if (list == NULL)
-        list = hanja_table_match_exact (hangul->symbol_table,
+        list = hanja_table_match_exact (nimf_libhangul_symbol_table,
                                         hangul->preedit_string);
 
       gint list_len = hanja_list_get_size (list);
@@ -539,8 +541,14 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->preedit_attrs  = g_malloc0_n (2, sizeof (NimfPreeditAttr *));
   hangul->preedit_attrs[0] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_UNDERLINE, 0, 0);
   hangul->preedit_attrs[1] = NULL;
-  hangul->hanja_table  = hanja_table_load (NULL);
-  hangul->symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
+
+  if (nimf_libhangul_hanja_table_ref_count == 0)
+  {
+    nimf_libhangul_hanja_table  = hanja_table_load (NULL);
+    nimf_libhangul_symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
+  }
+
+  nimf_libhangul_hanja_table_ref_count++;
 
   g_strfreev (trigger_keys);
   g_strfreev (hanja_keys);
@@ -568,9 +576,13 @@ nimf_libhangul_finalize (GObject *object)
 
   NimfLibhangul *hangul = NIMF_LIBHANGUL (object);
 
-  hanja_table_delete (hangul->hanja_table);
-  hanja_table_delete (hangul->symbol_table);
-  hangul_ic_delete   (hangul->context);
+  if (--nimf_libhangul_hanja_table_ref_count == 0)
+  {
+    hanja_table_delete (nimf_libhangul_hanja_table);
+    hanja_table_delete (nimf_libhangul_symbol_table);
+  }
+
+  hangul_ic_delete (hangul->context);
   g_free (hangul->preedit_string);
   nimf_preedit_attr_freev (hangul->preedit_attrs);
   g_free (hangul->id);
