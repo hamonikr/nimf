@@ -30,6 +30,9 @@ nimf_context_emit_preedit_start (NimfContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (G_UNLIKELY (!context))
+    return;
+
   switch (context->type)
   {
     case NIMF_CONTEXT_NIMF_IM:
@@ -72,6 +75,9 @@ nimf_context_emit_preedit_changed (NimfContext      *context,
                                    gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (!context))
+    return;
 
   switch (context->type)
   {
@@ -200,6 +206,9 @@ nimf_context_emit_preedit_end (NimfContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (G_UNLIKELY (!context))
+    return;
+
   switch (context->type)
   {
     case NIMF_CONTEXT_NIMF_IM:
@@ -239,7 +248,10 @@ void
 nimf_context_emit_commit (NimfContext *context,
                           const gchar *text)
 {
-  g_debug (G_STRLOC ": %s: id = %d", G_STRFUNC, context->icid);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (!context))
+    return;
 
   switch (context->type)
   {
@@ -281,6 +293,9 @@ nimf_context_emit_retrieve_surrounding (NimfContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  if (G_UNLIKELY (!context))
+    return FALSE;
+
   nimf_send_message (context->connection->socket, context->icid,
                      NIMF_MESSAGE_RETRIEVE_SURROUNDING, NULL, 0, NULL);
   nimf_result_iteration_until (context->connection->result, NULL,
@@ -299,6 +314,9 @@ nimf_context_emit_delete_surrounding (NimfContext *context,
                                       gint         n_chars)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (!context))
+    return FALSE;
 
   gint *data = g_malloc (2 * sizeof (gint));
   data[0] = offset;
@@ -322,6 +340,9 @@ nimf_context_emit_engine_changed (NimfContext *context,
                                   const gchar *name)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (!context))
+    return;
 
   gpointer       agent;
   GHashTableIter iter;

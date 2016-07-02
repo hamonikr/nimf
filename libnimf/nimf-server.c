@@ -55,6 +55,10 @@ on_incoming_message_nimf (GSocket        *socket,
 
     g_socket_close (socket, NULL);
 
+    GList *l;
+    for (l = connection->server->instances; l != NULL; l = l->next)
+      nimf_engine_reset (l->data, NULL);
+
     connection->result->reply = NULL;
     g_hash_table_remove (connection->server->connections,
                          GUINT_TO_POINTER (nimf_connection_get_id (connection)));
