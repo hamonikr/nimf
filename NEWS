@@ -1,3 +1,18 @@
+nimf (2016.07.03) stable; urgency=medium
+
+  * Fixed nimf_sunpinyin_reset()
+  * Reset server->instances when G_IO_HUP | G_IO_ERR
+  * Create HanjaTable as a single instance
+  * Run as a unique instance: nimf-indicator
+  * Do not use virtual modifiers
+  * Implemented nimf-anthy based on anthy
+  * Fixed memory leak
+  * Fixed invalid use of g_malloc0_n()
+  * Modified nimf_candidate_show_window()
+  * Fixed a possible fault
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 03 Jul 2016 23:53:42 +0900
+
 nimf (2016.06.18) stable; urgency=medium
 
   * Fixed infinite loop (reported by nemonein)
