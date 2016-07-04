@@ -141,6 +141,8 @@ typedef enum
 
   NIMF_KEY_Escape       = 0xff1b, /*< nick=Escape >*/
 
+  NIMF_KEY_Multi_key    = 0xff20, /*< nick=Multi_key >*/
+
   NIMF_KEY_Hangul       = 0xff31, /*< nick=Hangul >*/
 
   NIMF_KEY_Hangul_Hanja = 0xff34, /*< nick=Hangul_Hanja >*/
