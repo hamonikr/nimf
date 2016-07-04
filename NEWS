@@ -1,3 +1,9 @@
+nimf (2016.07.04) stable; urgency=medium
+
+  * Added Multi_key 0xff20
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 04 Jul 2016 18:52:41 +0900
+
 nimf (2016.07.03) stable; urgency=medium
 
   * Fixed nimf_sunpinyin_reset()
