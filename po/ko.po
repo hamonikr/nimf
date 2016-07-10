@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-06-16 22:15+0900\n"
+"PO-Revision-Date: 2016-07-10 19:51+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,85 +18,95 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:124
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:321
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:125
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:322
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:126
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:323
 msgid "Version"
 msgstr "버전"
 
-#: ../indicator/nimf-indicator.c:59 ../indicator/nimf-indicator.c:60
-#: ../indicator/nimf-indicator.c:61 ../indicator/nimf-indicator.c:78
+#: ../indicator/nimf-indicator.c:94 ../indicator/nimf-indicator.c:95
+#: ../indicator/nimf-indicator.c:96 ../indicator/nimf-indicator.c:113
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../indicator/nimf-indicator.c:72
+#: ../indicator/nimf-indicator.c:107
 msgid "An indicator for Nimf"
 msgstr "님프를 위한 표시기"
 
-#: ../indicator/nimf-indicator.c:73
+#: ../indicator/nimf-indicator.c:108
 msgid "Copyright (c) 2015,2016 Hodong Kim"
 msgstr "저작권 (c) 2015,2016 김호동"
 
-#: ../indicator/nimf-indicator.c:77
+#: ../indicator/nimf-indicator.c:112
 msgid "Nimf Indicator"
 msgstr "님프 표시기"
 
-#: ../indicator/nimf-indicator.c:81
+#: ../indicator/nimf-indicator.c:116
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../indicator/nimf-indicator.c:221
-msgid "Settings"
-msgstr "설정"
-
-#: ../indicator/nimf-indicator.c:222
-msgid "About"
-msgstr "정보"
-
-#: ../indicator/nimf-indicator.c:223
-msgid "Exit"
-msgstr "종료"
-
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:537
+#: ../indicator/nimf-indicator.c:166 ../indicator/nimf-indicator.c:169
+#: ../indicator/nimf-indicator.c:186 ../modules/clients/gtk/im-nimf.c:563
 msgid "Nimf"
 msgstr "님프"
 
-#: ../settings/nimf-settings.c:453
+#: ../indicator/nimf-indicator.c:166
+msgid "Caps Lock On"
+msgstr "캡스락 켜짐"
+
+#: ../indicator/nimf-indicator.c:169
+msgid "Caps Lock Off"
+msgstr "캡스락 꺼짐"
+
+#: ../indicator/nimf-indicator.c:277
+msgid "Settings"
+msgstr "설정"
+
+#: ../indicator/nimf-indicator.c:278
+msgid "About"
+msgstr "정보"
+
+#: ../indicator/nimf-indicator.c:279
+msgid "Exit"
+msgstr "종료"
+
+#: ../settings/nimf-settings.c:458
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "버그를 보고해 주세요. (keyval: %d)"
 
-#: ../settings/nimf-settings.c:514
+#: ../settings/nimf-settings.c:519
 msgid "Press key combination..."
 msgstr "키 조합을 누르세요..."
 
-#: ../settings/nimf-settings.c:517
+#: ../settings/nimf-settings.c:522
 msgid "_OK"
 msgstr "예 (_O)"
 
-#: ../settings/nimf-settings.c:518
+#: ../settings/nimf-settings.c:523
 msgid "_Cancel"
 msgstr "취소 (_C)"
 
-#: ../settings/nimf-settings.c:527
+#: ../settings/nimf-settings.c:532
 msgid "Press the combination of the keys"
 msgstr "키 조합을 누르세요"
 
-#: ../settings/nimf-settings.c:796
+#: ../settings/nimf-settings.c:801
 msgid "Nimf Settings"
 msgstr "님프 설정"
 
-#: ../libnimf/org.nimf.gschema.xml.h:1
-msgid "'Nimf'"
-msgstr "'님프'"
+#: ../indicator/org.nimf.indicator.gschema.xml.h:1
+msgid "'Indicator'"
+msgstr "'표시기'"
 
+#: ../indicator/org.nimf.indicator.gschema.xml.h:2
 #: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
 #: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
@@ -108,6 +118,7 @@ msgstr "'님프'"
 msgid "schema name for nimf-settings"
 msgstr "nimf-settings 를 위한 스키마 이름"
 
+#: ../indicator/org.nimf.indicator.gschema.xml.h:3
 #: ../libnimf/org.nimf.gschema.xml.h:3
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
 #: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
@@ -118,6 +129,14 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
 msgstr "이 키는 nimf-settings 를 위해 고안되었습니다."
+
+#: ../indicator/org.nimf.indicator.gschema.xml.h:4
+msgid "Show notification for Caps Lock state"
+msgstr "캡스락 상태에 대한 알림을 표시합니다"
+
+#: ../libnimf/org.nimf.gschema.xml.h:1
+msgid "'Nimf'"
+msgstr "'님프'"
 
 #: ../libnimf/org.nimf.gschema.xml.h:4
 msgid "Hotkeys for switching input method engine"
@@ -164,21 +183,17 @@ msgid ""
 "filter all key events before delivering them normally, which avoids bugs of "
 "many applications"
 msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니다."
-" 이것은 많은 응용 프로그램의 버그를 회피합니다."
+" 이것은 여러 응용 프로그램의 버그를 회피합니다."
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
-msgid "Reset on gdk button-press-event"
-msgstr "gdk button-press-event 일 때 리셋합니다"
+msgid "Reset when clicking the mouse button"
+msgstr "마우스 버튼을 클릭할 때 리셋합니다"
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:7
-msgid "Reset on gdk button-press-event, which avoids the bug of firefox 38.3"
-msgstr "gdk button-press-event 일 때 리셋합니다. 이것은 firefox 38.3 의 버그를 회피합니다"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
 msgid "Always use preedit string"
 msgstr "조합 문자열을 항상 사용합니다"
 
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:9
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
 msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
 msgstr "gtk_im_context_set_use_preedit()를 무시할지 말지 결정합니다"
 
@@ -210,6 +225,10 @@ msgstr "엔진 활성화"
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:5
 msgid "The engine will be loaded on startup if available. Restart required"
 msgstr "만약 가능하다면 이 엔진은 시작할 때 로드될 것입니다. 재시작이 필요합니다."
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:6
+msgid "Trigger keys for switching Japanese / System"
+msgstr "일본어 / 시스템 전환을 위한 작동 키"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"

@@ -14,8 +14,8 @@
     </key>
     <key type="b" name="reset-on-gdk-button-press-event">
       <default>false</default>
-      <summary>Reset on gdk button-press-event</summary>
-      <description>Reset on gdk button-press-event, which avoids the bug of firefox 38.3</description>
+      <summary>Reset when clicking the mouse button</summary>
+      <description>Reset when clicking the mouse button</description>
     </key>
     <key type="b" name="always-use-preedit">
       <default>true</default>
