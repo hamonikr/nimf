@@ -47,12 +47,9 @@ AC_SUBST(LIBNIMF_REQUIRES)
 AC_SUBST(LIBNIMF_PRIVATE)
 
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
-PKG_CHECK_MODULES(GLIB,    [glib-2.0])
-PKG_CHECK_MODULES(GIO,     [gio-2.0])
 PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
-PKG_CHECK_MODULES(GTK3,    [gtk+-3.0])
+PKG_CHECK_MODULES(GLIB,    [glib-2.0])
 PKG_CHECK_MODULES(GTK2,    [gtk+-2.0])
-PKG_CHECK_MODULES(X11,     [x11])
 
 dnl ***************************************************************************
 dnl engines
@@ -180,14 +177,16 @@ if test "x$RSVG_CONVERT" = "xno"; then
 fi
 
 dnl ***************************************************************************
-dnl Build nimf-indicator by default
+dnl nimf-indicator
 dnl ***************************************************************************
 
 AC_ARG_ENABLE([nimf-indicator],
   AS_HELP_STRING([--disable-nimf-indicator], [Disable nimf-indicator]))
 
 AS_IF([test "x$enable_nimf_indicator" != "xno"],
-  [PKG_CHECK_MODULES(APPINDICATOR3, [appindicator3-0.1])])
+  [PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [glib-2.0 gio-2.0 gio-unix-2.0 x11
+                                           gtk+-3.0 appindicator3-0.1
+                                           libnotify])])
 
 AM_CONDITIONAL([ENABLE_NIMF_INDICATOR],
                [test "$enable_nimf_indicator" != "no"])

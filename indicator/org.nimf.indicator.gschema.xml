@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.indicator"
+          path="/org/nimf/indicator/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Indicator'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="show-notification">
+      <default>true</default>
+      <summary>Show notification for Caps Lock state</summary>
+      <description>Show notification for Caps Lock state</description>
+    </key>
+  </schema>
+</schemalist>
