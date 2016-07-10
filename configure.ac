@@ -197,8 +197,6 @@ dnl nimf-settings
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS, [gtk+-3.0 gio-2.0 gmodule-2.0])
-GLIB_COMPILE_RESOURCES=`pkg-config --variable=glib_compile_resources gio-2.0`
-AC_SUBST(GLIB_COMPILE_RESOURCES)
 
 dnl ***************************************************************************
 
