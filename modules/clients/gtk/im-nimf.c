@@ -42,7 +42,6 @@ struct _NimfGtkIMContext
 
   NimfIM       *im;
   GdkWindow    *client_window;
-  GdkRectangle  cursor_area;
   GSettings    *settings;
   gboolean      is_reset_on_gdk_button_press_event;
   gboolean      is_hook_gdk_event_key;
@@ -281,23 +280,17 @@ nimf_gtk_im_context_set_cursor_location (GtkIMContext *context,
 
   NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
 
-  if (memcmp (&nimf_context->cursor_area, area, sizeof (GdkRectangle)) == 0)
-    return;
-
-  nimf_context->cursor_area = *area;
   GdkRectangle root_area = *area;
 
   if (nimf_context->client_window)
-  {
     gdk_window_get_root_coords (nimf_context->client_window,
                                 area->x,
                                 area->y,
                                 &root_area.x,
                                 &root_area.y);
 
-    nimf_im_set_cursor_location (NIMF_GTK_IM_CONTEXT (context)->im,
-                                 (const NimfRectangle *) &root_area);
-  }
+  nimf_im_set_cursor_location (NIMF_GTK_IM_CONTEXT (context)->im,
+                               (const NimfRectangle *) &root_area);
 }
 
 static void
