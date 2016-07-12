@@ -1,3 +1,15 @@
+nimf (2016.07.13) stable; urgency=medium
+
+  * Fixed preedit attributes
+  * Fixed set_cursor_location
+  * Improved the performance of nimf-anthy
+  * Updated translations
+  * Show Caps Lock state
+    Added a "show-notification" option, default value is true.
+    related issue https://github.com/dasom-im/dasom/issues/37
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 13 Jul 2016 00:30:19 +0900
+
 nimf (2016.07.04) stable; urgency=medium
 
   * Added Multi_key 0xff20
