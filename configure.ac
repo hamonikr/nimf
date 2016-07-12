@@ -52,13 +52,17 @@ PKG_CHECK_MODULES(GLIB,    [glib-2.0])
 PKG_CHECK_MODULES(GTK2,    [gtk+-2.0])
 
 dnl ***************************************************************************
-dnl engines
+dnl nimf-libhangul  nimf-system-keyboard
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_ANTHY_DEPS,     [anthy               $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0       $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,               [$LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS, [$LIBNIMF_REQUIRES])
+
+dnl ***************************************************************************
+dnl nimf-sunpinyin
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0 $LIBNIMF_REQUIRES])
 
 dnl Check sunpinyin-data for Debian-like distributions
 
@@ -69,6 +73,7 @@ AC_CHECK_FILES(
     $SUNPINYIN_DATA_DIR/pydict_sc.bin], [], HAVE_SUNPINYIN_DATA="no")
 
 dnl Check sunpinyin-data for Arch Linux, Fedora
+
 if test "x$HAVE_SUNPINYIN_DATA" = "xno"; then
   AC_CHECK_FILES(
      [/usr/share/sunpinyin/lm_sc.t3g
@@ -76,8 +81,11 @@ if test "x$HAVE_SUNPINYIN_DATA" = "xno"; then
       AC_MSG_ERROR([sunpinyin-data files are not found.]))
 fi
 
-dnl Check anthy.dic
+dnl ***************************************************************************
+dnl nimf-anthy
+dnl ***************************************************************************
 
+PKG_CHECK_MODULES(NIMF_ANTHY_DEPS, [anthy $LIBNIMF_REQUIRES])
 AC_CHECK_FILE([/var/lib/anthy/anthy.dic],   [HAVE_ANTHY_DIC="yes"])
 AC_CHECK_FILE([/usr/share/anthy/anthy.dic], [HAVE_ANTHY_DIC="yes"])
 AS_IF([test "x$HAVE_ANTHY_DIC" != "xyes"],
