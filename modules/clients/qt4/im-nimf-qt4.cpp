@@ -125,7 +125,7 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
 
     QInputMethodEvent::Attribute attr (QInputMethodEvent::TextFormat,
                                        preedit_attrs[i]->start_index,
-                                       preedit_attrs[i]->end_index,
+                                       preedit_attrs[i]->end_index - preedit_attrs[i]->start_index,
                                        QVariant (format));
     attrs << attr;
   }
