@@ -258,8 +258,8 @@ nimf_anthy_filter_event (NimfEngine  *engine,
 
   struct anthy_conv_stat    conv_stat;
   struct anthy_segment_stat segment_stat;
-  gint  i;
-  gchar buf[4096];
+  static gchar buf[512];
+  gint i;
 
   anthy_set_string (anthy->context, anthy->preedit1->str);
   anthy_get_stat (anthy->context, &conv_stat);
@@ -295,7 +295,7 @@ nimf_anthy_filter_event (NimfEngine  *engine,
 
     for (i = 0; i < segment_stat.nr_candidate; i++)
     {
-      anthy_get_segment (anthy->context, conv_stat.nr_segment - 1, i, buf, 4096);
+      anthy_get_segment (anthy->context, conv_stat.nr_segment - 1, i, buf, 512);
       candidates[i] = g_strdup (buf);
     }
 
