@@ -239,12 +239,12 @@ nimf_anthy_filter_event (NimfEngine  *engine,
     {
       if (anthy->preedit2->len > 1)
       {
-        gchar c;
+        static gchar c[2] = {0};
 
         g_string_append_len (anthy->preedit1, anthy->preedit2->str,
                              anthy->preedit2->len - 1);
-        c = anthy->preedit2->str[anthy->preedit2->len - 1];
-        g_string_assign (anthy->preedit2, &c);
+        c[0] = anthy->preedit2->str[anthy->preedit2->len - 1];
+        g_string_assign (anthy->preedit2, c);
       }
       else
       {
