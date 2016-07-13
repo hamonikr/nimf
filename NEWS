@@ -1,3 +1,10 @@
+nimf (2016.07.14) stable; urgency=medium
+
+  * nimf-anthy: Reduced memory usage
+  * nimf-anthy: Fixed invalid assignment
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 14 Jul 2016 00:00:04 +0900
+
 nimf (2016.07.13) stable; urgency=medium
 
   * Fixed preedit attributes
