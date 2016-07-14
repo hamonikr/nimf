@@ -12,5 +12,10 @@
       <summary>Disable fallback filter</summary>
       <description>Disable fallback filter</description>
     </key>
+    <key type="b" name="reset-on-mouse-button-press">
+      <default>true</default>
+      <summary>Reset when clicking the mouse button</summary>
+      <description>Reset when clicking the mouse button</description>
+    </key>
   </schema>
 </schemalist>

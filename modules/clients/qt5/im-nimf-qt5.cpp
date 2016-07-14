@@ -27,6 +27,34 @@
 #include <QtWidgets/QWidget>
 #include <nimf.h>
 
+class NimfEventHandler : public QObject
+{
+  Q_OBJECT
+
+public:
+  NimfEventHandler(NimfIM *im)
+  {
+    m_im = im;
+  };
+
+  ~NimfEventHandler()
+  {};
+
+protected:
+  bool eventFilter(QObject *obj, QEvent *event);
+
+private:
+  NimfIM *m_im;
+};
+
+bool NimfEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+  if (event->type() == QEvent::MouseButtonPress)
+    nimf_im_reset (m_im);
+
+  return QObject::eventFilter(obj, event);
+}
+
 class NimfInputContext : public QPlatformInputContext
 {
   Q_OBJECT
@@ -66,13 +94,17 @@ public:
                                            gint         n_chars,
                                            gpointer     user_data);
   // settings
-  static void on_changed_disable_fallback_filter (GSettings     *settings,
-                                                  gchar         *key,
-                                                  gpointer       user_data);
+  static void on_changed_disable_fallback_filter     (GSettings *settings,
+                                                      gchar     *key,
+                                                      gpointer   user_data);
+  static void on_changed_reset_on_mouse_button_press (GSettings *settings,
+                                                      gchar     *key,
+                                                      gpointer   user_data);
 private:
-  NimfIM        *m_im;
-  NimfRectangle  m_cursor_area;
-  GSettings     *m_settings;
+  NimfIM           *m_im;
+  NimfRectangle     m_cursor_area;
+  GSettings        *m_settings;
+  NimfEventHandler *m_handler;
 };
 
 /* nimf signal callbacks */
@@ -180,9 +212,9 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
 }
 
 void
-NimfInputContext::on_changed_disable_fallback_filter (GSettings     *settings,
-                                                      gchar         *key,
-                                                      gpointer       user_data)
+NimfInputContext::on_changed_disable_fallback_filter (GSettings *settings,
+                                                      gchar     *key,
+                                                      gpointer   user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -190,6 +222,34 @@ NimfInputContext::on_changed_disable_fallback_filter (GSettings     *settings,
 
   nimf_im_set_use_fallback_filter (context->m_im,
                                    !g_settings_get_boolean (settings, key));
+}
+
+void
+NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
+                                                          gchar     *key,
+                                                          gpointer   user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
+
+  if (g_settings_get_boolean (settings, key))
+  {
+    if (context->m_handler == NULL)
+    {
+      context->m_handler = new NimfEventHandler(context->m_im);
+      qApp->installEventFilter(context->m_handler);
+    }
+  }
+  else
+  {
+    if (context->m_handler)
+    {
+      qApp->removeEventFilter(context->m_handler);
+      delete context->m_handler;
+      context->m_handler = NULL;
+    }
+  }
 }
 
 NimfInputContext::NimfInputContext ()
@@ -202,7 +262,6 @@ NimfInputContext::NimfInputContext ()
   nimf_im_set_use_fallback_filter (m_im,
                                    !g_settings_get_boolean (m_settings,
                                                             "disable-fallback-filter"));
-
   g_signal_connect (m_im, "preedit-start",
                     G_CALLBACK (NimfInputContext::on_preedit_start), this);
   g_signal_connect (m_im, "preedit-end",
@@ -220,11 +279,20 @@ NimfInputContext::NimfInputContext ()
 
   g_signal_connect (m_settings, "changed::disable-fallback-filter",
                     G_CALLBACK (NimfInputContext::on_changed_disable_fallback_filter), this);
+  g_signal_connect (m_settings, "changed::reset-on-mouse-button-press",
+                    G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this);
+  m_handler = NULL;
+  g_signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
+                                     "reset-on-mouse-button-press");
 }
 
 NimfInputContext::~NimfInputContext ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (m_handler)
+    delete m_handler;
+
   g_object_unref (m_im);
   g_object_unref (m_settings);
 }
@@ -310,9 +378,6 @@ NimfInputContext::filterEvent (const QEvent *event)
     case QEvent::KeyRelease:
       type = NIMF_EVENT_KEY_RELEASE;
       break;
-    case QEvent::MouseButtonPress:
-      /* TODO: Provide as a option */
-      nimf_im_reset (m_im);
     default:
       return false;
   }

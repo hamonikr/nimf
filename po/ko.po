@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-07-10 19:51+0900\n"
+"PO-Revision-Date: 2016-07-14 19:18+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,62 +18,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:321
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:327
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:322
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:328
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:323
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:329
 msgid "Version"
 msgstr "버전"
 
-#: ../indicator/nimf-indicator.c:94 ../indicator/nimf-indicator.c:95
-#: ../indicator/nimf-indicator.c:96 ../indicator/nimf-indicator.c:113
+#: ../indicator/nimf-indicator.c:100 ../indicator/nimf-indicator.c:101
+#: ../indicator/nimf-indicator.c:102 ../indicator/nimf-indicator.c:119
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../indicator/nimf-indicator.c:107
+#: ../indicator/nimf-indicator.c:113
 msgid "An indicator for Nimf"
 msgstr "님프를 위한 표시기"
 
-#: ../indicator/nimf-indicator.c:108
+#: ../indicator/nimf-indicator.c:114
 msgid "Copyright (c) 2015,2016 Hodong Kim"
 msgstr "저작권 (c) 2015,2016 김호동"
 
-#: ../indicator/nimf-indicator.c:112
+#: ../indicator/nimf-indicator.c:118
 msgid "Nimf Indicator"
 msgstr "님프 표시기"
 
-#: ../indicator/nimf-indicator.c:116
+#: ../indicator/nimf-indicator.c:122
 msgid "Website"
 msgstr "웹사이트"
 
 #. ID
-#: ../indicator/nimf-indicator.c:166 ../indicator/nimf-indicator.c:169
-#: ../indicator/nimf-indicator.c:186 ../modules/clients/gtk/im-nimf.c:563
+#: ../indicator/nimf-indicator.c:172 ../indicator/nimf-indicator.c:175
+#: ../indicator/nimf-indicator.c:192 ../modules/clients/gtk/im-nimf.c:556
 msgid "Nimf"
 msgstr "님프"
 
-#: ../indicator/nimf-indicator.c:166
+#: ../indicator/nimf-indicator.c:172
 msgid "Caps Lock On"
 msgstr "캡스락 켜짐"
 
-#: ../indicator/nimf-indicator.c:169
+#: ../indicator/nimf-indicator.c:175
 msgid "Caps Lock Off"
 msgstr "캡스락 꺼짐"
 
-#: ../indicator/nimf-indicator.c:277
+#: ../indicator/nimf-indicator.c:283
 msgid "Settings"
 msgstr "설정"
 
-#: ../indicator/nimf-indicator.c:278
+#: ../indicator/nimf-indicator.c:284
 msgid "About"
 msgstr "정보"
 
-#: ../indicator/nimf-indicator.c:279
+#: ../indicator/nimf-indicator.c:285
 msgid "Exit"
 msgstr "종료"
 
@@ -186,6 +186,7 @@ msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니
 " 이것은 여러 응용 프로그램의 버그를 회피합니다."
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:5
 msgid "Reset when clicking the mouse button"
 msgstr "마우스 버튼을 클릭할 때 리셋합니다"
 
