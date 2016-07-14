@@ -1,3 +1,10 @@
+nimf (2016.07.15) stable; urgency=medium
+
+  * Added "reset-on-mouse-button-press" option on Qt5
+    Default value is true.
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 15 Jul 2016 00:07:39 +0900
+
 nimf (2016.07.14) stable; urgency=medium
 
   * nimf-anthy: Reduced memory usage
