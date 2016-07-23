@@ -311,22 +311,32 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
                                         hangul->preedit_string);
 
       gint list_len = hanja_list_get_size (list);
-      gchar **strv = g_malloc0 ((list_len + 1) * sizeof (gchar *));
+      gchar **strv1 = g_malloc0 ((list_len + 1) * sizeof (gchar *));
+      gchar **strv2 = g_malloc0 ((list_len + 1) * sizeof (gchar *));
 
       if (list)
       {
         gint i;
         for (i = 0; i < list_len; i++)
         {
-          const char *hanja = hanja_list_get_nth_value (list, i);
-          strv[i] = g_strdup (hanja);
+          const Hanja *hanja = hanja_list_get_nth (list, i);
+          const char  *str1  = hanja_get_value   (hanja);
+          const char  *str2  = hanja_get_comment (hanja);
+
+          if (str1)
+            strv1[i] = g_strdup (str1);
+
+          if (str2)
+            strv2[i] = g_strdup (str2);
         }
 
         hanja_list_delete (list);
       }
 
-      nimf_engine_update_candidate_window (engine, (const gchar **) strv, NULL);
-      g_strfreev (strv);
+      nimf_engine_update_candidate_window (engine, (const gchar **) strv1,
+                                                   (const gchar **) strv2);
+      g_strfreev (strv1);
+      g_strfreev (strv2);
       nimf_engine_show_candidate_window (engine, target, TRUE);
     }
     else
@@ -533,7 +543,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   trigger_keys = g_settings_get_strv (hangul->settings, "trigger-keys");
   hanja_keys   = g_settings_get_strv (hangul->settings, "hanja-keys");
 
-  hangul->hanja_keys   = nimf_key_newv ((const gchar **) hanja_keys);
+  hangul->hanja_keys = nimf_key_newv ((const gchar **) hanja_keys);
   hangul->context = hangul_ic_new (hangul->layout);
 
   hangul->id = g_strdup ("nimf-libhangul");
