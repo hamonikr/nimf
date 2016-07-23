@@ -1,6 +1,3 @@
-gsettings_SCHEMAS = org.nimf.indicator.gschema.xml
-@GSETTINGS_RULES@
-
 bin_PROGRAMS = nimf-indicator
 
 nimf_indicator_SOURCES = nimf-indicator.c

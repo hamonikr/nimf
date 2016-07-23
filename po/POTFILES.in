@@ -7,7 +7,6 @@ modules/engines/nimf-libhangul/nimf-libhangul.c
 modules/engines/nimf-sunpinyin/nimf-sunpinyin.cpp
 modules/engines/nimf-system-keyboard/nimf-system-keyboard.c
 settings/nimf-settings.c
-[type: gettext/gsettings]indicator/org.nimf.indicator.gschema.xml
 [type: gettext/gsettings]libnimf/org.nimf.gschema.xml
 [type: gettext/gsettings]modules/clients/gtk/org.nimf.clients.gtk.gschema.xml
 [type: gettext/gsettings]modules/clients/qt4/org.nimf.clients.qt4.gschema.xml

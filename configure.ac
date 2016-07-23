@@ -193,8 +193,7 @@ AC_ARG_ENABLE([nimf-indicator],
 
 AS_IF([test "x$enable_nimf_indicator" != "xno"],
   [PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [glib-2.0 gio-2.0 gio-unix-2.0 x11
-                                           gtk+-3.0 appindicator3-0.1
-                                           libnotify])])
+                                           gtk+-3.0 appindicator3-0.1])])
 
 AM_CONDITIONAL([ENABLE_NIMF_INDICATOR],
                [test "$enable_nimf_indicator" != "no"])

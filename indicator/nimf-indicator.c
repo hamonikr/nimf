@@ -28,50 +28,9 @@
 #include <syslog.h>
 #include "nimf-private.h"
 #include <stdlib.h>
-#include <libnotify/notify.h>
 
-static gboolean   syslog_initialized = FALSE;
-static NimfAgent *agent              = NULL;
-
-typedef struct
-{
-  NotifyNotification *notification;
-  GdkKeymap          *keymap;
-  gulong              handler_id;
-  gboolean            show_notification;
-  gboolean            caps_lock_state;
-} NimfIndicator;
-
-static NimfIndicator *nimf_indicator_new ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfIndicator *indicator;
-
-  indicator = g_slice_new0 (NimfIndicator);
-  indicator->keymap = gdk_keymap_get_default ();
-
-  return indicator;
-}
-
-static void nimf_indicator_free (NimfIndicator *indicator)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (indicator->handler_id > 0)
-  {
-    g_signal_handler_disconnect (indicator->keymap, indicator->handler_id);
-    indicator->handler_id = 0;
-  }
-
-  if (indicator->notification)
-    g_object_unref (indicator->notification);
-
-  if (notify_is_initted ())
-    notify_uninit ();
-
-  g_slice_free (NimfIndicator, indicator);
-}
+static gboolean syslog_initialized = FALSE;
+static NimfAgent *agent = NULL;
 
 static void on_engine_menu (GtkWidget *widget,
                             gchar     *engine_id)
@@ -153,106 +112,85 @@ static void on_disconnected (NimfAgent    *agent,
                                "nimf-indicator-warning", "disconnected");
 }
 
-static void
-on_state_changed (GdkKeymap     *keymap,
-                  gchar         *key,
-                  NimfIndicator *indicator)
+int
+main (int argc, char **argv)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  GError         *error        = NULL;
+  gboolean        is_no_daemon = FALSE;
+  gboolean        is_debug     = FALSE;
+  gboolean        is_version   = FALSE;
+  GOptionContext *context;
+  GOptionEntry    entries[] = {
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
+    {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
+    {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
+    {NULL}
+  };
 
-  gboolean new_state = gdk_keymap_get_caps_lock_state (keymap);
+  context = g_option_context_new ("- indicator for Nimf");
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_parse (context, &argc, &argv, &error);
+  g_option_context_free (context);
 
-  if (new_state == indicator->caps_lock_state)
-    return;
-
-  indicator->caps_lock_state = new_state;
-
-  if (indicator->caps_lock_state)
-    notify_notification_update (indicator->notification,
-                                _("Nimf"), _("Caps Lock On"), "nimf");
-  else
-    notify_notification_update (indicator->notification,
-                                _("Nimf"), _("Caps Lock Off"), "nimf");
-
-  notify_notification_show (indicator->notification, NULL);
-}
-
-static void
-on_changed_show_notification (GSettings     *settings,
-                              gchar         *key,
-                              NimfIndicator *indicator)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  indicator->show_notification = g_settings_get_boolean (settings, key);
-
-  if (indicator->show_notification)
+  if (error != NULL)
   {
-    if (notify_is_initted () == FALSE)
-      notify_init (_("Nimf"));
-
-    if (indicator->notification == NULL)
-    {
-      indicator->notification = notify_notification_new ("Nimf", "Caps Lock state", "nimf");
-      g_object_add_weak_pointer (G_OBJECT (indicator->notification),
-                                 (gpointer) &indicator->notification);
-    }
-
-    if (indicator->handler_id == 0)
-      indicator->handler_id = g_signal_connect (indicator->keymap,
-                                                "state-changed",
-                                                G_CALLBACK (on_state_changed),
-                                                indicator);
-
-    indicator->caps_lock_state = gdk_keymap_get_caps_lock_state (indicator->keymap);
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    return EXIT_FAILURE;
   }
-  else
+
+#ifdef ENABLE_NLS
+  bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+#endif
+
+  if (is_debug)
+    g_setenv ("G_MESSAGES_DEBUG", "nimf", TRUE);
+
+  if (is_version)
   {
-    if (indicator->handler_id > 0)
-    {
-      g_signal_handler_disconnect (indicator->keymap, indicator->handler_id);
-      indicator->handler_id = 0;
-    }
-
-    if (indicator->notification)
-      g_object_unref (indicator->notification);
-
-    if (notify_is_initted ())
-      notify_uninit ();
+    g_print ("%s %s\n", argv[0], VERSION);
+    exit (EXIT_SUCCESS);
   }
-}
 
-static void
-on_startup (GApplication *app, gpointer user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  if (is_no_daemon == FALSE)
+  {
+    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
+    syslog_initialized = TRUE;
+    g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
 
-  AppIndicator  *app_indicator;
-  GtkWidget     *menu_shell;
-  GtkWidget     *settings_menu;
-  GtkWidget     *about_menu;
-  GtkWidget     *exit_menu;
-  GSettings     *settings;
-  NimfIndicator *indicator;
+    if (daemon (0, 0) != 0)
+    {
+      g_critical ("Couldn't daemonize.");
+      return EXIT_FAILURE;
+    }
+  }
 
-  gtk_init (NULL, NULL);
-  indicator = nimf_indicator_new ();
+  gtk_init (&argc, &argv);
+
+  AppIndicator *indicator;
+  GtkWidget    *menu_shell;
+  GtkWidget    *settings_menu;
+  GtkWidget    *about_menu;
+  GtkWidget    *exit_menu;
+
   menu_shell = gtk_menu_new ();
-  app_indicator = app_indicator_new ("nimf-indicator", "input-keyboard",
+  indicator = app_indicator_new ("nimf-indicator", "input-keyboard",
                                  APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
-  app_indicator_set_status (app_indicator, APP_INDICATOR_STATUS_ACTIVE);
-  app_indicator_set_icon_full (app_indicator, "nimf-indicator", "Nimf");
-  app_indicator_set_menu (app_indicator, GTK_MENU (menu_shell));
+  app_indicator_set_status (indicator, APP_INDICATOR_STATUS_ACTIVE);
+  app_indicator_set_icon_full (indicator, "nimf-indicator", "Nimf");
+  app_indicator_set_menu (indicator, GTK_MENU (menu_shell));
 
   agent = nimf_agent_new ();
 
   g_signal_connect (agent, "engine-changed",
-                    G_CALLBACK (on_engine_changed), app_indicator);
+                    G_CALLBACK (on_engine_changed), indicator);
   g_signal_connect (agent, "disconnected",
-                    G_CALLBACK (on_disconnected), app_indicator);
+                    G_CALLBACK (on_disconnected), indicator);
 
   if (G_UNLIKELY (nimf_client_is_connected () == FALSE))
-    app_indicator_set_icon_full (app_indicator,
+    app_indicator_set_icon_full (indicator,
                                  "nimf-indicator-warning", "disconnected");
   /* menu */
   gchar     **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
@@ -260,7 +198,7 @@ on_startup (GApplication *app, gpointer user_data)
 
   guint i;
 
-  for (i = 0; engine_ids && engine_ids[i] != NULL; i++)
+  for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
   {
     GSettings *settings;
     gchar     *schema_id;
@@ -297,86 +235,14 @@ on_startup (GApplication *app, gpointer user_data)
 
   gtk_widget_show_all (menu_shell);
 
-  /* notification */
-  settings = g_settings_new ("org.nimf.indicator");
-  g_signal_connect (settings, "changed::show-notification",
-                    G_CALLBACK (on_changed_show_notification), indicator);
-  g_signal_emit_by_name (settings, "changed::show-notification", "show-notification");
-
   gtk_main ();
 
   g_object_unref (agent);
-  g_object_unref (app_indicator);
+  g_object_unref (indicator);
   g_strfreev (engine_ids);
-  g_object_unref (settings);
-  nimf_indicator_free (indicator);
-  g_application_quit (app);
-}
-
-int
-main (int argc, char **argv)
-{
-  GApplication   *app;
-  int             status;
-  GError         *error     = NULL;
-  gboolean        no_daemon = FALSE;
-  gboolean        debug     = FALSE;
-  gboolean        version   = FALSE;
-  GOptionContext *context;
-  GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, N_("Do not daemonize"), NULL},
-    {"debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Log debugging message"), NULL},
-    {"version", 0, 0, G_OPTION_ARG_NONE, &version, N_("Version"), NULL},
-    {NULL}
-  };
-
-  context = g_option_context_new ("- indicator for Nimf");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-  g_option_context_parse (context, &argc, &argv, &error);
-  g_option_context_free (context);
-
-  if (error != NULL)
-  {
-    g_warning ("%s", error->message);
-    g_error_free (error);
-    return EXIT_FAILURE;
-  }
-
-#ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-#endif
-
-  if (debug)
-    g_setenv ("G_MESSAGES_DEBUG", "nimf", TRUE);
-
-  if (version)
-  {
-    g_print ("%s %s\n", argv[0], VERSION);
-    exit (EXIT_SUCCESS);
-  }
-
-  if (no_daemon == FALSE)
-  {
-    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
-    syslog_initialized = TRUE;
-    g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &debug);
-
-    if (daemon (0, 0) != 0)
-    {
-      g_critical ("Couldn't daemonize.");
-      return EXIT_FAILURE;
-    }
-  }
-
-  app = g_application_new ("org.nimf.indicator", G_APPLICATION_IS_SERVICE);
-  g_signal_connect (app, "startup",  G_CALLBACK (on_startup),  NULL);
-  status = g_application_run (app, argc, argv);
-  g_object_unref (app);
 
   if (syslog_initialized)
     closelog ();
 
-  return status;
+  return EXIT_SUCCESS;
 }
