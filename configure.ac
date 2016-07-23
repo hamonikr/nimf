@@ -206,6 +206,17 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS, [gtk+-3.0 gio-2.0 gmodule-2.0])
 
 dnl ***************************************************************************
+dnl im-config data
+dnl ***************************************************************************
+
+AC_ARG_WITH([im-config-data],
+  AS_HELP_STRING([--with-im-config-data], [Install im-config data]),
+  [with_im_config_data=yes])
+
+AM_CONDITIONAL([WITH_IM_CONFIG_DATA],
+               [test "$with_im_config_data" = "yes"])
+
+dnl ***************************************************************************
 
 GLIB_GSETTINGS
 GOBJECT_INTROSPECTION_CHECK([0.10.1])
@@ -216,6 +227,7 @@ AC_OUTPUT([
   data/Makefile
   data/apparmor-abstractions/Makefile
   data/icons/Makefile
+  data/im-config/Makefile
   indicator/Makefile
   libnimf/Makefile
   libnimf/nimf.pc

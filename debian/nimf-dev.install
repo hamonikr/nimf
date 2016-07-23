@@ -1,0 +1,4 @@
+usr/include
+usr/lib/*/libnimf.so
+usr/lib/*/pkgconfig
+usr/share/gir-1.0

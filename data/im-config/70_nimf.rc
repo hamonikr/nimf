@@ -1,0 +1,15 @@
+if [ "$IM_CONFIG_PHASE" = 2 ]; then
+    nimf-daemon
+
+    if ! test -z `which nimf-indicator`; then
+        nimf-indicator
+    fi
+fi
+
+if [ "$IM_CONFIG_PHASE" = 1 ]; then
+    XMODIFIERS="@im=nimf"
+    GTK_IM_MODULE=nimf
+    QT4_IM_MODULE=nimf
+    QT_IM_MODULE=nimf
+    CLUTTER_IM_MODULE=xim
+fi
