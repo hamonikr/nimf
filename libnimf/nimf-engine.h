@@ -138,7 +138,8 @@ void     nimf_engine_emit_engine_changed       (NimfEngine       *engine,
                                                 NimfContext      *context);
 /* candidate */
 void     nimf_engine_update_candidate_window         (NimfEngine      *engine,
-                                                      const gchar    **strv);
+                                                      const gchar    **strv1,
+                                                      const gchar    **strv2);
 void     nimf_engine_show_candidate_window           (NimfEngine      *engine,
                                                       NimfContext     *context,
                                                       gboolean         select_first);

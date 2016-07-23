@@ -287,7 +287,7 @@ void nimf_sunpinyin_update (NimfEngine  *engine,
       }
     }
 
-    nimf_engine_update_candidate_window (engine, (const gchar **) strv);
+    nimf_engine_update_candidate_window (engine, (const gchar **) strv, NULL);
     g_strfreev (strv);
 
     if (pinyin->pcl->size() > 0)

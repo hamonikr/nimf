@@ -300,7 +300,7 @@ nimf_anthy_filter_event (NimfEngine  *engine,
     }
 
     candidates[segment_stat.nr_candidate] = NULL;
-    nimf_engine_update_candidate_window (engine, (const gchar **) candidates);
+    nimf_engine_update_candidate_window (engine, (const gchar **) candidates, NULL);
     nimf_engine_show_candidate_window (engine, target, FALSE);
 
     g_strfreev (candidates);

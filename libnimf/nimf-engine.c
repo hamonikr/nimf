@@ -352,9 +352,10 @@ nimf_engine_real_get_surrounding (NimfEngine   *engine,
 
 void
 nimf_engine_update_candidate_window (NimfEngine   *engine,
-                                     const gchar **strv)
+                                     const gchar **strv1,
+                                     const gchar **strv2)
 {
-  nimf_candidate_update_window (engine->priv->server->candidate, strv);
+  nimf_candidate_update_window (engine->priv->server->candidate, strv1, strv2);
 }
 
 void

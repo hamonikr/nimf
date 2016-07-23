@@ -39,7 +39,8 @@ struct _NimfCandidateClass
 
 enum
 {
-  TITEL_COLUMN,
+  MAIN_COLUMN,
+  EXTRA_COLUMN,
   N_COLUMNS
 };
 
@@ -90,14 +91,14 @@ on_tree_view_realize (GtkWidget     *tree_view,
   gint horizontal_space, height;
   guint border_width;
 
-  column = gtk_tree_view_get_column (GTK_TREE_VIEW (tree_view), TITEL_COLUMN);
+  column = gtk_tree_view_get_column (GTK_TREE_VIEW (tree_view), MAIN_COLUMN);
   gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
   border_width = gtk_container_get_border_width (GTK_CONTAINER (candidate->window));
   gtk_widget_style_get (tree_view, "horizontal-separator",
                         &horizontal_space, NULL);
   height = height + horizontal_space / 2;
   gtk_window_resize (GTK_WINDOW (candidate->window),
-                     height * 10 / 1.6,
+                     height * 10 * 1.6,
                      height * 10 + border_width * 2);
 
   adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
@@ -110,14 +111,14 @@ nimf_candidate_init (NimfCandidate *candidate)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GtkCellRenderer   *renderer;
-  GtkTreeViewColumn *column;
+  GtkTreeViewColumn *column1, *column2;
   GtkListStore      *store;
   GtkTreeSelection  *selection;
 
   gtk_init (0, NULL);
 
   /* gtk tree view */
-  store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
+  store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
   candidate->treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
@@ -126,11 +127,16 @@ nimf_candidate_init (NimfCandidate *candidate)
   g_signal_connect (selection, "changed", (GCallback) on_changed, &candidate->iter);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Title", renderer,
-                                                     "text", TITEL_COLUMN,
-                                                     NULL);
-  gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_FIXED);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column);
+  column1 = gtk_tree_view_column_new_with_attributes ("Main", renderer,
+                                                      "text", MAIN_COLUMN,
+                                                      NULL);
+  column2 = gtk_tree_view_column_new_with_attributes ("Extra", renderer,
+                                                      "text", EXTRA_COLUMN,
+                                                      NULL);
+  gtk_tree_view_column_set_sizing (column1, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column1);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column2);
   gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (candidate->treeview), TRUE);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (candidate->treeview), FALSE);
 
@@ -168,7 +174,8 @@ nimf_candidate_class_init (NimfCandidateClass *class)
 
 void
 nimf_candidate_update_window (NimfCandidate  *candidate,
-                              const gchar   **strv)
+                              const gchar   **strv1,
+                              const gchar   **strv2)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -180,11 +187,15 @@ nimf_candidate_update_window (NimfCandidate  *candidate,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
-  for (i = 0; strv[i] != NULL; i++)
+  for (i = 0; strv1 && strv1[i]; i++)
   {
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set    (GTK_LIST_STORE (model), &iter,
-                           TITEL_COLUMN, strv[i], -1);
+                           MAIN_COLUMN, strv1[i], -1);
+
+    if (strv2 && strv2[i])
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          EXTRA_COLUMN, strv2[i], -1);
   }
 
   adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
@@ -376,7 +387,7 @@ gchar *nimf_candidate_get_selected_text (NimfCandidate *candidate)
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
-    gtk_tree_model_get (model, &iter, TITEL_COLUMN, &text, -1);
+    gtk_tree_model_get (model, &iter, MAIN_COLUMN, &text, -1);
 
   return text;
 }
