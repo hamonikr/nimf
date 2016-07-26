@@ -454,7 +454,7 @@ on_key_press_event (GtkWidget *widget,
 
     g_string_free (combination, TRUE);
     gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                       GTK_RESPONSE_ACCEPT, FALSE);
+                                       GTK_RESPONSE_OK, FALSE);
     text = g_strdup_printf (_("Please report a bug. (keyval: %d)"),
                             event->key.keyval);
     gtk_entry_set_text (GTK_ENTRY (widget), text);
@@ -468,7 +468,7 @@ on_key_press_event (GtkWidget *widget,
   gtk_entry_set_text (GTK_ENTRY (widget), combination->str);
   gtk_editable_set_position (GTK_EDITABLE (widget), -1);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                     GTK_RESPONSE_ACCEPT, TRUE);
+                                     GTK_RESPONSE_OK, TRUE);
   g_string_free (combination, TRUE);
 
   return TRUE;
@@ -516,22 +516,24 @@ on_button_clicked_add (GtkButton           *button,
   flags = GTK_DIALOG_MODAL;
 #endif
 
-  dialog = gtk_dialog_new_with_buttons (_("Press key combination..."),
+  dialog = gtk_dialog_new_with_buttons (_("Press key combination"),
                                         GTK_WINDOW (nimf_settings_window),
                                         flags,
-                                        _("_OK"),     GTK_RESPONSE_ACCEPT,
-                                        _("_Cancel"), GTK_RESPONSE_REJECT,
+                                        _("_OK"),     GTK_RESPONSE_OK,
+                                        _("_Cancel"), GTK_RESPONSE_CANCEL,
                                         NULL);
   gtk_window_set_icon_name (GTK_WINDOW (dialog), "nimf");
+  gtk_widget_set_size_request (GTK_WIDGET (dialog), 400, -1);
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-                                     GTK_RESPONSE_ACCEPT, FALSE);
+                                     GTK_RESPONSE_OK, FALSE);
 
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 
   entry = gtk_entry_new ();
-  gtk_entry_set_text (GTK_ENTRY (entry), _("Press the combination of the keys"));
-  gtk_editable_set_position (GTK_EDITABLE (entry), -1);
-  gtk_container_add (GTK_CONTAINER (content_area), entry);
+  gtk_entry_set_placeholder_text (GTK_ENTRY (entry),
+                                  _("Click here and then press key combination"));
+  gtk_box_pack_start (GTK_BOX (content_area), entry, TRUE, TRUE, 0);
   g_signal_connect (entry, "key-press-event",
                     G_CALLBACK (on_key_press_event), dialog);
 
@@ -539,7 +541,7 @@ on_button_clicked_add (GtkButton           *button,
 
   switch (gtk_dialog_run (GTK_DIALOG (dialog)))
   {
-    case GTK_RESPONSE_ACCEPT:
+    case GTK_RESPONSE_OK:
       {
         GtkTreeModel *model;
         const gchar  *text;
