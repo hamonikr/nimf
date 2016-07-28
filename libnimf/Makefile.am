@@ -81,6 +81,7 @@ nimfinclude_HEADERS = \
 	nimf-candidate.h \
 	nimf-client.h \
 	nimf-connection.h \
+	nimf-context.h \
 	nimf-engine.h \
 	nimf-enum-types.h \
 	nimf-events.h \
