@@ -151,7 +151,11 @@ gir_DATA = $(INTROSPECTION_GIRS)
 typelibdir   = $(INTROSPECTION_TYPELIBDIR)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
+install-data-hook:
+	rm -f $(DESTDIR)$(libdir)/libnimf.la
+
 uninstall-hook:
+	-rm    -f $(DESTDIR)$(libdir)/libnimf.so*
 	-rmdir -p $(DESTDIR)$(libdir)/nimf
 	-rmdir -p $(DESTDIR)$(nimfincludedir)
 
