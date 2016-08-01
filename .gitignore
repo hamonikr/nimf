@@ -36,6 +36,5 @@ data/icons/22x22/
 data/icons/24x24/
 data/icons/32x32/
 data/icons/48x48/
-data/imsettings/nimf.conf
 settings/nimf-settings
 settings/nimf-settings-resources.c
