@@ -115,7 +115,7 @@ nimf_candidate_init (NimfCandidate *candidate)
   GtkListStore      *store;
   GtkTreeSelection  *selection;
 
-  gtk_init (0, NULL);
+  gtk_init (NULL, NULL);
 
   /* gtk tree view */
   store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
@@ -137,7 +137,6 @@ nimf_candidate_init (NimfCandidate *candidate)
   gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column1);
   gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column2);
-  gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (candidate->treeview), TRUE);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (candidate->treeview), FALSE);
 
   /* scrolled window */
