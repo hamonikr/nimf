@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2016.07.23
+Version:  2016.08.06
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -110,6 +110,13 @@ fi
 %{_datadir}/gir-1.0/*
 
 %changelog
+* Sat Aug 06 2016 Hodong Kim <cogniti@gmail.com> - 2016.08.06-1
+- Fixed scroll bug in the candidate window
+- Fixed trivial bugs
+- Added fedora-specific files related
+- Remove libnimf.la
+- Fixed missing nimf-context.h
+- nimf-settings: Improved dialog to capture keys
 * Sat Jul 23 2016 Hodong Kim <cogniti@gmail.com> - 2016.07.23-1
 - nimf-indicator: Revert to 2016-06-04
 - Show comments in the candidate window

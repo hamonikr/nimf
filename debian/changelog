@@ -1,3 +1,14 @@
+nimf (2016.08.06) stable; urgency=medium
+
+  * Fixed scroll bug in the candidate window
+  * Fixed trivial bugs
+  * Added fedora-specific files
+  * Remove libnimf.la
+  * Fixed missing nimf-context.h
+  * nimf-settings: Improved dialog to capture keys
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 06 Aug 2016 17:32:03 +0900
+
 nimf (2016.07.23) stable; urgency=medium
 
   * nimf-indicator: Revert to 2016-06-04
