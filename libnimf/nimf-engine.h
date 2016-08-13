@@ -136,21 +136,6 @@ gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
                                                 gint              n_chars);
 void     nimf_engine_emit_engine_changed       (NimfEngine       *engine,
                                                 NimfContext      *context);
-/* candidate */
-void     nimf_engine_update_candidate_window         (NimfEngine      *engine,
-                                                      const gchar    **strv1,
-                                                      const gchar    **strv2);
-void     nimf_engine_show_candidate_window           (NimfEngine      *engine,
-                                                      NimfContext     *context,
-                                                      gboolean         select_first);
-void     nimf_engine_hide_candidate_window           (NimfEngine      *engine);
-gboolean nimf_engine_is_candidate_window_visible     (NimfEngine      *engine);
-void     nimf_engine_select_previous_candidate_item  (NimfEngine      *engine);
-void     nimf_engine_select_next_candidate_item      (NimfEngine      *engine);
-void     nimf_engine_select_page_up_candidate_item   (NimfEngine      *engine);
-void     nimf_engine_select_page_down_candidate_item (NimfEngine      *engine);
-gchar   *nimf_engine_get_selected_candidate_text     (NimfEngine      *engine);
-gint     nimf_engine_get_selected_candidate_index    (NimfEngine      *engine);
 /* info */
 const gchar *nimf_engine_get_id        (NimfEngine *engine);
 const gchar *nimf_engine_get_icon_name (NimfEngine *engine);

@@ -46,9 +46,10 @@ typedef struct _NimfCandidateClass  NimfCandidateClass;
 GType          nimf_candidate_get_type (void) G_GNUC_CONST;
 
 NimfCandidate *nimf_candidate_new                   (void);
+NimfCandidate *nimf_candidate_get_default           (void);
 void           nimf_candidate_update_window         (NimfCandidate  *candidate,
-                                                     const gchar   **strv1,
-                                                     const gchar   **strv2);
+                                                     const gchar   **items1,
+                                                     const gchar   **items2);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
                                                      NimfContext    *context,
                                                      gboolean        select_first);

@@ -37,6 +37,7 @@ struct _NimfLibhangul
 {
   NimfEngine parent_instance;
 
+  NimfCandidate      *candidate;
   HangulInputContext *context;
   gchar              *preedit_string;
   NimfPreeditAttr   **preedit_attrs;
@@ -185,7 +186,7 @@ nimf_libhangul_reset (NimfEngine  *engine,
   if (G_UNLIKELY (hangul->ignore_reset_in_commit_cb && hangul->is_committing))
     return;
 
-  nimf_engine_hide_candidate_window (engine);
+  nimf_candidate_hide_window (hangul->candidate);
   hangul->is_candidate_mode = FALSE;
 
   const ucschar *flush;
@@ -239,7 +240,7 @@ on_candidate_clicked (NimfEngine  *engine,
     nimf_libhangul_update_preedit (engine, target, g_strdup (""));
   }
 
-  nimf_engine_hide_candidate_window (NIMF_ENGINE (hangul));
+  nimf_candidate_hide_window (hangul->candidate);
   hangul->is_candidate_mode = FALSE;
 }
 
@@ -311,8 +312,8 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
                                         hangul->preedit_string);
 
       gint list_len = hanja_list_get_size (list);
-      gchar **strv1 = g_malloc0 ((list_len + 1) * sizeof (gchar *));
-      gchar **strv2 = g_malloc0 ((list_len + 1) * sizeof (gchar *));
+      gchar **items1 = g_malloc0 ((list_len + 1) * sizeof (gchar *));
+      gchar **items2 = g_malloc0 ((list_len + 1) * sizeof (gchar *));
 
       if (list)
       {
@@ -320,29 +321,29 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
         for (i = 0; i < list_len; i++)
         {
           const Hanja *hanja = hanja_list_get_nth (list, i);
-          const char  *str1  = hanja_get_value   (hanja);
-          const char  *str2  = hanja_get_comment (hanja);
+          const char  *item1 = hanja_get_value    (hanja);
+          const char  *item2 = hanja_get_comment  (hanja);
 
-          if (str1)
-            strv1[i] = g_strdup (str1);
+          if (item1)
+            items1[i] = g_strdup (item1);
 
-          if (str2)
-            strv2[i] = g_strdup (str2);
+          if (item2)
+            items2[i] = g_strdup (item2);
         }
 
         hanja_list_delete (list);
       }
 
-      nimf_engine_update_candidate_window (engine, (const gchar **) strv1,
-                                                   (const gchar **) strv2);
-      g_strfreev (strv1);
-      g_strfreev (strv2);
-      nimf_engine_show_candidate_window (engine, target, TRUE);
+      nimf_candidate_update_window (hangul->candidate, (const gchar **) items1,
+                                                       (const gchar **) items2);
+      g_strfreev (items1);
+      g_strfreev (items2);
+      nimf_candidate_show_window (hangul->candidate, target, TRUE);
     }
     else
     {
       hangul->is_candidate_mode = FALSE;
-      nimf_engine_hide_candidate_window (engine);
+      nimf_candidate_hide_window (hangul->candidate);
     }
 
     return TRUE;
@@ -355,29 +356,29 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
       case NIMF_KEY_Return:
       case NIMF_KEY_KP_Enter:
         {
-          gchar *text = nimf_engine_get_selected_candidate_text (engine);
+          gchar *text = nimf_candidate_get_selected_text (hangul->candidate);
           on_candidate_clicked (engine, target, text, -1);
           g_free (text);
         }
         break;
       case NIMF_KEY_Up:
       case NIMF_KEY_KP_Up:
-        nimf_engine_select_previous_candidate_item (engine);
+        nimf_candidate_select_previous_item (hangul->candidate);
         break;
       case NIMF_KEY_Down:
       case NIMF_KEY_KP_Down:
-        nimf_engine_select_next_candidate_item (engine);
+        nimf_candidate_select_next_item (hangul->candidate);
         break;
       case NIMF_KEY_Page_Up:
       case NIMF_KEY_KP_Page_Up:
-        nimf_engine_select_page_up_candidate_item (engine);
+        nimf_candidate_select_page_up_item (hangul->candidate);
         break;
       case NIMF_KEY_Page_Down:
       case NIMF_KEY_KP_Page_Down:
-        nimf_engine_select_page_down_candidate_item (engine);
+        nimf_candidate_select_page_down_item (hangul->candidate);
         break;
       case NIMF_KEY_Escape:
-        nimf_engine_hide_candidate_window (engine);
+        nimf_candidate_hide_window (hangul->candidate);
         hangul->is_candidate_mode = FALSE;
         break;
       default:
@@ -530,6 +531,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   gchar **trigger_keys;
   gchar **hanja_keys;
 
+  hangul->candidate = nimf_candidate_get_default ();
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
 
   hangul->layout = g_settings_get_string (hangul->settings, "layout");

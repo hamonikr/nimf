@@ -22,6 +22,8 @@
 #include "nimf-candidate.h"
 #include <gtk/gtk.h>
 
+static NimfCandidate *default_nimf_candidate = NULL;
+
 struct _NimfCandidate
 {
   GObject parent_instance;
@@ -91,6 +93,7 @@ nimf_candidate_init (NimfCandidate *candidate)
   GtkTreeSelection  *selection;
 
   gtk_init (NULL, NULL);
+  default_nimf_candidate = candidate;
 
   /* gtk tree view */
   store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
@@ -367,6 +370,13 @@ void nimf_candidate_select_page_down_item (NimfCandidate *candidate)
 
   while (nimf_candidate_select_next_item_return_val (candidate))
   { }
+}
+
+NimfCandidate *nimf_candidate_get_default ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return default_nimf_candidate;
 }
 
 NimfCandidate *nimf_candidate_new ()

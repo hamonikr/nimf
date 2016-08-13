@@ -58,6 +58,7 @@ struct _NimfSunpinyin
 {
   NimfEngine parent_instance;
 
+  NimfCandidate     *candidate;
   gchar             *id;
   gchar             *preedit_string;
   NimfPreeditAttr  **preedit_attrs;
@@ -171,6 +172,7 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  pinyin->candidate = nimf_candidate_get_default ();
   pinyin->id = g_strdup ("nimf-sunpinyin");
   pinyin->preedit_string   = g_strdup ("");
   pinyin->preedit_attrs    = (NimfPreeditAttr **) g_malloc0_n (2, sizeof (NimfPreeditAttr *));
@@ -272,9 +274,11 @@ void nimf_sunpinyin_update (NimfEngine  *engine,
   /* update candidate */
   if (pinyin->pcl)
   {
-    const TWCHAR *wstr;
-    gchar **strv = (gchar **) g_malloc0 ((pinyin->pcl->size() + 1) * sizeof (gchar *));
-    gint i;
+    const TWCHAR  *wstr;
+    gchar        **items;
+    gint           i;
+
+    items = (gchar **) g_malloc0 ((pinyin->pcl->size() + 1) * sizeof (gchar *));
 
     for (i = 0; i < pinyin->pcl->size(); i++)
     {
@@ -283,17 +287,18 @@ void nimf_sunpinyin_update (NimfEngine  *engine,
       if (wstr)
       {
         gchar *text = g_ucs4_to_utf8 (wstr, -1, NULL, NULL, NULL);
-        strv[i] = text;
+        items[i] = text;
       }
     }
 
-    nimf_engine_update_candidate_window (engine, (const gchar **) strv, NULL);
-    g_strfreev (strv);
+    nimf_candidate_update_window (pinyin->candidate, (const gchar **) items, NULL);
+
+    g_strfreev (items);
 
     if (pinyin->pcl->size() > 0)
-      nimf_engine_show_candidate_window (engine, target, TRUE);
+      nimf_candidate_show_window (pinyin->candidate, target, TRUE);
     else
-      nimf_engine_hide_candidate_window (engine);
+      nimf_candidate_hide_window (pinyin->candidate);
 
     pinyin->pcl = NULL;
   }
@@ -366,7 +371,7 @@ nimf_sunpinyin_filter_event (NimfEngine  *engine,
     case NIMF_KEY_KP_Enter:
     case NIMF_KEY_space:
       {
-        gint index = nimf_engine_get_selected_candidate_index (engine);
+        gint index = nimf_candidate_get_selected_index (pinyin->candidate);
 
         if (G_LIKELY (index >= 0))
         {
@@ -379,15 +384,15 @@ nimf_sunpinyin_filter_event (NimfEngine  *engine,
       break;
     case NIMF_KEY_Up:
     case NIMF_KEY_KP_Up:
-      if (!nimf_engine_is_candidate_window_visible (engine))
+      if (!nimf_candidate_is_window_visible (pinyin->candidate))
         return FALSE;
-      nimf_engine_select_previous_candidate_item (engine);
+      nimf_candidate_select_previous_item (pinyin->candidate);
       return TRUE;
     case NIMF_KEY_Down:
     case NIMF_KEY_KP_Down:
-      if (!nimf_engine_is_candidate_window_visible (engine))
+      if (!nimf_candidate_is_window_visible (pinyin->candidate))
         return FALSE;
-      nimf_engine_select_next_candidate_item (engine);
+      nimf_candidate_select_next_item (pinyin->candidate);
       return TRUE;
     default:
       break;
