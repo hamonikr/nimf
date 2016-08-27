@@ -1,3 +1,3 @@
-SUBDIRS = nimf-anthy nimf-libhangul nimf-sunpinyin nimf-system-keyboard
+SUBDIRS = nimf-anthy nimf-chewing nimf-libhangul nimf-sunpinyin nimf-system-keyboard
 
 DISTCLEANFILES = Makefile.in

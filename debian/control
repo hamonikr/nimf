@@ -21,7 +21,8 @@ Build-Depends: debhelper (>= 9),
                sunpinyin-data,
                libhangul-dev,
                libanthy-dev,
-               anthy
+               anthy,
+               libchewing3-dev
 Standards-Version: 3.9.6
 Homepage: https://github.com/cogniti/nimf
 
@@ -40,7 +41,7 @@ Description: Input Method Framework
   * Input Method Server:
      * nimf-daemon including IMdkit(XIM)
   * Language Engines:
-     * Chinese (in alpha stage, based on sunpinyin)
+     * Chinese (in alpha stage, based on sunpinyin, libchewing)
      * Japanese (in alpha stage, based on anthy)
      * Korean (based on libhangul)
   * Client Modules:

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-07-26 21:52+0900\n"
+"PO-Revision-Date: 2016-08-28 00:33+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -102,6 +102,7 @@ msgstr "'님프'"
 #: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
@@ -113,6 +114,7 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 #: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
@@ -197,12 +199,14 @@ msgid "'Japanese (anthy)'"
 msgstr "'일본어 (anthy)'"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:4
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:4
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:4
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:4
 msgid "Active engine"
 msgstr "엔진 활성화"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:5
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:5
 msgid "The engine will be loaded on startup if available. Restart required"
@@ -211,6 +215,15 @@ msgstr "만약 가능하다면 이 엔진은 시작할 때 로드될 것입니�
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:6
 msgid "Trigger keys for switching Japanese / System"
 msgstr "일본어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
+msgid "'Chinese (chewing)'"
+msgstr "'중국어 (chewing)'"
+
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:6
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:6
+msgid "Trigger keys for switching Chinese / System"
+msgstr "중국어 / 시스템 전환을 위한 작동 키"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
@@ -299,10 +312,6 @@ msgstr "응용 어플리케이션에서 commit 콜백에 의해 호출되는 res
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
 msgid "'Chinese (sunpinyin)'"
 msgstr "'중국어 (sunpinyin)'"
-
-#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:6
-msgid "Trigger keys for switching Chinese / System"
-msgstr "중국어 / 시스템 전환을 위한 작동 키"
 
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:1
 msgid "'System Keyboard'"

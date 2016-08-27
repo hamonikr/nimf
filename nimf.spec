@@ -25,6 +25,7 @@ BuildRequires: sunpinyin-data
 BuildRequires: libhangul-devel
 BuildRequires: anthy-devel
 BuildRequires: anthy
+BuildRequires: libchewing-devel
 
 Requires:         anthy
 Requires:         sunpinyin-data
