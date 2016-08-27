@@ -77,7 +77,7 @@ static void on_about_menu (GtkWidget *widget,
     "program-name",       _("Nimf Indicator"),
     "translator-credits", _("Hodong Kim <cogniti@gmail.com>"),
     "version",            VERSION,
-    "website",            "https://github.com/cogniti/nimf",
+    "website",            "https://cogniti.github.io/nimf/",
     "website-label",      _("Website"),
     NULL);
 
