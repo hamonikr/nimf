@@ -82,10 +82,18 @@ struct _NimfEngineClass
                                    gint                *cursor_index);
   void     (* set_cursor_location)(NimfEngine          *engine,
                                    const NimfRectangle *area);
-  void     (* candidate_clicked)  (NimfEngine          *engine,
-                                   NimfContext         *context,
-                                   gchar               *text,
-                                   gint                 index);
+  /* candidate */
+  gboolean (* candidate_page_up)   (NimfEngine         *engine,
+                                    NimfContext        *context);
+  gboolean (* candidate_page_down) (NimfEngine         *engine,
+                                    NimfContext        *context);
+  void     (* candidate_clicked)   (NimfEngine         *engine,
+                                    NimfContext        *context,
+                                    gchar              *text,
+                                    gint                index);
+  void     (* candidate_scrolled)  (NimfEngine         *engine,
+                                    NimfContext        *context,
+                                    gdouble             value);
   /* info */
   const gchar * (* get_id)        (NimfEngine          *engine);
   const gchar * (* get_icon_name) (NimfEngine          *engine);

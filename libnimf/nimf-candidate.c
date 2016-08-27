@@ -22,16 +22,16 @@
 #include "nimf-candidate.h"
 #include <gtk/gtk.h>
 
-static NimfCandidate *default_nimf_candidate = NULL;
+static NimfCandidate *nimf_candidate_default = NULL;
 
 struct _NimfCandidate
 {
   GObject parent_instance;
 
-  GtkWidget   *window;
-  GtkWidget   *treeview;
-  GtkTreeIter  iter;
   NimfContext *target;
+  GtkWidget   *window;
+  GtkWidget   *scrollbar;
+  GtkWidget   *treeview;
 };
 
 struct _NimfCandidateClass
@@ -41,21 +41,13 @@ struct _NimfCandidateClass
 
 enum
 {
+  INDEX_COLUMN,
   MAIN_COLUMN,
   EXTRA_COLUMN,
   N_COLUMNS
 };
 
 G_DEFINE_TYPE (NimfCandidate, nimf_candidate, G_TYPE_OBJECT);
-
-static gboolean
-on_changed (GtkTreeSelection *selection,
-            gpointer          iter)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return gtk_tree_selection_get_selected (selection, NULL, iter);
-}
 
 static void
 on_tree_view_row_activated (GtkTreeView       *tree_view,
@@ -77,9 +69,26 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
 
   if (engine_class->candidate_clicked)
     engine_class->candidate_clicked (candidate->target->engine,
-                                     candidate->target,
-                                     text, indices[0]);
+                                     candidate->target, text, indices[0]);
   g_free (text);
+}
+
+void
+on_scrollbar_value_changed (GtkRange      *range,
+                            NimfCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (candidate->target &&
+                    NIMF_IS_ENGINE (candidate->target->engine));
+
+  NimfEngineClass *engine_class;
+  engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+
+  if (engine_class->candidate_scrolled)
+    engine_class->candidate_scrolled (candidate->target->engine,
+                                      candidate->target,
+                                      gtk_range_get_value (range));
 }
 
 static void
@@ -88,49 +97,81 @@ nimf_candidate_init (NimfCandidate *candidate)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GtkCellRenderer   *renderer;
-  GtkTreeViewColumn *column1, *column2;
+  GtkTreeViewColumn *column[N_COLUMNS];
   GtkListStore      *store;
   GtkTreeSelection  *selection;
+  gint               fixed_height = 32;
+  gint               height;
+  gint               horizontal_space;
 
   gtk_init (NULL, NULL);
-  default_nimf_candidate = candidate;
+  nimf_candidate_default = candidate;
 
   /* gtk tree view */
-  store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
+  store = gtk_list_store_new (N_COLUMNS, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);
   candidate->treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
-  g_signal_connect (selection, "changed", (GCallback) on_changed, &candidate->iter);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column1 = gtk_tree_view_column_new_with_attributes ("Main", renderer,
-                                                      "text", MAIN_COLUMN,
-                                                      NULL);
-  column2 = gtk_tree_view_column_new_with_attributes ("Extra", renderer,
-                                                      "text", EXTRA_COLUMN,
-                                                      NULL);
-  gtk_tree_view_column_set_sizing (column1, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column1);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview), column2);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (candidate->treeview), FALSE);
+  gtk_widget_style_get (candidate->treeview, "horizontal-separator",
+                        &horizontal_space, NULL);
+  height = fixed_height + horizontal_space / 2;
+  gtk_widget_set_size_request (candidate->treeview, height * 10 / 1.6,
+                                                    height * 10);
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+  gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
+  g_signal_connect (candidate->treeview, "row-activated",
+                    (GCallback) on_tree_view_row_activated, candidate);
+  /* column */
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (renderer, "height", fixed_height, "font", "Sans 14", NULL);
 
-  /* scrolled window */
-  GtkWidget *scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  column[INDEX_COLUMN] = gtk_tree_view_column_new_with_attributes ("Index",
+                                        renderer, "text", INDEX_COLUMN, NULL);
+  column[MAIN_COLUMN]  = gtk_tree_view_column_new_with_attributes ("Main",
+                                        renderer, "text", MAIN_COLUMN, NULL);
+  column[EXTRA_COLUMN] = gtk_tree_view_column_new_with_attributes ("Extra",
+                                        renderer, "text", EXTRA_COLUMN, NULL);
+  gtk_tree_view_column_set_sizing (column[INDEX_COLUMN], GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_column_set_sizing (column[MAIN_COLUMN],  GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_column_set_sizing (column[EXTRA_COLUMN], GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview),
+                               column[INDEX_COLUMN]);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview),
+                               column[MAIN_COLUMN]);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (candidate->treeview),
+                               column[EXTRA_COLUMN]);
+  /* scrollbar */
+  GtkAdjustment *adjustment = gtk_adjustment_new (1.0, 1.0, 2.0, 1.0, 1.0, 1.0);
+  candidate->scrollbar = gtk_scrollbar_new (GTK_ORIENTATION_VERTICAL, adjustment);
+  gtk_range_set_slider_size_fixed (GTK_RANGE (candidate->scrollbar), FALSE);
+  g_signal_connect (candidate->scrollbar, "value-changed",
+                    G_CALLBACK (on_scrollbar_value_changed), candidate);
+  GtkCssProvider  *provider;
+  GtkStyleContext *style_context;
+  provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_data (GTK_CSS_PROVIDER (provider),
+                       ".scrollbar {"
+                       "  -GtkScrollbar-has-backward-stepper: true;"
+                       "  -GtkScrollbar-has-forward-stepper:  true;"
+                       "  -GtkScrollbar-has-secondary-forward-stepper:  true;"
+                       "}" , -1, NULL);
+  style_context = gtk_widget_get_style_context (candidate->scrollbar);
+  gtk_style_context_add_provider (style_context,
+                                  GTK_STYLE_PROVIDER (provider),
+                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  g_object_unref (provider);
+
+  /* gtk box */
+  GtkWidget *hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), candidate->treeview,  TRUE,  TRUE, 0);
+  gtk_box_pack_end   (GTK_BOX (hbox), candidate->scrollbar, FALSE, TRUE, 0);
 
   /* gtk window */
   candidate->window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_window_set_type_hint (GTK_WINDOW (candidate->window),
                             GDK_WINDOW_TYPE_HINT_POPUP_MENU);
-  gtk_widget_set_size_request (candidate->window, 200, 320);
   gtk_container_set_border_width (GTK_CONTAINER (candidate->window), 1);
-  gtk_container_add (GTK_CONTAINER (scrolled_window), candidate->treeview);
-  gtk_container_add (GTK_CONTAINER (candidate->window), scrolled_window);
-
-  g_signal_connect (candidate->treeview, "row-activated",
-                    (GCallback) on_tree_view_row_activated, candidate);
+  gtk_container_add (GTK_CONTAINER (candidate->window), hbox);
 }
 
 static void
@@ -152,76 +193,68 @@ nimf_candidate_class_init (NimfCandidateClass *class)
   object_class->finalize = nimf_candidate_finalize;
 }
 
-/* items1 and items2 should be same length */
-void
-nimf_candidate_update_window (NimfCandidate  *candidate,
-                              const gchar   **items1,
-                              const gchar   **items2)
+void nimf_candidate_clear (NimfCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GtkTreeModel *model;
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
+  gtk_list_store_clear (GTK_LIST_STORE (model));
+}
+
+void nimf_candidate_append (NimfCandidate *candidate,
+                            const gchar   *item1,
+                            const gchar   *item2)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GtkTreeModel  *model;
   GtkTreeIter    iter;
-  GtkAdjustment *adjustment;
-  guint          i;
+  gint           n_row;
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
-  gtk_list_store_clear (GTK_LIST_STORE (model));
+  n_row = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (model), NULL);
 
-  for (i = 0; items1 && items1[i]; i++)
-  {
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set    (GTK_LIST_STORE (model), &iter,
-                           MAIN_COLUMN, items1[i], -1);
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set    (GTK_LIST_STORE (model), &iter,
+                         INDEX_COLUMN, (n_row + 1) % 10,
+                         MAIN_COLUMN, item1, -1);
 
-    if (items2)
-      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                          EXTRA_COLUMN, items2[i], -1);
-  }
-
-  adjustment = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (candidate->treeview));
-  gtk_adjustment_set_value (adjustment, 0.0);
+  if (item2)
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                        EXTRA_COLUMN, item2, -1);
 }
 
-static void
-nimf_candidate_select_first_if_available (NimfCandidate    *candidate,
-                                          GtkTreeModel     *model,
-                                          GtkTreeSelection *selection)
+void nimf_candidate_set_page_value (NimfCandidate *candidate,
+                                    NimfContext   *target,
+                                    gint           page_index,
+                                    gint           n_pages)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (gtk_tree_model_get_iter_first (model, &candidate->iter))
-  {
-    GtkTreePath *path = NULL;
-    gtk_tree_selection_select_iter (selection, &candidate->iter);
-    path = gtk_tree_model_get_path (model, &candidate->iter);
-    gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (candidate->treeview),
-                                  path, NULL, TRUE, 0.0, 0.0);
-    gtk_tree_path_free (path);
-  }
+  GtkRange *range = GTK_RANGE (candidate->scrollbar);
+
+  candidate->target = target;
+  gtk_range_set_range (range, 1.0, (gdouble) n_pages + 1.0);
+
+  if (page_index != (gint) gtk_range_get_value (range))
+    gtk_range_set_value (range, (gdouble) page_index);
 }
 
 void nimf_candidate_show_window (NimfCandidate *candidate,
-                                 NimfContext   *target,
-                                 gboolean       select_first)
+                                 NimfContext   *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GtkTreeModel   *model;
-  GtkRequisition  natural_size;
-  int             x, y, w, h;
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
-
-  if (select_first)
-  {
-    GtkTreeSelection *selection;
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
-    nimf_candidate_select_first_if_available (candidate, model, selection);
-  }
+  GtkTreeSelection *selection;
+  GtkRequisition    natural_size;
+  int               x, y, w, h;
 
   candidate->target = target;
   gtk_widget_show_all (candidate->window);
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+  gtk_tree_selection_unselect_all (selection);
   gtk_widget_get_preferred_size (candidate->window, NULL, &natural_size);
   gtk_window_resize (GTK_WINDOW (candidate->window),
                      natural_size.width, natural_size.height);
@@ -254,40 +287,8 @@ gboolean nimf_candidate_is_window_visible (NimfCandidate *candidate)
   return gtk_widget_is_visible (candidate->window);
 }
 
-static gboolean
-nimf_candidate_scroll_to_cell (NimfCandidate    *candidate,
-                               GtkTreeModel     *model,
-                               GtkTreeSelection *selection,
-                               gfloat            align)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GtkTreePath  *path = NULL;
-  GdkWindow    *bin_window;
-  GdkRectangle  rect;
-  gboolean      retval = TRUE;
-
-  gtk_tree_selection_select_iter (selection, &candidate->iter);
-  path = gtk_tree_model_get_path (model, &candidate->iter);
-  gtk_tree_view_get_cell_area (GTK_TREE_VIEW (candidate->treeview),
-                               path, NULL, &rect);
-  bin_window = gtk_tree_view_get_bin_window
-                                      (GTK_TREE_VIEW (candidate->treeview));
-  if (rect.y + rect.height >= gdk_window_get_height (bin_window) ||
-      rect.y < 0)
-  {
-    gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (candidate->treeview),
-                                  path, NULL, TRUE, align, 0.0);
-    retval = FALSE;
-  }
-
-  gtk_tree_path_free (path);
-
-  return retval;
-}
-
-static gboolean
-nimf_candidate_select_previous_item_return_val (NimfCandidate *candidate)
+void
+nimf_candidate_select_last_item_in_page (NimfCandidate *candidate)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -297,29 +298,67 @@ nimf_candidate_select_previous_item_return_val (NimfCandidate *candidate)
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+  gint n_row = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (model), NULL);
 
-  if (gtk_tree_selection_get_selected (selection, &model, &iter) == FALSE)
-  {
-    nimf_candidate_select_first_if_available (candidate, model, selection);
-    return FALSE;
-  }
-
-  if (gtk_tree_model_iter_previous (model, &candidate->iter))
-    return nimf_candidate_scroll_to_cell (candidate, model, selection, 1.0);
-  else
-    gtk_tree_model_get_iter_first (model, &candidate->iter);
-
-  return FALSE;
+  if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (model),
+                                     &iter, NULL, MAX (0, n_row - 1)))
+    gtk_tree_selection_select_iter (selection, &iter);
 }
 
 void
 nimf_candidate_select_previous_item (NimfCandidate *candidate)
 {
-  nimf_candidate_select_previous_item_return_val (candidate);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GtkTreeModel     *model;
+  GtkTreeSelection *selection;
+  GtkTreeIter       iter;
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter) == FALSE)
+  {
+    nimf_candidate_select_last_item_in_page (candidate);
+    return;
+  }
+
+  if (gtk_tree_model_iter_previous (model, &iter))
+  {
+    gtk_tree_selection_select_iter (selection, &iter);
+  }
+  else
+  {
+    NimfEngineClass *engine_class;
+    engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+
+    if (engine_class->candidate_page_up)
+    {
+      if (engine_class->candidate_page_up (candidate->target->engine,
+                                           candidate->target))
+        nimf_candidate_select_last_item_in_page (candidate);
+    }
+  }
 }
 
-static gboolean
-nimf_candidate_select_next_item_return_val (NimfCandidate *candidate)
+void
+nimf_candidate_select_first_item_in_page (NimfCandidate *candidate)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GtkTreeModel     *model;
+  GtkTreeSelection *selection;
+  GtkTreeIter       iter;
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (candidate->treeview));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (candidate->treeview));
+
+  if (gtk_tree_model_get_iter_first (model, &iter))
+    gtk_tree_selection_select_iter (selection, &iter);
+}
+
+void
+nimf_candidate_select_next_item (NimfCandidate *candidate)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -332,51 +371,33 @@ nimf_candidate_select_next_item_return_val (NimfCandidate *candidate)
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter) == FALSE)
   {
-    nimf_candidate_select_first_if_available (candidate, model, selection);
-    return FALSE;
+    nimf_candidate_select_first_item_in_page (candidate);
+    return;
   }
 
-  if (gtk_tree_model_iter_next (model, &candidate->iter))
+  if (gtk_tree_model_iter_next (model, &iter))
   {
-    return nimf_candidate_scroll_to_cell (candidate, model, selection, 0.0);
+    gtk_tree_selection_select_iter (selection, &iter);
   }
   else
   {
-    gint n_row = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (model), NULL);
-    gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (model), &candidate->iter,
-                                   NULL, n_row - 1);
+    NimfEngineClass *engine_class;
+    engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+
+    if (engine_class->candidate_page_down)
+    {
+      if (engine_class->candidate_page_down (candidate->target->engine,
+                                             candidate->target))
+        nimf_candidate_select_first_item_in_page (candidate);
+    }
   }
-
-  return FALSE;
-}
-
-void
-nimf_candidate_select_next_item (NimfCandidate *candidate)
-{
-  nimf_candidate_select_next_item_return_val (candidate);
-}
-
-void nimf_candidate_select_page_up_item (NimfCandidate *candidate)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  while (nimf_candidate_select_previous_item_return_val (candidate))
-  { }
-}
-
-void nimf_candidate_select_page_down_item (NimfCandidate *candidate)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  while (nimf_candidate_select_next_item_return_val (candidate))
-  { }
 }
 
 NimfCandidate *nimf_candidate_get_default ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return default_nimf_candidate;
+  return nimf_candidate_default;
 }
 
 NimfCandidate *nimf_candidate_new ()

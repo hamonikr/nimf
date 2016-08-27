@@ -30,6 +30,8 @@
 #define NIMF_IS_ANTHY_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_ANTHY))
 #define NIMF_ANTHY_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ANTHY, NimfAnthyClass))
 
+#define NIMF_ANTHY_BUFFER_SIZE  256
+
 typedef struct _NimfAnthy      NimfAnthy;
 typedef struct _NimfAnthyClass NimfAnthyClass;
 
@@ -44,7 +46,12 @@ struct _NimfAnthy
   glong             offset;
   gchar            *id;
 
-  anthy_context_t context;
+  anthy_context_t           context;
+  struct anthy_conv_stat    conv_stat;
+  struct anthy_segment_stat segment_stat;
+  gchar                     buffer[NIMF_ANTHY_BUFFER_SIZE];
+  gint                      current_page;
+  gint                      n_pages;
 };
 
 struct _NimfAnthyClass
@@ -108,6 +115,14 @@ nimf_anthy_focus_out (NimfEngine  *engine,
   nimf_anthy_reset (engine, target);
 }
 
+static gint
+nimf_anthy_get_current_page (NimfEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return NIMF_ANTHY (engine)->current_page;
+}
+
 static void
 on_candidate_clicked (NimfEngine  *engine,
                       NimfContext *target,
@@ -143,6 +158,133 @@ on_candidate_clicked (NimfEngine  *engine,
 
   g_free (tmp);
   g_free (preedit_str);
+}
+
+static void
+nimf_anthy_update_page (NimfEngine  *engine,
+                        NimfContext *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  gint i;
+
+  anthy->n_pages = (anthy->segment_stat.nr_candidate + 9) / 10;
+  nimf_candidate_clear (anthy->candidate);
+
+  for (i = (anthy->current_page - 1) * 10;
+       i < MIN (anthy->current_page * 10, anthy->segment_stat.nr_candidate);
+       i++)
+  {
+    anthy_get_segment (anthy->context, anthy->conv_stat.nr_segment - 1, i,
+                       anthy->buffer, NIMF_ANTHY_BUFFER_SIZE);
+    nimf_candidate_append (anthy->candidate, anthy->buffer, NULL);
+  }
+
+  nimf_candidate_set_page_value (anthy->candidate, target,
+                                 anthy->current_page, anthy->n_pages);
+}
+
+static gboolean
+nimf_anthy_page_up (NimfEngine *engine, NimfContext *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if (anthy->current_page <= 1)
+  {
+    nimf_candidate_select_first_item_in_page (anthy->candidate);
+    return FALSE;
+  }
+
+  anthy->current_page--;
+  nimf_anthy_update_page (engine, target);
+  nimf_candidate_select_last_item_in_page (anthy->candidate);
+
+  return TRUE;
+}
+
+static gboolean
+nimf_anthy_page_down (NimfEngine *engine, NimfContext *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if (anthy->current_page == anthy->n_pages)
+  {
+    nimf_candidate_select_last_item_in_page (anthy->candidate);
+    return FALSE;
+  }
+
+  anthy->current_page++;
+  nimf_anthy_update_page (engine, target);
+  nimf_candidate_select_first_item_in_page (anthy->candidate);
+
+  return TRUE;
+}
+
+static void
+nimf_anthy_page_home (NimfEngine *engine, NimfContext *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if (anthy->current_page <= 1)
+  {
+    nimf_candidate_select_first_item_in_page (anthy->candidate);
+    return;
+  }
+
+  anthy->current_page = 1;
+  nimf_anthy_update_page (engine, target);
+  nimf_candidate_select_first_item_in_page (anthy->candidate);
+}
+
+static void
+nimf_anthy_page_end (NimfEngine *engine, NimfContext *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if (anthy->current_page == anthy->n_pages)
+  {
+    nimf_candidate_select_last_item_in_page (anthy->candidate);
+    return;
+  }
+
+  anthy->current_page = anthy->n_pages;
+  nimf_anthy_update_page (engine, target);
+  nimf_candidate_select_last_item_in_page (anthy->candidate);
+}
+
+static void
+on_candidate_scrolled (NimfEngine  *engine,
+                       NimfContext *target,
+                       gdouble      value)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if ((gint) value == nimf_anthy_get_current_page (engine))
+    return;
+
+  while (anthy->n_pages > 1)
+  {
+    gint d = (gint) value - nimf_anthy_get_current_page (engine);
+
+    if (d > 0)
+      nimf_anthy_page_down (engine, target);
+    else if (d < 0)
+      nimf_anthy_page_up (engine, target);
+    else if (d == 0)
+      break;
+  }
 }
 
 gboolean
@@ -189,12 +331,66 @@ nimf_anthy_filter_event (NimfEngine  *engine,
         return TRUE;
       case NIMF_KEY_Page_Up:
       case NIMF_KEY_KP_Page_Up:
-        nimf_candidate_select_page_up_item (anthy->candidate);
+        nimf_anthy_page_up (engine, target);
         return TRUE;
       case NIMF_KEY_Page_Down:
       case NIMF_KEY_KP_Page_Down:
-        nimf_candidate_select_page_down_item (anthy->candidate);
+        nimf_anthy_page_down (engine, target);
         return TRUE;
+      case NIMF_KEY_Home:
+        nimf_anthy_page_home (engine, target);
+        return TRUE;
+      case NIMF_KEY_End:
+        nimf_anthy_page_end (engine, target);
+        return TRUE;
+      case NIMF_KEY_0:
+      case NIMF_KEY_1:
+      case NIMF_KEY_2:
+      case NIMF_KEY_3:
+      case NIMF_KEY_4:
+      case NIMF_KEY_5:
+      case NIMF_KEY_6:
+      case NIMF_KEY_7:
+      case NIMF_KEY_8:
+      case NIMF_KEY_9:
+      case NIMF_KEY_KP_0:
+      case NIMF_KEY_KP_1:
+      case NIMF_KEY_KP_2:
+      case NIMF_KEY_KP_3:
+      case NIMF_KEY_KP_4:
+      case NIMF_KEY_KP_5:
+      case NIMF_KEY_KP_6:
+      case NIMF_KEY_KP_7:
+      case NIMF_KEY_KP_8:
+      case NIMF_KEY_KP_9:
+        {
+          if (anthy->current_page < 1)
+            break;
+
+          gint i, n;
+
+          if (event->key.keyval >= NIMF_KEY_0 &&
+              event->key.keyval <= NIMF_KEY_9)
+            n = (event->key.keyval - NIMF_KEY_0 + 9) % 10;
+          else if (event->key.keyval >= NIMF_KEY_KP_0 &&
+                   event->key.keyval <= NIMF_KEY_KP_9)
+            n = (event->key.keyval - NIMF_KEY_KP_0 + 9) % 10;
+          else
+            break;
+
+          i = (anthy->current_page - 1) * 10 + n;
+
+          if (i < MIN (anthy->current_page * 10,
+                       anthy->segment_stat.nr_candidate))
+          {
+            anthy_get_segment (anthy->context, anthy->conv_stat.nr_segment - 1,
+                               i, anthy->buffer, NIMF_ANTHY_BUFFER_SIZE);
+            on_candidate_clicked (engine, target, anthy->buffer, -1);
+
+            return TRUE;
+          }
+        }
+        break;
       default:
         break;
     }
@@ -257,21 +453,19 @@ nimf_anthy_filter_event (NimfEngine  *engine,
     }
   }
 
-  struct anthy_conv_stat    conv_stat;
-  struct anthy_segment_stat segment_stat;
-  static gchar buf[512];
   gint i;
 
   anthy_set_string (anthy->context, anthy->preedit1->str);
-  anthy_get_stat (anthy->context, &conv_stat);
-
+  anthy_get_stat (anthy->context, &anthy->conv_stat);
+  anthy_get_segment_stat (anthy->context, anthy->conv_stat.nr_segment - 1,
+                          &anthy->segment_stat);
   /* calculate offset */
   anthy->offset = 0;
 
-  for (i = 0; i < conv_stat.nr_segment - 1; i++)
+  for (i = 0; i < anthy->conv_stat.nr_segment - 1; i++)
   {
-    anthy_get_segment_stat (anthy->context, i, &segment_stat);
-    anthy->offset += segment_stat.seg_len;
+    anthy_get_segment_stat (anthy->context, i, &anthy->segment_stat);
+    anthy->offset += anthy->segment_stat.seg_len;
   }
 
   preedit_str = g_strjoin (NULL, anthy->preedit1->str,
@@ -284,27 +478,21 @@ nimf_anthy_filter_event (NimfEngine  *engine,
                                     anthy->preedit_attrs,
                                     g_utf8_strlen (preedit_str, -1));
 
-  if (conv_stat.nr_segment > 0)
+  if (anthy->conv_stat.nr_segment > 0)
   {
-    gchar **items;
-    gint    i;
-
-    anthy_get_segment_stat (anthy->context, conv_stat.nr_segment - 1,
-                            &segment_stat);
-
-    items = g_malloc0_n (segment_stat.nr_candidate + 1, sizeof (gchar *));
-
-    for (i = 0; i < segment_stat.nr_candidate; i++)
+    anthy->current_page = 1;
+    nimf_anthy_update_page (engine, target);
+    nimf_candidate_show_window (anthy->candidate, target);
+  }
+  else
+  {
+    if (anthy->n_pages > 0)
     {
-      anthy_get_segment (anthy->context, conv_stat.nr_segment - 1, i, buf, 512);
-      items[i] = g_strdup (buf);
+      nimf_candidate_hide_window (anthy->candidate);
+      nimf_candidate_clear (anthy->candidate);
+      anthy->n_pages = 0;
+      anthy->current_page = 0;
     }
-
-    items[segment_stat.nr_candidate] = NULL;
-    nimf_candidate_update_window (anthy->candidate, (const gchar **) items, NULL);
-    nimf_candidate_show_window (anthy->candidate, target, FALSE);
-
-    g_strfreev (items);
   }
 
   g_free (preedit_str);
@@ -565,7 +753,10 @@ nimf_anthy_class_init (NimfAnthyClass *class)
   engine_class->focus_in           = nimf_anthy_focus_in;
   engine_class->focus_out          = nimf_anthy_focus_out;
 
-  engine_class->candidate_clicked  = on_candidate_clicked;
+  engine_class->candidate_page_up   = nimf_anthy_page_up;
+  engine_class->candidate_page_down = nimf_anthy_page_down;
+  engine_class->candidate_clicked   = on_candidate_clicked;
+  engine_class->candidate_scrolled  = on_candidate_scrolled;
 
   engine_class->get_id             = nimf_anthy_get_id;
   engine_class->get_icon_name      = nimf_anthy_get_icon_name;
