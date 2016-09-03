@@ -98,12 +98,11 @@ on_incoming_message_nimf (GSocket        *socket,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_DESTROY_CONTEXT:
-      g_hash_table_remove (connection->contexts, GUINT_TO_POINTER (icid));
-
-      if (context->type == NIMF_CONTEXT_NIMF_AGENT)
+      if (context && context->type == NIMF_CONTEXT_NIMF_AGENT)
         g_hash_table_remove (connection->server->agents,
                              GUINT_TO_POINTER (icid));
 
+      g_hash_table_remove (connection->contexts, GUINT_TO_POINTER (icid));
       nimf_send_message (socket, icid, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY,
                          NULL, 0, NULL);
       break;
@@ -539,11 +538,14 @@ nimf_server_load_engines (NimfServer *server)
 
         if (!g_type_module_use (G_TYPE_MODULE (module)))
         {
-          g_warning (G_STRLOC ":" "Failed to load module: %s", path);
+          g_warning (G_STRLOC ": Failed to load module: %s", path);
 
-          g_free (path);
           g_object_unref (module);
-          break;
+          g_free (path);
+          g_object_unref (settings);
+          g_settings_schema_unref (schema);
+
+          continue;
         }
 
         g_hash_table_insert (server->modules, g_strdup (path), module);

@@ -116,12 +116,6 @@ nimf_context_emit_preedit_changed (NimfContext      *context,
     case NIMF_CONTEXT_XIM:
       {
         XIMS              xims = context->cb_user_data;
-        gchar            *preedit_string;
-        NimfPreeditAttr **attrs;
-        gint              cursor_pos;
-
-        nimf_context_get_preedit_string (context, &preedit_string, &attrs,
-                                         &cursor_pos);
         IMPreeditCBStruct preedit_cb_data = {0};
         XIMText           text;
         XTextProperty     text_property;
@@ -129,14 +123,7 @@ nimf_context_emit_preedit_changed (NimfContext      *context,
         static XIMFeedback *feedback;
         gint i, j, len;
 
-        if (preedit_string == NULL)
-        {
-          nimf_preedit_attr_freev (attrs);
-          return;
-        }
-
         len = g_utf8_strlen (preedit_string, -1);
-
         feedback = g_malloc0 (sizeof (XIMFeedback) * (len + 1));
 
         for (i = 0; attrs[i]; i++)
@@ -190,9 +177,7 @@ nimf_context_emit_preedit_changed (NimfContext      *context,
 
         context->xim_preedit_length = len;
 
-        nimf_preedit_attr_freev (attrs);
         g_free (feedback);
-        g_free (preedit_string);
       }
       break;
     default:
@@ -358,6 +343,8 @@ nimf_context_emit_engine_changed (NimfContext *context,
 
 void nimf_context_focus_in (NimfContext *context)
 {
+  g_return_if_fail (context != NULL);
+
   g_debug (G_STRLOC ": %s: context icid = %d", G_STRFUNC, context->icid);
 
   if (G_UNLIKELY (context->engine == NULL))
@@ -370,6 +357,8 @@ void nimf_context_focus_in (NimfContext *context)
 
 void nimf_context_focus_out (NimfContext *context)
 {
+  g_return_if_fail (context != NULL);
+
   g_debug (G_STRLOC ": %s: context icid = %d", G_STRFUNC, context->icid);
 
   if (G_UNLIKELY (context->engine == NULL))
@@ -459,6 +448,8 @@ gboolean nimf_context_filter_event (NimfContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  g_return_val_if_fail (context != NULL, FALSE);
+
   if (G_UNLIKELY (context->engine == NULL))
     return FALSE;
 
@@ -534,7 +525,7 @@ nimf_context_get_preedit_string (NimfContext       *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_LIKELY (context->engine && context->use_preedit == TRUE))
+  if (G_LIKELY (context && context->engine))
   {
     nimf_engine_get_preedit_string (context->engine, str, attrs, cursor_pos);
   }
@@ -548,6 +539,8 @@ nimf_context_get_preedit_string (NimfContext       *context,
 
     if (cursor_pos)
       *cursor_pos = 0;
+
+    g_return_if_reached ();
   }
 }
 
@@ -558,6 +551,8 @@ nimf_context_set_surrounding (NimfContext *context,
                               gint         cursor_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (context != NULL);
 
   if (G_UNLIKELY (context->engine == NULL))
     return;
@@ -572,6 +567,8 @@ nimf_context_get_surrounding (NimfContext  *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  g_return_val_if_fail (context != NULL, FALSE);
+
   if (G_UNLIKELY (context->engine == NULL))
     return FALSE;
 
@@ -584,6 +581,8 @@ nimf_context_set_use_preedit (NimfContext *context,
                               gboolean     use_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (context != NULL);
 
   if (context->use_preedit == TRUE && use_preedit == FALSE)
   {
@@ -631,6 +630,8 @@ nimf_context_set_cursor_location (NimfContext         *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  g_return_if_fail (context != NULL);
+
   if (G_UNLIKELY (context->engine == NULL))
     return;
 
@@ -674,6 +675,8 @@ nimf_context_xim_set_cursor_location (NimfContext *context,
 void nimf_context_reset (NimfContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (context != NULL);
 
   if (G_LIKELY (context->engine))
     nimf_engine_reset (context->engine, context);

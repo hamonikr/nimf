@@ -348,23 +348,22 @@ nimf_client_finalize (GObject *object)
 
   NimfClient *client = NIMF_CLIENT (object);
 
-  GSocket *socket = g_socket_connection_get_socket (nimf_client_connection);
-  if (!socket || g_socket_is_closed (socket))
-  {
-    g_warning ("socket is closed");
-    return;
-  }
-
-  nimf_send_message (socket, client->id, NIMF_MESSAGE_DESTROY_CONTEXT,
-                     NULL, 0, NULL);
-  nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
-                               client->id, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY);
-
   if (nimf_client_table)
     g_hash_table_steal (nimf_client_table, GUINT_TO_POINTER (client->id));
 
   if (nimf_client_connection)
   {
+    GSocket *socket;
+    socket = g_socket_connection_get_socket (nimf_client_connection);
+
+    if (socket && !g_socket_is_closed (socket))
+    {
+      nimf_send_message (socket, client->id, NIMF_MESSAGE_DESTROY_CONTEXT,
+                         NULL, 0, NULL);
+      nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+                                   client->id, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY);
+    }
+
     g_object_unref (nimf_client_connection);
 
     if (nimf_client_connection == NULL)
