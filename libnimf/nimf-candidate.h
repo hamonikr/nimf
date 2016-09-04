@@ -47,18 +47,26 @@ GType          nimf_candidate_get_type (void) G_GNUC_CONST;
 
 NimfCandidate *nimf_candidate_new                   (void);
 NimfCandidate *nimf_candidate_get_default           (void);
-void           nimf_candidate_clear                 (NimfCandidate  *candidate);
+void           nimf_candidate_clear                 (NimfCandidate  *candidate,
+                                                     NimfContext    *target);
 void           nimf_candidate_append                (NimfCandidate  *candidate,
                                                      const gchar    *item1,
                                                      const gchar    *item2);
-void           nimf_candidate_set_page_value        (NimfCandidate  *candidate,
+void           nimf_candidate_set_auxiliary_text    (NimfCandidate  *candidate,
+                                                     const gchar    *text,
+                                                     gint            cursor_pos);
+void           nimf_candidate_set_page_values       (NimfCandidate  *candidate,
                                                      NimfContext    *target,
                                                      gint            page_index,
-                                                     gint            n_pages);
+                                                     gint            n_pages,
+                                                     gint            page_size);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
-                                                     NimfContext    *context);
+                                                     NimfContext    *context,
+                                                     gboolean        show_entry);
 gboolean       nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);
+void           nimf_candidate_select_item_by_index_in_page (NimfCandidate *candidate,
+                                                            gint           index);
 void           nimf_candidate_select_previous_item  (NimfCandidate  *candidate);
 void           nimf_candidate_select_next_item      (NimfCandidate  *candidate);
 void           nimf_candidate_select_first_item_in_page (NimfCandidate *candidate);

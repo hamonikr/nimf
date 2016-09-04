@@ -147,7 +147,7 @@ static void nimf_chewing_update (NimfEngine  *engine,
     nimf_engine_emit_preedit_end (engine, target);
   }
 
-  nimf_candidate_clear (chewing->candidate);
+  nimf_candidate_clear (chewing->candidate, target);
   chewing_cand_Enumerate (chewing->context);
 
   gint i;
@@ -158,12 +158,12 @@ static void nimf_chewing_update (NimfEngine  *engine,
                            chewing_cand_String_static (chewing->context), NULL);
   }
 
-  nimf_candidate_set_page_value (chewing->candidate, target,
-                                 chewing_cand_CurrentPage (chewing->context) + 1,
-                                 chewing_cand_TotalPage   (chewing->context));
+  nimf_candidate_set_page_values (chewing->candidate, target,
+                                  chewing_cand_CurrentPage (chewing->context) + 1,
+                                  chewing_cand_TotalPage   (chewing->context), 10);
 
   if (chewing_cand_TotalChoice (chewing->context) > 0)
-    nimf_candidate_show_window (chewing->candidate, target);
+    nimf_candidate_show_window (chewing->candidate, target, FALSE);
   else
     nimf_candidate_hide_window (chewing->candidate);
 }

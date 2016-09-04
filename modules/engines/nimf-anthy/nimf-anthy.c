@@ -171,7 +171,7 @@ nimf_anthy_update_page (NimfEngine  *engine,
   gint i;
 
   anthy->n_pages = (anthy->segment_stat.nr_candidate + 9) / 10;
-  nimf_candidate_clear (anthy->candidate);
+  nimf_candidate_clear (anthy->candidate, target);
 
   for (i = (anthy->current_page - 1) * 10;
        i < MIN (anthy->current_page * 10, anthy->segment_stat.nr_candidate);
@@ -182,8 +182,8 @@ nimf_anthy_update_page (NimfEngine  *engine,
     nimf_candidate_append (anthy->candidate, anthy->buffer, NULL);
   }
 
-  nimf_candidate_set_page_value (anthy->candidate, target,
-                                 anthy->current_page, anthy->n_pages);
+  nimf_candidate_set_page_values (anthy->candidate, target,
+                                  anthy->current_page, anthy->n_pages, 10);
 }
 
 static gboolean
@@ -482,14 +482,14 @@ nimf_anthy_filter_event (NimfEngine  *engine,
   {
     anthy->current_page = 1;
     nimf_anthy_update_page (engine, target);
-    nimf_candidate_show_window (anthy->candidate, target);
+    nimf_candidate_show_window (anthy->candidate, target, FALSE);
   }
   else
   {
     if (anthy->n_pages > 0)
     {
       nimf_candidate_hide_window (anthy->candidate);
-      nimf_candidate_clear (anthy->candidate);
+      nimf_candidate_clear (anthy->candidate, target);
       anthy->n_pages = 0;
       anthy->current_page = 0;
     }
@@ -669,6 +669,8 @@ nimf_anthy_init (NimfAnthy *anthy)
   if (anthy_init () < 0)
     g_error (G_STRLOC ": %s: anthy is not initialized", G_STRFUNC);
 
+  /* FIXME */
+  /* anthy_set_personality () */
   anthy->context = anthy_create_context ();
   nimf_anthy_ref_count++;
   anthy_context_set_encoding (anthy->context, ANTHY_UTF8_ENCODING);

@@ -252,7 +252,7 @@ nimf_sunpinyin_update_page (NimfEngine  *engine,
   gint i;
 
   pinyin->n_pages = (pinyin->pcl->total() + 9) / 10;
-  nimf_candidate_clear (pinyin->candidate);
+  nimf_candidate_clear (pinyin->candidate, target);
 
   for (i = 0; i < pinyin->pcl->size(); i++)
   {
@@ -267,8 +267,8 @@ nimf_sunpinyin_update_page (NimfEngine  *engine,
     }
   }
 
-  nimf_candidate_set_page_value (pinyin->candidate, target,
-                                 pinyin->current_page, pinyin->n_pages);
+  nimf_candidate_set_page_values (pinyin->candidate, target,
+                                  pinyin->current_page, pinyin->n_pages, 10);
 }
 
 void nimf_sunpinyin_update (NimfEngine  *engine,
@@ -307,8 +307,8 @@ void nimf_sunpinyin_update (NimfEngine  *engine,
 
     if (pinyin->pcl->size() > 0)
     {
-      nimf_candidate_show_window (pinyin->candidate, target);
-      nimf_candidate_select_next_item (pinyin->candidate);
+      nimf_candidate_show_window (pinyin->candidate, target, FALSE);
+      nimf_candidate_select_first_item_in_page (pinyin->candidate);
     }
     else
     {

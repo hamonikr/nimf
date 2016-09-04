@@ -266,7 +266,7 @@ nimf_libhangul_update_page (NimfEngine  *engine,
 
   gint i;
   gint list_len = hanja_list_get_size (hangul->hanja_list);
-  nimf_candidate_clear (hangul->candidate);
+  nimf_candidate_clear (hangul->candidate, target);
 
   for (i = (hangul->current_page - 1) * 10;
        i < MIN (hangul->current_page * 10, list_len); i++)
@@ -277,8 +277,8 @@ nimf_libhangul_update_page (NimfEngine  *engine,
     nimf_candidate_append (hangul->candidate, item1, item2);
   }
 
-  nimf_candidate_set_page_value (hangul->candidate, target,
-                                 hangul->current_page, hangul->n_pages);
+  nimf_candidate_set_page_values (hangul->candidate, target,
+                                  hangul->current_page, hangul->n_pages, 10);
 }
 
 static gboolean
@@ -455,7 +455,7 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
     if (nimf_candidate_is_window_visible (hangul->candidate) == FALSE)
     {
       hanja_list_delete (hangul->hanja_list);
-      nimf_candidate_clear (hangul->candidate);
+      nimf_candidate_clear (hangul->candidate, target);
       hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_hanja_table,
                                                     hangul->preedit_string);
       if (hangul->hanja_list == NULL)
@@ -464,13 +464,13 @@ nimf_libhangul_filter_event (NimfEngine  *engine,
       hangul->n_pages = (hanja_list_get_size (hangul->hanja_list) + 9) / 10;
       hangul->current_page = 1;
       nimf_libhangul_update_page (engine, target);
-      nimf_candidate_show_window (hangul->candidate, target);
-      nimf_candidate_select_next_item (hangul->candidate);
+      nimf_candidate_show_window (hangul->candidate, target, FALSE);
+      nimf_candidate_select_first_item_in_page (hangul->candidate);
     }
     else
     {
       nimf_candidate_hide_window (hangul->candidate);
-      nimf_candidate_clear (hangul->candidate);
+      nimf_candidate_clear (hangul->candidate, target);
       hanja_list_delete (hangul->hanja_list);
       hangul->hanja_list = NULL;
       hangul->current_page = 0;
