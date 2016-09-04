@@ -22,15 +22,17 @@ Build-Depends: debhelper (>= 9),
                libhangul-dev,
                libanthy-dev,
                anthy,
-               libchewing3-dev
+               libchewing3-dev,
+               librime-dev (>= 1.2.9)
 Standards-Version: 3.9.6
 Homepage: https://github.com/cogniti/nimf
 
 Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, sunpinyin-data, anthy
-Recommends: im-config
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         anthy, sunpinyin-data
+Recommends: im-config, librime-data
 Suggests: fonts-noto-cjk, gnome-tweak-tool
 Description: Input Method Framework
  Nimf is an input method framework which has a module-based client-server
@@ -41,7 +43,7 @@ Description: Input Method Framework
   * Input Method Server:
      * nimf-daemon including IMdkit(XIM)
   * Language Engines:
-     * Chinese (in alpha stage, based on sunpinyin, libchewing)
+     * Chinese (in alpha stage, based on sunpinyin, libchewing, librime)
      * Japanese (in alpha stage, based on anthy)
      * Korean (based on libhangul)
   * Client Modules:

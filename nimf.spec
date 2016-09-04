@@ -26,10 +26,11 @@ BuildRequires: libhangul-devel
 BuildRequires: anthy-devel
 BuildRequires: anthy
 BuildRequires: libchewing-devel
+BuildRequires: librime-devel >= 1.2.9
 
+Requires:         im-chooser
 Requires:         anthy
 Requires:         sunpinyin-data
-Requires:         im-chooser
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
 
@@ -118,6 +119,7 @@ fi
 - Remove libnimf.la
 - Fixed missing nimf-context.h
 - nimf-settings: Improved dialog to capture keys
+
 * Sat Jul 23 2016 Hodong Kim <cogniti@gmail.com> - 2016.07.23-1
 - nimf-indicator: Revert to 2016-06-04
 - Show comments in the candidate window

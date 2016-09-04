@@ -52,11 +52,12 @@ PKG_CHECK_MODULES(GLIB,    [glib-2.0])
 PKG_CHECK_MODULES(GTK2,    [gtk+-2.0])
 
 dnl ***************************************************************************
-dnl nimf-chewing  nimf-libhangul  nimf-system-keyboard
+dnl nimf-chewing  nimf-libhangul  nimf-rime  nimf-system-keyboard
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_CHEWING_DEPS, [chewing $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_RIME_DEPS, [rime >= 1.2.9 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS, [$LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
@@ -252,6 +253,7 @@ AC_OUTPUT([
   modules/engines/nimf-anthy/Makefile
   modules/engines/nimf-chewing/Makefile
   modules/engines/nimf-libhangul/Makefile
+  modules/engines/nimf-rime/Makefile
   modules/engines/nimf-sunpinyin/Makefile
   modules/engines/nimf-system-keyboard/Makefile
   po/Makefile.in

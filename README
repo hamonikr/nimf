@@ -6,7 +6,7 @@ Nimf provides:
  * Input Method Server:
     * nimf-daemon including IMdkit(XIM)
  * Language Engines:
-    * Chinese (in alpha stage, based on sunpinyin, libchewing)
+    * Chinese (in alpha stage, based on sunpinyin, libchewing, librime)
     * Japanese (in alpha stage, based on anthy)
     * Korean (based on libhangul)
  * Client Modules:
@@ -113,6 +113,7 @@ Architecture
                   +- nimf-anthy                +- nimf-candidate (gtk3)
                   +- nimf-chewing
                   +- nimf-libhangul
+                  +- nimf-rime
                   +- nimf-sunpinyin
 
 
@@ -147,6 +148,7 @@ References
   http://anonscm.debian.org/cgit/collab-maint/anthy.git
   https://github.com/chewing/libchewing
   https://github.com/choehwanjin/libhangul
+  https://github.com/rime/librime
   https://github.com/sunpinyin/sunpinyin
 
   * Implementations

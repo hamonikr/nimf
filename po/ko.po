@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-08-28 00:33+0900\n"
+"PO-Revision-Date: 2016-09-04 06:02+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -68,6 +68,10 @@ msgstr "종료"
 msgid "Nimf"
 msgstr "님프"
 
+#: ../modules/engines/nimf-rime/nimf-rime.c:373
+msgid "Rime"
+msgstr "라임"
+
 #: ../settings/nimf-settings.c:458
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
@@ -104,6 +108,7 @@ msgstr "'님프'"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
 msgid "schema name for nimf-settings"
@@ -116,6 +121,7 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
@@ -201,6 +207,7 @@ msgstr "'일본어 (anthy)'"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:4
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:4
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:4
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:4
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:4
 msgid "Active engine"
 msgstr "엔진 활성화"
@@ -208,6 +215,7 @@ msgstr "엔진 활성화"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:5
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:5
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:5
 msgid "The engine will be loaded on startup if available. Restart required"
 msgstr "만약 가능하다면 이 엔진은 시작할 때 로드될 것입니다. 재시작이 필요합니다."
@@ -221,6 +229,7 @@ msgid "'Chinese (chewing)'"
 msgstr "'중국어 (chewing)'"
 
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:6
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:6
 msgid "Trigger keys for switching Chinese / System"
 msgstr "중국어 / 시스템 전환을 위한 작동 키"
@@ -308,6 +317,10 @@ msgstr "commit 콜백에서 reset()을 무시합니다"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
 msgstr "응용 어플리케이션에서 commit 콜백에 의해 호출되는 reset()을 무시합니다"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
+msgid "'Chinese (rime)'"
+msgstr "'중국어 (rime)'"
 
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
 msgid "'Chinese (sunpinyin)'"
