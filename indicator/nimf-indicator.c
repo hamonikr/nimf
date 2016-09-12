@@ -30,14 +30,13 @@
 #include <stdlib.h>
 
 static gboolean syslog_initialized = FALSE;
-static NimfAgent *agent = NULL;
 
 static void on_engine_menu (GtkWidget *widget,
-                            gchar     *engine_id)
+                            NimfAgent *agent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_agent_set_engine_by_id (agent, engine_id);
+  nimf_agent_set_engine_by_id (agent, gtk_widget_get_name (widget));
 }
 
 static void on_settings_menu (GtkWidget *widget,
@@ -169,6 +168,7 @@ main (int argc, char **argv)
 
   gtk_init (&argc, &argv);
 
+  NimfAgent    *agent;
   AppIndicator *indicator;
   GtkWidget    *menu_shell;
   GtkWidget    *settings_menu;
@@ -209,14 +209,17 @@ main (int argc, char **argv)
     name = g_settings_get_string (settings, "hidden-schema-name");
 
     engine_menu = gtk_menu_item_new_with_label (name);
+    gtk_widget_set_name (engine_menu, engine_ids[i]);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
     g_signal_connect (engine_menu, "activate",
-                      G_CALLBACK (on_engine_menu), engine_ids[i]);
+                      G_CALLBACK (on_engine_menu), agent);
 
     g_free (name);
     g_free (schema_id);
     g_object_unref (settings);
   }
+
+  g_strfreev (engine_ids);
 
   settings_menu = gtk_menu_item_new_with_label (_("Settings"));
   about_menu    = gtk_menu_item_new_with_label (_("About"));
@@ -239,7 +242,6 @@ main (int argc, char **argv)
 
   g_object_unref (agent);
   g_object_unref (indicator);
-  g_strfreev (engine_ids);
 
   if (syslog_initialized)
     closelog ();
