@@ -305,8 +305,6 @@ nimf_anthy_filter_event (NimfEngine  *engine,
   {
     switch (event->key.keyval)
     {
-      case NIMF_KEY_Return:
-      case NIMF_KEY_KP_Enter:
       case NIMF_KEY_space:
         {
           gint index = nimf_candidate_get_selected_index (anthy->candidate);
