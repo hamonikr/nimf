@@ -62,10 +62,6 @@ struct _NimfEngineClass
   gboolean (* filter_event)       (NimfEngine          *engine,
                                    NimfContext         *context,
                                    NimfEvent           *event);
-  void     (* get_preedit_string) (NimfEngine          *engine,
-                                   gchar              **str,
-                                   NimfPreeditAttr   ***attrs,
-                                   gint                *cursor_pos);
   void     (* reset)              (NimfEngine          *engine,
                                    NimfContext         *context);
   void     (* focus_in)           (NimfEngine          *engine,
@@ -109,10 +105,6 @@ void     nimf_engine_focus_in                  (NimfEngine          *engine,
                                                 NimfContext         *context);
 void     nimf_engine_focus_out                 (NimfEngine          *engine,
                                                 NimfContext         *context);
-void     nimf_engine_get_preedit_string        (NimfEngine          *engine,
-                                                gchar              **str,
-                                                NimfPreeditAttr   ***attrs,
-                                                gint                *cursor_pos);
 void     nimf_engine_set_surrounding           (NimfEngine          *engine,
                                                 const char          *text,
                                                 gint                 len,

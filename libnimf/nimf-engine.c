@@ -137,22 +137,6 @@ gboolean nimf_engine_real_filter_event (NimfEngine  *engine,
 }
 
 void
-nimf_engine_get_preedit_string (NimfEngine        *engine,
-                                gchar            **str,
-                                NimfPreeditAttr ***attrs,
-                                gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
-
-  if (class->get_preedit_string)
-    class->get_preedit_string (engine, str, attrs, cursor_pos);
-}
-
-void
 nimf_engine_set_surrounding (NimfEngine *engine,
                              const char *text,
                              gint        len,
@@ -290,25 +274,6 @@ nimf_engine_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_engine_parent_class)->finalize (object);
 }
 
-
-static void
-nimf_engine_real_get_preedit_string (NimfEngine        *engine,
-                                     gchar            **str,
-                                     NimfPreeditAttr ***attrs,
-                                     gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (str)
-    *str = g_strdup ("");
-
-  if (attrs)
-    *attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
-
-  if (cursor_pos)
-    *cursor_pos = 0;
-}
-
 static void
 nimf_engine_real_set_surrounding (NimfEngine *engine,
                                   const char *text,
@@ -395,7 +360,6 @@ nimf_engine_class_init (NimfEngineClass *class)
   object_class->get_property = nimf_engine_get_property;
 
   class->filter_event        = nimf_engine_real_filter_event;
-  class->get_preedit_string  = nimf_engine_real_get_preedit_string;
   class->set_surrounding     = nimf_engine_real_set_surrounding;
   class->get_surrounding     = nimf_engine_real_get_surrounding;
   class->get_id              = nimf_engine_real_get_id;

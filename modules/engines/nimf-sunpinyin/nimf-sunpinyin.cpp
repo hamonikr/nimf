@@ -549,28 +549,6 @@ nimf_sunpinyin_filter_event (NimfEngine  *engine,
   return retval;
 }
 
-void
-nimf_sunpinyin_get_preedit_string (NimfEngine        *engine,
-                                   gchar            **str,
-                                   NimfPreeditAttr ***attrs,
-                                   gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfSunpinyin *pinyin = NIMF_SUNPINYIN (engine);
-
-  if (str)
-    *str = g_strdup (pinyin->preedit_string);
-
-  if (attrs)
-    *attrs = nimf_preedit_attrs_copy (pinyin->preedit_attrs);
-
-  if (cursor_pos)
-    *cursor_pos = g_utf8_strlen (pinyin->preedit_string, -1);
-}
-
 static void
 on_candidate_clicked (NimfEngine  *engine,
                       NimfContext *target,
@@ -597,7 +575,6 @@ nimf_sunpinyin_class_init (NimfSunpinyinClass *klass)
   engine_class->focus_out          = nimf_sunpinyin_focus_out;
   engine_class->reset              = nimf_sunpinyin_reset;
   engine_class->filter_event       = nimf_sunpinyin_filter_event;
-  engine_class->get_preedit_string = nimf_sunpinyin_get_preedit_string;
   engine_class->candidate_page_up   = nimf_sunpinyin_page_up;
   engine_class->candidate_page_down = nimf_sunpinyin_page_down;
   engine_class->candidate_clicked   = on_candidate_clicked;

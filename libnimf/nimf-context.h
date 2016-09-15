@@ -52,6 +52,10 @@ struct _NimfContext
   gpointer         cb_user_data;
   Window           client_window;
   Window           focus_window;
+  /* preedit */
+  gchar            *preedit_string;
+  NimfPreeditAttr **preedit_attrs;
+  gint              preedit_cursor_pos;
 };
 
 NimfContext *nimf_context_new  (NimfContextType  type,
@@ -64,10 +68,6 @@ void         nimf_context_focus_in           (NimfContext  *context);
 void         nimf_context_focus_out          (NimfContext  *context);
 gboolean     nimf_context_filter_event       (NimfContext  *context,
                                               NimfEvent    *event);
-void         nimf_context_get_preedit_string (NimfContext       *context,
-                                              gchar            **str,
-                                              NimfPreeditAttr ***attrs,
-                                              gint              *cursor_pos);
 void         nimf_context_set_surrounding         (NimfContext         *context,
                                                    const char          *text,
                                                    gint                 len,

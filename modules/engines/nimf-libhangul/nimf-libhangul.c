@@ -788,28 +788,6 @@ nimf_libhangul_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_libhangul_parent_class)->finalize (object);
 }
 
-void
-nimf_libhangul_get_preedit_string (NimfEngine        *engine,
-                                   gchar            **str,
-                                   NimfPreeditAttr ***attrs,
-                                   gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfLibhangul *hangul = NIMF_LIBHANGUL (engine);
-
-  if (str)
-    *str = g_strdup (hangul->preedit_string);
-
-  if (attrs)
-    *attrs = nimf_preedit_attrs_copy (hangul->preedit_attrs);
-
-  if (cursor_pos)
-    *cursor_pos = g_utf8_strlen (hangul->preedit_string, -1);
-}
-
 const gchar *
 nimf_libhangul_get_id (NimfEngine *engine)
 {
@@ -839,7 +817,6 @@ nimf_libhangul_class_init (NimfLibhangulClass *class)
   NimfEngineClass *engine_class = NIMF_ENGINE_CLASS (class);
 
   engine_class->filter_event       = nimf_libhangul_filter_event;
-  engine_class->get_preedit_string = nimf_libhangul_get_preedit_string;
   engine_class->reset              = nimf_libhangul_reset;
   engine_class->focus_in           = nimf_libhangul_focus_in;
   engine_class->focus_out          = nimf_libhangul_focus_out;

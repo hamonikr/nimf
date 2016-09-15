@@ -384,28 +384,6 @@ nimf_chewing_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_chewing_parent_class)->finalize (object);
 }
 
-void
-nimf_chewing_get_preedit_string (NimfEngine        *engine,
-                                 gchar            **str,
-                                 NimfPreeditAttr ***attrs,
-                                 gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfChewing *chewing = NIMF_CHEWING (engine);
-
-  if (str)
-    *str = g_strdup (chewing->preedit->str);
-
-  if (attrs)
-    *attrs = nimf_preedit_attrs_copy (chewing->preedit_attrs);
-
-  if (cursor_pos)
-    *cursor_pos = chewing_cursor_Current (chewing->context);
-}
-
 const gchar *
 nimf_chewing_get_id (NimfEngine *engine)
 {
@@ -435,7 +413,6 @@ nimf_chewing_class_init (NimfChewingClass *class)
   NimfEngineClass *engine_class = NIMF_ENGINE_CLASS (class);
 
   engine_class->filter_event       = nimf_chewing_filter_event;
-  engine_class->get_preedit_string = nimf_chewing_get_preedit_string;
   engine_class->reset              = nimf_chewing_reset;
   engine_class->focus_in           = nimf_chewing_focus_in;
   engine_class->focus_out          = nimf_chewing_focus_out;

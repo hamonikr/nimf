@@ -394,30 +394,6 @@ nimf_rime_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_rime_parent_class)->finalize (object);
 }
 
-void
-nimf_rime_get_preedit_string (NimfEngine        *engine,
-                              gchar            **str,
-                              NimfPreeditAttr ***attrs,
-                              gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfRime *rime = NIMF_RIME (engine);
-
-  RIME_STRUCT (RimeContext, context);
-
-  if (str)
-    *str = g_strdup (rime->preedit->str);
-
-  if (attrs)
-    *attrs = nimf_preedit_attrs_copy (rime->preedit_attrs);
-
-  if (cursor_pos)
-    *cursor_pos = rime->cursor_pos;
-}
-
 const gchar *
 nimf_rime_get_id (NimfEngine *engine)
 {
@@ -447,7 +423,6 @@ nimf_rime_class_init (NimfRimeClass *class)
   NimfEngineClass *engine_class = NIMF_ENGINE_CLASS (class);
 
   engine_class->filter_event       = nimf_rime_filter_event;
-  engine_class->get_preedit_string = nimf_rime_get_preedit_string;
   engine_class->reset              = nimf_rime_reset;
   engine_class->focus_in           = nimf_rime_focus_in;
   engine_class->focus_out          = nimf_rime_focus_out;

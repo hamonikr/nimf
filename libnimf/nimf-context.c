@@ -79,6 +79,13 @@ nimf_context_emit_preedit_changed (NimfContext      *context,
   if (G_UNLIKELY (!context))
     return;
 
+  g_free (context->preedit_string);
+  nimf_preedit_attr_freev (context->preedit_attrs);
+
+  context->preedit_string = g_strdup (preedit_string);
+  context->preedit_attrs = nimf_preedit_attrs_copy (attrs);
+  context->preedit_cursor_pos = cursor_pos;
+
   switch (context->type)
   {
     case NIMF_CONTEXT_NIMF_IM:
@@ -518,33 +525,6 @@ gboolean nimf_context_filter_event (NimfContext *context,
 }
 
 void
-nimf_context_get_preedit_string (NimfContext       *context,
-                                 gchar            **str,
-                                 NimfPreeditAttr ***attrs,
-                                 gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_LIKELY (context && context->engine))
-  {
-    nimf_engine_get_preedit_string (context->engine, str, attrs, cursor_pos);
-  }
-  else
-  {
-    if (str)
-      *str = g_strdup ("");
-
-    if (attrs)
-      *attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
-
-    if (cursor_pos)
-      *cursor_pos = 0;
-
-    g_return_if_reached ();
-  }
-}
-
-void
 nimf_context_set_surrounding (NimfContext *context,
                               const char  *text,
                               gint         len,
@@ -590,37 +570,23 @@ nimf_context_set_use_preedit (NimfContext *context,
 
     if (context->preedit_state == NIMF_PREEDIT_STATE_START)
     {
-      NimfPreeditAttr **attrs;
-      gchar            *preedit_string;
-      gint              cursor_pos;
-
-      nimf_context_get_preedit_string   (context, &preedit_string, &attrs, &cursor_pos);
-      nimf_context_emit_preedit_changed (context, preedit_string, attrs, cursor_pos);
-      nimf_context_emit_preedit_end     (context);
-
-      nimf_preedit_attr_freev (attrs);
-      g_free (preedit_string);
+      nimf_context_emit_preedit_changed (context, context->preedit_string,
+                                                  context->preedit_attrs,
+                                                  context->preedit_cursor_pos);
+      nimf_context_emit_preedit_end (context);
     }
   }
   else if (context->use_preedit == FALSE && use_preedit == TRUE)
   {
-    NimfPreeditAttr **attrs;
-    gchar            *preedit_string;
-    gint              cursor_pos;
-
     context->use_preedit = TRUE;
 
-    nimf_context_get_preedit_string (context, &preedit_string, &attrs, &cursor_pos);
-
-    if (preedit_string[0] != 0)
+    if (context->preedit_string[0] != 0)
     {
       nimf_context_emit_preedit_start   (context);
-      nimf_context_emit_preedit_changed (context,
-                                         preedit_string, attrs, cursor_pos);
+      nimf_context_emit_preedit_changed (context, context->preedit_string,
+                                                  context->preedit_attrs,
+                                                  context->preedit_cursor_pos);
     }
-
-    nimf_preedit_attr_freev (attrs);
-    g_free (preedit_string);
   }
 }
 
@@ -756,6 +722,11 @@ NimfContext *nimf_context_new (NimfContextType  type,
     context->engine = nimf_context_get_default_engine (context);
   }
 
+  context->preedit_string = g_strdup ("");
+  context->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
+  context->preedit_attrs[0] = NULL;
+  context->preedit_cursor_pos = 0;
+
   return context;
 }
 
@@ -769,6 +740,9 @@ void nimf_context_free (NimfContext *context)
 
   if (context->engines)
     g_list_free_full (context->engines, g_object_unref);
+
+  g_free (context->preedit_string);
+  nimf_preedit_attr_freev (context->preedit_attrs);
 
   g_slice_free (NimfContext, context);
 }

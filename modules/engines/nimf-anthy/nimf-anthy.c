@@ -698,29 +698,6 @@ nimf_anthy_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_anthy_parent_class)->finalize (object);
 }
 
-void
-nimf_anthy_get_preedit_string (NimfEngine        *engine,
-                               gchar            **str,
-                               NimfPreeditAttr ***attrs,
-                               gint              *cursor_pos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfAnthy *anthy = NIMF_ANTHY (engine);
-
-  if (str)
-    *str = g_strjoin (NULL, anthy->preedit1->str, anthy->preedit2->str, NULL);
-
-  if (attrs)
-    *attrs = nimf_preedit_attrs_copy (anthy->preedit_attrs);
-
-  if (cursor_pos)
-    *cursor_pos = g_utf8_strlen (anthy->preedit1->str, -1) +
-                  g_utf8_strlen (anthy->preedit2->str, -1);
-}
-
 const gchar *
 nimf_anthy_get_id (NimfEngine *engine)
 {
@@ -750,7 +727,6 @@ nimf_anthy_class_init (NimfAnthyClass *class)
   NimfEngineClass *engine_class = NIMF_ENGINE_CLASS (class);
 
   engine_class->filter_event       = nimf_anthy_filter_event;
-  engine_class->get_preedit_string = nimf_anthy_get_preedit_string;
   engine_class->reset              = nimf_anthy_reset;
   engine_class->focus_in           = nimf_anthy_focus_in;
   engine_class->focus_out          = nimf_anthy_focus_out;
