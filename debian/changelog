@@ -1,6 +1,6 @@
 nimf (2016.09.16) stable; urgency=medium
 
-  * nimf-anthy: Do not use the return key to selece an item (issue #20)
+  * nimf-anthy: Do not use the return key to select an item (issue #20)
   * Added nimf-chewing, nimf-rime (issue #18)
   * Redesigned candidate window and APIs
   * Enhanced stability

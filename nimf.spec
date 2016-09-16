@@ -113,7 +113,7 @@ fi
 
 %changelog
 * Fri Sep 16 2016 Hodong Kim <cogniti@gmail.com> - 2016.09.16-1
-- nimf-anthy: Do not use the return key to selece an item (issue #20)
+- nimf-anthy: Do not use the return key to select an item (issue #20)
 - Added nimf-chewing, nimf-rime (issue #18)
 - Redesigned candidate window and APIs
 - Enhanced stability
