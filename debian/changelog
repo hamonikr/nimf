@@ -1,3 +1,14 @@
+nimf (2016.09.16) stable; urgency=medium
+
+  * nimf-anthy: Do not use the return key to selece an item (issue #20)
+  * Added nimf-chewing, nimf-rime (issue #18)
+  * Redesigned candidate window and APIs
+  * Enhanced stability
+  * nimf-sunpinyin: Changed trigger key
+  * nimf-indicator: Changed website
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 16 Sep 2016 18:19:10 +0900
+
 nimf (2016.08.06) stable; urgency=medium
 
   * Fixed scroll bug in the candidate window

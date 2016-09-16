@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2016.08.06
+Version:  2016.09.16
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -112,6 +112,14 @@ fi
 %{_datadir}/gir-1.0/*
 
 %changelog
+* Fri Sep 16 2016 Hodong Kim <cogniti@gmail.com> - 2016.09.16-1
+- nimf-anthy: Do not use the return key to selece an item (issue #20)
+- Added nimf-chewing, nimf-rime (issue #18)
+- Redesigned candidate window and APIs
+- Enhanced stability
+- nimf-sunpinyin: Changed trigger key
+- nimf-indicator: Changed website
+
 * Sat Aug 06 2016 Hodong Kim <cogniti@gmail.com> - 2016.08.06-1
 - Fixed scroll bug in the candidate window
 - Fixed trivial bugs
