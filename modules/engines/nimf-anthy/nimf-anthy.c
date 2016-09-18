@@ -398,7 +398,9 @@ nimf_anthy_filter_event (NimfEngine  *engine,
       (event->key.keyval <  'a' || event->key.keyval == 'l'  ||
        event->key.keyval == 'q' || event->key.keyval == 'v'  ||
        event->key.keyval == 'x' || event->key.keyval >  'z'  ||
-       event->key.keyval == NIMF_KEY_Return))
+       event->key.keyval == NIMF_KEY_Return ||
+       (event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
+       (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK)))
   {
     if (anthy->preedit1->len > 0 || anthy->preedit2->len > 0)
     {

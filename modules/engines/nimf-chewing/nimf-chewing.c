@@ -331,7 +331,7 @@ nimf_chewing_filter_event (NimfEngine  *engine,
          event->key.keyval <= NIMF_KEY_KP_9))
       chewing_handle_CtrlNum (chewing->context, event->key.keyval);
     else
-      chewing_handle_Default (chewing->context, event->key.keyval);
+      nimf_chewing_reset (engine, target);
   }
 
   nimf_chewing_update (engine, target);
