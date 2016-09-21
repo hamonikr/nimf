@@ -182,6 +182,7 @@ nimf_anthy_update_page (NimfEngine  *engine,
     nimf_candidate_append (anthy->candidate, anthy->buffer, NULL);
   }
 
+  nimf_candidate_select_first_item_in_page (anthy->candidate);
   nimf_candidate_set_page_values (anthy->candidate, target,
                                   anthy->current_page, anthy->n_pages, 10);
 }
