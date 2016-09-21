@@ -112,6 +112,12 @@ fi
 %{_datadir}/gir-1.0/*
 
 %changelog
+* Wed Sep 21 2016 Hodong Kim <cogniti@gmail.com> - 2016.09.21-1
+- nimf-anthy: Select first item in page
+- nimf-settings: g_unsetenv ("GTK_IM_MODULE")
+- nimf-client.c: Retry 4 times
+- Fixed: Ctrl+C and Ctrl+V not working (issue #21)
+
 * Fri Sep 16 2016 Hodong Kim <cogniti@gmail.com> - 2016.09.16-1
 - nimf-anthy: Do not use the return key to select an item (issue #20)
 - Added nimf-chewing, nimf-rime (issue #18)

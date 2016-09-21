@@ -1,3 +1,12 @@
+nimf (2016.09.21) stable; urgency=medium
+
+  * nimf-anthy: Select first item in page
+  * nimf-settings: g_unsetenv ("GTK_IM_MODULE")
+  * nimf-client.c: Retry 4 times
+  * Fixed: Ctrl+C and Ctrl+V not working (issue #21)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 21 Sep 2016 21:38:53 +0900
+
 nimf (2016.09.16) stable; urgency=medium
 
   * nimf-anthy: Do not use the return key to select an item (issue #20)
