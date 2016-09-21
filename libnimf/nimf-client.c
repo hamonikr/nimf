@@ -261,7 +261,7 @@ nimf_client_constructed (GObject *object)
   {
     GSocketClient  *socket_client;
     GSocketAddress *address;
-    gint            retry_limit = 5;
+    gint            retry_limit = 4;
     gint            retry_count = 0;
     GSocket        *socket;
     GError         *error = NULL;
