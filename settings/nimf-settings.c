@@ -911,7 +911,7 @@ int main (int argc, char **argv)
   NimfSettings *nsettings;
   int status;
 
-  g_unsetenv ("GTK_IM_MODULE");
+  g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);

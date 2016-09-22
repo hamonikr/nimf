@@ -144,7 +144,6 @@ nimf_candidate_init (NimfCandidate *candidate)
   gint               fixed_height = 32;
   gint               horizontal_space;
 
-  g_unsetenv ("GTK_IM_MODULE");
   gtk_init (NULL, NULL);
   nimf_candidate_default = candidate;
 

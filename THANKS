@@ -1,4 +1,5 @@
 JH (nemonein) reported issues.
+nimf-daemon freezes              https://github.com/cogniti/nimf/issues/22
 Side effect about singleton mode https://github.com/cogniti/nimf/issues/7
 Caps Lock doesn't work correctly https://github.com/cogniti/nimf/issues/2
 

@@ -138,6 +138,8 @@ main (int argc, char **argv)
     return EXIT_FAILURE;
   }
 
+  g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
+
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");

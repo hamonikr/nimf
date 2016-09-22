@@ -1,3 +1,10 @@
+nimf (2016.09.22) stable; urgency=medium
+
+  * Fixed: nimf-daemon freezes (issue #22)
+    Set GTK_IM_MODULE to "gtk-im-context-simple"
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 22 Sep 2016 18:48:27 +0900
+
 nimf (2016.09.21) stable; urgency=medium
 
   * nimf-anthy: Select first item in page
