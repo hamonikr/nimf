@@ -543,7 +543,13 @@ nimf_anthy_init (NimfAnthy *anthy)
     g_hash_table_insert (nimf_anthy_romaji, "d", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "da", g_strdup ("だ"));
     g_hash_table_insert (nimf_anthy_romaji, "de", g_strdup ("で"));
+    g_hash_table_insert (nimf_anthy_romaji, "di", g_strdup ("ぢ"));
     g_hash_table_insert (nimf_anthy_romaji, "do", g_strdup ("ど"));
+    g_hash_table_insert (nimf_anthy_romaji, "du", g_strdup ("づ"));
+    g_hash_table_insert (nimf_anthy_romaji, "dy", g_strdup ("")); /* dummy */
+    g_hash_table_insert (nimf_anthy_romaji, "dya", g_strdup ("ぢゃ"));
+    g_hash_table_insert (nimf_anthy_romaji, "dyo", g_strdup ("ぢょ"));
+    g_hash_table_insert (nimf_anthy_romaji, "dyu", g_strdup ("ぢゅ"));
     g_hash_table_insert (nimf_anthy_romaji, "e", g_strdup ("え"));
     g_hash_table_insert (nimf_anthy_romaji, "f", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "fu", g_strdup ("ふ"));
@@ -569,13 +575,9 @@ nimf_anthy_init (NimfAnthy *anthy)
     g_hash_table_insert (nimf_anthy_romaji, "i", g_strdup ("い"));
     g_hash_table_insert (nimf_anthy_romaji, "j", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "ja", g_strdup ("じゃ"));
-    g_hash_table_insert (nimf_anthy_romaji, "ja", g_strdup ("ぢゃ"));
     g_hash_table_insert (nimf_anthy_romaji, "ji", g_strdup ("じ"));
-    g_hash_table_insert (nimf_anthy_romaji, "ji", g_strdup ("ぢ"));
     g_hash_table_insert (nimf_anthy_romaji, "jo", g_strdup ("じょ"));
-    g_hash_table_insert (nimf_anthy_romaji, "jo", g_strdup ("ぢょ"));
     g_hash_table_insert (nimf_anthy_romaji, "ju", g_strdup ("じゅ"));
-    g_hash_table_insert (nimf_anthy_romaji, "ju", g_strdup ("ぢゅ"));
     g_hash_table_insert (nimf_anthy_romaji, "k", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "ka", g_strdup ("か"));
     g_hash_table_insert (nimf_anthy_romaji, "ke", g_strdup ("け"));
@@ -647,22 +649,22 @@ nimf_anthy_init (NimfAnthy *anthy)
     g_hash_table_insert (nimf_anthy_romaji, "u", g_strdup ("う"));
     g_hash_table_insert (nimf_anthy_romaji, "w", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "wa", g_strdup ("わ"));
-    g_hash_table_insert (nimf_anthy_romaji, "we", g_strdup ("ゑ"));
-    g_hash_table_insert (nimf_anthy_romaji, "wi", g_strdup ("ゐ"));
+    g_hash_table_insert (nimf_anthy_romaji, "we", g_strdup ("うぇ"));
+    g_hash_table_insert (nimf_anthy_romaji, "wi", g_strdup ("うぃ"));
     g_hash_table_insert (nimf_anthy_romaji, "wo", g_strdup ("を"));
+    g_hash_table_insert (nimf_anthy_romaji, "wy", g_strdup ("")); /* dummy */
+    g_hash_table_insert (nimf_anthy_romaji, "wye", g_strdup ("ゑ"));
+    g_hash_table_insert (nimf_anthy_romaji, "wyi", g_strdup ("ゐ"));
     g_hash_table_insert (nimf_anthy_romaji, "y", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "ya", g_strdup ("や"));
-    g_hash_table_insert (nimf_anthy_romaji, "ya", g_strdup ("や"));
     g_hash_table_insert (nimf_anthy_romaji, "yo", g_strdup ("よ"));
-    g_hash_table_insert (nimf_anthy_romaji, "yo", g_strdup ("よ"));
-    g_hash_table_insert (nimf_anthy_romaji, "yu", g_strdup ("ゆ"));
     g_hash_table_insert (nimf_anthy_romaji, "yu", g_strdup ("ゆ"));
     g_hash_table_insert (nimf_anthy_romaji, "z", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "za", g_strdup ("ざ"));
     g_hash_table_insert (nimf_anthy_romaji, "ze", g_strdup ("ぜ"));
+    g_hash_table_insert (nimf_anthy_romaji, "zi", g_strdup ("じ"));
     g_hash_table_insert (nimf_anthy_romaji, "zo", g_strdup ("ぞ"));
     g_hash_table_insert (nimf_anthy_romaji, "zu", g_strdup ("ず"));
-    g_hash_table_insert (nimf_anthy_romaji, "zu", g_strdup ("づ"));
     g_hash_table_insert (nimf_anthy_romaji, ",", g_strdup ("、"));
     g_hash_table_insert (nimf_anthy_romaji, ".", g_strdup ("。"));
   }

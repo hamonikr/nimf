@@ -1,3 +1,9 @@
+nimf (2016.09.23) stable; urgency=medium
+
+  * nimf-anthy: Fixed romaji table (closes #23)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 23 Sep 2016 20:02:40 +0900
+
 nimf (2016.09.22) stable; urgency=medium
 
   * Fixed: nimf-daemon freezes (issue #22)
