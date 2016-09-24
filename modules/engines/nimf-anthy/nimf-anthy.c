@@ -42,6 +42,7 @@ struct _NimfAnthy
   NimfCandidate    *candidate;
   GString          *preedit1;
   GString          *preedit2;
+  NimfPreeditState  preedit_state;
   NimfPreeditAttr **preedit_attrs;
   glong             offset;
   gchar            *id;
@@ -65,9 +66,35 @@ static GHashTable *nimf_anthy_romaji = NULL;;
 
 G_DEFINE_DYNAMIC_TYPE (NimfAnthy, nimf_anthy, NIMF_TYPE_ENGINE);
 
-void
-nimf_anthy_reset (NimfEngine  *engine,
-                  NimfContext *target)
+static void nimf_anthy_update_preedit (NimfEngine  *engine,
+                                       NimfContext *target,
+                                       const gchar *new_preedit,
+                                       gint         cursor_pos)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if (anthy->preedit_state == NIMF_PREEDIT_STATE_END &&
+      anthy->preedit1->len + anthy->preedit2->len > 0)
+  {
+    anthy->preedit_state = NIMF_PREEDIT_STATE_START;
+    nimf_engine_emit_preedit_start (engine, target);
+  }
+
+  nimf_engine_emit_preedit_changed (engine, target, new_preedit,
+                                    anthy->preedit_attrs, cursor_pos);
+
+  if (anthy->preedit_state == NIMF_PREEDIT_STATE_START &&
+      anthy->preedit1->len + anthy->preedit2->len == 0)
+  {
+    anthy->preedit_state = NIMF_PREEDIT_STATE_END;
+    nimf_engine_emit_preedit_end (engine, target);
+  }
+}
+
+void nimf_anthy_reset (NimfEngine  *engine,
+                       NimfContext *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -76,7 +103,7 @@ nimf_anthy_reset (NimfEngine  *engine,
   nimf_candidate_hide_window (anthy->candidate);
   anthy->offset = 0;
 
-  if (anthy->preedit1->len > 0 || anthy->preedit2->len > 0)
+  if (anthy->preedit1->len + anthy->preedit2->len > 0)
   {
     gchar *commit_str;
 
@@ -89,8 +116,7 @@ nimf_anthy_reset (NimfEngine  *engine,
     anthy->preedit_attrs[0]->end_index   = 0;
     anthy->preedit_attrs[1]->start_index = 0;
     anthy->preedit_attrs[1]->end_index   = 0;
-    nimf_engine_emit_preedit_changed (engine, target, "", anthy->preedit_attrs, 0);
-    nimf_engine_emit_preedit_end (engine, target);
+    nimf_anthy_update_preedit (engine, target, "", 0);
 
     g_free (commit_str);
   }
@@ -132,7 +158,7 @@ on_candidate_clicked (NimfEngine  *engine,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfAnthy *anthy = NIMF_ANTHY (engine);
-  gchar     *preedit_str;
+  gchar     *new_preedit;
   gchar     *tmp;
   struct anthy_conv_stat conv_stat;
 
@@ -145,22 +171,22 @@ on_candidate_clicked (NimfEngine  *engine,
   if (g_strcmp0 (anthy->preedit2->str, "n") == 0)
     g_string_assign (anthy->preedit2, "");
 
-  preedit_str = g_strjoin (NULL, anthy->preedit1->str,
+  new_preedit = g_strjoin (NULL, anthy->preedit1->str,
                                  anthy->preedit2->str, NULL);
   anthy->preedit_attrs[0]->start_index = 0;
-  anthy->preedit_attrs[0]->end_index   = g_utf8_strlen (preedit_str, -1);
+  anthy->preedit_attrs[0]->end_index   = g_utf8_strlen (new_preedit, -1);
   anthy->preedit_attrs[1]->start_index = 0;
   anthy->preedit_attrs[1]->end_index   = 0;
-  nimf_engine_emit_preedit_changed (engine, target, preedit_str,
-                                    anthy->preedit_attrs,
-                                    g_utf8_strlen (preedit_str, -1));
+
+  nimf_anthy_update_preedit (engine, target, new_preedit,
+                             g_utf8_strlen (new_preedit, -1));
   nimf_candidate_hide_window (anthy->candidate);
 
   anthy_get_stat (anthy->context, &conv_stat);
   anthy_commit_segment (anthy->context, conv_stat.nr_segment - 1, index);
 
   g_free (tmp);
-  g_free (preedit_str);
+  g_free (new_preedit);
 }
 
 static void
@@ -291,6 +317,149 @@ on_candidate_scrolled (NimfEngine  *engine,
   }
 }
 
+static void
+nimf_anthy_update_candidate (NimfEngine  *engine,
+                             NimfContext *target,
+                             NimfEvent   *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+  gint       i;
+
+  if (g_strcmp0 (anthy->preedit2->str, "n") == 0)
+  {
+    gchar *tmp;
+
+    tmp = g_strjoin (NULL, anthy->preedit1->str, "ん", NULL);
+    anthy_set_string (anthy->context, tmp);
+
+    g_free (tmp);
+  }
+  else
+    anthy_set_string (anthy->context, anthy->preedit1->str);
+
+  anthy_get_stat (anthy->context, &anthy->conv_stat);
+  anthy_get_segment_stat (anthy->context, anthy->conv_stat.nr_segment - 1,
+                          &anthy->segment_stat);
+  /* calculate offset */
+  anthy->offset = 0;
+
+  for (i = 0; i < anthy->conv_stat.nr_segment - 1; i++)
+  {
+    anthy_get_segment_stat (anthy->context, i, &anthy->segment_stat);
+    anthy->offset += anthy->segment_stat.seg_len;
+  }
+
+  if (anthy->conv_stat.nr_segment > 0)
+  {
+    anthy->current_page = 1;
+    nimf_anthy_update_page (engine, target);
+    nimf_candidate_show_window (anthy->candidate, target, FALSE);
+  }
+  else
+  {
+    if (anthy->n_pages > 0)
+    {
+      nimf_candidate_hide_window (anthy->candidate);
+      nimf_candidate_clear (anthy->candidate, target);
+      anthy->n_pages = 0;
+      anthy->current_page = 0;
+    }
+  }
+}
+
+static gboolean
+nimf_anthy_romaji_filter_event (NimfEngine  *engine,
+                                NimfContext *target,
+                                NimfEvent   *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy   *anthy = NIMF_ANTHY (engine);
+  const gchar *str;
+
+  if (event->key.keyval == NIMF_KEY_space ||
+      (event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
+      (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK))
+    return FALSE;
+
+  if (event->key.keyval == NIMF_KEY_Return)
+  {
+    if (anthy->preedit1->len > 0 || anthy->preedit2->len > 0)
+    {
+      nimf_anthy_reset (engine, target);
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  if (event->key.keyval == NIMF_KEY_BackSpace)
+  {
+    if (anthy->preedit2->len > 0)
+    {
+      g_string_erase (anthy->preedit2, anthy->preedit2->len - 1, 1);
+      return TRUE;
+    }
+    else if (anthy->preedit1->len > 0)
+    {
+      gchar *tmp;
+      glong  len = g_utf8_strlen (anthy->preedit1->str, -1);
+
+      tmp = g_utf8_substring (anthy->preedit1->str, 0, len - 1);
+      g_string_assign (anthy->preedit1, tmp);
+
+      g_free (tmp);
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  if (event->key.keyval > 127)
+    return FALSE;
+
+  g_string_append_c (anthy->preedit2, event->key.keyval);
+
+  while (TRUE)
+  {
+    str = g_hash_table_lookup (nimf_anthy_romaji, anthy->preedit2->str);
+
+    if (str)
+    {
+      if (str[0] != 0)
+      {
+        g_string_append (anthy->preedit1, str);
+        g_string_assign (anthy->preedit2, "");
+      }
+
+      break;
+    }
+    else
+    {
+      if (anthy->preedit2->len > 1)
+      {
+        static gchar c[2] = {0};
+
+        g_string_append_len (anthy->preedit1, anthy->preedit2->str,
+                             anthy->preedit2->len - 1);
+        c[0] = anthy->preedit2->str[anthy->preedit2->len - 1];
+        g_string_assign (anthy->preedit2, c);
+      }
+      else
+      {
+        g_string_append (anthy->preedit1, anthy->preedit2->str);
+        g_string_assign (anthy->preedit2, "");
+
+        break;
+      }
+    }
+  }
+
+  return TRUE;
+}
+
 gboolean
 nimf_anthy_filter_event (NimfEngine  *engine,
                          NimfContext *target,
@@ -298,9 +467,8 @@ nimf_anthy_filter_event (NimfEngine  *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfAnthy   *anthy = NIMF_ANTHY (engine);
-  const gchar *str;
-  gchar       *preedit_str;
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+  gboolean   retval;
 
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
@@ -309,7 +477,8 @@ nimf_anthy_filter_event (NimfEngine  *engine,
   {
     switch (event->key.keyval)
     {
-      case NIMF_KEY_space:
+      case NIMF_KEY_Return:
+      case NIMF_KEY_KP_Enter:
         {
           gint index = nimf_candidate_get_selected_index (anthy->candidate);
 
@@ -329,6 +498,7 @@ nimf_anthy_filter_event (NimfEngine  *engine,
         return TRUE;
       case NIMF_KEY_Down:
       case NIMF_KEY_KP_Down:
+      case NIMF_KEY_space:
         nimf_candidate_select_next_item (anthy->candidate);
         return TRUE;
       case NIMF_KEY_Page_Up:
@@ -393,126 +563,49 @@ nimf_anthy_filter_event (NimfEngine  *engine,
           }
         }
         break;
+      case NIMF_KEY_Escape:
+        nimf_candidate_hide_window (anthy->candidate);
       default:
         break;
     }
   }
 
-  if ((event->key.keyval != ',' && event->key.keyval != '.') &&
-      (event->key.keyval <  'a' || event->key.keyval == 'l'  ||
-       event->key.keyval == 'q' || event->key.keyval == 'v'  ||
-       event->key.keyval == 'x' || event->key.keyval >  'z'  ||
-       event->key.keyval == NIMF_KEY_Return ||
-       (event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
-       (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK)))
-  {
-    if (anthy->preedit1->len > 0 || anthy->preedit2->len > 0)
-    {
-      nimf_anthy_reset (engine, target);
+  nimf_candidate_hide_window (anthy->candidate);
+  retval = nimf_anthy_romaji_filter_event (engine, target, event);
 
-      if (event->key.keyval == NIMF_KEY_Return)
-        return TRUE;
-    }
+  gchar *new_preedit;
 
-    return FALSE;
-  }
-
-  if (anthy->preedit1->len == 0 && anthy->preedit2->len == 0)
-    nimf_engine_emit_preedit_start (engine, target);
-
-  g_string_append_c (anthy->preedit2, event->key.keyval);
-
-  while (TRUE)
-  {
-    str = g_hash_table_lookup (nimf_anthy_romaji, anthy->preedit2->str);
-
-    if (str)
-    {
-      if (str[0] != 0)
-      {
-        g_string_append (anthy->preedit1, str);
-        g_string_assign (anthy->preedit2, "");
-      }
-
-      break;
-    }
-    else
-    {
-      if (anthy->preedit2->len > 1)
-      {
-        static gchar c[2] = {0};
-
-        g_string_append_len (anthy->preedit1, anthy->preedit2->str,
-                             anthy->preedit2->len - 1);
-        c[0] = anthy->preedit2->str[anthy->preedit2->len - 1];
-        g_string_assign (anthy->preedit2, c);
-      }
-      else
-      {
-        g_string_append (anthy->preedit1, anthy->preedit2->str);
-        g_string_assign (anthy->preedit2, "");
-
-        break;
-      }
-    }
-  }
-
-  gint i;
-
-  if (g_strcmp0 (anthy->preedit2->str, "n") == 0)
-  {
-    gchar *tmp;
-
-    tmp = g_strjoin (NULL, anthy->preedit1->str, "ん", NULL);
-    anthy_set_string (anthy->context, tmp);
-
-    g_free (tmp);
-  }
-  else
-    anthy_set_string (anthy->context, anthy->preedit1->str);
-
-  anthy_get_stat (anthy->context, &anthy->conv_stat);
-  anthy_get_segment_stat (anthy->context, anthy->conv_stat.nr_segment - 1,
-                          &anthy->segment_stat);
-  /* calculate offset */
-  anthy->offset = 0;
-
-  for (i = 0; i < anthy->conv_stat.nr_segment - 1; i++)
-  {
-    anthy_get_segment_stat (anthy->context, i, &anthy->segment_stat);
-    anthy->offset += anthy->segment_stat.seg_len;
-  }
-
-  preedit_str = g_strjoin (NULL, anthy->preedit1->str,
+  /* update preedit */
+  new_preedit = g_strjoin (NULL, anthy->preedit1->str,
                                  anthy->preedit2->str, NULL);
   anthy->preedit_attrs[0]->start_index = 0;
-  anthy->preedit_attrs[0]->end_index = anthy->offset;
-  anthy->preedit_attrs[1]->start_index = anthy->offset;
-  anthy->preedit_attrs[1]->end_index = g_utf8_strlen (preedit_str, -1);
-  nimf_engine_emit_preedit_changed (engine, target, preedit_str,
-                                    anthy->preedit_attrs,
-                                    g_utf8_strlen (preedit_str, -1));
+  anthy->preedit_attrs[0]->end_index = g_utf8_strlen (new_preedit, -1);
+  anthy->preedit_attrs[1]->start_index = 0;
+  anthy->preedit_attrs[1]->end_index = 0;
 
-  if (anthy->conv_stat.nr_segment > 0)
+  nimf_anthy_update_preedit (engine, target, new_preedit,
+                             g_utf8_strlen (new_preedit, -1));
+
+  if ((event->key.keyval == NIMF_KEY_space   ||
+       event->key.keyval == NIMF_KEY_Down    ||
+       event->key.keyval == NIMF_KEY_KP_Down) &&
+      (anthy->preedit1->len + anthy->preedit2->len > 0))
   {
-    anthy->current_page = 1;
-    nimf_anthy_update_page (engine, target);
-    nimf_candidate_show_window (anthy->candidate, target, FALSE);
-  }
-  else
-  {
-    if (anthy->n_pages > 0)
-    {
-      nimf_candidate_hide_window (anthy->candidate);
-      nimf_candidate_clear (anthy->candidate, target);
-      anthy->n_pages = 0;
-      anthy->current_page = 0;
-    }
+    nimf_anthy_update_candidate (engine, target, event);
+
+    anthy->preedit_attrs[0]->start_index = 0;
+    anthy->preedit_attrs[0]->end_index = anthy->offset;
+    anthy->preedit_attrs[1]->start_index = anthy->offset;
+    anthy->preedit_attrs[1]->end_index = g_utf8_strlen (new_preedit, -1);
+
+    nimf_anthy_update_preedit (engine, target, new_preedit,
+                               g_utf8_strlen (new_preedit, -1));
+    retval = TRUE;
   }
 
-  g_free (preedit_str);
+  g_free (new_preedit);
 
-  return TRUE;
+  return retval;
 }
 
 static void
