@@ -142,6 +142,9 @@ on_candidate_clicked (NimfEngine  *engine,
   g_string_append (anthy->preedit1, tmp);
   g_string_append (anthy->preedit1, text);
 
+  if (g_strcmp0 (anthy->preedit2->str, "n") == 0)
+    g_string_assign (anthy->preedit2, "");
+
   preedit_str = g_strjoin (NULL, anthy->preedit1->str,
                                  anthy->preedit2->str, NULL);
   anthy->preedit_attrs[0]->start_index = 0;
@@ -456,7 +459,18 @@ nimf_anthy_filter_event (NimfEngine  *engine,
 
   gint i;
 
-  anthy_set_string (anthy->context, anthy->preedit1->str);
+  if (g_strcmp0 (anthy->preedit2->str, "n") == 0)
+  {
+    gchar *tmp;
+
+    tmp = g_strjoin (NULL, anthy->preedit1->str, "ん", NULL);
+    anthy_set_string (anthy->context, tmp);
+
+    g_free (tmp);
+  }
+  else
+    anthy_set_string (anthy->context, anthy->preedit1->str);
+
   anthy_get_stat (anthy->context, &anthy->conv_stat);
   anthy_get_segment_stat (anthy->context, anthy->conv_stat.nr_segment - 1,
                           &anthy->segment_stat);
