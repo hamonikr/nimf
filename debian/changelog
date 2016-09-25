@@ -1,3 +1,10 @@
+nimf (2016.09.25) stable; urgency=medium
+
+  * nimf-anthy: Navigate segments
+  * nimf-anthy: Improved nimf-anthy
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 25 Sep 2016 18:04:14 +0900
+
 nimf (2016.09.24) stable; urgency=medium
 
   * nimf-anthy: Convert "n" to "ん" (closes #23)
