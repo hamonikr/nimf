@@ -1,3 +1,9 @@
+nimf (2016.09.26) stable; urgency=medium
+
+  * nimf-anthy: Fixed segmentation fault
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 26 Sep 2016 00:09:52 +0900
+
 nimf (2016.09.25) stable; urgency=medium
 
   * nimf-anthy: Navigate segments
