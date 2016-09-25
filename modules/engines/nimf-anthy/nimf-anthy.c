@@ -162,11 +162,12 @@ on_candidate_clicked (NimfEngine  *engine,
   gchar     *new_preedit;
   gchar     *sub1;
   gchar     *sub2;
+  gint       len = g_utf8_strlen (anthy->preedit1->str, -1);
 
   sub1 = g_utf8_substring (anthy->preedit1->str, 0, anthy->offset);
   sub2 = g_utf8_substring (anthy->preedit1->str,
-                           anthy->offset + anthy->segment_stat.seg_len,
-                           g_utf8_strlen (anthy->preedit1->str, -1));
+                           MIN (len, anthy->offset + anthy->segment_stat.seg_len),
+                           len);
   g_string_assign (anthy->preedit1, "");
   g_string_append (anthy->preedit1, sub1);
   g_string_append (anthy->preedit1, text);
@@ -182,9 +183,7 @@ on_candidate_clicked (NimfEngine  *engine,
   nimf_anthy_update_preedit (engine, target, new_preedit,
                              g_utf8_strlen (anthy->preedit1->str, -1));
   nimf_candidate_hide_window (anthy->candidate);
-
-  anthy_get_stat (anthy->context, &anthy->conv_stat); /* FIXME */
-  anthy_commit_segment (anthy->context, anthy->conv_stat.nr_segment - 1, index);
+  anthy_commit_segment (anthy->context, anthy->segment_index, index);
 
   g_free (sub1);
   g_free (sub2);
@@ -595,7 +594,7 @@ nimf_anthy_filter_event (NimfEngine  *engine,
           if (i < MIN (anthy->current_page * 10,
                        anthy->segment_stat.nr_candidate))
           {
-            anthy_get_segment (anthy->context, anthy->conv_stat.nr_segment - 1,
+            anthy_get_segment (anthy->context, anthy->segment_index,
                                i, anthy->buffer, NIMF_ANTHY_BUFFER_SIZE);
             on_candidate_clicked (engine, target, anthy->buffer, -1);
 
