@@ -119,11 +119,11 @@ fi
 
 QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
 
-case `pkg-config --variable=host_bins Qt5Core` in
-  */qt5/*)
+case `pkg-config --variable=includedir Qt5Core` in
+  */qt5)
     QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
     ;;
-  */qt/*)
+  */qt)
     QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
     ;;
   *)
