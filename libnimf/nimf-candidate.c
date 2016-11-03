@@ -317,6 +317,20 @@ void nimf_candidate_show_window (NimfCandidate *candidate,
 
   GtkRequisition  natural_size;
   int             x, y, w, h;
+  int             screen_width, screen_height;
+
+  #if GTK_CHECK_VERSION (3, 22, 0)
+    GdkRectangle  geometry;
+    GdkDisplay   *display = gtk_widget_get_display (candidate->window);
+    GdkWindow    *window  = gtk_widget_get_window  (candidate->window);
+    GdkMonitor   *monitor = gdk_display_get_monitor_at_window (display, window);
+    gdk_monitor_get_geometry (monitor, &geometry);
+    screen_width  = geometry.width;
+    screen_height = geometry.height;
+  #else
+    screen_width  = gdk_screen_width ();
+    screen_height = gdk_screen_height ();
+  #endif
 
   candidate->target = target;
 
@@ -334,10 +348,10 @@ void nimf_candidate_show_window (NimfCandidate *candidate,
   x = target->cursor_area.x - target->cursor_area.width;
   y = target->cursor_area.y + target->cursor_area.height;
 
-  if (x + w > gdk_screen_width ())
-    x = gdk_screen_width () - w;
+  if (x + w > screen_width)
+    x = screen_width - w;
 
-  if (y + h > gdk_screen_height ())
+  if (y + h > screen_height)
     y = target->cursor_area.y - h;
 
   gtk_window_move (GTK_WINDOW (candidate->window), x, y);
