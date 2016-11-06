@@ -7,5 +7,10 @@
       <summary>schema name for nimf-settings</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
+    <key type="as" name="trigger-keys">
+      <default>['Escape']</default>
+      <summary>Trigger keys for switching to System</summary>
+      <description>Binding to change to System</description>
+    </key>
   </schema>
 </schemalist>
