@@ -1,7 +1,7 @@
 # Korean translation for Nimf
 # Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015,2016.
+# Hodong Kim <cogniti@gmail.com>, 2015-2017.
 #
 #, fuzzy
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2016-09-04 06:02+0900\n"
+"PO-Revision-Date: 2017-01-27 20:43+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,57 +18,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:124
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:131
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:125
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:132
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:126
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:133
 msgid "Version"
 msgstr "버전"
 
-#: ../indicator/nimf-indicator.c:59 ../indicator/nimf-indicator.c:60
-#: ../indicator/nimf-indicator.c:61 ../indicator/nimf-indicator.c:78
+#: ../indicator/nimf-indicator.c:66 ../indicator/nimf-indicator.c:67
+#: ../indicator/nimf-indicator.c:68 ../indicator/nimf-indicator.c:85
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../indicator/nimf-indicator.c:72
+#: ../indicator/nimf-indicator.c:79
 msgid "An indicator for Nimf"
 msgstr "님프를 위한 표시기"
 
-#: ../indicator/nimf-indicator.c:73
+#: ../indicator/nimf-indicator.c:80
 msgid "Copyright (c) 2015,2016 Hodong Kim"
 msgstr "저작권 (c) 2015,2016 김호동"
 
-#: ../indicator/nimf-indicator.c:77
+#: ../indicator/nimf-indicator.c:84
 msgid "Nimf Indicator"
 msgstr "님프 표시기"
 
-#: ../indicator/nimf-indicator.c:81
+#: ../indicator/nimf-indicator.c:88
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../indicator/nimf-indicator.c:221
+#: ../indicator/nimf-indicator.c:235
 msgid "Settings"
 msgstr "설정"
 
-#: ../indicator/nimf-indicator.c:222
+#: ../indicator/nimf-indicator.c:236
+msgid "Donate"
+msgstr "기부하기"
+
+#: ../indicator/nimf-indicator.c:237
 msgid "About"
 msgstr "정보"
 
-#: ../indicator/nimf-indicator.c:223
+#: ../indicator/nimf-indicator.c:238
 msgid "Exit"
 msgstr "종료"
 
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:556
+#: ../modules/clients/gtk/im-nimf.c:576
 msgid "Nimf"
 msgstr "님프"
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:373
+#: ../modules/engines/nimf-rime/nimf-rime.c:358
 msgid "Rime"
 msgstr "라임"
 
@@ -103,7 +107,6 @@ msgstr "'님프'"
 
 #: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:2
@@ -116,7 +119,6 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 
 #: ../libnimf/org.nimf.gschema.xml.h:3
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:3
@@ -132,30 +134,26 @@ msgid "Hotkeys for switching input method engine"
 msgstr "입력 엔진을 전환하기 위한 핫키"
 
 #: ../libnimf/org.nimf.gschema.xml.h:5
-msgid "Disable fallback filter for XIM"
-msgstr "XIM 을 위한 예비 필터를 사용하지 않습니다"
-
-#: ../libnimf/org.nimf.gschema.xml.h:6
 msgid "Use singleton mode"
 msgstr "싱글톤 모드를 사용합니다"
 
-#: ../libnimf/org.nimf.gschema.xml.h:7
+#: ../libnimf/org.nimf.gschema.xml.h:6
 msgid "Use singleton"
 msgstr "싱글톤 모드를 사용합니다"
 
-#: ../libnimf/org.nimf.gschema.xml.h:8
+#: ../libnimf/org.nimf.gschema.xml.h:7
 msgid "'Clients'"
 msgstr "'클라이언트'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:9
+#: ../libnimf/org.nimf.gschema.xml.h:8
 msgid "'Engines'"
 msgstr "'엔진'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:10
+#: ../libnimf/org.nimf.gschema.xml.h:9
 msgid "Default language engine"
 msgstr "기본 언어 엔진"
 
-#: ../libnimf/org.nimf.gschema.xml.h:11
+#: ../libnimf/org.nimf.gschema.xml.h:10
 msgid "Default language engine on startup"
 msgstr "시작할 때의 기본 언어 엔진"
 
@@ -175,7 +173,7 @@ msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니
 " 이것은 여러 응용 프로그램의 버그를 회피합니다."
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
-#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:5
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "마우스 버튼을 클릭할 때 리셋합니다"
 
@@ -186,15 +184,6 @@ msgstr "조합 문자열을 항상 사용합니다"
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
 msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
 msgstr "gtk_im_context_set_use_preedit()를 무시할지 말지 결정합니다"
-
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:1
-msgid "'Qt4'"
-msgstr ""
-
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:4
-#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
-msgid "Disable fallback filter"
-msgstr "예비 필터를 사용하지 않습니다"
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"

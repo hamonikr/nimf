@@ -3,7 +3,7 @@
  * nimf-indicator.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -45,6 +45,14 @@ static void on_settings_menu (GtkWidget *widget,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_spawn_command_line_async ("nimf-settings", NULL);
+}
+
+static void on_donate_menu (GtkWidget *widget,
+                            gpointer   user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_spawn_command_line_async ("sensible-browser https://cogniti.github.io/nimf/donate", NULL);
 }
 
 static void on_about_menu (GtkWidget *widget,
@@ -175,6 +183,7 @@ main (int argc, char **argv)
   GtkWidget    *menu_shell;
   GtkWidget    *settings_menu;
   GtkWidget    *about_menu;
+  GtkWidget    *donate_menu;
   GtkWidget    *exit_menu;
 
   menu_shell = gtk_menu_new ();
@@ -224,17 +233,21 @@ main (int argc, char **argv)
   g_strfreev (engine_ids);
 
   settings_menu = gtk_menu_item_new_with_label (_("Settings"));
+  donate_menu   = gtk_menu_item_new_with_label (_("Donate"));
   about_menu    = gtk_menu_item_new_with_label (_("About"));
   exit_menu     = gtk_menu_item_new_with_label (_("Exit"));
 
   g_signal_connect (settings_menu, "activate",
                     G_CALLBACK (on_settings_menu), NULL);
+  g_signal_connect (donate_menu, "activate",
+                    G_CALLBACK (on_donate_menu), NULL);
   g_signal_connect (about_menu, "activate",
                     G_CALLBACK (on_about_menu), NULL);
   g_signal_connect (exit_menu,  "activate",
                     G_CALLBACK (on_exit_menu),  NULL);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), settings_menu);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), donate_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), exit_menu);
 
