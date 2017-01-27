@@ -7,11 +7,6 @@
       <summary>schema name for nimf-settings</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
-    <key type="b" name="disable-fallback-filter">
-      <default>true</default>
-      <summary>Disable fallback filter</summary>
-      <description>Disable fallback filter</description>
-    </key>
     <key type="b" name="reset-on-mouse-button-press">
       <default>true</default>
       <summary>Reset when clicking the mouse button</summary>

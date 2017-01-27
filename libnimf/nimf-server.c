@@ -3,7 +3,7 @@
  * nimf-server.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -477,18 +477,6 @@ on_changed_hotkeys (GSettings  *settings,
 }
 
 static void
-on_changed_disable_fallback_filter_for_xim (GSettings  *settings,
-                                            gchar      *key,
-                                            NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  server->disable_fallback_filter_for_xim =
-    g_settings_get_boolean (server->settings,
-                            "disable-fallback-filter-for-xim");
-}
-
-static void
 on_use_singleton (GSettings  *settings,
                   gchar      *key,
                   NimfServer *server)
@@ -585,9 +573,6 @@ nimf_server_init (NimfServer *server)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   server->settings = g_settings_new ("org.nimf");
-  server->disable_fallback_filter_for_xim =
-    g_settings_get_boolean (server->settings,
-                            "disable-fallback-filter-for-xim");
   server->use_singleton = g_settings_get_boolean (server->settings,
                                                   "use-singleton");
   server->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -601,10 +586,6 @@ nimf_server_init (NimfServer *server)
 
   g_signal_connect (server->settings, "changed::hotkeys",
                     G_CALLBACK (on_changed_hotkeys), server);
-  g_signal_connect (server->settings,
-                    "changed::disable-fallback-filter-for-xim",
-                    G_CALLBACK (on_changed_disable_fallback_filter_for_xim),
-                    server);
   g_signal_connect (server->settings, "changed::use-singleton",
                     G_CALLBACK (on_use_singleton), server);
 
@@ -1007,29 +988,6 @@ int nimf_server_xim_forward_event (NimfServer           *server,
                                  GUINT_TO_POINTER (data->icid));
   retval = nimf_context_filter_event (context, event);
   nimf_event_free (event);
-
-  if (!retval && !server->disable_fallback_filter_for_xim)
-  {
-    gunichar ch;
-    gchar buf[10];
-    gint len;
-
-    ch = nimf_keyval_to_unicode (event->key.keyval);
-    g_return_val_if_fail (g_unichar_validate (ch), 0);
-
-    len = g_unichar_to_utf8 (ch, buf);
-    buf[len] = '\0';
-
-    if (ch != 0 && !g_unichar_iscntrl (ch))
-    {
-      nimf_context_emit_commit (context, buf);
-      retval = TRUE;
-    }
-    else
-    {
-      retval = FALSE;
-    }
-  }
 
   if (G_UNLIKELY (!retval))
     IMForwardEvent (xims, (XPointer) data);

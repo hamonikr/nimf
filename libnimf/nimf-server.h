@@ -3,7 +3,7 @@
  * nimf-server.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -73,7 +73,6 @@ struct _NimfServer
   NimfKey        **hotkeys;
   GHashTable      *trigger_gsettings;
   GHashTable      *trigger_keys;
-  gboolean         disable_fallback_filter_for_xim;
   gboolean         use_singleton;
 };
 

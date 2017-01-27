@@ -3,7 +3,7 @@
  * im-nimf-qt4.cpp
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -58,15 +58,10 @@ public:
                                            gint         n_chars,
                                            gpointer     user_data);
 
-  // settings
-  static void on_changed_disable_fallback_filter (GSettings     *settings,
-                                                  gchar         *key,
-                                                  gpointer       user_data);
 private:
   NimfIM        *m_im;
   bool           m_isComposing;
   NimfRectangle  m_cursor_area;
-  GSettings     *m_settings;
 };
 
 /* nimf signal callbacks */
@@ -174,30 +169,12 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
   return FALSE;
 }
 
-void
-NimfInputContext::on_changed_disable_fallback_filter (GSettings     *settings,
-                                                      gchar         *key,
-                                                      gpointer       user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
-
-  nimf_im_set_use_fallback_filter (context->m_im,
-                                   !g_settings_get_boolean (settings, key));
-}
-
 NimfInputContext::NimfInputContext ()
   : m_isComposing(false)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  m_settings = g_settings_new ("org.nimf.clients.qt4");
-
   m_im = nimf_im_new ();
-  nimf_im_set_use_fallback_filter (m_im,
-                                   !g_settings_get_boolean (m_settings,
-                                                            "disable-fallback-filter"));
 
   g_signal_connect (m_im, "preedit-start",
                     G_CALLBACK (NimfInputContext::on_preedit_start), this);
@@ -213,9 +190,6 @@ NimfInputContext::NimfInputContext ()
   g_signal_connect (m_im, "delete-surrounding",
                     G_CALLBACK (NimfInputContext::on_delete_surrounding),
                     this);
-
-  g_signal_connect (m_settings, "changed::disable-fallback-filter",
-                    G_CALLBACK (NimfInputContext::on_changed_disable_fallback_filter), this);
 }
 
 NimfInputContext::~NimfInputContext ()
@@ -223,7 +197,6 @@ NimfInputContext::~NimfInputContext ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_object_unref (m_im);
-  g_object_unref (m_settings);
 }
 
 QString
