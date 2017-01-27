@@ -22,7 +22,6 @@
 #include "nimf-im.h"
 #include "nimf-events.h"
 #include "nimf-types.h"
-#include "nimf-enum-types.h"
 #include "nimf-key-syms.h"
 #include "nimf-marshalers.h"
 #include <gio/gunixsocketaddress.h>
@@ -110,16 +109,6 @@ void nimf_im_set_use_preedit (NimfIM   *im,
                      (gchar *) &use_preedit, sizeof (gboolean), NULL);
   nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
                                client->id, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY);
-}
-
-void nimf_im_set_use_fallback_filter (NimfIM   *im,
-                                      gboolean  use_fallback_filter)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_IM (im));
-
-  im->use_fallback_filter = use_fallback_filter;
 }
 
 gboolean nimf_im_get_surrounding (NimfIM  *im,
@@ -320,11 +309,7 @@ gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
   if (!socket || g_socket_is_closed (socket))
   {
     g_warning ("socket is closed");
-
-    if (im->use_fallback_filter)
-      return nimf_im_filter_event_fallback (im, event);
-    else
-      return FALSE;
+    return FALSE;
   }
 
   nimf_send_message (socket, client->id, NIMF_MESSAGE_FILTER_EVENT,
@@ -336,10 +321,7 @@ gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
       *(gboolean *) (nimf_client_result->reply->data))
     return TRUE;
 
-  if (im->use_fallback_filter)
-    return nimf_im_filter_event_fallback (im, event);
-  else
-    return FALSE;
+  return FALSE;
 }
 
 NimfIM *
@@ -358,7 +340,6 @@ nimf_im_init (NimfIM *im)
 
   im->preedit_string = g_strdup ("");
   im->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
-  im->use_fallback_filter = FALSE;
 }
 
 static void

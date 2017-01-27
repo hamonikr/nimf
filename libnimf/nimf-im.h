@@ -3,7 +3,7 @@
  * nimf-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -54,7 +54,6 @@ struct _NimfIM
   gchar            *preedit_string;
   NimfPreeditAttr **preedit_attrs;
   gint              cursor_pos;
-  gboolean          use_fallback_filter;
 };
 
 struct _NimfIMClass
@@ -89,8 +88,6 @@ void      nimf_im_set_cursor_location     (NimfIM              *im,
                                            const NimfRectangle *area);
 void      nimf_im_set_use_preedit         (NimfIM              *im,
                                            gboolean             use_preedit);
-void      nimf_im_set_use_fallback_filter (NimfIM              *im,
-                                           gboolean             use_fallback_filter);
 gboolean  nimf_im_get_surrounding         (NimfIM              *im,
                                            gchar              **text,
                                            gint                *cursor_index);
