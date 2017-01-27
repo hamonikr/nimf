@@ -264,39 +264,6 @@ void nimf_im_reset (NimfIM *im)
                                client->id, NIMF_MESSAGE_RESET_REPLY);
 }
 
-gboolean
-nimf_im_filter_event_fallback (NimfIM    *im,
-                               NimfEvent *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if ((event->key.type   == NIMF_EVENT_KEY_RELEASE) ||
-      (event->key.keyval == NIMF_KEY_Shift_L)       ||
-      (event->key.keyval == NIMF_KEY_Shift_R)       ||
-      (event->key.state & (NIMF_CONTROL_MASK | NIMF_MOD1_MASK)))
-    return FALSE;
-
-  gunichar ch;
-  gchar buf[10];
-  gint len;
-
-  ch = nimf_keyval_to_unicode (event->key.keyval);
-  g_return_val_if_fail (g_unichar_validate (ch), FALSE);
-
-  len = g_unichar_to_utf8 (ch, buf);
-  buf[len] = '\0';
-
-  if (ch != 0 && !g_unichar_iscntrl (ch))
-  {
-    g_signal_emit_by_name (im, "commit", &buf);
-    return TRUE;
-  }
-  else
-  {
-    return FALSE;
-  }
-}
-
 gboolean nimf_im_filter_event (NimfIM *im, NimfEvent *event)
 {
   g_debug (G_STRLOC ":%s", G_STRFUNC);
