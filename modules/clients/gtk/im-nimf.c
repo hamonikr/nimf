@@ -3,7 +3,7 @@
  * im-nimf.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -41,6 +41,7 @@ struct _NimfGtkIMContext
   GtkIMContext  parent_instance;
 
   NimfIM       *im;
+  GtkIMContext *simple;
   GdkWindow    *client_window;
   GSettings    *settings;
   gboolean      is_reset_on_gdk_button_press_event;
@@ -121,11 +122,14 @@ nimf_gtk_im_context_filter_keypress (GtkIMContext *context,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval = FALSE;
+  gboolean   retval;
   NimfEvent *nimf_event = translate_gdk_event_key (event);
 
   retval = nimf_im_filter_event (NIMF_GTK_IM_CONTEXT (context)->im, nimf_event);
   nimf_event_free (nimf_event);
+
+  if (retval == FALSE)
+    return gtk_im_context_filter_keypress (NIMF_GTK_IM_CONTEXT (context)->simple, event);
 
   return retval;
 }
@@ -136,6 +140,7 @@ nimf_gtk_im_context_reset (GtkIMContext *context)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   nimf_im_reset (NIMF_GTK_IM_CONTEXT (context)->im);
+  gtk_im_context_reset (NIMF_GTK_IM_CONTEXT (context)->simple);
 }
 
 static GdkFilterReturn
@@ -466,6 +471,7 @@ nimf_gtk_im_context_init (NimfGtkIMContext *context)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   context->im = nimf_im_new ();
+  context->simple = gtk_im_context_simple_new ();
 
   g_signal_connect (context->im, "commit",
                     G_CALLBACK (on_commit), context);
@@ -478,6 +484,19 @@ nimf_gtk_im_context_init (NimfGtkIMContext *context)
   g_signal_connect (context->im, "preedit-start",
                     G_CALLBACK (on_preedit_start), context);
   g_signal_connect (context->im, "retrieve-surrounding",
+                    G_CALLBACK (on_retrieve_surrounding), context);
+
+  g_signal_connect (context->simple, "commit",
+                    G_CALLBACK (on_commit), context);
+  g_signal_connect (context->simple, "delete-surrounding",
+                    G_CALLBACK (on_delete_surrounding), context);
+  g_signal_connect (context->simple, "preedit-changed",
+                    G_CALLBACK (on_preedit_changed), context);
+  g_signal_connect (context->simple, "preedit-end",
+                    G_CALLBACK (on_preedit_end), context);
+  g_signal_connect (context->simple, "preedit-start",
+                    G_CALLBACK (on_preedit_start), context);
+  g_signal_connect (context->simple, "retrieve-surrounding",
                     G_CALLBACK (on_retrieve_surrounding), context);
 
   context->settings = g_settings_new ("org.nimf.clients.gtk");
@@ -515,6 +534,7 @@ nimf_gtk_im_context_finalize (GObject *object)
     gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
 
   g_object_unref (context->im);
+  g_object_unref (context->simple);
   g_object_unref (context->settings);
 
   if (context->client_window)

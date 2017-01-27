@@ -3,7 +3,7 @@
  * nimf-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -358,7 +358,7 @@ nimf_im_init (NimfIM *im)
 
   im->preedit_string = g_strdup ("");
   im->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
-  im->use_fallback_filter = TRUE;
+  im->use_fallback_filter = FALSE;
 }
 
 static void
