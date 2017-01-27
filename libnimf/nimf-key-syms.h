@@ -220,7 +220,10 @@ typedef enum
 
   NIMF_KEY_Delete       = 0xffff, /*< nick=Delete >*/
 
-  NIMF_KEY_VoidSymbol   = 0xffffff /*< nick=VoidSymbol >*/
+  NIMF_KEY_VoidSymbol   = 0xffffff, /*< nick=VoidSymbol >*/
+  NIMF_KEY_WakeUp       = 0x1008ff2b, /*< nick=WakeUp >*/
+  NIMF_KEY_WebCam       = 0x1008ff8f, /*< nick=WebCam >*/
+  NIMF_KEY_WLAN         = 0x1008ff95 /*< nick=WLAN >*/
 } NimfKeySym;
 
 const gchar *nimf_keyval_to_keysym_name (guint keyval);
