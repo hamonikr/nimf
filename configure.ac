@@ -41,7 +41,7 @@ AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 x11"
+LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 x11 xkbcommon >= 0.5.0"
 LIBNIMF_PRIVATE="gtk+-3.0"
 AC_SUBST(LIBNIMF_REQUIRES)
 AC_SUBST(LIBNIMF_PRIVATE)

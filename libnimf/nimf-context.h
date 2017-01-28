@@ -56,6 +56,10 @@ struct _NimfContext
   gchar            *preedit_string;
   NimfPreeditAttr **preedit_attrs;
   gint              preedit_cursor_pos;
+  /* compose */
+  struct xkb_context       *xkb_context;
+  struct xkb_compose_table *xkb_compose_table;
+  struct xkb_compose_state *xkb_compose_state;
 };
 
 NimfContext *nimf_context_new  (NimfContextType  type,

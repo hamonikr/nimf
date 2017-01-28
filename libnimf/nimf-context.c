@@ -24,6 +24,7 @@
 #include <string.h>
 #include <X11/Xutil.h>
 #include "IMdkit/Xi18n.h"
+#include <xkbcommon/xkbcommon-compose.h>
 
 void
 nimf_context_emit_preedit_start (NimfContext *context)
@@ -450,6 +451,45 @@ nimf_context_get_next_instance (NimfContext *context, NimfEngine *engine)
   return engine;
 }
 
+static gboolean nimf_context_filter_compose (NimfContext *context,
+                                             NimfEvent   *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (event->type == NIMF_EVENT_KEY_RELEASE)
+    return FALSE;
+
+  enum xkb_compose_feed_result result;
+  result = xkb_compose_state_feed (context->xkb_compose_state,
+                                   event->key.keyval);
+
+  if (result == XKB_COMPOSE_FEED_IGNORED)
+    return FALSE;
+
+  switch (xkb_compose_state_get_status (context->xkb_compose_state))
+  {
+    case XKB_COMPOSE_NOTHING:
+      return FALSE;
+    case XKB_COMPOSE_COMPOSED:
+      {
+        char buffer[8];
+        int length = xkb_compose_state_get_utf8 (context->xkb_compose_state, buffer, sizeof(buffer));
+        xkb_compose_state_reset (context->xkb_compose_state);
+
+        if (length > 0)
+          nimf_context_emit_commit (context, buffer);
+      }
+      break;
+    case XKB_COMPOSE_CANCELLED:
+      xkb_compose_state_reset (context->xkb_compose_state);
+      break;
+    default:
+      break;
+  }
+
+  return TRUE;
+}
+
 gboolean nimf_context_filter_event (NimfContext *context,
                                     NimfEvent   *event)
 {
@@ -521,7 +561,10 @@ gboolean nimf_context_filter_event (NimfContext *context,
     return TRUE;
   }
 
-  return nimf_engine_filter_event (context->engine, context, event);
+  if (nimf_engine_filter_event (context->engine, context, event))
+    return TRUE;
+  else
+    return nimf_context_filter_compose (context, event);
 }
 
 void
@@ -646,6 +689,8 @@ void nimf_context_reset (NimfContext *context)
 
   if (G_LIKELY (context->engine))
     nimf_engine_reset (context->engine, context);
+
+  xkb_compose_state_reset (context->xkb_compose_state);
 }
 
 void
@@ -727,6 +772,21 @@ NimfContext *nimf_context_new (NimfContextType  type,
   context->preedit_attrs[0] = NULL;
   context->preedit_cursor_pos = 0;
 
+  context->xkb_context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+
+  const gchar *locale = g_getenv ("LC_ALL");
+  if (!locale)
+    locale = g_getenv ("LC_CTYPE");
+  if (!locale)
+    locale = g_getenv ("LANG");
+  if (!locale)
+    locale = "C";
+
+  context->xkb_compose_table = xkb_compose_table_new_from_locale (context->xkb_context, locale,
+                                                                  XKB_COMPOSE_COMPILE_NO_FLAGS);
+  context->xkb_compose_state = xkb_compose_state_new (context->xkb_compose_table,
+                                                      XKB_COMPOSE_STATE_NO_FLAGS);
+
   return context;
 }
 
@@ -743,6 +803,10 @@ void nimf_context_free (NimfContext *context)
 
   g_free (context->preedit_string);
   nimf_preedit_attr_freev (context->preedit_attrs);
+
+  xkb_compose_state_unref (context->xkb_compose_state);
+  xkb_compose_table_unref (context->xkb_compose_table);
+  xkb_context_unref       (context->xkb_context);
 
   g_slice_free (NimfContext, context);
 }

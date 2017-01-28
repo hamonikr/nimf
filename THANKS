@@ -1,3 +1,6 @@
+mxa reported: Compose key not supported in nimf
+https://github.com/cogniti/nimf/issues/33
+
 JH (nemonein) reported issues.
 nimf-daemon freezes              https://github.com/cogniti/nimf/issues/22
 Side effect about singleton mode https://github.com/cogniti/nimf/issues/7
