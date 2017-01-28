@@ -97,7 +97,7 @@ dnl ***************************************************************************
 dnl  Qt
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(QT4_GUI, [QtGui])
+PKG_CHECK_MODULES(NIMF_QT4_DEPS, [QtGui])
 PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Gui Qt5Widgets])
 
 QT5_GUI_VERSION=`pkg-config --modversion Qt5Gui`

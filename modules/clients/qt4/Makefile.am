@@ -13,10 +13,10 @@ libqt4im_nimf_la_CXXFLAGS = \
 	$(LIBNIMF_DEPS_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
-	$(QT4_GUI_CFLAGS) \
+	$(NIMF_QT4_DEPS_CFLAGS) \
 	-DQT_NO_KEYWORDS
 
-libqt4im_nimf_la_LDFLAGS = -avoid-version -module $(QT4_GUI_LIBS) \
+libqt4im_nimf_la_LDFLAGS = -avoid-version -module $(NIMF_QT4_DEPS_LIBS) \
 	                         $(LIBNIMF_DEPS_LIBS)
 libqt4im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
 
