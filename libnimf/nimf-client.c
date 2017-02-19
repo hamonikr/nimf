@@ -3,7 +3,7 @@
  * nimf-client.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -26,6 +26,7 @@
 #include "nimf-enum-types.h"
 #include <gio/gunixsocketaddress.h>
 #include <string.h>
+#include <unistd.h>
 
 enum
 {
@@ -264,10 +265,14 @@ nimf_client_constructed (GObject *object)
     gint            retry_limit = 4;
     gint            retry_count = 0;
     GSocket        *socket;
+    gchar          *addr;
     GError         *error = NULL;
 
-    address = g_unix_socket_address_new_with_type (NIMF_ADDRESS, -1,
+    addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", getuid ());
+    address = g_unix_socket_address_new_with_type (addr, -1,
                                                    G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+    g_free (addr);
+
     socket_client = g_socket_client_new ();
 
     for (retry_count = 0; retry_count < retry_limit; retry_count++)

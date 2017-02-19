@@ -3,4 +3,4 @@
   # Allow connecting to the nimf-daemon socket
   unix (send, receive, connect)
        type=stream
-       peer=(addr="@unix:abstract=nimf"),
+       peer=(addr="@unix:abstract=nimf-[0-9]*"),

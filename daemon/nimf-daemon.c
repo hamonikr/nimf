@@ -3,7 +3,7 @@
  * nimf-daemon.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -26,6 +26,7 @@
 #include <syslog.h>
 #include "nimf-private.h"
 #include <glib/gi18n.h>
+#include <unistd.h>
 
 gboolean syslog_initialized = FALSE;
 
@@ -36,6 +37,7 @@ main (int argc, char **argv)
 
   NimfServer *server;
   GMainLoop  *loop;
+  gchar      *addr;
   GError     *error = NULL;
 
   gboolean is_no_daemon = FALSE;
@@ -92,7 +94,9 @@ main (int argc, char **argv)
     }
   }
 
-  server = nimf_server_new (NIMF_ADDRESS, &error);
+  addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", getuid ());
+  server = nimf_server_new (addr, &error);
+  g_free (addr);
 
   if (server == NULL)
   {

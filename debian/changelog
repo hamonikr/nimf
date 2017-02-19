@@ -1,3 +1,11 @@
+nimf (2017.02.19) stable; urgency=medium
+
+  * Support multi-user environment (closes #37)
+  * Fixed email address, year
+  * Support for Compose using libxkbcommon (closes #33)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 19 Feb 2017 00:00:00 +0900
+
 nimf (2017.01.28) stable; urgency=medium
 
   * Added missing keysyms
