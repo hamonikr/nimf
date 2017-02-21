@@ -14,7 +14,8 @@ libqt5im_nimf_la_CXXFLAGS = \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_QT5_DEPS_CFLAGS) \
-	-I$(QT5_GUI_INCLUDE_PATH) \
+	-I$(QT5_CORE_PRIVATE_INCLUDE_PATH) \
+	-I$(QT5_GUI_PRIVATE_INCLUDE_PATH) \
 	-DQT_NO_KEYWORDS
 
 libqt5im_nimf_la_LDFLAGS = -avoid-version -module \
@@ -23,7 +24,8 @@ libqt5im_nimf_la_LDFLAGS = -avoid-version -module \
 libqt5im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
 
 im-nimf-qt5.moc: im-nimf-qt5.cpp
-	$(AM_V_GEN) $(QT5_MOC) -I $(QT5_GUI_INCLUDE_PATH) im-nimf-qt5.cpp \
+	$(AM_V_GEN) $(QT5_MOC) -I $(QT5_CORE_PRIVATE_INCLUDE_PATH) \
+	                       -I $(QT5_GUI_PRIVATE_INCLUDE_PATH) im-nimf-qt5.cpp \
 	                       -o im-nimf-qt5.moc
 
 install-data-hook:
