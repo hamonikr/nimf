@@ -21,8 +21,8 @@
 
 #include <QTextFormat>
 #include <QInputMethodEvent>
-#include <qpa/qplatforminputcontext.h>
-#include <qpa/qplatforminputcontextplugin_p.h>
+#include <QtGui/qpa/qplatforminputcontext.h>
+#include <QtGui/qpa/qplatforminputcontextplugin_p.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 #include <nimf.h>
