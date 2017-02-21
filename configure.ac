@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2017.02.19)
+AC_INIT(nimf, 2017.02.21)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -98,18 +98,20 @@ dnl  Qt
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_QT4_DEPS, [QtGui])
-PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Gui Qt5Widgets])
+PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets])
 
-QT5_GUI_VERSION=`pkg-config --modversion Qt5Gui`
-QT5_GUI_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Gui`
-QT5_GUI_INCLUDE_PATH=$QT5_GUI_INCLUDE_DIR/QtGui/$QT5_GUI_VERSION/QtGui
+QT5_VERSION=`pkg-config --modversion Qt5Core`
+QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
+QT5_CORE_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtCore/$QT5_VERSION
+QT5_GUI_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtGui/$QT5_VERSION
 
 AC_CHECK_FILES(
-   [$QT5_GUI_INCLUDE_PATH/qpa/qplatforminputcontext.h
-    $QT5_GUI_INCLUDE_PATH/qpa/qplatforminputcontextplugin_p.h], [],
+   [$QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
+    $QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontextplugin_p.h], [],
     AC_MSG_ERROR([Qt 5 base private development files are not found.]))
 
-AC_SUBST(QT5_GUI_INCLUDE_PATH)
+AC_SUBST(QT5_CORE_PRIVATE_INCLUDE_PATH)
+AC_SUBST(QT5_GUI_PRIVATE_INCLUDE_PATH)
 
 AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
               [`pkg-config --variable=host_bins Qt5Core`])
