@@ -1,3 +1,10 @@
+nimf (2017.02.21) stable; urgency=medium
+
+  * Fixed Qt 5.8.0 compile error (closes #38)
+  * Fixed nimf-types.h
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 21 Feb 2017 12:30:00 +0900
+
 nimf (2017.02.19) stable; urgency=medium
 
   * Support multi-user environment (closes #37)
