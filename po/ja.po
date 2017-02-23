@@ -1,0 +1,320 @@
+# Japanese translation for Nimf
+# Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+# This file is distributed under the same license as the Nimf project.
+# Hodong Kim <cogniti@gmail.com>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: nimf\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-22 02:06+0900\n"
+"PO-Revision-Date: 2017-02-23 10:00+0900\n"
+"Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
+"Language-Team: Hodong Kim <cogniti@gmail.com>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:131
+msgid "Do not daemonize"
+msgstr "デーモン化しません"
+
+#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:132
+msgid "Log debugging message"
+msgstr "デバッグメッセージを記録します。"
+
+#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:133
+msgid "Version"
+msgstr "バージョン"
+
+#: ../indicator/nimf-indicator.c:66 ../indicator/nimf-indicator.c:67
+#: ../indicator/nimf-indicator.c:68 ../indicator/nimf-indicator.c:85
+msgid "Hodong Kim <cogniti@gmail.com>"
+msgstr "キム・ホドン <cogniti@gmail.com>"
+
+#: ../indicator/nimf-indicator.c:79
+msgid "An indicator for Nimf"
+msgstr "ニンフのための表示器"
+
+#: ../indicator/nimf-indicator.c:80
+msgid "Copyright (c) 2015,2016 Hodong Kim"
+msgstr "著作権 (c) 2015,2016 キム・ホドン"
+
+#: ../indicator/nimf-indicator.c:84
+msgid "Nimf Indicator"
+msgstr "ニンフ表示器"
+
+#: ../indicator/nimf-indicator.c:88
+msgid "Website"
+msgstr "ウェブサイト"
+
+#: ../indicator/nimf-indicator.c:235
+msgid "Settings"
+msgstr "設定"
+
+#: ../indicator/nimf-indicator.c:236
+msgid "Donate"
+msgstr "寄付"
+
+#: ../indicator/nimf-indicator.c:237
+msgid "About"
+msgstr "情報"
+
+#: ../indicator/nimf-indicator.c:238
+msgid "Exit"
+msgstr "終了"
+
+#. ID
+#: ../modules/clients/gtk/im-nimf.c:576
+msgid "Nimf"
+msgstr "ニンフ"
+
+#: ../modules/engines/nimf-rime/nimf-rime.c:358
+msgid "Rime"
+msgstr "ライム"
+
+#: ../settings/nimf-settings.c:458
+#, c-format
+msgid "Please report a bug. (keyval: %d)"
+msgstr "バグを報告してください。 (keyval: %d)"
+
+#: ../settings/nimf-settings.c:519
+msgid "Press key combination"
+msgstr "キーの組み合わせを押してください"
+
+#: ../settings/nimf-settings.c:522
+msgid "_OK"
+msgstr "よし (_O)"
+
+#: ../settings/nimf-settings.c:523
+msgid "_Cancel"
+msgstr "キャンセル (_C)"
+
+#: ../settings/nimf-settings.c:535
+msgid "Click here and then press key combination"
+msgstr "ここをクリックして、キーの組み合わせを押してください"
+
+#: ../settings/nimf-settings.c:803
+msgid "Nimf Settings"
+msgstr "ニンフ設定"
+
+#: ../libnimf/org.nimf.gschema.xml.h:1
+msgid "'Nimf'"
+msgstr "'ニンフ'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:2
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:2
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:2
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
+msgid "schema name for nimf-settings"
+msgstr "nimf-settingsのためのスキーマ名"
+
+#: ../libnimf/org.nimf.gschema.xml.h:3
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:3
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:3
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
+msgid "This key is intended for nimf-settings."
+msgstr "このキーは、nimf-settingsのために設計されて。"
+
+#: ../libnimf/org.nimf.gschema.xml.h:4
+msgid "Hotkeys for switching input method engine"
+msgstr "入力エンジンを切り替えるためのホットキー"
+
+#: ../libnimf/org.nimf.gschema.xml.h:5
+msgid "Use singleton mode"
+msgstr "シングルトンモードを使用します"
+
+#: ../libnimf/org.nimf.gschema.xml.h:6
+msgid "Use singleton"
+msgstr "シングルトンモードを使用します"
+
+#: ../libnimf/org.nimf.gschema.xml.h:7
+msgid "'Clients'"
+msgstr "'クライアント'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:8
+msgid "'Engines'"
+msgstr "'エンジン'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:9
+msgid "Default language engine"
+msgstr "デフォルト言語エンジン"
+
+#: ../libnimf/org.nimf.gschema.xml.h:10
+msgid "Default language engine on startup"
+msgstr "起動時のデフォルト言語エンジン"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:1
+msgid "'GTK+'"
+msgstr ""
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:4
+msgid "hooking gdk key events"
+msgstr "gdkキーイベントをフックする"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:5
+msgid ""
+"filter all key events before delivering them normally, which avoids bugs of "
+"many applications"
+msgstr "すべてのキーイベントを送出する前に、それらをろ過します。"
+"これは、複数のアプリケーションのバグを回避します。"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
+msgid "Reset when clicking the mouse button"
+msgstr "マウスボタンをクリックしたときにリセットします"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:7
+msgid "Always use preedit string"
+msgstr "組み合わせ文字列を常に使用します"
+
+#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
+msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
+msgstr "gtk_im_context_set_use_preedit()を無視するか否かを決定します"
+
+#: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
+msgid "'Qt5'"
+msgstr ""
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:1
+msgid "'Japanese (anthy)'"
+msgstr "'日本語 (anthy)'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:4
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:4
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:4
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:4
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:4
+msgid "Active engine"
+msgstr "エンジン有効に"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:5
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:5
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:5
+msgid "The engine will be loaded on startup if available. Restart required"
+msgstr "もし可能であればこのエンジンは、起動時にロードされます。再起動が必要になります。"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:6
+msgid "Trigger keys for switching Japanese / System"
+msgstr "日本語/システム切り替えのためのトリガーキー"
+
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
+msgid "'Chinese (chewing)'"
+msgstr "'中国語 (chewing)'"
+
+#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:6
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:6
+msgid "Trigger keys for switching Chinese / System"
+msgstr "中国語/システムの切り替え用のトリガーキー"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
+msgid "'Korean (libhangul)'"
+msgstr "'韓国語 (libhangul)'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
+msgid "Korean keyboard layout"
+msgstr "韓国語のキーボード配列"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
+msgid "'Dubeolsik'"
+msgstr "'2ボル式'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
+msgid "key value for UI l10n"
+msgstr "UI l10nのためのキー値"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
+msgid "'Dubeolsik Yetgeul'"
+msgstr "'2ボル式古文'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:10
+msgid "'Ahnmatae'"
+msgstr "'アンマテ'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
+msgid "'Sebeolsik Final'"
+msgstr "'3ボル式最終'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
+msgid "'Sebeolsik 390'"
+msgstr "'3ボル式390'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
+msgid "'Sebeolsik Noshift'"
+msgstr "'3ボル式純下'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:14
+msgid "'Sebeolsik Yetgeul'"
+msgstr "'3ボル式古文'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:15
+msgid "'Sebeolsik Dubeol Layout'"
+msgstr "'3ボル式二着配列'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:16
+msgid "'Romaja'"
+msgstr "'ローマ字'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:17
+msgid "Trigger keys for switching Korean / System"
+msgstr "韓国語/システムの切り替え用のトリガーキー"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:18
+msgid "Binding to change Korean / System"
+msgstr "韓国/システムを変更するためのバインディング"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:19
+msgid "hotkey for hanja"
+msgstr "漢字のためのホットキー"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:20
+msgid "Binding to Hanja key"
+msgstr "漢字キーのバインディング"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:21
+msgid "Use a rule composing double consonants"
+msgstr "二重子音組み合わせルールを使用します"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:22
+msgid "compose a double consonant on pressing same consonant twice"
+msgstr "同じ子音を二度押すと、二重子音を組み合わせます"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:23
+msgid "auto-correction in Dubeolsik"
+msgstr "2ボル式で自動校正"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:24
+msgid "Ignore reset() in commit callback"
+msgstr "commitコールバックでreset()を無視します"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
+msgid "Ignore reset() called by commit callback in application"
+msgstr "アプリケーションでcommitコールバックが呼び出されるreset()を無視します"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
+msgid "'Chinese (rime)'"
+msgstr "'中国語 (rime)'"
+
+#: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
+msgid "'Chinese (sunpinyin)'"
+msgstr "'中国語 (sunpinyin)'"
+
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:1
+msgid "'System Keyboard'"
+msgstr "'システムキーボード'"
