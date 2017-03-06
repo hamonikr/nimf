@@ -52,7 +52,7 @@ static void on_donate_menu (GtkWidget *widget,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_spawn_command_line_async ("sensible-browser https://cogniti.github.io/nimf/donate", NULL);
+  g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/donate", NULL);
 }
 
 static void on_about_menu (GtkWidget *widget,
