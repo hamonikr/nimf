@@ -53,16 +53,14 @@ struct _NimfServer
 
   GMainContext    *main_context;
   GHashTable      *modules;
+  GHashTable      *services;
   GList           *instances;
   GSocketListener *listener;
   GHashTable      *connections;
-  GHashTable      *xim_contexts;
   GHashTable      *agents;
 
   NimfCandidate   *candidate;
-  GSource         *xevent_source;
   guint16          next_id;
-  guint16          next_icid;
 
   gchar           *address;
   gboolean         active;

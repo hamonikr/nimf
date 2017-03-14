@@ -4,20 +4,26 @@ synchronously with the Nimf server via a unix socket.
 
 Nimf provides:
  * Input Method Server:
-    * nimf-daemon including IMdkit(XIM)
+    * nimf-daemon
  * Language Engines:
-    * Chinese (in alpha stage, based on sunpinyin, libchewing, librime)
-    * Japanese (in alpha stage, based on anthy)
+    * Chinese (alpha stage, based on sunpinyin, libchewing, librime)
+    * Japanese (alpha stage, based on anthy)
     * Korean (based on libhangul)
+ * Server Modules:
+    * XIM (based on IMdkit)
  * Client Modules:
     * GTK+2, GTK+3, Qt4, Qt5
  * Indicator:
     * nimf-indicator for Unity, GNOME Panel, KDE
  * Settings tool to configure the Nimf:
     * nimf-settings
- * Development files
+ * Development files:
+    * C library and headers
+    * GObject introspection data file for language bindings
 
-Project Homepage: https://github.com/cogniti/nimf
+Project Homepage:
+ * https://github.com/cogniti/nimf
+ * https://cogniti.github.io/nimf
 
 
 License
@@ -83,38 +89,6 @@ Troubleshoot
 
 * Failed to load shared library
   Check /etc/ld.so.conf and /etc/ld.so.conf.d/ for /usr/local/lib path
-
-
-Architecture
-------------
-
-      +- im modules --+       +-- each process ---+   +- a process --+
-      | gtk im module |       |  nimf-indicator   |   |   X server   |
-      | qt  im module |       +-------------------+   +--------------+
-      +---------------+                |                    ^ |
-              | calls                  | calls              | |
-     +-----------------+      +--------------------+        | |
-     | nimf IM library |      | nimf agent library |        | | communicates
-     +-----------------+      +--------------------+        | |
-             ^ |                      ^ |                   | |
-             | |   communicates       | |                   | |
-             | |   via Unix Socket    | |                   | |
-             | v                      | v                   | v
-          +---------------------- a process ----------------------+
-          |               nimf-daemon (including XIM)             |
-          +-------------------------------------------------------+
-                          | calls                  | create instance
-                          | an instance            | (not module yet)
-                +---------------+            +------------------+
-                | engine module |   calls    | candidate module |
-                |   interface   | ---------> |    interface     |
-                +---------------+            +------------------+
-                  | (alphabetically listed)    |
-                  +- nimf-anthy                +- nimf-candidate (gtk3)
-                  +- nimf-chewing
-                  +- nimf-libhangul
-                  +- nimf-rime
-                  +- nimf-sunpinyin
 
 
 Debugging

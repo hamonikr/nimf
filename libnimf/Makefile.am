@@ -59,6 +59,8 @@ libnimf_la_SOURCES = \
 	nimf-connection.h \
 	nimf-server.c \
 	nimf-server.h \
+	nimf-service.c \
+	nimf-service.h \
 	$(BUILT_SOURCES) \
 	$(IMdkit_SOURCES) \
 	$(NULL)
@@ -70,6 +72,7 @@ libnimf_la_CFLAGS = \
 	-DNIMF_COMPILATION \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
+	-DNIMF_SERVICE_MODULE_DIR=\"$(libdir)/nimf/modules/services\" \
 	$(LIBNIMF_DEPS_CFLAGS)
 
 libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
@@ -90,6 +93,7 @@ nimfinclude_HEADERS = \
 	nimf-message.h \
 	nimf-private.h \
 	nimf-server.h \
+	nimf-service.h \
 	nimf-types.h
 
 nimf-marshalers.h: nimf-marshalers.list
@@ -137,13 +141,13 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = nimf-agent.c nimf-agent.h
 
-Nimf-2017.02.gir: libnimf.la
-Nimf_2017_02_gir_INCLUDES = GObject-2.0
-Nimf_2017_02_gir_CFLAGS   = $(libnimf_la_CFLAGS) -I$(top_srcdir)
-Nimf_2017_02_gir_LIBS     = libnimf.la
-Nimf_2017_02_gir_FILES    = $(introspection_sources)
+Nimf-2017.03.gir: libnimf.la
+Nimf_2017_03_gir_INCLUDES = GObject-2.0
+Nimf_2017_03_gir_CFLAGS   = $(libnimf_la_CFLAGS) -I$(top_srcdir)
+Nimf_2017_03_gir_LIBS     = libnimf.la
+Nimf_2017_03_gir_FILES    = $(introspection_sources)
 
-INTROSPECTION_GIRS += Nimf-2017.02.gir
+INTROSPECTION_GIRS += Nimf-2017.03.gir
 
 girdir   = $(INTROSPECTION_GIRDIR)
 gir_DATA = $(INTROSPECTION_GIRS)

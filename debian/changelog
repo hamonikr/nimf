@@ -1,3 +1,11 @@
+nimf (2017.03.15) stable; urgency=medium
+
+  * Modulized XIM (related issue #25)
+  * Added Japanese translation
+  * Added Chinese translation
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 15 Mar 2017 00:25:52 +0900
+
 nimf (2017.02.21) stable; urgency=medium
 
   * Fixed Qt 5.8.0 compile error (closes #38)
@@ -255,7 +263,7 @@ dasom (1.0.1) stable; urgency=medium
     - f9f9f9 (2.5% gray) --> f2f2f2 ( 5% gray)
     - ffffff (black)     --> 1a1a1a (90% gray)
 
- -- Hodong Kim <hodong@cogno.org>  Sun, 25 Oct 2015 00:37:29 +0900
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 25 Oct 2015 00:37:29 +0900
 
 dasom (1.0) stable; urgency=medium
 
@@ -267,4 +275,4 @@ dasom (1.0) stable; urgency=medium
     - IM Modules for GTK+2, GTK+3, Qt4, Qt5
     - Indicators for GNOME Shell, Unity, KDE, GNOME panel
 
- -- Hodong Kim <hodong@cogno.org>  Fri, 09 Oct 2015 01:21:10 +0900
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 09 Oct 2015 01:21:10 +0900

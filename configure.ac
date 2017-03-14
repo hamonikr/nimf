@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2017.02.21)
+AC_INIT(nimf, 2017.03.15)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -189,6 +189,12 @@ if test "x$RSVG_CONVERT" = "xno"; then
 fi
 
 dnl ***************************************************************************
+dnl nimf-xim
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES])
+
+dnl ***************************************************************************
 dnl nimf-indicator
 dnl ***************************************************************************
 
@@ -246,6 +252,8 @@ AC_OUTPUT([
   modules/engines/nimf-rime/Makefile
   modules/engines/nimf-sunpinyin/Makefile
   modules/engines/nimf-system-keyboard/Makefile
+  modules/services/Makefile
+  modules/services/xim/Makefile
   po/Makefile.in
   settings/Makefile
 ])
