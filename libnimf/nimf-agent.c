@@ -3,7 +3,7 @@
  * nimf-agent.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -60,7 +60,7 @@ nimf_agent_new ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   return g_object_new (NIMF_TYPE_AGENT,
-                       "context-type", NIMF_CONTEXT_NIMF_AGENT, NULL);
+                       "service-im-type", NIMF_SERVICE_IM_NIMF_AGENT, NULL);
 }
 
 void

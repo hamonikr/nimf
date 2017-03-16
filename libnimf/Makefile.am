@@ -7,34 +7,10 @@ BUILT_SOURCES = \
 	nimf-marshalers.c \
 	$(NULL)
 
-IMdkit_SOURCES = \
-	IMdkit/FrameMgr.h \
-	IMdkit/IMdkit.h \
-	IMdkit/Xi18n.h \
-	IMdkit/Xi18nX.h \
-	IMdkit/XimFunc.h \
-	IMdkit/XimProto.h \
-	IMdkit/FrameMgr.c \
-	IMdkit/i18nAttr.c \
-	IMdkit/i18nClbk.c \
-	IMdkit/i18nIc.c \
-	IMdkit/i18nIMProto.c \
-	IMdkit/i18nMethod.c \
-	IMdkit/i18nOffsetCache.c \
-	IMdkit/i18nPtHdr.c \
-	IMdkit/i18nUtil.c \
-	IMdkit/i18nX.c \
-	IMdkit/IMConn.c \
-	IMdkit/IMMethod.c \
-	IMdkit/IMValues.c \
-	$(NULL)
-
 libnimf_la_SOURCES = \
 	nimf.h \
 	nimf-client.h \
 	nimf-client.c \
-	nimf-context.h \
-	nimf-context.c \
 	nimf-private.h \
 	nimf-private.c \
 	nimf-im.c \
@@ -59,10 +35,13 @@ libnimf_la_SOURCES = \
 	nimf-connection.h \
 	nimf-server.c \
 	nimf-server.h \
+	nimf-server-im.c \
+	nimf-server-im.h \
 	nimf-service.c \
 	nimf-service.h \
+	nimf-service-im.c \
+	nimf-service-im.h \
 	$(BUILT_SOURCES) \
-	$(IMdkit_SOURCES) \
 	$(NULL)
 
 libnimf_la_CFLAGS = \
@@ -84,7 +63,6 @@ nimfinclude_HEADERS = \
 	nimf-candidate.h \
 	nimf-client.h \
 	nimf-connection.h \
-	nimf-context.h \
 	nimf-engine.h \
 	nimf-enum-types.h \
 	nimf-events.h \
@@ -94,6 +72,7 @@ nimfinclude_HEADERS = \
 	nimf-private.h \
 	nimf-server.h \
 	nimf-service.h \
+	nimf-service-im.h \
 	nimf-types.h
 
 nimf-marshalers.h: nimf-marshalers.list

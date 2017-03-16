@@ -27,7 +27,8 @@
 #include "nimf-key-syms.h"
 #include "nimf-candidate.h"
 #include "nimf-types.h"
-#include "nimf-context.h"
+#include "nimf-service-im.h"
+#include "nimf-server-im.h"
 #include <gio/gunixsocketaddress.h>
 #include <string.h>
 
@@ -75,56 +76,54 @@ on_incoming_message_nimf (GSocket        *socket,
     return G_SOURCE_CONTINUE;
   }
 
-  NimfContext *context;
-  guint16      icid = message->header->icid;
+  NimfServerIM *im;
+  guint16       icid = message->header->icid;
 
-  context = g_hash_table_lookup (connection->contexts,
-                                 GUINT_TO_POINTER (icid));
+  im = g_hash_table_lookup (connection->ims, GUINT_TO_POINTER (icid));
 
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      context = nimf_context_new (*(NimfContextType *) message->data,
-                                  connection, connection->server, NULL);
-      context->icid = icid;
-      g_hash_table_insert (connection->contexts,
-                           GUINT_TO_POINTER (icid), context);
+      im = nimf_server_im_new (*(NimfServiceIMType *) message->data,
+                               connection, connection->server, NULL);
+      NIMF_SERVICE_IM (im)->icid = icid;
+      g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
 
-      if (context->type == NIMF_CONTEXT_NIMF_AGENT)
+      if (NIMF_SERVICE_IM (im)->type == NIMF_SERVICE_IM_NIMF_AGENT)
         g_hash_table_insert (connection->server->agents,
-                             GUINT_TO_POINTER (icid), context);
+                             GUINT_TO_POINTER (icid), im);
 
       nimf_send_message (socket, icid, NIMF_MESSAGE_CREATE_CONTEXT_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_DESTROY_CONTEXT:
-      if (context && context->type == NIMF_CONTEXT_NIMF_AGENT)
+      if (NIMF_SERVICE_IM (im) && NIMF_SERVICE_IM (im)->type == NIMF_SERVICE_IM_NIMF_AGENT)
         g_hash_table_remove (connection->server->agents,
                              GUINT_TO_POINTER (icid));
 
-      g_hash_table_remove (connection->contexts, GUINT_TO_POINTER (icid));
+      g_hash_table_remove (connection->ims, GUINT_TO_POINTER (icid));
       nimf_send_message (socket, icid, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_FILTER_EVENT:
       nimf_message_ref (message);
-      retval = nimf_context_filter_event (context, (NimfEvent *) message->data);
+      retval = nimf_service_im_filter_event (NIMF_SERVICE_IM (im), (NimfEvent *) message->data);
       nimf_message_unref (message);
       nimf_send_message (socket, icid, NIMF_MESSAGE_FILTER_EVENT_REPLY,
                          &retval, sizeof (gboolean), NULL);
       break;
     case NIMF_MESSAGE_RESET:
-      nimf_context_reset (context);
+      nimf_service_im_reset (NIMF_SERVICE_IM (im));
       nimf_send_message (socket, icid, NIMF_MESSAGE_RESET_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_FOCUS_IN:
-      nimf_context_focus_in (context);
+      nimf_service_im_focus_in (NIMF_SERVICE_IM (im));
       nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_IN_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_FOCUS_OUT:
-      nimf_context_focus_out (context);
+      nimf_service_im_focus_out (NIMF_SERVICE_IM (im));
       nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_OUT_REPLY,
                          NULL, 0, NULL);
       break;
@@ -137,7 +136,7 @@ on_incoming_message_nimf (GSocket        *socket,
         gint   str_len      = data_len - 1 - 2 * sizeof (gint);
         gint   cursor_index = *(gint *) (data + data_len - sizeof (gint));
 
-        nimf_context_set_surrounding (context, data, str_len, cursor_index);
+        nimf_service_im_set_surrounding (NIMF_SERVICE_IM (im), data, str_len, cursor_index);
         nimf_message_unref (message);
         nimf_send_message (socket, icid,
                            NIMF_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
@@ -149,7 +148,7 @@ on_incoming_message_nimf (GSocket        *socket,
         gint   cursor_index;
         gint   str_len = 0;
 
-        retval = nimf_context_get_surrounding (context, &data, &cursor_index);
+        retval = nimf_service_im_get_surrounding (NIMF_SERVICE_IM (im), &data, &cursor_index);
         str_len = strlen (data);
         data = g_realloc (data, str_len + 1 + sizeof (gint) + sizeof (gboolean));
         *(gint *) (data + str_len + 1) = cursor_index;
@@ -164,15 +163,14 @@ on_incoming_message_nimf (GSocket        *socket,
       break;
     case NIMF_MESSAGE_SET_CURSOR_LOCATION:
       nimf_message_ref (message);
-      nimf_context_set_cursor_location (context,
-                                        (NimfRectangle *) message->data);
+      nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (im), (NimfRectangle *) message->data);
       nimf_message_unref (message);
       nimf_send_message (socket, icid, NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_SET_USE_PREEDIT:
       nimf_message_ref (message);
-      nimf_context_set_use_preedit (context, *(gboolean *) message->data);
+      nimf_service_im_set_use_preedit (NIMF_SERVICE_IM (im), *(gboolean *) message->data);
       nimf_message_unref (message);
       nimf_send_message (socket, icid, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
                          NULL, 0, NULL);

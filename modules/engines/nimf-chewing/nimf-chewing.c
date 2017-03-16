@@ -3,7 +3,7 @@
  * nimf-chewing.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -54,8 +54,8 @@ struct _NimfChewingClass
 G_DEFINE_DYNAMIC_TYPE (NimfChewing, nimf_chewing, NIMF_TYPE_ENGINE);
 
 void
-nimf_chewing_reset (NimfEngine  *engine,
-                    NimfContext *target)
+nimf_chewing_reset (NimfEngine    *engine,
+                    NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -78,15 +78,15 @@ nimf_chewing_reset (NimfEngine  *engine,
 }
 
 void
-nimf_chewing_focus_in (NimfEngine  *engine,
-                       NimfContext *context)
+nimf_chewing_focus_in (NimfEngine    *engine,
+                       NimfServiceIM *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
-nimf_chewing_focus_out (NimfEngine  *engine,
-                        NimfContext *target)
+nimf_chewing_focus_out (NimfEngine    *engine,
+                        NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -94,8 +94,8 @@ nimf_chewing_focus_out (NimfEngine  *engine,
   nimf_chewing_reset (engine, target);
 }
 
-static void nimf_chewing_update (NimfEngine  *engine,
-                                 NimfContext *target)
+static void nimf_chewing_update (NimfEngine    *engine,
+                                 NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -169,10 +169,10 @@ static void nimf_chewing_update (NimfEngine  *engine,
 }
 
 static void
-on_candidate_clicked (NimfEngine  *engine,
-                      NimfContext *target,
-                      gchar       *text,
-                      gint         index)
+on_candidate_clicked (NimfEngine    *engine,
+                      NimfServiceIM *target,
+                      gchar         *text,
+                      gint           index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -183,9 +183,9 @@ on_candidate_clicked (NimfEngine  *engine,
 }
 
 static void
-on_candidate_scrolled (NimfEngine  *engine,
-                       NimfContext *target,
-                       gdouble      value)
+on_candidate_scrolled (NimfEngine    *engine,
+                       NimfServiceIM *target,
+                       gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -210,9 +210,9 @@ on_candidate_scrolled (NimfEngine  *engine,
 }
 
 gboolean
-nimf_chewing_filter_event (NimfEngine  *engine,
-                           NimfContext *target,
-                           NimfEvent   *event)
+nimf_chewing_filter_event (NimfEngine    *engine,
+                           NimfServiceIM *target,
+                           NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

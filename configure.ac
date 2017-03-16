@@ -41,7 +41,7 @@ AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 x11 xkbcommon >= 0.5.0"
+LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 gobject-introspection-1.0 xkbcommon >= 0.5.0"
 LIBNIMF_PRIVATE="gtk+-3.0"
 AC_SUBST(LIBNIMF_REQUIRES)
 AC_SUBST(LIBNIMF_PRIVATE)
@@ -192,7 +192,7 @@ dnl ***************************************************************************
 dnl nimf-xim
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)
 
 dnl ***************************************************************************
 dnl nimf-indicator

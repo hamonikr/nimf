@@ -3,7 +3,7 @@
  * nimf-sunpinyin.cpp
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -101,10 +101,10 @@ NimfWinHandler::commit(const TWCHAR* wstr)
 }
 
 static void
-nimf_sunpinyin_update_preedit (NimfEngine  *engine,
-                               NimfContext *target,
-                               gchar       *new_preedit,
-                               int          cursor_pos)
+nimf_sunpinyin_update_preedit (NimfEngine    *engine,
+                               NimfServiceIM *target,
+                               gchar         *new_preedit,
+                               int            cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -242,8 +242,8 @@ nimf_sunpinyin_get_icon_name (NimfEngine *engine)
 }
 
 static void
-nimf_sunpinyin_update_page (NimfEngine  *engine,
-                            NimfContext *target)
+nimf_sunpinyin_update_page (NimfEngine    *engine,
+                            NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -271,8 +271,8 @@ nimf_sunpinyin_update_page (NimfEngine  *engine,
                                   pinyin->current_page, pinyin->n_pages, 10);
 }
 
-void nimf_sunpinyin_update (NimfEngine  *engine,
-                            NimfContext *target)
+void nimf_sunpinyin_update (NimfEngine    *engine,
+                            NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -318,8 +318,8 @@ void nimf_sunpinyin_update (NimfEngine  *engine,
 }
 
 void
-nimf_sunpinyin_reset (NimfEngine  *engine,
-                      NimfContext *target)
+nimf_sunpinyin_reset (NimfEngine    *engine,
+                      NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -332,8 +332,8 @@ nimf_sunpinyin_reset (NimfEngine  *engine,
 }
 
 void
-nimf_sunpinyin_focus_in (NimfEngine  *engine,
-                         NimfContext *context)
+nimf_sunpinyin_focus_in (NimfEngine    *engine,
+                         NimfServiceIM *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -352,8 +352,8 @@ nimf_sunpinyin_focus_in (NimfEngine  *engine,
 }
 
 void
-nimf_sunpinyin_focus_out (NimfEngine  *engine,
-                          NimfContext *target)
+nimf_sunpinyin_focus_out (NimfEngine    *engine,
+                          NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -371,7 +371,7 @@ nimf_sunpinyin_get_current_page (NimfEngine *engine)
 }
 
 static gboolean
-nimf_sunpinyin_page_up (NimfEngine *engine, NimfContext *target)
+nimf_sunpinyin_page_up (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -392,7 +392,7 @@ nimf_sunpinyin_page_up (NimfEngine *engine, NimfContext *target)
 }
 
 static gboolean
-nimf_sunpinyin_page_down (NimfEngine *engine, NimfContext *target)
+nimf_sunpinyin_page_down (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -413,7 +413,7 @@ nimf_sunpinyin_page_down (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-nimf_sunpinyin_page_home (NimfEngine *engine, NimfContext *target)
+nimf_sunpinyin_page_home (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -432,7 +432,7 @@ nimf_sunpinyin_page_home (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-nimf_sunpinyin_page_end (NimfEngine *engine, NimfContext *target)
+nimf_sunpinyin_page_end (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -451,9 +451,9 @@ nimf_sunpinyin_page_end (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-on_candidate_scrolled (NimfEngine  *engine,
-                       NimfContext *target,
-                       gdouble      value)
+on_candidate_scrolled (NimfEngine    *engine,
+                       NimfServiceIM *target,
+                       gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -476,9 +476,9 @@ on_candidate_scrolled (NimfEngine  *engine,
 }
 
 gboolean
-nimf_sunpinyin_filter_event (NimfEngine  *engine,
-                             NimfContext *target,
-                             NimfEvent   *event)
+nimf_sunpinyin_filter_event (NimfEngine    *engine,
+                             NimfServiceIM *target,
+                             NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -550,10 +550,10 @@ nimf_sunpinyin_filter_event (NimfEngine  *engine,
 }
 
 static void
-on_candidate_clicked (NimfEngine  *engine,
-                      NimfContext *target,
-                      gchar       *text,
-                      gint         index)
+on_candidate_clicked (NimfEngine    *engine,
+                      NimfServiceIM *target,
+                      gchar         *text,
+                      gint           index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

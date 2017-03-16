@@ -3,7 +3,7 @@
  * nimf-anthy.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -67,10 +67,10 @@ static GHashTable *nimf_anthy_romaji = NULL;;
 
 G_DEFINE_DYNAMIC_TYPE (NimfAnthy, nimf_anthy, NIMF_TYPE_ENGINE);
 
-static void nimf_anthy_update_preedit (NimfEngine  *engine,
-                                       NimfContext *target,
-                                       const gchar *new_preedit,
-                                       gint         cursor_pos)
+static void nimf_anthy_update_preedit (NimfEngine    *engine,
+                                       NimfServiceIM *target,
+                                       const gchar   *new_preedit,
+                                       gint           cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -94,8 +94,8 @@ static void nimf_anthy_update_preedit (NimfEngine  *engine,
   }
 }
 
-void nimf_anthy_reset (NimfEngine  *engine,
-                       NimfContext *target)
+void nimf_anthy_reset (NimfEngine    *engine,
+                       NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -126,15 +126,15 @@ void nimf_anthy_reset (NimfEngine  *engine,
 }
 
 void
-nimf_anthy_focus_in (NimfEngine  *engine,
-                     NimfContext *context)
+nimf_anthy_focus_in (NimfEngine    *engine,
+                     NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
-nimf_anthy_focus_out (NimfEngine  *engine,
-                      NimfContext *target)
+nimf_anthy_focus_out (NimfEngine    *engine,
+                      NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -151,10 +151,10 @@ nimf_anthy_get_current_page (NimfEngine *engine)
 }
 
 static void
-on_candidate_clicked (NimfEngine  *engine,
-                      NimfContext *target,
-                      gchar       *text,
-                      gint         index)
+on_candidate_clicked (NimfEngine    *engine,
+                      NimfServiceIM *target,
+                      gchar         *text,
+                      gint           index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -191,8 +191,8 @@ on_candidate_clicked (NimfEngine  *engine,
 }
 
 static void
-nimf_anthy_update_page (NimfEngine  *engine,
-                        NimfContext *target)
+nimf_anthy_update_page (NimfEngine    *engine,
+                        NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -218,7 +218,7 @@ nimf_anthy_update_page (NimfEngine  *engine,
 }
 
 static gboolean
-nimf_anthy_page_up (NimfEngine *engine, NimfContext *target)
+nimf_anthy_page_up (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -238,7 +238,7 @@ nimf_anthy_page_up (NimfEngine *engine, NimfContext *target)
 }
 
 static gboolean
-nimf_anthy_page_down (NimfEngine *engine, NimfContext *target)
+nimf_anthy_page_down (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -258,7 +258,7 @@ nimf_anthy_page_down (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-nimf_anthy_page_home (NimfEngine *engine, NimfContext *target)
+nimf_anthy_page_home (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -276,7 +276,7 @@ nimf_anthy_page_home (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-nimf_anthy_page_end (NimfEngine *engine, NimfContext *target)
+nimf_anthy_page_end (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -294,9 +294,9 @@ nimf_anthy_page_end (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-on_candidate_scrolled (NimfEngine  *engine,
-                       NimfContext *target,
-                       gdouble      value)
+on_candidate_scrolled (NimfEngine    *engine,
+                       NimfServiceIM *target,
+                       gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -319,9 +319,9 @@ on_candidate_scrolled (NimfEngine  *engine,
 }
 
 static void
-nimf_anthy_update_candidate (NimfEngine  *engine,
-                             NimfContext *target,
-                             NimfEvent   *event)
+nimf_anthy_update_candidate (NimfEngine    *engine,
+                             NimfServiceIM *target,
+                             NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -361,9 +361,9 @@ nimf_anthy_update_candidate (NimfEngine  *engine,
 }
 
 static gboolean
-nimf_anthy_romaji_filter_event (NimfEngine  *engine,
-                                NimfContext *target,
-                                NimfEvent   *event)
+nimf_anthy_romaji_filter_event (NimfEngine    *engine,
+                                NimfServiceIM *target,
+                                NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -452,9 +452,9 @@ nimf_anthy_romaji_filter_event (NimfEngine  *engine,
 }
 
 gboolean
-nimf_anthy_filter_event (NimfEngine  *engine,
-                         NimfContext *target,
-                         NimfEvent   *event)
+nimf_anthy_filter_event (NimfEngine    *engine,
+                         NimfServiceIM *target,
+                         NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

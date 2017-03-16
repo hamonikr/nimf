@@ -3,7 +3,7 @@
  * nimf-connection.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -23,10 +23,8 @@
 #include "nimf-events.h"
 #include "nimf-marshalers.h"
 #include "nimf-private.h"
-#include "nimf-context.h"
+#include "nimf-service-im.h"
 #include <string.h>
-#include <X11/Xutil.h>
-#include "IMdkit/Xi18n.h"
 
 G_DEFINE_TYPE (NimfConnection, nimf_connection, G_TYPE_OBJECT);
 
@@ -37,13 +35,13 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GHashTableIter iter;
-  gpointer       context;
+  gpointer       im;
 
-  g_hash_table_iter_init (&iter, connection->contexts);
+  g_hash_table_iter_init (&iter, connection->ims);
 
-  while (g_hash_table_iter_next (&iter, NULL, &context))
-    if (((NimfContext *) context)->type != NIMF_CONTEXT_NIMF_AGENT)
-      nimf_context_set_engine_by_id (context, engine_id);
+  while (g_hash_table_iter_next (&iter, NULL, &im))
+    if (((NimfServiceIM *) im)->type != NIMF_SERVICE_IM_NIMF_AGENT)
+      nimf_service_im_set_engine_by_id (im, engine_id);
 }
 
 static void
@@ -52,9 +50,9 @@ nimf_connection_init (NimfConnection *connection)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   connection->result = g_slice_new0 (NimfResult);
-  connection->contexts = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                NULL,
-                                                (GDestroyNotify) nimf_context_free);
+  connection->ims    = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                              NULL,
+                                              (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -75,7 +73,7 @@ nimf_connection_finalize (GObject *object)
     g_object_unref (connection->socket_connection);
 
   g_slice_free (NimfResult, connection->result);
-  g_hash_table_unref (connection->contexts);
+  g_hash_table_unref (connection->ims);
 
   G_OBJECT_CLASS (nimf_connection_parent_class)->finalize (object);
 }

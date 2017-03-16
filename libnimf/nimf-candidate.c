@@ -28,12 +28,12 @@ struct _NimfCandidate
 {
   GObject parent_instance;
 
-  NimfContext *target;
-  GtkWidget   *window;
-  GtkWidget   *entry;
-  GtkWidget   *treeview;
-  GtkWidget   *scrollbar;
-  gint         cell_height;
+  NimfServiceIM *target;
+  GtkWidget     *window;
+  GtkWidget     *entry;
+  GtkWidget     *treeview;
+  GtkWidget     *scrollbar;
+  gint           cell_height;
 };
 
 struct _NimfCandidateClass
@@ -244,7 +244,7 @@ nimf_candidate_class_init (NimfCandidateClass *class)
 }
 
 void nimf_candidate_clear (NimfCandidate *candidate,
-                           NimfContext   *target)
+                           NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -289,7 +289,7 @@ void nimf_candidate_set_auxiliary_text (NimfCandidate *candidate,
 }
 
 void nimf_candidate_set_page_values (NimfCandidate *candidate,
-                                     NimfContext   *target,
+                                     NimfServiceIM *target,
                                      gint           page_index,
                                      gint           n_pages,
                                      gint           page_size)
@@ -310,7 +310,7 @@ void nimf_candidate_set_page_values (NimfCandidate *candidate,
 }
 
 void nimf_candidate_show_window (NimfCandidate *candidate,
-                                 NimfContext   *target,
+                                 NimfServiceIM *target,
                                  gboolean       show_entry)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

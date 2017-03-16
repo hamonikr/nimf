@@ -32,6 +32,7 @@
 #include "nimf-im.h"
 #include "nimf-key-syms.h"
 #include "nimf-service.h"
+#include "nimf-service-im.h"
 #include "nimf-types.h"
 
 #undef __NIMF_H_INSIDE__

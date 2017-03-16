@@ -3,7 +3,7 @@
  * nimf-libhangul.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -126,9 +126,9 @@ guint nimf_event_keycode_to_qwerty_keyval (const NimfEvent *event)
 }
 
 static void
-nimf_libhangul_update_preedit (NimfEngine  *engine,
-                               NimfContext *target,
-                               gchar       *new_preedit)
+nimf_libhangul_update_preedit (NimfEngine    *engine,
+                               NimfServiceIM *target,
+                               gchar         *new_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -163,9 +163,9 @@ nimf_libhangul_update_preedit (NimfEngine  *engine,
 }
 
 void
-nimf_libhangul_emit_commit (NimfEngine  *engine,
-                            NimfContext *target,
-                            const gchar *text)
+nimf_libhangul_emit_commit (NimfEngine    *engine,
+                            NimfServiceIM *target,
+                            const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -176,8 +176,8 @@ nimf_libhangul_emit_commit (NimfEngine  *engine,
 }
 
 void
-nimf_libhangul_reset (NimfEngine  *engine,
-                      NimfContext *target)
+nimf_libhangul_reset (NimfEngine    *engine,
+                      NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -205,8 +205,8 @@ nimf_libhangul_reset (NimfEngine  *engine,
 }
 
 void
-nimf_libhangul_focus_in (NimfEngine  *engine,
-                         NimfContext *context)
+nimf_libhangul_focus_in (NimfEngine    *engine,
+                         NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -214,8 +214,8 @@ nimf_libhangul_focus_in (NimfEngine  *engine,
 }
 
 void
-nimf_libhangul_focus_out (NimfEngine  *engine,
-                          NimfContext *target)
+nimf_libhangul_focus_out (NimfEngine    *engine,
+                          NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -225,10 +225,10 @@ nimf_libhangul_focus_out (NimfEngine  *engine,
 }
 
 static void
-on_candidate_clicked (NimfEngine  *engine,
-                      NimfContext *target,
-                      gchar       *text,
-                      gint         index)
+on_candidate_clicked (NimfEngine    *engine,
+                      NimfServiceIM *target,
+                      gchar         *text,
+                      gint           index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -254,8 +254,8 @@ nimf_libhangul_get_current_page (NimfEngine *engine)
 }
 
 static void
-nimf_libhangul_update_page (NimfEngine  *engine,
-                            NimfContext *target)
+nimf_libhangul_update_page (NimfEngine    *engine,
+                            NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -282,7 +282,7 @@ nimf_libhangul_update_page (NimfEngine  *engine,
 }
 
 static gboolean
-nimf_libhangul_page_up (NimfEngine *engine, NimfContext *target)
+nimf_libhangul_page_up (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -305,7 +305,7 @@ nimf_libhangul_page_up (NimfEngine *engine, NimfContext *target)
 }
 
 static gboolean
-nimf_libhangul_page_down (NimfEngine *engine, NimfContext *target)
+nimf_libhangul_page_down (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -328,7 +328,7 @@ nimf_libhangul_page_down (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-nimf_libhangul_page_home (NimfEngine *engine, NimfContext *target)
+nimf_libhangul_page_home (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -349,7 +349,7 @@ nimf_libhangul_page_home (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-nimf_libhangul_page_end (NimfEngine *engine, NimfContext *target)
+nimf_libhangul_page_end (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -370,9 +370,9 @@ nimf_libhangul_page_end (NimfEngine *engine, NimfContext *target)
 }
 
 static void
-on_candidate_scrolled (NimfEngine  *engine,
-                       NimfContext *target,
-                       gdouble      value)
+on_candidate_scrolled (NimfEngine    *engine,
+                       NimfServiceIM *target,
+                       gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -395,9 +395,9 @@ on_candidate_scrolled (NimfEngine  *engine,
 }
 
 static gboolean
-nimf_libhangul_filter_leading_consonant (NimfEngine  *engine,
-                                         NimfContext *target,
-                                         guint        keyval)
+nimf_libhangul_filter_leading_consonant (NimfEngine    *engine,
+                                         NimfServiceIM *target,
+                                         guint          keyval)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -427,9 +427,9 @@ nimf_libhangul_filter_leading_consonant (NimfEngine  *engine,
 }
 
 gboolean
-nimf_libhangul_filter_event (NimfEngine  *engine,
-                             NimfContext *target,
-                             NimfEvent   *event)
+nimf_libhangul_filter_event (NimfEngine    *engine,
+                             NimfServiceIM *target,
+                             NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

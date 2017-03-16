@@ -24,6 +24,7 @@
 #include <glib/gi18n.h>
 #include <X11/XKBlib.h>
 #include "IMdkit/Xi18n.h"
+#include "nimf-xim-im.h"
 
 #define NIMF_TYPE_XIM               (nimf_xim_get_type ())
 #define NIMF_XIM(object)            (G_TYPE_CHECK_INSTANCE_CAST ((object), NIMF_TYPE_XIM, NimfXim))
@@ -41,7 +42,7 @@ struct _NimfXim
 
   GSource    *xevent_source;
   gchar      *id;
-  GHashTable *contexts;
+  GHashTable *ims;
   guint16     next_icid;
   XIMS        xims;
 };
@@ -62,17 +63,17 @@ nimf_xim_set_engine_by_id (NimfService *service,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GHashTableIter iter;
-  gpointer       context;
+  gpointer       im;
 
-  g_hash_table_iter_init (&iter, NIMF_XIM (service)->contexts);
+  g_hash_table_iter_init (&iter, NIMF_XIM (service)->ims);
 
-  while (g_hash_table_iter_next (&iter, NULL, &context))
-    nimf_context_set_engine_by_id (context, engine_id);
+  while (g_hash_table_iter_next (&iter, NULL, &im))
+    nimf_service_im_set_engine_by_id (im, engine_id);
 }
 
 static guint16
-nimf_xim_add_context (NimfXim     *xim,
-                      NimfContext *context)
+nimf_xim_add_im (NimfXim      *xim,
+                 NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -80,10 +81,10 @@ nimf_xim_add_context (NimfXim     *xim,
 
   do
     icid = xim->next_icid++;
-  while (icid == 0 || g_hash_table_contains (xim->contexts,
+  while (icid == 0 || g_hash_table_contains (xim->ims,
                                              GUINT_TO_POINTER (icid)));
-  context->icid = icid;
-  g_hash_table_insert (xim->contexts, GUINT_TO_POINTER (icid), context);
+  im->icid = icid;
+  g_hash_table_insert (xim->ims, GUINT_TO_POINTER (icid), im);
 
   return icid;
 }
@@ -93,8 +94,8 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
+  NimfServiceIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
   CARD16 i;
 
   for (i = 0; i < data->ic_attr_num; i++)
@@ -102,9 +103,9 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
     if (g_strcmp0 (XNInputStyle, data->ic_attr[i].name) == 0)
       g_message ("XNInputStyle is ignored");
     else if (g_strcmp0 (XNClientWindow, data->ic_attr[i].name) == 0)
-      context->client_window = *(Window *) data->ic_attr[i].value;
+      im->client_window = *(Window *) data->ic_attr[i].value;
     else if (g_strcmp0 (XNFocusWindow, data->ic_attr[i].name) == 0)
-      context->focus_window = *(Window *) data->ic_attr[i].value;
+      im->focus_window = *(Window *) data->ic_attr[i].value;
     else
       g_warning (G_STRLOC ": %s %s", G_STRFUNC, data->ic_attr[i].name);
   }
@@ -117,10 +118,10 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
       switch (state)
       {
         case XIMPreeditEnable:
-          nimf_context_set_use_preedit (context, TRUE);
+          nimf_service_im_set_use_preedit (im, TRUE);
           break;
         case XIMPreeditDisable:
-          nimf_context_set_use_preedit (context, FALSE);
+          nimf_service_im_set_use_preedit (im, FALSE);
           break;
         default:
           g_message ("XIMPreeditState: %ld is ignored", state);
@@ -138,7 +139,7 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
                 G_STRFUNC, data->status_attr[i].name);
   }
 
-  nimf_context_xim_set_cursor_location (context, xim->xims->core.display);
+  nimf_service_im_xim_set_cursor_location (im, xim->xims->core.display);
 
   return 1;
 }
@@ -148,15 +149,15 @@ int nimf_xim_create_ic (NimfXim          *xim,
 {
   g_debug (G_STRLOC ": %s, data->connect_id: %d", G_STRFUNC, data->connect_id);
 
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
+  NimfXimIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
-  if (!context)
+  if (!im)
   {
-    context = nimf_context_new (NIMF_CONTEXT_XIM, NULL,
-                                NIMF_SERVICE (xim)->server, xim->xims);
-    context->xim_connect_id = data->connect_id;
-    data->icid = nimf_xim_add_context (xim, context);
+    im = nimf_xim_im_new (NIMF_SERVICE_IM_XIM, NULL,
+                          NIMF_SERVICE (xim)->server, xim->xims);
+    NIMF_SERVICE_IM (im)->xim_connect_id = data->connect_id;
+    data->icid = nimf_xim_add_im (xim, NIMF_SERVICE_IM (im));
     g_debug (G_STRLOC ": icid = %d", data->icid);
   }
 
@@ -170,7 +171,7 @@ int nimf_xim_destroy_ic (NimfXim           *xim,
 {
   g_debug (G_STRLOC ": %s, data->icid = %d", G_STRFUNC, data->icid);
 
-  return g_hash_table_remove (xim->contexts, GUINT_TO_POINTER (data->icid));
+  return g_hash_table_remove (xim->ims, GUINT_TO_POINTER (data->icid));
 }
 
 int nimf_xim_get_ic_values (NimfXim          *xim,
@@ -178,8 +179,8 @@ int nimf_xim_get_ic_values (NimfXim          *xim,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
+  NimfServiceIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
   CARD16 i;
 
   for (i = 0; i < data->ic_attr_num; i++)
@@ -208,7 +209,7 @@ int nimf_xim_get_ic_values (NimfXim          *xim,
       data->preedit_attr[i].value_length = sizeof (XIMPreeditState);
       data->preedit_attr[i].value = g_malloc (sizeof (XIMPreeditState));
 
-      if (context->use_preedit)
+      if (im->use_preedit)
         *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditEnable;
       else
         *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditDisable;
@@ -259,9 +260,9 @@ int nimf_xim_forward_event (NimfXim              *xim,
   state = event->key.state & ~consumed;
   event->key.state |= (NimfModifierType) state;
 
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
-  retval  = nimf_context_filter_event (context, event);
+  NimfServiceIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
+  retval  = nimf_service_im_filter_event (im, event);
   nimf_event_free (event);
 
   if (G_UNLIKELY (!retval))
@@ -273,13 +274,13 @@ int nimf_xim_forward_event (NimfXim              *xim,
 int nimf_xim_set_ic_focus (NimfXim             *xim,
                            IMChangeFocusStruct *data)
 {
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
+  NimfServiceIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
   g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
-           G_STRFUNC, data->icid, context->icid);
+           G_STRFUNC, data->icid, im->icid);
 
-  nimf_context_focus_in (context);
+  nimf_service_im_focus_in (im);
 
   return 1;
 }
@@ -287,12 +288,12 @@ int nimf_xim_set_ic_focus (NimfXim             *xim,
 int nimf_xim_unset_ic_focus (NimfXim             *xim,
                              IMChangeFocusStruct *data)
 {
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
+  NimfServiceIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
   g_debug (G_STRLOC ": %s, icid = %d", G_STRFUNC, data->icid);
 
-  nimf_context_focus_out (context);
+  nimf_service_im_focus_out (im);
 
   return 1;
 }
@@ -302,9 +303,9 @@ int nimf_xim_reset_ic (NimfXim         *xim,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfContext *context;
-  context = g_hash_table_lookup (xim->contexts, GUINT_TO_POINTER (data->icid));
-  nimf_context_reset (context);
+  NimfServiceIM *im;
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
+  nimf_service_im_reset (im);
 
   return 1;
 }
@@ -574,10 +575,10 @@ nimf_xim_init (NimfXim *xim)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   xim->id = g_strdup ("nimf-xim");
-  xim->contexts = g_hash_table_new_full (g_direct_hash,
+  xim->ims = g_hash_table_new_full (g_direct_hash,
                                          g_direct_equal,
                                          NULL,
-                                         (GDestroyNotify) nimf_context_free);
+                                         (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -587,7 +588,7 @@ nimf_xim_finalize (GObject *object)
 
   NimfXim *xim = NIMF_XIM (object);
 
-  g_hash_table_unref (xim->contexts);
+  g_hash_table_unref (xim->ims);
   g_free (xim->id);
 
   if (xim->xevent_source)

@@ -31,7 +31,7 @@
 enum
 {
   PROP_0,
-  PROP_CONTEXT_TYPE,
+  PROP_SERVICE_IM_TYPE,
 };
 
 enum {
@@ -337,7 +337,7 @@ nimf_client_constructed (GObject *object)
   }
 
   nimf_send_message (socket, client->id, NIMF_MESSAGE_CREATE_CONTEXT,
-                     &client->type, sizeof (NimfContextType), NULL);
+                     &client->type, sizeof (NimfServiceIMType), NULL);
   nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
                                client->id, NIMF_MESSAGE_CREATE_CONTEXT_REPLY);
 
@@ -403,7 +403,7 @@ nimf_client_set_property (GObject      *object,
 
   switch (prop_id)
   {
-    case PROP_CONTEXT_TYPE:
+    case PROP_SERVICE_IM_TYPE:
       client->type = g_value_get_enum (value);
       break;
     default:
@@ -424,7 +424,7 @@ nimf_client_get_property (GObject    *object,
 
   switch (prop_id)
   {
-    case PROP_CONTEXT_TYPE:
+    case PROP_SERVICE_IM_TYPE:
       g_value_set_enum (value, client->type);
       break;
     default:
@@ -446,12 +446,12 @@ nimf_client_class_init (NimfClientClass *class)
   object_class->constructed  = nimf_client_constructed;
 
   g_object_class_install_property (object_class,
-                                   PROP_CONTEXT_TYPE,
-                                   g_param_spec_enum ("context-type",
-                                                      "context type",
-                                                      "context type",
-                                                      NIMF_TYPE_CONTEXT_TYPE,
-                                                      NIMF_CONTEXT_NIMF_IM,
+                                   PROP_SERVICE_IM_TYPE,
+                                   g_param_spec_enum ("service-im-type",
+                                                      "service im type",
+                                                      "service im type",
+                                                      NIMF_TYPE_SERVICE_IM_TYPE,
+                                                      NIMF_SERVICE_IM_NIMF_IM,
                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   nimf_client_signals[ENGINE_CHANGED] =
     g_signal_new (g_intern_static_string ("engine-changed"),

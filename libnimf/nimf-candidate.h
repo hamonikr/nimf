@@ -3,7 +3,7 @@
  * nimf-candidate.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -27,7 +27,7 @@
 #endif
 
 #include <glib-object.h>
-#include "nimf-context.h"
+#include "nimf-service-im.h"
 
 G_BEGIN_DECLS
 
@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 #define NIMF_IS_CANDIDATE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_CANDIDATE))
 #define NIMF_CANDIDATE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_CANDIDATE, NimfCandidateClass))
 
-typedef struct _NimfContext NimfContext;
+typedef struct _NimfServiceIM NimfServiceIM;
 
 typedef struct _NimfCandidate       NimfCandidate;
 typedef struct _NimfCandidateClass  NimfCandidateClass;
@@ -48,7 +48,7 @@ GType          nimf_candidate_get_type (void) G_GNUC_CONST;
 NimfCandidate *nimf_candidate_new                   (void);
 NimfCandidate *nimf_candidate_get_default           (void);
 void           nimf_candidate_clear                 (NimfCandidate  *candidate,
-                                                     NimfContext    *target);
+                                                     NimfServiceIM  *target);
 void           nimf_candidate_append                (NimfCandidate  *candidate,
                                                      const gchar    *item1,
                                                      const gchar    *item2);
@@ -56,12 +56,12 @@ void           nimf_candidate_set_auxiliary_text    (NimfCandidate  *candidate,
                                                      const gchar    *text,
                                                      gint            cursor_pos);
 void           nimf_candidate_set_page_values       (NimfCandidate  *candidate,
-                                                     NimfContext    *target,
+                                                     NimfServiceIM  *target,
                                                      gint            page_index,
                                                      gint            n_pages,
                                                      gint            page_size);
 void           nimf_candidate_show_window           (NimfCandidate  *candidate,
-                                                     NimfContext    *context,
+                                                     NimfServiceIM  *target,
                                                      gboolean        show_entry);
 gboolean       nimf_candidate_is_window_visible     (NimfCandidate  *candidate);
 void           nimf_candidate_hide_window           (NimfCandidate  *candidate);

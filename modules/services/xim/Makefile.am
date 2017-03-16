@@ -1,8 +1,33 @@
 moduledir = $(libdir)/nimf/modules/services
 module_LTLIBRARIES = libnimf-xim.la
 
+IMdkit_SOURCES = \
+	IMdkit/FrameMgr.h \
+	IMdkit/IMdkit.h \
+	IMdkit/Xi18n.h \
+	IMdkit/Xi18nX.h \
+	IMdkit/XimFunc.h \
+	IMdkit/XimProto.h \
+	IMdkit/FrameMgr.c \
+	IMdkit/i18nAttr.c \
+	IMdkit/i18nClbk.c \
+	IMdkit/i18nIc.c \
+	IMdkit/i18nIMProto.c \
+	IMdkit/i18nMethod.c \
+	IMdkit/i18nOffsetCache.c \
+	IMdkit/i18nPtHdr.c \
+	IMdkit/i18nUtil.c \
+	IMdkit/i18nX.c \
+	IMdkit/IMConn.c \
+	IMdkit/IMMethod.c \
+	IMdkit/IMValues.c \
+	$(NULL)
+
 libnimf_xim_la_SOURCES = \
 	nimf-xim.c \
+	nimf-xim-im.c \
+	nimf-xim-im.h \
+	$(IMdkit_SOURCES) \
 	$(NULL)
 
 libnimf_xim_la_CFLAGS = \

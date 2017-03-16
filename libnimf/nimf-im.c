@@ -297,7 +297,7 @@ nimf_im_new ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   return g_object_new (NIMF_TYPE_IM,
-                       "context-type", NIMF_CONTEXT_NIMF_IM, NULL);
+                       "service-im-type", NIMF_SERVICE_IM_NIMF_IM, NULL);
 }
 
 static void
