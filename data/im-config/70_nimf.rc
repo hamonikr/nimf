@@ -1,9 +1,5 @@
 if [ "$IM_CONFIG_PHASE" = 2 ]; then
     nimf-daemon
-
-    if ! test -z `which nimf-indicator`; then
-        nimf-indicator
-    fi
 fi
 
 if [ "$IM_CONFIG_PHASE" = 1 ]; then

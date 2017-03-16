@@ -24,13 +24,13 @@
 
 #define __NIMF_H_INSIDE__
 
-#include "nimf-agent.h"
 #include "nimf-candidate.h"
 #include "nimf-engine.h"
 #include "nimf-enum-types.h"
 #include "nimf-events.h"
 #include "nimf-im.h"
 #include "nimf-key-syms.h"
+#include "nimf-server.h"
 #include "nimf-service.h"
 #include "nimf-service-im.h"
 #include "nimf-types.h"

@@ -29,7 +29,6 @@ G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 enum
 {
   PROP_0,
-  PROP_SERVICE_IM_TYPE,
   PROP_SERVICE_IM_CONNECTION,
   PROP_SERVICE_IM_SERVER,
   PROP_SERVICE_IM_CB_USER_DATA
@@ -155,16 +154,7 @@ nimf_service_im_emit_engine_changed (NimfServiceIM *im,
   if (G_UNLIKELY (!im))
     return;
 
-  gpointer       agent;
-  GHashTableIter iter;
-
-  g_hash_table_iter_init (&iter, im->server->agents);
-
-  while (g_hash_table_iter_next (&iter, NULL, &agent))
-    nimf_send_message (((NimfServiceIM *) agent)->connection->socket,
-                       ((NimfServiceIM *) agent)->icid,
-                       NIMF_MESSAGE_ENGINE_CHANGED,
-                       (gchar *) name, strlen (name) + 1, NULL);
+  g_signal_emit_by_name (im->server, "engine-changed", name);
 }
 
 void nimf_service_im_focus_in (NimfServiceIM *im)
@@ -605,9 +595,6 @@ nimf_service_im_finalize (GObject *object)
 
   NimfServiceIM *im = NIMF_SERVICE_IM (object);
 
-  if (im->type == NIMF_SERVICE_IM_NIMF_AGENT)
-    g_hash_table_steal (im->server->agents, GUINT_TO_POINTER (im->icid));
-
   if (im->engines)
     g_list_free_full (im->engines, g_object_unref);
 
@@ -633,9 +620,6 @@ nimf_service_im_set_property (GObject      *object,
 
   switch (prop_id)
   {
-    case PROP_SERVICE_IM_TYPE:
-      im->type = g_value_get_enum (value);
-      break;
     case PROP_SERVICE_IM_CONNECTION:
       im->connection = g_value_get_object (value);
       break;
@@ -663,9 +647,6 @@ nimf_service_im_get_property (GObject    *object,
 
   switch (prop_id)
   {
-    case PROP_SERVICE_IM_TYPE:
-      g_value_set_enum (value, im->type);
-      break;
     case PROP_SERVICE_IM_CONNECTION:
       g_value_set_object (value, im->connection);
       break;
@@ -693,14 +674,6 @@ nimf_service_im_class_init (NimfServiceIMClass *class)
   object_class->get_property = nimf_service_im_get_property;
   object_class->constructed  = nimf_service_im_constructed;
 
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE_IM_TYPE,
-                                   g_param_spec_enum ("service-im-type",
-                                                      "service im type",
-                                                      "service im type",
-                                                      NIMF_TYPE_SERVICE_IM_TYPE,
-                                                      NIMF_SERVICE_IM_NIMF_IM,
-                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (object_class,
                                    PROP_SERVICE_IM_CONNECTION,
                                    g_param_spec_object ("connection",

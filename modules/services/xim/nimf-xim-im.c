@@ -154,13 +154,11 @@ void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
   IMCallCallback (xims, (XPointer) &preedit_cb_data);
 }
 
-NimfXimIM *nimf_xim_im_new (NimfServiceIMType  type,
-                            NimfConnection    *connection,
+NimfXimIM *nimf_xim_im_new (NimfConnection    *connection,
                             NimfServer        *server,
                             gpointer           cb_user_data)
 {
   return g_object_new (NIMF_TYPE_XIM_IM,
-                       "service-im-type", NIMF_SERVICE_IM_XIM,
                        "connection",      connection,
                        "server",          server,
                        "cb-user-data",    cb_user_data,

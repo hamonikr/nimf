@@ -1,5 +1,5 @@
 # Korean translation for Nimf
-# Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
 # Hodong Kim <cogniti@gmail.com>, 2015-2017.
 #
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2017-01-27 20:43+0900\n"
+"PO-Revision-Date: 2017-03-17 01:48+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,63 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:131
+#: ../daemon/nimf-daemon.c:49
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:132
+#: ../daemon/nimf-daemon.c:50
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:133
+#: ../daemon/nimf-daemon.c:51
 msgid "Version"
 msgstr "버전"
 
-#: ../indicator/nimf-indicator.c:66 ../indicator/nimf-indicator.c:67
-#: ../indicator/nimf-indicator.c:68 ../indicator/nimf-indicator.c:85
-msgid "Hodong Kim <cogniti@gmail.com>"
-msgstr "김호동 <cogniti@gmail.com>"
-
-#: ../indicator/nimf-indicator.c:79
-msgid "An indicator for Nimf"
-msgstr "님프를 위한 표시기"
-
-#: ../indicator/nimf-indicator.c:80
-msgid "Copyright (c) 2015,2016 Hodong Kim"
-msgstr "저작권 (c) 2015,2016 김호동"
-
-#: ../indicator/nimf-indicator.c:84
-msgid "Nimf Indicator"
-msgstr "님프 표시기"
-
-#: ../indicator/nimf-indicator.c:88
-msgid "Website"
-msgstr "웹사이트"
-
-#: ../indicator/nimf-indicator.c:235
-msgid "Settings"
-msgstr "설정"
-
-#: ../indicator/nimf-indicator.c:236
-msgid "Donate"
-msgstr "기부하기"
-
-#: ../indicator/nimf-indicator.c:237
-msgid "About"
-msgstr "정보"
-
-#: ../indicator/nimf-indicator.c:238
-msgid "Exit"
-msgstr "종료"
-
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:576
+#: ../modules/services/indicator/nimf-indicator.c:105
 msgid "Nimf"
 msgstr "님프"
 
 #: ../modules/engines/nimf-rime/nimf-rime.c:358
 msgid "Rime"
 msgstr "라임"
+
+#: ../modules/services/indicator/nimf-indicator.c:87
+#: ../modules/services/indicator/nimf-indicator.c:88
+#: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:106
+msgid "Hodong Kim <cogniti@gmail.com>"
+msgstr "김호동 <cogniti@gmail.com>"
+
+#: ../modules/services/indicator/nimf-indicator.c:100
+msgid "Nimf is an input method framework"
+msgstr "님프는 입력 방법 프레임워크입니다"
+
+#: ../modules/services/indicator/nimf-indicator.c:101
+msgid "Copyright (c) 2015-2017 Hodong Kim"
+msgstr "저작권 (c) 2015-2017 김호동"
+
+#: ../modules/services/indicator/nimf-indicator.c:109
+msgid "Website"
+msgstr "웹사이트"
+
+#: ../modules/services/indicator/nimf-indicator.c:192
+msgid "Settings"
+msgstr "설정"
+
+#: ../modules/services/indicator/nimf-indicator.c:193
+msgid "Donate"
+msgstr "기부하기"
+
+#: ../modules/services/indicator/nimf-indicator.c:194
+msgid "About"
+msgstr "정보"
 
 #: ../settings/nimf-settings.c:458
 #, c-format

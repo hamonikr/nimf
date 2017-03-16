@@ -1,3 +1,3 @@
-SUBDIRS = xim
+SUBDIRS = xim indicator
 
 DISTCLEANFILES = Makefile.in

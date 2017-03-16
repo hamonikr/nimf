@@ -43,20 +43,12 @@ struct _NimfClient
 {
   GObject parent_instance;
 
-  NimfServiceIMType type;
-  guint16           id;
+  guint16 id;
 };
 
 struct _NimfClientClass
 {
-  /*< private >*/
   GObjectClass parent_class;
-
-  /*< public >*/
-  /* Signals */
-  void (*engine_changed) (NimfClient  *client,
-                          const gchar *str);
-  void (*disconnected)   (NimfClient  *client);
 };
 
 GType    nimf_client_get_type     (void) G_GNUC_CONST;

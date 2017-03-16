@@ -23,20 +23,41 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include "nimf.h"
-#include <gio/gunixsocketaddress.h>
 #include <libappindicator/app-indicator.h>
-#include <syslog.h>
-#include "nimf-private.h"
-#include <stdlib.h>
 
-static gboolean syslog_initialized = FALSE;
+#define NIMF_TYPE_INDICATOR             (nimf_indicator_get_type ())
+#define NIMF_INDICATOR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_INDICATOR, NimfIndicator))
+#define NIMF_INDICATOR_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_INDICATOR, NimfIndicatorClass))
+#define NIMF_IS_INDICATOR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_INDICATOR))
+#define NIMF_IS_INDICATOR_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_INDICATOR))
+#define NIMF_INDICATOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_INDICATOR, NimfIndicatorClass))
 
-static void on_engine_menu (GtkWidget *widget,
-                            NimfAgent *agent)
+typedef struct _NimfIndicator      NimfIndicator;
+typedef struct _NimfIndicatorClass NimfIndicatorClass;
+
+struct _NimfIndicatorClass
+{
+  NimfServiceClass parent_class;
+};
+
+struct _NimfIndicator
+{
+  NimfService parent_instance;
+
+  gchar        *id;
+  AppIndicator *appindicator;
+};
+
+GType nimf_indicator_get_type (void) G_GNUC_CONST;
+
+G_DEFINE_DYNAMIC_TYPE (NimfIndicator, nimf_indicator, NIMF_TYPE_SERVICE);
+
+static void on_engine_menu (GtkWidget  *widget,
+                            NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_agent_set_engine_by_id (agent, gtk_widget_get_name (widget));
+  nimf_server_set_engine_by_id (server, gtk_widget_get_name (widget));
 }
 
 static void on_settings_menu (GtkWidget *widget,
@@ -76,12 +97,12 @@ static void on_about_menu (GtkWidget *widget,
   g_object_set (about_dialog,
     "artists",            artists,
     "authors",            authors,
-    "comments",           _("An indicator for Nimf"),
-    "copyright",          _("Copyright (c) 2015,2016 Hodong Kim"),
+    "comments",           _("Nimf is an input method framework"),
+    "copyright",          _("Copyright (c) 2015-2017 Hodong Kim"),
     "documenters",        documenters,
     "license-type",       GTK_LICENSE_LGPL_3_0,
     "logo-icon-name",     "nimf",
-    "program-name",       _("Nimf Indicator"),
+    "program-name",       _("Nimf"),
     "translator-credits", _("Hodong Kim <cogniti@gmail.com>"),
     "version",            VERSION,
     "website",            "https://cogniti.github.io/nimf/",
@@ -93,15 +114,7 @@ static void on_about_menu (GtkWidget *widget,
   gtk_widget_destroy (parent);
 }
 
-static void on_exit_menu (GtkWidget *widget,
-                          gpointer   user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gtk_main_quit ();
-}
-
-static void on_engine_changed (NimfAgent    *agent,
+static void on_engine_changed (NimfServer   *server,
                                gchar        *icon_name,
                                AppIndicator *indicator)
 {
@@ -110,101 +123,45 @@ static void on_engine_changed (NimfAgent    *agent,
   app_indicator_set_icon_full (indicator, icon_name, icon_name);
 }
 
-static void on_disconnected (NimfAgent    *agent,
-                             AppIndicator *indicator)
+const gchar *
+nimf_indicator_get_id (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  app_indicator_set_icon_full (indicator,
-                               "nimf-indicator-warning", "disconnected");
+  g_return_val_if_fail (NIMF_IS_SERVICE (service), NULL);
+
+  return NIMF_INDICATOR (service)->id;
 }
 
-int
-main (int argc, char **argv)
+static void nimf_indicator_start (NimfService *service)
 {
-  GError         *error        = NULL;
-  gboolean        is_no_daemon = FALSE;
-  gboolean        is_debug     = FALSE;
-  gboolean        is_version   = FALSE;
-  GOptionContext *context;
-  GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
-    {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
-    {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
-    {NULL}
-  };
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  context = g_option_context_new ("- indicator for Nimf");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-  g_option_context_parse (context, &argc, &argv, &error);
-  g_option_context_free (context);
-
-  if (error != NULL)
-  {
-    g_warning ("%s", error->message);
-    g_error_free (error);
-    return EXIT_FAILURE;
-  }
+  NimfIndicator *indicator = NIMF_INDICATOR (service);
 
   g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
 
-#ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-#endif
+  gtk_init (NULL, NULL);
 
-  if (is_debug)
-    g_setenv ("G_MESSAGES_DEBUG", "nimf", TRUE);
-
-  if (is_version)
-  {
-    g_print ("%s %s\n", argv[0], VERSION);
-    exit (EXIT_SUCCESS);
-  }
-
-  if (is_no_daemon == FALSE)
-  {
-    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
-    syslog_initialized = TRUE;
-    g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
-
-    if (daemon (0, 0) != 0)
-    {
-      g_critical ("Couldn't daemonize.");
-      return EXIT_FAILURE;
-    }
-  }
-
-  gtk_init (&argc, &argv);
-
-  NimfAgent    *agent;
-  AppIndicator *indicator;
-  GtkWidget    *menu_shell;
-  GtkWidget    *settings_menu;
-  GtkWidget    *about_menu;
-  GtkWidget    *donate_menu;
-  GtkWidget    *exit_menu;
+  GtkWidget *menu_shell;
+  GtkWidget *settings_menu;
+  GtkWidget *about_menu;
+  GtkWidget *donate_menu;
 
   menu_shell = gtk_menu_new ();
-  indicator = app_indicator_new ("nimf-indicator", "input-keyboard",
-                                 APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
-  app_indicator_set_status (indicator, APP_INDICATOR_STATUS_ACTIVE);
-  app_indicator_set_icon_full (indicator, "nimf-indicator", "Nimf");
-  app_indicator_set_menu (indicator, GTK_MENU (menu_shell));
+  indicator->appindicator = app_indicator_new ("nimf-indicator",
+                                               "input-keyboard",
+                                               APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+  app_indicator_set_status (indicator->appindicator,
+                            APP_INDICATOR_STATUS_ACTIVE);
+  app_indicator_set_icon_full (indicator->appindicator,
+                               "nimf-indicator", "Nimf");
+  app_indicator_set_menu (indicator->appindicator, GTK_MENU (menu_shell));
 
-  agent = nimf_agent_new ();
-
-  g_signal_connect (agent, "engine-changed",
-                    G_CALLBACK (on_engine_changed), indicator);
-  g_signal_connect (agent, "disconnected",
-                    G_CALLBACK (on_disconnected), indicator);
-
-  if (G_UNLIKELY (nimf_client_is_connected () == FALSE))
-    app_indicator_set_icon_full (indicator,
-                                 "nimf-indicator-warning", "disconnected");
+  g_signal_connect (service->server, "engine-changed",
+                    G_CALLBACK (on_engine_changed), indicator->appindicator);
   /* menu */
-  gchar     **engine_ids = nimf_agent_get_loaded_engine_ids (agent);
+  gchar     **engine_ids = nimf_server_get_loaded_engine_ids (service->server);
   GtkWidget  *engine_menu;
 
   guint i;
@@ -223,7 +180,7 @@ main (int argc, char **argv)
     gtk_widget_set_name (engine_menu, engine_ids[i]);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
     g_signal_connect (engine_menu, "activate",
-                      G_CALLBACK (on_engine_menu), agent);
+                      G_CALLBACK (on_engine_menu), service->server);
 
     g_free (name);
     g_free (schema_id);
@@ -235,7 +192,6 @@ main (int argc, char **argv)
   settings_menu = gtk_menu_item_new_with_label (_("Settings"));
   donate_menu   = gtk_menu_item_new_with_label (_("Donate"));
   about_menu    = gtk_menu_item_new_with_label (_("About"));
-  exit_menu     = gtk_menu_item_new_with_label (_("Exit"));
 
   g_signal_connect (settings_menu, "activate",
                     G_CALLBACK (on_settings_menu), NULL);
@@ -243,23 +199,70 @@ main (int argc, char **argv)
                     G_CALLBACK (on_donate_menu), NULL);
   g_signal_connect (about_menu, "activate",
                     G_CALLBACK (on_about_menu), NULL);
-  g_signal_connect (exit_menu,  "activate",
-                    G_CALLBACK (on_exit_menu),  NULL);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), settings_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), donate_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), exit_menu);
 
   gtk_widget_show_all (menu_shell);
+}
 
-  gtk_main ();
+static void nimf_indicator_stop (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_object_unref (agent);
-  g_object_unref (indicator);
+  g_object_unref (NIMF_INDICATOR (service)->appindicator);
+}
 
-  if (syslog_initialized)
-    closelog ();
+static void
+nimf_indicator_init (NimfIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return EXIT_SUCCESS;
+  indicator->id = g_strdup ("nimf-indicator");
+}
+
+static void
+nimf_indicator_finalize (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_free (NIMF_INDICATOR (object)->id);
+
+  G_OBJECT_CLASS (nimf_indicator_parent_class)->finalize (object);
+}
+
+static void
+nimf_indicator_class_init (NimfIndicatorClass *class)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GObjectClass     *object_class  = G_OBJECT_CLASS (class);
+  NimfServiceClass *service_class = NIMF_SERVICE_CLASS (class);
+
+  service_class->get_id = nimf_indicator_get_id;
+  service_class->start  = nimf_indicator_start;
+  service_class->stop   = nimf_indicator_stop;
+
+  object_class->finalize = nimf_indicator_finalize;
+}
+
+static void
+nimf_indicator_class_finalize (NimfIndicatorClass *class)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+void module_register_type (GTypeModule *type_module)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_indicator_register_type (type_module);
+}
+
+GType module_get_type ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return nimf_indicator_get_type ();
 }

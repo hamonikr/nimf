@@ -29,8 +29,6 @@ libnimf_la_SOURCES = \
 	nimf-message.c \
 	nimf-candidate.h \
 	nimf-candidate.c \
-	nimf-agent.c \
-	nimf-agent.h \
 	nimf-connection.c \
 	nimf-connection.h \
 	nimf-server.c \
@@ -59,7 +57,6 @@ libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
 nimfincludedir = $(includedir)/nimf
 nimfinclude_HEADERS = \
 	nimf.h \
-	nimf-agent.h \
 	nimf-candidate.h \
 	nimf-client.h \
 	nimf-connection.h \
@@ -111,29 +108,6 @@ gsettings_SCHEMAS = org.nimf.gschema.xml
 
 EXTRA_DIST = nimf.pc.in
 
--include $(INTROSPECTION_MAKEFILE)
-INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS  = --add-include-path=$(srcdir) \
-                              --warn-all --warn-error \
-                              --identifier-prefix=Nimf --symbol-prefix=nimf
-INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
-
-introspection_sources = nimf-agent.c nimf-agent.h
-
-Nimf-2017.03.gir: libnimf.la
-Nimf_2017_03_gir_INCLUDES = GObject-2.0
-Nimf_2017_03_gir_CFLAGS   = $(libnimf_la_CFLAGS) -I$(top_srcdir)
-Nimf_2017_03_gir_LIBS     = libnimf.la
-Nimf_2017_03_gir_FILES    = $(introspection_sources)
-
-INTROSPECTION_GIRS += Nimf-2017.03.gir
-
-girdir   = $(INTROSPECTION_GIRDIR)
-gir_DATA = $(INTROSPECTION_GIRS)
-
-typelibdir   = $(INTROSPECTION_TYPELIBDIR)
-typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
-
 install-data-hook:
 	rm -f $(DESTDIR)$(libdir)/libnimf.la
 
@@ -142,8 +116,6 @@ uninstall-hook:
 	-rmdir -p $(DESTDIR)$(libdir)/nimf
 	-rmdir -p $(DESTDIR)$(nimfincludedir)
 
-CLEANFILES = \
-	$(BUILT_SOURCES) \
-	$(gir_DATA) $(typelib_DATA)
+CLEANFILES = $(BUILT_SOURCES)
 
 DISTCLEANFILES = Makefile.in

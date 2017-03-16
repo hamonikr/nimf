@@ -48,8 +48,7 @@ struct _NimfServerIM
 };
 
 GType         nimf_server_im_get_type (void) G_GNUC_CONST;
-NimfServerIM *nimf_server_im_new (NimfServiceIMType  type,
-                                  NimfConnection    *connection,
+NimfServerIM *nimf_server_im_new (NimfConnection    *connection,
                                   NimfServer        *server,
                                   gpointer           cb_user_data);
 G_END_DECLS

@@ -22,6 +22,7 @@
 #include "config.h"
 #include "nimf-server.h"
 #include "nimf-private.h"
+#include "nimf-marshalers.h"
 #include "nimf-module.h"
 #include "nimf-service.h"
 #include "nimf-key-syms.h"
@@ -37,6 +38,13 @@ enum
   PROP_0,
   PROP_ADDRESS,
 };
+
+enum {
+  ENGINE_CHANGED,
+  LAST_SIGNAL
+};
+
+static guint nimf_server_signals[LAST_SIGNAL] = { 0 };
 
 static gboolean
 on_incoming_message_nimf (GSocket        *socket,
@@ -84,23 +92,14 @@ on_incoming_message_nimf (GSocket        *socket,
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_server_im_new (*(NimfServiceIMType *) message->data,
-                               connection, connection->server, NULL);
+      im = nimf_server_im_new (connection, connection->server, NULL);
       NIMF_SERVICE_IM (im)->icid = icid;
       g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
-
-      if (NIMF_SERVICE_IM (im)->type == NIMF_SERVICE_IM_NIMF_AGENT)
-        g_hash_table_insert (connection->server->agents,
-                             GUINT_TO_POINTER (icid), im);
 
       nimf_send_message (socket, icid, NIMF_MESSAGE_CREATE_CONTEXT_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_DESTROY_CONTEXT:
-      if (NIMF_SERVICE_IM (im) && NIMF_SERVICE_IM (im)->type == NIMF_SERVICE_IM_NIMF_AGENT)
-        g_hash_table_remove (connection->server->agents,
-                             GUINT_TO_POINTER (icid));
-
       g_hash_table_remove (connection->ims, GUINT_TO_POINTER (icid));
       nimf_send_message (socket, icid, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY,
                          NULL, 0, NULL);
@@ -174,55 +173,6 @@ on_incoming_message_nimf (GSocket        *socket,
       nimf_message_unref (message);
       nimf_send_message (socket, icid, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
                          NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS:
-      {
-        GString *string;
-        GList *list = g_list_first (connection->server->instances);
-        const gchar *id;
-
-        string = g_string_new (NULL);
-
-        while (list)
-        {
-          id = nimf_engine_get_id (list->data);
-          g_string_append (string, id);
-
-          if ((list = list->next) == NULL)
-            break;
-          /* 0x1e is RS (record separator) */
-          g_string_append_c (string, 0x1e);
-        }
-
-        nimf_send_message (socket, icid,
-                           NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY,
-                           string->str, string->len + 1, NULL);
-        g_string_free (string, TRUE);
-      }
-      break;
-    case NIMF_MESSAGE_SET_ENGINE_BY_ID:
-      {
-        nimf_message_ref (message);
-
-        GHashTableIter iter;
-        gpointer       conn;
-        gpointer       service;
-
-        g_hash_table_iter_init (&iter, connection->server->connections);
-
-        while (g_hash_table_iter_next (&iter, NULL, &conn))
-          nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn),
-                                            message->data);
-
-        g_hash_table_iter_init (&iter, connection->server->services);
-
-        while (g_hash_table_iter_next (&iter, NULL, &service))
-          nimf_service_set_engine_by_id (service, message->data);
-
-        nimf_message_unref (message);
-        nimf_send_message (socket, icid,
-                           NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY, NULL, 0, NULL);
-      }
       break;
     case NIMF_MESSAGE_PREEDIT_START_REPLY:
     case NIMF_MESSAGE_PREEDIT_CHANGED_REPLY:
@@ -634,7 +584,6 @@ nimf_server_init (NimfServer *server)
                                                g_direct_equal,
                                                NULL,
                                                (GDestroyNotify) g_object_unref);
-  server->agents = g_hash_table_new (g_direct_hash, g_direct_equal);
 }
 
 void
@@ -689,7 +638,6 @@ nimf_server_finalize (GObject *object)
 
   g_object_unref (server->candidate);
   g_hash_table_unref (server->connections);
-  g_hash_table_unref (server->agents);
   g_object_unref (server->settings);
   g_hash_table_unref (server->trigger_gsettings);
   g_hash_table_unref (server->trigger_keys);
@@ -762,6 +710,15 @@ nimf_server_class_init (NimfServerClass *class)
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_BLURB |
                                                         G_PARAM_STATIC_NICK));
+  nimf_server_signals[ENGINE_CHANGED] =
+    g_signal_new (g_intern_static_string ("engine-changed"),
+                  G_TYPE_FROM_CLASS (class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (NimfServerClass, engine_changed),
+                  NULL, NULL,
+                  nimf_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 }
 
 NimfServer *
@@ -799,4 +756,48 @@ nimf_server_start (NimfServer *server)
     nimf_service_start (NIMF_SERVICE (service));
 
   server->active = TRUE;
+}
+
+void nimf_server_set_engine_by_id (NimfServer  *server,
+                                   const gchar *id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GHashTableIter iter;
+  gpointer       conn;
+  gpointer       service;
+
+  g_hash_table_iter_init (&iter, server->connections);
+
+  while (g_hash_table_iter_next (&iter, NULL, &conn))
+    nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn), id);
+
+  g_hash_table_iter_init (&iter, server->services);
+
+  while (g_hash_table_iter_next (&iter, NULL, &service))
+    nimf_service_set_engine_by_id (service, id);
+}
+
+gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar **engine_ids;
+  gint    i;
+  GList  *list;
+  const gchar *id;
+
+  engine_ids = g_malloc0_n (1, sizeof (gchar *));
+
+  for (list = g_list_first (server->instances), i = 0;
+       list != NULL;
+       list = list->next, i++)
+  {
+    id = nimf_engine_get_id (list->data);
+    engine_ids[i] = g_strdup (id);
+    engine_ids = g_realloc_n (engine_ids, sizeof (gchar *), i + 2);
+    engine_ids[i + 1] = NULL;
+  }
+
+  return engine_ids;
 }

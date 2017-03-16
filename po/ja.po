@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-22 02:06+0900\n"
-"PO-Revision-Date: 2017-02-23 10:00+0900\n"
+"PO-Revision-Date: 2017-03-17 01:53+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -18,63 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:131
+#: ../daemon/nimf-daemon.c:49
 msgid "Do not daemonize"
 msgstr "デーモン化しません"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:132
+#: ../daemon/nimf-daemon.c:50
 msgid "Log debugging message"
 msgstr "デバッグメッセージを記録します。"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:133
+#: ../daemon/nimf-daemon.c:51
 msgid "Version"
 msgstr "バージョン"
 
-#: ../indicator/nimf-indicator.c:66 ../indicator/nimf-indicator.c:67
-#: ../indicator/nimf-indicator.c:68 ../indicator/nimf-indicator.c:85
-msgid "Hodong Kim <cogniti@gmail.com>"
-msgstr "キム・ホドン <cogniti@gmail.com>"
-
-#: ../indicator/nimf-indicator.c:79
-msgid "An indicator for Nimf"
-msgstr "ニンフのための表示器"
-
-#: ../indicator/nimf-indicator.c:80
-msgid "Copyright (c) 2015,2016 Hodong Kim"
-msgstr "著作権 (c) 2015,2016 キム・ホドン"
-
-#: ../indicator/nimf-indicator.c:84
-msgid "Nimf Indicator"
-msgstr "ニンフ表示器"
-
-#: ../indicator/nimf-indicator.c:88
-msgid "Website"
-msgstr "ウェブサイト"
-
-#: ../indicator/nimf-indicator.c:235
-msgid "Settings"
-msgstr "設定"
-
-#: ../indicator/nimf-indicator.c:236
-msgid "Donate"
-msgstr "寄付"
-
-#: ../indicator/nimf-indicator.c:237
-msgid "About"
-msgstr "情報"
-
-#: ../indicator/nimf-indicator.c:238
-msgid "Exit"
-msgstr "終了"
-
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:576
+#: ../modules/services/indicator/nimf-indicator.c:105
 msgid "Nimf"
 msgstr "ニンフ"
 
 #: ../modules/engines/nimf-rime/nimf-rime.c:358
 msgid "Rime"
 msgstr "ライム"
+
+#: ../modules/services/indicator/nimf-indicator.c:87
+#: ../modules/services/indicator/nimf-indicator.c:88
+#: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:106
+msgid "Hodong Kim <cogniti@gmail.com>"
+msgstr "キム・ホドン <cogniti@gmail.com>"
+
+#: ../modules/services/indicator/nimf-indicator.c:100
+msgid "Nimf is an input method framework"
+msgstr "ニンフはインプットメソッドフレームワークです。"
+
+#: ../modules/services/indicator/nimf-indicator.c:101
+msgid "Copyright (c) 2015-2017 Hodong Kim"
+msgstr "著作権 (c) 2015-2017 キム・ホドン"
+
+#: ../modules/services/indicator/nimf-indicator.c:109
+msgid "Website"
+msgstr "ウェブサイト"
+
+#: ../modules/services/indicator/nimf-indicator.c:192
+msgid "Settings"
+msgstr "設定"
+
+#: ../modules/services/indicator/nimf-indicator.c:193
+msgid "Donate"
+msgstr "寄付"
+
+#: ../modules/services/indicator/nimf-indicator.c:194
+msgid "About"
+msgstr "情報"
 
 #: ../settings/nimf-settings.c:458
 #, c-format

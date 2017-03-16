@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Hodong Kim <cogniti@gmail.com>
 Build-Depends: debhelper (>= 9),
                dh-autoreconf,
-               libgirepository1.0-dev,
                libglib2.0-dev,
                pkg-config,
                intltool (>= 0.50.1),
@@ -38,15 +37,18 @@ Suggests: fonts-noto-cjk, gnome-tweak-tool
 Description: Input Method Framework
  Nimf is an input method framework which has a module-based client-server
  architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a unix socket.
+ synchronously with the Nimf server via a Unix socket.
  .
  Nimf provides:
   * Input Method Server:
      * nimf-daemon including IMdkit(XIM)
   * Language Engines:
-     * Chinese (in alpha stage, based on sunpinyin, libchewing, librime)
-     * Japanese (in alpha stage, based on anthy)
+     * Chinese (alpha stage, based on sunpinyin, libchewing, librime)
+     * Japanese (alpha stage, based on anthy)
      * Korean (based on libhangul)
+  * Server Modules:
+     * Indicator (based on appindicator)
+     * XIM (based on IMdkit)
   * Client Modules:
      * GTK+2, GTK+3, Qt4, Qt5
   * Indicator:
@@ -59,12 +61,11 @@ Section: libdevel
 Architecture: any
 Depends: ${misc:Depends},
          nimf (= ${binary:Version}),
-         libgirepository1.0-dev,
          libglib2.0-dev,
          libgtk-3-dev
 Description: Input Method Framework (development file)
  Nimf is an input method framework which has a module-based client-server
  architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a unix socket.
+ synchronously with the Nimf server via a Unix socket.
  .
  This package contains development files.

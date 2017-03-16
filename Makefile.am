@@ -1,9 +1,5 @@
 SUBDIRS = libnimf modules daemon settings po data
 
-if ENABLE_NIMF_INDICATOR
-  SUBDIRS += indicator
-endif
-
 ACLOCAL_AMFLAGS = -I m4
 
 DISTCLEANFILES = \

@@ -21,26 +21,12 @@
 
 #include "nimf-client.h"
 #include "nimf-im.h"
-#include "nimf-agent.h"
 #include "nimf-marshalers.h"
 #include "nimf-enum-types.h"
 #include <gio/gunixsocketaddress.h>
 #include <string.h>
 #include <unistd.h>
 
-enum
-{
-  PROP_0,
-  PROP_SERVICE_IM_TYPE,
-};
-
-enum {
-  ENGINE_CHANGED,
-  DISCONNECTED,
-  LAST_SIGNAL
-};
-
-static guint       nimf_client_signals[LAST_SIGNAL] = { 0 };
 static GSource    *nimf_client_socket_source  = NULL;
 static GSource    *nimf_client_default_source = NULL;
 static GHashTable *nimf_client_table          = NULL;
@@ -76,16 +62,6 @@ on_incoming_message (GSocket      *socket,
       g_socket_close (socket, NULL);
 
     nimf_client_result->reply = NULL;
-
-    if (nimf_client_table)
-    {
-      GHashTableIter iter;
-      gpointer       value;
-      g_hash_table_iter_init (&iter, nimf_client_table);
-
-      while (g_hash_table_iter_next (&iter, NULL, &value))
-        g_signal_emit_by_name (NIMF_CLIENT (value), "disconnected", NULL);
-    }
 
     g_critical (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
 
@@ -172,23 +148,6 @@ on_incoming_message (GSocket      *socket,
                          NIMF_MESSAGE_DELETE_SURROUNDING_REPLY,
                          &retval, sizeof (gboolean), NULL);
       break;
-    /* for agent */
-    case NIMF_MESSAGE_ENGINE_CHANGED:
-      nimf_message_ref (message);
-
-      if (nimf_client_table)
-      {
-        GHashTableIter iter;
-        gpointer       value;
-        g_hash_table_iter_init (&iter, nimf_client_table);
-
-        while (g_hash_table_iter_next (&iter, NULL, &value))
-          g_signal_emit_by_name (NIMF_CLIENT (value), "engine-changed",
-                                 (gchar *) message->data);
-      }
-
-      nimf_message_unref (message);
-      break;
     /* reply */
     case NIMF_MESSAGE_CREATE_CONTEXT_REPLY:
     case NIMF_MESSAGE_DESTROY_CONTEXT_REPLY:
@@ -200,8 +159,6 @@ on_incoming_message (GSocket      *socket,
     case NIMF_MESSAGE_GET_SURROUNDING_REPLY:
     case NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY:
     case NIMF_MESSAGE_SET_USE_PREEDIT_REPLY:
-    case NIMF_MESSAGE_GET_LOADED_ENGINE_IDS_REPLY:
-    case NIMF_MESSAGE_SET_ENGINE_BY_ID_REPLY:
       break;
     default:
       g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
@@ -304,7 +261,6 @@ nimf_client_constructed (GObject *object)
     if (!socket)
     {
       g_critical (G_STRLOC ": %s: %s", G_STRFUNC, "Can't get socket");
-      g_signal_emit_by_name (client, "disconnected", NULL);
       return;
     }
 
@@ -337,7 +293,7 @@ nimf_client_constructed (GObject *object)
   }
 
   nimf_send_message (socket, client->id, NIMF_MESSAGE_CREATE_CONTEXT,
-                     &client->type, sizeof (NimfServiceIMType), NULL);
+                     NULL, 0, NULL);
   nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
                                client->id, NIMF_MESSAGE_CREATE_CONTEXT_REPLY);
 
@@ -392,48 +348,6 @@ nimf_client_finalize (GObject *object)
 }
 
 static void
-nimf_client_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfClient *client = NIMF_CLIENT (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVICE_IM_TYPE:
-      client->type = g_value_get_enum (value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-nimf_client_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfClient *client = NIMF_CLIENT (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVICE_IM_TYPE:
-      g_value_set_enum (value, client->type);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
 nimf_client_class_init (NimfClientClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -441,33 +355,5 @@ nimf_client_class_init (NimfClientClass *class)
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = nimf_client_finalize;
-  object_class->set_property = nimf_client_set_property;
-  object_class->get_property = nimf_client_get_property;
   object_class->constructed  = nimf_client_constructed;
-
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE_IM_TYPE,
-                                   g_param_spec_enum ("service-im-type",
-                                                      "service im type",
-                                                      "service im type",
-                                                      NIMF_TYPE_SERVICE_IM_TYPE,
-                                                      NIMF_SERVICE_IM_NIMF_IM,
-                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  nimf_client_signals[ENGINE_CHANGED] =
-    g_signal_new (g_intern_static_string ("engine-changed"),
-                  G_TYPE_FROM_CLASS (class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (NimfClientClass, engine_changed),
-                  NULL, NULL,
-                  nimf_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_STRING);
-  nimf_client_signals[DISCONNECTED] =
-    g_signal_new (g_intern_static_string ("disconnected"),
-                  G_TYPE_FROM_CLASS (class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (NimfClientClass, disconnected),
-                  NULL, NULL,
-                  nimf_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
 }

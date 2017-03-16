@@ -44,6 +44,16 @@ nimf_service_finalize (GObject *object)
 }
 
 const gchar *
+nimf_service_real_get_id (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_critical (G_STRLOC ": %s: You should implement your_service_get_id ()",
+              G_STRFUNC);
+  return NULL;
+}
+
+const gchar *
 nimf_service_get_id (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -55,11 +65,7 @@ nimf_service_get_id (NimfService *service)
     return class->get_id (service);
   }
   else
-  {
-    g_critical (G_STRLOC ": %s: You should implement your_service_get_id ()",
-                G_STRFUNC);
-    return NULL;
-  }
+    return nimf_service_real_get_id (service);
 }
 
 void nimf_service_start (NimfService *service)
@@ -148,10 +154,7 @@ nimf_service_class_init (NimfServiceClass *class)
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  class->get_id           = nimf_service_get_id;
-  class->start            = nimf_service_start;
-  class->stop             = nimf_service_stop;
-  class->set_engine_by_id = nimf_service_set_engine_by_id;
+  class->get_id = nimf_service_real_get_id;
 
   object_class->finalize     = nimf_service_finalize;
   object_class->set_property = nimf_service_set_property;

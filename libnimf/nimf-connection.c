@@ -40,8 +40,7 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   g_hash_table_iter_init (&iter, connection->ims);
 
   while (g_hash_table_iter_next (&iter, NULL, &im))
-    if (((NimfServiceIM *) im)->type != NIMF_SERVICE_IM_NIMF_AGENT)
-      nimf_service_im_set_engine_by_id (im, engine_id);
+    nimf_service_im_set_engine_by_id (im, engine_id);
 }
 
 static void

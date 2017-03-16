@@ -154,8 +154,7 @@ int nimf_xim_create_ic (NimfXim          *xim,
 
   if (!im)
   {
-    im = nimf_xim_im_new (NIMF_SERVICE_IM_XIM, NULL,
-                          NIMF_SERVICE (xim)->server, xim->xims);
+    im = nimf_xim_im_new (NULL, NIMF_SERVICE (xim)->server, xim->xims);
     NIMF_SERVICE_IM (im)->xim_connect_id = data->connect_id;
     data->icid = nimf_xim_add_im (xim, NIMF_SERVICE_IM (im));
     g_debug (G_STRLOC ": icid = %d", data->icid);

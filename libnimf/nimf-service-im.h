@@ -72,7 +72,6 @@ struct _NimfServiceIM
    /*< private >*/
   GObjectClass parent_class;
 
-  NimfServiceIMType  type; /* prop */
   NimfEngine        *engine;
   guint16            icid;
   NimfConnection    *connection; /* prop */

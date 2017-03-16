@@ -296,8 +296,7 @@ nimf_im_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_object_new (NIMF_TYPE_IM,
-                       "service-im-type", NIMF_SERVICE_IM_NIMF_IM, NULL);
+  return g_object_new (NIMF_TYPE_IM, NULL);
 }
 
 static void
@@ -306,7 +305,7 @@ nimf_im_init (NimfIM *im)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   im->preedit_string = g_strdup ("");
-  im->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
+  im->preedit_attrs  = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
 }
 
 static void

@@ -103,13 +103,11 @@ void nimf_server_im_emit_preedit_end (NimfServiceIM *im)
   im->preedit_state = NIMF_PREEDIT_STATE_END;
 }
 
-NimfServerIM *nimf_server_im_new (NimfServiceIMType  type,
-                                  NimfConnection    *connection,
-                                  NimfServer        *server,
-                                  gpointer           cb_user_data)
+NimfServerIM *nimf_server_im_new (NimfConnection *connection,
+                                  NimfServer     *server,
+                                  gpointer        cb_user_data)
 {
   return g_object_new (NIMF_TYPE_SERVER_IM,
-                       "service-im-type", type,
                        "connection",      connection,
                        "server",          server,
                        "cb-user-data",    cb_user_data,

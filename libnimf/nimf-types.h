@@ -38,13 +38,6 @@ typedef enum
   NIMF_ERROR_FAILED
 } NimfError;
 
-typedef enum
-{
-  NIMF_SERVICE_IM_NIMF_IM,
-  NIMF_SERVICE_IM_NIMF_AGENT,
-  NIMF_SERVICE_IM_XIM
-} NimfServiceIMType;
-
 /* copied from GdkModifierType in gdktypes.h for compatibility */
 typedef enum
 {

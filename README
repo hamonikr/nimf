@@ -1,6 +1,6 @@
 Nimf is an input method framework which has a module-based client-server
 architecture in which an application acts as a client and communicates
-synchronously with the Nimf server via a unix socket.
+synchronously with the Nimf server via a Unix socket.
 
 Nimf provides:
  * Input Method Server:
@@ -10,16 +10,14 @@ Nimf provides:
     * Japanese (alpha stage, based on anthy)
     * Korean (based on libhangul)
  * Server Modules:
+    * Indicator (based on appindicator)
     * XIM (based on IMdkit)
  * Client Modules:
     * GTK+2, GTK+3, Qt4, Qt5
- * Indicator:
-    * nimf-indicator for Unity, GNOME Panel, KDE
  * Settings tool to configure the Nimf:
     * nimf-settings
  * Development files:
     * C library and headers
-    * GObject introspection data file for language bindings
 
 Project Homepage:
  * https://github.com/cogniti/nimf
@@ -55,7 +53,6 @@ Install
     sudo make update-gtk-im-cache
     sudo make update-gtk-icon-cache
     nimf-daemon
-    nimf-indicator
     export GTK_IM_MODULE="nimf"
     export QT4_IM_MODULE="nimf"
     export QT_IM_MODULE="nimf"

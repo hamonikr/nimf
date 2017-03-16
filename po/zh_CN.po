@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-19 17:40+0900\n"
-"PO-Revision-Date: 2017-02-22 00:34+0900\n"
+"PO-Revision-Date: 2017-03-17 02:02+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -18,63 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:47 ../indicator/nimf-indicator.c:131
+#: ../daemon/nimf-daemon.c:49
 msgid "Do not daemonize"
 msgstr "不要化为守护进程"
 
-#: ../daemon/nimf-daemon.c:48 ../indicator/nimf-indicator.c:132
+#: ../daemon/nimf-daemon.c:50
 msgid "Log debugging message"
 msgstr "日志调试消息"
 
-#: ../daemon/nimf-daemon.c:49 ../indicator/nimf-indicator.c:133
+#: ../daemon/nimf-daemon.c:51
 msgid "Version"
 msgstr "版本"
 
-#: ../indicator/nimf-indicator.c:66 ../indicator/nimf-indicator.c:67
-#: ../indicator/nimf-indicator.c:68 ../indicator/nimf-indicator.c:85
-msgid "Hodong Kim <cogniti@gmail.com>"
-msgstr "金豪东 <cogniti@gmail.com>"
-
-#: ../indicator/nimf-indicator.c:79
-msgid "An indicator for Nimf"
-msgstr "宁芙的指示器"
-
-#: ../indicator/nimf-indicator.c:80
-msgid "Copyright (c) 2015,2016 Hodong Kim"
-msgstr "版权所有 (c) 2015,2016 金豪东"
-
-#: ../indicator/nimf-indicator.c:84
-msgid "Nimf Indicator"
-msgstr "宁芙指示器"
-
-#: ../indicator/nimf-indicator.c:88
-msgid "Website"
-msgstr "网站"
-
-#: ../indicator/nimf-indicator.c:235
-msgid "Settings"
-msgstr "设置"
-
-#: ../indicator/nimf-indicator.c:236
-msgid "Donate"
-msgstr "捐赠"
-
-#: ../indicator/nimf-indicator.c:237
-msgid "About"
-msgstr "关于"
-
-#: ../indicator/nimf-indicator.c:238
-msgid "Exit"
-msgstr "退出"
-
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:576
+#: ../modules/services/indicator/nimf-indicator.c:105
 msgid "Nimf"
 msgstr "宁芙"
 
 #: ../modules/engines/nimf-rime/nimf-rime.c:358
 msgid "Rime"
 msgstr "中州韵"
+
+#: ../modules/services/indicator/nimf-indicator.c:87
+#: ../modules/services/indicator/nimf-indicator.c:88
+#: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:106
+msgid "Hodong Kim <cogniti@gmail.com>"
+msgstr "金豪东 <cogniti@gmail.com>"
+
+#: ../modules/services/indicator/nimf-indicator.c:100
+msgid "Nimf is an input method framework"
+msgstr "宁芙是一个输入法框架。"
+
+#: ../modules/services/indicator/nimf-indicator.c:101
+msgid "Copyright (c) 2015-2017 Hodong Kim"
+msgstr "版权所有 (c) 2015-2017 金豪东"
+
+#: ../modules/services/indicator/nimf-indicator.c:109
+msgid "Website"
+msgstr "网站"
+
+#: ../modules/services/indicator/nimf-indicator.c:192
+msgid "Settings"
+msgstr "设置"
+
+#: ../modules/services/indicator/nimf-indicator.c:193
+msgid "Donate"
+msgstr "捐赠"
+
+#: ../modules/services/indicator/nimf-indicator.c:194
+msgid "About"
+msgstr "关于"
 
 #: ../settings/nimf-settings.c:458
 #, c-format
