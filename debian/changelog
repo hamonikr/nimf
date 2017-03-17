@@ -1,3 +1,9 @@
+nimf (2017.03.17) stable; urgency=medium
+
+  * Modulized indicator
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 17 Mar 2017 09:36:01 +0900
+
 nimf (2017.03.15) stable; urgency=medium
 
   * Modulized XIM (related issue #25)

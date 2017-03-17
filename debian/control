@@ -46,13 +46,11 @@ Description: Input Method Framework
      * Chinese (alpha stage, based on sunpinyin, libchewing, librime)
      * Japanese (alpha stage, based on anthy)
      * Korean (based on libhangul)
-  * Server Modules:
+  * Service Modules:
      * Indicator (based on appindicator)
      * XIM (based on IMdkit)
   * Client Modules:
      * GTK+2, GTK+3, Qt4, Qt5
-  * Indicator:
-     * nimf-indicator for Unity, GNOME Panel, KDE
   * Settings tool to configure the Nimf:
      * nimf-settings
 

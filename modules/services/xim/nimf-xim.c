@@ -72,8 +72,8 @@ nimf_xim_set_engine_by_id (NimfService *service,
 }
 
 static guint16
-nimf_xim_add_im (NimfXim      *xim,
-                 NimfServiceIM *im)
+nimf_xim_add_im (NimfXim   *xim,
+                 NimfXimIM *xim_im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -83,8 +83,8 @@ nimf_xim_add_im (NimfXim      *xim,
     icid = xim->next_icid++;
   while (icid == 0 || g_hash_table_contains (xim->ims,
                                              GUINT_TO_POINTER (icid)));
-  im->icid = icid;
-  g_hash_table_insert (xim->ims, GUINT_TO_POINTER (icid), im);
+  NIMF_SERVICE_IM (xim_im)->icid = icid;
+  g_hash_table_insert (xim->ims, GUINT_TO_POINTER (icid), xim_im);
 
   return icid;
 }
@@ -95,17 +95,20 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfServiceIM *im;
-  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
+  NimfXimIM     *xim_im;
   CARD16 i;
+
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
+  xim_im = NIMF_XIM_IM (im);
 
   for (i = 0; i < data->ic_attr_num; i++)
   {
     if (g_strcmp0 (XNInputStyle, data->ic_attr[i].name) == 0)
       g_message ("XNInputStyle is ignored");
     else if (g_strcmp0 (XNClientWindow, data->ic_attr[i].name) == 0)
-      im->client_window = *(Window *) data->ic_attr[i].value;
+      xim_im->client_window = *(Window *) data->ic_attr[i].value;
     else if (g_strcmp0 (XNFocusWindow, data->ic_attr[i].name) == 0)
-      im->focus_window = *(Window *) data->ic_attr[i].value;
+      xim_im->focus_window = *(Window *) data->ic_attr[i].value;
     else
       g_warning (G_STRLOC ": %s %s", G_STRFUNC, data->ic_attr[i].name);
   }
@@ -139,7 +142,7 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
                 G_STRFUNC, data->status_attr[i].name);
   }
 
-  nimf_service_im_xim_set_cursor_location (im, xim->xims->core.display);
+  nimf_xim_im_set_cursor_location (im, xim->xims->core.display);
 
   return 1;
 }
@@ -149,14 +152,14 @@ int nimf_xim_create_ic (NimfXim          *xim,
 {
   g_debug (G_STRLOC ": %s, data->connect_id: %d", G_STRFUNC, data->connect_id);
 
-  NimfXimIM *im;
-  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
+  NimfXimIM *xim_im;
+  xim_im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
-  if (!im)
+  if (!xim_im)
   {
-    im = nimf_xim_im_new (NULL, NIMF_SERVICE (xim)->server, xim->xims);
-    NIMF_SERVICE_IM (im)->xim_connect_id = data->connect_id;
-    data->icid = nimf_xim_add_im (xim, NIMF_SERVICE_IM (im));
+    xim_im = nimf_xim_im_new (NIMF_SERVICE (xim)->server, xim->xims);
+    xim_im->connect_id = data->connect_id;
+    data->icid = nimf_xim_add_im (xim, xim_im);
     g_debug (G_STRLOC ": icid = %d", data->icid);
   }
 

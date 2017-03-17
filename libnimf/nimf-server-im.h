@@ -45,12 +45,12 @@ struct _NimfServerIMClass
 struct _NimfServerIM
 {
   NimfServiceIM parent_instance;
+  NimfConnection *connection;
 };
 
 GType         nimf_server_im_get_type (void) G_GNUC_CONST;
 NimfServerIM *nimf_server_im_new (NimfConnection    *connection,
-                                  NimfServer        *server,
-                                  gpointer           cb_user_data);
+                                  NimfServer        *server);
 G_END_DECLS
 
 #endif /* __NIMF_SERVER_IM_H__ */

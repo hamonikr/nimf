@@ -30,7 +30,6 @@
 #include "nimf-engine.h"
 #include "nimf-connection.h"
 #include "nimf-server.h"
-#include <X11/Xlib.h>
 #include "nimf-enum-types.h"
 
 G_BEGIN_DECLS
@@ -55,14 +54,18 @@ struct _NimfServiceIMClass
 
   /*< public >*/
   /* Virtual functions */
-  void (* emit_commit)          (NimfServiceIM    *im,
-                                 const gchar      *text);
-  void (* emit_preedit_start)   (NimfServiceIM    *im);
-  void (* emit_preedit_changed) (NimfServiceIM    *im,
-                                 const gchar      *preedit_string,
-                                 NimfPreeditAttr **attrs,
-                                 gint              cursor_pos);
-  void (* emit_preedit_end)     (NimfServiceIM    *im);
+  void     (* emit_commit)               (NimfServiceIM    *im,
+                                          const gchar      *text);
+  void     (* emit_preedit_start)        (NimfServiceIM    *im);
+  void     (* emit_preedit_changed)      (NimfServiceIM    *im,
+                                          const gchar      *preedit_string,
+                                          NimfPreeditAttr **attrs,
+                                          gint              cursor_pos);
+  void     (* emit_preedit_end)          (NimfServiceIM    *im);
+  gboolean (* emit_retrieve_surrounding) (NimfServiceIM    *im);
+  gboolean (* emit_delete_surrounding)   (NimfServiceIM    *im,
+                                          gint              offset,
+                                          gint              n_chars);
 };
 
 struct _NimfServiceIM
@@ -72,21 +75,14 @@ struct _NimfServiceIM
    /*< private >*/
   GObjectClass parent_class;
 
-  NimfEngine        *engine;
-  guint16            icid;
-  NimfConnection    *connection; /* prop */
-  NimfServer        *server; /* prop */
-  gboolean           use_preedit;
-  NimfRectangle      cursor_area;
-  GList             *engines;
-  /* XIM */
-  guint16          xim_connect_id;
-  gint             xim_preedit_length;
-  NimfPreeditState preedit_state;
-  gpointer         cb_user_data; /* prop */
-  Window           client_window;
-  Window           focus_window;
+  NimfEngine       *engine;
+  guint16           icid;
+  NimfServer       *server; /* prop */
+  gboolean          use_preedit;
+  NimfRectangle     cursor_area;
+  GList            *engines;
   /* preedit */
+  NimfPreeditState  preedit_state;
   gchar            *preedit_string;
   NimfPreeditAttr **preedit_attrs;
   gint              preedit_cursor_pos;
@@ -112,8 +108,6 @@ void         nimf_service_im_set_use_preedit         (NimfServiceIM       *im,
                                                       gboolean             use_preedit);
 void         nimf_service_im_set_cursor_location     (NimfServiceIM       *im,
                                                       const NimfRectangle *area);
-void         nimf_service_im_xim_set_cursor_location (NimfServiceIM       *im,
-                                                      Display             *display);
 void         nimf_service_im_reset              (NimfServiceIM  *im);
 void         nimf_service_im_set_engine_by_id   (NimfServiceIM  *im,
                                                  const gchar    *engine_id);

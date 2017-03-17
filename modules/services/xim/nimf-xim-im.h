@@ -24,6 +24,7 @@
 
 #include <glib-object.h>
 #include "nimf.h"
+#include "IMdkit/Xi18n.h"
 
 G_BEGIN_DECLS
 
@@ -45,12 +46,18 @@ struct _NimfXimIMClass
 struct _NimfXimIM
 {
   NimfServiceIM parent_instance;
+  XIMS    xims;
+  guint16 connect_id;
+  gint    preedit_length;
+  Window  client_window;
+  Window  focus_window;
 };
 
 GType nimf_xim_im_get_type (void) G_GNUC_CONST;
-NimfXimIM *nimf_xim_im_new (NimfConnection    *connection,
-                            NimfServer        *server,
-                            gpointer           cb_user_data);
+NimfXimIM *nimf_xim_im_new (NimfServer *server,
+                            XIMS        xims);
+void       nimf_xim_im_set_cursor_location (NimfServiceIM *im,
+                                            Display       *display);
 G_END_DECLS
 
 #endif /* __NIMF_XIM_IM_H__ */

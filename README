@@ -9,7 +9,7 @@ Nimf provides:
     * Chinese (alpha stage, based on sunpinyin, libchewing, librime)
     * Japanese (alpha stage, based on anthy)
     * Korean (based on libhangul)
- * Server Modules:
+ * Service Modules:
     * Indicator (based on appindicator)
     * XIM (based on IMdkit)
  * Client Modules:

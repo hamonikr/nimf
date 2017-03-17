@@ -29,9 +29,7 @@ G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 enum
 {
   PROP_0,
-  PROP_SERVICE_IM_CONNECTION,
-  PROP_SERVICE_IM_SERVER,
-  PROP_SERVICE_IM_CB_USER_DATA
+  PROP_SERVICE_IM_SERVER
 };
 
 void nimf_service_im_emit_preedit_start (NimfServiceIM *im)
@@ -108,15 +106,12 @@ nimf_service_im_emit_retrieve_surrounding (NimfServiceIM *im)
   if (G_UNLIKELY (!im))
     return FALSE;
 
-  nimf_send_message (im->connection->socket, im->icid,
-                     NIMF_MESSAGE_RETRIEVE_SURROUNDING, NULL, 0, NULL);
-  nimf_result_iteration_until (im->connection->result, NULL, im->icid,
-                               NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
+  NimfServiceIMClass *class = NIMF_SERVICE_IM_GET_CLASS (im);
 
-  if (im->connection->result->reply == NULL)
+  if (class->emit_retrieve_surrounding)
+    return class->emit_retrieve_surrounding (im);
+  else
     return FALSE;
-
-  return *(gboolean *) (im->connection->result->reply->data);
 }
 
 gboolean
@@ -129,20 +124,12 @@ nimf_service_im_emit_delete_surrounding (NimfServiceIM *im,
   if (G_UNLIKELY (!im))
     return FALSE;
 
-  gint *data = g_malloc (2 * sizeof (gint));
-  data[0] = offset;
-  data[1] = n_chars;
+  NimfServiceIMClass *class = NIMF_SERVICE_IM_GET_CLASS (im);
 
-  nimf_send_message (im->connection->socket, im->icid,
-                     NIMF_MESSAGE_DELETE_SURROUNDING,
-                     data, 2 * sizeof (gint), g_free);
-  nimf_result_iteration_until (im->connection->result, NULL, im->icid,
-                               NIMF_MESSAGE_DELETE_SURROUNDING_REPLY);
-
-  if (im->connection->result->reply == NULL)
+  if (class->emit_delete_surrounding)
+    return class->emit_delete_surrounding (im, offset, n_chars);
+  else
     return FALSE;
-
-  return *(gboolean *) (im->connection->result->reply->data);
 }
 
 void
@@ -450,39 +437,6 @@ nimf_service_im_set_cursor_location (NimfServiceIM       *im,
   nimf_engine_set_cursor_location (im->engine, area);
 }
 
-void
-nimf_service_im_xim_set_cursor_location (NimfServiceIM *im,
-                                         Display       *display)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfRectangle preedit_area = im->cursor_area;
-
-  Window target;
-
-  if (im->focus_window)
-    target = im->focus_window;
-  else
-    target = im->client_window;
-
-  if (target)
-  {
-    XWindowAttributes xwa;
-    Window child;
-
-    XGetWindowAttributes (display, target, &xwa);
-    XTranslateCoordinates (display, target,
-                           xwa.root,
-                           preedit_area.x,
-                           preedit_area.y,
-                           &preedit_area.x,
-                           &preedit_area.y,
-                           &child);
-  }
-
-  nimf_service_im_set_cursor_location (im, &preedit_area);
-}
-
 void nimf_service_im_reset (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -620,14 +574,8 @@ nimf_service_im_set_property (GObject      *object,
 
   switch (prop_id)
   {
-    case PROP_SERVICE_IM_CONNECTION:
-      im->connection = g_value_get_object (value);
-      break;
     case PROP_SERVICE_IM_SERVER:
       im->server = g_value_get_object (value);
-      break;
-    case PROP_SERVICE_IM_CB_USER_DATA:
-      im->cb_user_data = g_value_get_pointer (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -647,14 +595,8 @@ nimf_service_im_get_property (GObject    *object,
 
   switch (prop_id)
   {
-    case PROP_SERVICE_IM_CONNECTION:
-      g_value_set_object (value, im->connection);
-      break;
     case PROP_SERVICE_IM_SERVER:
       g_value_set_object (value, im->server);
-      break;
-    case PROP_SERVICE_IM_CB_USER_DATA:
-      g_value_set_pointer (value, im->cb_user_data);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -675,23 +617,10 @@ nimf_service_im_class_init (NimfServiceIMClass *class)
   object_class->constructed  = nimf_service_im_constructed;
 
   g_object_class_install_property (object_class,
-                                   PROP_SERVICE_IM_CONNECTION,
-                                   g_param_spec_object ("connection",
-                                                        "connection",
-                                                        "connection",
-                                                        NIMF_TYPE_CONNECTION,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (object_class,
                                    PROP_SERVICE_IM_SERVER,
                                    g_param_spec_object ("server",
                                                         "server",
                                                         "server",
                                                         NIMF_TYPE_SERVER,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE_IM_CB_USER_DATA,
-                                   g_param_spec_pointer ("cb-user-data",
-                                                         "cb user data",
-                                                         "cb user data",
-                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
