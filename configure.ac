@@ -221,7 +221,6 @@ AM_CONDITIONAL([WITH_IM_CONFIG_DATA],
 dnl ***************************************************************************
 
 GLIB_GSETTINGS
-GOBJECT_INTROSPECTION_CHECK([0.10.1])
 
 AC_OUTPUT([
   Makefile
