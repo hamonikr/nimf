@@ -59,11 +59,6 @@ Install
     export XMODIFIERS="@im=nimf"
     gedit # or kate
 
-  * To use symbols in libhangul engine
-
-    wget https://raw.githubusercontent.com/choehwanjin/libhangul/master/data/hanja/mssymbol.txt
-    sudo mv mssymbol.txt /usr/share/libhangul/hanja/
-
 
 Configure
 ---------

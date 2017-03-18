@@ -739,7 +739,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   if (nimf_libhangul_hanja_table_ref_count == 0)
   {
     nimf_libhangul_hanja_table  = hanja_table_load (NULL);
-    nimf_libhangul_symbol_table = hanja_table_load ("/usr/share/libhangul/hanja/mssymbol.txt"); /* FIXME */
+    nimf_libhangul_symbol_table = hanja_table_load (MSSYMBOL_PATH);
   }
 
   nimf_libhangul_hanja_table_ref_count++;

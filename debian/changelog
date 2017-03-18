@@ -1,3 +1,9 @@
+nimf (2017.03.19) stable; urgency=medium
+
+  * Added mssymbol.txt for nimf-libhangul (closes #31)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 19 Mar 2017 00:35:38 +0900
+
 nimf (2017.03.17) stable; urgency=medium
 
   * Modulized indicator
