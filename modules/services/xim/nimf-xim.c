@@ -467,7 +467,7 @@ nimf_xevent_source_new (Display *display)
   g_source_add_poll (source, &xevent_source->poll_fd);
 
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
-  g_source_set_can_recurse (source, FALSE);
+  g_source_set_can_recurse (source, TRUE);
 
   return source;
 }
