@@ -457,15 +457,12 @@ nimf_xevent_source_new (Display *display)
 
   GSource *source;
   NimfXEventSource *xevent_source;
-  int connection_number;
 
   source = g_source_new (&event_funcs, sizeof (NimfXEventSource));
   xevent_source = (NimfXEventSource *) source;
   xevent_source->display = display;
 
-  connection_number = ConnectionNumber (xevent_source->display);
-
-  xevent_source->poll_fd.fd = connection_number;
+  xevent_source->poll_fd.fd = ConnectionNumber (xevent_source->display);
   xevent_source->poll_fd.events = G_IO_IN;
   g_source_add_poll (source, &xevent_source->poll_fd);
 
