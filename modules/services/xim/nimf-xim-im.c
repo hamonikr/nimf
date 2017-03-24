@@ -57,7 +57,7 @@ nimf_xim_im_set_cursor_location (NimfServiceIM *im,
   nimf_service_im_set_cursor_location (im, &preedit_area);
 }
 
-void
+static void
 nimf_xim_im_emit_commit (NimfServiceIM *im,
                          const gchar   *text)
 {
@@ -80,7 +80,7 @@ nimf_xim_im_emit_commit (NimfServiceIM *im,
   XFree (property.value);
 }
 
-void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
+static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -97,7 +97,7 @@ void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
   IMCallCallback (xim_im->xims, (XPointer) &preedit_cb_data);
 }
 
-void
+static void
 nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
                                   const gchar      *preedit_string,
                                   NimfPreeditAttr **attrs,
@@ -170,7 +170,7 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   g_free (feedback);
 }
 
-void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
+static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

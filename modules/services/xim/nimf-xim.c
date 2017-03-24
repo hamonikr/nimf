@@ -56,9 +56,8 @@ GType nimf_xim_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
 
-void
-nimf_xim_set_engine_by_id (NimfService *service,
-                           const gchar *engine_id)
+static void nimf_xim_set_engine_by_id (NimfService *service,
+                                       const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -89,8 +88,8 @@ nimf_xim_add_im (NimfXim   *xim,
   return icid;
 }
 
-int nimf_xim_set_ic_values (NimfXim          *xim,
-                            IMChangeICStruct *data)
+static int nimf_xim_set_ic_values (NimfXim          *xim,
+                                   IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -147,8 +146,8 @@ int nimf_xim_set_ic_values (NimfXim          *xim,
   return 1;
 }
 
-int nimf_xim_create_ic (NimfXim          *xim,
-                        IMChangeICStruct *data)
+static int nimf_xim_create_ic (NimfXim          *xim,
+                               IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s, data->connect_id: %d", G_STRFUNC, data->connect_id);
 
@@ -168,16 +167,16 @@ int nimf_xim_create_ic (NimfXim          *xim,
   return 1;
 }
 
-int nimf_xim_destroy_ic (NimfXim           *xim,
-                         IMDestroyICStruct *data)
+static int nimf_xim_destroy_ic (NimfXim           *xim,
+                                IMDestroyICStruct *data)
 {
   g_debug (G_STRLOC ": %s, data->icid = %d", G_STRFUNC, data->icid);
 
   return g_hash_table_remove (xim->ims, GUINT_TO_POINTER (data->icid));
 }
 
-int nimf_xim_get_ic_values (NimfXim          *xim,
-                            IMChangeICStruct *data)
+static int nimf_xim_get_ic_values (NimfXim          *xim,
+                                   IMChangeICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -228,8 +227,8 @@ int nimf_xim_get_ic_values (NimfXim          *xim,
   return 1;
 }
 
-int nimf_xim_forward_event (NimfXim              *xim,
-                            IMForwardEventStruct *data)
+static int nimf_xim_forward_event (NimfXim              *xim,
+                                   IMForwardEventStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -273,8 +272,8 @@ int nimf_xim_forward_event (NimfXim              *xim,
   return 1;
 }
 
-int nimf_xim_set_ic_focus (NimfXim             *xim,
-                           IMChangeFocusStruct *data)
+static int nimf_xim_set_ic_focus (NimfXim             *xim,
+                                  IMChangeFocusStruct *data)
 {
   NimfServiceIM *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
@@ -287,8 +286,8 @@ int nimf_xim_set_ic_focus (NimfXim             *xim,
   return 1;
 }
 
-int nimf_xim_unset_ic_focus (NimfXim             *xim,
-                             IMChangeFocusStruct *data)
+static int nimf_xim_unset_ic_focus (NimfXim             *xim,
+                                    IMChangeFocusStruct *data)
 {
   NimfServiceIM *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
@@ -300,8 +299,8 @@ int nimf_xim_unset_ic_focus (NimfXim             *xim,
   return 1;
 }
 
-int nimf_xim_reset_ic (NimfXim         *xim,
-                       IMResetICStruct *data)
+static int nimf_xim_reset_ic (NimfXim         *xim,
+                              IMResetICStruct *data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -450,8 +449,7 @@ static GSourceFuncs event_funcs = {
   nimf_xevent_source_finalize
 };
 
-GSource *
-nimf_xevent_source_new (Display *display)
+static GSource *nimf_xevent_source_new (Display *display)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -558,7 +556,7 @@ static void nimf_xim_stop (NimfService *service)
   /* xclosedisplay */
 }
 
-const gchar *
+static const gchar *
 nimf_xim_get_id (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -580,8 +578,7 @@ nimf_xim_init (NimfXim *xim)
                                          (GDestroyNotify) g_object_unref);
 }
 
-static void
-nimf_xim_finalize (GObject *object)
+static void nimf_xim_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
