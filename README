@@ -11,6 +11,7 @@ Nimf provides:
     * Korean (based on libhangul)
  * Service Modules:
     * Indicator (based on appindicator)
+    * Wayland
     * XIM (based on IMdkit)
  * Client Modules:
     * GTK+2, GTK+3, Qt4, Qt5

@@ -189,6 +189,14 @@ if test "x$RSVG_CONVERT" = "xno"; then
 fi
 
 dnl ***************************************************************************
+dnl nimf-wayland
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_WAYLAND_DEPS, [$LIBNIMF_REQUIRES]
+                                     wayland-client wayland-server
+                                     wayland-protocols xkbcommon)
+
+dnl ***************************************************************************
 dnl nimf-xim
 dnl ***************************************************************************
 
@@ -245,6 +253,7 @@ AC_OUTPUT([
   modules/engines/nimf-system-keyboard/Makefile
   modules/services/Makefile
   modules/services/indicator/Makefile
+  modules/services/wayland/Makefile
   modules/services/xim/Makefile
   po/Makefile.in
   settings/Makefile
