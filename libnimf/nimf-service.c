@@ -68,14 +68,16 @@ nimf_service_get_id (NimfService *service)
     return nimf_service_real_get_id (service);
 }
 
-void nimf_service_start (NimfService *service)
+gboolean nimf_service_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfServiceClass *class = NIMF_SERVICE_GET_CLASS (service);
 
   if (class->start)
-    class->start (service);
+    return class->start (service);
+  else
+    return FALSE;
 }
 
 void nimf_service_stop (NimfService *service)

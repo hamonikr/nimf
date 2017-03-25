@@ -133,7 +133,7 @@ nimf_indicator_get_id (NimfService *service)
   return NIMF_INDICATOR (service)->id;
 }
 
-static void nimf_indicator_start (NimfService *service)
+static gboolean nimf_indicator_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -141,7 +141,8 @@ static void nimf_indicator_start (NimfService *service)
 
   g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
 
-  gtk_init (NULL, NULL);
+  if (!gtk_init_check (NULL, NULL))
+    return FALSE;
 
   GtkWidget *menu_shell;
   GtkWidget *settings_menu;
@@ -205,6 +206,8 @@ static void nimf_indicator_start (NimfService *service)
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
 
   gtk_widget_show_all (menu_shell);
+
+  return TRUE;
 }
 
 static void nimf_indicator_stop (NimfService *service)

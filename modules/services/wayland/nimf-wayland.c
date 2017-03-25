@@ -489,7 +489,7 @@ static const struct wl_registry_listener registry_listener = {
   registry_handle_global_remove
 };
 
-static void nimf_wayland_start (NimfService *service)
+static gboolean nimf_wayland_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -499,7 +499,7 @@ static void nimf_wayland_start (NimfService *service)
   if (wayland->display == NULL)
   {
     g_warning (G_STRLOC ": %s: wl_display_connect() failed", G_STRFUNC);
-    return;
+    return FALSE;
   }
 
   wayland->registry = wl_display_get_registry (wayland->display);
@@ -508,19 +508,21 @@ static void nimf_wayland_start (NimfService *service)
   if (wayland->input_method == NULL)
   {
     g_critical (G_STRLOC ": %s: No input_method global", G_STRFUNC);
-    return;
+    return FALSE;
   }
 
   wayland->xkb_context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
   if (wayland->xkb_context == NULL) {
     g_critical (G_STRLOC ": %s: xkb_context_new() failed", G_STRFUNC);
-    return;
+    return FALSE;
   }
 
   wayland->im = nimf_wayland_im_new (NIMF_SERVICE (wayland)->server, wayland);
   wayland->context = NULL;
   wayland->event_source = nimf_wayland_source_new (wayland);
   g_source_attach (wayland->event_source, service->server->main_context);
+
+  return TRUE;
 }
 
 static const gchar *

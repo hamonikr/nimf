@@ -470,7 +470,7 @@ static GSource *nimf_xevent_source_new (Display *display)
   return source;
 }
 
-static void nimf_xim_start (NimfService *service)
+static gboolean nimf_xim_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -484,7 +484,7 @@ static void nimf_xim_start (NimfService *service)
   if (display == NULL)
   {
     g_warning (G_STRLOC ": %s: Can't open display", G_STRFUNC);
-    return;
+    return FALSE;
   }
 
   XIMStyle ims_styles_on_spot [] = {
@@ -544,6 +544,8 @@ static void nimf_xim_start (NimfService *service)
   xim->xevent_source = nimf_xevent_source_new (display);
   g_source_attach (xim->xevent_source, service->server->main_context);
   XSetErrorHandler (on_xerror);
+
+  return TRUE;
 }
 
 static void nimf_xim_stop (NimfService *service)

@@ -55,14 +55,14 @@ struct _NimfServiceClass
   /*< public >*/
   /* Virtual functions */
   const gchar * (* get_id)           (NimfService *service);
-  void          (* start)            (NimfService *service);
+  gboolean      (* start)            (NimfService *service);
   void          (* stop)             (NimfService *service);
   void          (* set_engine_by_id) (NimfService *service,
                                       const gchar *engine_id);
 };
 
 GType        nimf_service_get_type         (void) G_GNUC_CONST;
-void         nimf_service_start            (NimfService *service);
+gboolean     nimf_service_start            (NimfService *service);
 void         nimf_service_stop             (NimfService *service);
 const gchar *nimf_service_get_id           (NimfService *service);
 void         nimf_service_set_engine_by_id (NimfService *service,

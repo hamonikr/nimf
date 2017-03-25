@@ -753,7 +753,10 @@ nimf_server_start (NimfServer *server)
   g_hash_table_iter_init (&iter, server->services);
 
   while (g_hash_table_iter_next (&iter, NULL, &service))
-    nimf_service_start (NIMF_SERVICE (service));
+  {
+    if (!nimf_service_start (NIMF_SERVICE (service)))
+      g_hash_table_iter_remove (&iter);
+  }
 
   server->active = TRUE;
 }
