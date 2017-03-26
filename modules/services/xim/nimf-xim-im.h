@@ -49,6 +49,7 @@ struct _NimfXimIM
   XIMS    xims;
   guint16 connect_id;
   gint    preedit_length;
+  CARD32  input_style;
   Window  client_window;
   Window  focus_window;
 };

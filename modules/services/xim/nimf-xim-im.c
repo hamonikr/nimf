@@ -85,6 +85,10 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
+
+  if (!(xim_im->input_style & XIMPreeditCallbacks))
+    return;
+
   IMPreeditStateStruct preedit_state_data = {0};
 
   preedit_state_data.connect_id = xim_im->connect_id;
@@ -106,6 +110,10 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
+
+  if (!(xim_im->input_style & XIMPreeditCallbacks))
+    return;
+
   IMPreeditCBStruct preedit_cb_data = {0};
   XIMText           text;
   XTextProperty     text_property;
@@ -175,6 +183,10 @@ static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
+
+  if (!(xim_im->input_style & XIMPreeditCallbacks))
+    return;
+
   IMPreeditStateStruct preedit_state_data = {0};
 
   preedit_state_data.connect_id = xim_im->connect_id;

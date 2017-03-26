@@ -103,7 +103,7 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
   for (i = 0; i < data->ic_attr_num; i++)
   {
     if (g_strcmp0 (XNInputStyle, data->ic_attr[i].name) == 0)
-      g_message ("XNInputStyle is ignored");
+      xim_im->input_style = *(CARD32*) data->ic_attr[i].value;
     else if (g_strcmp0 (XNClientWindow, data->ic_attr[i].name) == 0)
       xim_im->client_window = *(Window *) data->ic_attr[i].value;
     else if (g_strcmp0 (XNFocusWindow, data->ic_attr[i].name) == 0)
@@ -125,8 +125,11 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
         case XIMPreeditDisable:
           nimf_service_im_set_use_preedit (im, FALSE);
           break;
+        case XIMPreeditUnKnown:
+          break;
         default:
-          g_message ("XIMPreeditState: %ld is ignored", state);
+          g_warning (G_STRLOC ": %s: XIMPreeditState: %ld is ignored",
+                     G_STRFUNC, state);
           break;
       }
     }
@@ -488,12 +491,8 @@ static gboolean nimf_xim_start (NimfService *service)
   }
 
   XIMStyle ims_styles_on_spot [] = {
-    XIMPreeditPosition  | XIMStatusNothing,
-    XIMPreeditCallbacks | XIMStatusNothing,
-    XIMPreeditNothing   | XIMStatusNothing,
-    XIMPreeditPosition  | XIMStatusCallbacks,
-    XIMPreeditCallbacks | XIMStatusCallbacks,
-    XIMPreeditNothing   | XIMStatusCallbacks,
+    XIMPreeditCallbacks | XIMStatusNone, /* on-the-spot */
+    XIMPreeditNone      | XIMStatusNone,
     0
   };
 
