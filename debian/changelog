@@ -1,3 +1,9 @@
+nimf (2017.03.27) stable; urgency=medium
+
+  * nimf-xim: Added a root window im style (issue #35)
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 27 Mar 2017 22:03:07 +0900
+
 nimf (2017.03.25) stable; urgency=medium
 
   * Support for Wayland (closes #25)

@@ -19,40 +19,7 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-#include <nimf.h>
-#include <glib/gi18n.h>
-#include <X11/XKBlib.h>
-#include "IMdkit/Xi18n.h"
-#include "nimf-xim-im.h"
-
-#define NIMF_TYPE_XIM               (nimf_xim_get_type ())
-#define NIMF_XIM(object)            (G_TYPE_CHECK_INSTANCE_CAST ((object), NIMF_TYPE_XIM, NimfXim))
-#define NIMF_XIM_CLASS(class)       (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_XIM, NimfXimClass))
-#define NIMF_IS_XIM(object)         (G_TYPE_CHECK_INSTANCE_TYPE ((object), NIMF_TYPE_XIM))
-#define NIMF_IS_XIM_CLASS(class)    (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_XIM))
-#define NIMF_XIM_GET_CLASS(object)  (G_TYPE_INSTANCE_GET_CLASS ((object), NIMF_TYPE_XIM, NimfXimClass))
-
-typedef struct _NimfXim      NimfXim;
-typedef struct _NimfXimClass NimfXimClass;
-
-struct _NimfXim
-{
-  NimfService parent_instance;
-
-  GSource    *xevent_source;
-  gchar      *id;
-  GHashTable *ims;
-  guint16     next_icid;
-  XIMS        xims;
-};
-
-struct _NimfXimClass
-{
-  NimfServiceClass parent_class;
-};
-
-GType nimf_xim_get_type (void) G_GNUC_CONST;
+#include "nimf-xim.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
 
@@ -144,8 +111,6 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
                 G_STRFUNC, data->status_attr[i].name);
   }
 
-  nimf_xim_im_set_cursor_location (im, xim->xims->core.display);
-
   return 1;
 }
 
@@ -159,7 +124,7 @@ static int nimf_xim_create_ic (NimfXim          *xim,
 
   if (!xim_im)
   {
-    xim_im = nimf_xim_im_new (NIMF_SERVICE (xim)->server, xim->xims);
+    xim_im = nimf_xim_im_new (NIMF_SERVICE (xim)->server, xim);
     xim_im->connect_id = data->connect_id;
     data->icid = nimf_xim_add_im (xim, xim_im);
     g_debug (G_STRLOC ": icid = %d", data->icid);
@@ -490,22 +455,23 @@ static gboolean nimf_xim_start (NimfService *service)
     return FALSE;
   }
 
-  XIMStyle ims_styles_on_spot [] = {
+  XIMStyle im_styles [] = {
     XIMPreeditCallbacks | XIMStatusNone, /* on-the-spot */
-    XIMPreeditNone      | XIMStatusNone,
+    XIMPreeditNothing   | XIMStatusNone, /* on-root-window */
+    XIMPreeditNone      | XIMStatusNone, /* do not anyhing */
     0
   };
 
   XIMEncoding ims_encodings[] = {
-      "COMPOUND_TEXT",
-      NULL
+    "COMPOUND_TEXT",
+    NULL
   };
 
   XIMStyles    styles;
   XIMEncodings encodings;
 
-  styles.count_styles = sizeof (ims_styles_on_spot) / sizeof (XIMStyle) - 1;
-  styles.supported_styles = ims_styles_on_spot;
+  styles.count_styles = sizeof (im_styles) / sizeof (XIMStyle) - 1;
+  styles.supported_styles = im_styles;
 
   encodings.count_encodings = sizeof (ims_encodings) / sizeof (XIMEncoding) - 1;
   encodings.supported_encodings = ims_encodings;
@@ -577,6 +543,17 @@ nimf_xim_init (NimfXim *xim)
                                          g_direct_equal,
                                          NULL,
                                          (GDestroyNotify) g_object_unref);
+  gtk_init (NULL, NULL);
+  /* gtk entry */
+  xim->entry = gtk_entry_new ();
+  gtk_editable_set_editable (GTK_EDITABLE (xim->entry), FALSE);
+  /* gtk window */
+  xim->window = gtk_window_new (GTK_WINDOW_POPUP);
+  gtk_window_set_type_hint (GTK_WINDOW (xim->window),
+                            GDK_WINDOW_TYPE_HINT_POPUP_MENU);
+  gtk_container_set_border_width (GTK_CONTAINER (xim->window), 1);
+  gtk_container_add (GTK_CONTAINER (xim->window), xim->entry);
+  gtk_window_move (GTK_WINDOW (xim->window), 0, 0);
 }
 
 static void nimf_xim_finalize (GObject *object)
@@ -587,6 +564,7 @@ static void nimf_xim_finalize (GObject *object)
 
   g_hash_table_unref (xim->ims);
   g_free (xim->id);
+  gtk_widget_destroy (xim->window);
 
   if (xim->xevent_source)
   {

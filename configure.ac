@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2017.03.25)
+AC_INIT(nimf, 2017.03.27)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -200,7 +200,7 @@ dnl ***************************************************************************
 dnl nimf-xim
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)
+PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11 gtk+-3.0)
 
 dnl ***************************************************************************
 dnl nimf-indicator
