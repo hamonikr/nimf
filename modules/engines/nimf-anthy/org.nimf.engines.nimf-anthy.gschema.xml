@@ -13,7 +13,7 @@
       <description>The engine will be loaded on startup if available. Restart required</description>
     </key>
     <key type="as" name="trigger-keys">
-      <default>['&lt;Mod4&gt; j']</default>
+      <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
       <summary>Trigger keys for switching Japanese / System</summary>
       <description>Trigger keys for switching Japanese / System</description>
     </key>
