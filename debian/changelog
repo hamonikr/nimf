@@ -1,3 +1,9 @@
+nimf (2017.04.08) stable; urgency=medium
+
+  * Fixed not connecting to daemon as root privilege (closes #43)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 08 Apr 2017 05:27:07 +0900
+
 nimf (2017.04.07) stable; urgency=medium
 
   * Changed default trigger keys

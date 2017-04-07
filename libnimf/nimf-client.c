@@ -26,6 +26,7 @@
 #include <gio/gunixsocketaddress.h>
 #include <string.h>
 #include <unistd.h>
+#include <libaudit.h>
 
 static GSource    *nimf_client_socket_source  = NULL;
 static GSource    *nimf_client_default_source = NULL;
@@ -224,8 +225,13 @@ nimf_client_constructed (GObject *object)
     GSocket        *socket;
     gchar          *addr;
     GError         *error = NULL;
+    uid_t           uid;
 
-    addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", getuid ());
+    uid = audit_getloginuid ();
+    if (uid == (uid_t) -1)
+      uid = getuid ();
+
+    addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
     address = g_unix_socket_address_new_with_type (addr, -1,
                                                    G_UNIX_SOCKET_ADDRESS_ABSTRACT);
     g_free (addr);

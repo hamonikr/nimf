@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2017.04.07)
+AC_INIT(nimf, 2017.04.08)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -41,15 +41,14 @@ AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 xkbcommon >= 0.5.0"
+LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 xkbcommon >= 0.5.0 audit"
 LIBNIMF_PRIVATE="gtk+-3.0"
 AC_SUBST(LIBNIMF_REQUIRES)
 AC_SUBST(LIBNIMF_PRIVATE)
 
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
-PKG_CHECK_MODULES(GOBJECT, [gobject-2.0])
-PKG_CHECK_MODULES(GLIB,    [glib-2.0])
-PKG_CHECK_MODULES(GTK2,    [gtk+-2.0])
+PKG_CHECK_MODULES(GLIB, [glib-2.0])
+PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 
 dnl ***************************************************************************
 dnl nimf-chewing  nimf-libhangul  nimf-rime  nimf-system-keyboard
@@ -201,6 +200,12 @@ dnl nimf-xim
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11 gtk+-3.0)
+
+dnl ***************************************************************************
+dnl nimf-daemon
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_DAEMON_DEPS, [glib-2.0 gobject-2.0 audit])
 
 dnl ***************************************************************************
 dnl nimf-indicator

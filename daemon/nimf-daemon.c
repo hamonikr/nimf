@@ -27,6 +27,7 @@
 #include "nimf-private.h"
 #include <glib/gi18n.h>
 #include <unistd.h>
+#include <libaudit.h>
 
 gboolean syslog_initialized = FALSE;
 
@@ -39,6 +40,7 @@ main (int argc, char **argv)
   GMainLoop  *loop;
   gchar      *addr;
   GError     *error = NULL;
+  uid_t       uid;
 
   gboolean is_no_daemon = FALSE;
   gboolean is_debug     = FALSE;
@@ -94,7 +96,11 @@ main (int argc, char **argv)
     }
   }
 
-  addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", getuid ());
+  uid = audit_getloginuid ();
+  if (uid == (uid_t) -1)
+    uid = getuid ();
+
+  addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
   server = nimf_server_new (addr, &error);
   g_free (addr);
 
