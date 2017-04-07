@@ -42,25 +42,6 @@ License
   along with this program;  If not, see <http://www.gnu.org/licenses/>.
 
 
-Install
--------
-
-  * Compile
-
-    ./autogen.sh
-    make
-    sudo make install
-    sudo ldconfig
-    sudo make update-gtk-im-cache
-    sudo make update-gtk-icon-cache
-    nimf-daemon
-    export GTK_IM_MODULE="nimf"
-    export QT4_IM_MODULE="nimf"
-    export QT_IM_MODULE="nimf"
-    export XMODIFIERS="@im=nimf"
-    gedit # or kate
-
-
 Configure
 ---------
 

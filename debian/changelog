@@ -1,3 +1,9 @@
+nimf (2017.04.07) stable; urgency=medium
+
+  * Changed default trigger keys
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 07 Apr 2017 23:11:09 +0900
+
 nimf (2017.03.27) stable; urgency=medium
 
   * nimf-xim: Added a root window im style (issue #35)
