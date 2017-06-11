@@ -32,6 +32,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ******************************************************************/
 
 #include <stddef.h>
+#include <stdint.h>
 #include <limits.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -275,7 +276,7 @@ static Bool Xi18nXEnd(XIMS ims)
 
 static char *MakeNewAtom (CARD16 connect_id, char *atomName)
 {
-    static int sequence = 0;
+    static uint8_t sequence = 0;
     
     sprintf (atomName,
              "_server%d_%d",
