@@ -456,6 +456,12 @@ static gboolean nimf_xim_start (NimfService *service)
   }
 
   XIMStyle im_styles [] = {
+    XIMPreeditPosition  | XIMStatusNothing,
+    XIMPreeditCallbacks | XIMStatusNothing,
+    XIMPreeditNothing   | XIMStatusNothing,
+    XIMPreeditPosition  | XIMStatusCallbacks,
+    XIMPreeditCallbacks | XIMStatusCallbacks,
+    XIMPreeditNothing   | XIMStatusCallbacks,
     XIMPreeditCallbacks | XIMStatusNone, /* on-the-spot */
     XIMPreeditNothing   | XIMStatusNone, /* on-root-window */
     XIMPreeditNone      | XIMStatusNone, /* do not anyhing */

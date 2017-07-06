@@ -1,3 +1,9 @@
+nimf (2017.07.07) stable; urgency=medium
+
+  * nimf-xim: Fixed supported styles (closes #45 #48)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 07 Jul 2017 00:37:36 +0900
+
 nimf (2017.04.08) stable; urgency=medium
 
   * Fixed not connecting to daemon as root privilege (closes #43)
