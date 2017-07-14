@@ -67,8 +67,6 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
     IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
     gtk_widget_hide (xim_im->xim->window);
   }
-  else
-    gtk_widget_show_all (xim_im->xim->window);
 }
 
 static void
@@ -151,7 +149,11 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   {
     gtk_entry_set_text (GTK_ENTRY (xim_im->xim->entry), preedit_string);
     gtk_editable_set_position (GTK_EDITABLE (xim_im->xim->entry), cursor_pos);
-    gtk_widget_show_all (xim_im->xim->window);
+
+    if (g_utf8_strlen (preedit_string, -1) > 0)
+      gtk_widget_show_all (xim_im->xim->window);
+    else
+      gtk_widget_hide (xim_im->xim->window);
   }
 }
 
