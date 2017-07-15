@@ -51,7 +51,6 @@ struct _NimfServer
 {
   GObject parent_instance;
 
-  GMainContext    *main_context;
   GHashTable      *modules;
   GHashTable      *services;
   GList           *instances;

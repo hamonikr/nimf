@@ -550,7 +550,7 @@ static gboolean nimf_xim_start (NimfService *service)
 
   xim->xims = xims;
   xim->xevent_source = nimf_xevent_source_new (display);
-  g_source_attach (xim->xevent_source, service->server->main_context);
+  g_source_attach (xim->xevent_source, NULL);
   XSetErrorHandler (on_xerror);
 
   return TRUE;

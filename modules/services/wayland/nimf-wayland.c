@@ -520,7 +520,7 @@ static gboolean nimf_wayland_start (NimfService *service)
   wayland->im = nimf_wayland_im_new (NIMF_SERVICE (wayland)->server, wayland);
   wayland->context = NULL;
   wayland->event_source = nimf_wayland_source_new (wayland);
-  g_source_attach (wayland->event_source, service->server->main_context);
+  g_source_attach (wayland->event_source, NULL);
 
   return TRUE;
 }

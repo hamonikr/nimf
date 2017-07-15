@@ -227,7 +227,7 @@ on_new_connection (GSocketService    *service,
   g_source_set_callback (connection->source,
                          (GSourceFunc) on_incoming_message_nimf,
                          connection, NULL);
-  g_source_attach (connection->source, server->main_context);
+  g_source_attach (connection->source, NULL);
 
   return TRUE;
 }
@@ -579,7 +579,6 @@ nimf_server_init (NimfServer *server)
                                              g_free, g_object_unref);
   nimf_server_load_engines  (server);
   nimf_server_load_services (server);
-  server->main_context = g_main_context_ref_thread_default ();
   server->connections = g_hash_table_new_full (g_direct_hash,
                                                g_direct_equal,
                                                NULL,
@@ -643,8 +642,6 @@ nimf_server_finalize (GObject *object)
   g_hash_table_unref (server->trigger_keys);
   nimf_key_freev (server->hotkeys);
   g_free (server->address);
-
-  g_main_context_unref (server->main_context);
 
   G_OBJECT_CLASS (nimf_server_parent_class)->finalize (object);
 }
