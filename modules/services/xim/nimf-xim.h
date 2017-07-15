@@ -53,6 +53,8 @@ struct _NimfXim
   XIMS        xims;
   GtkWidget  *window;
   GtkWidget  *entry;
+  gboolean    ignore_xim_preedit_callbacks;
+  GSettings  *settings;
 };
 
 struct _NimfXimClass

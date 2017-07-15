@@ -54,6 +54,7 @@ struct _NimfXimIM
   Window   client_window;
   Window   focus_window;
   NimfXim *xim;
+  gboolean preedit_started;
 };
 
 GType nimf_xim_im_get_type (void) G_GNUC_CONST;

@@ -47,13 +47,39 @@ nimf_xim_im_emit_commit (NimfServiceIM *im,
   XFree (property.value);
 }
 
+static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfXimIM *xim_im = NIMF_XIM_IM (im);
+
+  if (xim_im->preedit_started)
+  {
+    IMPreeditStateStruct preedit_state_data = {0};
+
+    preedit_state_data.connect_id = xim_im->connect_id;
+    preedit_state_data.icid       = im->icid;
+    IMPreeditEnd (xim_im->xim->xims, (XPointer) &preedit_state_data);
+
+    IMPreeditCBStruct preedit_cb_data = {0};
+    preedit_cb_data.major_code = XIM_PREEDIT_DONE;
+    preedit_cb_data.connect_id = xim_im->connect_id;
+    preedit_cb_data.icid       = im->icid;
+    IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
+    xim_im->preedit_started = FALSE;
+  }
+
+  gtk_widget_hide (xim_im->xim->window);
+}
+
 static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
 
-  if (xim_im->input_style & XIMPreeditCallbacks)
+  if ((xim_im->input_style & XIMPreeditCallbacks) &&
+      !xim_im->xim->ignore_xim_preedit_callbacks)
   {
     IMPreeditStateStruct preedit_state_data = {0};
 
@@ -66,6 +92,11 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
     preedit_cb_data.icid       = im->icid;
     IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
     gtk_widget_hide (xim_im->xim->window);
+    xim_im->preedit_started = TRUE;
+  }
+  else if (xim_im->preedit_started)
+  {
+    nimf_xim_im_emit_preedit_end (im);
   }
 }
 
@@ -79,7 +110,8 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
 
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
 
-  if (xim_im->input_style & XIMPreeditCallbacks)
+  if ((xim_im->input_style & XIMPreeditCallbacks) &&
+      !xim_im->xim->ignore_xim_preedit_callbacks)
   {
     IMPreeditCBStruct preedit_cb_data = {0};
     XIMText           text;
@@ -147,6 +179,9 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   }
   else
   {
+    if (xim_im->preedit_started)
+      nimf_xim_im_emit_preedit_end (im);
+
     gtk_entry_set_text (GTK_ENTRY (xim_im->xim->entry), preedit_string);
     gtk_editable_set_position (GTK_EDITABLE (xim_im->xim->entry), cursor_pos);
 
@@ -155,30 +190,6 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
     else
       gtk_widget_hide (xim_im->xim->window);
   }
-}
-
-static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfXimIM *xim_im = NIMF_XIM_IM (im);
-
-  if (xim_im->input_style & XIMPreeditCallbacks)
-  {
-    IMPreeditStateStruct preedit_state_data = {0};
-
-    preedit_state_data.connect_id = xim_im->connect_id;
-    preedit_state_data.icid       = im->icid;
-    IMPreeditEnd (xim_im->xim->xims, (XPointer) &preedit_state_data);
-
-    IMPreeditCBStruct preedit_cb_data = {0};
-    preedit_cb_data.major_code = XIM_PREEDIT_DONE;
-    preedit_cb_data.connect_id = xim_im->connect_id;
-    preedit_cb_data.icid       = im->icid;
-    IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
-  }
-
-  gtk_widget_hide (xim_im->xim->window);
 }
 
 NimfXimIM *nimf_xim_im_new (NimfServer *server,

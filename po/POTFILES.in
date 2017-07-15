@@ -17,3 +17,4 @@ settings/nimf-settings.c
 [type: gettext/gsettings]modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml
+[type: gettext/gsettings]modules/services/xim/org.nimf.services.xim.gschema.xml

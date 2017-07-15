@@ -577,6 +577,17 @@ nimf_xim_get_id (NimfService *service)
 }
 
 static void
+on_changed_ignore_xim_preedit_callbacks (GSettings *settings,
+                                         gchar     *key,
+                                         NimfXim   *xim)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  xim->ignore_xim_preedit_callbacks =
+    g_settings_get_boolean (xim->settings, key);
+}
+
+static void
 nimf_xim_init (NimfXim *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -586,6 +597,14 @@ nimf_xim_init (NimfXim *xim)
                                          g_direct_equal,
                                          NULL,
                                          (GDestroyNotify) g_object_unref);
+
+  xim->settings = g_settings_new ("org.nimf.services.xim");
+  xim->ignore_xim_preedit_callbacks =
+    g_settings_get_boolean (xim->settings, "ignore-xim-preedit-callbacks");
+
+  g_signal_connect (xim->settings, "changed::ignore-xim-preedit-callbacks",
+                    G_CALLBACK (on_changed_ignore_xim_preedit_callbacks), xim);
+
   gtk_init (NULL, NULL);
   /* gtk entry */
   xim->entry = gtk_entry_new ();
@@ -608,6 +627,7 @@ static void nimf_xim_finalize (GObject *object)
   g_hash_table_unref (xim->ims);
   g_free (xim->id);
   gtk_widget_destroy (xim->window);
+  g_object_unref (xim->settings);
 
   if (xim->xevent_source)
   {
