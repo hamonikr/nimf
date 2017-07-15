@@ -55,6 +55,41 @@ nimf_xim_add_im (NimfXim   *xim,
   return icid;
 }
 
+static void nimf_xim_set_cursor_location (NimfXim          *xim,
+                                          IMChangeICStruct *data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfServiceIM *im;
+  NimfXimIM     *xim_im;
+  int            x = 0, y = 0, height = 0;
+
+  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
+  xim_im = NIMF_XIM_IM (im);
+
+  Window window;
+
+  if (xim_im->focus_window)
+    window = xim_im->focus_window;
+  else
+    window = xim_im->client_window;
+
+  if (window)
+  {
+    Window child;
+    XWindowAttributes attr;
+    XGetWindowAttributes (xim->xims->core.display, window, &attr);
+    XTranslateCoordinates(xim->xims->core.display, window, attr.root,
+                          0, attr.height, &x, &y, &child);
+  }
+
+  if (gtk_widget_is_visible (xim->window))
+  {
+    gtk_window_get_size (GTK_WINDOW (xim->window), NULL, &height);
+    gtk_window_move (GTK_WINDOW (xim->window), x, y - height);
+  }
+}
+
 static int nimf_xim_set_ic_values (NimfXim          *xim,
                                    IMChangeICStruct *data)
 {
@@ -236,6 +271,8 @@ static int nimf_xim_forward_event (NimfXim              *xim,
 
   if (G_UNLIKELY (!retval))
     IMForwardEvent (xim->xims, (XPointer) data);
+  else
+    nimf_xim_set_cursor_location (xim, (IMChangeICStruct *) data);
 
   return 1;
 }
