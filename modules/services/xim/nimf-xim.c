@@ -86,7 +86,11 @@ static void nimf_xim_set_cursor_location (NimfXim          *xim,
   if (gtk_widget_is_visible (xim->window))
   {
     gtk_window_get_size (GTK_WINDOW (xim->window), NULL, &height);
-    gtk_window_move (GTK_WINDOW (xim->window), x, y - height);
+
+    if (window)
+      gtk_window_move (GTK_WINDOW (xim->window), x, y - height);
+    else
+      gtk_window_move (GTK_WINDOW (xim->window), 0, 0);
   }
 }
 
