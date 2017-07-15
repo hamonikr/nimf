@@ -80,7 +80,7 @@
     </key>
     <key type="as" name="hanja-keys">
       <default>['Hangul_Hanja']</default>
-      <summary>hotkey for hanja</summary>
+      <summary>Hotkey for Hanja</summary>
       <description>Binding to Hanja key</description>
     </key>
     <key type="b" name="double-consonant-rule">

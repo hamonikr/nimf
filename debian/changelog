@@ -1,3 +1,13 @@
+nimf (2017.07.15) stable; urgency=medium
+
+  * Updated translations
+  * Added German translation
+  * nimf-xim: Add option ignore-xim-preedit-callbacks (closes #35)
+  * nimf-xim: Added nimf_xim_set_cursor_location() (issue #35)
+  * nimf-xim: Fixed preedit window
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 15 Jul 2017 22:57:35 +0900
+
 nimf (2017.07.07) stable; urgency=medium
 
   * nimf-xim: Fixed supported styles (closes #45 #48)

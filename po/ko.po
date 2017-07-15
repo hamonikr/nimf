@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-05 05:01+0900\n"
-"PO-Revision-Date: 2017-03-17 01:48+0900\n"
+"POT-Creation-Date: 2017-07-15 22:27+0900\n"
+"PO-Revision-Date: 2017-07-15 22:39+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:49
+#: ../daemon/nimf-daemon.c:51
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:50
+#: ../daemon/nimf-daemon.c:52
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:51
+#: ../daemon/nimf-daemon.c:53
 msgid "Version"
 msgstr "버전"
 
@@ -43,7 +43,6 @@ msgstr "라임"
 #: ../modules/services/indicator/nimf-indicator.c:87
 #: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
-#: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
@@ -55,19 +54,23 @@ msgstr "님프는 입력 방법 프레임워크입니다"
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr "저작권 (c) 2015-2017 김호동"
 
+#: ../modules/services/indicator/nimf-indicator.c:106
+msgid "Hodong Kim, N"
+msgstr "김호동, N"
+
 #: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:192
+#: ../modules/services/indicator/nimf-indicator.c:193
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:193
+#: ../modules/services/indicator/nimf-indicator.c:194
 msgid "Donate"
 msgstr "기부하기"
 
-#: ../modules/services/indicator/nimf-indicator.c:194
+#: ../modules/services/indicator/nimf-indicator.c:195
 msgid "About"
 msgstr "정보"
 
@@ -109,6 +112,7 @@ msgstr "'님프'"
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
+#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:2
 msgid "schema name for nimf-settings"
 msgstr "nimf-settings 를 위한 스키마 이름"
 
@@ -121,6 +125,7 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
+#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
 msgstr "이 키는 nimf-settings 를 위해 고안되었습니다."
 
@@ -137,18 +142,22 @@ msgid "Use singleton"
 msgstr "싱글톤 모드를 사용합니다"
 
 #: ../libnimf/org.nimf.gschema.xml.h:7
+msgid "'Services'"
+msgstr "'서비스'"
+
+#: ../libnimf/org.nimf.gschema.xml.h:8
 msgid "'Clients'"
 msgstr "'클라이언트'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:8
+#: ../libnimf/org.nimf.gschema.xml.h:9
 msgid "'Engines'"
 msgstr "'엔진'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:9
+#: ../libnimf/org.nimf.gschema.xml.h:10
 msgid "Default language engine"
 msgstr "기본 언어 엔진"
 
-#: ../libnimf/org.nimf.gschema.xml.h:10
+#: ../libnimf/org.nimf.gschema.xml.h:11
 msgid "Default language engine on startup"
 msgstr "시작할 때의 기본 언어 엔진"
 
@@ -275,7 +284,7 @@ msgid "Binding to change Korean / System"
 msgstr "한국어 / 시스템 전환하기 위한 바인딩"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:19
-msgid "hotkey for hanja"
+msgid "Hotkey for Hanja"
 msgstr "한자를 위한 핫키"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:20
@@ -313,3 +322,11 @@ msgstr "'중국어 (sunpinyin)'"
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:1
 msgid "'System Keyboard'"
 msgstr "'시스템 키보드'"
+
+#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:1
+msgid "'XIM'"
+msgstr ""
+
+#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:4
+msgid "Ignore XIMPreeditCallbacks"
+msgstr "XIMPreeditCallbacks을 무시합니다"

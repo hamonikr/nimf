@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-15 21:57+0900\n"
-"PO-Revision-Date: 2017-07-15 22:22+0900\n"
+"POT-Creation-Date: 2017-07-15 22:27+0900\n"
+"PO-Revision-Date: 2017-07-15 22:28+0900\n"
 "Last-Translator: N <abonnements@revolwear.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -288,7 +288,7 @@ msgid "Binding to change Korean / System"
 msgstr "Bindung um zwischen Koreansich / System zu wechseln"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:19
-msgid "hotkey for hanja"
+msgid "Hotkey for Hanja"
 msgstr "Tastenkürzel für Hanja"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:20
