@@ -47,8 +47,8 @@ Configure
 
   * For GNOME Shell, use 3rd party gnome-shell-extension-appindicator
 
-    https://extensions.gnome.org/extension/615/appindicator-support/
-    https://github.com/rgcjonas/gnome-shell-extension-appindicator
+    https://extensions.gnome.org/extension/1031/topicons/
+    https://github.com/phocean/TopIcons-plus
 
   * Configure Hangul/Hanja key if you use a keyboard
     without hardware Hangul/Hanja key
