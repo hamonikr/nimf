@@ -41,7 +41,7 @@ AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
-LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 xkbcommon >= 0.5.0 audit"
+LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
 LIBNIMF_PRIVATE="gtk+-3.0"
 AC_SUBST(LIBNIMF_REQUIRES)
 AC_SUBST(LIBNIMF_PRIVATE)
@@ -57,7 +57,8 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(NIMF_CHEWING_DEPS, [chewing $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_RIME_DEPS, [rime >= 1.2.9 $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS, [$LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,
+                  [xkbcommon >= 0.5.0 $LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
 dnl nimf-sunpinyin

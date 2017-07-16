@@ -22,7 +22,6 @@
 #include "nimf-service-im.h"
 #include "nimf-module.h"
 #include <string.h>
-#include <xkbcommon/xkbcommon-compose.h>
 
 G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 
@@ -246,44 +245,6 @@ nimf_service_im_get_next_instance (NimfServiceIM *im, NimfEngine *engine)
   return engine;
 }
 
-static gboolean nimf_service_im_filter_compose (NimfServiceIM *im,
-                                                NimfEvent     *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (event->type == NIMF_EVENT_KEY_RELEASE)
-    return FALSE;
-
-  enum xkb_compose_feed_result result;
-  result = xkb_compose_state_feed (im->xkb_compose_state, event->key.keyval);
-
-  if (result == XKB_COMPOSE_FEED_IGNORED)
-    return FALSE;
-
-  switch (xkb_compose_state_get_status (im->xkb_compose_state))
-  {
-    case XKB_COMPOSE_NOTHING:
-      return FALSE;
-    case XKB_COMPOSE_COMPOSED:
-      {
-        char buffer[8];
-        int length = xkb_compose_state_get_utf8 (im->xkb_compose_state, buffer, sizeof(buffer));
-        xkb_compose_state_reset (im->xkb_compose_state);
-
-        if (length > 0)
-          nimf_service_im_emit_commit (im, buffer);
-      }
-      break;
-    case XKB_COMPOSE_CANCELLED:
-      xkb_compose_state_reset (im->xkb_compose_state);
-      break;
-    default:
-      break;
-  }
-
-  return TRUE;
-}
-
 gboolean nimf_service_im_filter_event (NimfServiceIM *im,
                                        NimfEvent     *event)
 {
@@ -351,10 +312,7 @@ gboolean nimf_service_im_filter_event (NimfServiceIM *im,
     return TRUE;
   }
 
-  if (nimf_engine_filter_event (im->engine, im, event))
-    return TRUE;
-  else
-    return nimf_service_im_filter_compose (im, event);
+  return nimf_engine_filter_event (im->engine, im, event);
 }
 
 void
@@ -445,8 +403,6 @@ void nimf_service_im_reset (NimfServiceIM *im)
 
   if (G_LIKELY (im->engine))
     nimf_engine_reset (im->engine, im);
-
-  xkb_compose_state_reset (im->xkb_compose_state);
 }
 
 void
@@ -525,21 +481,6 @@ nimf_service_im_constructed (GObject *object)
   im->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
   im->preedit_attrs[0] = NULL;
   im->preedit_cursor_pos = 0;
-
-  im->xkb_context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
-
-  const gchar *locale = g_getenv ("LC_ALL");
-  if (!locale)
-    locale = g_getenv ("LC_CTYPE");
-  if (!locale)
-    locale = g_getenv ("LANG");
-  if (!locale)
-    locale = "C";
-
-  im->xkb_compose_table = xkb_compose_table_new_from_locale (im->xkb_context, locale,
-                                                             XKB_COMPOSE_COMPILE_NO_FLAGS);
-  im->xkb_compose_state = xkb_compose_state_new (im->xkb_compose_table,
-                                                 XKB_COMPOSE_STATE_NO_FLAGS);
 }
 
 static void
@@ -554,10 +495,6 @@ nimf_service_im_finalize (GObject *object)
 
   g_free (im->preedit_string);
   nimf_preedit_attr_freev (im->preedit_attrs);
-
-  xkb_compose_state_unref (im->xkb_compose_state);
-  xkb_compose_table_unref (im->xkb_compose_table);
-  xkb_context_unref       (im->xkb_context);
 
   G_OBJECT_CLASS (nimf_service_im_parent_class)->finalize (object);
 }

@@ -21,6 +21,7 @@
 
 #include <nimf.h>
 #include <glib/gi18n.h>
+#include <xkbcommon/xkbcommon-compose.h>
 
 #define NIMF_TYPE_SYSTEM_KEYBOARD               (nimf_system_keyboard_get_type ())
 #define NIMF_SYSTEM_KEYBOARD(object)            (G_TYPE_CHECK_INSTANCE_CAST ((object), NIMF_TYPE_SYSTEM_KEYBOARD, NimfSystemKeyboard))
@@ -37,6 +38,15 @@ struct _NimfSystemKeyboard
   NimfEngine parent_instance;
 
   gchar *id;
+  /* preedit */
+  gchar              *preedit_string;
+  NimfPreeditAttr   **preedit_attrs;
+  NimfPreeditState    preedit_state;
+  /* compose */
+  struct xkb_context       *xkb_context;
+  struct xkb_compose_table *xkb_compose_table;
+  struct xkb_compose_state *xkb_compose_state;
+  gchar                     buffer[8];
 };
 
 struct _NimfSystemKeyboardClass
@@ -48,7 +58,7 @@ GType nimf_system_keyboard_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_DYNAMIC_TYPE (NimfSystemKeyboard, nimf_system_keyboard, NIMF_TYPE_ENGINE);
 
-const gchar *
+static const gchar *
 nimf_system_keyboard_get_id (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -58,7 +68,7 @@ nimf_system_keyboard_get_id (NimfEngine *engine)
   return NIMF_SYSTEM_KEYBOARD (engine)->id;
 }
 
-const gchar *
+static const gchar *
 nimf_system_keyboard_get_icon_name (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -74,6 +84,26 @@ nimf_system_keyboard_init (NimfSystemKeyboard *keyboard)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   keyboard->id = g_strdup ("nimf-system-keyboard");
+  keyboard->preedit_string = g_strdup ("");
+  keyboard->preedit_attrs  = g_malloc0_n (2, sizeof (NimfPreeditAttr *));
+  keyboard->preedit_attrs[0] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_UNDERLINE, 0, 0);
+  keyboard->preedit_attrs[1] = NULL;
+  keyboard->xkb_context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+
+  const gchar *locale = g_getenv ("LC_ALL");
+  if (!locale)
+    locale = g_getenv ("LC_CTYPE");
+  if (!locale)
+    locale = g_getenv ("LANG");
+  if (!locale)
+    locale = "C";
+
+  keyboard->xkb_compose_table =
+    xkb_compose_table_new_from_locale (keyboard->xkb_context, locale,
+                                       XKB_COMPOSE_COMPILE_NO_FLAGS);
+  keyboard->xkb_compose_state =
+    xkb_compose_state_new (keyboard->xkb_compose_table,
+                           XKB_COMPOSE_STATE_NO_FLAGS);
 }
 
 static void
@@ -81,9 +111,115 @@ nimf_system_keyboard_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (object);
+
+  g_free (keyboard->preedit_string);
+  nimf_preedit_attr_freev (keyboard->preedit_attrs);
+
+  xkb_compose_state_unref (keyboard->xkb_compose_state);
+  xkb_compose_table_unref (keyboard->xkb_compose_table);
+  xkb_context_unref       (keyboard->xkb_context);
+
   g_free (NIMF_SYSTEM_KEYBOARD (object)->id);
 
   G_OBJECT_CLASS (nimf_system_keyboard_parent_class)->finalize (object);
+}
+
+static void
+nimf_system_keyboard_update_preedit (NimfEngine    *engine,
+                                     NimfServiceIM *target,
+                                     gchar         *new_preedit)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (engine);
+
+  /* preedit-start */
+  if (keyboard->preedit_state == NIMF_PREEDIT_STATE_END && new_preedit[0] != 0)
+  {
+    keyboard->preedit_state = NIMF_PREEDIT_STATE_START;
+    nimf_engine_emit_preedit_start (engine, target);
+  }
+  /* preedit-changed */
+  if (keyboard->preedit_string[0] != 0 || new_preedit[0] != 0)
+  {
+    g_free (keyboard->preedit_string);
+    keyboard->preedit_string = new_preedit;
+    keyboard->preedit_attrs[0]->end_index = g_utf8_strlen (keyboard->preedit_string, -1);
+    nimf_engine_emit_preedit_changed (engine, target, keyboard->preedit_string,
+                                      keyboard->preedit_attrs,
+                                      g_utf8_strlen (keyboard->preedit_string,
+                                                     -1));
+  }
+  else
+  {
+    g_free (new_preedit);
+  }
+  /* preedit-end */
+  if (keyboard->preedit_state == NIMF_PREEDIT_STATE_START &&
+      keyboard->preedit_string[0] == 0)
+  {
+    keyboard->preedit_state = NIMF_PREEDIT_STATE_END;
+    nimf_engine_emit_preedit_end (engine, target);
+  }
+}
+
+static gboolean
+nimf_system_keyboard_filter_event (NimfEngine    *engine,
+                                   NimfServiceIM *target,
+                                   NimfEvent     *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (event->type == NIMF_EVENT_KEY_RELEASE)
+    return FALSE;
+
+  NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (engine);
+  enum xkb_compose_feed_result result;
+
+  result = xkb_compose_state_feed (keyboard->xkb_compose_state,
+                                   event->key.keyval);
+
+  if (result == XKB_COMPOSE_FEED_IGNORED)
+    return FALSE;
+
+  switch (xkb_compose_state_get_status (keyboard->xkb_compose_state))
+  {
+    case XKB_COMPOSE_NOTHING:
+      return FALSE;
+    case XKB_COMPOSE_COMPOSING:
+      if (xkb_keysym_to_utf8 (event->key.keyval, keyboard->buffer,
+                              sizeof (keyboard->buffer)) > 0)
+        nimf_system_keyboard_update_preedit (engine, target,
+          g_strconcat (keyboard->preedit_string, keyboard->buffer, NULL));
+
+      break;
+    case XKB_COMPOSE_COMPOSED:
+      nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
+
+      if (xkb_compose_state_get_utf8 (keyboard->xkb_compose_state,
+                                      keyboard->buffer,
+                                      sizeof (keyboard->buffer)) > 0)
+        nimf_engine_emit_commit (engine, target, keyboard->buffer);
+
+      break;
+    case XKB_COMPOSE_CANCELLED:
+      nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
+      break;
+    default:
+      break;
+  }
+
+  return TRUE;
+}
+
+static void nimf_system_keyboard_reset (NimfEngine    *engine,
+                                        NimfServiceIM *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  xkb_compose_state_reset (NIMF_SYSTEM_KEYBOARD (engine)->xkb_compose_state);
+  nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
 }
 
 static void
@@ -94,6 +230,8 @@ nimf_system_keyboard_class_init (NimfSystemKeyboardClass *class)
   GObjectClass    *object_class = G_OBJECT_CLASS (class);
   NimfEngineClass *engine_class = NIMF_ENGINE_CLASS (class);
 
+  engine_class->filter_event  = nimf_system_keyboard_filter_event;
+  engine_class->reset         = nimf_system_keyboard_reset;
   engine_class->get_id        = nimf_system_keyboard_get_id;
   engine_class->get_icon_name = nimf_system_keyboard_get_icon_name;
 
