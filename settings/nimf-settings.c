@@ -522,7 +522,7 @@ on_button_clicked_add (GtkButton           *button,
                                         _("_OK"),     GTK_RESPONSE_OK,
                                         _("_Cancel"), GTK_RESPONSE_CANCEL,
                                         NULL);
-  gtk_window_set_icon_name (GTK_WINDOW (dialog), "nimf");
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), "nimf-logo");
   gtk_widget_set_size_request (GTK_WIDGET (dialog), 400, -1);
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
@@ -801,7 +801,7 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   window = gtk_application_window_new (nsettings->app);
   gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
   gtk_window_set_title        (GTK_WINDOW (window), _("Nimf Settings"));
-  gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf");
+  gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf-logo");
 
   notebook = gtk_notebook_new ();
   gtk_notebook_set_tab_pos    (GTK_NOTEBOOK (notebook), GTK_POS_LEFT);

@@ -93,7 +93,7 @@ static void on_about_menu (GtkWidget *widget,
   gtk_window_set_transient_for (GTK_WINDOW (about_dialog),
                                 GTK_WINDOW (parent));
   gtk_window_set_destroy_with_parent (GTK_WINDOW (about_dialog), TRUE);
-  gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf");
+  gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf-logo");
   g_object_set (about_dialog,
     "artists",            artists,
     "authors",            authors,
@@ -101,7 +101,7 @@ static void on_about_menu (GtkWidget *widget,
     "copyright",          _("Copyright (c) 2015-2017 Hodong Kim"),
     "documenters",        documenters,
     "license-type",       GTK_LICENSE_LGPL_3_0,
-    "logo-icon-name",     "nimf",
+    "logo-icon-name",     "nimf-logo",
     "program-name",       _("Nimf"),
     "translator-credits", _("Hodong Kim, N"),
     "version",            VERSION,
