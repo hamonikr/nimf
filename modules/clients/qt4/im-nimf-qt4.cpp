@@ -57,7 +57,8 @@ public:
                                            gint         offset,
                                            gint         n_chars,
                                            gpointer     user_data);
-
+  static void     on_beep                 (NimfIM      *im,
+                                           gpointer     user_data);
 private:
   NimfIM        *m_im;
   bool           m_isComposing;
@@ -169,6 +170,14 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
   return FALSE;
 }
 
+void
+NimfInputContext::on_beep (NimfIM *im, gpointer user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  QApplication::beep();
+}
+
 NimfInputContext::NimfInputContext ()
   : m_isComposing(false)
 {
@@ -190,6 +199,8 @@ NimfInputContext::NimfInputContext ()
   g_signal_connect (m_im, "delete-surrounding",
                     G_CALLBACK (NimfInputContext::on_delete_surrounding),
                     this);
+  g_signal_connect (m_im, "beep",
+                    G_CALLBACK (NimfInputContext::on_beep), this);
 }
 
 NimfInputContext::~NimfInputContext ()

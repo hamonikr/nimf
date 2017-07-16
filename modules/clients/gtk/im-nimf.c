@@ -402,6 +402,15 @@ on_retrieve_surrounding (NimfIM           *im,
 }
 
 static void
+on_beep (NimfIM           *im,
+         NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gdk_beep ();
+}
+
+static void
 nimf_gtk_im_context_update_event_filter (NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -485,6 +494,8 @@ nimf_gtk_im_context_init (NimfGtkIMContext *context)
                     G_CALLBACK (on_preedit_start), context);
   g_signal_connect (context->im, "retrieve-surrounding",
                     G_CALLBACK (on_retrieve_surrounding), context);
+  g_signal_connect (context->im, "beep",
+                    G_CALLBACK (on_beep), context);
 
   g_signal_connect (context->simple, "commit",
                     G_CALLBACK (on_commit), context);

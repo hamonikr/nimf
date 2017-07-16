@@ -180,6 +180,7 @@ on_incoming_message_nimf (GSocket        *socket,
     case NIMF_MESSAGE_COMMIT_REPLY:
     case NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
     case NIMF_MESSAGE_DELETE_SURROUNDING_REPLY:
+    case NIMF_MESSAGE_BEEP_REPLY:
       break;
     default:
       g_warning ("Unknown message type: %d", message->header->type);

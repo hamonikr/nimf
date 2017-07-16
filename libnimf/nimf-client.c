@@ -149,6 +149,11 @@ on_incoming_message (GSocket      *socket,
                          NIMF_MESSAGE_DELETE_SURROUNDING_REPLY,
                          &retval, sizeof (gboolean), NULL);
       break;
+    case NIMF_MESSAGE_BEEP:
+      g_signal_emit_by_name (NIMF_IM (client), "beep");
+      nimf_send_message (socket, client->id, NIMF_MESSAGE_BEEP_REPLY,
+                         NULL, 0, NULL);
+      break;
     /* reply */
     case NIMF_MESSAGE_CREATE_CONTEXT_REPLY:
     case NIMF_MESSAGE_DESTROY_CONTEXT_REPLY:

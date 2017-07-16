@@ -205,6 +205,7 @@ nimf_system_keyboard_filter_event (NimfEngine    *engine,
       break;
     case XKB_COMPOSE_CANCELLED:
       nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
+      nimf_engine_emit_beep (engine, target);
       break;
     default:
       break;

@@ -36,6 +36,7 @@ enum {
   COMMIT,
   RETRIEVE_SURROUNDING,
   DELETE_SURROUNDING,
+  BEEP,
   LAST_SIGNAL
 };
 
@@ -386,4 +387,13 @@ nimf_im_class_init (NimfIMClass *klass)
                   G_TYPE_BOOLEAN, 2,
                   G_TYPE_INT,
                   G_TYPE_INT);
+
+  im_signals[BEEP] =
+    g_signal_new (g_intern_static_string ("beep"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (NimfIMClass, beep),
+                  NULL, NULL,
+                  nimf_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }

@@ -136,6 +136,8 @@ gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
                                                 gint              n_chars);
 void     nimf_engine_emit_engine_changed       (NimfEngine       *engine,
                                                 NimfServiceIM    *im);
+void     nimf_engine_emit_beep                 (NimfEngine       *engine,
+                                                NimfServiceIM    *im);
 /* info */
 const gchar *nimf_engine_get_id        (NimfEngine *engine);
 const gchar *nimf_engine_get_icon_name (NimfEngine *engine);

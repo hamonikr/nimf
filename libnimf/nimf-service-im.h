@@ -66,6 +66,7 @@ struct _NimfServiceIMClass
   gboolean (* emit_delete_surrounding)   (NimfServiceIM    *im,
                                           gint              offset,
                                           gint              n_chars);
+  void     (* emit_beep)                 (NimfServiceIM    *im);
 };
 
 struct _NimfServiceIM
@@ -122,6 +123,7 @@ gboolean nimf_service_im_emit_delete_surrounding   (NimfServiceIM    *im,
                                                     gint              n_chars);
 void     nimf_service_im_emit_engine_changed       (NimfServiceIM    *im,
                                                     const gchar      *name);
+void     nimf_service_im_emit_beep                 (NimfServiceIM    *im);
 G_END_DECLS
 
 #endif /* __NIMF_SERVICE_IM_H__ */

@@ -143,6 +143,20 @@ nimf_service_im_emit_engine_changed (NimfServiceIM *im,
   g_signal_emit_by_name (im->server, "engine-changed", name);
 }
 
+void
+nimf_service_im_emit_beep (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (!im))
+    return;
+
+  NimfServiceIMClass *class = NIMF_SERVICE_IM_GET_CLASS (im);
+
+  if (class->emit_beep)
+    class->emit_beep (im);
+}
+
 void nimf_service_im_focus_in (NimfServiceIM *im)
 {
   g_return_if_fail (im != NULL);

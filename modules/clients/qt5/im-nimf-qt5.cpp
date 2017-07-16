@@ -93,6 +93,8 @@ public:
                                            gint         offset,
                                            gint         n_chars,
                                            gpointer     user_data);
+  static void     on_beep                 (NimfIM      *im,
+                                           gpointer     user_data);
   // settings
   static void on_changed_reset_on_mouse_button_press (GSettings *settings,
                                                       gchar     *key,
@@ -209,6 +211,14 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
 }
 
 void
+NimfInputContext::on_beep (NimfIM *im, gpointer user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  QApplication::beep();
+}
+
+void
 NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
                                                           gchar     *key,
                                                           gpointer   user_data)
@@ -257,6 +267,8 @@ NimfInputContext::NimfInputContext ()
   g_signal_connect (m_im, "delete-surrounding",
                     G_CALLBACK (NimfInputContext::on_delete_surrounding),
                     this);
+  g_signal_connect (m_im, "beep",
+                    G_CALLBACK (NimfInputContext::on_beep), this);
 
   g_signal_connect (m_settings, "changed::reset-on-mouse-button-press",
                     G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this);

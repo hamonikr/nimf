@@ -71,6 +71,7 @@ struct _NimfIMClass
   gboolean (*delete_surrounding)   (NimfIM *im,
                                     gint    offset,
                                     gint    n_chars);
+  void     (*beep)                 (NimfIM *im);
 };
 
 GType     nimf_im_get_type                (void) G_GNUC_CONST;

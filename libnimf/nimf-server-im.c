@@ -154,6 +154,18 @@ nimf_server_im_emit_delete_surrounding (NimfServiceIM *im,
   return *(gboolean *) (server_im->connection->result->reply->data);
 }
 
+void nimf_server_im_emit_beep (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfServerIM *server_im = NIMF_SERVER_IM (im);
+
+  nimf_send_message (server_im->connection->socket, im->icid,
+                     NIMF_MESSAGE_BEEP, NULL, 0, NULL);
+  nimf_result_iteration_until (server_im->connection->result, NULL, im->icid,
+                               NIMF_MESSAGE_BEEP_REPLY);
+}
+
 NimfServerIM *nimf_server_im_new (NimfConnection *connection,
                                   NimfServer     *server)
 {
@@ -190,4 +202,5 @@ nimf_server_im_class_init (NimfServerIMClass *class)
   service_im_class->emit_preedit_end     = nimf_server_im_emit_preedit_end;
   service_im_class->emit_retrieve_surrounding = nimf_server_im_emit_retrieve_surrounding;
   service_im_class->emit_delete_surrounding = nimf_server_im_emit_delete_surrounding;
+  service_im_class->emit_beep            = nimf_server_im_emit_beep;
 }

@@ -253,6 +253,15 @@ nimf_engine_emit_engine_changed (NimfEngine    *engine,
   nimf_service_im_emit_engine_changed (im, nimf_engine_get_icon_name (engine));
 }
 
+void
+nimf_engine_emit_beep (NimfEngine    *engine,
+                       NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_service_im_emit_beep (im);
+}
+
 static void
 nimf_engine_init (NimfEngine *engine)
 {
