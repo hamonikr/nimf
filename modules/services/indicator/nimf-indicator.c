@@ -151,12 +151,12 @@ static gboolean nimf_indicator_start (NimfService *service)
 
   menu_shell = gtk_menu_new ();
   indicator->appindicator = app_indicator_new ("nimf-indicator",
-                                               "input-keyboard",
+                                               "nimf-focus-out",
                                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
   app_indicator_set_status (indicator->appindicator,
                             APP_INDICATOR_STATUS_ACTIVE);
   app_indicator_set_icon_full (indicator->appindicator,
-                               "nimf-indicator", "Nimf");
+                               "nimf-focus-out", "Nimf");
   app_indicator_set_menu (indicator->appindicator, GTK_MENU (menu_shell));
 
   g_signal_connect (service->server, "engine-changed",

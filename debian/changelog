@@ -1,3 +1,12 @@
+nimf (2017.07.16) stable; urgency=medium
+
+  * Renamed nimf-indicator.svg to nimf-focus-out.svg (issue #50)
+  * Renamed nimf.svg to nimf-logo.svg (issue #50)
+  * nimf-system-keyboard: Implemented preedit string (issue #33)
+  * nimf-xim: Fixed cursor location
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 16 Jul 2017 22:44:00 +0900
+
 nimf (2017.07.15) stable; urgency=medium
 
   * Updated translations

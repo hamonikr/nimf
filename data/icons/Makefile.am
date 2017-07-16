@@ -3,7 +3,7 @@ icon_themedir = $(datadir)/icons/hicolor
 status_scalable_icondir   = $(icon_themedir)/scalable/status/
 status_scalable_icon_DATA = \
 	scalable/nimf-logo.svg \
-	scalable/nimf-indicator.svg \
+	scalable/nimf-focus-out.svg \
 	scalable/nimf-system-keyboard.svg \
 	scalable/nimf-indicator-warning.svg \
 	scalable/nimf-libhangul.svg \

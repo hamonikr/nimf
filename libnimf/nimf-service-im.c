@@ -181,7 +181,7 @@ void nimf_service_im_focus_out (NimfServiceIM *im)
     return;
 
   nimf_engine_focus_out (im->engine, im);
-  nimf_service_im_emit_engine_changed (im, "nimf-indicator");
+  nimf_service_im_emit_engine_changed (im, "nimf-focus-out");
 }
 
 static gint
