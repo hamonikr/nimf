@@ -17,10 +17,12 @@ IMdkit_SOURCES = \
 	IMdkit/i18nIc.c \
 	IMdkit/i18nIMProto.c \
 	IMdkit/i18nMethod.c \
+	IMdkit/i18nMethod.h \
 	IMdkit/i18nOffsetCache.c \
 	IMdkit/i18nPtHdr.c \
 	IMdkit/i18nUtil.c \
 	IMdkit/i18nX.c \
+	IMdkit/i18nX.h \
 	IMdkit/IMConn.c \
 	IMdkit/IMMethod.c \
 	IMdkit/IMValues.c \

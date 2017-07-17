@@ -31,11 +31,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ******************************************************************/
 
-#include <stddef.h>
-#include <stdint.h>
-#include <limits.h>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
+#include "i18nX.h"
 #include "FrameMgr.h"
 #include "IMdkit.h"
 #include "Xi18n.h"
@@ -47,9 +43,6 @@ extern Xi18nClient *_Xi18nNewClient (Xi18n);
 extern void _Xi18nDeleteClient (Xi18n, CARD16);
 extern unsigned long _Xi18nLookupPropertyOffset (Xi18nOffsetCache *, Atom);
 extern void _Xi18nSetPropertyOffset (Xi18nOffsetCache *, Atom, unsigned long);
-Bool WaitXConnectMessage (Display*, Window,
-                          XEvent*, XPointer);
-Bool WaitXIMProtocol (Display*, Window, XEvent*, XPointer);
 
 static XClient *NewXClient (Xi18n i18n_core, Window new_client)
 {

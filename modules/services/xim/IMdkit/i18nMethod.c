@@ -29,13 +29,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ******************************************************************/
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#ifndef NEED_EVENTS
-#define NEED_EVENTS
-#endif
-#include <X11/Xproto.h>
-#undef NEED_EVENTS
+#include "i18nMethod.h"
 #include "FrameMgr.h"
 #include "IMdkit.h"
 #include "Xi18n.h"
