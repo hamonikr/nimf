@@ -1,10 +1,10 @@
 /******************************************************************
- 
+
          Copyright (C) 1994-1995 Sun Microsystems, Inc.
          Copyright (C) 1993-1994 Hewlett-Packard Company
          Copyright (C) 2014 Peng Huang <shawn.p.huang@gmail.com>
          Copyright (C) 2014 Red Hat, Inc.
- 
+
 Permission to use, copy, modify, distribute, and sell this software
 and its documentation for any purpose is hereby granted without fee,
 provided that the above copyright notice appear in all copies and
@@ -15,7 +15,7 @@ distribution of the software without specific, written prior permission.
 Sun Microsystems, Inc. and Hewlett-Packard make no representations about
 the suitability of this software for any purpose.  It is provided "as is"
 without express or implied warranty.
- 
+
 SUN MICROSYSTEMS INC. AND HEWLETT-PACKARD COMPANY DISCLAIMS ALL
 WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -24,11 +24,11 @@ SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
 RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
 CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
   Author: Hidetoshi Tajima(tajima@Eng.Sun.COM) Sun Microsystems, Inc.
 
     This version tidied and debugged by Steve Underwood May 1999
- 
+
 ******************************************************************/
 
 #include <stddef.h>
@@ -47,9 +47,9 @@ extern Xi18nClient *_Xi18nNewClient (Xi18n);
 extern void _Xi18nDeleteClient (Xi18n, CARD16);
 extern unsigned long _Xi18nLookupPropertyOffset (Xi18nOffsetCache *, Atom);
 extern void _Xi18nSetPropertyOffset (Xi18nOffsetCache *, Atom, unsigned long);
-static Bool WaitXConnectMessage (Display*, Window,
-                                 XEvent*, XPointer);
-static Bool WaitXIMProtocol (Display*, Window, XEvent*, XPointer);
+Bool WaitXConnectMessage (Display*, Window,
+                          XEvent*, XPointer);
+Bool WaitXIMProtocol (Display*, Window, XEvent*, XPointer);
 
 static XClient *NewXClient (Xi18n i18n_core, Window new_client)
 {
@@ -277,7 +277,7 @@ static Bool Xi18nXEnd(XIMS ims)
 static char *MakeNewAtom (CARD16 connect_id, char *atomName)
 {
     static uint8_t sequence = 0;
-    
+
     sprintf (atomName,
              "_server%d_%d",
              connect_id,
@@ -458,7 +458,7 @@ Bool _Xi18nCheckXAddress (Xi18n i18n_core,
     if (!(spec = (XSpecRec *) malloc (sizeof (XSpecRec))))
         return False;
     /*endif*/
-    
+
     i18n_core->address.connect_addr = (XSpecRec *) spec;
     i18n_core->methods.begin = Xi18nXBegin;
     i18n_core->methods.end = Xi18nXEnd;
@@ -468,10 +468,10 @@ Bool _Xi18nCheckXAddress (Xi18n i18n_core,
     return True;
 }
 
-static Bool WaitXConnectMessage (Display *dpy,
-                                 Window win,
-                                 XEvent *ev,
-                                 XPointer client_data)
+Bool WaitXConnectMessage (Display *dpy,
+                          Window win,
+                          XEvent *ev,
+                          XPointer client_data)
 {
     XIMS ims = (XIMS)client_data;
     Xi18n i18n_core = ims->protocol;
@@ -487,10 +487,10 @@ static Bool WaitXConnectMessage (Display *dpy,
     return False;
 }
 
-static Bool WaitXIMProtocol (Display *dpy,
-                             Window win,
-                             XEvent *ev,
-                             XPointer client_data)
+Bool WaitXIMProtocol (Display *dpy,
+                      Window win,
+                      XEvent *ev,
+                      XPointer client_data)
 {
     extern void _Xi18nMessageHandler (XIMS, CARD16, unsigned char *, Bool *);
     XIMS ims = (XIMS) client_data;

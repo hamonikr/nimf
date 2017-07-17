@@ -1,8 +1,8 @@
 /******************************************************************
- 
+
          Copyright 1994, 1995 by Sun Microsystems, Inc.
          Copyright 1993, 1994 by Hewlett-Packard Company
- 
+
 Permission to use, copy, modify, distribute, and sell this software
 and its documentation for any purpose is hereby granted without fee,
 provided that the above copyright notice appear in all copies and
@@ -13,7 +13,7 @@ distribution of the software without specific, written prior permission.
 Sun Microsystems, Inc. and Hewlett-Packard make no representations about
 the suitability of this software for any purpose.  It is provided "as is"
 without express or implied warranty.
- 
+
 SUN MICROSYSTEMS INC. AND HEWLETT-PACKARD COMPANY DISCLAIMS ALL
 WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -22,11 +22,11 @@ SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
 RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
 CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
   Author: Hidetoshi Tajima(tajima@Eng.Sun.COM) Sun Microsystems, Inc.
 
     This version tidied and debugged by Steve Underwood May 1999
- 
+
 ******************************************************************/
 
 #include <X11/Xlib.h>
@@ -574,8 +574,8 @@ static int SetXi18nSelectionOwner(Xi18n i18n_core)
                          1);
     }
     else {
-	/* 
-	 * We always need to generate the PropertyNotify to the Root Window 
+	/*
+	 * We always need to generate the PropertyNotify to the Root Window
 	 */
         XChangeProperty (dpy,
                          root,
@@ -588,7 +588,7 @@ static int SetXi18nSelectionOwner(Xi18n i18n_core)
     }
     if (data != NULL)
         XFree ((char *) data);
-    
+
     /* Intern "LOCALES" and "TRANSOPORT" Target Atoms */
     i18n_core->address.Localename = XInternAtom (dpy, LOCALES, False);
     i18n_core->address.Transportname = XInternAtom (dpy, TRANSPORT, False);
@@ -681,7 +681,7 @@ static void *xi18n_setup (Display *dpy, XIMArg *args)
     if ((i18n_core = (Xi18n) malloc (sizeof (Xi18nCore))) == (Xi18n) NULL)
         return NULL;
     /*endif*/
-    
+
     memset (i18n_core, 0, sizeof (Xi18nCore));
 
     i18n_core->address.dpy = dpy;
@@ -697,7 +697,7 @@ static void *xi18n_setup (Display *dpy, XIMArg *args)
     else
         i18n_core->address.im_byteOrder = 'B';
     /*endif*/
-    
+
     /* install IMAttr and ICAttr list in i18n_core */
     _Xi18nInitAttrList (i18n_core);
 
@@ -740,10 +740,10 @@ static void ReturnSelectionNotify (Xi18n i18n_core, XSelectionRequestEvent *ev)
     XFlush (i18n_core->address.dpy);
 }
 
-static Bool WaitXSelectionRequest (Display *dpy,
-                                   Window win,
-                                   XEvent *ev,
-                                   XPointer client_data)
+Bool WaitXSelectionRequest (Display *dpy,
+                            Window win,
+                            XEvent *ev,
+                            XPointer client_data)
 {
     XIMS ims = (XIMS) client_data;
     Xi18n i18n_core = ims->protocol;
@@ -795,7 +795,7 @@ static Status xi18n_closeIM(XIMS ims)
     DeleteXi18nAtom(i18n_core);
     if (!i18n_core->methods.end (ims))
         return False;
-    
+
     _XUnregisterFilter (dpy,
                         i18n_core->address.im_window,
                         WaitXSelectionRequest,
@@ -1116,7 +1116,7 @@ static int xi18n_preeditEnd (XIMS ims, XPointer xp)
     if (on_key_num == 0  &&  off_key_num == 0)
         return False;
     /*endif*/
-    
+
     _Xi18nSetEventMask (ims,
                         preedit_state->connect_id,
                         preedit_state->connect_id,
