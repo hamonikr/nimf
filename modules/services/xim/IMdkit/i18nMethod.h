@@ -40,9 +40,6 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <X11/Xproto.h>
 #undef NEED_EVENTS
 
-Bool WaitXSelectionRequest (Display *dpy,
-                            Window win,
-                            XEvent *ev,
-                            XPointer client_data);
+Bool WaitXSelectionRequest (Display *dpy, XEvent *ev, XPointer client_data);
 
 #endif /* I18N_METHOD_H */

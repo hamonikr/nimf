@@ -209,12 +209,6 @@ static void ReadXConnectMessage (XIMS ims, XClientMessageEvent *ev)
         /* Only supporting only-CM & Property-with-CM method */
     }
     /*endif*/
-    _XRegisterFilterByType (dpy,
-                            x_client->accept_win,
-                            ClientMessage,
-                            ClientMessage,
-                            WaitXIMProtocol,
-                            (XPointer)ims);
     event.xclient.type = ClientMessage;
     event.xclient.display = dpy;
     event.xclient.window = new_client;
@@ -236,7 +230,6 @@ static void ReadXConnectMessage (XIMS ims, XClientMessageEvent *ev)
 static Bool Xi18nXBegin (XIMS ims)
 {
     Xi18n i18n_core = ims->protocol;
-    Display *dpy = i18n_core->address.dpy;
     XSpecRec *spec = (XSpecRec *) i18n_core->address.connect_addr;
 
     spec->xim_request = XInternAtom (i18n_core->address.dpy,
@@ -246,24 +239,11 @@ static Bool Xi18nXBegin (XIMS ims)
                                          _XIM_XCONNECT,
                                          False);
 
-    _XRegisterFilterByType (dpy,
-                            i18n_core->address.im_window,
-                            ClientMessage,
-                            ClientMessage,
-                            WaitXConnectMessage,
-                            (XPointer)ims);
     return True;
 }
 
 static Bool Xi18nXEnd(XIMS ims)
 {
-    Xi18n i18n_core = ims->protocol;
-    Display *dpy = i18n_core->address.dpy;
-
-    _XUnregisterFilter (dpy,
-                        i18n_core->address.im_window,
-                        WaitXConnectMessage,
-                        (XPointer)ims);
     return True;
 }
 
@@ -433,10 +413,6 @@ static Bool Xi18nXDisconnect (XIMS ims, CARD16 connect_id)
     XClient *x_client = (XClient *) client->trans_rec;
 
     XDestroyWindow (dpy, x_client->accept_win);
-    _XUnregisterFilter (dpy,
-                        x_client->accept_win,
-                        WaitXIMProtocol,
-                        (XPointer)ims);
     XFree (x_client);
     _Xi18nDeleteClient (i18n_core, connect_id);
     return True;
@@ -462,8 +438,7 @@ Bool _Xi18nCheckXAddress (Xi18n i18n_core,
 }
 
 Bool WaitXConnectMessage (Display *dpy,
-                          Window win,
-                          XEvent *ev,
+                          XEvent  *ev,
                           XPointer client_data)
 {
     XIMS ims = (XIMS)client_data;
@@ -481,8 +456,7 @@ Bool WaitXConnectMessage (Display *dpy,
 }
 
 Bool WaitXIMProtocol (Display *dpy,
-                      Window win,
-                      XEvent *ev,
+                      XEvent  *ev,
                       XPointer client_data)
 {
     extern void _Xi18nMessageHandler (XIMS, CARD16, unsigned char *, Bool *);

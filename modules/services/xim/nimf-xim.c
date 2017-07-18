@@ -20,6 +20,8 @@
  */
 
 #include "nimf-xim.h"
+#include "IMdkit/i18nMethod.h"
+#include "IMdkit/i18nX.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
 
@@ -400,9 +402,9 @@ on_xerror (Display *display, XErrorEvent *error)
 
 typedef struct
 {
-  GSource  source;
-  Display *display;
-  GPollFD  poll_fd;
+  GSource source;
+  XIMS    xims;
+  GPollFD poll_fd;
 } NimfXEventSource;
 
 static gboolean nimf_xevent_source_prepare (GSource *source,
@@ -410,7 +412,7 @@ static gboolean nimf_xevent_source_prepare (GSource *source,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  Display *display = ((NimfXEventSource *) source)->display;
+  Display *display = ((NimfXEventSource *) source)->xims->core.display;
   *timeout = -1;
   return XPending (display) > 0;
 }
@@ -422,7 +424,7 @@ static gboolean nimf_xevent_source_check (GSource *source)
   NimfXEventSource *display_source = (NimfXEventSource *) source;
 
   if (display_source->poll_fd.revents & G_IO_IN)
-    return XPending (display_source->display) > 0;
+    return XPending (display_source->xims->core.display) > 0;
   else
     return FALSE;
 }
@@ -433,14 +435,39 @@ static gboolean nimf_xevent_source_dispatch (GSource     *source,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  Display *display = ((NimfXEventSource*) source)->display;
+  XIMS     xims    = ((NimfXEventSource*) source)->xims;
+  Display *display = xims->core.display;
   XEvent   event;
 
-  while (XPending (display))
+  while (XPending (display) > 0)
   {
     XNextEvent (display, &event);
-    if (XFilterEvent (&event, None))
-      continue;
+    if (!XFilterEvent (&event, None))
+    {
+      switch (event.type)
+      {
+        case SelectionRequest:
+          WaitXSelectionRequest (display, &event, (XPointer) xims);
+          break;
+        case ClientMessage:
+          {
+            XClientMessageEvent cme = *(XClientMessageEvent *) &event;
+
+            if (cme.message_type == XInternAtom (display, "_XIM_XCONNECT", False))
+              WaitXConnectMessage (display, &event, (XPointer) xims);
+            else if (cme.message_type == XInternAtom (display, "_XIM_PROTOCOL", False))
+              WaitXIMProtocol (display, &event, (XPointer) xims);
+          }
+          break;
+        case MappingNotify:
+          g_message (G_STRLOC ": %s: MappingNotify", G_STRFUNC);
+          break;
+        default:
+          g_warning (G_STRLOC ": %s: event type: %d not filtered",
+                     G_STRFUNC, event.type);
+          break;
+      }
+    }
   }
 
   return TRUE;
@@ -458,7 +485,7 @@ static GSourceFuncs event_funcs = {
   nimf_xevent_source_finalize
 };
 
-static GSource *nimf_xevent_source_new (Display *display)
+static GSource *nimf_xevent_source_new (XIMS xims)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -467,9 +494,9 @@ static GSource *nimf_xevent_source_new (Display *display)
 
   source = g_source_new (&event_funcs, sizeof (NimfXEventSource));
   xevent_source = (NimfXEventSource *) source;
-  xevent_source->display = display;
+  xevent_source->xims = xims;
 
-  xevent_source->poll_fd.fd = ConnectionNumber (xevent_source->display);
+  xevent_source->poll_fd.fd = ConnectionNumber (xevent_source->xims->core.display);
   xevent_source->poll_fd.events = G_IO_IN;
   g_source_add_poll (source, &xevent_source->poll_fd);
 
@@ -552,8 +579,14 @@ static gboolean nimf_xim_start (NimfService *service)
                    IMFilterEventMask,  KeyPressMask | KeyReleaseMask,
                    NULL);
 
+  if (!xims)
+  {
+    g_warning (G_STRLOC ": %s: XIM is not started.", G_STRFUNC);
+    return FALSE;
+  }
+
   xim->xims = xims;
-  xim->xevent_source = nimf_xevent_source_new (display);
+  xim->xevent_source = nimf_xevent_source_new (xims);
   g_source_attach (xim->xevent_source, NULL);
   XSetErrorHandler (on_xerror);
 

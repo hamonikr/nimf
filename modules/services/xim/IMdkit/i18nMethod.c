@@ -735,8 +735,7 @@ static void ReturnSelectionNotify (Xi18n i18n_core, XSelectionRequestEvent *ev)
 }
 
 Bool WaitXSelectionRequest (Display *dpy,
-                            Window win,
-                            XEvent *ev,
+                            XEvent  *ev,
                             XPointer client_data)
 {
     XIMS ims = (XIMS) client_data;
@@ -771,12 +770,6 @@ static Status xi18n_openIM(XIMS ims)
     }
     /*endif*/
 
-    _XRegisterFilterByType (dpy,
-                            i18n_core->address.im_window,
-                            SelectionRequest,
-                            SelectionRequest,
-                            WaitXSelectionRequest,
-                            (XPointer)ims);
     XFlush(dpy);
     return True;
 }
@@ -784,16 +777,11 @@ static Status xi18n_openIM(XIMS ims)
 static Status xi18n_closeIM(XIMS ims)
 {
     Xi18n i18n_core = ims->protocol;
-    Display *dpy = i18n_core->address.dpy;
 
     DeleteXi18nAtom(i18n_core);
     if (!i18n_core->methods.end (ims))
         return False;
 
-    _XUnregisterFilter (dpy,
-                        i18n_core->address.im_window,
-                        WaitXSelectionRequest,
-                        (XPointer)ims);
     XFree (i18n_core->address.im_name);
     XFree (i18n_core->address.im_locale);
     XFree (i18n_core->address.im_addr);

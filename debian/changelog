@@ -1,3 +1,10 @@
+nimf (2017.07.18) stable; urgency=medium
+
+  * nimf-xim: Modified dispatcher (issue #53)
+  * Deleted nimf-indicator-warning.svg
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 18 Jul 2017 20:00:15 +0900
+
 nimf (2017.07.16) stable; urgency=medium
 
   * Renamed nimf-indicator.svg to nimf-focus-out.svg (issue #50)

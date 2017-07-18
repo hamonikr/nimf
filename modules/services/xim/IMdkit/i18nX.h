@@ -40,8 +40,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-Bool WaitXConnectMessage (Display*, Window,
-                          XEvent*, XPointer);
-Bool WaitXIMProtocol (Display*, Window, XEvent*, XPointer);
+Bool WaitXConnectMessage (Display*, XEvent*, XPointer);
+Bool WaitXIMProtocol     (Display*, XEvent*, XPointer);
 
 #endif /* I18N_X_H */
