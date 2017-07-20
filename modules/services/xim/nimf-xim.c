@@ -24,6 +24,7 @@
 #include "IMdkit/i18nX.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
+G_LOCK_DEFINE (active);
 
 static void nimf_xim_set_engine_by_id (NimfService *service,
                                        const gchar *engine_id)
@@ -80,8 +81,8 @@ static void nimf_xim_set_cursor_location (NimfXim          *xim,
   {
     Window child;
     XWindowAttributes attr;
-    XGetWindowAttributes (xim->xims->core.display, window, &attr);
-    XTranslateCoordinates(xim->xims->core.display, window, attr.root,
+    XGetWindowAttributes (xim->display, window, &attr);
+    XTranslateCoordinates(xim->display, window, attr.root,
                           0, attr.height, &x, &y, &child);
   }
 
@@ -261,7 +262,7 @@ static int nimf_xim_forward_event (NimfXim              *xim,
   event->key.keyval = NIMF_KEY_VoidSymbol;
   event->key.hardware_keycode = xevent->keycode;
 
-  XkbLookupKeySym (xim->xims->core.display,
+  XkbLookupKeySym (xim->display,
                    event->key.hardware_keycode,
                    event->key.state,
                    &consumed, &keysym);
@@ -402,9 +403,9 @@ on_xerror (Display *display, XErrorEvent *error)
 
 typedef struct
 {
-  GSource source;
-  XIMS    xims;
-  GPollFD poll_fd;
+  GSource  source;
+  NimfXim *xim;
+  GPollFD  poll_fd;
 } NimfXEventSource;
 
 static gboolean nimf_xevent_source_prepare (GSource *source,
@@ -412,7 +413,7 @@ static gboolean nimf_xevent_source_prepare (GSource *source,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  Display *display = ((NimfXEventSource *) source)->xims->core.display;
+  Display *display = ((NimfXEventSource *) source)->xim->display;
   *timeout = -1;
   return XPending (display) > 0;
 }
@@ -424,7 +425,7 @@ static gboolean nimf_xevent_source_check (GSource *source)
   NimfXEventSource *display_source = (NimfXEventSource *) source;
 
   if (display_source->poll_fd.revents & G_IO_IN)
-    return XPending (display_source->xims->core.display) > 0;
+    return XPending (display_source->xim->display) > 0;
   else
     return FALSE;
 }
@@ -435,28 +436,30 @@ static gboolean nimf_xevent_source_dispatch (GSource     *source,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  XIMS     xims    = ((NimfXEventSource*) source)->xims;
-  Display *display = xims->core.display;
+  NimfXim *xim = ((NimfXEventSource*) source)->xim;
   XEvent   event;
 
-  while (XPending (display) > 0)
+  while (XPending (xim->display) > 0)
   {
-    XNextEvent (display, &event);
+    XNextEvent (xim->display, &event);
     if (!XFilterEvent (&event, None))
     {
       switch (event.type)
       {
         case SelectionRequest:
-          WaitXSelectionRequest (display, &event, (XPointer) xims);
+          WaitXSelectionRequest (xim->display, &event, (XPointer) xim->xims);
           break;
         case ClientMessage:
           {
             XClientMessageEvent cme = *(XClientMessageEvent *) &event;
 
-            if (cme.message_type == XInternAtom (display, "_XIM_XCONNECT", False))
-              WaitXConnectMessage (display, &event, (XPointer) xims);
-            else if (cme.message_type == XInternAtom (display, "_XIM_PROTOCOL", False))
-              WaitXIMProtocol (display, &event, (XPointer) xims);
+            if (cme.message_type == xim->atom_xconnect)
+              WaitXConnectMessage (xim->display, &event, (XPointer) xim->xims);
+            else if (cme.message_type == xim->atom_protocol)
+              WaitXIMProtocol (xim->display, &event, (XPointer) xim->xims);
+            else
+              g_warning (G_STRLOC ": %s: ClientMessage type: %ld not handled",
+                         G_STRFUNC, cme.message_type);
           }
           break;
         case MappingNotify:
@@ -485,7 +488,7 @@ static GSourceFuncs event_funcs = {
   nimf_xevent_source_finalize
 };
 
-static GSource *nimf_xevent_source_new (XIMS xims)
+static GSource *nimf_xevent_source_new (NimfXim *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -494,9 +497,9 @@ static GSource *nimf_xevent_source_new (XIMS xims)
 
   source = g_source_new (&event_funcs, sizeof (NimfXEventSource));
   xevent_source = (NimfXEventSource *) source;
-  xevent_source->xims = xims;
+  xevent_source->xim = xim;
 
-  xevent_source->poll_fd.fd = ConnectionNumber (xevent_source->xims->core.display);
+  xevent_source->poll_fd.fd = ConnectionNumber (xevent_source->xim->display);
   xevent_source->poll_fd.events = G_IO_IN;
   g_source_add_poll (source, &xevent_source->poll_fd);
 
@@ -506,22 +509,57 @@ static GSource *nimf_xevent_source_new (XIMS xims)
   return source;
 }
 
+static gboolean nimf_xim_is_active (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfXim *xim = NIMF_XIM (service);
+
+  gboolean active;
+
+  G_LOCK (active);
+  active = xim->active;
+  G_UNLOCK (active);
+
+  return active;
+}
+
 static gboolean nimf_xim_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXim *xim = NIMF_XIM (service);
-  Display *display;
-  Window   window;
   XIMS     xims;
 
-  display = XOpenDisplay (NULL);
+  G_LOCK (active);
 
-  if (display == NULL)
+  if (xim->active)
+    return TRUE;
+
+  gtk_init (NULL, NULL);
+  /* gtk entry */
+  xim->entry = gtk_entry_new ();
+  gtk_editable_set_editable (GTK_EDITABLE (xim->entry), FALSE);
+  /* gtk window */
+  xim->window = gtk_window_new (GTK_WINDOW_POPUP);
+  gtk_window_set_type_hint (GTK_WINDOW (xim->window),
+                            GDK_WINDOW_TYPE_HINT_POPUP_MENU);
+  gtk_container_set_border_width (GTK_CONTAINER (xim->window), 1);
+  gtk_container_add (GTK_CONTAINER (xim->window), xim->entry);
+  gtk_window_move (GTK_WINDOW (xim->window), 0, 0);
+
+  xim->display = XOpenDisplay (NULL);
+
+  if (xim->display == NULL)
   {
+    gtk_widget_destroy (xim->window);
+    xim->window = NULL;
     g_warning (G_STRLOC ": %s: Can't open display", G_STRFUNC);
     return FALSE;
   }
+
+  xim->atom_xconnect  = XInternAtom (xim->display, "_XIM_XCONNECT", False);
+  xim->atom_protocol  = XInternAtom (xim->display, "_XIM_PROTOCOL", False);
 
   XIMStyle im_styles [] = {
     XIMPreeditPosition  | XIMStatusNothing,
@@ -555,20 +593,20 @@ static gboolean nimf_xim_start (NimfService *service)
   attrs.event_mask = KeyPressMask | KeyReleaseMask;
   attrs.override_redirect = True;
 
-  window = XCreateWindow (display,      /* Display *display */
-                          DefaultRootWindow (display),  /* Window parent */
-                          0, 0,         /* int x, y */
-                          1, 1,         /* unsigned int width, height */
-                          0,            /* unsigned int border_width */
-                          0,            /* int depth */
-                          InputOutput,  /* unsigned int class */
-                          CopyFromParent, /* Visual *visual */
-                          CWOverrideRedirect | CWEventMask, /* unsigned long valuemask */
-                          &attrs);      /* XSetWindowAttributes *attributes */
+  xim->im_window = XCreateWindow (xim->display, /* Display *display */
+                                  DefaultRootWindow (xim->display),  /* Window parent */
+                                  0, 0,         /* int x, y */
+                                  1, 1,         /* unsigned int width, height */
+                                  0,            /* unsigned int border_width */
+                                  0,            /* int depth */
+                                  InputOutput,  /* unsigned int class */
+                                  CopyFromParent, /* Visual *visual */
+                                  CWOverrideRedirect | CWEventMask, /* unsigned long valuemask */
+                                  &attrs);      /* XSetWindowAttributes *attributes */
 
-  xims = IMOpenIM (display,
+  xims = IMOpenIM (xim->display,
                    IMModifiers,        "Xi18n",
-                   IMServerWindow,     window,
+                   IMServerWindow,     xim->im_window,
                    IMServerName,       PACKAGE,
                    IMLocale,           "C,en,ja,ko,zh", /* FIXME: Make get_supported_locales() */
                    IMServerTransport,  "X/",
@@ -581,14 +619,23 @@ static gboolean nimf_xim_start (NimfService *service)
 
   if (!xims)
   {
+    gtk_widget_destroy (xim->window);
+    XDestroyWindow (xim->display, xim->im_window);
+    XCloseDisplay  (xim->display);
+    xim->window = NULL;
+    xim->im_window = 0;
+    xim->display = NULL;
     g_warning (G_STRLOC ": %s: XIM is not started.", G_STRFUNC);
     return FALSE;
   }
 
   xim->xims = xims;
-  xim->xevent_source = nimf_xevent_source_new (xims);
+  xim->xevent_source = nimf_xevent_source_new (xim);
   g_source_attach (xim->xevent_source, NULL);
   XSetErrorHandler (on_xerror);
+
+  xim->active = TRUE;
+  G_UNLOCK (active);
 
   return TRUE;
 }
@@ -597,10 +644,45 @@ static void nimf_xim_stop (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /* TODO FIXME */
-  /* source */
-  /* imcloseim */
-  /* xclosedisplay */
+  NimfXim *xim = NIMF_XIM (service);
+
+  G_LOCK (active);
+
+  if (!xim->active)
+    return;
+
+  if (xim->xevent_source)
+  {
+    g_source_destroy (xim->xevent_source);
+    g_source_unref   (xim->xevent_source);
+  }
+
+  if (xim->im_window)
+  {
+    XDestroyWindow (xim->display, xim->im_window);
+    xim->im_window = 0;
+  }
+
+  if (xim->window)
+  {
+    gtk_widget_destroy (xim->window);
+    xim->window = NULL;
+  }
+
+  if (xim->xims)
+  {
+    IMCloseIM (xim->xims);
+    xim->xims = NULL;
+  }
+
+  if (xim->display)
+  {
+    XCloseDisplay (xim->display);
+    xim->display = NULL;
+  }
+
+  xim->active = FALSE;
+  G_UNLOCK (active);
 }
 
 static const gchar *
@@ -641,36 +723,21 @@ nimf_xim_init (NimfXim *xim)
 
   g_signal_connect (xim->settings, "changed::ignore-xim-preedit-callbacks",
                     G_CALLBACK (on_changed_ignore_xim_preedit_callbacks), xim);
-
-  gtk_init (NULL, NULL);
-  /* gtk entry */
-  xim->entry = gtk_entry_new ();
-  gtk_editable_set_editable (GTK_EDITABLE (xim->entry), FALSE);
-  /* gtk window */
-  xim->window = gtk_window_new (GTK_WINDOW_POPUP);
-  gtk_window_set_type_hint (GTK_WINDOW (xim->window),
-                            GDK_WINDOW_TYPE_HINT_POPUP_MENU);
-  gtk_container_set_border_width (GTK_CONTAINER (xim->window), 1);
-  gtk_container_add (GTK_CONTAINER (xim->window), xim->entry);
-  gtk_window_move (GTK_WINDOW (xim->window), 0, 0);
 }
 
 static void nimf_xim_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfXim *xim = NIMF_XIM (object);
+  NimfService *service = NIMF_SERVICE (object);
+  NimfXim     *xim     = NIMF_XIM (object);
+
+  if (nimf_xim_is_active (service))
+    nimf_xim_stop (service);
 
   g_hash_table_unref (xim->ims);
   g_free (xim->id);
-  gtk_widget_destroy (xim->window);
   g_object_unref (xim->settings);
-
-  if (xim->xevent_source)
-  {
-    g_source_destroy (xim->xevent_source);
-    g_source_unref   (xim->xevent_source);
-  }
 
   G_OBJECT_CLASS (nimf_xim_parent_class)->finalize (object);
 }

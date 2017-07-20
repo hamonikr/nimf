@@ -55,6 +55,12 @@ struct _NimfXim
   GtkWidget  *entry;
   gboolean    ignore_xim_preedit_callbacks;
   GSettings  *settings;
+  gboolean    active;
+
+  Display *display;
+  Window   im_window;
+  Atom     atom_xconnect;
+  Atom     atom_protocol;
 };
 
 struct _NimfXimClass
