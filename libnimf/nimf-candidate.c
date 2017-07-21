@@ -3,7 +3,7 @@
  * nimf-candidate.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -222,6 +222,7 @@ nimf_candidate_init (NimfCandidate *candidate)
                             GDK_WINDOW_TYPE_HINT_POPUP_MENU);
   gtk_container_set_border_width (GTK_CONTAINER (candidate->window), 1);
   gtk_container_add (GTK_CONTAINER (candidate->window), vbox);
+  gtk_widget_realize (candidate->window);
 }
 
 static void

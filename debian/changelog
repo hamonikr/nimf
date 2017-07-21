@@ -1,3 +1,11 @@
+nimf (2017.07.22) stable; urgency=medium
+
+  * nimf-candidate: Fixed a warning
+  * IMdkit: Set border width to 0
+  * nimf-xim: Enhanced stability
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 22 Jul 2017 04:31:50 +0900
+
 nimf (2017.07.18) stable; urgency=medium
 
   * nimf-xim: Modified dispatcher (issue #53)
