@@ -54,13 +54,7 @@ static XClient *NewXClient (Xi18n i18n_core, Window new_client)
     x_client->client_win = new_client;
     x_client->accept_win = XCreateSimpleWindow (dpy,
                                                 DefaultRootWindow(dpy),
-                                                0,
-                                                0,
-                                                1,
-                                                1,
-                                                1,
-                                                0,
-                                                0);
+                                                0, 0, 1, 1, 0, 0, 0);
     client->trans_rec = x_client;
     return ((XClient *) x_client);
 }
