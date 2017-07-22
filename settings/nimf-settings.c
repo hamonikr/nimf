@@ -3,7 +3,7 @@
  * nimf-settings.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -58,7 +58,7 @@ typedef struct _NimfSettingsPage
 {
   GSettings *gsettings;
   GtkWidget *box;
-  GtkWidget *label;
+  gchar     *title;
   GPtrArray *page_keys;
 } NimfSettingsPage;
 
@@ -667,28 +667,25 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   return vbox;
 }
 
-static GtkWidget *
-nimf_settings_page_build_label (NimfSettingsPage *page, const gchar *schema_id)
+static gchar *
+nimf_settings_page_build_title (NimfSettingsPage *page, const gchar *schema_id)
 {
-  GString   *string;
-  gchar     *str;
-  GtkWidget *tab_label;
-  gchar     *p;
+  GString *title;
+  gchar   *str;
+  gchar   *p;
 
-  str = g_settings_get_string (page->gsettings, "hidden-schema-name");
-  string = g_string_new (str);
+  str   = g_settings_get_string (page->gsettings, "hidden-schema-name");
+  title = g_string_new (str);
 
   for (p = (gchar *) schema_id; *p != 0; p++)
     if (*p == '.')
-      g_string_prepend (string, "  ");
+      g_string_prepend (title, "  ");
 
-  tab_label = gtk_label_new (string->str);
-  gtk_widget_set_halign (tab_label, GTK_ALIGN_START);
+  g_string_append (title, "  ");
 
   g_free (str);
-  g_string_free (string, TRUE);
 
-  return tab_label;
+  return g_string_free (title, FALSE);
 }
 
 static NimfSettingsPage *
@@ -704,7 +701,7 @@ nimf_settings_page_new (NimfSettings *nsettings,
 
   page = g_slice_new0 (NimfSettingsPage);
   page->gsettings = g_settings_new (schema_id);
-  page->label = nimf_settings_page_build_label (page, schema_id);
+  page->title = nimf_settings_page_build_title (page, schema_id);
   page->box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 15);
   page->page_keys = g_ptr_array_new_with_free_func ((GDestroyNotify) nimf_settings_page_key_free);
 
@@ -793,7 +790,9 @@ static GtkWidget *
 nimf_settings_build_main_window (NimfSettings *nsettings)
 {
   GtkWidget  *window;
-  GtkWidget  *notebook;
+  GtkWidget  *stack;
+  GtkWidget  *sidebar;
+  GtkWidget  *box;
   GList      *schema_list = NULL;
   gchar     **non_relocatable;
   gint        i;
@@ -803,10 +802,13 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   gtk_window_set_title        (GTK_WINDOW (window), _("Nimf Settings"));
   gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf-logo");
 
-  notebook = gtk_notebook_new ();
-  gtk_notebook_set_tab_pos    (GTK_NOTEBOOK (notebook), GTK_POS_LEFT);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook), TRUE);
-  gtk_container_add (GTK_CONTAINER (window), notebook);
+  stack   = gtk_stack_new ();
+  sidebar = gtk_stack_sidebar_new ();
+  gtk_stack_sidebar_set_stack (GTK_STACK_SIDEBAR (sidebar), GTK_STACK (stack));
+
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_pack_start (GTK_BOX (box), sidebar, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (box), stack,   TRUE,  TRUE,  0);
 
   g_settings_schema_source_list_schemas (nsettings->schema_source, TRUE,
                                          &non_relocatable, NULL);
@@ -819,16 +821,19 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
        schema_list != NULL;
        schema_list = schema_list->next)
   {
-    NimfSettingsPage  *page;
-    GtkWidget         *scrolled_w;
+    NimfSettingsPage *page;
+    GtkWidget        *scrolled_w;
 
     scrolled_w = gtk_scrolled_window_new (NULL, NULL);
     page = nimf_settings_page_new (nsettings,
                                    (const gchar *) schema_list->data);
     gtk_container_add (GTK_CONTAINER (scrolled_w), page->box);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolled_w, page->label);
+    gtk_stack_add_titled (GTK_STACK (stack), scrolled_w,
+                          (const gchar *) schema_list->data, page->title);
     g_ptr_array_add (nsettings->pages, page);
   }
+
+  gtk_container_add (GTK_CONTAINER (window), box);
 
   g_strfreev (non_relocatable);
   g_list_free (schema_list);
@@ -873,6 +878,7 @@ nimf_settings_new ()
 static void nimf_settings_page_free (NimfSettingsPage *page)
 {
   g_object_unref (page->gsettings);
+  g_free (page->title);
   g_slice_free (NimfSettingsPage, page);
 }
 
