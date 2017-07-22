@@ -38,7 +38,7 @@ struct _NimfSettings
 {
   GObject parent_instance;
 
-  GtkApplication        *app;
+  GApplication          *app;
   GPtrArray             *pages;
   GSettingsSchemaSource *schema_source; /* do not free */
 };
@@ -786,6 +786,11 @@ nimf_settings_page_new (NimfSettings *nsettings,
   return page;
 }
 
+void on_destroy (GtkWidget *widget, GApplication *app)
+{
+  g_application_release (app);
+}
+
 static GtkWidget *
 nimf_settings_build_main_window (NimfSettings *nsettings)
 {
@@ -797,7 +802,7 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   gchar     **non_relocatable;
   gint        i;
 
-  window = gtk_application_window_new (nsettings->app);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
   gtk_window_set_title        (GTK_WINDOW (window), _("Nimf Settings"));
   gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf-logo");
@@ -838,25 +843,26 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   g_strfreev (non_relocatable);
   g_list_free (schema_list);
 
+  g_signal_connect (window, "destroy",
+                    G_CALLBACK (on_destroy), nsettings->app);
+
   return window;
 }
 
 static void
-on_activate (GtkApplication *app, NimfSettings *nsettings)
+on_activate (GApplication *app, NimfSettings *nsettings)
 {
-  const GList  *window_list;
+  g_application_hold (app);
 
-  window_list = gtk_application_get_windows (app);
-
-  if (window_list)
+  if (nimf_settings_window)
   {
-    gtk_window_present (GTK_WINDOW (window_list->data));
+    gtk_window_present (GTK_WINDOW (nimf_settings_window));
+    g_application_release (app);
+
     return;
   }
 
   nimf_settings_window = nimf_settings_build_main_window (nsettings);
-  gtk_application_add_window (GTK_APPLICATION (nsettings->app),
-                              GTK_WINDOW (nimf_settings_window));
 
   gtk_widget_show_all (nimf_settings_window);
 }
@@ -887,8 +893,8 @@ nimf_settings_init (NimfSettings *nsettings)
 {
   nsettings->schema_source = g_settings_schema_source_get_default ();
   nsettings->pages = g_ptr_array_new_with_free_func ((GDestroyNotify) nimf_settings_page_free);
-  nsettings->app = gtk_application_new ("org.nimf.settings",
-                                        G_APPLICATION_FLAGS_NONE);
+  nsettings->app = g_application_new ("org.nimf.settings",
+                                      G_APPLICATION_FLAGS_NONE);
   g_signal_connect (nsettings->app, "activate",
                     G_CALLBACK (on_activate), nsettings);
 }
@@ -924,6 +930,8 @@ int main (int argc, char **argv)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 #endif
+
+  gtk_init (&argc, &argv);
 
   nsettings = nimf_settings_new ();
   status = nimf_settings_run (nsettings, argc, argv);

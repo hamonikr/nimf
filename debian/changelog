@@ -1,3 +1,10 @@
+nimf (2017.07.23) stable; urgency=medium
+
+  * nimf-settings: Do not use GtkApplication
+  * nimf-settings: Replaced notebook with stack
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 23 Jul 2017 00:00:34 +0900
+
 nimf (2017.07.22) stable; urgency=medium
 
   * nimf-candidate: Fixed a warning
