@@ -1,3 +1,9 @@
+nimf (2017.08.15) stable; urgency=medium
+
+  * nimf-system-keyboard: Fixed a locale parameter (closes #57)
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 15 Aug 2017 14:50:03 +0900
+
 nimf (2017.07.23) stable; urgency=medium
 
   * nimf-settings: Do not use GtkApplication

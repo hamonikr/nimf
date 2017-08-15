@@ -22,6 +22,7 @@
 #include <nimf.h>
 #include <glib/gi18n.h>
 #include <xkbcommon/xkbcommon-compose.h>
+#include <locale.h>
 
 #define NIMF_TYPE_SYSTEM_KEYBOARD               (nimf_system_keyboard_get_type ())
 #define NIMF_SYSTEM_KEYBOARD(object)            (G_TYPE_CHECK_INSTANCE_CAST ((object), NIMF_TYPE_SYSTEM_KEYBOARD, NimfSystemKeyboard))
@@ -90,17 +91,14 @@ nimf_system_keyboard_init (NimfSystemKeyboard *keyboard)
   keyboard->preedit_attrs[1] = NULL;
   keyboard->xkb_context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
 
-  const gchar *locale = g_getenv ("LC_ALL");
-  if (!locale)
-    locale = g_getenv ("LC_CTYPE");
-  if (!locale)
-    locale = g_getenv ("LANG");
-  if (!locale)
-    locale = "C";
-
   keyboard->xkb_compose_table =
-    xkb_compose_table_new_from_locale (keyboard->xkb_context, locale,
+    xkb_compose_table_new_from_locale (keyboard->xkb_context,
+                                       setlocale (LC_CTYPE, NULL),
                                        XKB_COMPOSE_COMPILE_NO_FLAGS);
+  if (!keyboard->xkb_compose_table)
+    keyboard->xkb_compose_table =
+      xkb_compose_table_new_from_locale (keyboard->xkb_context, "C",
+                                         XKB_COMPOSE_COMPILE_NO_FLAGS);
   keyboard->xkb_compose_state =
     xkb_compose_state_new (keyboard->xkb_compose_table,
                            XKB_COMPOSE_STATE_NO_FLAGS);
