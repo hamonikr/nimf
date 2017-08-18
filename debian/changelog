@@ -1,3 +1,9 @@
+nimf (2017.08.18) stable; urgency=medium
+
+  * Forced GDK backend to x11 (issue #25)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 18 Aug 2017 23:19:42 +0900
+
 nimf (2017.08.15) stable; urgency=medium
 
   * nimf-system-keyboard: Fixed a locale parameter (closes #57)
