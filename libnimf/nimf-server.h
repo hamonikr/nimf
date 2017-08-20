@@ -80,6 +80,7 @@ struct _NimfServerClass
   /*< public >*/
   /* Signals */
   void (* engine_changed) (NimfServer  *server,
+                           const gchar *engine_id,
                            const gchar *icon_name);
 };
 

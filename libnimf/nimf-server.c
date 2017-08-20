@@ -714,8 +714,9 @@ nimf_server_class_init (NimfServerClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (NimfServerClass, engine_changed),
                   NULL, NULL,
-                  nimf_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1,
+                  nimf_cclosure_marshal_VOID__STRING_STRING,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_STRING,
                   G_TYPE_STRING);
 }
 

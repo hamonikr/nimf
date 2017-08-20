@@ -115,6 +115,7 @@ static void on_about_menu (GtkWidget *widget,
 }
 
 static void on_engine_changed (NimfServer   *server,
+                               gchar        *engine_id,
                                gchar        *icon_name,
                                AppIndicator *indicator)
 {
