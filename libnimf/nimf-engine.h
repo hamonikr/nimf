@@ -111,10 +111,11 @@ void     nimf_engine_set_surrounding           (NimfEngine          *engine,
                                                 gint                 cursor_index);
 gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
                                                 NimfServiceIM       *im,
-                                                gchar             **text,
+                                                gchar              **text,
                                                 gint                *cursor_index);
 void     nimf_engine_set_cursor_location       (NimfEngine          *engine,
                                                 const NimfRectangle *area);
+void     nimf_engine_status_changed            (NimfEngine          *engine);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine       *engine,
                                                 NimfServiceIM    *im);
@@ -134,8 +135,6 @@ gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
                                                 NimfServiceIM    *im,
                                                 gint              offset,
                                                 gint              n_chars);
-void     nimf_engine_emit_engine_changed       (NimfEngine       *engine,
-                                                NimfServiceIM    *im);
 void     nimf_engine_emit_beep                 (NimfEngine       *engine,
                                                 NimfServiceIM    *im);
 /* info */

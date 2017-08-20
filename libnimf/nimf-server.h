@@ -79,9 +79,12 @@ struct _NimfServerClass
 
   /*< public >*/
   /* Signals */
-  void (* engine_changed) (NimfServer  *server,
-                           const gchar *engine_id,
-                           const gchar *icon_name);
+  void (* engine_changed)        (NimfServer  *server,
+                                  const gchar *engine_id,
+                                  const gchar *icon_name);
+  void (* engine_status_changed) (NimfServer  *server,
+                                  const gchar *engine_id,
+                                  const gchar *icon_name);
 };
 
 GType       nimf_server_get_type              (void) G_GNUC_CONST;

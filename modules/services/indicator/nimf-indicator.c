@@ -46,6 +46,7 @@ struct _NimfIndicator
 
   gchar        *id;
   AppIndicator *appindicator;
+  const gchar  *engine_id;
 };
 
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
@@ -114,14 +115,27 @@ static void on_about_menu (GtkWidget *widget,
   gtk_widget_destroy (parent);
 }
 
-static void on_engine_changed (NimfServer   *server,
-                               gchar        *engine_id,
-                               gchar        *icon_name,
-                               AppIndicator *indicator)
+static void on_engine_changed (NimfServer    *server,
+                               const gchar   *engine_id,
+                               const gchar   *icon_name,
+                               NimfIndicator *indicator)
 {
   g_debug (G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
 
-  app_indicator_set_icon_full (indicator, icon_name, icon_name);
+  indicator->engine_id = engine_id;
+
+  app_indicator_set_icon_full (indicator->appindicator, icon_name, icon_name);
+}
+
+static void on_engine_status_changed (NimfServer    *server,
+                                      const gchar   *engine_id,
+                                      const gchar   *icon_name,
+                                      NimfIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
+
+  if (!g_strcmp0 (indicator->engine_id, engine_id))
+    app_indicator_set_icon_full (indicator->appindicator, icon_name, icon_name);
 }
 
 const gchar *
@@ -161,7 +175,9 @@ static gboolean nimf_indicator_start (NimfService *service)
   app_indicator_set_menu (indicator->appindicator, GTK_MENU (menu_shell));
 
   g_signal_connect (service->server, "engine-changed",
-                    G_CALLBACK (on_engine_changed), indicator->appindicator);
+                    G_CALLBACK (on_engine_changed), indicator);
+  g_signal_connect (service->server, "engine-status-changed",
+                    G_CALLBACK (on_engine_status_changed), indicator);
   /* menu */
   gchar     **engine_ids = nimf_server_get_loaded_engine_ids (service->server);
   GtkWidget  *engine_menu;

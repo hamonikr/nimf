@@ -245,13 +245,13 @@ nimf_engine_emit_retrieve_surrounding (NimfEngine    *engine,
 }
 
 void
-nimf_engine_emit_engine_changed (NimfEngine    *engine,
-                                 NimfServiceIM *im)
+nimf_engine_status_changed (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_service_im_engine_changed (im, nimf_engine_get_id (engine),
-                                  nimf_engine_get_icon_name (engine));
+  g_signal_emit_by_name (engine->priv->server, "engine-status-changed",
+                         nimf_engine_get_id (engine),
+                         nimf_engine_get_icon_name (engine));
 }
 
 void
