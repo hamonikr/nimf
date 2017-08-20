@@ -88,10 +88,10 @@
       <summary>Use a rule composing double consonants</summary>
       <description>compose a double consonant on pressing same consonant twice</description>
     </key>
-    <key type="b" name="auto-correction">
+    <key type="b" name="auto-reordering">
       <default>false</default>
-      <summary>auto-correction in Dubeolsik</summary>
-      <description>auto-correction in Dubeolsik</description>
+      <summary>Auto-reordering in Dubeolsik</summary>
+      <description>Auto-reordering in Dubeolsik</description>
     </key>
     <key type="b" name="ignore-reset-in-commit-cb">
       <default>true</default>

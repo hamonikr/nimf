@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-20 19:49+0900\n"
-"PO-Revision-Date: 2017-08-20 20:22+0900\n"
+"POT-Creation-Date: 2017-08-20 20:38+0900\n"
+"PO-Revision-Date: 2017-08-20 20:50+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -299,8 +299,8 @@ msgid "compose a double consonant on pressing same consonant twice"
 msgstr "按两次同一的辅音时组成一个双辅音"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:23
-msgid "auto-correction in Dubeolsik"
-msgstr "自动校正在两套式"
+msgid "Auto-reordering in Dubeolsik"
+msgstr "自动重新排序在两套式"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:24
 msgid "Ignore reset() in commit callback"

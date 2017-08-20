@@ -47,7 +47,7 @@ struct _NimfLibhangul
   NimfKey           **hanja_keys;
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
-  gboolean            is_auto_correction;
+  gboolean            is_auto_reordering;
   gchar              *layout;
   /* workaround: ignore reset called by commit callback in application */
   gboolean            ignore_reset_in_commit_cb;
@@ -636,7 +636,7 @@ nimf_libhangul_update_transition_cb (NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if ((g_strcmp0 (hangul->layout, "2") == 0) && !hangul->is_auto_correction)
+  if ((g_strcmp0 (hangul->layout, "2") == 0) && !hangul->is_auto_reordering)
     hangul_ic_connect_callback (hangul->context, "transition",
                                 on_libhangul_transition, NULL);
   else
@@ -657,13 +657,13 @@ on_changed_layout (GSettings     *settings,
 }
 
 static void
-on_changed_auto_correction (GSettings     *settings,
+on_changed_auto_reordering (GSettings     *settings,
                             gchar         *key,
                             NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  hangul->is_auto_correction = g_settings_get_boolean (settings, key);
+  hangul->is_auto_reordering = g_settings_get_boolean (settings, key);
   nimf_libhangul_update_transition_cb (hangul);
 }
 
@@ -719,8 +719,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->layout = g_settings_get_string (hangul->settings, "layout");
   hangul->is_double_consonant_rule =
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
-  hangul->is_auto_correction =
-    g_settings_get_boolean (hangul->settings, "auto-correction");
+  hangul->is_auto_reordering =
+    g_settings_get_boolean (hangul->settings, "auto-reordering");
   hangul->ignore_reset_in_commit_cb =
     g_settings_get_boolean (hangul->settings, "ignore-reset-in-commit-cb");
 
@@ -757,8 +757,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
                     G_CALLBACK (on_changed_keys), hangul);
   g_signal_connect (hangul->settings, "changed::double-consonant-rule",
                     G_CALLBACK (on_changed_double_consonant_rule), hangul);
-  g_signal_connect (hangul->settings, "changed::auto-correction",
-                    G_CALLBACK (on_changed_auto_correction), hangul);
+  g_signal_connect (hangul->settings, "changed::auto-reordering",
+                    G_CALLBACK (on_changed_auto_reordering), hangul);
   g_signal_connect (hangul->settings, "changed::ignore-reset-in-commit-cb",
                     G_CALLBACK (on_changed_ignore_reset_in_commit_cb), hangul);
 }
