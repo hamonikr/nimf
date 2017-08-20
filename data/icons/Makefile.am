@@ -9,7 +9,8 @@ status_scalable_icon_DATA = \
 	scalable/nimf-sunpinyin.svg \
 	scalable/nimf-anthy.svg \
 	scalable/nimf-chewing.svg \
-	scalable/nimf-rime.svg
+	scalable/nimf-rime-simplified.svg \
+	scalable/nimf-rime-traditional.svg
 
 # 16x16 icons
 

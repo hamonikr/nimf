@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-15 22:27+0900\n"
-"PO-Revision-Date: 2017-07-15 22:29+0900\n"
+"POT-Creation-Date: 2017-08-20 19:49+0900\n"
+"PO-Revision-Date: 2017-08-20 20:18+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -31,46 +31,46 @@ msgid "Version"
 msgstr "バージョン"
 
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:576
-#: ../modules/services/indicator/nimf-indicator.c:105
+#: ../modules/clients/gtk/im-nimf.c:587
+#: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr "ニンフ"
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:358
+#: ../modules/engines/nimf-rime/nimf-rime.c:400
 msgid "Rime"
 msgstr "ライム"
 
-#: ../modules/services/indicator/nimf-indicator.c:87
 #: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:90
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "キム・ホドン <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:100
+#: ../modules/services/indicator/nimf-indicator.c:101
 msgid "Nimf is an input method framework"
 msgstr "ニンフはインプットメソッドフレームワークです。"
 
-#: ../modules/services/indicator/nimf-indicator.c:101
+#: ../modules/services/indicator/nimf-indicator.c:102
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr "著作権 (c) 2015-2017 キム・ホドン"
 
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:107
 msgid "キム・ホドン, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: ../modules/services/indicator/nimf-indicator.c:193
+#: ../modules/services/indicator/nimf-indicator.c:211
 msgid "Settings"
 msgstr "設定"
 
-#: ../modules/services/indicator/nimf-indicator.c:194
+#: ../modules/services/indicator/nimf-indicator.c:212
 msgid "Donate"
 msgstr "寄付"
 
-#: ../modules/services/indicator/nimf-indicator.c:195
+#: ../modules/services/indicator/nimf-indicator.c:213
 msgid "About"
 msgstr "情報"
 
@@ -95,7 +95,7 @@ msgstr "キャンセル (_C)"
 msgid "Click here and then press key combination"
 msgstr "ここをクリックして、キーの組み合わせを押してください"
 
-#: ../settings/nimf-settings.c:803
+#: ../settings/nimf-settings.c:807
 msgid "Nimf Settings"
 msgstr "ニンフ設定"
 
@@ -314,6 +314,17 @@ msgstr "アプリケーションでcommitコールバックが呼び出される
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'中国語 (rime)'"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
+msgid "Simplified Chinese"
+msgstr "簡体字中国語"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:8
+msgid ""
+"If Simplified Chinese is set, Simplified Chinese is used. Otherwise "
+"Traditional Chinese is used."
+msgstr "簡体字中国語が設定されると、簡体字中国語が使用されます。"
+"そうでなければ、繁体字中国語が使用されます。"
 
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
 msgid "'Chinese (sunpinyin)'"

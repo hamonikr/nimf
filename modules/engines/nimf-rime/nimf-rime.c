@@ -47,6 +47,8 @@ struct _NimfRime
   RimeSessionId     session_id;
   gint              current_page;
   gint              n_pages;
+  GSettings        *settings;
+  gboolean          is_simplified;
 };
 
 struct _NimfRimeClass
@@ -332,11 +334,50 @@ nimf_rime_filter_event (NimfEngine    *engine,
 }
 
 static void
+on_changed_simplification (GSettings *settings,
+                           gchar     *key,
+                           NimfRime  *rime)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  Bool is_simplified  = RimeGetOption (rime->session_id, "simplification");
+  rime->is_simplified = g_settings_get_boolean (settings, key);
+
+  if (!rime->is_simplified != !is_simplified)
+    RimeSetOption (rime->session_id, "simplification", rime->is_simplified);
+
+  nimf_engine_status_changed (NIMF_ENGINE (rime));
+}
+
+static void on_notification (void          *context_object,
+                             RimeSessionId  session_id,
+                             const char    *message_type,
+                             const char    *message_value)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfRime *rime = (NimfRime *) context_object;
+
+  if (!g_strcmp0 (message_type, "option"))
+  {
+    if (!g_strcmp0 (message_value, "simplification") &&
+        !g_settings_get_boolean (rime->settings, "simplification"))
+      g_settings_set_boolean (rime->settings, "simplification", TRUE);
+    else if (!g_strcmp0 (message_value, "!simplification") &&
+              g_settings_get_boolean (rime->settings, "simplification"))
+      g_settings_set_boolean (rime->settings, "simplification", FALSE);
+  }
+}
+
+static void
 nimf_rime_init (NimfRime *rime)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   rime->candidate = nimf_candidate_get_default ();
+  rime->settings  = g_settings_new ("org.nimf.engines.nimf-rime");
+  rime->is_simplified =
+    g_settings_get_boolean (rime->settings, "simplification");
   rime->id        = g_strdup ("nimf-rime");
   rime->preedit   = g_string_new ("");
   rime->preedit_attrs  = g_malloc0_n (2, sizeof (NimfPreeditAttr *));
@@ -352,6 +393,7 @@ nimf_rime_init (NimfRime *rime)
     if (!g_file_test (user_data_dir, G_FILE_TEST_IS_DIR))
       g_mkdir_with_parents (user_data_dir, 0700);
 
+    RimeSetNotificationHandler (on_notification, rime);
     RIME_STRUCT (RimeTraits, traits);
     traits.shared_data_dir        = "/usr/share/rime-data";
     traits.user_data_dir          = user_data_dir;
@@ -369,6 +411,10 @@ nimf_rime_init (NimfRime *rime)
   nimf_rime_ref_count++;
 
   rime->session_id = RimeCreateSession();
+  RimeSetOption (rime->session_id, "simplification", rime->is_simplified);
+
+  g_signal_connect (rime->settings, "changed::simplification",
+                    G_CALLBACK (on_changed_simplification), rime);
 }
 
 static void
@@ -391,6 +437,8 @@ nimf_rime_finalize (GObject *object)
   if (--nimf_rime_ref_count == 0)
     RimeFinalize ();
 
+  g_object_unref (rime->settings);
+
   G_OBJECT_CLASS (nimf_rime_parent_class)->finalize (object);
 }
 
@@ -411,7 +459,12 @@ nimf_rime_get_icon_name (NimfEngine *engine)
 
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
-  return NIMF_RIME (engine)->id;
+  NimfRime *rime = NIMF_RIME (engine);
+
+  if (RimeGetOption (rime->session_id, "simplification"))
+    return "nimf-rime-simplified";
+  else
+    return "nimf-rime-traditional";
 }
 
 static void

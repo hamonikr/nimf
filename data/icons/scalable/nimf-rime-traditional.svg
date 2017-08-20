@@ -14,7 +14,7 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="nimf-rime.svg">
+   sodipodi:docname="nimf-rime-traditional.svg">
   <defs
      id="defs2987" />
   <sodipodi:namedview
@@ -66,11 +66,16 @@
        id="path3795"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccc" />
-    <path
-       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#1a1a1a;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
-       d="m 7.4,10.8 -4,0 0,1.2 9.2,0 0,-1.2 -4,0 0,-1.2 c 3.4,0 4,-1 4,-5 l -1.2,0 c 0,3 0,3.8 -2.8,3.8 L 8.6,4 7.4,4 7.4,8.4 C 4.6,8.4 4.6,7.6 4.6,4.6 l -1.2,0 c 0,4 0.6,5 4,5 z"
-       id="path3795-6"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Noto Sans Mono CJK KR;-inkscape-font-specification:Sans Bold"
+       x="3"
+       y="12"
+       id="text2987"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989"
+         x="3"
+         y="12">漢</tspan></text>
   </g>
 </svg>

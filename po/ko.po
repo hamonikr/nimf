@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-15 22:27+0900\n"
-"PO-Revision-Date: 2017-07-15 22:39+0900\n"
+"POT-Creation-Date: 2017-08-20 19:49+0900\n"
+"PO-Revision-Date: 2017-08-20 20:18+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -31,46 +31,46 @@ msgid "Version"
 msgstr "버전"
 
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:576
-#: ../modules/services/indicator/nimf-indicator.c:105
+#: ../modules/clients/gtk/im-nimf.c:587
+#: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr "님프"
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:358
+#: ../modules/engines/nimf-rime/nimf-rime.c:400
 msgid "Rime"
 msgstr "라임"
 
-#: ../modules/services/indicator/nimf-indicator.c:87
 #: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:90
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:100
+#: ../modules/services/indicator/nimf-indicator.c:101
 msgid "Nimf is an input method framework"
 msgstr "님프는 입력 방법 프레임워크입니다"
 
-#: ../modules/services/indicator/nimf-indicator.c:101
+#: ../modules/services/indicator/nimf-indicator.c:102
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr "저작권 (c) 2015-2017 김호동"
 
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:107
 msgid "Hodong Kim, N"
 msgstr "김호동, N"
 
-#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:193
+#: ../modules/services/indicator/nimf-indicator.c:211
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:194
+#: ../modules/services/indicator/nimf-indicator.c:212
 msgid "Donate"
 msgstr "기부하기"
 
-#: ../modules/services/indicator/nimf-indicator.c:195
+#: ../modules/services/indicator/nimf-indicator.c:213
 msgid "About"
 msgstr "정보"
 
@@ -95,7 +95,7 @@ msgstr "취소 (_C)"
 msgid "Click here and then press key combination"
 msgstr "여기를 클릭한 후 키 조합을 누르세요"
 
-#: ../settings/nimf-settings.c:803
+#: ../settings/nimf-settings.c:807
 msgid "Nimf Settings"
 msgstr "님프 설정"
 
@@ -314,6 +314,18 @@ msgstr "응용 어플리케이션에서 commit 콜백에 의해 호출되는 res
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'중국어 (rime)'"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
+msgid "Simplified Chinese"
+msgstr "중국어 간체"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:8
+msgid ""
+"If Simplified Chinese is set, Simplified Chinese is used. Otherwise "
+"Traditional Chinese is used."
+msgstr ""
+"중국어 간체가 설정되면 중국어 간체가 사용됩니다. 그렇지 않으면 중국어 번체가 "
+"사용됩니다."
 
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
 msgid "'Chinese (sunpinyin)'"

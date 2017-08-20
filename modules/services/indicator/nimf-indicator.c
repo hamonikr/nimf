@@ -46,7 +46,7 @@ struct _NimfIndicator
 
   gchar        *id;
   AppIndicator *appindicator;
-  const gchar  *engine_id;
+  gchar        *engine_id;
 };
 
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
@@ -122,7 +122,8 @@ static void on_engine_changed (NimfServer    *server,
 {
   g_debug (G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
 
-  indicator->engine_id = engine_id;
+  g_free (indicator->engine_id);
+  indicator->engine_id = g_strdup (engine_id);
 
   app_indicator_set_icon_full (indicator->appindicator, icon_name, icon_name);
 }
@@ -247,7 +248,10 @@ nimf_indicator_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_free (NIMF_INDICATOR (object)->id);
+  NimfIndicator *indicator = NIMF_INDICATOR (object);
+
+  g_free (indicator->engine_id);
+  g_free (indicator->id);
 
   G_OBJECT_CLASS (nimf_indicator_parent_class)->finalize (object);
 }

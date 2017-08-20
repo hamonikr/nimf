@@ -17,5 +17,10 @@
       <summary>Trigger keys for switching Chinese / System</summary>
       <description>Trigger keys for switching Chinese / System</description>
     </key>
+    <key type="b" name="simplification">
+      <default>true</default>
+      <summary>Simplified Chinese</summary>
+      <description>If Simplified Chinese is set, Simplified Chinese is used. Otherwise Traditional Chinese is used.</description>
+    </key>
   </schema>
 </schemalist>

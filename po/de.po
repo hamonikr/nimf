@@ -9,16 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-15 22:27+0900\n"
-"PO-Revision-Date: 2017-07-15 22:28+0900\n"
-"Last-Translator: N <abonnements@revolwear.com>\n"
+"POT-Creation-Date: 2017-08-20 19:49+0900\n"
+"PO-Revision-Date: 2017-08-20 20:18+0900\n"
+"Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../daemon/nimf-daemon.c:51
 msgid "Do not daemonize"
@@ -33,46 +32,46 @@ msgid "Version"
 msgstr ""
 
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:576
-#: ../modules/services/indicator/nimf-indicator.c:105
+#: ../modules/clients/gtk/im-nimf.c:587
+#: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr ""
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:358
+#: ../modules/engines/nimf-rime/nimf-rime.c:400
 msgid "Rime"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:87
 #: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:90
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:100
+#: ../modules/services/indicator/nimf-indicator.c:101
 msgid "Nimf is an input method framework"
 msgstr "Nimf ist eine Texteingabemethode"
 
-#: ../modules/services/indicator/nimf-indicator.c:101
+#: ../modules/services/indicator/nimf-indicator.c:102
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:107
 msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:193
+#: ../modules/services/indicator/nimf-indicator.c:211
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:194
+#: ../modules/services/indicator/nimf-indicator.c:212
 msgid "Donate"
 msgstr "Spenden"
 
-#: ../modules/services/indicator/nimf-indicator.c:195
+#: ../modules/services/indicator/nimf-indicator.c:213
 msgid "About"
 msgstr "Über"
 
@@ -97,7 +96,7 @@ msgstr "Abbrechen (_C)"
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../settings/nimf-settings.c:803
+#: ../settings/nimf-settings.c:807
 msgid "Nimf Settings"
 msgstr "Nimf Einstellungen"
 
@@ -320,6 +319,18 @@ msgstr ""
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'Chinesisch (Rime)'"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
+msgid "Simplified Chinese"
+msgstr "Vereinfachtes Chinesisch"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:8
+msgid ""
+"If Simplified Chinese is set, Simplified Chinese is used. Otherwise "
+"Traditional Chinese is used."
+msgstr ""
+"Wenn vereinfachtes Chinesisch gesetzt ist, wird vereinfachtes Chinesisch "
+"verwendet. Ansonsten wird traditionelles Chinesisch verwendet."
 
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
 msgid "'Chinese (sunpinyin)'"
