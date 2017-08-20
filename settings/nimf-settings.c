@@ -803,7 +803,7 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   gint        i;
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
+  gtk_window_set_default_size (GTK_WINDOW (window), 700, 525);
   gtk_window_set_title        (GTK_WINDOW (window), _("Nimf Settings"));
   gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf-logo");
 

@@ -1,3 +1,15 @@
+nimf (2017.08.20) stable; urgency=medium
+
+  * nimf-settings: set size 700 x 525
+  * nimf-libhangul: Renamed auto-correction to auto-reordering
+  * nimf-rime: showed the status of simplification
+  * Added "engine-status-changed" signal
+  * Added engine_id to nimf_service_im_engine_changed()
+  * Renamed nimf_service_im_emit_engine_changed() to
+    nimf_service_im_engine_changed()
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 20 Aug 2017 21:21:13 +0900
+
 nimf (2017.08.18) stable; urgency=medium
 
   * Forced GDK backend to x11 (issue #25)
