@@ -94,20 +94,22 @@ void         nimf_service_im_focus_in           (NimfServiceIM *im);
 void         nimf_service_im_focus_out          (NimfServiceIM *im);
 gboolean     nimf_service_im_filter_event       (NimfServiceIM *im,
                                                  NimfEvent     *event);
-void         nimf_service_im_set_surrounding         (NimfServiceIM       *im,
-                                                      const char          *text,
-                                                      gint                 len,
-                                                      gint                 cursor_index);
-gboolean     nimf_service_im_get_surrounding         (NimfServiceIM       *im,
-                                                      gchar              **text,
-                                                      gint                *cursor_index);
-void         nimf_service_im_set_use_preedit         (NimfServiceIM       *im,
-                                                      gboolean             use_preedit);
-void         nimf_service_im_set_cursor_location     (NimfServiceIM       *im,
-                                                      const NimfRectangle *area);
-void         nimf_service_im_reset              (NimfServiceIM  *im);
-void         nimf_service_im_set_engine_by_id   (NimfServiceIM  *im,
-                                                 const gchar    *engine_id);
+void         nimf_service_im_set_surrounding     (NimfServiceIM  *im,
+                                                  const char     *text,
+                                                  gint            len,
+                                                  gint            cursor_index);
+gboolean     nimf_service_im_get_surrounding     (NimfServiceIM  *im,
+                                                  gchar         **text,
+                                                  gint           *cursor_index);
+void         nimf_service_im_set_use_preedit     (NimfServiceIM  *im,
+                                                  gboolean        use_preedit);
+void         nimf_service_im_set_cursor_location (NimfServiceIM  *im,
+                                                  const NimfRectangle *area);
+void         nimf_service_im_reset               (NimfServiceIM  *im);
+void         nimf_service_im_set_engine_by_id    (NimfServiceIM  *im,
+                                                  const gchar    *engine_id);
+void         nimf_service_im_engine_changed      (NimfServiceIM  *im,
+                                                  const gchar    *name);
 /* signals */
 void     nimf_service_im_emit_preedit_start        (NimfServiceIM    *im);
 void     nimf_service_im_emit_preedit_changed      (NimfServiceIM    *im,
@@ -121,9 +123,8 @@ gboolean nimf_service_im_emit_retrieve_surrounding (NimfServiceIM    *im);
 gboolean nimf_service_im_emit_delete_surrounding   (NimfServiceIM    *im,
                                                     gint              offset,
                                                     gint              n_chars);
-void     nimf_service_im_emit_engine_changed       (NimfServiceIM    *im,
-                                                    const gchar      *name);
 void     nimf_service_im_emit_beep                 (NimfServiceIM    *im);
+
 G_END_DECLS
 
 #endif /* __NIMF_SERVICE_IM_H__ */

@@ -132,8 +132,8 @@ nimf_service_im_emit_delete_surrounding (NimfServiceIM *im,
 }
 
 void
-nimf_service_im_emit_engine_changed (NimfServiceIM *im,
-                                     const gchar   *name)
+nimf_service_im_engine_changed (NimfServiceIM *im,
+                                const gchar   *name)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -167,8 +167,7 @@ void nimf_service_im_focus_in (NimfServiceIM *im)
     return;
 
   nimf_engine_focus_in (im->engine, im);
-  nimf_service_im_emit_engine_changed (im,
-                                       nimf_engine_get_icon_name (im->engine));
+  nimf_service_im_engine_changed (im, nimf_engine_get_icon_name (im->engine));
 }
 
 void nimf_service_im_focus_out (NimfServiceIM *im)
@@ -181,7 +180,7 @@ void nimf_service_im_focus_out (NimfServiceIM *im)
     return;
 
   nimf_engine_focus_out (im->engine, im);
-  nimf_service_im_emit_engine_changed (im, "nimf-focus-out");
+  nimf_service_im_engine_changed (im, "nimf-focus-out");
 }
 
 static gint
@@ -300,8 +299,7 @@ gboolean nimf_service_im_filter_event (NimfServiceIM *im,
                                                        "nimf-system-keyboard");
         }
 
-        nimf_service_im_emit_engine_changed (im,
-                                             nimf_engine_get_icon_name (im->engine));
+        nimf_service_im_engine_changed (im, nimf_engine_get_icon_name (im->engine));
       }
 
       return TRUE;
@@ -319,8 +317,7 @@ gboolean nimf_service_im_filter_event (NimfServiceIM *im,
       else
         im->engine = nimf_service_im_get_next_instance (im, im->engine);
 
-      nimf_service_im_emit_engine_changed (im,
-                                           nimf_engine_get_icon_name (im->engine));
+      nimf_service_im_engine_changed (im, nimf_engine_get_icon_name (im->engine));
     }
 
     return TRUE;
@@ -435,8 +432,7 @@ nimf_service_im_set_engine_by_id (NimfServiceIM *im,
   g_return_if_fail (engine != NULL);
 
   im->engine = engine;
-  nimf_service_im_emit_engine_changed (im,
-                                       nimf_engine_get_icon_name (im->engine));
+  nimf_service_im_engine_changed (im, nimf_engine_get_icon_name (im->engine));
 }
 
 static NimfEngine *
