@@ -245,6 +245,7 @@ AC_OUTPUT([
   daemon/Makefile
   data/Makefile
   data/apparmor-abstractions/Makefile
+  data/autostart/Makefile
   data/icons/Makefile
   data/im-config/Makefile
   libnimf/Makefile
