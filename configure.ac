@@ -14,6 +14,10 @@ AM_PROG_AR
 AC_PROG_CC
 AC_PROG_CXX
 
+AS_IF([test "$CXX" = "g++"],
+      [AS_IF([test "$GXX" != "yes"],
+	     AC_MSG_ERROR([C++ compiler is not found.]))])
+
 dnl ***************************************************************************
 dnl Libtool Versioning
 dnl ***************************************************************************

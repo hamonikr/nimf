@@ -16,7 +16,8 @@ libqt5im_nimf_la_CXXFLAGS = \
 	$(NIMF_QT5_DEPS_CFLAGS) \
 	-I$(QT5_CORE_PRIVATE_INCLUDE_PATH) \
 	-I$(QT5_GUI_PRIVATE_INCLUDE_PATH) \
-	-DQT_NO_KEYWORDS
+	-DQT_NO_KEYWORDS \
+	-fPIC
 
 libqt5im_nimf_la_LDFLAGS = -avoid-version -module \
 	                         $(NIMF_QT5_DEPS_LIBS) \
