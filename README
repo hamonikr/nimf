@@ -6,8 +6,8 @@ Nimf provides:
  * Input Method Server:
     * nimf-daemon
  * Language Engines:
-    * Chinese (alpha stage, based on sunpinyin, libchewing, librime)
-    * Japanese (alpha stage, based on anthy)
+    * Chinese (based on sunpinyin, libchewing, librime)
+    * Japanese (based on anthy)
     * Korean (based on libhangul)
  * Service Modules:
     * Indicator (based on appindicator)

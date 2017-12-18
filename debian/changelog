@@ -1,3 +1,11 @@
+nimf (2017.12.18) stable; urgency=medium
+
+  * Split nimf into multiple packages (closes #60)
+  * Added nimf-daemon.desktop into /etc/xdg/autostart (closes #66)
+  * Fixed compile errors on compiling nimf-qt5
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 18 Dec 2017 21:35:48 +0900
+
 nimf (2017.08.20) stable; urgency=medium
 
   * nimf-settings: set size 700 x 525
