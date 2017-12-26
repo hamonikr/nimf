@@ -74,7 +74,14 @@ static void on_donate_menu (GtkWidget *widget,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/donate", NULL);
+  if (g_str_has_prefix (g_getenv ("LANG"), "ja_"))
+    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/ja/donate", NULL);
+  else if (g_str_has_prefix (g_getenv ("LANG"), "ko_"))
+    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/ko/donate", NULL);
+  else if (g_str_has_prefix (g_getenv ("LANG"), "zh_"))
+    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/zh/donate", NULL);
+  else
+    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/donate", NULL);
 }
 
 static void on_about_menu (GtkWidget *widget,
