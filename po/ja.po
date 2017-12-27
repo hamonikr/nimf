@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-20 20:38+0900\n"
-"PO-Revision-Date: 2017-08-20 20:43+0900\n"
+"POT-Creation-Date: 2017-12-27 15:31+0900\n"
+"PO-Revision-Date: 2017-12-27 15:39+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -18,21 +18,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:51
+#: ../daemon/nimf-daemon.c:85
 msgid "Do not daemonize"
 msgstr "デーモン化しません"
 
-#: ../daemon/nimf-daemon.c:52
+#: ../daemon/nimf-daemon.c:86
 msgid "Log debugging message"
 msgstr "デバッグメッセージを記録します。"
 
-#: ../daemon/nimf-daemon.c:53
+#: ../daemon/nimf-daemon.c:87
 msgid "Version"
 msgstr "バージョン"
 
+#: ../daemon/nimf-daemon.c:88
+msgid "Start indicator"
+msgstr "インジケータを開始します"
+
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:587
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:115
 msgid "Nimf"
 msgstr "ニンフ"
 
@@ -40,37 +44,37 @@ msgstr "ニンフ"
 msgid "Rime"
 msgstr "ライム"
 
-#: ../modules/services/indicator/nimf-indicator.c:88
-#: ../modules/services/indicator/nimf-indicator.c:89
-#: ../modules/services/indicator/nimf-indicator.c:90
+#: ../modules/services/indicator/nimf-indicator.c:97
+#: ../modules/services/indicator/nimf-indicator.c:98
+#: ../modules/services/indicator/nimf-indicator.c:99
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "キム・ホドン <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:101
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Nimf is an input method framework"
 msgstr "ニンフはインプットメソッドフレームワークです。"
 
-#: ../modules/services/indicator/nimf-indicator.c:102
+#: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr "著作権 (c) 2015-2017 キム・ホドン"
 
-#: ../modules/services/indicator/nimf-indicator.c:107
-msgid "キム・ホドン, N"
+#: ../modules/services/indicator/nimf-indicator.c:116
+msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:110
+#: ../modules/services/indicator/nimf-indicator.c:119
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: ../modules/services/indicator/nimf-indicator.c:211
+#: ../modules/services/indicator/nimf-indicator.c:238
 msgid "Settings"
 msgstr "設定"
 
-#: ../modules/services/indicator/nimf-indicator.c:212
+#: ../modules/services/indicator/nimf-indicator.c:239
 msgid "Donate"
 msgstr "寄付"
 
-#: ../modules/services/indicator/nimf-indicator.c:213
+#: ../modules/services/indicator/nimf-indicator.c:240
 msgid "About"
 msgstr "情報"
 

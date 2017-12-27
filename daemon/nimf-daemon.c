@@ -28,8 +28,40 @@
 #include <glib/gi18n.h>
 #include <unistd.h>
 #include <libaudit.h>
+#include <gio/gunixsocketaddress.h>
 
 gboolean syslog_initialized = FALSE;
+
+gboolean start_indicator_service (gchar *addr)
+{
+  GSocketAddress    *address;
+  GSocketClient     *client;
+  GSocketConnection *connection;
+  gboolean           retval = FALSE;
+
+  address = g_unix_socket_address_new_with_type (addr, -1,
+                                                 G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+
+  client = g_socket_client_new ();
+
+  connection = g_socket_client_connect (client, G_SOCKET_CONNECTABLE (address),
+                                        NULL, NULL);
+
+  if (connection)
+  {
+    GSocket *socket = g_socket_connection_get_socket (connection);
+    if (socket && !g_socket_is_closed (socket))
+      nimf_send_message (socket, 0, NIMF_MESSAGE_START_INDICATOR,
+                         NULL, 0, NULL);
+    retval = TRUE;
+    g_object_unref (connection);
+  }
+
+  g_object_unref (client);
+  g_object_unref (address);
+
+  return retval;
+}
 
 int
 main (int argc, char **argv)
@@ -41,16 +73,19 @@ main (int argc, char **argv)
   gchar      *addr;
   GError     *error = NULL;
   uid_t       uid;
+  gboolean    retval = FALSE;
 
   gboolean is_no_daemon = FALSE;
   gboolean is_debug     = FALSE;
   gboolean is_version   = FALSE;
+  gboolean start_indicator = FALSE;
 
   GOptionContext *context;
   GOptionEntry    entries[] = {
     {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
     {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
     {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
+    {"start-indicator", 0, 0, G_OPTION_ARG_NONE, &start_indicator, N_("Start indicator"), NULL},
     {NULL}
   };
 
@@ -102,6 +137,16 @@ main (int argc, char **argv)
     uid = getuid ();
 
   addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
+
+  if (start_indicator)
+    retval = start_indicator_service (addr);
+
+  if (retval)
+  {
+    g_free (addr);
+    return EXIT_SUCCESS;
+  }
+
   server = nimf_server_new (addr, &error);
   g_free (addr);
 
@@ -110,10 +155,13 @@ main (int argc, char **argv)
     g_critical ("%s", error->message);
     g_clear_error (&error);
 
+    if (syslog_initialized)
+      closelog ();
+
     return EXIT_FAILURE;
   }
 
-  nimf_server_start (server);
+  nimf_server_start (server, start_indicator);
 
   loop = g_main_loop_new (NULL, FALSE);
 

@@ -175,6 +175,15 @@ on_incoming_message_nimf (GSocket        *socket,
       nimf_send_message (socket, icid, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
                          NULL, 0, NULL);
       break;
+    case NIMF_MESSAGE_START_INDICATOR:
+      {
+        NimfService *service;
+        service = g_hash_table_lookup (connection->server->services,
+                                       "nimf-indicator");
+        if (!nimf_service_is_active (service))
+          nimf_service_start (service);
+      }
+      break;
     case NIMF_MESSAGE_PREEDIT_START_REPLY:
     case NIMF_MESSAGE_PREEDIT_CHANGED_REPLY:
     case NIMF_MESSAGE_PREEDIT_END_REPLY:
@@ -438,7 +447,8 @@ nimf_server_load_service (NimfServer  *server,
   }
 
   service = g_object_new (module->type, "server", server, NULL);
-  g_hash_table_insert (server->services, g_strdup (path), service);
+  g_hash_table_insert (server->services,
+                       g_strdup (nimf_service_get_id (service)), service);
 
   g_type_module_unuse (G_TYPE_MODULE (module));
 }
@@ -745,7 +755,7 @@ nimf_server_new (const gchar  *address,
 }
 
 void
-nimf_server_start (NimfServer *server)
+nimf_server_start (NimfServer *server, gboolean start_indicator)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -764,6 +774,9 @@ nimf_server_start (NimfServer *server)
 
   while (g_hash_table_iter_next (&iter, NULL, &service))
   {
+    if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-indicator") && !start_indicator)
+      continue;
+
     if (!nimf_service_start (NIMF_SERVICE (service)))
       g_hash_table_iter_remove (&iter);
   }

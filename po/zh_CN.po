@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-20 20:38+0900\n"
-"PO-Revision-Date: 2017-08-20 20:50+0900\n"
+"POT-Creation-Date: 2017-12-27 15:31+0900\n"
+"PO-Revision-Date: 2017-12-27 15:49+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -18,21 +18,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:51
+#: ../daemon/nimf-daemon.c:85
 msgid "Do not daemonize"
 msgstr "不要化为守护进程"
 
-#: ../daemon/nimf-daemon.c:52
+#: ../daemon/nimf-daemon.c:86
 msgid "Log debugging message"
 msgstr "日志调试消息"
 
-#: ../daemon/nimf-daemon.c:53
+#: ../daemon/nimf-daemon.c:87
 msgid "Version"
 msgstr "版本"
 
+#: ../daemon/nimf-daemon.c:88
+msgid "Start indicator"
+msgstr "开始指示器"
+
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:587
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:115
 msgid "Nimf"
 msgstr "宁芙"
 
@@ -40,37 +44,37 @@ msgstr "宁芙"
 msgid "Rime"
 msgstr "中州韵"
 
-#: ../modules/services/indicator/nimf-indicator.c:88
-#: ../modules/services/indicator/nimf-indicator.c:89
-#: ../modules/services/indicator/nimf-indicator.c:90
+#: ../modules/services/indicator/nimf-indicator.c:97
+#: ../modules/services/indicator/nimf-indicator.c:98
+#: ../modules/services/indicator/nimf-indicator.c:99
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "金豪东 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:101
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Nimf is an input method framework"
 msgstr "宁芙是一个输入法框架。"
 
-#: ../modules/services/indicator/nimf-indicator.c:102
+#: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr "版权所有 (c) 2015-2017 金豪东"
 
-#: ../modules/services/indicator/nimf-indicator.c:107
+#: ../modules/services/indicator/nimf-indicator.c:116
 msgid "Hodong Kim, N"
 msgstr "金豪东，N"
 
-#: ../modules/services/indicator/nimf-indicator.c:110
+#: ../modules/services/indicator/nimf-indicator.c:119
 msgid "Website"
 msgstr "网站"
 
-#: ../modules/services/indicator/nimf-indicator.c:211
+#: ../modules/services/indicator/nimf-indicator.c:238
 msgid "Settings"
 msgstr "设置"
 
-#: ../modules/services/indicator/nimf-indicator.c:212
+#: ../modules/services/indicator/nimf-indicator.c:239
 msgid "Donate"
 msgstr "捐赠"
 
-#: ../modules/services/indicator/nimf-indicator.c:213
+#: ../modules/services/indicator/nimf-indicator.c:240
 msgid "About"
 msgstr "关于"
 

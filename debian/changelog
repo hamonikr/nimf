@@ -1,3 +1,11 @@
+nimf (2017.12.27) stable; urgency=medium
+
+  * Added --start-indicator option
+  * Added *_is_active() functions
+  * Renamed 70_nimf.* to 23_nimf.*
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 27 Dec 2017 16:09:03 +0900
+
 nimf (2017.12.18) stable; urgency=medium
 
   * Split nimf into multiple packages (closes #60)

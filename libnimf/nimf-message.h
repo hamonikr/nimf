@@ -73,7 +73,9 @@ typedef enum
   NIMF_MESSAGE_DELETE_SURROUNDING_REPLY,
   /* misc */
   NIMF_MESSAGE_BEEP,
-  NIMF_MESSAGE_BEEP_REPLY
+  NIMF_MESSAGE_BEEP_REPLY,
+  /* command */
+  NIMF_MESSAGE_START_INDICATOR
 } NimfMessageType;
 
 struct _NimfMessageHeader

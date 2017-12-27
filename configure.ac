@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2017.12.18)
+AC_INIT(nimf, 2017.12.27)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -210,7 +210,7 @@ dnl ***************************************************************************
 dnl nimf-daemon
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_DAEMON_DEPS, [glib-2.0 gobject-2.0 audit])
+PKG_CHECK_MODULES(NIMF_DAEMON_DEPS, [glib-2.0 gio-unix-2.0 gobject-2.0 audit])
 
 dnl ***************************************************************************
 dnl nimf-indicator
