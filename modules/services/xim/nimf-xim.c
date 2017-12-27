@@ -753,6 +753,7 @@ nimf_xim_class_init (NimfXimClass *class)
   service_class->get_id           = nimf_xim_get_id;
   service_class->start            = nimf_xim_start;
   service_class->stop             = nimf_xim_stop;
+  service_class->is_active        = nimf_xim_is_active;
   service_class->set_engine_by_id = nimf_xim_set_engine_by_id;
 
   object_class->finalize = nimf_xim_finalize;

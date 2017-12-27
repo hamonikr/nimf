@@ -32,6 +32,7 @@
 #include "nimf-service.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfWayland, nimf_wayland, NIMF_TYPE_SERVICE);
+G_LOCK_DEFINE (active);
 
 typedef struct
 {
@@ -71,11 +72,19 @@ static void nimf_wayland_stop (NimfService *service)
 
   NimfWayland *wayland = NIMF_WAYLAND (service);
 
+  G_LOCK (active);
+
+  if (!wayland->active)
+    return;
+
   if (wayland->event_source)
   {
     g_source_destroy (wayland->event_source);
     g_source_unref   (wayland->event_source);
   }
+
+  wayland->active = FALSE;
+  G_UNLOCK (active);
 }
 
 static gboolean nimf_wayland_source_check (GSource *base)
@@ -489,11 +498,29 @@ static const struct wl_registry_listener registry_listener = {
   registry_handle_global_remove
 };
 
+static gboolean nimf_wayland_is_active (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean active;
+
+  G_LOCK (active);
+  active = NIMF_WAYLAND (service)->active;
+  G_UNLOCK (active);
+
+  return active;
+}
+
 static gboolean nimf_wayland_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfWayland *wayland = NIMF_WAYLAND (service);
+
+  G_LOCK (active);
+
+  if (wayland->active)
+    return TRUE;
 
   wayland->display = wl_display_connect (NULL);
   if (wayland->display == NULL)
@@ -521,6 +548,9 @@ static gboolean nimf_wayland_start (NimfService *service)
   wayland->context = NULL;
   wayland->event_source = nimf_wayland_source_new (wayland);
   g_source_attach (wayland->event_source, NULL);
+
+  wayland->active = TRUE;
+  G_UNLOCK (active);
 
   return TRUE;
 }
@@ -566,9 +596,10 @@ nimf_wayland_class_init (NimfWaylandClass *class)
   GObjectClass     *object_class  = G_OBJECT_CLASS (class);
   NimfServiceClass *service_class = NIMF_SERVICE_CLASS (class);
 
-  service_class->get_id = nimf_wayland_get_id;
-  service_class->start  = nimf_wayland_start;
-  service_class->stop   = nimf_wayland_stop;
+  service_class->get_id    = nimf_wayland_get_id;
+  service_class->start     = nimf_wayland_start;
+  service_class->stop      = nimf_wayland_stop;
+  service_class->is_active = nimf_wayland_is_active;
 
   object_class->finalize = nimf_wayland_finalize;
 }

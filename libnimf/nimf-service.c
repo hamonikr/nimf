@@ -80,6 +80,20 @@ void nimf_service_stop (NimfService *service)
     class->stop (service);
 }
 
+gboolean nimf_service_real_is_active (NimfService *service)
+{
+  g_error (G_STRLOC ": %s: You should implement your_service_is_active ()",
+           G_STRFUNC);
+  return FALSE;
+}
+
+gboolean nimf_service_is_active (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return NIMF_SERVICE_GET_CLASS (service)->is_active (service);
+}
+
 void
 nimf_service_set_engine_by_id (NimfService *service,
                                const gchar *engine_id)
@@ -153,6 +167,7 @@ nimf_service_class_init (NimfServiceClass *class)
   object_class->get_property = nimf_service_get_property;
 
   class->get_id    = nimf_service_real_get_id;
+  class->is_active = nimf_service_real_is_active;
 
   g_object_class_install_property (object_class,
                                    PROP_SERVER,
