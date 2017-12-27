@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 15:31+0900\n"
-"PO-Revision-Date: 2017-12-27 15:39+0900\n"
+"POT-Creation-Date: 2017-12-27 17:58+0900\n"
+"PO-Revision-Date: 2017-12-27 18:02+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -184,14 +184,6 @@ msgstr "すべてのキーイベントを送出する前に、それらをろ過
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "マウスボタンをクリックしたときにリセットします"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:7
-msgid "Always use preedit string"
-msgstr "組み合わせ文字列を常に使用します"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
-msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
-msgstr "gtk_im_context_set_use_preedit()を無視するか否かを決定します"
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"

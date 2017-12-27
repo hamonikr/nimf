@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 15:31+0900\n"
-"PO-Revision-Date: 2017-12-27 15:49+0900\n"
+"POT-Creation-Date: 2017-12-27 17:58+0900\n"
+"PO-Revision-Date: 2017-12-27 18:03+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -183,14 +183,6 @@ msgstr "在正常传递所有键事件之前过滤它们，这避免许多应用
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "单击鼠标按钮时复位"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:7
-msgid "Always use preedit string"
-msgstr "总是使用预编辑字符串"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
-msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
-msgstr "是否忽略gtk_im_context_set_use_preedit()"
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"

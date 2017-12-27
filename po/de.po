@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 15:31+0900\n"
-"PO-Revision-Date: 2017-12-27 15:32+0900\n"
+"POT-Creation-Date: 2017-12-27 17:58+0900\n"
+"PO-Revision-Date: 2017-12-27 18:0+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -186,14 +186,6 @@ msgstr ""
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "Zurücksetzen bei Mausklick"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:7
-msgid "Always use preedit string"
-msgstr "Preedit-String immer verwenden"
-
-#: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:8
-msgid "Whether or not to ignore gtk_im_context_set_use_preedit()"
-msgstr "gtk_im_context_set_use_preedit() ignorieren oder nicht"
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"

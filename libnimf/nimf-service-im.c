@@ -365,7 +365,7 @@ void
 nimf_service_im_set_use_preedit (NimfServiceIM *im,
                                  gboolean       use_preedit)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
+  g_debug (G_STRLOC ": %s: %d", G_STRFUNC, use_preedit);
 
   g_return_if_fail (im != NULL);
 
