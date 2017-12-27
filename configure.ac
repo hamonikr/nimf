@@ -216,8 +216,7 @@ dnl ***************************************************************************
 dnl nimf-indicator
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [glib-2.0 gio-2.0 gio-unix-2.0 x11
-                                        gtk+-3.0 appindicator3-0.1])
+PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [glib-2.0 x11 gtk+-3.0 appindicator3-0.1])
 
 dnl ***************************************************************************
 dnl nimf-settings
