@@ -250,9 +250,14 @@ nimf_client_constructed (GObject *object)
         g_socket_client_connect (socket_client, G_SOCKET_CONNECTABLE (address),
                                  NULL, &error);
       if (nimf_client_connection)
+      {
         break;
+      }
       else
-        g_usleep (G_USEC_PER_SEC);;
+      {
+        g_spawn_command_line_async ("nimf-daemon --start-indicator", NULL);
+        g_usleep (G_USEC_PER_SEC);
+      }
     }
 
     g_object_unref (address);
