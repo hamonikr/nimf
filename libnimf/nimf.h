@@ -30,6 +30,7 @@
 #include "nimf-events.h"
 #include "nimf-im.h"
 #include "nimf-key-syms.h"
+#include "nimf-preeditable.h"
 #include "nimf-server.h"
 #include "nimf-service.h"
 #include "nimf-service-im.h"

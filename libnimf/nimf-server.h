@@ -31,6 +31,7 @@
 #include "nimf-types.h"
 #include "nimf-candidate.h"
 #include "nimf-engine.h"
+#include "nimf-preeditable.h"
 
 G_BEGIN_DECLS
 
@@ -56,19 +57,19 @@ struct _NimfServer
   GList           *instances;
   GSocketListener *listener;
   GHashTable      *connections;
-
-  NimfCandidate   *candidate;
-  guint16          next_id;
-
   gchar           *address;
+  guint16          next_id;
   gboolean         active;
   gulong           run_signal_handler_id;
-
+  /* settings */
   GSettings       *settings;
   NimfKey        **hotkeys;
   GHashTable      *trigger_gsettings;
   GHashTable      *trigger_keys;
   gboolean         use_singleton;
+  /* facilities */
+  NimfCandidate   *candidate;
+  NimfPreeditable *preeditable;
 };
 
 struct _NimfServerClass

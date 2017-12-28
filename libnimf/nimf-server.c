@@ -781,6 +781,8 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
 
     if (!nimf_service_start (NIMF_SERVICE (service)))
       g_hash_table_iter_remove (&iter);
+    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
+      server->preeditable = service;
   }
 
   server->active = TRUE;

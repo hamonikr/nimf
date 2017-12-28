@@ -31,6 +31,8 @@ libnimf_la_SOURCES = \
 	nimf-candidate.c \
 	nimf-connection.c \
 	nimf-connection.h \
+	nimf-preeditable.c \
+	nimf-preeditable.h \
 	nimf-server.c \
 	nimf-server.h \
 	nimf-server-im.c \
@@ -66,6 +68,7 @@ nimfinclude_HEADERS = \
 	nimf-im.h \
 	nimf-key-syms.h \
 	nimf-message.h \
+	nimf-preeditable.h \
 	nimf-private.h \
 	nimf-server.h \
 	nimf-service.h \

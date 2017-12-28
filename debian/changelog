@@ -1,3 +1,10 @@
+nimf (2017.12.29) stable; urgency=medium
+
+  * Implemented preedit-window module (closes #61)
+  * Wait for NIMF_MESSAGE_START_INDICATOR_REPLY (closes #74)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 29 Dec 2017 07:59:38 +0900
+
 nimf (2017.12.28) stable; urgency=medium
 
   * Fixed deadlock (closes #74)

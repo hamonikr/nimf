@@ -22,6 +22,7 @@
 #include "nimf-service-im.h"
 #include "nimf-module.h"
 #include <string.h>
+#include "nimf-preeditable.h"
 
 G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 
@@ -42,6 +43,9 @@ void nimf_service_im_emit_preedit_start (NimfServiceIM *im)
 
   if (class->emit_preedit_start)
     class->emit_preedit_start (im);
+
+  if (!im->use_preedit)
+    nimf_preeditable_show (im->server->preeditable);
 }
 
 void
@@ -66,6 +70,9 @@ nimf_service_im_emit_preedit_changed (NimfServiceIM    *im,
 
   if (class->emit_preedit_changed)
     class->emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
+
+  if (!im->use_preedit)
+    nimf_preeditable_set_text (im->server->preeditable, preedit_string);
 }
 
 void
@@ -80,6 +87,9 @@ nimf_service_im_emit_preedit_end (NimfServiceIM *im)
 
   if (class->emit_preedit_end)
     class->emit_preedit_end (im);
+
+  if (!im->use_preedit)
+    nimf_preeditable_hide (im->server->preeditable);
 }
 
 void
@@ -183,6 +193,7 @@ void nimf_service_im_focus_out (NimfServiceIM *im)
 
   nimf_engine_focus_out (im->engine, im);
   nimf_service_im_engine_changed (im, NULL, "nimf-focus-out");
+  nimf_preeditable_hide (im->server->preeditable);
 }
 
 static gint
@@ -408,6 +419,9 @@ nimf_service_im_set_cursor_location (NimfServiceIM       *im,
 
   im->cursor_area = *area;
   nimf_engine_set_cursor_location (im->engine, area);
+
+  if (!im->use_preedit)
+    nimf_preeditable_set_cursor_location (im->server->preeditable, area);
 }
 
 void nimf_service_im_reset (NimfServiceIM *im)

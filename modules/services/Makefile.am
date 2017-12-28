@@ -1,3 +1,3 @@
-SUBDIRS = indicator wayland xim
+SUBDIRS = indicator wayland xim preedit-window
 
 DISTCLEANFILES = Makefile.in
