@@ -49,11 +49,17 @@ gboolean start_indicator_service (gchar *addr)
 
   if (connection)
   {
+    NimfMessage *message;
+
     GSocket *socket = g_socket_connection_get_socket (connection);
     if (socket && !g_socket_is_closed (socket))
       nimf_send_message (socket, 0, NIMF_MESSAGE_START_INDICATOR,
                          NULL, 0, NULL);
-    retval = TRUE;
+
+    message = nimf_recv_message (socket);
+    retval = *(gboolean *) message->data;
+
+    nimf_message_unref (message);
     g_object_unref (connection);
   }
 

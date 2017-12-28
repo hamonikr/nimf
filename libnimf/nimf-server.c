@@ -178,10 +178,15 @@ on_incoming_message_nimf (GSocket        *socket,
     case NIMF_MESSAGE_START_INDICATOR:
       {
         NimfService *service;
+        gboolean     retval = FALSE;
+
         service = g_hash_table_lookup (connection->server->services,
                                        "nimf-indicator");
         if (!nimf_service_is_active (service))
-          nimf_service_start (service);
+          retval = nimf_service_start (service);
+
+        nimf_send_message (socket, icid, NIMF_MESSAGE_START_INDICATOR_REPLY,
+                           &retval, sizeof (gboolean), NULL);
       }
       break;
     case NIMF_MESSAGE_PREEDIT_START_REPLY:
