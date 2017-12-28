@@ -62,7 +62,6 @@ struct _NimfServer
 
   gchar           *address;
   gboolean         active;
-  gboolean         is_using_listener;
   gulong           run_signal_handler_id;
 
   GSettings       *settings;

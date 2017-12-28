@@ -279,7 +279,6 @@ nimf_server_initable_init (GInitable     *initable,
     return FALSE;
   }
 
-  server->is_using_listener = TRUE;
   server->run_signal_handler_id =
     g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
                       (GCallback) on_new_connection, server);
@@ -607,7 +606,6 @@ nimf_server_stop (NimfServer *server)
   if (!server->active)
     return;
 
-  g_assert (server->is_using_listener);
   g_assert (server->run_signal_handler_id > 0);
 
   g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
@@ -764,7 +762,6 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
   if (server->active)
     return;
 
-  g_assert (server->is_using_listener);
   g_socket_service_start (G_SOCKET_SERVICE (server->listener));
 
   GHashTableIter iter;
