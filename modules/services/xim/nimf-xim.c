@@ -24,7 +24,6 @@
 #include "IMdkit/i18nX.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
-G_LOCK_DEFINE (active);
 
 static void nimf_xim_set_engine_by_id (NimfService *service,
                                        const gchar *engine_id)
@@ -513,15 +512,7 @@ static gboolean nimf_xim_is_active (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfXim *xim = NIMF_XIM (service);
-
-  gboolean active;
-
-  G_LOCK (active);
-  active = xim->active;
-  G_UNLOCK (active);
-
-  return active;
+  return NIMF_XIM (service)->active;
 }
 
 static gboolean nimf_xim_start (NimfService *service)
@@ -530,8 +521,6 @@ static gboolean nimf_xim_start (NimfService *service)
 
   NimfXim *xim = NIMF_XIM (service);
   XIMS     xims;
-
-  G_LOCK (active);
 
   if (xim->active)
     return TRUE;
@@ -626,6 +615,7 @@ static gboolean nimf_xim_start (NimfService *service)
     xim->im_window = 0;
     xim->display = NULL;
     g_warning (G_STRLOC ": %s: XIM is not started.", G_STRFUNC);
+
     return FALSE;
   }
 
@@ -635,7 +625,6 @@ static gboolean nimf_xim_start (NimfService *service)
   XSetErrorHandler (on_xerror);
 
   xim->active = TRUE;
-  G_UNLOCK (active);
 
   return TRUE;
 }
@@ -645,8 +634,6 @@ static void nimf_xim_stop (NimfService *service)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXim *xim = NIMF_XIM (service);
-
-  G_LOCK (active);
 
   if (!xim->active)
     return;
@@ -682,7 +669,6 @@ static void nimf_xim_stop (NimfService *service)
   }
 
   xim->active = FALSE;
-  G_UNLOCK (active);
 }
 
 static const gchar *

@@ -53,7 +53,6 @@ struct _NimfIndicator
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_DYNAMIC_TYPE (NimfIndicator, nimf_indicator, NIMF_TYPE_SERVICE);
-G_LOCK_DEFINE (active);
 
 static void on_engine_menu (GtkWidget  *widget,
                             NimfServer *server)
@@ -162,13 +161,7 @@ static gboolean nimf_indicator_is_active (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean active;
-
-  G_LOCK (active);
-  active = NIMF_INDICATOR (service)->active;
-  G_UNLOCK (active);
-
-  return active;
+  return NIMF_INDICATOR (service)->active;
 }
 
 static gboolean nimf_indicator_start (NimfService *service)
@@ -176,8 +169,6 @@ static gboolean nimf_indicator_start (NimfService *service)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfIndicator *indicator = NIMF_INDICATOR (service);
-
-  G_LOCK (active);
 
   if (indicator->active)
     return TRUE;
@@ -253,7 +244,6 @@ static gboolean nimf_indicator_start (NimfService *service)
   gtk_widget_show_all (menu_shell);
 
   indicator->active = TRUE;
-  G_UNLOCK (active);
 
   return TRUE;
 }
@@ -264,15 +254,12 @@ static void nimf_indicator_stop (NimfService *service)
 
   NimfIndicator *indicator = NIMF_INDICATOR (service);
 
-  G_LOCK (active);
-
   if (!indicator->active)
     return;
 
   g_object_unref (NIMF_INDICATOR (service)->appindicator);
 
   indicator->active = FALSE;
-  G_UNLOCK (active);
 }
 
 static void

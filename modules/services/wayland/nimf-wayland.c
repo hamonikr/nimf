@@ -32,7 +32,6 @@
 #include "nimf-service.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfWayland, nimf_wayland, NIMF_TYPE_SERVICE);
-G_LOCK_DEFINE (active);
 
 typedef struct
 {
@@ -72,8 +71,6 @@ static void nimf_wayland_stop (NimfService *service)
 
   NimfWayland *wayland = NIMF_WAYLAND (service);
 
-  G_LOCK (active);
-
   if (!wayland->active)
     return;
 
@@ -84,7 +81,6 @@ static void nimf_wayland_stop (NimfService *service)
   }
 
   wayland->active = FALSE;
-  G_UNLOCK (active);
 }
 
 static gboolean nimf_wayland_source_check (GSource *base)
@@ -502,13 +498,7 @@ static gboolean nimf_wayland_is_active (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean active;
-
-  G_LOCK (active);
-  active = NIMF_WAYLAND (service)->active;
-  G_UNLOCK (active);
-
-  return active;
+  return NIMF_WAYLAND (service)->active;
 }
 
 static gboolean nimf_wayland_start (NimfService *service)
@@ -516,8 +506,6 @@ static gboolean nimf_wayland_start (NimfService *service)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfWayland *wayland = NIMF_WAYLAND (service);
-
-  G_LOCK (active);
 
   if (wayland->active)
     return TRUE;
@@ -550,7 +538,6 @@ static gboolean nimf_wayland_start (NimfService *service)
   g_source_attach (wayland->event_source, NULL);
 
   wayland->active = TRUE;
-  G_UNLOCK (active);
 
   return TRUE;
 }

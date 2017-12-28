@@ -1,3 +1,12 @@
+nimf (2017.12.28) stable; urgency=medium
+
+  * Fixed deadlock (closes #74)
+    Removed G_LOCK
+  * Run nimf-daemon on demand
+  * Removed always-use-preedit option (related #5)
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 28 Dec 2017 11:59:13 +0900
+
 nimf (2017.12.27) stable; urgency=medium
 
   * Added --start-indicator option
