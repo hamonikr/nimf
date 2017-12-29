@@ -1,3 +1,9 @@
+nimf (2017.12.30) stable; urgency=medium
+
+  * nimf-anthy: Improved End key (related issue #73)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 30 Dec 2017 00:20:34 +0900
+
 nimf (2017.12.29) stable; urgency=medium
 
   * Implemented preedit-window module (closes #61)

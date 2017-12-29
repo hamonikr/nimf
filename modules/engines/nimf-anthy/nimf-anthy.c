@@ -630,7 +630,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
   if ((event->key.keyval == NIMF_KEY_space   ||
        event->key.keyval == NIMF_KEY_Down    ||
-       event->key.keyval == NIMF_KEY_KP_Down) &&
+       event->key.keyval == NIMF_KEY_KP_Down ||
+       event->key.keyval == NIMF_KEY_End) &&
       (anthy->preedit1->len + anthy->preedit2->len > 0))
   {
     if (g_strcmp0 (anthy->preedit2->str, "n") == 0)
@@ -640,6 +641,9 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     }
 
     nimf_anthy_update_candidate (engine, target, event);
+
+    if (event->key.keyval == NIMF_KEY_End)
+      nimf_anthy_page_end (engine, target);
 
     gchar *new_preedit2;
 
