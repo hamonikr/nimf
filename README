@@ -67,7 +67,7 @@ Troubleshoot
 
 Debugging
 ---------
-    nimf-daemon --debug
+    nimf-daemon --start-indicator --debug
     tail -f /var/log/daemon.log
 
     export GTK_IM_MODULE="nimf"
