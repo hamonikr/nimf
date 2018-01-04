@@ -17,5 +17,15 @@
       <summary>Trigger keys for switching Japanese / System</summary>
       <description>Trigger keys for switching Japanese / System</description>
     </key>
+    <key type="as" name="hiragana-keys">
+      <default>['F6']</default>
+      <summary>Hotkey for Hiragana</summary>
+      <description>Hotkeys for converting to Hiragana</description>
+    </key>
+    <key type="as" name="katakana-keys">
+      <default>['F7']</default>
+      <summary>Hotkey for Katakana</summary>
+      <description>Hotkeys for converting to Katakana</description>
+    </key>
   </schema>
 </schemalist>

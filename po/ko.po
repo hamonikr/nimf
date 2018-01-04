@@ -1,15 +1,15 @@
 # Korean translation for Nimf
-# Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2017.
+# Hodong Kim <cogniti@gmail.com>, 2015-2018.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 17:58+0900\n"
-"PO-Revision-Date: 2017-12-27 18:02+0900\n"
+"POT-Creation-Date: 2018-01-04 20:58+0900\n"
+"PO-Revision-Date: 2018-01-04 21:16+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,25 +18,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:85
+#: ../daemon/nimf-daemon.c:91
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:86
+#: ../daemon/nimf-daemon.c:92
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:87
+#: ../daemon/nimf-daemon.c:93
 msgid "Version"
 msgstr "버전"
 
-#: ../daemon/nimf-daemon.c:88
+#: ../daemon/nimf-daemon.c:94
 msgid "Start indicator"
 msgstr "표시기를 시작합니다"
 
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:587
-#: ../modules/services/indicator/nimf-indicator.c:115
+#: ../modules/clients/gtk/im-nimf.c:564
+#: ../modules/services/indicator/nimf-indicator.c:114
 msgid "Nimf"
 msgstr "님프"
 
@@ -44,37 +44,37 @@ msgstr "님프"
 msgid "Rime"
 msgstr "라임"
 
+#: ../modules/services/indicator/nimf-indicator.c:96
 #: ../modules/services/indicator/nimf-indicator.c:97
 #: ../modules/services/indicator/nimf-indicator.c:98
-#: ../modules/services/indicator/nimf-indicator.c:99
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:110
+#: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Nimf is an input method framework"
 msgstr "님프는 입력 방법 프레임워크입니다"
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr "저작권 (c) 2015-2017 김호동"
 
-#: ../modules/services/indicator/nimf-indicator.c:116
+#: ../modules/services/indicator/nimf-indicator.c:115
 msgid "Hodong Kim, N"
 msgstr "김호동, N"
 
-#: ../modules/services/indicator/nimf-indicator.c:119
+#: ../modules/services/indicator/nimf-indicator.c:118
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:238
+#: ../modules/services/indicator/nimf-indicator.c:229
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:239
+#: ../modules/services/indicator/nimf-indicator.c:230
 msgid "Donate"
 msgstr "기부하기"
 
-#: ../modules/services/indicator/nimf-indicator.c:240
+#: ../modules/services/indicator/nimf-indicator.c:231
 msgid "About"
 msgstr "정보"
 
@@ -212,6 +212,22 @@ msgstr "만약 가능하다면 이 엔진은 시작할 때 로드될 것입니�
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:6
 msgid "Trigger keys for switching Japanese / System"
 msgstr "일본어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:7
+msgid "Hotkey for Hiragana"
+msgstr "히라가나 단축키"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:8
+msgid "Hotkeys for converting to Hiragana"
+msgstr "히라가나로 변환하기 위한 단축키"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:9
+msgid "Hotkey for Katakana"
+msgstr "가타카나 단축키"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:10
+msgid "Hotkeys for converting to Katakana"
+msgstr "가타카나로 변환하기 위한 단축키"
 
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"

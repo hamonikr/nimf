@@ -1,7 +1,7 @@
 # German translation for Nimf
-# Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2017.
+# Hodong Kim <cogniti@gmail.com>, 2015-2018.
 # N <abonnements@revolwear.com>, 2017.
 #
 #, fuzzy
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 17:58+0900\n"
-"PO-Revision-Date: 2017-12-27 18:0+0900\n"
+"POT-Creation-Date: 2018-01-04 20:58+0900\n"
+"PO-Revision-Date: 2018-01-04 21:01+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,25 +19,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../daemon/nimf-daemon.c:85
+#: ../daemon/nimf-daemon.c:91
 msgid "Do not daemonize"
 msgstr "Nicht als Daemon starten"
 
-#: ../daemon/nimf-daemon.c:86
+#: ../daemon/nimf-daemon.c:92
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../daemon/nimf-daemon.c:87
+#: ../daemon/nimf-daemon.c:93
 msgid "Version"
 msgstr ""
 
-#: ../daemon/nimf-daemon.c:88
+#: ../daemon/nimf-daemon.c:94
 msgid "Start indicator"
 msgstr "Starte einen Indikator"
 
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:587
-#: ../modules/services/indicator/nimf-indicator.c:115
+#: ../modules/clients/gtk/im-nimf.c:564
+#: ../modules/services/indicator/nimf-indicator.c:114
 msgid "Nimf"
 msgstr ""
 
@@ -45,37 +45,37 @@ msgstr ""
 msgid "Rime"
 msgstr ""
 
+#: ../modules/services/indicator/nimf-indicator.c:96
 #: ../modules/services/indicator/nimf-indicator.c:97
 #: ../modules/services/indicator/nimf-indicator.c:98
-#: ../modules/services/indicator/nimf-indicator.c:99
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:110
+#: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Nimf is an input method framework"
 msgstr "Nimf ist eine Texteingabemethode"
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Copyright (c) 2015-2017 Hodong Kim"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:116
+#: ../modules/services/indicator/nimf-indicator.c:115
 msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:119
+#: ../modules/services/indicator/nimf-indicator.c:118
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:238
+#: ../modules/services/indicator/nimf-indicator.c:229
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:239
+#: ../modules/services/indicator/nimf-indicator.c:230
 msgid "Donate"
 msgstr "Spenden"
 
-#: ../modules/services/indicator/nimf-indicator.c:240
+#: ../modules/services/indicator/nimf-indicator.c:231
 msgid "About"
 msgstr "Über"
 
@@ -216,6 +216,22 @@ msgstr ""
 msgid "Trigger keys for switching Japanese / System"
 msgstr "Auslösertasten um Japanisch / System umzuschalten"
 
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:7
+msgid "Hotkey for Hiragana"
+msgstr "Hotkey für Hiragana"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:8
+msgid "Hotkeys for converting to Hiragana"
+msgstr "Hotkeys zum Umwandeln in Hiragana"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:9
+msgid "Hotkey for Katakana"
+msgstr "Hotkey für Katakana"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:10
+msgid "Hotkeys for converting to Katakana"
+msgstr "Hotkeys zum Umwandeln in Katakana"
+
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"
 msgstr "'Chinesisch (Chewing)'"
@@ -314,7 +330,7 @@ msgstr ""
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
-msgstr "'Chinesisch (Rime)'"
+msgstr "'Chinesisch (rime)'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
 msgid "Simplified Chinese"
@@ -330,7 +346,7 @@ msgstr ""
 
 #: ../modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml.h:1
 msgid "'Chinese (sunpinyin)'"
-msgstr "'Chinesisch (Sunpinyin)'"
+msgstr "'Chinesisch (sunpinyin)'"
 
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:1
 msgid "'System Keyboard'"
