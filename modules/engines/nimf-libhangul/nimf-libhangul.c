@@ -3,7 +3,7 @@
  * nimf-libhangul.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -710,7 +710,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar **trigger_keys;
   gchar **hanja_keys;
 
   hangul->candidate = nimf_candidate_get_default ();
@@ -724,9 +723,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->ignore_reset_in_commit_cb =
     g_settings_get_boolean (hangul->settings, "ignore-reset-in-commit-cb");
 
-  trigger_keys = g_settings_get_strv (hangul->settings, "trigger-keys");
-  hanja_keys   = g_settings_get_strv (hangul->settings, "hanja-keys");
-
+  hanja_keys = g_settings_get_strv (hangul->settings, "hanja-keys");
   hangul->hanja_keys = nimf_key_newv ((const gchar **) hanja_keys);
   hangul->context = hangul_ic_new (hangul->layout);
 
@@ -744,7 +741,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   nimf_libhangul_hanja_table_ref_count++;
 
-  g_strfreev (trigger_keys);
   g_strfreev (hanja_keys);
 
   nimf_libhangul_update_transition_cb (hangul);
