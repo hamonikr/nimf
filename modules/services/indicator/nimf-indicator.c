@@ -3,7 +3,7 @@
  * nimf-indicator.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -54,24 +54,31 @@ GType nimf_indicator_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_DYNAMIC_TYPE (NimfIndicator, nimf_indicator, NIMF_TYPE_SERVICE);
 
-static void on_engine_menu (GtkWidget  *widget,
-                            NimfServer *server)
+static void
+on_menu_engine (GSimpleAction *action,
+                GVariant      *parameter,
+                gpointer       server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_server_set_engine_by_id (server, gtk_widget_get_name (widget));
+  const gchar *id = g_variant_get_string (parameter, NULL);
+  nimf_server_set_engine_by_id (server, id);
 }
 
-static void on_settings_menu (GtkWidget *widget,
-                              gpointer   user_data)
+static void
+on_menu_settings (GSimpleAction *action,
+                  GVariant      *parameter,
+                  gpointer       user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_spawn_command_line_async ("nimf-settings", NULL);
 }
 
-static void on_about_menu (GtkWidget *widget,
-                           gpointer   user_data)
+static void
+on_menu_about (GSimpleAction *action,
+               GVariant      *parameter,
+               gpointer       user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -92,7 +99,7 @@ static void on_about_menu (GtkWidget *widget,
     "artists",            artists,
     "authors",            authors,
     "comments",           _("Nimf is an input method framework"),
-    "copyright",          _("Copyright (c) 2015-2017 Hodong Kim"),
+    "copyright",          _("Copyright (c) 2015-2018 Hodong Kim"),
     "documenters",        documenters,
     "license-type",       GTK_LICENSE_LGPL_3_0,
     "logo-icon-name",     "nimf-logo",
@@ -163,11 +170,11 @@ static gboolean nimf_indicator_start (NimfService *service)
   if (!gtk_init_check (NULL, NULL))
     return FALSE;
 
-  GtkWidget *menu_shell;
-  GtkWidget *settings_menu;
-  GtkWidget *about_menu;
+  GtkWidget *gtk_menu;
+  GMenu     *menu;
 
-  menu_shell = gtk_menu_new ();
+  menu = g_menu_new ();
+  gtk_menu = gtk_menu_new_from_model (G_MENU_MODEL (menu));
   indicator->appindicator = app_indicator_new ("nimf-indicator",
                                                "nimf-focus-out",
                                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
@@ -175,20 +182,40 @@ static gboolean nimf_indicator_start (NimfService *service)
                             APP_INDICATOR_STATUS_ACTIVE);
   app_indicator_set_icon_full (indicator->appindicator,
                                "nimf-focus-out", "Nimf");
-  app_indicator_set_menu (indicator->appindicator, GTK_MENU (menu_shell));
+  app_indicator_set_menu (indicator->appindicator, GTK_MENU (gtk_menu));
 
   g_signal_connect (service->server, "engine-changed",
                     G_CALLBACK (on_engine_changed), indicator);
   g_signal_connect (service->server, "engine-status-changed",
                     G_CALLBACK (on_engine_status_changed), indicator);
   /* menu */
-  gchar     **engine_ids = nimf_server_get_loaded_engine_ids (service->server);
-  GtkWidget  *engine_menu;
+  GMenu               *section1;
+  GMenu               *section2;
+  GMenuItem           *settings_menu;
+  GMenuItem           *about_menu;
+  GIcon               *settings_icon;
+  GIcon               *about_icon;
+  GSimpleActionGroup  *group;
+  gchar              **engine_ids;
+  guint                i;
 
-  guint i;
+  const GActionEntry entries[] = {
+    { "engine",   on_menu_engine,   "s",  NULL, NULL },
+    { "settings", on_menu_settings, NULL, NULL, NULL },
+    { "about",    on_menu_about,    NULL, NULL, NULL }
+  };
+
+  section1 = g_menu_new ();
+  section2 = g_menu_new ();
+  group    = g_simple_action_group_new ();
+  g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), service->server);
+  gtk_widget_insert_action_group (gtk_menu, "indicator", G_ACTION_GROUP (group));
+
+  engine_ids = nimf_server_get_loaded_engine_ids (service->server);
 
   for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
   {
+    GMenuItem *engine_menu;
     GSettings *settings;
     gchar     *schema_id;
     gchar     *name;
@@ -197,31 +224,41 @@ static gboolean nimf_indicator_start (NimfService *service)
     settings = g_settings_new (schema_id);
     name = g_settings_get_string (settings, "hidden-schema-name");
 
-    engine_menu = gtk_menu_item_new_with_label (name);
-    gtk_widget_set_name (engine_menu, engine_ids[i]);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), engine_menu);
-    g_signal_connect (engine_menu, "activate",
-                      G_CALLBACK (on_engine_menu), service->server);
+    engine_menu = g_menu_item_new (name, "indicator.engine");
+    g_menu_item_set_attribute (engine_menu, G_MENU_ATTRIBUTE_TARGET, "s", engine_ids[i]);
+    g_menu_append_item (section1, engine_menu);
 
+    g_object_unref (engine_menu);
     g_free (name);
     g_free (schema_id);
     g_object_unref (settings);
   }
 
+  settings_menu = g_menu_item_new (_("Settings"), "indicator.settings");
+  about_menu    = g_menu_item_new (_("About"),    "indicator.about");
+
+  settings_icon = g_icon_new_for_string ("preferences-system", NULL);
+  about_icon    = g_icon_new_for_string ("help-about", NULL);
+
+  g_menu_item_set_icon (settings_menu, settings_icon);
+  g_menu_item_set_icon (about_menu, about_icon);
+
+  g_menu_append_item (section2, settings_menu);
+  g_menu_append_item (section2, about_menu);
+
+  g_menu_append_section (menu, NULL, G_MENU_MODEL (section1));
+  g_menu_append_section (menu, NULL, G_MENU_MODEL (section2));
+
+  g_object_unref (section1);
+  g_object_unref (section2);
+  g_object_unref (settings_icon);
+  g_object_unref (about_icon);
+  g_object_unref (settings_menu);
+  g_object_unref (about_menu);
+  g_object_unref (group);
   g_strfreev (engine_ids);
 
-  settings_menu = gtk_menu_item_new_with_label (_("Settings"));
-  about_menu    = gtk_menu_item_new_with_label (_("About"));
-
-  g_signal_connect (settings_menu, "activate",
-                    G_CALLBACK (on_settings_menu), NULL);
-  g_signal_connect (about_menu, "activate",
-                    G_CALLBACK (on_about_menu), NULL);
-
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), settings_menu);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
-
-  gtk_widget_show_all (menu_shell);
+  gtk_widget_show_all (gtk_menu);
 
   indicator->active = TRUE;
 
