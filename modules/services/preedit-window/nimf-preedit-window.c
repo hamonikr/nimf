@@ -3,7 +3,7 @@
  * nimf-preedit-window.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017,2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -174,6 +174,7 @@ static gboolean nimf_preedit_window_start (NimfService *service)
   gtk_container_set_border_width (GTK_CONTAINER (preedit_window->window), 1);
   gtk_container_add (GTK_CONTAINER (preedit_window->window),
                      preedit_window->entry);
+  gtk_widget_realize (preedit_window->window);
   gtk_window_move (GTK_WINDOW (preedit_window->window), 0, 0);
 
   preedit_window->active = TRUE;
