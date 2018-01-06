@@ -70,21 +70,6 @@ static void on_settings_menu (GtkWidget *widget,
   g_spawn_command_line_async ("nimf-settings", NULL);
 }
 
-static void on_donate_menu (GtkWidget *widget,
-                            gpointer   user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (g_str_has_prefix (g_getenv ("LANG"), "ja_"))
-    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/ja/donate", NULL);
-  else if (g_str_has_prefix (g_getenv ("LANG"), "ko_"))
-    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/ko/donate", NULL);
-  else if (g_str_has_prefix (g_getenv ("LANG"), "zh_"))
-    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/zh/donate", NULL);
-  else
-    g_spawn_command_line_async ("xdg-open https://cogniti.github.io/nimf/donate", NULL);
-}
-
 static void on_about_menu (GtkWidget *widget,
                            gpointer   user_data)
 {
@@ -181,7 +166,6 @@ static gboolean nimf_indicator_start (NimfService *service)
   GtkWidget *menu_shell;
   GtkWidget *settings_menu;
   GtkWidget *about_menu;
-  GtkWidget *donate_menu;
 
   menu_shell = gtk_menu_new ();
   indicator->appindicator = app_indicator_new ("nimf-indicator",
@@ -227,18 +211,14 @@ static gboolean nimf_indicator_start (NimfService *service)
   g_strfreev (engine_ids);
 
   settings_menu = gtk_menu_item_new_with_label (_("Settings"));
-  donate_menu   = gtk_menu_item_new_with_label (_("Donate"));
   about_menu    = gtk_menu_item_new_with_label (_("About"));
 
   g_signal_connect (settings_menu, "activate",
                     G_CALLBACK (on_settings_menu), NULL);
-  g_signal_connect (donate_menu, "activate",
-                    G_CALLBACK (on_donate_menu), NULL);
   g_signal_connect (about_menu, "activate",
                     G_CALLBACK (on_about_menu), NULL);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), settings_menu);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), donate_menu);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_shell), about_menu);
 
   gtk_widget_show_all (menu_shell);
