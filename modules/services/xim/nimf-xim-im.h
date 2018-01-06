@@ -3,7 +3,7 @@
  * nimf-xim-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -48,13 +48,13 @@ struct _NimfXimIMClass
 struct _NimfXimIM
 {
   NimfServiceIM parent_instance;
-  guint16  connect_id;
-  gint     preedit_length;
-  CARD32   input_style;
-  Window   client_window;
-  Window   focus_window;
-  NimfXim *xim;
-  gboolean preedit_started;
+  guint16   connect_id;
+  gint      preedit_length;
+  CARD32    input_style;
+  gboolean  draw_preedit_on_the_server_side;
+  Window    client_window;
+  Window    focus_window;
+  NimfXim  *xim;
 };
 
 GType nimf_xim_im_get_type (void) G_GNUC_CONST;

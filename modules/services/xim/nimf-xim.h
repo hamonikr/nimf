@@ -28,7 +28,6 @@
 #include <X11/XKBlib.h>
 #include "IMdkit/Xi18n.h"
 #include "nimf-xim-im.h"
-#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
@@ -51,9 +50,6 @@ struct _NimfXim
   GHashTable *ims;
   guint16     next_icid;
   XIMS        xims;
-  GtkWidget  *window;
-  GtkWidget  *entry;
-  gboolean    draw_preedit_on_the_server_side;
   GSettings  *settings;
   gboolean    active;
 

@@ -3,7 +3,7 @@
  * nimf-xim.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -64,7 +64,7 @@ static void nimf_xim_set_cursor_location (NimfXim          *xim,
 
   NimfServiceIM *im;
   NimfXimIM     *xim_im;
-  int            x = 0, y = 0, height = 0;
+  NimfRectangle  area = {0};
 
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
   xim_im = NIMF_XIM_IM (im);
@@ -78,22 +78,14 @@ static void nimf_xim_set_cursor_location (NimfXim          *xim,
 
   if (window)
   {
-    Window child;
+    Window            child;
     XWindowAttributes attr;
     XGetWindowAttributes (xim->display, window, &attr);
     XTranslateCoordinates(xim->display, window, attr.root,
-                          0, attr.height, &x, &y, &child);
+                          0, attr.height, &area.x, &area.y, &child);
   }
 
-  if (gtk_widget_is_visible (xim->window))
-  {
-    gtk_window_get_size (GTK_WINDOW (xim->window), NULL, &height);
-
-    if (window)
-      gtk_window_move (GTK_WINDOW (xim->window), x, y - height);
-    else
-      gtk_window_move (GTK_WINDOW (xim->window), 0, 0);
-  }
+  nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (xim_im), &area);
 }
 
 static int nimf_xim_set_ic_values (NimfXim          *xim,
@@ -110,14 +102,25 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
 
   for (i = 0; i < data->ic_attr_num; i++)
   {
-    if (g_strcmp0 (XNInputStyle, data->ic_attr[i].name) == 0)
-      xim_im->input_style = *(CARD32*) data->ic_attr[i].value;
-    else if (g_strcmp0 (XNClientWindow, data->ic_attr[i].name) == 0)
+    if (!g_strcmp0 (XNInputStyle, data->ic_attr[i].name))
+    {
+      xim_im->input_style = (*(CARD32*) data->ic_attr[i].value) & XIMPreeditCallbacks;
+
+      if (xim_im->draw_preedit_on_the_server_side || !xim_im->input_style)
+        nimf_service_im_set_use_preedit (im, FALSE);
+    }
+    else if (!g_strcmp0 (XNClientWindow, data->ic_attr[i].name))
+    {
       xim_im->client_window = *(Window *) data->ic_attr[i].value;
-    else if (g_strcmp0 (XNFocusWindow, data->ic_attr[i].name) == 0)
+    }
+    else if (!g_strcmp0 (XNFocusWindow, data->ic_attr[i].name))
+    {
       xim_im->focus_window = *(Window *) data->ic_attr[i].value;
+    }
     else
+    {
       g_warning (G_STRLOC ": %s %s", G_STRFUNC, data->ic_attr[i].name);
+    }
   }
 
   for (i = 0; i < data->preedit_attr_num; i++)
@@ -525,24 +528,10 @@ static gboolean nimf_xim_start (NimfService *service)
   if (xim->active)
     return TRUE;
 
-  gtk_init (NULL, NULL);
-  /* gtk entry */
-  xim->entry = gtk_entry_new ();
-  gtk_editable_set_editable (GTK_EDITABLE (xim->entry), FALSE);
-  /* gtk window */
-  xim->window = gtk_window_new (GTK_WINDOW_POPUP);
-  gtk_window_set_type_hint (GTK_WINDOW (xim->window),
-                            GDK_WINDOW_TYPE_HINT_POPUP_MENU);
-  gtk_container_set_border_width (GTK_CONTAINER (xim->window), 1);
-  gtk_container_add (GTK_CONTAINER (xim->window), xim->entry);
-  gtk_window_move (GTK_WINDOW (xim->window), 0, 0);
-
   xim->display = XOpenDisplay (NULL);
 
   if (xim->display == NULL)
   {
-    gtk_widget_destroy (xim->window);
-    xim->window = NULL;
     g_warning (G_STRLOC ": %s: Can't open display", G_STRFUNC);
     return FALSE;
   }
@@ -608,10 +597,8 @@ static gboolean nimf_xim_start (NimfService *service)
 
   if (!xims)
   {
-    gtk_widget_destroy (xim->window);
     XDestroyWindow (xim->display, xim->im_window);
     XCloseDisplay  (xim->display);
-    xim->window = NULL;
     xim->im_window = 0;
     xim->display = NULL;
     g_warning (G_STRLOC ": %s: XIM is not started.", G_STRFUNC);
@@ -650,12 +637,6 @@ static void nimf_xim_stop (NimfService *service)
     xim->im_window = 0;
   }
 
-  if (xim->window)
-  {
-    gtk_widget_destroy (xim->window);
-    xim->window = NULL;
-  }
-
   if (xim->xims)
   {
     IMCloseIM (xim->xims);
@@ -682,17 +663,6 @@ nimf_xim_get_id (NimfService *service)
 }
 
 static void
-on_changed_draw_preedit_on_the_server_side (GSettings *settings,
-                                            gchar     *key,
-                                            NimfXim   *xim)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  xim->draw_preedit_on_the_server_side =
-    g_settings_get_boolean (xim->settings, key);
-}
-
-static void
 nimf_xim_init (NimfXim *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -702,13 +672,7 @@ nimf_xim_init (NimfXim *xim)
                                          g_direct_equal,
                                          NULL,
                                          (GDestroyNotify) g_object_unref);
-
   xim->settings = g_settings_new ("org.nimf.services.xim");
-  xim->draw_preedit_on_the_server_side =
-    g_settings_get_boolean (xim->settings, "draw-preedit-on-the-server-side");
-
-  g_signal_connect (xim->settings, "changed::draw-preedit-on-the-server-side",
-                    G_CALLBACK (on_changed_draw_preedit_on_the_server_side), xim);
 }
 
 static void nimf_xim_finalize (GObject *object)

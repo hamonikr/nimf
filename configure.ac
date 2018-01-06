@@ -204,7 +204,7 @@ dnl ***************************************************************************
 dnl nimf-xim
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11 gtk+-3.0)
+PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)
 
 dnl ***************************************************************************
 dnl nimf-daemon
