@@ -7,10 +7,10 @@
       <summary>schema name for nimf-settings</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
-    <key type="b" name="ignore-xim-preedit-callbacks">
+    <key type="b" name="draw-preedit-on-the-server-side">
       <default>false</default>
-      <summary>Ignore XIMPreeditCallbacks</summary>
-      <description>Ignore XIMPreeditCallbacks</description>
+      <summary>Always draw preedit string on the server-side</summary>
+      <description>If you have trouble viewing preedit string, check this option.</description>
     </key>
   </schema>
 </schemalist>

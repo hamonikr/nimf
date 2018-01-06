@@ -682,13 +682,13 @@ nimf_xim_get_id (NimfService *service)
 }
 
 static void
-on_changed_ignore_xim_preedit_callbacks (GSettings *settings,
-                                         gchar     *key,
-                                         NimfXim   *xim)
+on_changed_draw_preedit_on_the_server_side (GSettings *settings,
+                                            gchar     *key,
+                                            NimfXim   *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  xim->ignore_xim_preedit_callbacks =
+  xim->draw_preedit_on_the_server_side =
     g_settings_get_boolean (xim->settings, key);
 }
 
@@ -704,11 +704,11 @@ nimf_xim_init (NimfXim *xim)
                                          (GDestroyNotify) g_object_unref);
 
   xim->settings = g_settings_new ("org.nimf.services.xim");
-  xim->ignore_xim_preedit_callbacks =
-    g_settings_get_boolean (xim->settings, "ignore-xim-preedit-callbacks");
+  xim->draw_preedit_on_the_server_side =
+    g_settings_get_boolean (xim->settings, "draw-preedit-on-the-server-side");
 
-  g_signal_connect (xim->settings, "changed::ignore-xim-preedit-callbacks",
-                    G_CALLBACK (on_changed_ignore_xim_preedit_callbacks), xim);
+  g_signal_connect (xim->settings, "changed::draw-preedit-on-the-server-side",
+                    G_CALLBACK (on_changed_draw_preedit_on_the_server_side), xim);
 }
 
 static void nimf_xim_finalize (GObject *object)

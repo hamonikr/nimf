@@ -3,7 +3,7 @@
  * nimf-xim.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -53,7 +53,7 @@ struct _NimfXim
   XIMS        xims;
   GtkWidget  *window;
   GtkWidget  *entry;
-  gboolean    ignore_xim_preedit_callbacks;
+  gboolean    draw_preedit_on_the_server_side;
   GSettings  *settings;
   gboolean    active;
 

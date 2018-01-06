@@ -3,7 +3,7 @@
  * nimf-xim-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -79,7 +79,7 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
 
   if ((xim_im->input_style & XIMPreeditCallbacks) &&
-      !xim_im->xim->ignore_xim_preedit_callbacks)
+      !xim_im->xim->draw_preedit_on_the_server_side)
   {
     IMPreeditStateStruct preedit_state_data = {0};
 
@@ -111,7 +111,7 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
 
   if ((xim_im->input_style & XIMPreeditCallbacks) &&
-      !xim_im->xim->ignore_xim_preedit_callbacks)
+      !xim_im->xim->draw_preedit_on_the_server_side)
   {
     IMPreeditCBStruct preedit_cb_data = {0};
     XIMText           text;
