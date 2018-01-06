@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-04 20:58+0900\n"
-"PO-Revision-Date: 2018-01-04 21:01+0900\n"
+"POT-Creation-Date: 2018-01-07 04:50+0900\n"
+"PO-Revision-Date: 2018-01-07 04:50+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -37,7 +37,7 @@ msgstr "Starte einen Indikator"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:564
-#: ../modules/services/indicator/nimf-indicator.c:114
+#: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr ""
 
@@ -45,37 +45,33 @@ msgstr ""
 msgid "Rime"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:96
-#: ../modules/services/indicator/nimf-indicator.c:97
-#: ../modules/services/indicator/nimf-indicator.c:98
+#: ../modules/services/indicator/nimf-indicator.c:88
+#: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:90
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:101
 msgid "Nimf is an input method framework"
 msgstr "Nimf ist eine Texteingabemethode"
 
-#: ../modules/services/indicator/nimf-indicator.c:110
-msgid "Copyright (c) 2015-2017 Hodong Kim"
+#: ../modules/services/indicator/nimf-indicator.c:102
+msgid "Copyright (c) 2015-2018 Hodong Kim"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:115
+#: ../modules/services/indicator/nimf-indicator.c:107
 msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:118
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:229
+#: ../modules/services/indicator/nimf-indicator.c:237
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:230
-msgid "Donate"
-msgstr "Spenden"
-
-#: ../modules/services/indicator/nimf-indicator.c:231
+#: ../modules/services/indicator/nimf-indicator.c:238
 msgid "About"
 msgstr "Über"
 
@@ -357,5 +353,9 @@ msgid "'XIM'"
 msgstr ""
 
 #: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:4
-msgid "Ignore XIMPreeditCallbacks"
-msgstr "Ignoriere XIMPreeditCallbacks"
+msgid "Always draw preedit string on the server-side"
+msgstr "Zeichnen Sie immer eine Preedit-Zeichenfolge auf der Serverseite"
+
+#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:5
+msgid "If you have trouble viewing preedit string, check this option."
+msgstr "Wenn Sie Probleme beim Anzeigen der Pre-Edit-Zeichenfolge haben, aktivieren Sie diese Option."

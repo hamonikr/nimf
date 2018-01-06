@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-04 20:58+0900\n"
-"PO-Revision-Date: 2018-01-04 21:10+0900\n"
+"POT-Creation-Date: 2018-01-07 04:50+0900\n"
+"PO-Revision-Date: 2018-01-07 04:53+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -36,7 +36,7 @@ msgstr "インジケータを開始します"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:564
-#: ../modules/services/indicator/nimf-indicator.c:114
+#: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr "ニンフ"
 
@@ -44,37 +44,33 @@ msgstr "ニンフ"
 msgid "Rime"
 msgstr "ライム"
 
-#: ../modules/services/indicator/nimf-indicator.c:96
-#: ../modules/services/indicator/nimf-indicator.c:97
-#: ../modules/services/indicator/nimf-indicator.c:98
+#: ../modules/services/indicator/nimf-indicator.c:88
+#: ../modules/services/indicator/nimf-indicator.c:89
+#: ../modules/services/indicator/nimf-indicator.c:90
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "キム・ホドン <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:101
 msgid "Nimf is an input method framework"
 msgstr "ニンフはインプットメソッドフレームワークです。"
 
-#: ../modules/services/indicator/nimf-indicator.c:110
-msgid "Copyright (c) 2015-2017 Hodong Kim"
-msgstr "著作権 (c) 2015-2017 キム・ホドン"
+#: ../modules/services/indicator/nimf-indicator.c:102
+msgid "Copyright (c) 2015-2018 Hodong Kim"
+msgstr "著作権 (c) 2015-2018 キム・ホドン"
 
-#: ../modules/services/indicator/nimf-indicator.c:115
+#: ../modules/services/indicator/nimf-indicator.c:107
 msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:118
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: ../modules/services/indicator/nimf-indicator.c:229
+#: ../modules/services/indicator/nimf-indicator.c:237
 msgid "Settings"
 msgstr "設定"
 
-#: ../modules/services/indicator/nimf-indicator.c:230
-msgid "Donate"
-msgstr "寄付"
-
-#: ../modules/services/indicator/nimf-indicator.c:231
+#: ../modules/services/indicator/nimf-indicator.c:238
 msgid "About"
 msgstr "情報"
 
@@ -351,5 +347,9 @@ msgid "'XIM'"
 msgstr ""
 
 #: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:4
-msgid "Ignore XIMPreeditCallbacks"
-msgstr "XIMPreeditCallbacksを無視します"
+msgid "Always draw preedit string on the server-side"
+msgstr "常にプリエディット文字列をサーバー側に描画する"
+
+#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:5
+msgid "If you have trouble viewing preedit string, check this option."
+msgstr "プリエディット文字列の表示に問題がある場合は、このオプションをチェックしてください。"
