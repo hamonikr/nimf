@@ -1,3 +1,14 @@
+nimf (2018.01.07) stable; urgency=medium
+
+  * Removed nimf_engine_set_cursor_location()
+  * Modulized nimf-candidate
+  * nimf-xim: Changed option name to "draw-preedit-on-the-server-side"
+    "ignore-xim-preedit-callbacks" --> "draw-preedit-on-the-server-side"
+  * nimf-indicator: Display some icons
+  * Removed donate menu
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 07 Jan 2018 23:09:56 +0900
+
 nimf (2018.01.04) stable; urgency=medium
 
   * Redesigned nimf-anthy (closes #73)

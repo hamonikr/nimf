@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2018.01.04)
+AC_INIT(nimf, 2018.01.07)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -49,8 +49,6 @@ LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
 AC_SUBST(LIBNIMF_REQUIRES)
 
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
-PKG_CHECK_MODULES(GLIB, [glib-2.0])
-PKG_CHECK_MODULES(GTK2, [gtk+-2.0])
 
 dnl ***************************************************************************
 dnl nimf-chewing  nimf-libhangul  nimf-rime  nimf-system-keyboard
@@ -142,6 +140,7 @@ dnl  Check for im-nimf-gtk
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(IM_NIMF_GTK3_DEPS, [gtk+-3.0 gdk-x11-3.0])
+PKG_CHECK_MODULES(IM_NIMF_GTK2_DEPS, [gtk+-2.0])
 
 case `uname -m` in
   x86_64)

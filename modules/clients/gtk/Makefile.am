@@ -4,8 +4,7 @@ gsettings_SCHEMAS = org.nimf.clients.gtk.gschema.xml
 AM_CFLAGS = \
 	-Wall -Werror \
 	-I$(top_srcdir)/libnimf \
-	-DG_LOG_DOMAIN=\"nimf\" \
-	$(GLIB_CFLAGS)
+	-DG_LOG_DOMAIN=\"nimf\"
 
 # for gtk3
 
@@ -23,8 +22,8 @@ gtk2_im_moduledir = $(GTK2_LIBDIR)/gtk-2.0/$(GTK2_BINARY_VERSION)/immodules
 gtk2_im_module_LTLIBRARIES = im-nimf-gtk2.la
 
 im_nimf_gtk2_la_SOURCES  = im-nimf.c
-im_nimf_gtk2_la_CFLAGS   = $(AM_CFLAGS) $(GTK2_CFLAGS)
-im_nimf_gtk2_la_LDFLAGS  = $(GTK2_LIBS) -avoid-version -module
+im_nimf_gtk2_la_CFLAGS   = $(IM_NIMF_GTK2_DEPS_CFLAGS) $(AM_CFLAGS)
+im_nimf_gtk2_la_LDFLAGS  = $(IM_NIMF_GTK2_DEPS_LIBS) -avoid-version -module
 im_nimf_gtk2_la_LIBADD   = $(top_builddir)/libnimf/libnimf.la
 
 DISTCLEANFILES = Makefile.in
