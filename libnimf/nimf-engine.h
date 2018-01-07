@@ -3,7 +3,7 @@
  * nimf-engine.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -30,6 +30,7 @@
 #include "nimf-events.h"
 #include "nimf-types.h"
 #include "nimf-service-im.h"
+#include "nimf-candidatable.h"
 
 G_BEGIN_DECLS
 
@@ -40,7 +41,8 @@ G_BEGIN_DECLS
 #define NIMF_IS_ENGINE_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_ENGINE))
 #define NIMF_ENGINE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
 
-typedef struct _NimfServiceIM NimfServiceIM;
+typedef struct _NimfServiceIM    NimfServiceIM;
+typedef struct _NimfCandidatable NimfCandidatable;
 
 typedef struct _NimfEngine        NimfEngine;
 typedef struct _NimfEngineClass   NimfEngineClass;
@@ -140,6 +142,8 @@ void     nimf_engine_emit_beep                 (NimfEngine       *engine,
 /* info */
 const gchar *nimf_engine_get_id        (NimfEngine *engine);
 const gchar *nimf_engine_get_icon_name (NimfEngine *engine);
+/* candidate */
+NimfCandidatable *nimf_engine_get_candidatable (NimfEngine *engine);
 
 G_END_DECLS
 

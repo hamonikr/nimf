@@ -3,7 +3,7 @@
  * nimf.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -24,7 +24,7 @@
 
 #define __NIMF_H_INSIDE__
 
-#include "nimf-candidate.h"
+#include "nimf-candidatable.h"
 #include "nimf-engine.h"
 #include "nimf-enum-types.h"
 #include "nimf-events.h"

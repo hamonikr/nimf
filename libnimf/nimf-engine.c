@@ -332,6 +332,14 @@ nimf_engine_get_id (NimfEngine *engine)
   return NIMF_ENGINE_GET_CLASS (engine)->get_id (engine);
 }
 
+NimfCandidatable *
+nimf_engine_get_candidatable (NimfEngine *engine)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return engine->priv->server->candidatable;
+}
+
 static const gchar *
 nimf_engine_real_get_id (NimfEngine *engine)
 {

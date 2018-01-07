@@ -37,7 +37,7 @@ struct _NimfLibhangul
 {
   NimfEngine parent_instance;
 
-  NimfCandidate      *candidate;
+  NimfCandidatable   *candidatable;
   HangulInputContext *context;
   gchar              *preedit_string;
   NimfPreeditAttr   **preedit_attrs;
@@ -189,7 +189,7 @@ nimf_libhangul_reset (NimfEngine    *engine,
   if (G_UNLIKELY (hangul->ignore_reset_in_commit_cb && hangul->is_committing))
     return;
 
-  nimf_candidate_hide_window (hangul->candidate);
+  nimf_candidatable_hide (hangul->candidatable);
 
   const ucschar *flush;
   flush = hangul_ic_flush (hangul->context);
@@ -242,7 +242,7 @@ on_candidate_clicked (NimfEngine    *engine,
     nimf_libhangul_update_preedit (engine, target, g_strdup (""));
   }
 
-  nimf_candidate_hide_window (hangul->candidate);
+  nimf_candidatable_hide (hangul->candidatable);
 }
 
 static gint
@@ -266,7 +266,7 @@ nimf_libhangul_update_page (NimfEngine    *engine,
 
   gint i;
   gint list_len = hanja_list_get_size (hangul->hanja_list);
-  nimf_candidate_clear (hangul->candidate, target);
+  nimf_candidatable_clear (hangul->candidatable, target);
 
   for (i = (hangul->current_page - 1) * 10;
        i < MIN (hangul->current_page * 10, list_len); i++)
@@ -274,11 +274,11 @@ nimf_libhangul_update_page (NimfEngine    *engine,
     const Hanja *hanja = hanja_list_get_nth (hangul->hanja_list, i);
     const char  *item1 = hanja_get_value    (hanja);
     const char  *item2 = hanja_get_comment  (hanja);
-    nimf_candidate_append (hangul->candidate, item1, item2);
+    nimf_candidatable_append (hangul->candidatable, item1, item2);
   }
 
-  nimf_candidate_set_page_values (hangul->candidate, target,
-                                  hangul->current_page, hangul->n_pages, 10);
+  nimf_candidatable_set_page_values (hangul->candidatable, target,
+                                     hangul->current_page, hangul->n_pages, 10);
 }
 
 static gboolean
@@ -293,13 +293,13 @@ nimf_libhangul_page_up (NimfEngine *engine, NimfServiceIM *target)
 
   if (hangul->current_page <= 1)
   {
-    nimf_candidate_select_first_item_in_page (hangul->candidate);
+    nimf_candidatable_select_first_item_in_page (hangul->candidatable);
     return FALSE;
   }
 
   hangul->current_page--;
   nimf_libhangul_update_page (engine, target);
-  nimf_candidate_select_last_item_in_page (hangul->candidate);
+  nimf_candidatable_select_last_item_in_page (hangul->candidatable);
 
   return TRUE;
 }
@@ -316,13 +316,13 @@ nimf_libhangul_page_down (NimfEngine *engine, NimfServiceIM *target)
 
   if (hangul->current_page == hangul->n_pages)
   {
-    nimf_candidate_select_last_item_in_page (hangul->candidate);
+    nimf_candidatable_select_last_item_in_page (hangul->candidatable);
     return FALSE;
   }
 
   hangul->current_page++;
   nimf_libhangul_update_page (engine, target);
-  nimf_candidate_select_first_item_in_page (hangul->candidate);
+  nimf_candidatable_select_first_item_in_page (hangul->candidatable);
 
   return TRUE;
 }
@@ -339,13 +339,13 @@ nimf_libhangul_page_home (NimfEngine *engine, NimfServiceIM *target)
 
   if (hangul->current_page <= 1)
   {
-    nimf_candidate_select_first_item_in_page (hangul->candidate);
+    nimf_candidatable_select_first_item_in_page (hangul->candidatable);
     return;
   }
 
   hangul->current_page = 1;
   nimf_libhangul_update_page (engine, target);
-  nimf_candidate_select_first_item_in_page (hangul->candidate);
+  nimf_candidatable_select_first_item_in_page (hangul->candidatable);
 }
 
 static void
@@ -360,13 +360,13 @@ nimf_libhangul_page_end (NimfEngine *engine, NimfServiceIM *target)
 
   if (hangul->current_page == hangul->n_pages)
   {
-    nimf_candidate_select_last_item_in_page (hangul->candidate);
+    nimf_candidatable_select_last_item_in_page (hangul->candidatable);
     return;
   }
 
   hangul->current_page = hangul->n_pages;
   nimf_libhangul_update_page (engine, target);
-  nimf_candidate_select_last_item_in_page (hangul->candidate);
+  nimf_candidatable_select_last_item_in_page (hangul->candidatable);
 }
 
 static void
@@ -452,10 +452,10 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
   if (G_UNLIKELY (nimf_event_matches (event,
                   (const NimfKey **) hangul->hanja_keys)))
   {
-    if (nimf_candidate_is_window_visible (hangul->candidate) == FALSE)
+    if (nimf_candidatable_is_visible (hangul->candidatable) == FALSE)
     {
       hanja_list_delete (hangul->hanja_list);
-      nimf_candidate_clear (hangul->candidate, target);
+      nimf_candidatable_clear (hangul->candidatable, target);
       hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_hanja_table,
                                                     hangul->preedit_string);
       if (hangul->hanja_list == NULL)
@@ -464,13 +464,13 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
       hangul->n_pages = (hanja_list_get_size (hangul->hanja_list) + 9) / 10;
       hangul->current_page = 1;
       nimf_libhangul_update_page (engine, target);
-      nimf_candidate_show_window (hangul->candidate, target, FALSE);
-      nimf_candidate_select_first_item_in_page (hangul->candidate);
+      nimf_candidatable_show (hangul->candidatable, target, FALSE);
+      nimf_candidatable_select_first_item_in_page (hangul->candidatable);
     }
     else
     {
-      nimf_candidate_hide_window (hangul->candidate);
-      nimf_candidate_clear (hangul->candidate, target);
+      nimf_candidatable_hide (hangul->candidatable);
+      nimf_candidatable_clear (hangul->candidatable, target);
       hanja_list_delete (hangul->hanja_list);
       hangul->hanja_list = NULL;
       hangul->current_page = 0;
@@ -480,25 +480,28 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
     return TRUE;
   }
 
-  if (nimf_candidate_is_window_visible (hangul->candidate))
+  if (nimf_candidatable_is_visible (hangul->candidatable))
   {
     switch (event->key.keyval)
     {
       case NIMF_KEY_Return:
       case NIMF_KEY_KP_Enter:
         {
-          gchar *text = nimf_candidate_get_selected_text (hangul->candidate);
+          gchar *text;
+
+          text = nimf_candidatable_get_selected_text (hangul->candidatable);
           on_candidate_clicked (engine, target, text, -1);
+
           g_free (text);
         }
         break;
       case NIMF_KEY_Up:
       case NIMF_KEY_KP_Up:
-        nimf_candidate_select_previous_item (hangul->candidate);
+        nimf_candidatable_select_previous_item (hangul->candidatable);
         break;
       case NIMF_KEY_Down:
       case NIMF_KEY_KP_Down:
-        nimf_candidate_select_next_item (hangul->candidate);
+        nimf_candidatable_select_next_item (hangul->candidatable);
         break;
       case NIMF_KEY_Page_Up:
       case NIMF_KEY_KP_Page_Up:
@@ -515,7 +518,7 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
         nimf_libhangul_page_end (engine, target);
         break;
       case NIMF_KEY_Escape:
-        nimf_candidate_hide_window (hangul->candidate);
+        nimf_candidatable_hide (hangul->candidatable);
         break;
       case NIMF_KEY_0:
       case NIMF_KEY_1:
@@ -712,9 +715,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   gchar **hanja_keys;
 
-  hangul->candidate = nimf_candidate_get_default ();
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
-
   hangul->layout = g_settings_get_string (hangul->settings, "layout");
   hangul->is_double_consonant_rule =
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
@@ -805,6 +806,16 @@ nimf_libhangul_get_icon_name (NimfEngine *engine)
 }
 
 static void
+nimf_libhangul_constructed (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfLibhangul *hangul = NIMF_LIBHANGUL (object);
+
+  hangul->candidatable = nimf_engine_get_candidatable (NIMF_ENGINE (hangul));
+}
+
+static void
 nimf_libhangul_class_init (NimfLibhangulClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -825,7 +836,8 @@ nimf_libhangul_class_init (NimfLibhangulClass *class)
   engine_class->get_id             = nimf_libhangul_get_id;
   engine_class->get_icon_name      = nimf_libhangul_get_icon_name;
 
-  object_class->finalize = nimf_libhangul_finalize;
+  object_class->constructed = nimf_libhangul_constructed;
+  object_class->finalize    = nimf_libhangul_finalize;
 }
 
 static void

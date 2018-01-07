@@ -8,5 +8,4 @@ Description: Nimf Input Method Framework Library
 Version: @VERSION@
 Requires: @LIBNIMF_REQUIRES@
 Libs: -L${libdir} -lnimf
-Libs.private: @LIBNIMF_PRIVATE@
 Cflags: -I${includedir}/nimf

@@ -3,7 +3,7 @@
  * nimf-chewing.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -37,7 +37,7 @@ struct _NimfChewing
 {
   NimfEngine parent_instance;
 
-  NimfCandidate    *candidate;
+  NimfCandidatable *candidatable;
   gchar            *id;
   GString          *preedit;
   NimfPreeditAttr **preedit_attrs;
@@ -61,7 +61,7 @@ nimf_chewing_reset (NimfEngine    *engine,
 
   NimfChewing *chewing = NIMF_CHEWING (engine);
 
-  nimf_candidate_hide_window (chewing->candidate);
+  nimf_candidatable_hide (chewing->candidatable);
 
   if (chewing->preedit->len > 0)
   {
@@ -90,7 +90,7 @@ nimf_chewing_focus_out (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_candidate_hide_window (NIMF_CHEWING (engine)->candidate);
+  nimf_candidatable_hide (NIMF_CHEWING (engine)->candidatable);
   nimf_chewing_reset (engine, target);
 }
 
@@ -147,25 +147,25 @@ static void nimf_chewing_update (NimfEngine    *engine,
     nimf_engine_emit_preedit_end (engine, target);
   }
 
-  nimf_candidate_clear (chewing->candidate, target);
+  nimf_candidatable_clear (chewing->candidatable, target);
   chewing_cand_Enumerate (chewing->context);
 
   gint i;
   for (i = 0; chewing_cand_hasNext (chewing->context) &&
               i < chewing_cand_ChoicePerPage (chewing->context); i++)
   {
-    nimf_candidate_append (chewing->candidate,
-                           chewing_cand_String_static (chewing->context), NULL);
+    nimf_candidatable_append (chewing->candidatable,
+                              chewing_cand_String_static (chewing->context), NULL);
   }
 
-  nimf_candidate_set_page_values (chewing->candidate, target,
-                                  chewing_cand_CurrentPage (chewing->context) + 1,
-                                  chewing_cand_TotalPage   (chewing->context), 10);
+  nimf_candidatable_set_page_values (chewing->candidatable, target,
+                                     chewing_cand_CurrentPage (chewing->context) + 1,
+                                     chewing_cand_TotalPage   (chewing->context), 10);
 
   if (chewing_cand_TotalChoice (chewing->context) > 0)
-    nimf_candidate_show_window (chewing->candidate, target, FALSE);
+    nimf_candidatable_show (chewing->candidatable, target, FALSE);
   else
-    nimf_candidate_hide_window (chewing->candidate);
+    nimf_candidatable_hide (chewing->candidatable);
 }
 
 static void
@@ -350,8 +350,7 @@ nimf_chewing_init (NimfChewing *chewing)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gint keys[10] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
-  chewing->candidate = nimf_candidate_get_default ();
-  chewing->id      = g_strdup ("nimf-chewing");
+  chewing->id = g_strdup ("nimf-chewing");
   chewing->preedit = g_string_new ("");
   chewing->preedit_attrs  = g_malloc0_n (3, sizeof (NimfPreeditAttr *));
   chewing->preedit_attrs[0] = nimf_preedit_attr_new (NIMF_PREEDIT_ATTR_UNDERLINE, 0, 0);
@@ -405,6 +404,16 @@ nimf_chewing_get_icon_name (NimfEngine *engine)
 }
 
 static void
+nimf_chewing_constructed (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfChewing *chewing = NIMF_CHEWING (object);
+
+  chewing->candidatable = nimf_engine_get_candidatable (NIMF_ENGINE (chewing));
+}
+
+static void
 nimf_chewing_class_init (NimfChewingClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -423,7 +432,8 @@ nimf_chewing_class_init (NimfChewingClass *class)
   engine_class->get_id             = nimf_chewing_get_id;
   engine_class->get_icon_name      = nimf_chewing_get_icon_name;
 
-  object_class->finalize = nimf_chewing_finalize;
+  object_class->constructed = nimf_chewing_constructed;
+  object_class->finalize    = nimf_chewing_finalize;
 }
 
 static void

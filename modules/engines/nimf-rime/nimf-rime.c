@@ -3,7 +3,7 @@
  * nimf-rime.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -38,7 +38,7 @@ struct _NimfRime
 {
   NimfEngine parent_instance;
 
-  NimfCandidate    *candidate;
+  NimfCandidatable *candidatable;
   gchar            *id;
   GString          *preedit;
   NimfPreeditAttr **preedit_attrs;
@@ -97,7 +97,7 @@ void nimf_rime_reset (NimfEngine    *engine,
 
   NimfRime *rime = NIMF_RIME (engine);
 
-  nimf_candidate_hide_window (rime->candidate);
+  nimf_candidatable_hide (rime->candidatable);
   nimf_rime_update_preedit (engine, target, "", 0);
   RimeProcessKey (rime->session_id, NIMF_KEY_Escape, 0);
 }
@@ -115,7 +115,7 @@ nimf_rime_focus_out (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_candidate_hide_window (NIMF_RIME (engine)->candidate);
+  nimf_candidatable_hide (NIMF_RIME (engine)->candidatable);
   nimf_rime_reset (engine, target);
 }
 
@@ -133,7 +133,7 @@ nimf_rime_update_candidate (NimfEngine    *engine,
   if (!RimeGetContext (rime->session_id, &context) ||
       context.composition.length == 0)
   {
-    nimf_candidate_hide_window (rime->candidate);
+    nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
@@ -144,19 +144,19 @@ nimf_rime_update_candidate (NimfEngine    *engine,
   if (!context.menu.is_last_page)
     rime->n_pages++;
 
-  nimf_candidate_clear (rime->candidate, target);
+  nimf_candidatable_clear (rime->candidatable, target);
 
   for (i = 0; i < context.menu.num_candidates; i++)
   {
-    nimf_candidate_append (rime->candidate,
-                           context.menu.candidates[i].text,
-                           context.menu.candidates[i].comment);
-    nimf_candidate_select_item_by_index_in_page (rime->candidate,
-                                                 context.menu.highlighted_candidate_index);
+    nimf_candidatable_append (rime->candidatable,
+                              context.menu.candidates[i].text,
+                              context.menu.candidates[i].comment);
+    nimf_candidatable_select_item_by_index_in_page (rime->candidatable,
+                                                    context.menu.highlighted_candidate_index);
   }
 
-  nimf_candidate_set_page_values (rime->candidate, target,
-                                  context.menu.page_no + 1, rime->n_pages, 5);
+  nimf_candidatable_set_page_values (rime->candidatable, target,
+                                     context.menu.page_no + 1, rime->n_pages, 5);
   RimeFreeContext (&context);
 }
 
@@ -173,7 +173,7 @@ static void nimf_rime_update_preedit2 (NimfEngine    *engine,
       context.composition.length == 0)
   {
     nimf_rime_update_preedit (engine, target, "", 0);
-    nimf_candidate_hide_window (rime->candidate);
+    nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
@@ -184,9 +184,9 @@ static void nimf_rime_update_preedit2 (NimfEngine    *engine,
   else
     nimf_rime_update_preedit (engine, target, "", 0);
 
-  nimf_candidate_set_auxiliary_text (rime->candidate,
-                                     context.composition.preedit,
-                                     context.composition.cursor_pos);
+  nimf_candidatable_set_auxiliary_text (rime->candidatable,
+                                        context.composition.preedit,
+                                        context.composition.cursor_pos);
   RimeFreeContext (&context);
 }
 
@@ -212,7 +212,7 @@ static void nimf_rime_update (NimfEngine    *engine,
       context.composition.length == 0)
   {
     nimf_rime_update_preedit (engine, target, "", 0);
-    nimf_candidate_hide_window (rime->candidate);
+    nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
@@ -223,12 +223,12 @@ static void nimf_rime_update (NimfEngine    *engine,
   {
     nimf_rime_update_candidate (engine, target);
 
-    if (!nimf_candidate_is_window_visible (rime->candidate))
-      nimf_candidate_show_window (rime->candidate, target, TRUE);
+    if (!nimf_candidatable_is_visible (rime->candidatable))
+      nimf_candidatable_show (rime->candidatable, target, TRUE);
   }
   else
   {
-    nimf_candidate_clear (rime->candidate, target);
+    nimf_candidatable_clear (rime->candidatable, target);
   }
 
   RimeFreeContext (&context);
@@ -374,7 +374,6 @@ nimf_rime_init (NimfRime *rime)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  rime->candidate = nimf_candidate_get_default ();
   rime->settings  = g_settings_new ("org.nimf.engines.nimf-rime");
   rime->is_simplified =
     g_settings_get_boolean (rime->settings, "simplification");
@@ -468,6 +467,16 @@ nimf_rime_get_icon_name (NimfEngine *engine)
 }
 
 static void
+nimf_rime_constructed (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfRime *rime = NIMF_RIME (object);
+
+  rime->candidatable = nimf_engine_get_candidatable (NIMF_ENGINE (rime));
+}
+
+static void
 nimf_rime_class_init (NimfRimeClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -488,7 +497,8 @@ nimf_rime_class_init (NimfRimeClass *class)
   engine_class->get_id             = nimf_rime_get_id;
   engine_class->get_icon_name      = nimf_rime_get_icon_name;
 
-  object_class->finalize = nimf_rime_finalize;
+  object_class->constructed = nimf_rime_constructed;
+  object_class->finalize    = nimf_rime_finalize;
 }
 
 static void

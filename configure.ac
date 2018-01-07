@@ -46,9 +46,7 @@ AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 LT_INIT([disable-static])
 
 LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
-LIBNIMF_PRIVATE="gtk+-3.0"
 AC_SUBST(LIBNIMF_REQUIRES)
-AC_SUBST(LIBNIMF_PRIVATE)
 
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
 PKG_CHECK_MODULES(GLIB, [glib-2.0])
@@ -219,10 +217,11 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [glib-2.0 x11 gtk+-3.0 appindicator3-0.1])
 
 dnl ***************************************************************************
-dnl nimf-preedit-window
+dnl nimf-preedit-window  nimf-candidate
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_PREEDIT_WINDOW_DEPS, [glib-2.0 gtk+-3.0])
+PKG_CHECK_MODULES(NIMF_CANDIDATE_DEPS,      [glib-2.0 gtk+-3.0])
 
 dnl ***************************************************************************
 dnl nimf-settings
@@ -268,6 +267,7 @@ AC_OUTPUT([
   modules/engines/nimf-sunpinyin/Makefile
   modules/engines/nimf-system-keyboard/Makefile
   modules/services/Makefile
+  modules/services/candidate/Makefile
   modules/services/indicator/Makefile
   modules/services/preedit-window/Makefile
   modules/services/wayland/Makefile

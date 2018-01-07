@@ -27,10 +27,10 @@ libnimf_la_SOURCES = \
 	nimf-key-syms.c \
 	nimf-message.h \
 	nimf-message.c \
-	nimf-candidate.h \
-	nimf-candidate.c \
 	nimf-connection.c \
 	nimf-connection.h \
+	nimf-candidatable.c \
+	nimf-candidatable.h \
 	nimf-preeditable.c \
 	nimf-preeditable.h \
 	nimf-server.c \
@@ -59,7 +59,7 @@ libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
 nimfincludedir = $(includedir)/nimf
 nimfinclude_HEADERS = \
 	nimf.h \
-	nimf-candidate.h \
+	nimf-candidatable.h \
 	nimf-client.h \
 	nimf-connection.h \
 	nimf-engine.h \

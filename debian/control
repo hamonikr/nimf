@@ -51,6 +51,7 @@ Description: Input Method Framework
      * Wayland
      * XIM (based on IMdkit)
      * Preedit window
+     * Candidate
   * Client Modules:
      * GTK+2, GTK+3, Qt4, Qt5
   * Settings tool to configure the Nimf:

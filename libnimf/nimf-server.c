@@ -3,7 +3,7 @@
  * nimf-server.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -26,7 +26,6 @@
 #include "nimf-module.h"
 #include "nimf-service.h"
 #include "nimf-key-syms.h"
-#include "nimf-candidate.h"
 #include "nimf-types.h"
 #include "nimf-service-im.h"
 #include "nimf-server-im.h"
@@ -588,13 +587,20 @@ nimf_server_init (NimfServer *server)
   g_signal_connect (server->settings, "changed::use-singleton",
                     G_CALLBACK (on_use_singleton), server);
 
-  server->candidate = nimf_candidate_new ();
   server->modules   = g_hash_table_new_full (g_str_hash, g_str_equal,
                                              g_free, NULL);
   server->services  = g_hash_table_new_full (g_str_hash, g_str_equal,
                                              g_free, g_object_unref);
-  nimf_server_load_engines  (server);
+
   nimf_server_load_services (server);
+
+  server->candidatable = g_hash_table_lookup (server->services, "nimf-candidate");
+  server->preeditable  = g_hash_table_lookup (server->services, "nimf-preedit-window");
+  nimf_service_start (NIMF_SERVICE (server->candidatable));
+  nimf_service_start (NIMF_SERVICE (server->preeditable));
+
+  nimf_server_load_engines  (server);
+
   server->connections = g_hash_table_new_full (g_direct_hash,
                                                g_direct_equal,
                                                NULL,
@@ -650,7 +656,6 @@ nimf_server_finalize (GObject *object)
     server->instances = NULL;
   }
 
-  g_object_unref (server->candidate);
   g_hash_table_unref (server->connections);
   g_object_unref (server->settings);
   g_hash_table_unref (server->trigger_gsettings);
@@ -778,11 +783,13 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
   {
     if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-indicator") && !start_indicator)
       continue;
+    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-candidate"))
+      continue;
+    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
+      continue;
 
     if (!nimf_service_start (NIMF_SERVICE (service)))
       g_hash_table_iter_remove (&iter);
-    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
-      server->preeditable = service;
   }
 
   server->active = TRUE;

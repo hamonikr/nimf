@@ -3,7 +3,7 @@
  * nimf-server.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -29,7 +29,7 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 #include "nimf-types.h"
-#include "nimf-candidate.h"
+#include "nimf-candidatable.h"
 #include "nimf-engine.h"
 #include "nimf-preeditable.h"
 
@@ -42,8 +42,8 @@ G_BEGIN_DECLS
 #define NIMF_IS_SERVER_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_SERVER))
 #define NIMF_SERVER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVER, NimfServerClass))
 
-typedef struct _NimfEngine      NimfEngine;
-typedef struct _NimfCandidate   NimfCandidate;
+typedef struct _NimfEngine       NimfEngine;
+typedef struct _NimfCandidatable NimfCandidatable;
 
 typedef struct _NimfServer      NimfServer;
 typedef struct _NimfServerClass NimfServerClass;
@@ -68,8 +68,8 @@ struct _NimfServer
   GHashTable      *trigger_keys;
   gboolean         use_singleton;
   /* facilities */
-  NimfCandidate   *candidate;
-  NimfPreeditable *preeditable;
+  NimfCandidatable *candidatable;
+  NimfPreeditable  *preeditable;
 };
 
 struct _NimfServerClass

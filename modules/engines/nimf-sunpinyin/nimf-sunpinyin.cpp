@@ -3,7 +3,7 @@
  * nimf-sunpinyin.cpp
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -58,7 +58,7 @@ struct _NimfSunpinyin
 {
   NimfEngine parent_instance;
 
-  NimfCandidate     *candidate;
+  NimfCandidatable  *candidatable;
   gchar             *id;
   gchar             *preedit_string;
   NimfPreeditAttr  **preedit_attrs;
@@ -171,7 +171,6 @@ nimf_sunpinyin_init (NimfSunpinyin *pinyin)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  pinyin->candidate = nimf_candidate_get_default ();
   pinyin->id = g_strdup ("nimf-sunpinyin");
   pinyin->preedit_string   = g_strdup ("");
   pinyin->preedit_attrs    = (NimfPreeditAttr **) g_malloc0_n (2, sizeof (NimfPreeditAttr *));
@@ -252,7 +251,7 @@ nimf_sunpinyin_update_page (NimfEngine    *engine,
   gint i;
 
   pinyin->n_pages = (pinyin->pcl->total() + 9) / 10;
-  nimf_candidate_clear (pinyin->candidate, target);
+  nimf_candidatable_clear (pinyin->candidatable, target);
 
   for (i = 0; i < pinyin->pcl->size(); i++)
   {
@@ -262,13 +261,13 @@ nimf_sunpinyin_update_page (NimfEngine    *engine,
     if (wstr)
     {
       gchar *item = g_ucs4_to_utf8 (wstr, -1, NULL, NULL, NULL);
-      nimf_candidate_append (pinyin->candidate, item, NULL);
+      nimf_candidatable_append (pinyin->candidatable, item, NULL);
       g_free (item);
     }
   }
 
-  nimf_candidate_set_page_values (pinyin->candidate, target,
-                                  pinyin->current_page, pinyin->n_pages, 10);
+  nimf_candidatable_set_page_values (pinyin->candidatable, target,
+                                     pinyin->current_page, pinyin->n_pages, 10);
 }
 
 void nimf_sunpinyin_update (NimfEngine    *engine,
@@ -307,12 +306,12 @@ void nimf_sunpinyin_update (NimfEngine    *engine,
 
     if (pinyin->pcl->size() > 0)
     {
-      nimf_candidate_show_window (pinyin->candidate, target, FALSE);
-      nimf_candidate_select_first_item_in_page (pinyin->candidate);
+      nimf_candidatable_show (pinyin->candidatable, target, FALSE);
+      nimf_candidatable_select_first_item_in_page (pinyin->candidatable);
     }
     else
     {
-      nimf_candidate_hide_window (pinyin->candidate);
+      nimf_candidatable_hide (pinyin->candidatable);
     }
   }
 }
@@ -379,14 +378,14 @@ nimf_sunpinyin_page_up (NimfEngine *engine, NimfServiceIM *target)
 
   if (pinyin->current_page <= 1)
   {
-    nimf_candidate_select_first_item_in_page (pinyin->candidate);
+    nimf_candidatable_select_first_item_in_page (pinyin->candidatable);
     return FALSE;
   }
 
   pinyin->current_page--;
   pinyin->view->onCandidatePageRequest(-1, true);
   nimf_sunpinyin_update_page (engine, target);
-  nimf_candidate_select_last_item_in_page (pinyin->candidate);
+  nimf_candidatable_select_last_item_in_page (pinyin->candidatable);
 
   return TRUE;
 }
@@ -400,14 +399,14 @@ nimf_sunpinyin_page_down (NimfEngine *engine, NimfServiceIM *target)
 
   if (pinyin->current_page >= pinyin->n_pages)
   {
-    nimf_candidate_select_last_item_in_page (pinyin->candidate);
+    nimf_candidatable_select_last_item_in_page (pinyin->candidatable);
     return FALSE;
   }
 
   pinyin->current_page++;
   pinyin->view->onCandidatePageRequest(1, true);
   nimf_sunpinyin_update_page (engine, target);
-  nimf_candidate_select_first_item_in_page (pinyin->candidate);
+  nimf_candidatable_select_first_item_in_page (pinyin->candidatable);
 
   return TRUE;
 }
@@ -421,14 +420,14 @@ nimf_sunpinyin_page_home (NimfEngine *engine, NimfServiceIM *target)
 
   if (pinyin->current_page <= 1)
   {
-    nimf_candidate_select_first_item_in_page (pinyin->candidate);
+    nimf_candidatable_select_first_item_in_page (pinyin->candidatable);
     return;
   }
 
   pinyin->current_page = 1;
   pinyin->view->onCandidatePageRequest(0, false);
   nimf_sunpinyin_update_page (engine, target);
-  nimf_candidate_select_first_item_in_page (pinyin->candidate);
+  nimf_candidatable_select_first_item_in_page (pinyin->candidatable);
 }
 
 static void
@@ -440,14 +439,14 @@ nimf_sunpinyin_page_end (NimfEngine *engine, NimfServiceIM *target)
 
   if (pinyin->current_page >= pinyin->n_pages)
   {
-    nimf_candidate_select_last_item_in_page (pinyin->candidate);
+    nimf_candidatable_select_last_item_in_page (pinyin->candidatable);
     return;
   }
 
   pinyin->current_page = pinyin->n_pages;
   pinyin->view->onCandidatePageRequest(pinyin->n_pages - 1, false);
   nimf_sunpinyin_update_page (engine, target);
-  nimf_candidate_select_last_item_in_page (pinyin->candidate);
+  nimf_candidatable_select_last_item_in_page (pinyin->candidatable);
 }
 
 static void
@@ -491,7 +490,7 @@ nimf_sunpinyin_filter_event (NimfEngine    *engine,
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
 
-  if (nimf_candidate_is_window_visible (pinyin->candidate))
+  if (nimf_candidatable_is_visible (pinyin->candidatable))
   {
     switch (event->key.keyval)
     {
@@ -499,7 +498,7 @@ nimf_sunpinyin_filter_event (NimfEngine    *engine,
       case NIMF_KEY_KP_Enter:
       case NIMF_KEY_space:
         {
-          gint index = nimf_candidate_get_selected_index (pinyin->candidate);
+          gint index = nimf_candidatable_get_selected_index (pinyin->candidatable);
 
           if (G_LIKELY (index >= 0))
           {
@@ -512,11 +511,11 @@ nimf_sunpinyin_filter_event (NimfEngine    *engine,
         break;
         case NIMF_KEY_Up:
         case NIMF_KEY_KP_Up:
-          nimf_candidate_select_previous_item (pinyin->candidate);
+          nimf_candidatable_select_previous_item (pinyin->candidatable);
           return TRUE;
         case NIMF_KEY_Down:
         case NIMF_KEY_KP_Down:
-          nimf_candidate_select_next_item (pinyin->candidate);
+          nimf_candidatable_select_next_item (pinyin->candidatable);
           return TRUE;
         case NIMF_KEY_Page_Up:
         case NIMF_KEY_KP_Page_Up:
@@ -533,7 +532,7 @@ nimf_sunpinyin_filter_event (NimfEngine    *engine,
           nimf_sunpinyin_page_end (engine, target);
           return TRUE;
         case NIMF_KEY_Escape:
-          nimf_candidate_hide_window (pinyin->candidate);
+          nimf_candidatable_hide (pinyin->candidatable);
           return TRUE;
       default:
         break;
@@ -562,6 +561,16 @@ on_candidate_clicked (NimfEngine    *engine,
 }
 
 static void
+nimf_sunpinyin_constructed (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfSunpinyin *pinyin = NIMF_SUNPINYIN (object);
+
+  pinyin->candidatable = nimf_engine_get_candidatable (NIMF_ENGINE (pinyin));
+}
+
+static void
 nimf_sunpinyin_class_init (NimfSunpinyinClass *klass)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -580,7 +589,8 @@ nimf_sunpinyin_class_init (NimfSunpinyinClass *klass)
   engine_class->candidate_clicked   = on_candidate_clicked;
   engine_class->candidate_scrolled  = on_candidate_scrolled;
 
-  object_class->finalize           = nimf_sunpinyin_finalize;
+  object_class->constructed = nimf_sunpinyin_constructed;
+  object_class->finalize    = nimf_sunpinyin_finalize;
 }
 
 static void
