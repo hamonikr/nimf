@@ -418,7 +418,6 @@ nimf_service_im_set_cursor_location (NimfServiceIM       *im,
     return;
 
   im->cursor_area = *area;
-  nimf_engine_set_cursor_location (im->engine, area);
 
   if (!im->use_preedit)
     nimf_preeditable_set_cursor_location (im->server->preeditable, area);

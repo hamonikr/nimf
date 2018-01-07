@@ -171,20 +171,6 @@ nimf_engine_get_surrounding (NimfEngine     *engine,
 }
 
 void
-nimf_engine_set_cursor_location (NimfEngine          *engine,
-                                 const NimfRectangle *area)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
-  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
-
-  if (class->set_cursor_location)
-    class->set_cursor_location (engine, area);
-}
-
-void
 nimf_engine_emit_preedit_start (NimfEngine    *engine,
                                 NimfServiceIM *im)
 {

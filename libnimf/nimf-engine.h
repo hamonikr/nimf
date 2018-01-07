@@ -78,8 +78,6 @@ struct _NimfEngineClass
                                    NimfServiceIM       *im,
                                    gchar              **text,
                                    gint                *cursor_index);
-  void     (* set_cursor_location)(NimfEngine          *engine,
-                                   const NimfRectangle *area);
   /* candidate */
   gboolean (* candidate_page_up)   (NimfEngine         *engine,
                                     NimfServiceIM      *im);
@@ -115,8 +113,6 @@ gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
                                                 NimfServiceIM       *im,
                                                 gchar              **text,
                                                 gint                *cursor_index);
-void     nimf_engine_set_cursor_location       (NimfEngine          *engine,
-                                                const NimfRectangle *area);
 void     nimf_engine_status_changed            (NimfEngine          *engine);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine       *engine,
