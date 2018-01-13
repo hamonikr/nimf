@@ -48,7 +48,7 @@ LT_INIT([disable-static])
 LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
 AC_SUBST(LIBNIMF_REQUIRES)
 
-PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES $LIBNIMF_PRIVATE])
+PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
 dnl nimf-chewing  nimf-libhangul  nimf-rime  nimf-system-keyboard
