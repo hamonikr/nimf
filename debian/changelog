@@ -1,3 +1,10 @@
+nimf (2018.01.13) stable; urgency=medium
+
+  * Supplemented error messages
+  * Removed an unused variable
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 13 Jan 2018 10:04:18 +0900
+
 nimf (2018.01.07) stable; urgency=medium
 
   * Removed nimf_engine_set_cursor_location()

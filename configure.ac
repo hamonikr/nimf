@@ -97,8 +97,13 @@ dnl ***************************************************************************
 dnl  Qt
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_QT4_DEPS, [QtGui])
-PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets])
+PKG_CHECK_MODULES(NIMF_QT4_DEPS, [QtGui], [],
+  [AC_MSG_ERROR([No package 'QtGui' found.
+  If you are using Debian, please install 'libqt4-dev'.])])
+
+PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [],
+  [AC_MSG_ERROR([Package requirements (Qt5Core Qt5Gui Qt5Widgets) were not met:
+  If you are using Debian, please install 'qtbase5-dev'.])])
 
 QT5_VERSION=`pkg-config --modversion Qt5Core`
 QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
