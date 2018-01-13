@@ -3,28 +3,27 @@ architecture in which an application acts as a client and communicates
 synchronously with the Nimf server via a Unix socket.
 
 Nimf provides:
- * Input Method Server:
+  * Input Method Server:
     * nimf-daemon
- * Language Engines:
+  * Language Engines:
     * Chinese (based on sunpinyin, libchewing, librime)
     * Japanese (based on anthy)
     * Korean (based on libhangul)
- * Service Modules:
+  * Service Modules:
     * Indicator (based on appindicator)
     * Wayland
     * XIM (based on IMdkit)
     * Preedit window
     * Candidate
- * Client Modules:
+  * Client Modules:
     * GTK+2, GTK+3, Qt4, Qt5
- * Settings tool to configure the Nimf:
+  * Settings tool to configure the Nimf:
     * nimf-settings
- * Development files:
+  * Development files:
     * C library and headers
 
 Project Homepage:
- * https://github.com/cogniti/nimf
- * https://cogniti.github.io/nimf
+  * https://github.com/cogniti/nimf
 
 
 License
@@ -44,6 +43,95 @@ License
   along with this program;  If not, see <http://www.gnu.org/licenses/>.
 
 
+Downloads
+---------
+
+  Download latest snapshot of the current master branch
+
+  * Clone with HTTPS
+
+    git clone https://github.com/cogniti/nimf.git
+
+  * Download tar.gz
+
+    https://github.com/cogniti/nimf/archive/master.tar.gz
+
+
+Compiling and installing
+------------------------
+
+  * Compiling and installing in the usual way
+
+    If you are using im-config
+
+      ./autogen.sh --with-im-config-data
+
+    Otherwise
+
+      ./autogen.sh
+
+      make
+      sudo make install
+      sudo ldconfig
+      sudo make update-gtk-im-cache
+      sudo make update-gtk-icon-cache
+
+  * Compiling and installing in Debian way
+
+    First of all, install devscripts, build-essential, debhelper.
+
+      username:~$ sudo apt install devscripts build-essential debhelper
+
+    After installing devscripts, build-essential perform the following commands.
+
+      username:~$ cd
+      username:~$ mkdir tmp-build
+      username:~$ cd tmp-build
+      username:~/tmp-build$ wget https://github.com/cogniti/nimf/archive/master.tar.gz
+      username:~/tmp-build$ tar zxf master.tar.gz
+      username:~/tmp-build$ cd nimf-master
+      username:~/tmp-build/nimf-master$ dpkg-checkbuilddeps
+
+    You may see something like:
+
+      dpkg-checkbuilddeps: Unmet build dependencies: some-package1 some-package2 ...
+
+    Install all dependent packages and perform the following commands.
+
+      username:~/tmp-build/nimf-master$ debuild
+      username:~/tmp-build/nimf-master$ cd ..
+      username:~/tmp-build$ ls
+      nimf_YYYY.mm.dd_amd64.build
+      nimf_YYYY.mm.dd_amd64.buildinfo
+      nimf_YYYY.mm.dd_amd64.changes
+      nimf_YYYY.mm.dd_amd64.deb
+      nimf_YYYY.mm.dd.dsc
+      nimf_YYYY.mm.dd.tar.xz
+      nimf-anthy_YYYY.mm.dd_amd64.deb
+      nimf-anthy-dbgsym_YYYY.mm.dd_amd64.deb
+      nimf-chewing_YYYY.mm.dd_amd64.deb
+      nimf-chewing-dbgsym_YYYY.mm.dd_amd64.deb
+      nimf-dbgsym_YYYY.mm.dd_amd64.deb
+      nimf-dev_YYYY.mm.dd_amd64.deb
+      nimf-libhangul_YYYY.mm.dd_amd64.deb
+      nimf-libhangul-dbgsym_YYYY.mm.dd_amd64.deb
+      nimf-master
+      nimf-rime_YYYY.mm.dd_amd64.deb
+      nimf-rime-dbgsym_YYYY.mm.dd_amd64.deb
+      nimf-sunpinyin_YYYY.mm.dd_amd64.deb
+      nimf-sunpinyin-dbgsym_YYYY.mm.dd_amd64.deb
+
+    Install deb packages.
+
+      username:~/tmp-build$ sudo dpkg -i nimf_YYYY.mm.dd_amd64.deb \
+      nimf-anthy_YYYY.mm.dd_amd64.deb nimf-chewing_YYYY.mm.dd_amd64.deb \
+      nimf-libhangul_YYYY.mm.dd_amd64.deb nimf-rime_YYYY.mm.dd_amd64.deb \
+      nimf-sunpinyin_YYYY.mm.dd_amd64.deb
+
+    As above mentioned, make the package yourself. Otherwise, request your Linux
+    distribution to package Nimf.
+
+
 Configure
 ---------
 
@@ -52,61 +140,100 @@ Configure
     https://extensions.gnome.org/extension/1031/topicons/
     https://github.com/phocean/TopIcons-plus
 
-  * Configure Hangul/Hanja key if you use a keyboard
-    without hardware Hangul/Hanja key
+  * Configure Hangul/Hanja key if you use a keyboard without hardware
+    Hangul/Hanja key
 
-    Use xkb-data >= 2.14, then
-    Select "Right Alt as Hangul, right Ctrl as Hanja" or
-           "Right Ctrl as Hangul, right Alt as Hanja" from gnome-tweak-tool.
-
-
-Troubleshoot
-------------
-
-* Failed to load shared library
-  Check /etc/ld.so.conf and /etc/ld.so.conf.d/ for /usr/local/lib path
+    If you are using xkb-data 2.14 or newer, then select "Right Alt as Hangul,
+    right Ctrl as Hanja" or "Right Ctrl as Hangul, right Alt as Hanja" from
+    gnome-tweak-tool.
 
 
 Debugging
 ---------
-    nimf-daemon --start-indicator --debug
-    tail -f /var/log/daemon.log
 
-    export GTK_IM_MODULE="nimf"
-    export QT4_IM_MODULE="nimf"
-    export QT_IM_MODULE="nimf"
-    export XMODIFIERS="@im=nimf"
-    export G_MESSAGES_DEBUG=nimf
-    gedit # or kate for Qt
+  nimf-daemon --start-indicator --debug
+  tail -f /var/log/daemon.log
+
+  export GTK_IM_MODULE="nimf"
+  export QT4_IM_MODULE="nimf"
+  export QT_IM_MODULE="nimf"
+  export XMODIFIERS="@im=nimf"
+  export G_MESSAGES_DEBUG=nimf
+  gedit # or kate for Qt
+
+
+Participate
+----------
+
+  * Development
+
+    You may resolve issues, and then send pull requests.
+    https://github.com/cogniti/nimf/pulls
+
+  * Translation
+
+    You can make nimf.pot using the following commands.
+
+      git clone https://github.com/cogniti/nimf.git
+      cd nimf
+      ./autogen.sh
+      cd po
+      make nimf.pot
+
+    Then, you may translate nimf.pot into your native language.
+
+
+Support
+-------
+
+  If you have any problems or requests while you are using Nimf, please contact
+  issue tracker. https://github.com/cogniti/nimf/issues
+
+  * Not Nimf bugs but your application bugs
+
+    Report bugs to your application project. Do not request me to fix your
+    application bugs.
+
+  * Failed to load shared library
+
+    Check /etc/ld.so.conf and /etc/ld.so.conf.d/ for /usr/local/lib path
+
+  * libnimf.so.0: cannot open shared object file: No such file or directory
+
+    sudo ldconfig
+
+  * Nimf does not appear in im-config
+
+    sudo cp nimf/data/im-config/23_nimf.* /usr/share/im-config/data/
 
 
 References
 ----------
 
-  * API
+  * APIs
 
-  http://www.x.org/releases/X11R7.6/doc/libX11/specs/XIM/xim.html
-  http://www.w3.org/TR/ime-api/
-  https://developer.chrome.com/extensions/input_ime
-  https://docs.enlightenment.org/stable/efl/group__Ecore__IMF__Lib__Group.html
-  http://doc.qt.io/qt-4.8/qinputcontext.html
-  http://doc.qt.io/qt-5/qinputmethod.html
-  https://git.gnome.org/browse/gtk+
+    http://www.x.org/releases/X11R7.6/doc/libX11/specs/XIM/xim.html
+    http://www.w3.org/TR/ime-api/
+    https://developer.chrome.com/extensions/input_ime
+    https://docs.enlightenment.org/stable/efl/group__Ecore__IMF__Lib__Group.html
+    http://doc.qt.io/qt-4.8/qinputcontext.html
+    http://doc.qt.io/qt-5/qinputmethod.html
+    https://git.gnome.org/browse/gtk+/tree/gtk/gtkimcontext.c
 
   * Language Engines (alphabetically listed)
 
-  http://anonscm.debian.org/cgit/collab-maint/anthy.git
-  https://github.com/chewing/libchewing
-  https://github.com/choehwanjin/libhangul
-  https://github.com/rime/librime
-  https://github.com/sunpinyin/sunpinyin
+    http://anonscm.debian.org/cgit/collab-maint/anthy.git
+    https://github.com/chewing/libchewing
+    https://github.com/choehwanjin/libhangul
+    https://github.com/rime/librime
+    https://github.com/sunpinyin/sunpinyin
 
   * Implementations
 
-  https://github.com/choehwanjin/nabi
-  https://github.com/choehwanjin/imhangul
-  https://github.com/choehwanjin/ibus-hangul
-  https://github.com/ibus/ibus
-  https://github.com/fcitx/fcitx
-  https://github.com/fcitx/fcitx-qt5
-  https://github.com/uim/uim
+    https://github.com/choehwanjin/nabi
+    https://github.com/choehwanjin/imhangul
+    https://github.com/choehwanjin/ibus-hangul
+    https://github.com/ibus/ibus
+    https://github.com/fcitx/fcitx
+    https://github.com/fcitx/fcitx-qt5
+    https://github.com/uim/uim

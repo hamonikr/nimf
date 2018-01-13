@@ -1,3 +1,10 @@
+nimf (2018.01.14) stable; urgency=medium
+
+  * Updated README
+  * Changed website to https://github.com/cogniti/nimf
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 14 Jan 2018 08:38:37 +0900
+
 nimf (2018.01.13) stable; urgency=medium
 
   * Supplemented error messages
