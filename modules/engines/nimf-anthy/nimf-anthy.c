@@ -433,6 +433,14 @@ nimf_anthy_romaji_filter_event (NimfEngine    *engine,
   if (event->key.keyval > 127)
     return FALSE;
 
+  if (anthy->preedit2->len == 1   &&
+      event->key.keyval    != 'n' &&
+      anthy->preedit2->str[anthy->preedit2->len - 1] == event->key.keyval)
+  {
+    g_string_append (anthy->preedit1, "っ");
+    g_string_assign (anthy->preedit2, "");
+  }
+
   g_string_append_c (anthy->preedit2, event->key.keyval);
 
   while (TRUE)

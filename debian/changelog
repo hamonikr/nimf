@@ -1,3 +1,9 @@
+nimf (2018.01.15) stable; urgency=medium
+
+  * Output っ on typing the same consonant except n (related issue #81)
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 15 Jan 2018 15:08:24 +0900
+
 nimf (2018.01.14) stable; urgency=medium
 
   * Updated README
