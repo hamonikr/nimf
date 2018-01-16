@@ -1,3 +1,9 @@
+nimf (2018.01.16) stable; urgency=medium
+
+  * Fixed converting to Hiragana (closes #82) 
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 16 Jan 2018 09:37:30 +0900
+
 nimf (2018.01.15) stable; urgency=medium
 
   * Output っ on typing the same consonant except n (related issue #81)

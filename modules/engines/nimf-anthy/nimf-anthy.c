@@ -481,7 +481,35 @@ nimf_anthy_romaji_filter_event (NimfEngine    *engine,
   return TRUE;
 }
 
-gboolean
+static gchar *
+nimf_anthy_convert_to (NimfAnthy *anthy, int candidate_type)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  struct   anthy_conv_stat conv_stat;
+  GString *string;
+  gchar   *new_preedit;
+  gint     i;
+
+  new_preedit = g_strconcat (anthy->preedit1->str, anthy->preedit2->str, NULL);
+  anthy_set_string (anthy->context, new_preedit);
+  anthy_get_stat (anthy->context, &conv_stat);
+  string = g_string_new ("");
+  memset (anthy->buffer, 0, NIMF_ANTHY_BUFFER_SIZE);
+
+  for (i = 0; i < conv_stat.nr_segment; i++)
+  {
+    anthy_get_segment (anthy->context, i, candidate_type,
+                       anthy->buffer, NIMF_ANTHY_BUFFER_SIZE);
+    g_string_append (string, anthy->buffer);
+  }
+
+  g_free (new_preedit);
+
+  return g_string_free (string, FALSE);
+}
+
+static gboolean
 nimf_anthy_filter_event (NimfEngine    *engine,
                          NimfServiceIM *target,
                          NimfEvent     *event)
@@ -635,41 +663,27 @@ nimf_anthy_filter_event (NimfEngine    *engine,
   {
     if (G_UNLIKELY (nimf_event_matches (event, (const NimfKey **) anthy->hiragana_keys)))
     {
-      gchar *new_preedit;
+      gchar *converted;
 
-      new_preedit = g_strconcat (anthy->preedit1->str, anthy->preedit2->str, NULL);
-      g_string_assign (anthy->preedit, new_preedit);
+      converted = nimf_anthy_convert_to (anthy, NTH_HIRAGANA_CANDIDATE);
+
+      g_string_assign (anthy->preedit, converted);
       nimf_anthy_update_preedit_state (engine, target, anthy->preedit->str,
                                        g_utf8_strlen (anthy->preedit->str, -1));
-      g_free (new_preedit);
+      g_free (converted);
 
       return TRUE;
     }
     else if (G_UNLIKELY (nimf_event_matches (event, (const NimfKey **) anthy->katakana_keys)))
     {
-      struct   anthy_conv_stat conv_stat;
-      GString *string;
-      gchar   *new_preedit;
-      gint     i;
+      gchar *converted;
 
-      new_preedit = g_strconcat (anthy->preedit1->str, anthy->preedit2->str, NULL);
-      anthy_set_string (anthy->context, new_preedit);
-      anthy_get_stat (anthy->context, &conv_stat);
-      string = g_string_new ("");
-      memset (anthy->buffer, 0, NIMF_ANTHY_BUFFER_SIZE);
+      converted = nimf_anthy_convert_to (anthy, NTH_KATAKANA_CANDIDATE);
 
-      for (i = 0; i < conv_stat.nr_segment; i++)
-      {
-        anthy_get_segment (anthy->context, i, NTH_KATAKANA_CANDIDATE,
-                           anthy->buffer, NIMF_ANTHY_BUFFER_SIZE);
-        g_string_append (string, anthy->buffer);
-      }
-
-      g_string_assign (anthy->preedit, string->str);
+      g_string_assign (anthy->preedit, converted);
       nimf_anthy_update_preedit_state (engine, target, anthy->preedit->str,
                                        g_utf8_strlen (anthy->preedit->str, -1));
-      g_free (new_preedit);
-      g_string_free (string, TRUE);
+      g_free (converted);
 
       return TRUE;
     }
