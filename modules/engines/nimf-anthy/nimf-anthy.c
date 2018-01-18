@@ -845,7 +845,7 @@ nimf_anthy_init (NimfAnthy *anthy)
     g_hash_table_insert (nimf_anthy_romaji, "fwe", g_strdup ("ふぇ"));
     g_hash_table_insert (nimf_anthy_romaji, "fwi", g_strdup ("ふぃ"));
     g_hash_table_insert (nimf_anthy_romaji, "fwo", g_strdup ("ふぉ"));
-    g_hash_table_insert (nimf_anthy_romaji, "fwu", g_strdup ("ふう"));
+    g_hash_table_insert (nimf_anthy_romaji, "fwu", g_strdup ("ふぅ"));
     g_hash_table_insert (nimf_anthy_romaji, "fy", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "fya", g_strdup ("ふゃ"));
     g_hash_table_insert (nimf_anthy_romaji, "fye", g_strdup ("ふぇ"));
