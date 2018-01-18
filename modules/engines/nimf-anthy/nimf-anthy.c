@@ -383,7 +383,7 @@ nimf_anthy_update_candidate (NimfEngine    *engine,
 }
 
 static gboolean
-nimf_anthy_romaji_filter_event (NimfEngine    *engine,
+nimf_anthy_filter_event_romaji (NimfEngine    *engine,
                                 NimfServiceIM *target,
                                 NimfEvent     *event)
 {
@@ -697,7 +697,7 @@ nimf_anthy_filter_event (NimfEngine    *engine,
   struct anthy_conv_stat conv_stat;
   gchar *hiragana;
 
-  retval = nimf_anthy_romaji_filter_event (engine, target, event);
+  retval = nimf_anthy_filter_event_romaji (engine, target, event);
   hiragana = g_strconcat (anthy->preedit1->str, anthy->preedit2->str, NULL);
 
   nimf_candidatable_set_auxiliary_text (anthy->candidatable, hiragana,
