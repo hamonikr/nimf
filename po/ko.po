@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-07 04:50+0900\n"
-"PO-Revision-Date: 2018-01-07 04:55+0900\n"
+"POT-Creation-Date: 2018-01-19 06:10+0900\n"
+"PO-Revision-Date: 2018-01-19 06:28+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -40,7 +40,7 @@ msgstr "표시기를 시작합니다"
 msgid "Nimf"
 msgstr "님프"
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:400
+#: ../modules/engines/nimf-rime/nimf-rime.c:399
 msgid "Rime"
 msgstr "라임"
 
@@ -225,6 +225,23 @@ msgstr "가타카나 단축키"
 msgid "Hotkeys for converting to Katakana"
 msgstr "가타카나로 변환하기 위한 단축키"
 
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:11
+msgid "Japanese input mode"
+msgstr "일본어 입력 모드"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:12
+msgid "'Romaji'"
+msgstr "'로마지'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
+msgid "key value for UI l10n"
+msgstr "UI l10n 을 위한 키 값"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
+msgid "'Japanese Keyboard (OADG 109A)'"
+msgstr "'일본어 키보드 (OADG 109A)'"
+
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"
 msgstr "'중국어 (chewing)'"
@@ -246,10 +263,6 @@ msgstr "한국어 키보드 배열"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
 msgid "'Dubeolsik'"
 msgstr "'두벌식'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
-msgid "key value for UI l10n"
-msgstr "UI l10n 을 위한 키 값"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
 msgid "'Dubeolsik Yetgeul'"

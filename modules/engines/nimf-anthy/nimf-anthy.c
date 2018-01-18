@@ -49,6 +49,8 @@ struct _NimfAnthy
   GSettings         *settings;
   NimfKey          **hiragana_keys;
   NimfKey          **katakana_keys;
+  gchar             *input_mode;
+  gboolean           input_mode_changed;
 
   anthy_context_t  context;
   gint             current_segment;
@@ -392,53 +394,6 @@ nimf_anthy_filter_event_romaji (NimfEngine    *engine,
   NimfAnthy   *anthy = NIMF_ANTHY (engine);
   const gchar *str;
 
-  if (event->key.keyval == NIMF_KEY_space ||
-      (event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
-      (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK))
-    return FALSE;
-
-  if (event->key.keyval == NIMF_KEY_Return)
-  {
-    if (anthy->preedit1->len > 0 || anthy->preedit2->len > 0)
-    {
-      nimf_anthy_reset (engine, target);
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  if (event->key.keyval == NIMF_KEY_BackSpace)
-  {
-    if (anthy->preedit2->len > 0)
-    {
-      gchar *tmp;
-      glong  len = g_utf8_strlen (anthy->preedit2->str, -1);
-
-      tmp = g_utf8_substring (anthy->preedit2->str, 0, len - 1);
-      g_string_assign (anthy->preedit2, tmp);
-
-      g_free (tmp);
-      return TRUE;
-    }
-    else if (anthy->preedit1->len > 0)
-    {
-      gchar *tmp;
-      glong  len = g_utf8_strlen (anthy->preedit1->str, -1);
-
-      tmp = g_utf8_substring (anthy->preedit1->str, 0, len - 1);
-      g_string_assign (anthy->preedit1, tmp);
-
-      g_free (tmp);
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  if (event->key.keyval > 127)
-    return FALSE;
-
   if (anthy->preedit2->len == 1 && event->key.keyval != 'n' &&
       anthy->preedit2->str[0] == event->key.keyval)
     g_string_append (anthy->preedit1, "っ");
@@ -480,6 +435,81 @@ nimf_anthy_filter_event_romaji (NimfEngine    *engine,
         break;
       }
     }
+  }
+
+  return TRUE;
+}
+
+static gboolean
+nimf_anthy_filter_event_oadg109a (NimfEngine    *engine,
+                                  NimfServiceIM *target,
+                                  NimfEvent     *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+  guint      keyval;
+
+  keyval = nimf_event_keycode_to_qwerty_keyval (event);
+
+  switch (keyval)
+  {
+    case NIMF_KEY_1: g_string_append (anthy->preedit1, "ぬ"); break;
+    case NIMF_KEY_2: g_string_append (anthy->preedit1, "ふ"); break;
+    case NIMF_KEY_3: g_string_append (anthy->preedit1, "あ"); break;
+    case NIMF_KEY_numbersign: g_string_append (anthy->preedit1, "ぁ"); break;
+    case NIMF_KEY_4: g_string_append (anthy->preedit1, "う"); break;
+    case NIMF_KEY_dollar: g_string_append (anthy->preedit1, "ぅ"); break;
+    case NIMF_KEY_5: g_string_append (anthy->preedit1, "え"); break;
+    case NIMF_KEY_percent: g_string_append (anthy->preedit1, "ぇ"); break;
+    case NIMF_KEY_6: g_string_append (anthy->preedit1, "お"); break;
+    case NIMF_KEY_ampersand: g_string_append (anthy->preedit1, "ぉ"); break;
+    case NIMF_KEY_7: g_string_append (anthy->preedit1, "や"); break;
+    case NIMF_KEY_apostrophe: g_string_append (anthy->preedit1, "ゃ"); break;
+    case NIMF_KEY_8: g_string_append (anthy->preedit1, "ゆ"); break;
+    case NIMF_KEY_parenleft: g_string_append (anthy->preedit1, "ゅ"); break;
+    case NIMF_KEY_9: g_string_append (anthy->preedit1, "よ"); break;
+    case NIMF_KEY_parenright: g_string_append (anthy->preedit1, "ょ"); break;
+    case NIMF_KEY_0: g_string_append (anthy->preedit1, "わ"); break;
+    case NIMF_KEY_minus: g_string_append (anthy->preedit1, "ほ"); break;
+    case NIMF_KEY_asciicircum: g_string_append (anthy->preedit1, "へ"); break;
+    case NIMF_KEY_q: g_string_append (anthy->preedit1, "た"); break;
+    case NIMF_KEY_w: g_string_append (anthy->preedit1, "て"); break;
+    case NIMF_KEY_e: g_string_append (anthy->preedit1, "い"); break;
+    case NIMF_KEY_E: g_string_append (anthy->preedit1, "ぃ"); break;
+    case NIMF_KEY_r: g_string_append (anthy->preedit1, "す"); break;
+    case NIMF_KEY_t: g_string_append (anthy->preedit1, "か"); break;
+    case NIMF_KEY_y: g_string_append (anthy->preedit1, "ん"); break;
+    case NIMF_KEY_u: g_string_append (anthy->preedit1, "な"); break;
+    case NIMF_KEY_i: g_string_append (anthy->preedit1, "に"); break;
+    case NIMF_KEY_o: g_string_append (anthy->preedit1, "ら"); break;
+    case NIMF_KEY_p: g_string_append (anthy->preedit1, "せ"); break;
+    case NIMF_KEY_a: g_string_append (anthy->preedit1, "ぢ"); break;
+    case NIMF_KEY_s: g_string_append (anthy->preedit1, "ど"); break;
+    case NIMF_KEY_d: g_string_append (anthy->preedit1, "し"); break;
+    case NIMF_KEY_f: g_string_append (anthy->preedit1, "は"); break;
+    case NIMF_KEY_g: g_string_append (anthy->preedit1, "き"); break;
+    case NIMF_KEY_h: g_string_append (anthy->preedit1, "く"); break;
+    case NIMF_KEY_j: g_string_append (anthy->preedit1, "ま"); break;
+    case NIMF_KEY_k: g_string_append (anthy->preedit1, "の"); break;
+    case NIMF_KEY_l: g_string_append (anthy->preedit1, "り"); break;
+    case NIMF_KEY_semicolon: g_string_append (anthy->preedit1, "れ"); break;
+    case NIMF_KEY_colon: g_string_append (anthy->preedit1, "け"); break;
+    case NIMF_KEY_bracketright: g_string_append (anthy->preedit1, "む"); break;
+    case NIMF_KEY_z: g_string_append (anthy->preedit1, "つ"); break;
+    case NIMF_KEY_Z: g_string_append (anthy->preedit1, "っ"); break;
+    case NIMF_KEY_x: g_string_append (anthy->preedit1, "さ"); break;
+    case NIMF_KEY_c: g_string_append (anthy->preedit1, "そ"); break;
+    case NIMF_KEY_v: g_string_append (anthy->preedit1, "ひ"); break;
+    case NIMF_KEY_b: g_string_append (anthy->preedit1, "こ"); break;
+    case NIMF_KEY_n: g_string_append (anthy->preedit1, "み"); break;
+    case NIMF_KEY_m: g_string_append (anthy->preedit1, "も"); break;
+    case NIMF_KEY_comma: g_string_append (anthy->preedit1, "ね1"); break;
+    case NIMF_KEY_period: g_string_append (anthy->preedit1, "る1"); break;
+    case NIMF_KEY_slash: g_string_append (anthy->preedit1, "め"); break;
+    case NIMF_KEY_backslash: g_string_append (anthy->preedit1, "ろ"); break;
+    default:
+      return FALSE;
   }
 
   return TRUE;
@@ -625,6 +655,9 @@ nimf_anthy_filter_event (NimfEngine    *engine,
       case NIMF_KEY_KP_8:
       case NIMF_KEY_KP_9:
         {
+          if (g_strcmp0 (anthy->input_mode,"romaji"))
+            break;
+
           if (anthy->current_page < 1)
             break;
 
@@ -693,11 +726,68 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     }
   }
 
+  if (event->key.keyval == NIMF_KEY_space ||
+      (event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
+      (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK))
+    return FALSE;
+
+  if (anthy->input_mode_changed)
+  {
+    nimf_anthy_reset (engine, target);
+    anthy->input_mode_changed = FALSE;
+  }
+
+  if (event->key.keyval == NIMF_KEY_Return)
+  {
+    if (anthy->preedit1->len > 0 || anthy->preedit2->len > 0)
+    {
+      nimf_anthy_reset (engine, target);
+      retval = TRUE;
+    }
+
+    retval = FALSE;
+  }
+  else if (event->key.keyval == NIMF_KEY_BackSpace)
+  {
+    if (anthy->preedit2->len > 0)
+    {
+      gchar *tmp;
+      glong  len = g_utf8_strlen (anthy->preedit2->str, -1);
+
+      tmp = g_utf8_substring (anthy->preedit2->str, 0, len - 1);
+      g_string_assign (anthy->preedit2, tmp);
+
+      g_free (tmp);
+      retval = TRUE;
+    }
+    else if (anthy->preedit1->len > 0)
+    {
+      gchar *tmp;
+      glong  len = g_utf8_strlen (anthy->preedit1->str, -1);
+
+      tmp = g_utf8_substring (anthy->preedit1->str, 0, len - 1);
+      g_string_assign (anthy->preedit1, tmp);
+
+      g_free (tmp);
+      retval = TRUE;
+    }
+
+    retval = FALSE;
+  }
+  else if (event->key.keyval > 127)
+    retval = FALSE;
+  else if (g_strcmp0 (anthy->input_mode, "romaji") == 0)
+    retval = nimf_anthy_filter_event_romaji (engine, target, event);
+  else
+    retval = nimf_anthy_filter_event_oadg109a (engine, target, event);
+
+  if (retval == FALSE)
+    return FALSE;
+
   anthy->current_segment = 0;
   struct anthy_conv_stat conv_stat;
   gchar *hiragana;
 
-  retval = nimf_anthy_filter_event_romaji (engine, target, event);
   hiragana = g_strconcat (anthy->preedit1->str, anthy->preedit2->str, NULL);
 
   nimf_candidatable_set_auxiliary_text (anthy->candidatable, hiragana,
@@ -716,8 +806,6 @@ nimf_anthy_filter_event (NimfEngine    *engine,
       nimf_candidatable_show (anthy->candidatable, target, TRUE);
 
     nimf_anthy_update_candidate (engine, target);
-
-    retval = TRUE;
   }
   else
   {
@@ -726,7 +814,7 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
   g_free (hiragana);
 
-  return retval;
+  return TRUE;
 }
 
 static void
@@ -750,6 +838,18 @@ on_changed_keys (GSettings *settings,
   }
 
   g_strfreev (keys);
+}
+
+static void
+on_changed_method (GSettings *settings,
+                   gchar     *key,
+                   NimfAnthy *anthy)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_free (anthy->input_mode);
+  anthy->input_mode = g_settings_get_string (settings, key);
+  anthy->input_mode_changed = TRUE;
 }
 
 static void
@@ -1134,8 +1234,9 @@ nimf_anthy_init (NimfAnthy *anthy)
   anthy_context_set_encoding (anthy->context, ANTHY_UTF8_ENCODING);
 
   anthy->settings = g_settings_new ("org.nimf.engines.nimf-anthy");
-  hiragana_keys = g_settings_get_strv (anthy->settings, "hiragana-keys");
-  katakana_keys = g_settings_get_strv (anthy->settings, "katakana-keys");
+  anthy->input_mode = g_settings_get_string (anthy->settings, "input-mode");
+  hiragana_keys = g_settings_get_strv   (anthy->settings, "hiragana-keys");
+  katakana_keys = g_settings_get_strv   (anthy->settings, "katakana-keys");
   anthy->hiragana_keys = nimf_key_newv ((const gchar **) hiragana_keys);
   anthy->katakana_keys = nimf_key_newv ((const gchar **) katakana_keys);
 
@@ -1146,6 +1247,8 @@ nimf_anthy_init (NimfAnthy *anthy)
                     G_CALLBACK (on_changed_keys), anthy);
   g_signal_connect (anthy->settings, "changed::katakana-keys",
                     G_CALLBACK (on_changed_keys), anthy);
+  g_signal_connect (anthy->settings, "changed::input-mode",
+                    G_CALLBACK (on_changed_method), anthy);
 }
 
 static void
@@ -1164,6 +1267,7 @@ nimf_anthy_finalize (GObject *object)
   g_string_free (anthy->preedit, TRUE);
   nimf_key_freev (anthy->hiragana_keys);
   nimf_key_freev (anthy->katakana_keys);
+  g_free (anthy->input_mode);
   g_object_unref (anthy->settings);
 
   if (--nimf_anthy_ref_count == 0)

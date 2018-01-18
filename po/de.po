@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-07 04:50+0900\n"
-"PO-Revision-Date: 2018-01-07 04:50+0900\n"
+"POT-Creation-Date: 2018-01-19 06:10+0900\n"
+"PO-Revision-Date: 2018-01-19 06:10+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -41,7 +41,7 @@ msgstr "Starte einen Indikator"
 msgid "Nimf"
 msgstr ""
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:400
+#: ../modules/engines/nimf-rime/nimf-rime.c:399
 msgid "Rime"
 msgstr ""
 
@@ -228,9 +228,26 @@ msgstr "Hotkey für Katakana"
 msgid "Hotkeys for converting to Katakana"
 msgstr "Hotkeys zum Umwandeln in Katakana"
 
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:11
+msgid "Japanese input mode"
+msgstr "Japanischer Eingabemodus"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:12
+msgid "'Romaji'"
+msgstr ""
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
+msgid "key value for UI l10n"
+msgstr "Schlüsselwert für UI l10n"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
+msgid "'Japanese Keyboard (OADG 109A)'"
+msgstr "'Japanische Tastatur (OADG 109A)'"
+
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"
-msgstr "'Chinesisch (Chewing)'"
+msgstr "'Chinesisch (chewing)'"
 
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:6
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
@@ -249,10 +266,6 @@ msgstr "Koreanisches Tastaturlayout"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
 msgid "'Dubeolsik'"
 msgstr ""
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
-msgid "key value for UI l10n"
-msgstr "Schlüsselwert für UI l10n"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
 msgid "'Dubeolsik Yetgeul'"

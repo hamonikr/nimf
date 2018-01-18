@@ -1,3 +1,9 @@
+nimf (2018.01.19) stable; urgency=medium
+
+  * Partially supported Japanese Keyboard (OADG 109A) (closes #84)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 19 Jan 2018 06:39:27 +0900
+
 nimf (2018.01.18) stable; urgency=medium
 
   * Fixed how to type ん (closes #86 #85 #81)
