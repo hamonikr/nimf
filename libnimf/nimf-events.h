@@ -3,7 +3,7 @@
  * nimf-events.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -57,12 +57,13 @@ union _NimfEvent
   NimfEventKey  key;
 };
 
-GType      nimf_event_get_type   (void) G_GNUC_CONST;
-NimfEvent *nimf_event_new        (NimfEventType  type);
-NimfEvent *nimf_event_copy       (NimfEvent      *event);
-void       nimf_event_free       (NimfEvent      *event);
-gboolean   nimf_event_matches    (NimfEvent      *event,
-                                  const NimfKey **keys);
+GType      nimf_event_get_type (void) G_GNUC_CONST;
+NimfEvent *nimf_event_new                      (NimfEventType     type);
+NimfEvent *nimf_event_copy                     (NimfEvent        *event);
+void       nimf_event_free                     (NimfEvent        *event);
+gboolean   nimf_event_matches                  (NimfEvent        *event,
+                                                const NimfKey   **keys);
+guint      nimf_event_keycode_to_qwerty_keyval (const NimfEvent  *event);
 
 G_END_DECLS
 

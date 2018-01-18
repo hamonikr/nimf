@@ -70,61 +70,6 @@ static gint        nimf_libhangul_hanja_table_ref_count = 0;
 
 G_DEFINE_DYNAMIC_TYPE (NimfLibhangul, nimf_libhangul, NIMF_TYPE_ENGINE);
 
-/* only for PC keyboards */
-guint nimf_event_keycode_to_qwerty_keyval (const NimfEvent *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  guint keyval = 0;
-  gboolean is_shift = event->key.state & NIMF_SHIFT_MASK;
-
-  switch (event->key.hardware_keycode)
-  {
-    /* 20(-) ~ 21(=) */
-    case 20: keyval = is_shift ? '_' : '-';  break;
-    case 21: keyval = is_shift ? '+' : '=';  break;
-    /* 24(q) ~ 35(]) */
-    case 24: keyval = is_shift ? 'Q' : 'q';  break;
-    case 25: keyval = is_shift ? 'W' : 'w';  break;
-    case 26: keyval = is_shift ? 'E' : 'e';  break;
-    case 27: keyval = is_shift ? 'R' : 'r';  break;
-    case 28: keyval = is_shift ? 'T' : 't';  break;
-    case 29: keyval = is_shift ? 'Y' : 'y';  break;
-    case 30: keyval = is_shift ? 'U' : 'u';  break;
-    case 31: keyval = is_shift ? 'I' : 'i';  break;
-    case 32: keyval = is_shift ? 'O' : 'o';  break;
-    case 33: keyval = is_shift ? 'P' : 'p';  break;
-    case 34: keyval = is_shift ? '{' : '[';  break;
-    case 35: keyval = is_shift ? '}' : ']';  break;
-    /* 38(a) ~ 48(') */
-    case 38: keyval = is_shift ? 'A' : 'a';  break;
-    case 39: keyval = is_shift ? 'S' : 's';  break;
-    case 40: keyval = is_shift ? 'D' : 'd';  break;
-    case 41: keyval = is_shift ? 'F' : 'f';  break;
-    case 42: keyval = is_shift ? 'G' : 'g';  break;
-    case 43: keyval = is_shift ? 'H' : 'h';  break;
-    case 44: keyval = is_shift ? 'J' : 'j';  break;
-    case 45: keyval = is_shift ? 'K' : 'k';  break;
-    case 46: keyval = is_shift ? 'L' : 'l';  break;
-    case 47: keyval = is_shift ? ':' : ';';  break;
-    case 48: keyval = is_shift ? '"' : '\''; break;
-    /* 52(z) ~ 61(?) */
-    case 52: keyval = is_shift ? 'Z' : 'z';  break;
-    case 53: keyval = is_shift ? 'X' : 'x';  break;
-    case 54: keyval = is_shift ? 'C' : 'c';  break;
-    case 55: keyval = is_shift ? 'V' : 'v';  break;
-    case 56: keyval = is_shift ? 'B' : 'b';  break;
-    case 57: keyval = is_shift ? 'N' : 'n';  break;
-    case 58: keyval = is_shift ? 'M' : 'm';  break;
-    case 59: keyval = is_shift ? '<' : ',';  break;
-    case 60: keyval = is_shift ? '>' : '.';  break;
-    case 61: keyval = is_shift ? '?' : '/';  break;
-    default: keyval = event->key.keyval;     break;
-  }
-
-  return keyval;
-}
-
 static void
 nimf_libhangul_update_preedit (NimfEngine    *engine,
                                NimfServiceIM *target,
