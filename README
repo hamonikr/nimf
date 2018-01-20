@@ -163,11 +163,11 @@ Debugging
 
 
 Participate
-----------
+-----------
 
   * Development
 
-    You may resolve issues, and then send pull requests.
+    You may send pull requests.
     https://github.com/cogniti/nimf/pulls
 
   * Translation
@@ -185,9 +185,6 @@ Participate
 
 Support
 -------
-
-  If you have any problems or requests while you are using Nimf, please contact
-  issue tracker. https://github.com/cogniti/nimf/issues
 
   * Not Nimf bugs but your application bugs
 
