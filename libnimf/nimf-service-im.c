@@ -23,6 +23,7 @@
 #include "nimf-module.h"
 #include <string.h>
 #include "nimf-preeditable.h"
+#include "nimf-key-syms.h"
 
 G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 
@@ -315,6 +316,9 @@ gboolean nimf_service_im_filter_event (NimfServiceIM *im,
         nimf_service_im_engine_changed (im, nimf_engine_get_id (im->engine),
                                         nimf_engine_get_icon_name (im->engine));
       }
+
+      if (event->key.keyval == NIMF_KEY_Escape)
+        return FALSE;
 
       return TRUE;
     }

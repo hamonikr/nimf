@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-21 17:30+0900\n"
-"PO-Revision-Date: 2018-01-21 17:39+0900\n"
+"POT-Creation-Date: 2018-01-22 08:37+0900\n"
+"PO-Revision-Date: 2018-01-22 08:42+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -356,6 +356,10 @@ msgstr "'中文 (sunpinyin)'"
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:1
 msgid "'System Keyboard'"
 msgstr "'系统键盘'"
+
+#: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:4
+msgid "Trigger keys for switching to System Keyboard"
+msgstr "触发键切换到系统键盘"
 
 #: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:1
 msgid "'XIM'"
