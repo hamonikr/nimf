@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-19 06:10+0900\n"
-"PO-Revision-Date: 2018-01-19 06:22+0900\n"
+"POT-Creation-Date: 2018-01-21 17:30+0900\n"
+"PO-Revision-Date: 2018-01-21 17:34+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -239,8 +239,12 @@ msgid "key value for UI l10n"
 msgstr "UI l10nのためのキー値"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
-msgid "'Japanese Keyboard (OADG 109A)'"
-msgstr "'日本語キーボード (OADG 109A)'"
+msgid "'Kana input on the English Keyboard (pc104)'"
+msgstr "'英字キーボードの仮名入力 (pc104)'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
+msgid "'Kana input on the Japanese Keyboard (OADG 109A)'"
+msgstr "'日本語キーボードのかな入力 (OADG 109A)'"
 
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"

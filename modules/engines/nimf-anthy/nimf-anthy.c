@@ -441,6 +441,191 @@ nimf_anthy_filter_event_romaji (NimfEngine    *engine,
 }
 
 static gboolean
+nimf_anthy_filter_event_pc104 (NimfEngine    *engine,
+                               NimfServiceIM *target,
+                               NimfEvent     *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  gboolean is_shift = event->key.state & NIMF_SHIFT_MASK;
+
+  switch (event->key.hardware_keycode)
+  {
+    case 49: g_string_append (anthy->preedit1, "ろ"); break;
+    case 10: g_string_append (anthy->preedit1, "ぬ"); break;
+    case 11: g_string_append (anthy->preedit1, "ふ"); break;
+    case 12:
+      if (is_shift) g_string_append (anthy->preedit1, "ぁ");
+      else          g_string_append (anthy->preedit1, "あ");
+      break;
+    case 13:
+      if (is_shift) g_string_append (anthy->preedit1, "ぅ");
+      else          g_string_append (anthy->preedit1, "う");
+      break;
+    case 14:
+      if (is_shift) g_string_append (anthy->preedit1, "ぇ");
+      else          g_string_append (anthy->preedit1, "え");
+      break;
+    case 15:
+      if (is_shift) g_string_append (anthy->preedit1, "ぉ");
+      else          g_string_append (anthy->preedit1, "お");
+      break;
+    case 16:
+      if (is_shift) g_string_append (anthy->preedit1, "ゃ");
+      else          g_string_append (anthy->preedit1, "や");
+      break;
+    case 17:
+      if (is_shift) g_string_append (anthy->preedit1, "ゅ");
+      else          g_string_append (anthy->preedit1, "ゆ");
+      break;
+    case 18:
+      if (is_shift) g_string_append (anthy->preedit1, "ょ");
+      else          g_string_append (anthy->preedit1, "よ");
+      break;
+    case 19:
+      if (is_shift) g_string_append (anthy->preedit1, "を");
+      else          g_string_append (anthy->preedit1, "わ");
+      break;
+    case 20:
+      if (is_shift) g_string_append (anthy->preedit1, "ー");
+      else          g_string_append (anthy->preedit1, "ほ");
+      break;
+    case 21: g_string_append (anthy->preedit1, "へ"); break;
+    case 24: g_string_append (anthy->preedit1, "た"); break;
+    case 25: g_string_append (anthy->preedit1, "て"); break;
+    case 26:
+      if (is_shift) g_string_append (anthy->preedit1, "ぃ");
+      else          g_string_append (anthy->preedit1, "い");
+      break;
+    case 27: g_string_append (anthy->preedit1, "す"); break;
+    case 28: g_string_append (anthy->preedit1, "か"); break;
+    case 29: g_string_append (anthy->preedit1, "ん"); break;
+    case 30: g_string_append (anthy->preedit1, "な"); break;
+    case 31: g_string_append (anthy->preedit1, "に"); break;
+    case 32: g_string_append (anthy->preedit1, "ら"); break;
+    case 33: g_string_append (anthy->preedit1, "せ"); break;
+    case 34:
+      if (is_shift)
+      {
+        g_string_append (anthy->preedit1, "「");
+      }
+      else
+      {
+        gchar *ptr;
+
+        if (anthy->preedit->len == 0)
+          break;
+
+        if ((ptr = g_strrstr (anthy->preedit1->str, "は")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぱ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ひ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぴ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ふ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぷ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "へ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぺ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ほ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぽ");
+      }
+      break;
+    case 35:
+      if (is_shift)
+      {
+        g_string_append (anthy->preedit1, "」");
+      }
+      else
+      {
+        gchar *ptr;
+
+        if (anthy->preedit->len == 0)
+          break;
+
+        if ((ptr = g_strrstr (anthy->preedit1->str, "か")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "が");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "き")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぎ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "く")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぐ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "け")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "げ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "こ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ご");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "さ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ざ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "し")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "じ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "す")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ず");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "せ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぜ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "そ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぞ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "た")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "だ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ち")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぢ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "つ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "づ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "て")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "で");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "と")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ど");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "は")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ば");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ひ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "び");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ふ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぶ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "へ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "べ");
+        else if ((ptr = g_strrstr (anthy->preedit1->str, "ほ")))
+          g_string_overwrite (anthy->preedit1, ptr - anthy->preedit1->str, "ぼ");
+      }
+      break;
+    case 51: g_string_append (anthy->preedit1, "む"); break;
+    case 38: g_string_append (anthy->preedit1, "ち"); break;
+    case 39: g_string_append (anthy->preedit1, "と"); break;
+    case 40: g_string_append (anthy->preedit1, "し"); break;
+    case 41: g_string_append (anthy->preedit1, "は"); break;
+    case 42: g_string_append (anthy->preedit1, "き"); break;
+    case 43: g_string_append (anthy->preedit1, "く"); break;
+    case 44: g_string_append (anthy->preedit1, "ま"); break;
+    case 45: g_string_append (anthy->preedit1, "の"); break;
+    case 46: g_string_append (anthy->preedit1, "り"); break;
+    case 47: g_string_append (anthy->preedit1, "れ"); break;
+    case 48: g_string_append (anthy->preedit1, "け"); break;
+    case 52:
+      if (is_shift) g_string_append (anthy->preedit1, "っ");
+      else          g_string_append (anthy->preedit1, "つ");
+      break;
+    case 53: g_string_append (anthy->preedit1, "さ"); break;
+    case 54: g_string_append (anthy->preedit1, "そ"); break;
+    case 55: g_string_append (anthy->preedit1, "ひ"); break;
+    case 56: g_string_append (anthy->preedit1, "こ"); break;
+    case 57: g_string_append (anthy->preedit1, "み"); break;
+    case 58: g_string_append (anthy->preedit1, "も"); break;
+    case 59:
+      if (is_shift) g_string_append (anthy->preedit1, "、");
+      else          g_string_append (anthy->preedit1, "ね");
+      break;
+    case 60:
+      if (is_shift) g_string_append (anthy->preedit1, "。");
+      else          g_string_append (anthy->preedit1, "る");
+      break;
+    case 61:
+      if (is_shift) g_string_append (anthy->preedit1, "・");
+      else          g_string_append (anthy->preedit1, "め");
+      break;
+    default:
+      return FALSE;
+  }
+
+  return TRUE;
+}
+
+static gboolean
 nimf_anthy_filter_event_oadg109a (NimfEngine    *engine,
                                   NimfServiceIM *target,
                                   NimfEvent     *event)
@@ -771,13 +956,17 @@ nimf_anthy_filter_event (NimfEngine    *engine,
       g_free (tmp);
       retval = TRUE;
     }
-
-    retval = FALSE;
+    else
+    {
+      retval = FALSE;
+    }
   }
   else if (event->key.keyval > 127)
     retval = FALSE;
   else if (g_strcmp0 (anthy->input_mode, "romaji") == 0)
     retval = nimf_anthy_filter_event_romaji (engine, target, event);
+  else if (g_strcmp0 (anthy->input_mode, "pc104") == 0)
+    retval = nimf_anthy_filter_event_pc104 (engine, target, event);
   else
     retval = nimf_anthy_filter_event_oadg109a (engine, target, event);
 

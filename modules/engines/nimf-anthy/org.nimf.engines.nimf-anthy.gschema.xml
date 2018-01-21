@@ -30,7 +30,8 @@
     <key type="s" name="input-mode">
       <choices>
         <choice value='romaji'   /> <!-- Romaji -->
-        <choice value='oadg109a' /> <!-- OADG 109A -->
+        <choice value='pc104'    /> <!-- Standard English Keyboard pc104 -->
+        <choice value='oadg109a' /> <!-- Japanese Keyboard OADG 109A -->
       </choices>
       <default>'romaji'</default>
       <summary>Japanese input mode</summary>
@@ -41,8 +42,13 @@
       <summary>key value for UI l10n</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
+    <key type="s" name="hidden-input-mode-pc104">
+      <default l10n="messages">'Kana input on the English Keyboard (pc104)'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
     <key type="s" name="hidden-input-mode-oadg109a">
-      <default l10n="messages">'Japanese Keyboard (OADG 109A)'</default>
+      <default l10n="messages">'Kana input on the Japanese Keyboard (OADG 109A)'</default>
       <summary>key value for UI l10n</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>

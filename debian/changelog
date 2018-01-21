@@ -1,3 +1,9 @@
+nimf (2018.01.21) stable; urgency=medium
+
+  * Kana input on the English Keyboard (pc104) (closes #84)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 21 Jan 2018 17:43:21 +0900
+
 nimf (2018.01.20) stable; urgency=medium
 
   * Updated README
