@@ -646,81 +646,6 @@ nimf_anthy_filter_event_pc104 (NimfEngine    *engine,
   return TRUE;
 }
 
-static gboolean
-nimf_anthy_filter_event_oadg109a (NimfEngine    *engine,
-                                  NimfServiceIM *target,
-                                  NimfEvent     *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfAnthy *anthy = NIMF_ANTHY (engine);
-  guint      keyval;
-
-  keyval = nimf_event_keycode_to_qwerty_keyval (event);
-
-  switch (keyval)
-  {
-    case NIMF_KEY_1: g_string_append (anthy->preedit1, "ぬ"); break;
-    case NIMF_KEY_2: g_string_append (anthy->preedit1, "ふ"); break;
-    case NIMF_KEY_3: g_string_append (anthy->preedit1, "あ"); break;
-    case NIMF_KEY_numbersign: g_string_append (anthy->preedit1, "ぁ"); break;
-    case NIMF_KEY_4: g_string_append (anthy->preedit1, "う"); break;
-    case NIMF_KEY_dollar: g_string_append (anthy->preedit1, "ぅ"); break;
-    case NIMF_KEY_5: g_string_append (anthy->preedit1, "え"); break;
-    case NIMF_KEY_percent: g_string_append (anthy->preedit1, "ぇ"); break;
-    case NIMF_KEY_6: g_string_append (anthy->preedit1, "お"); break;
-    case NIMF_KEY_ampersand: g_string_append (anthy->preedit1, "ぉ"); break;
-    case NIMF_KEY_7: g_string_append (anthy->preedit1, "や"); break;
-    case NIMF_KEY_apostrophe: g_string_append (anthy->preedit1, "ゃ"); break;
-    case NIMF_KEY_8: g_string_append (anthy->preedit1, "ゆ"); break;
-    case NIMF_KEY_parenleft: g_string_append (anthy->preedit1, "ゅ"); break;
-    case NIMF_KEY_9: g_string_append (anthy->preedit1, "よ"); break;
-    case NIMF_KEY_parenright: g_string_append (anthy->preedit1, "ょ"); break;
-    case NIMF_KEY_0: g_string_append (anthy->preedit1, "わ"); break;
-    case NIMF_KEY_minus: g_string_append (anthy->preedit1, "ほ"); break;
-    case NIMF_KEY_asciicircum: g_string_append (anthy->preedit1, "へ"); break;
-    case NIMF_KEY_q: g_string_append (anthy->preedit1, "た"); break;
-    case NIMF_KEY_w: g_string_append (anthy->preedit1, "て"); break;
-    case NIMF_KEY_e: g_string_append (anthy->preedit1, "い"); break;
-    case NIMF_KEY_E: g_string_append (anthy->preedit1, "ぃ"); break;
-    case NIMF_KEY_r: g_string_append (anthy->preedit1, "す"); break;
-    case NIMF_KEY_t: g_string_append (anthy->preedit1, "か"); break;
-    case NIMF_KEY_y: g_string_append (anthy->preedit1, "ん"); break;
-    case NIMF_KEY_u: g_string_append (anthy->preedit1, "な"); break;
-    case NIMF_KEY_i: g_string_append (anthy->preedit1, "に"); break;
-    case NIMF_KEY_o: g_string_append (anthy->preedit1, "ら"); break;
-    case NIMF_KEY_p: g_string_append (anthy->preedit1, "せ"); break;
-    case NIMF_KEY_a: g_string_append (anthy->preedit1, "ぢ"); break;
-    case NIMF_KEY_s: g_string_append (anthy->preedit1, "ど"); break;
-    case NIMF_KEY_d: g_string_append (anthy->preedit1, "し"); break;
-    case NIMF_KEY_f: g_string_append (anthy->preedit1, "は"); break;
-    case NIMF_KEY_g: g_string_append (anthy->preedit1, "き"); break;
-    case NIMF_KEY_h: g_string_append (anthy->preedit1, "く"); break;
-    case NIMF_KEY_j: g_string_append (anthy->preedit1, "ま"); break;
-    case NIMF_KEY_k: g_string_append (anthy->preedit1, "の"); break;
-    case NIMF_KEY_l: g_string_append (anthy->preedit1, "り"); break;
-    case NIMF_KEY_semicolon: g_string_append (anthy->preedit1, "れ"); break;
-    case NIMF_KEY_colon: g_string_append (anthy->preedit1, "け"); break;
-    case NIMF_KEY_bracketright: g_string_append (anthy->preedit1, "む"); break;
-    case NIMF_KEY_z: g_string_append (anthy->preedit1, "つ"); break;
-    case NIMF_KEY_Z: g_string_append (anthy->preedit1, "っ"); break;
-    case NIMF_KEY_x: g_string_append (anthy->preedit1, "さ"); break;
-    case NIMF_KEY_c: g_string_append (anthy->preedit1, "そ"); break;
-    case NIMF_KEY_v: g_string_append (anthy->preedit1, "ひ"); break;
-    case NIMF_KEY_b: g_string_append (anthy->preedit1, "こ"); break;
-    case NIMF_KEY_n: g_string_append (anthy->preedit1, "み"); break;
-    case NIMF_KEY_m: g_string_append (anthy->preedit1, "も"); break;
-    case NIMF_KEY_comma: g_string_append (anthy->preedit1, "ね1"); break;
-    case NIMF_KEY_period: g_string_append (anthy->preedit1, "る1"); break;
-    case NIMF_KEY_slash: g_string_append (anthy->preedit1, "め"); break;
-    case NIMF_KEY_backslash: g_string_append (anthy->preedit1, "ろ"); break;
-    default:
-      return FALSE;
-  }
-
-  return TRUE;
-}
-
 static gchar *
 nimf_anthy_convert_to (NimfAnthy *anthy, int candidate_type)
 {
@@ -986,10 +911,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     retval = FALSE;
   else if (g_strcmp0 (anthy->input_mode, "romaji") == 0)
     retval = nimf_anthy_filter_event_romaji (engine, target, event);
-  else if (g_strcmp0 (anthy->input_mode, "pc104") == 0)
-    retval = nimf_anthy_filter_event_pc104 (engine, target, event);
   else
-    retval = nimf_anthy_filter_event_oadg109a (engine, target, event);
+    retval = nimf_anthy_filter_event_pc104 (engine, target, event);
 
   if (retval == FALSE)
     return FALSE;

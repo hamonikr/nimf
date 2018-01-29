@@ -1,3 +1,9 @@
+nimf (2018.01.30) stable; urgency=medium
+
+  * Removed Japanese Keyboard (OADG 109A)
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 30 Jan 2018 03:27:36 +0900
+
 nimf (2018.01.22) stable; urgency=medium
 
   * Added trigger-keys option for system keyboard (closes #30)
