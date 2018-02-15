@@ -3,7 +3,7 @@
  * im-nimf.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -81,8 +81,7 @@ translate_xkey_event (XEvent *xevent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GdkDisplay *display = gdk_display_get_default ();
-  GdkKeymap *keymap = gdk_keymap_get_for_display (display);
+  GdkKeymap *keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
   GdkModifierType consumed, state;
 
   NimfEvent *nimf_event = nimf_event_new (NIMF_EVENT_NOTHING);
@@ -123,8 +122,9 @@ nimf_gtk_im_context_filter_keypress (GtkIMContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gboolean   retval;
-  NimfEvent *nimf_event = translate_gdk_event_key (event);
+  NimfEvent *nimf_event;
 
+  nimf_event = translate_gdk_event_key (event);
   retval = nimf_im_filter_event (NIMF_GTK_IM_CONTEXT (context)->im, nimf_event);
   nimf_event_free (nimf_event);
 
@@ -404,8 +404,7 @@ on_beep (NimfIM           *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GdkDisplay *display = gdk_display_get_default ();
-  gdk_display_beep (display);
+  gdk_display_beep (gdk_display_get_default ());
 }
 
 static void

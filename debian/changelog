@@ -1,3 +1,9 @@
+nimf (2018.02.16) stable; urgency=medium
+
+  * Removed deprecated functions (closes #90)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 16 Feb 2018 04:29:21 +0900
+
 nimf (2018.01.30) stable; urgency=medium
 
   * Removed Japanese Keyboard (OADG 109A)
