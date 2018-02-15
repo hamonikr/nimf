@@ -81,7 +81,8 @@ translate_xkey_event (XEvent *xevent)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GdkKeymap *keymap = gdk_keymap_get_default ();
+  GdkDisplay *display = gdk_display_get_default ();
+  GdkKeymap *keymap = gdk_keymap_get_for_display (display);
   GdkModifierType consumed, state;
 
   NimfEvent *nimf_event = nimf_event_new (NIMF_EVENT_NOTHING);
@@ -403,7 +404,8 @@ on_beep (NimfIM           *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gdk_beep ();
+  GdkDisplay *display = gdk_display_get_default ();
+  gdk_display_beep (display);
 }
 
 static void
