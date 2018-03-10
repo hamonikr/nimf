@@ -1,3 +1,9 @@
+nimf (2018.03.10) stable; urgency=medium
+
+  * nimf-anthy: Fixed incorrect mapping (closes #91)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 10 Mar 2018 12:11:04 +0900
+
 nimf (2018.02.16) stable; urgency=medium
 
   * Removed deprecated functions (closes #90)

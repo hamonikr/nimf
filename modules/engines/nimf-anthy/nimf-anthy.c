@@ -516,33 +516,6 @@ nimf_anthy_filter_event_pc104 (NimfEngine    *engine,
         if (anthy->preedit->len == 0)
           break;
 
-        if (g_str_has_suffix (anthy->preedit1->str, "は"))
-          g_string_overwrite (anthy->preedit1,
-                              anthy->preedit1->len - strlen ("は"), "ぱ");
-        else if (g_str_has_suffix (anthy->preedit1->str, "ひ"))
-          g_string_overwrite (anthy->preedit1,
-                              anthy->preedit1->len - strlen ("ひ"), "ぴ");
-        else if (g_str_has_suffix (anthy->preedit1->str, "ふ"))
-          g_string_overwrite (anthy->preedit1,
-                              anthy->preedit1->len - strlen ("ふ"), "ぷ");
-        else if (g_str_has_suffix (anthy->preedit1->str, "へ"))
-          g_string_overwrite (anthy->preedit1,
-                              anthy->preedit1->len - strlen ("へ"), "ぺ");
-        else if (g_str_has_suffix (anthy->preedit1->str, "ほ"))
-          g_string_overwrite (anthy->preedit1,
-                              anthy->preedit1->len - strlen ("ほ"), "ぽ");
-      }
-      break;
-    case 35:
-      if (is_shift)
-      {
-        g_string_append (anthy->preedit1, "」");
-      }
-      else
-      {
-        if (anthy->preedit->len == 0)
-          break;
-
         if (g_str_has_suffix (anthy->preedit1->str, "か"))
           g_string_overwrite (anthy->preedit1,
                               anthy->preedit1->len - strlen ("か"), "が");
@@ -603,6 +576,33 @@ nimf_anthy_filter_event_pc104 (NimfEngine    *engine,
         else if (g_str_has_suffix (anthy->preedit1->str, "ほ"))
           g_string_overwrite (anthy->preedit1,
                               anthy->preedit1->len - strlen ("ほ"), "ぼ");
+      }
+      break;
+    case 35:
+      if (is_shift)
+      {
+        g_string_append (anthy->preedit1, "」");
+      }
+      else
+      {
+        if (anthy->preedit->len == 0)
+          break;
+
+        if (g_str_has_suffix (anthy->preedit1->str, "は"))
+          g_string_overwrite (anthy->preedit1,
+                              anthy->preedit1->len - strlen ("は"), "ぱ");
+        else if (g_str_has_suffix (anthy->preedit1->str, "ひ"))
+          g_string_overwrite (anthy->preedit1,
+                              anthy->preedit1->len - strlen ("ひ"), "ぴ");
+        else if (g_str_has_suffix (anthy->preedit1->str, "ふ"))
+          g_string_overwrite (anthy->preedit1,
+                              anthy->preedit1->len - strlen ("ふ"), "ぷ");
+        else if (g_str_has_suffix (anthy->preedit1->str, "へ"))
+          g_string_overwrite (anthy->preedit1,
+                              anthy->preedit1->len - strlen ("へ"), "ぺ");
+        else if (g_str_has_suffix (anthy->preedit1->str, "ほ"))
+          g_string_overwrite (anthy->preedit1,
+                              anthy->preedit1->len - strlen ("ほ"), "ぽ");
       }
       break;
     case 51: g_string_append (anthy->preedit1, "む"); break;
