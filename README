@@ -6,7 +6,7 @@ Nimf provides:
   * Input Method Server:
     * nimf-daemon
   * Language Engines:
-    * Chinese (based on sunpinyin, libchewing, librime)
+    * Chinese (based on libchewing, librime)
     * Japanese (based on anthy)
     * Korean (based on libhangul)
   * Service Modules:
@@ -118,15 +118,12 @@ Compiling and installing
       nimf-master
       nimf-rime_YYYY.mm.dd_amd64.deb
       nimf-rime-dbgsym_YYYY.mm.dd_amd64.deb
-      nimf-sunpinyin_YYYY.mm.dd_amd64.deb
-      nimf-sunpinyin-dbgsym_YYYY.mm.dd_amd64.deb
 
     Install deb packages.
 
       username:~/tmp-build$ sudo dpkg -i nimf_YYYY.mm.dd_amd64.deb \
       nimf-anthy_YYYY.mm.dd_amd64.deb nimf-chewing_YYYY.mm.dd_amd64.deb \
-      nimf-libhangul_YYYY.mm.dd_amd64.deb nimf-rime_YYYY.mm.dd_amd64.deb \
-      nimf-sunpinyin_YYYY.mm.dd_amd64.deb
+      nimf-libhangul_YYYY.mm.dd_amd64.deb nimf-rime_YYYY.mm.dd_amd64.deb
 
     As above mentioned, make the package yourself. Otherwise, request your Linux
     distribution to package Nimf.
@@ -223,7 +220,6 @@ References
     https://github.com/chewing/libchewing
     https://github.com/choehwanjin/libhangul
     https://github.com/rime/librime
-    https://github.com/sunpinyin/sunpinyin
 
   * Implementations
 

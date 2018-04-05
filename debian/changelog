@@ -1,3 +1,10 @@
+nimf (2018.04.05) stable; urgency=medium
+
+  * Removed sunpinyin
+  * Fixed segmentation fault (closes #95)
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 05 Apr 2018 13:49:30 +0900
+
 nimf (2018.03.10) stable; urgency=medium
 
   * nimf-anthy: Fixed incorrect mapping (closes #91)

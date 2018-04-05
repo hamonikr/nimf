@@ -4,7 +4,6 @@ modules/clients/gtk/im-nimf.c
 modules/engines/nimf-anthy/nimf-anthy.c
 modules/engines/nimf-libhangul/nimf-libhangul.c
 modules/engines/nimf-rime/nimf-rime.c
-modules/engines/nimf-sunpinyin/nimf-sunpinyin.cpp
 modules/engines/nimf-system-keyboard/nimf-system-keyboard.c
 modules/services/indicator/nimf-indicator.c
 settings/nimf-settings.c
@@ -15,6 +14,5 @@ settings/nimf-settings.c
 [type: gettext/gsettings]modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml
-[type: gettext/gsettings]modules/engines/nimf-sunpinyin/org.nimf.engines.nimf-sunpinyin.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml
 [type: gettext/gsettings]modules/services/xim/org.nimf.services.xim.gschema.xml

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2018.03.10)
+AC_INIT(nimf, 2018.04.05)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -59,29 +59,6 @@ PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_RIME_DEPS, [rime >= 1.2.9 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,
                   [xkbcommon >= 0.5.0 $LIBNIMF_REQUIRES])
-
-dnl ***************************************************************************
-dnl nimf-sunpinyin
-dnl ***************************************************************************
-
-PKG_CHECK_MODULES(NIMF_SUNPINYIN_DEPS, [sunpinyin-2.0 $LIBNIMF_REQUIRES])
-
-dnl Check sunpinyin-data for Debian-like distributions
-
-SUNPINYIN_DATA_DIR=`pkg-config --variable=libdir sunpinyin-2.0`/sunpinyin/data
-
-AC_CHECK_FILES(
-   [$SUNPINYIN_DATA_DIR/lm_sc.t3g
-    $SUNPINYIN_DATA_DIR/pydict_sc.bin], [], HAVE_SUNPINYIN_DATA="no")
-
-dnl Check sunpinyin-data for Arch Linux, Fedora
-
-if test "x$HAVE_SUNPINYIN_DATA" = "xno"; then
-  AC_CHECK_FILES(
-     [/usr/share/sunpinyin/lm_sc.t3g
-      /usr/share/sunpinyin/pydict_sc.bin], [],
-      AC_MSG_ERROR([sunpinyin-data files are not found.]))
-fi
 
 dnl ***************************************************************************
 dnl nimf-anthy
@@ -268,7 +245,6 @@ AC_OUTPUT([
   modules/engines/nimf-chewing/Makefile
   modules/engines/nimf-libhangul/Makefile
   modules/engines/nimf-rime/Makefile
-  modules/engines/nimf-sunpinyin/Makefile
   modules/engines/nimf-system-keyboard/Makefile
   modules/services/Makefile
   modules/services/candidate/Makefile

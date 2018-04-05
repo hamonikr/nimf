@@ -16,8 +16,6 @@ Build-Depends: debhelper (>= 9),
                libappindicator3-dev,
                librsvg2-bin,
                fonts-noto-cjk,
-               libsunpinyin-dev,
-               sunpinyin-data,
                libhangul-dev,
                libanthy-dev,
                anthy,
@@ -115,14 +113,3 @@ Description: Chinese input module for Nimf, based on rime
  synchronously with the Nimf server via a Unix socket.
  .
  This package provides a Chinese input module based on rime.
-
-Package: nimf-sunpinyin
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, sunpinyin-data
-Suggests: fonts-noto-cjk
-Description: Chinese input module for Nimf, based on sunpinyin
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
- .
- This package provides a Chinese input module based on sunpinyin.
