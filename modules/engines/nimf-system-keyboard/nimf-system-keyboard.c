@@ -3,7 +3,7 @@
  * nimf-system-keyboard.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -99,6 +99,13 @@ nimf_system_keyboard_init (NimfSystemKeyboard *keyboard)
     keyboard->xkb_compose_table =
       xkb_compose_table_new_from_locale (keyboard->xkb_context, "C",
                                          XKB_COMPOSE_COMPILE_NO_FLAGS);
+
+  if (!keyboard->xkb_compose_table)
+  {
+    g_warning ("xkb compose is disabled");
+    return;
+  }
+
   keyboard->xkb_compose_state =
     xkb_compose_state_new (keyboard->xkb_compose_table,
                            XKB_COMPOSE_STATE_NO_FLAGS);
@@ -169,11 +176,14 @@ nimf_system_keyboard_filter_event (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (event->type == NIMF_EVENT_KEY_RELEASE)
-    return FALSE;
-
   NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (engine);
   enum xkb_compose_feed_result result;
+
+  if (G_UNLIKELY (!keyboard->xkb_compose_table))
+    return FALSE;
+
+  if (event->type == NIMF_EVENT_KEY_RELEASE)
+    return FALSE;
 
   result = xkb_compose_state_feed (keyboard->xkb_compose_state,
                                    event->key.keyval);
@@ -212,12 +222,18 @@ nimf_system_keyboard_filter_event (NimfEngine    *engine,
   return TRUE;
 }
 
-static void nimf_system_keyboard_reset (NimfEngine    *engine,
-                                        NimfServiceIM *target)
+static void
+nimf_system_keyboard_reset (NimfEngine    *engine,
+                            NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  xkb_compose_state_reset (NIMF_SYSTEM_KEYBOARD (engine)->xkb_compose_state);
+  NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (engine);
+
+  if (G_UNLIKELY (!keyboard->xkb_compose_table))
+    return;
+
+  xkb_compose_state_reset (keyboard->xkb_compose_state);
   nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
 }
 
