@@ -1,3 +1,9 @@
+nimf (2018.05.04) stable; urgency=medium
+
+  * Add ISO_Level3_Shift (0xfe03) to NimfKeySym
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 04 May 2018 16:30:01 +0900
+
 nimf (2018.04.05) stable; urgency=medium
 
   * Removed sunpinyin
