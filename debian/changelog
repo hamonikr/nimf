@@ -1,3 +1,9 @@
+nimf (2018.05.08) stable; urgency=medium
+
+  * nimf-anthy: Follow existing practice (closes #102 #100 #76 #73)
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 08 May 2018 13:16:26 +0900
+
 nimf (2018.05.04) stable; urgency=medium
 
   * Add ISO_Level3_Shift (0xfe03) to NimfKeySym
