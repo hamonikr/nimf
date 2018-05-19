@@ -170,8 +170,8 @@ nimf_anthy_get_current_page (NimfEngine *engine)
 }
 
 static void
-nimf_anthy_convert_preedit_text (NimfEngine    *engine,
-                                 NimfServiceIM *target)
+nimf_anthy_update_preedit_text (NimfEngine    *engine,
+                                NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -210,26 +210,6 @@ nimf_anthy_convert_preedit_text (NimfEngine    *engine,
 }
 
 static void
-nimf_anthy_update_preedit_text (NimfEngine    *engine,
-                                NimfServiceIM *target)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfAnthy *anthy = NIMF_ANTHY (engine);
-  gint utf8_len;
-
-  g_string_assign (anthy->preedit, anthy->preedit1->str);
-  g_string_append (anthy->preedit, anthy->preedit2->str);
-  utf8_len = g_utf8_strlen (anthy->preedit->str, -1);
-  anthy->preedit_attrs[0]->start_index = 0;
-  anthy->preedit_attrs[0]->end_index   = utf8_len;
-  anthy->preedit_attrs[1]->start_index = 0;
-  anthy->preedit_attrs[1]->end_index   = 0;
-  nimf_anthy_update_preedit_state (engine, target, anthy->preedit->str,
-                                   utf8_len);
-}
-
-static void
 nimf_anthy_update_page (NimfEngine    *engine,
                         NimfServiceIM *target)
 {
@@ -255,8 +235,7 @@ nimf_anthy_update_page (NimfEngine    *engine,
     nimf_candidatable_append (anthy->candidatable, anthy->buffer, NULL);
   }
 
-  nimf_candidatable_select_item_by_index_in_page
-    (anthy->candidatable, anthy->selections[anthy->current_segment]);
+  nimf_candidatable_select_first_item_in_page (anthy->candidatable);
   nimf_candidatable_set_page_values (anthy->candidatable, target,
                                      anthy->current_page, anthy->n_pages, 10);
 }
@@ -272,25 +251,8 @@ on_candidate_clicked (NimfEngine    *engine,
   NimfAnthy *anthy = NIMF_ANTHY (engine);
 
   anthy->selections[anthy->current_segment] = (anthy->current_page -1) * 10 + index;
-  nimf_anthy_convert_preedit_text (engine, target);
-}
-
-static void
-nimf_anthy_page_end (NimfEngine *engine, NimfServiceIM *target)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfAnthy *anthy = NIMF_ANTHY (engine);
-
-  if (anthy->current_page == anthy->n_pages)
-  {
-    nimf_candidatable_select_last_item_in_page (anthy->candidatable);
-    return;
-  }
-
-  anthy->current_page = anthy->n_pages;
+  nimf_anthy_update_preedit_text (engine, target);
   nimf_anthy_update_page (engine, target);
-  nimf_candidatable_select_last_item_in_page (anthy->candidatable);
 }
 
 static gboolean
@@ -302,13 +264,33 @@ nimf_anthy_page_up (NimfEngine *engine, NimfServiceIM *target)
 
   if (anthy->current_page <= 1)
   {
-    nimf_anthy_page_end (engine, target);
+    nimf_candidatable_select_first_item_in_page (anthy->candidatable);
     return FALSE;
   }
 
   anthy->current_page--;
   nimf_anthy_update_page (engine, target);
   nimf_candidatable_select_last_item_in_page (anthy->candidatable);
+
+  return TRUE;
+}
+
+static gboolean
+nimf_anthy_page_down (NimfEngine *engine, NimfServiceIM *target)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfAnthy *anthy = NIMF_ANTHY (engine);
+
+  if (anthy->current_page == anthy->n_pages)
+  {
+    nimf_candidatable_select_last_item_in_page (anthy->candidatable);
+    return FALSE;
+  }
+
+  anthy->current_page++;
+  nimf_anthy_update_page (engine, target);
+  nimf_candidatable_select_first_item_in_page (anthy->candidatable);
 
   return TRUE;
 }
@@ -331,8 +313,8 @@ nimf_anthy_page_home (NimfEngine *engine, NimfServiceIM *target)
   nimf_candidatable_select_first_item_in_page (anthy->candidatable);
 }
 
-static gboolean
-nimf_anthy_page_down (NimfEngine *engine, NimfServiceIM *target)
+static void
+nimf_anthy_page_end (NimfEngine *engine, NimfServiceIM *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -340,15 +322,13 @@ nimf_anthy_page_down (NimfEngine *engine, NimfServiceIM *target)
 
   if (anthy->current_page == anthy->n_pages)
   {
-    nimf_anthy_page_home (engine, target);
-    return FALSE;
+    nimf_candidatable_select_last_item_in_page (anthy->candidatable);
+    return;
   }
 
-  anthy->current_page++;
+  anthy->current_page = anthy->n_pages;
   nimf_anthy_update_page (engine, target);
-  nimf_candidatable_select_first_item_in_page (anthy->candidatable);
-
-  return TRUE;
+  nimf_candidatable_select_last_item_in_page (anthy->candidatable);
 }
 
 static void
@@ -417,8 +397,6 @@ nimf_anthy_filter_event_romaji (NimfEngine    *engine,
   if (anthy->preedit2->len == 1 && event->key.keyval != 'n' &&
       anthy->preedit2->str[0] == event->key.keyval)
     g_string_append (anthy->preedit1, "っ");
-  else if (anthy->preedit2->len == 0 && event->key.keyval == 'n')
-    g_string_append (anthy->preedit2, "ん");
   else
     g_string_append_c (anthy->preedit2, event->key.keyval);
 
@@ -716,26 +694,18 @@ nimf_anthy_filter_event (NimfEngine    *engine,
         nimf_candidatable_hide (anthy->candidatable);
         nimf_anthy_emit_commit (engine, target);
         return TRUE;
+      case NIMF_KEY_space:
+        if (G_LIKELY (index >= 0))
+          on_candidate_clicked (engine, target, NULL,
+            nimf_candidatable_get_selected_index (anthy->candidatable));
+        return TRUE;
       case NIMF_KEY_Up:
       case NIMF_KEY_KP_Up:
-        {
-          nimf_candidatable_select_previous_item (anthy->candidatable);
-          gint index = nimf_candidatable_get_selected_index (anthy->candidatable);
-
-          if (G_LIKELY (index >= 0))
-            on_candidate_clicked (engine, target, NULL, index);
-        }
+        nimf_candidatable_select_previous_item (anthy->candidatable);
         return TRUE;
       case NIMF_KEY_Down:
       case NIMF_KEY_KP_Down:
-      case NIMF_KEY_space:
-        {
-          nimf_candidatable_select_next_item (anthy->candidatable);
-          gint index = nimf_candidatable_get_selected_index (anthy->candidatable);
-
-          if (G_LIKELY (index >= 0))
-            on_candidate_clicked (engine, target, NULL, index);
-        }
+        nimf_candidatable_select_next_item (anthy->candidatable);
         return TRUE;
       case NIMF_KEY_Left:
       case NIMF_KEY_KP_Left:
@@ -751,8 +721,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
           anthy->current_segment = conv_stat.nr_segment - 1;
         }
 
-        nimf_anthy_convert_preedit_text (engine, target);
-        nimf_anthy_update_candidate     (engine, target);
+        nimf_anthy_update_preedit_text (engine, target);
+        nimf_anthy_update_candidate    (engine, target);
         return TRUE;
       case NIMF_KEY_Right:
       case NIMF_KEY_KP_Right:
@@ -767,8 +737,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
             anthy->current_segment = 0;
         }
 
-        nimf_anthy_convert_preedit_text (engine, target);
-        nimf_anthy_update_candidate     (engine, target);
+        nimf_anthy_update_preedit_text (engine, target);
+        nimf_anthy_update_candidate    (engine, target);
         return TRUE;
       case NIMF_KEY_Page_Up:
       case NIMF_KEY_KP_Page_Up:
@@ -811,7 +781,6 @@ nimf_anthy_filter_event (NimfEngine    *engine,
           if (anthy->current_page < 1)
             break;
 
-          struct anthy_segment_stat segment_stat;
           gint i, n;
 
           if (event->key.keyval >= NIMF_KEY_0 &&
@@ -825,6 +794,10 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
           i = (anthy->current_page - 1) * 10 + n;
 
+          struct anthy_conv_stat conv_stat;
+          struct anthy_segment_stat segment_stat;
+
+          anthy_get_stat (anthy->context, &conv_stat);
           anthy_get_segment_stat (anthy->context, anthy->current_segment, &segment_stat);
 
           if (i < MIN (anthy->current_page * 10, segment_stat.nr_candidate))
@@ -869,28 +842,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     }
   }
 
-  if (event->key.keyval == NIMF_KEY_space)
-  {
-    nimf_anthy_convert_preedit_text (engine, target);
-
-    if (anthy->preedit1->len + anthy->preedit2->len > 0)
-    {
-      if (!nimf_candidatable_is_visible (anthy->candidatable))
-        nimf_candidatable_show (anthy->candidatable, target, FALSE);
-
-      anthy->current_segment = 0;
-      nimf_anthy_convert_preedit_text (engine, target);
-      nimf_anthy_update_candidate (engine, target);
-    }
-    else
-    {
-      nimf_candidatable_hide (anthy->candidatable);
-    }
-
-    return TRUE;
-  }
-
-  if ((event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
+  if (event->key.keyval == NIMF_KEY_space ||
+      (event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
       (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK))
     return FALSE;
 
@@ -955,6 +908,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
   hiragana = g_strconcat (anthy->preedit1->str, anthy->preedit2->str, NULL);
 
+  nimf_candidatable_set_auxiliary_text (anthy->candidatable, hiragana,
+                                        g_utf8_strlen (hiragana, -1));
   anthy_set_string (anthy->context, hiragana);
   anthy_get_stat (anthy->context, &conv_stat);
   anthy->current_segment = conv_stat.nr_segment - 1;
@@ -962,6 +917,18 @@ nimf_anthy_filter_event (NimfEngine    *engine,
                                    sizeof (gint));
   memset (anthy->selections, 0, conv_stat.nr_segment * sizeof (gint));
   nimf_anthy_update_preedit_text (engine, target);
+
+  if (anthy->preedit1->len + anthy->preedit2->len > 0)
+  {
+    if (!nimf_candidatable_is_visible (anthy->candidatable))
+      nimf_candidatable_show (anthy->candidatable, target, TRUE);
+
+    nimf_anthy_update_candidate (engine, target);
+  }
+  else
+  {
+    nimf_candidatable_hide (anthy->candidatable);
+  }
 
   g_free (hiragana);
 
@@ -1193,19 +1160,19 @@ nimf_anthy_init (NimfAnthy *anthy)
     g_hash_table_insert (nimf_anthy_romaji, "myi", g_strdup ("みぃ"));
     g_hash_table_insert (nimf_anthy_romaji, "myo", g_strdup ("みょ"));
     g_hash_table_insert (nimf_anthy_romaji, "myu", g_strdup ("みゅ"));
-    g_hash_table_insert (nimf_anthy_romaji, "ん", g_strdup ("")); /* dummy */
-    g_hash_table_insert (nimf_anthy_romaji, "んa", g_strdup ("な"));
-    g_hash_table_insert (nimf_anthy_romaji, "んe", g_strdup ("ね"));
-    g_hash_table_insert (nimf_anthy_romaji, "んi", g_strdup ("に"));
-    g_hash_table_insert (nimf_anthy_romaji, "んn", g_strdup ("ん"));
-    g_hash_table_insert (nimf_anthy_romaji, "んo", g_strdup ("の"));
-    g_hash_table_insert (nimf_anthy_romaji, "んu", g_strdup ("ぬ"));
-    g_hash_table_insert (nimf_anthy_romaji, "んy", g_strdup ("")); /* dummy */
-    g_hash_table_insert (nimf_anthy_romaji, "んya", g_strdup ("にゃ"));
-    g_hash_table_insert (nimf_anthy_romaji, "んye", g_strdup ("にぇ"));
-    g_hash_table_insert (nimf_anthy_romaji, "んyi", g_strdup ("にぃ"));
-    g_hash_table_insert (nimf_anthy_romaji, "んyo", g_strdup ("にょ"));
-    g_hash_table_insert (nimf_anthy_romaji, "んyu", g_strdup ("にゅ"));
+    g_hash_table_insert (nimf_anthy_romaji, "n", g_strdup ("")); /* dummy */
+    g_hash_table_insert (nimf_anthy_romaji, "na", g_strdup ("な"));
+    g_hash_table_insert (nimf_anthy_romaji, "ne", g_strdup ("ね"));
+    g_hash_table_insert (nimf_anthy_romaji, "ni", g_strdup ("に"));
+    g_hash_table_insert (nimf_anthy_romaji, "nn", g_strdup ("ん"));
+    g_hash_table_insert (nimf_anthy_romaji, "no", g_strdup ("の"));
+    g_hash_table_insert (nimf_anthy_romaji, "nu", g_strdup ("ぬ"));
+    g_hash_table_insert (nimf_anthy_romaji, "ny", g_strdup ("")); /* dummy */
+    g_hash_table_insert (nimf_anthy_romaji, "nya", g_strdup ("にゃ"));
+    g_hash_table_insert (nimf_anthy_romaji, "nye", g_strdup ("にぇ"));
+    g_hash_table_insert (nimf_anthy_romaji, "nyi", g_strdup ("にぃ"));
+    g_hash_table_insert (nimf_anthy_romaji, "nyo", g_strdup ("にょ"));
+    g_hash_table_insert (nimf_anthy_romaji, "nyu", g_strdup ("にゅ"));
     g_hash_table_insert (nimf_anthy_romaji, "o", g_strdup ("お"));
     g_hash_table_insert (nimf_anthy_romaji, "p", g_strdup ("")); /* dummy */
     g_hash_table_insert (nimf_anthy_romaji, "pa", g_strdup ("ぱ"));

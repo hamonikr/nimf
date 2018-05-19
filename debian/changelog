@@ -1,3 +1,9 @@
+nimf (2018.05.20) stable; urgency=medium
+
+  * Do not follow existing practice (affects #103 #102 #100 #85 #81 #76 #73)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 20 May 2018 00:06:02 +0900
+
 nimf (2018.05.08) stable; urgency=medium
 
   * nimf-anthy: Follow existing practice (closes #102 #100 #76 #73)
