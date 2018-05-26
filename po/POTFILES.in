@@ -1,5 +1,5 @@
 # List of source files containing translatable strings.
-daemon/nimf-daemon.c
+daemon/nimf.c
 modules/clients/gtk/im-nimf.c
 modules/engines/nimf-anthy/nimf-anthy.c
 modules/engines/nimf-libhangul/nimf-libhangul.c

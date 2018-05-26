@@ -186,10 +186,10 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)
 
 dnl ***************************************************************************
-dnl nimf-daemon
+dnl nimf
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_DAEMON_DEPS, [glib-2.0 gio-unix-2.0 gobject-2.0 audit])
+PKG_CHECK_MODULES(NIMF_DEPS, [glib-2.0 gio-unix-2.0 gobject-2.0 audit])
 
 dnl ***************************************************************************
 dnl nimf-indicator

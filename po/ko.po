@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf-daemon.c:91
+#: ../daemon/nimf.c:91
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf-daemon.c:92
+#: ../daemon/nimf.c:92
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf-daemon.c:93
+#: ../daemon/nimf.c:93
 msgid "Version"
 msgstr "버전"
 
-#: ../daemon/nimf-daemon.c:94
+#: ../daemon/nimf.c:94
 msgid "Start indicator"
 msgstr "표시기를 시작합니다"
 

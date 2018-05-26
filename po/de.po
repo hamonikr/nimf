@@ -19,19 +19,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../daemon/nimf-daemon.c:91
+#: ../daemon/nimf.c:91
 msgid "Do not daemonize"
 msgstr "Nicht als Daemon starten"
 
-#: ../daemon/nimf-daemon.c:92
+#: ../daemon/nimf.c:92
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../daemon/nimf-daemon.c:93
+#: ../daemon/nimf.c:93
 msgid "Version"
 msgstr ""
 
-#: ../daemon/nimf-daemon.c:94
+#: ../daemon/nimf.c:94
 msgid "Start indicator"
 msgstr "Starte einen Indikator"
 

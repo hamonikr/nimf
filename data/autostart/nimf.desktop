@@ -2,7 +2,7 @@
 Name=Nimf
 GenericName=Input Method
 Comment=Start Input Method
-Exec=nimf-daemon --start-indicator
+Exec=nimf --start-indicator
 Icon=nimf-logo
 Terminal=false
 Type=Application

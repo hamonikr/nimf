@@ -12,7 +12,7 @@ configure
 *.lo
 *.pc
 *.o
-nimf-daemon
+nimf
 libtool
 m4/
 stamp-h1

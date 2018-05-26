@@ -4,7 +4,7 @@ synchronously with the Nimf server via a Unix socket.
 
 Nimf provides:
   * Input Method Server:
-    * nimf-daemon
+    * nimf
   * Language Engines:
     * Chinese (based on libchewing, librime)
     * Japanese (based on anthy)
@@ -148,7 +148,7 @@ Configure
 Debugging
 ---------
 
-  nimf-daemon --start-indicator --debug
+  nimf --start-indicator --debug
   tail -f /var/log/daemon.log
 
   export GTK_IM_MODULE="nimf"

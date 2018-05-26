@@ -1,8 +1,8 @@
-bin_PROGRAMS = nimf-daemon
+bin_PROGRAMS = nimf
 
-nimf_daemon_SOURCES = nimf-daemon.c
+nimf_SOURCES = nimf.c
 
-nimf_daemon_CFLAGS = \
+nimf_CFLAGS = \
 	-Wall \
 	-Werror \
 	-I$(top_srcdir)/libnimf \
@@ -10,9 +10,9 @@ nimf_daemon_CFLAGS = \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	$(LIBNIMF_DEPS_CFLAGS) \
-	$(NIMF_DAEMON_DEPS_CFLAGS)
+	$(NIMF_DEPS_CFLAGS)
 
-nimf_daemon_LDFLAGS = $(NIMF_DAEMON_DEPS_LIBS)
-nimf_daemon_LDADD   = $(top_builddir)/libnimf/libnimf.la
+nimf_LDFLAGS = $(NIMF_DEPS_LIBS)
+nimf_LDADD   = $(top_builddir)/libnimf/libnimf.la
 
 DISTCLEANFILES = Makefile.in

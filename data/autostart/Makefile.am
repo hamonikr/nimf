@@ -1,5 +1,5 @@
 autostartdir = /etc/xdg/autostart
 
-autostart_DATA = nimf-daemon.desktop
+autostart_DATA = nimf.desktop
 
 DISTCLEANFILES = Makefile.in

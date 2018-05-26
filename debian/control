@@ -41,7 +41,7 @@ Description: Input Method Framework
  .
  This package provides:
   * Input Method Server:
-     * nimf-daemon including IMdkit(XIM)
+     * nimf including IMdkit(XIM)
   * Language Engine:
      * System keyboard input module
   * Service Modules:
