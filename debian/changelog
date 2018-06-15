@@ -1,3 +1,10 @@
+nimf (2018.06.16) stable; urgency=medium
+
+  * Changed site
+  * Renamed nimf-daemon to nimf
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 16 Jun 2018 01:51:50 +0900
+
 nimf (2018.05.20) stable; urgency=medium
 
   * Do not follow existing practice (affects #103 #102 #100 #85 #81 #76 #73)

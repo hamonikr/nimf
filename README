@@ -23,7 +23,7 @@ Nimf provides:
     * C library and headers
 
 Project Homepage:
-  * https://github.com/cogniti/nimf
+  * https://bitbucket.org/hodong/nimf
 
 
 License
@@ -50,11 +50,11 @@ Downloads
 
   * Clone with HTTPS
 
-    git clone https://github.com/cogniti/nimf.git
+    git clone https://bitbucket.org/hodong/nimf.git
 
   * Download tar.gz
 
-    https://github.com/cogniti/nimf/archive/master.tar.gz
+    https://bitbucket.org/hodong/nimf/get/master.tar.gz
 
 
 Compiling and installing
@@ -87,7 +87,7 @@ Compiling and installing
       username:~$ cd
       username:~$ mkdir tmp-build
       username:~$ cd tmp-build
-      username:~/tmp-build$ wget https://github.com/cogniti/nimf/archive/master.tar.gz
+      username:~/tmp-build$ wget https://bitbucket.org/hodong/nimf/get/master.tar.gz
       username:~/tmp-build$ tar zxf master.tar.gz
       username:~/tmp-build$ cd nimf-master
       username:~/tmp-build/nimf-master$ dpkg-checkbuilddeps
@@ -165,13 +165,13 @@ Participate
   * Development
 
     You may send pull requests.
-    https://github.com/cogniti/nimf/pulls
+    https://bitbucket.org/hodong/nimf/pull-requests/
 
   * Translation
 
     You can make nimf.pot using the following commands.
 
-      git clone https://github.com/cogniti/nimf.git
+      git clone https://bitbucket.org/hodong/nimf.git
       cd nimf
       ./autogen.sh
       cd po
