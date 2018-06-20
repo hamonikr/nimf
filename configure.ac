@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2018.06.16)
+AC_INIT(nimf, 2018.06.20)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -16,7 +16,7 @@ AC_PROG_CXX
 
 AS_IF([test "$CXX" = "g++"],
       [AS_IF([test "$GXX" != "yes"],
-	     AC_MSG_ERROR([C++ compiler is not found.]))])
+      AC_MSG_ERROR([C++ compiler is not found.]))])
 
 dnl ***************************************************************************
 dnl Libtool Versioning

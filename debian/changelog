@@ -1,3 +1,10 @@
+nimf (2018.06.20) stable; urgency=medium
+
+  * Added debian/libnimf0.install
+  * nimf-anthy: Implemented the editing feature (closes #103 #102)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 20 Jun 2018 21:12:10 +0900
+
 nimf (2018.06.16) stable; urgency=medium
 
   * Changed site
