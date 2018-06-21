@@ -23,7 +23,7 @@ Nimf provides:
     * C library and headers
 
 Project Homepage:
-  * https://bitbucket.org/hodong/nimf
+  * https://gitlab.com/hodong/nimf
 
 
 License
@@ -50,11 +50,11 @@ Downloads
 
   * Clone with HTTPS
 
-    git clone https://bitbucket.org/hodong/nimf.git
+    git clone https://gitlab.com/hodong/nimf.git
 
   * Download tar.gz
 
-    https://bitbucket.org/hodong/nimf/get/master.tar.gz
+    https://gitlab.com/hodong/nimf/-/archive/master/nimf-master.tar.gz
 
 
 Compiling and installing
@@ -87,8 +87,8 @@ Compiling and installing
       username:~$ cd
       username:~$ mkdir tmp-build
       username:~$ cd tmp-build
-      username:~/tmp-build$ wget https://bitbucket.org/hodong/nimf/get/master.tar.gz
-      username:~/tmp-build$ tar zxf master.tar.gz
+      username:~/tmp-build$ wget https://gitlab.com/hodong/nimf/-/archive/master/nimf-master.tar.gz
+      username:~/tmp-build$ tar zxf nimf-master.tar.gz
       username:~/tmp-build$ cd nimf-master
       username:~/tmp-build/nimf-master$ dpkg-checkbuilddeps
 
@@ -98,6 +98,9 @@ Compiling and installing
 
     Install all dependent packages and perform the following commands.
 
+      username:~/tmp-build/nimf-master$ debuild
+      username:~/tmp-build/nimf-master$ cd ..
+      username:~/tmp-build$ ls
       libnimf0_YYYY.mm.dd_amd64.deb
       libnimf0-dbgsym_YYYY.mm.dd_amd64.deb
       nimf_YYYY.mm.dd_amd64.build
@@ -165,13 +168,13 @@ Participate
   * Development
 
     You may send pull requests.
-    https://bitbucket.org/hodong/nimf/pull-requests/
+    https://gitlab.com/hodong/nimf/merge_requests
 
   * Translation
 
     You can make nimf.pot using the following commands.
 
-      git clone https://bitbucket.org/hodong/nimf.git
+      git clone https://gitlab.com/hodong/nimf.git
       cd nimf
       ./autogen.sh
       cd po
@@ -223,9 +226,9 @@ References
 
   * Implementations
 
-    https://github.com/choehwanjin/nabi
-    https://github.com/choehwanjin/imhangul
-    https://github.com/choehwanjin/ibus-hangul
+    https://github.com/libhangul/nabi
+    https://github.com/libhangul/imhangul
+    https://github.com/libhangul/ibus-hangul
     https://github.com/ibus/ibus
     https://github.com/fcitx/fcitx
     https://github.com/fcitx/fcitx-qt5

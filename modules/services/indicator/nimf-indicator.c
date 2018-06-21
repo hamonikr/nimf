@@ -106,7 +106,7 @@ on_menu_about (GSimpleAction *action,
     "program-name",       _("Nimf"),
     "translator-credits", _("Hodong Kim, N"),
     "version",            VERSION,
-    "website",            "https://cogniti-works.blogspot.com/search/label/nimf",
+    "website",            "https://gitlab.com/hodong/nimf",
     "website-label",      _("Website"),
     NULL);
 
