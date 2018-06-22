@@ -222,6 +222,17 @@ AM_CONDITIONAL([WITH_IM_CONFIG_DATA],
                [test "$with_im_config_data" = "yes"])
 
 dnl ***************************************************************************
+dnl imsettings data
+dnl ***************************************************************************
+
+AC_ARG_WITH([imsettings-data],
+  AS_HELP_STRING([--with-imsettings-data], [Install imsettings data]),
+  [with_imsettings_data=yes])
+
+AM_CONDITIONAL([WITH_IMSETTINGS_DATA],
+               [test "$with_imsettings_data" = "yes"])
+
+dnl ***************************************************************************
 
 GLIB_GSETTINGS
 
@@ -233,6 +244,7 @@ AC_OUTPUT([
   data/autostart/Makefile
   data/icons/Makefile
   data/im-config/Makefile
+  data/imsettings/Makefile
   libnimf/Makefile
   libnimf/nimf.pc
   modules/Makefile
