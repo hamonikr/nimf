@@ -238,7 +238,7 @@ GLIB_GSETTINGS
 
 AC_OUTPUT([
   Makefile
-  daemon/Makefile
+  bin/Makefile
   data/Makefile
   data/apparmor-abstractions/Makefile
   data/autostart/Makefile
@@ -265,5 +265,4 @@ AC_OUTPUT([
   modules/services/wayland/Makefile
   modules/services/xim/Makefile
   po/Makefile.in
-  settings/Makefile
 ])

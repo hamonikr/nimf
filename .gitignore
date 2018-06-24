@@ -12,13 +12,13 @@ configure
 *.lo
 *.pc
 *.o
-nimf
+/bin/nimf
+/bin/nimf-settings
 libtool
 m4/
 stamp-h1
 *.valid
 *anjuta*
-nimf-indicator
 *.gir
 *.typelib
 nimf-enum-types.c
@@ -36,8 +36,6 @@ data/icons/22x22/
 data/icons/24x24/
 data/icons/32x32/
 data/icons/48x48/
-settings/nimf-settings
-settings/nimf-settings-resources.c
 input-method-unstable-v1-client-protocol.h
 input-method-unstable-v1-protocol.c
 po/nimf.pot
