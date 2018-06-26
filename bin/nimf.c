@@ -81,14 +81,14 @@ main (int argc, char **argv)
   uid_t       uid;
   gboolean    retval = FALSE;
 
-  gboolean is_no_daemon = FALSE;
-  gboolean is_debug     = FALSE;
-  gboolean is_version   = FALSE;
+  gboolean no_daemon  = FALSE;
+  gboolean is_debug   = FALSE;
+  gboolean is_version = FALSE;
   gboolean start_indicator = FALSE;
 
   GOptionContext *context;
   GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &is_no_daemon, N_("Do not daemonize"), NULL},
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, N_("Do not daemonize"), NULL},
     {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
     {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
     {"start-indicator", 0, 0, G_OPTION_ARG_NONE, &start_indicator, N_("Start indicator"), NULL},
@@ -125,7 +125,7 @@ main (int argc, char **argv)
     exit (EXIT_SUCCESS);
   }
 
-  if (is_no_daemon == FALSE)
+  if (no_daemon == FALSE)
   {
     openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
     syslog_initialized = TRUE;
