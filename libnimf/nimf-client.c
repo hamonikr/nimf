@@ -28,10 +28,10 @@
 #include <unistd.h>
 #include <libaudit.h>
 
+GMainContext      *nimf_client_context        = NULL;
 static GSource    *nimf_client_socket_source  = NULL;
 static GSource    *nimf_client_default_source = NULL;
 static GHashTable *nimf_client_table          = NULL;
-GMainContext      *nimf_client_socket_context = NULL;
 NimfResult        *nimf_client_result         = NULL;
 GSocketConnection *nimf_client_connection     = NULL;
 
@@ -280,16 +280,16 @@ nimf_client_constructed (GObject *object)
       return;
     }
 
-    if (G_UNLIKELY (nimf_client_socket_context == NULL))
+    if (G_UNLIKELY (nimf_client_context == NULL))
     {
-      nimf_client_socket_context = g_main_context_new ();
+      nimf_client_context = g_main_context_new ();
 
       /* when g_main_context_iteration(), iterate only socket */
       nimf_client_socket_source = g_socket_create_source (socket, G_IO_IN, NULL);
       g_source_set_can_recurse (nimf_client_socket_source, TRUE);
       g_source_set_callback (nimf_client_socket_source,
                              (GSourceFunc) on_incoming_message, NULL, NULL);
-      g_source_attach (nimf_client_socket_source, nimf_client_socket_context);
+      g_source_attach (nimf_client_socket_source, nimf_client_context);
 
       nimf_client_default_source = g_socket_create_source (socket, G_IO_IN, NULL);
       g_source_set_can_recurse (nimf_client_default_source, TRUE);
@@ -310,7 +310,7 @@ nimf_client_constructed (GObject *object)
 
   nimf_send_message (socket, client->id, NIMF_MESSAGE_CREATE_CONTEXT,
                      NULL, 0, NULL);
-  nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+  nimf_result_iteration_until (nimf_client_result, nimf_client_context,
                                client->id, NIMF_MESSAGE_CREATE_CONTEXT_REPLY);
 
   g_mutex_unlock (&mutex);
@@ -337,7 +337,7 @@ nimf_client_finalize (GObject *object)
     {
       nimf_send_message (socket, client->id, NIMF_MESSAGE_DESTROY_CONTEXT,
                          NULL, 0, NULL);
-      nimf_result_iteration_until (nimf_client_result, nimf_client_socket_context,
+      nimf_result_iteration_until (nimf_client_result, nimf_client_context,
                                    client->id, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY);
     }
 
@@ -349,14 +349,14 @@ nimf_client_finalize (GObject *object)
       g_source_destroy (nimf_client_default_source);
       g_source_unref (nimf_client_socket_source);
       g_source_unref (nimf_client_default_source);
-      g_main_context_unref (nimf_client_socket_context);
+      g_main_context_unref (nimf_client_context);
       g_slice_free (NimfResult, nimf_client_result);
       g_hash_table_unref (nimf_client_table);
       nimf_client_socket_source  = NULL;
       nimf_client_default_source = NULL;
-      nimf_client_socket_context = NULL;
-      nimf_client_result = NULL;
-      nimf_client_table  = NULL;
+      nimf_client_context = NULL;
+      nimf_client_result  = NULL;
+      nimf_client_table   = NULL;
     }
   }
 
