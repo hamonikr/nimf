@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-05 13:40+0900\n"
-"PO-Revision-Date: 2018-04-05 13:45+0900\n"
+"POT-Creation-Date: 2018-06-28 03:07+0900\n"
+"PO-Revision-Date: 2018-06-28 03:32+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,24 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf.c:91
+#: ../bin/nimf.c:91
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../daemon/nimf.c:92
+#: ../bin/nimf.c:92
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../daemon/nimf.c:93
+#: ../bin/nimf.c:93
 msgid "Version"
 msgstr "버전"
 
-#: ../daemon/nimf.c:94
+#: ../bin/nimf.c:94
 msgid "Start indicator"
 msgstr "표시기를 시작합니다"
 
+#: ../bin/nimf-settings.c:458
+#, c-format
+msgid "Please report a bug. (keyval: %d)"
+msgstr "버그를 제보해 주세요. (keyval: %d)"
+
+#: ../bin/nimf-settings.c:519
+msgid "Press key combination"
+msgstr "키 조합을 누르세요"
+
+#: ../bin/nimf-settings.c:522
+msgid "_OK"
+msgstr "예 (_O)"
+
+#: ../bin/nimf-settings.c:523
+msgid "_Cancel"
+msgstr "취소 (_C)"
+
+#: ../bin/nimf-settings.c:535
+msgid "Click here and then press key combination"
+msgstr "여기를 클릭한 후 키 조합을 누르세요"
+
+#: ../bin/nimf-settings.c:807
+msgid "Nimf Settings"
+msgstr "님프 설정"
+
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:564
+#: ../modules/clients/gtk/im-nimf.c:565
 #: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr "님프"
@@ -73,31 +98,6 @@ msgstr "설정"
 #: ../modules/services/indicator/nimf-indicator.c:238
 msgid "About"
 msgstr "정보"
-
-#: ../settings/nimf-settings.c:458
-#, c-format
-msgid "Please report a bug. (keyval: %d)"
-msgstr "버그를 제보해 주세요. (keyval: %d)"
-
-#: ../settings/nimf-settings.c:519
-msgid "Press key combination"
-msgstr "키 조합을 누르세요"
-
-#: ../settings/nimf-settings.c:522
-msgid "_OK"
-msgstr "예 (_O)"
-
-#: ../settings/nimf-settings.c:523
-msgid "_Cancel"
-msgstr "취소 (_C)"
-
-#: ../settings/nimf-settings.c:535
-msgid "Click here and then press key combination"
-msgstr "여기를 클릭한 후 키 조합을 누르세요"
-
-#: ../settings/nimf-settings.c:807
-msgid "Nimf Settings"
-msgstr "님프 설정"
 
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"
@@ -326,6 +326,30 @@ msgstr "commit 콜백에서 reset()을 무시합니다"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
 msgstr "응용 어플리케이션에서 commit 콜백에 의해 호출되는 reset()을 무시합니다"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:26
+msgid "Korean Hangul/Hanja XKB Option"
+msgstr "한국어 한글/한자 XKB 옵션"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:27
+msgid "Korean Hangul/Hanja keys"
+msgstr "한국어 한글/한자 키"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:28
+msgid "'Not assigned'"
+msgstr "'할당되지 않음'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:29
+msgid "'Hardware Hangul/Hanja keys'"
+msgstr "'하드웨어 한글/한자 키'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
+msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
+msgstr "'오른쪽 Alt키를 한글키로, 오른쪽 Ctrl키를 한자키로 할당'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
+msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
+msgstr "'오른쪽 Ctrl키를 한글키로, 오른쪽 Alt키를 한자키로 할당'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"

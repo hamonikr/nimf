@@ -1,3 +1,10 @@
+nimf (2018.06.28) stable; urgency=medium
+
+  * Added Korean XKB option
+  * Improved error handling
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 28 Jun 2018 03:56:45 +0900
+
 nimf (2018.06.21) stable; urgency=medium
 
   * Changed project site to https://gitlab.com/hodong/nimf

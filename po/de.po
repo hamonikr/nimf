@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-05 13:40+0900\n"
-"PO-Revision-Date: 2018-04-05 13:41+0900\n"
+"POT-Creation-Date: 2018-06-28 03:07+0900\n"
+"PO-Revision-Date: 2018-06-28 03:13+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,24 +19,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../daemon/nimf.c:91
+#: ../bin/nimf.c:91
 msgid "Do not daemonize"
 msgstr "Nicht als Daemon starten"
 
-#: ../daemon/nimf.c:92
+#: ../bin/nimf.c:92
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../daemon/nimf.c:93
+#: ../bin/nimf.c:93
 msgid "Version"
 msgstr ""
 
-#: ../daemon/nimf.c:94
+#: ../bin/nimf.c:94
 msgid "Start indicator"
 msgstr "Starte einen Indikator"
 
+#: ../bin/nimf-settings.c:458
+#, c-format
+msgid "Please report a bug. (keyval: %d)"
+msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
+
+#: ../bin/nimf-settings.c:519
+msgid "Press key combination"
+msgstr "Tastenkombination drücken"
+
+#: ../bin/nimf-settings.c:522
+msgid "_OK"
+msgstr "Bestätigen (_O)"
+
+#: ../bin/nimf-settings.c:523
+msgid "_Cancel"
+msgstr "Abbrechen (_C)"
+
+#: ../bin/nimf-settings.c:535
+msgid "Click here and then press key combination"
+msgstr "Hier klicken und dann Tastenkombination drücken"
+
+#: ../bin/nimf-settings.c:807
+msgid "Nimf Settings"
+msgstr "Nimf Einstellungen"
+
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:564
+#: ../modules/clients/gtk/im-nimf.c:565
 #: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr ""
@@ -74,31 +99,6 @@ msgstr "Einstellungen"
 #: ../modules/services/indicator/nimf-indicator.c:238
 msgid "About"
 msgstr "Über"
-
-#: ../settings/nimf-settings.c:458
-#, c-format
-msgid "Please report a bug. (keyval: %d)"
-msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
-
-#: ../settings/nimf-settings.c:519
-msgid "Press key combination"
-msgstr "Tastenkombination drücken"
-
-#: ../settings/nimf-settings.c:522
-msgid "_OK"
-msgstr "Bestätigen (_O)"
-
-#: ../settings/nimf-settings.c:523
-msgid "_Cancel"
-msgstr "Abbrechen (_C)"
-
-#: ../settings/nimf-settings.c:535
-msgid "Click here and then press key combination"
-msgstr "Hier klicken und dann Tastenkombination drücken"
-
-#: ../settings/nimf-settings.c:807
-msgid "Nimf Settings"
-msgstr "Nimf Einstellungen"
 
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"
@@ -331,6 +331,30 @@ msgid "Ignore reset() called by commit callback in application"
 msgstr ""
 "Ignoriere reset(), welches von commit Rückmeldung einer Anwendung aufgerufen "
 "wurde"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:26
+msgid "Korean Hangul/Hanja XKB Option"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:27
+msgid "Korean Hangul/Hanja keys"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:28
+msgid "'Not assigned'"
+msgstr ""
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:29
+msgid "'Hardware Hangul/Hanja keys'"
+msgstr "'Hardware Hangul / Hanja Schlüssel'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
+msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
+msgstr "'Rechts Alt wie Hangul, rechts Strg als Hanja'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
+msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
+msgstr "'Rechts Strg als Hangul, rechts Alt wie Hanja'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"

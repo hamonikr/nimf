@@ -3,7 +3,7 @@
  * nimf-settings.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -803,7 +803,7 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   gint        i;
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size (GTK_WINDOW (window), 700, 525);
+  gtk_window_set_default_size (GTK_WINDOW (window), 800, 600);
   gtk_window_set_title        (GTK_WINDOW (window), _("Nimf Settings"));
   gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf-logo");
 

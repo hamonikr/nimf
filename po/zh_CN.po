@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-05 13:40+0900\n"
-"PO-Revision-Date: 2018-04-05 13:44+0900\n"
+"POT-Creation-Date: 2018-06-28 03:07+0900\n"
+"PO-Revision-Date: 2018-06-28 03:44+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -18,24 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../daemon/nimf.c:91
+#: ../bin/nimf.c:91
 msgid "Do not daemonize"
 msgstr "不要化为守护进程"
 
-#: ../daemon/nimf.c:92
+#: ../bin/nimf.c:92
 msgid "Log debugging message"
 msgstr "日志调试消息"
 
-#: ../daemon/nimf.c:93
+#: ../bin/nimf.c:93
 msgid "Version"
 msgstr "版本"
 
-#: ../daemon/nimf.c:94
+#: ../bin/nimf.c:94
 msgid "Start indicator"
 msgstr "开始指示器"
 
+#: ../bin/nimf-settings.c:458
+#, c-format
+msgid "Please report a bug. (keyval: %d)"
+msgstr "请报告错误。(keyval: %d)"
+
+#: ../bin/nimf-settings.c:519
+msgid "Press key combination"
+msgstr "请按组合键"
+
+#: ../bin/nimf-settings.c:522
+msgid "_OK"
+msgstr "确定 (_O)"
+
+#: ../bin/nimf-settings.c:523
+msgid "_Cancel"
+msgstr "取消 (_C)"
+
+#: ../bin/nimf-settings.c:535
+msgid "Click here and then press key combination"
+msgstr "请单击此处，然后按组合键"
+
+#: ../bin/nimf-settings.c:807
+msgid "Nimf Settings"
+msgstr "宁芙设置"
+
 #. ID
-#: ../modules/clients/gtk/im-nimf.c:564
+#: ../modules/clients/gtk/im-nimf.c:565
 #: ../modules/services/indicator/nimf-indicator.c:106
 msgid "Nimf"
 msgstr "宁芙"
@@ -73,31 +98,6 @@ msgstr "设置"
 #: ../modules/services/indicator/nimf-indicator.c:238
 msgid "About"
 msgstr "关于"
-
-#: ../settings/nimf-settings.c:458
-#, c-format
-msgid "Please report a bug. (keyval: %d)"
-msgstr "请报告错误。(keyval: %d)"
-
-#: ../settings/nimf-settings.c:519
-msgid "Press key combination"
-msgstr "请按组合键"
-
-#: ../settings/nimf-settings.c:522
-msgid "_OK"
-msgstr "确定 (_O)"
-
-#: ../settings/nimf-settings.c:523
-msgid "_Cancel"
-msgstr "取消 (_C)"
-
-#: ../settings/nimf-settings.c:535
-msgid "Click here and then press key combination"
-msgstr "请单击此处，然后按组合键"
-
-#: ../settings/nimf-settings.c:807
-msgid "Nimf Settings"
-msgstr "宁芙设置"
 
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"
@@ -325,6 +325,30 @@ msgstr "忽略提交回调中的reset()"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
 msgstr "忽略应用程序中由提交回调调用的reset()"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:26
+msgid "Korean Hangul/Hanja XKB Option"
+msgstr "韩国Hangul/Hanja XKB选项"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:27
+msgid "Korean Hangul/Hanja keys"
+msgstr "韩文Hangul/Hanja钥匙"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:28
+msgid "'Not assigned'"
+msgstr "'未分配'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:29
+msgid "'Hardware Hangul/Hanja keys'"
+msgstr "'硬件Hangul/Hanja钥匙'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
+msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
+msgstr "'右侧的Alt作为Hangul，右侧的Ctrl作为Hanja'"
+
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
+msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
+msgstr "'右侧Ctrl作为Hangul，右侧Alt作为Hanja'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
