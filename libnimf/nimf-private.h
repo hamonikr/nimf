@@ -3,7 +3,7 @@
  * nimf-private.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -47,7 +47,7 @@ typedef struct _NimfResult NimfResult;
 
 struct _NimfResult
 {
-  gboolean    is_dispatched;
+  gboolean     is_dispatched;
   NimfMessage *reply;
 };
 

@@ -3,7 +3,7 @@
  * nimf-client.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -43,7 +43,10 @@ struct _NimfClient
 {
   GObject parent_instance;
 
-  guint16 id;
+  guint16  id;
+  guint    watcher_id;
+  uid_t    uid;
+  gboolean created;
 };
 
 struct _NimfClientClass
