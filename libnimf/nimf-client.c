@@ -300,7 +300,7 @@ on_name_appeared (GDBusConnection *connection,
   if (!nimf_client_is_connected ())
     nimf_client_connect (client);
 
-  if (!client->created)
+  if (nimf_client_is_connected () && !client->created)
     nimf_client_create_context (client);
 }
 
@@ -363,7 +363,7 @@ nimf_client_init (NimfClient *client)
   if (!nimf_client_is_connected ())
     nimf_client_connect (client);
 
-  if (!client->created)
+  if (nimf_client_is_connected () && !client->created)
     nimf_client_create_context (client);
 }
 
@@ -374,15 +374,12 @@ nimf_client_finalize (GObject *object)
 
   NimfClient *client = NIMF_CLIENT (object);
 
-  if (nimf_client_socket)
+  if (nimf_client_is_connected () && client->created)
   {
-    if (g_socket_is_connected (nimf_client_socket))
-    {
-      nimf_send_message (nimf_client_socket, client->id,
-                         NIMF_MESSAGE_DESTROY_CONTEXT, NULL, 0, NULL);
-      nimf_result_iteration_until (nimf_client_result, nimf_client_context,
-                                   client->id, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY);
-    }
+    nimf_send_message (nimf_client_socket, client->id,
+                       NIMF_MESSAGE_DESTROY_CONTEXT, NULL, 0, NULL);
+    nimf_result_iteration_until (nimf_client_result, nimf_client_context,
+                                 client->id, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY);
   }
 
   g_hash_table_remove (nimf_client_table, GUINT_TO_POINTER (client->id));
@@ -395,11 +392,22 @@ nimf_client_finalize (GObject *object)
 
     g_hash_table_unref (nimf_client_table);
     g_slice_free       (NimfResult, nimf_client_result);
-    g_object_unref     (nimf_client_socket);
-    g_source_destroy   (nimf_client_socket_source);
-    g_source_destroy   (nimf_client_default_source);
-    g_source_unref     (nimf_client_socket_source);
-    g_source_unref     (nimf_client_default_source);
+
+    if (nimf_client_socket)
+      g_object_unref (nimf_client_socket);
+
+    if (nimf_client_socket_source)
+      g_source_destroy   (nimf_client_socket_source);
+
+    if (nimf_client_socket_source)
+      g_source_unref     (nimf_client_socket_source);
+
+    if (nimf_client_default_source)
+      g_source_destroy   (nimf_client_default_source);
+
+    if (nimf_client_default_source)
+      g_source_unref     (nimf_client_default_source);
+
     nimf_client_socket_source  = NULL;
     nimf_client_default_source = NULL;
     nimf_client_context = NULL;
