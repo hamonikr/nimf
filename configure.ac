@@ -233,6 +233,12 @@ AM_CONDITIONAL([WITH_IMSETTINGS_DATA],
                [test "$with_imsettings_data" = "yes"])
 
 dnl ***************************************************************************
+dnl test-nimf
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(TEST_NIMF_DEPS, [glib-2.0])
+
+dnl ***************************************************************************
 
 GLIB_GSETTINGS
 
@@ -264,5 +270,6 @@ AC_OUTPUT([
   modules/services/preedit-window/Makefile
   modules/services/wayland/Makefile
   modules/services/xim/Makefile
+  tests/Makefile
   po/Makefile.in
 ])
