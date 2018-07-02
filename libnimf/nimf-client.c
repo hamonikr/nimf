@@ -27,6 +27,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <libaudit.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 
 GMainContext      *nimf_client_context        = NULL;
 static GSource    *nimf_client_socket_source  = NULL;
@@ -212,6 +214,20 @@ nimf_client_connect (NimfClient *client)
   g_mutex_init (&mutex);
   g_mutex_lock (&mutex);
 
+  gchar   *path;
+  GStatBuf info;
+  gint     retval;
+
+  path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
+  retval = g_stat (path, &info);
+  g_free (path);
+
+  if (retval == 0 && client->uid != info.st_uid)
+  {
+    g_critical (G_STRLOC ": %s: Can't authenticate", G_STRFUNC);
+    goto FINALLY;
+  }
+
   if (!nimf_client_is_connected ())
   {
     GSocketAddress *address;
@@ -222,7 +238,7 @@ nimf_client_connect (NimfClient *client)
 
     addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
     address = g_unix_socket_address_new_with_type (addr, -1,
-                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+                                                   G_UNIX_SOCKET_ADDRESS_PATH);
     if (nimf_client_socket)
     {
       g_object_unref (nimf_client_socket);
@@ -283,6 +299,8 @@ nimf_client_connect (NimfClient *client)
       g_clear_error (&error);
     }
   }
+
+  FINALLY:
 
   g_mutex_unlock (&mutex);
 }

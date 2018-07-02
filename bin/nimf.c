@@ -40,7 +40,7 @@ gboolean start_indicator_service (gchar *addr)
   gboolean           retval = FALSE;
 
   address = g_unix_socket_address_new_with_type (addr, -1,
-                                                 G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+                                                 G_UNIX_SOCKET_ADDRESS_PATH);
 
   client = g_socket_client_new ();
 

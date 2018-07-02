@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2018.06.28
+Version:  2018.07.02
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -111,5 +111,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Thu Jun 28 2018 Hodong Kim <cogniti@gmail.com> - 2018.06.28-1
+* Mon Jul 2 2018 Hodong Kim <cogniti@gmail.com> - 2018.07.02-1
 - https://gitlab.com/hodong/nimf/blob/master/debian/changelog

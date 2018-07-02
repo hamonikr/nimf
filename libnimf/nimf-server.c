@@ -31,6 +31,8 @@
 #include "nimf-server-im.h"
 #include <gio/gunixsocketaddress.h>
 #include <string.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 
 enum
 {
@@ -263,7 +265,7 @@ nimf_server_initable_init (GInitable     *initable,
 
   if (g_unix_socket_address_abstract_names_supported ())
     address = g_unix_socket_address_new_with_type (server->address, -1,
-                                                   G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+                                                   G_UNIX_SOCKET_ADDRESS_PATH);
   else
   {
     g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
@@ -282,6 +284,8 @@ nimf_server_initable_init (GInitable     *initable,
     g_propagate_error (error, local_error);
     return FALSE;
   }
+
+  g_chmod (server->address, 0700);
 
   server->run_signal_handler_id =
     g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
@@ -653,6 +657,7 @@ nimf_server_finalize (GObject *object)
   if (server->listener != NULL)
     g_object_unref (server->listener);
 
+  g_unlink (server->address);
   g_hash_table_unref (server->modules);
   g_hash_table_unref (server->services);
 
