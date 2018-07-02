@@ -33,12 +33,7 @@
 #include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-
-enum
-{
-  PROP_0,
-  PROP_ADDRESS,
-};
+#include <libaudit.h>
 
 enum {
   ENGINE_CHANGED,
@@ -259,12 +254,17 @@ nimf_server_initable_init (GInitable     *initable,
   NimfServer     *server = NIMF_SERVER (initable);
   GSocketAddress *address;
   GError         *local_error = NULL;
+  uid_t           uid;
 
+  if ((uid = audit_getloginuid ()) == (uid_t) -1)
+    uid = getuid ();
+
+  server->path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
   server->listener = G_SOCKET_LISTENER (g_socket_service_new ());
   /* server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1)); */
 
   if (g_unix_socket_address_abstract_names_supported ())
-    address = g_unix_socket_address_new_with_type (server->address, -1,
+    address = g_unix_socket_address_new_with_type (server->path, -1,
                                                    G_UNIX_SOCKET_ADDRESS_PATH);
   else
   {
@@ -285,7 +285,7 @@ nimf_server_initable_init (GInitable     *initable,
     return FALSE;
   }
 
-  g_chmod (server->address, 0700);
+  g_chmod (server->path, 0700);
 
   server->run_signal_handler_id =
     g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
@@ -657,7 +657,7 @@ nimf_server_finalize (GObject *object)
   if (server->listener != NULL)
     g_object_unref (server->listener);
 
-  g_unlink (server->address);
+  g_unlink (server->path);
   g_hash_table_unref (server->modules);
   g_hash_table_unref (server->services);
 
@@ -672,47 +672,9 @@ nimf_server_finalize (GObject *object)
   g_hash_table_unref (server->trigger_gsettings);
   g_hash_table_unref (server->trigger_keys);
   nimf_key_freev (server->hotkeys);
-  g_free (server->address);
+  g_free (server->path);
 
   G_OBJECT_CLASS (nimf_server_parent_class)->finalize (object);
-}
-
-static void
-nimf_server_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
-{
-  NimfServer *server = NIMF_SERVER (object);
-
-  switch (prop_id)
-  {
-    case PROP_ADDRESS:
-      g_value_set_string (value, server->address);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-nimf_server_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
-{
-  NimfServer *server = NIMF_SERVER (object);
-
-  switch (prop_id)
-  {
-    case PROP_ADDRESS:
-      server->address = g_value_dup_string (value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
 }
 
 static void
@@ -722,22 +684,8 @@ nimf_server_class_init (NimfServerClass *class)
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize     = nimf_server_finalize;
-  object_class->set_property = nimf_server_set_property;
-  object_class->get_property = nimf_server_get_property;
+  object_class->finalize = nimf_server_finalize;
 
-  g_object_class_install_property (object_class,
-                                   PROP_ADDRESS,
-                                   g_param_spec_string ("address",
-                                                        "Address",
-                                                        "The address to listen on",
-                                                        NULL,
-                                                        G_PARAM_READABLE |
-                                                        G_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_STATIC_NAME |
-                                                        G_PARAM_STATIC_BLURB |
-                                                        G_PARAM_STATIC_NICK));
   nimf_server_signals[ENGINE_CHANGED] =
     g_signal_new (g_intern_static_string ("engine-changed"),
                   G_TYPE_FROM_CLASS (class),
@@ -769,8 +717,7 @@ nimf_server_new (const gchar  *address,
   g_return_val_if_fail (address != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  return g_initable_new (NIMF_TYPE_SERVER, NULL, error,
-                         "address", address, NULL);
+  return g_initable_new (NIMF_TYPE_SERVER, NULL, error, NULL);
 }
 
 void
@@ -807,7 +754,7 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
   {
     gchar *name;
 
-    name = g_strconcat ("org.nimf-", server->address + strlen (NIMF_BASE_ADDRESS), NULL);
+    name = g_strconcat ("org.nimf-", server->path + strlen (NIMF_BASE_ADDRESS), NULL);
     server->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION, name,
                                        G_BUS_NAME_OWNER_FLAGS_REPLACE,
                                        NULL, NULL, NULL, NULL, NULL);

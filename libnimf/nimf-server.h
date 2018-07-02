@@ -57,7 +57,7 @@ struct _NimfServer
   GList           *instances;
   GSocketListener *listener;
   GHashTable      *connections;
-  gchar           *address;
+  gchar           *path;
   guint16          next_id;
   gboolean         active;
   gulong           run_signal_handler_id;
