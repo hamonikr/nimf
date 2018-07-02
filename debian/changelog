@@ -1,3 +1,9 @@
+nimf (2018.07.02.1) stable; urgency=medium
+
+  * Fixed incorrectly deleting an socket
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 02 Jul 2018 19:07:20 +0900
+
 nimf (2018.07.02) stable; urgency=medium
 
   * Fixed an authentication issue #107

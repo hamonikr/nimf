@@ -595,12 +595,14 @@ nimf_server_finalize (GObject *object)
   NimfServer *server = NIMF_SERVER (object);
 
   if (server->run_signal_handler_id > 0)
+  {
     g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
+    g_unlink (server->path);
+  }
 
   if (server->listener != NULL)
     g_object_unref (server->listener);
 
-  g_unlink (server->path);
   g_hash_table_unref (server->modules);
   g_hash_table_unref (server->services);
 
