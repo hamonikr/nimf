@@ -153,7 +153,7 @@ main (int argc, char **argv)
     return EXIT_SUCCESS;
   }
 
-  server = nimf_server_new (path, &error);
+  server = nimf_server_new ();
   g_free (path);
 
   if (server == NULL)
@@ -167,7 +167,15 @@ main (int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  nimf_server_start (server, start_indicator);
+  if (!nimf_server_start (server, start_indicator))
+  {
+    g_object_unref (server);
+
+    if (syslog_initialized)
+      closelog ();
+
+    return EXIT_FAILURE;
+  }
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -177,6 +185,7 @@ main (int argc, char **argv)
   g_main_loop_run (loop);
 
   g_main_loop_unref (loop);
+
   g_object_unref (server);
 
   if (syslog_initialized)

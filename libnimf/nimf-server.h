@@ -89,9 +89,8 @@ struct _NimfServerClass
 };
 
 GType       nimf_server_get_type              (void) G_GNUC_CONST;
-NimfServer *nimf_server_new                   (const gchar  *address,
-                                               GError      **error);
-void        nimf_server_start                 (NimfServer   *server,
+NimfServer *nimf_server_new                   (void);
+gboolean    nimf_server_start                 (NimfServer   *server,
                                                gboolean      start_indicator);
 void        nimf_server_stop                  (NimfServer   *server);
 NimfEngine *nimf_server_get_default_engine    (NimfServer   *server);

@@ -244,64 +244,7 @@ on_new_connection (GSocketService    *service,
   return TRUE;
 }
 
-static gboolean
-nimf_server_initable_init (GInitable     *initable,
-                           GCancellable  *cancellable,
-                           GError       **error)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfServer     *server = NIMF_SERVER (initable);
-  GSocketAddress *address;
-  GError         *local_error = NULL;
-  uid_t           uid;
-
-  if ((uid = audit_getloginuid ()) == (uid_t) -1)
-    uid = getuid ();
-
-  server->path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
-  server->listener = G_SOCKET_LISTENER (g_socket_service_new ());
-  /* server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1)); */
-
-  if (g_unix_socket_address_abstract_names_supported ())
-    address = g_unix_socket_address_new_with_type (server->path, -1,
-                                                   G_UNIX_SOCKET_ADDRESS_PATH);
-  else
-  {
-    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                         "Abstract UNIX domain socket names are not supported.");
-    return FALSE;
-  }
-
-  g_socket_listener_add_address (server->listener, address,
-                                 G_SOCKET_TYPE_STREAM,
-                                 G_SOCKET_PROTOCOL_DEFAULT,
-                                 NULL, NULL, &local_error);
-  g_object_unref (address);
-
-  if (local_error)
-  {
-    g_propagate_error (error, local_error);
-    return FALSE;
-  }
-
-  g_chmod (server->path, 0700);
-
-  server->run_signal_handler_id =
-    g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
-                      (GCallback) on_new_connection, server);
-  return TRUE;
-}
-
-static void
-nimf_server_initable_iface_init (GInitableIface *initable_iface)
-{
-  initable_iface->init = nimf_server_initable_init;
-}
-
-G_DEFINE_TYPE_WITH_CODE (NimfServer, nimf_server, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                nimf_server_initable_iface_init));
+G_DEFINE_TYPE (NimfServer, nimf_server, G_TYPE_OBJECT);
 
 static gint
 on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
@@ -709,26 +652,62 @@ nimf_server_class_init (NimfServerClass *class)
 }
 
 NimfServer *
-nimf_server_new (const gchar  *address,
-                 GError      **error)
+nimf_server_new ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_val_if_fail (address != NULL, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  return g_initable_new (NIMF_TYPE_SERVER, NULL, error, NULL);
+  return g_object_new (NIMF_TYPE_SERVER, NULL);
 }
 
-void
+gboolean
 nimf_server_start (NimfServer *server, gboolean start_indicator)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_SERVER (server));
+  g_return_val_if_fail (NIMF_IS_SERVER (server), FALSE);
 
   if (server->active)
-    return;
+    return TRUE;
+
+  GSocketAddress *address;
+  GError         *error = NULL;
+  uid_t           uid;
+
+  if ((uid = audit_getloginuid ()) == (uid_t) -1)
+    uid = getuid ();
+
+  server->path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
+  server->listener = G_SOCKET_LISTENER (g_socket_service_new ());
+  /* server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1)); */
+
+  if (g_unix_socket_address_abstract_names_supported ())
+    address = g_unix_socket_address_new_with_type (server->path, -1,
+                                                   G_UNIX_SOCKET_ADDRESS_PATH);
+  else
+  {
+    g_critical ("Abstract UNIX domain socket names are not supported.");
+    return FALSE;
+  }
+
+  g_socket_listener_add_address (server->listener, address,
+                                 G_SOCKET_TYPE_STREAM,
+                                 G_SOCKET_PROTOCOL_DEFAULT,
+                                 NULL, NULL, &error);
+  g_object_unref (address);
+
+  if (error)
+  {
+    g_critical ("%s", error->message);
+    g_clear_error (&error);
+
+    return FALSE;
+  }
+
+  g_chmod (server->path, 0700);
+
+  server->run_signal_handler_id =
+    g_signal_connect (G_SOCKET_SERVICE (server->listener), "incoming",
+                      (GCallback) on_new_connection, server);
 
   g_socket_service_start (G_SOCKET_SERVICE (server->listener));
 
@@ -762,6 +741,8 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
   }
 
   server->active = TRUE;
+
+  return TRUE;
 }
 
 void nimf_server_set_engine_by_id (NimfServer  *server,
