@@ -220,7 +220,6 @@ nimf_client_connect (NimfClient *client)
 
   path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
   retval = g_stat (path, &info);
-  g_free (path);
 
   if (retval == 0 && client->uid != info.st_uid)
   {
@@ -233,11 +232,9 @@ nimf_client_connect (NimfClient *client)
     GSocketAddress *address;
     gint            retry_limit = 4;
     gint            retry_count = 0;
-    gchar          *addr;
     GError         *error = NULL;
 
-    addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
-    address = g_unix_socket_address_new_with_type (addr, -1,
+    address = g_unix_socket_address_new_with_type (path, -1,
                                                    G_UNIX_SOCKET_ADDRESS_PATH);
     if (nimf_client_socket)
     {
@@ -275,7 +272,6 @@ nimf_client_connect (NimfClient *client)
       g_usleep (G_USEC_PER_SEC);
     }
 
-    g_free (addr);
     g_object_unref (address);
 
     if (nimf_client_is_connected ())
@@ -302,6 +298,7 @@ nimf_client_connect (NimfClient *client)
 
   FINALLY:
 
+  g_free (path);
   g_mutex_unlock (&mutex);
 }
 
