@@ -76,7 +76,7 @@ main (int argc, char **argv)
 
   NimfServer *server;
   GMainLoop  *loop;
-  gchar      *addr;
+  gchar      *path;
   GError     *error = NULL;
   uid_t       uid;
   gboolean    retval = FALSE;
@@ -142,19 +142,19 @@ main (int argc, char **argv)
   if (uid == (uid_t) -1)
     uid = getuid ();
 
-  addr = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
+  path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
 
   if (start_indicator)
-    retval = start_indicator_service (addr);
+    retval = start_indicator_service (path);
 
   if (retval)
   {
-    g_free (addr);
+    g_free (path);
     return EXIT_SUCCESS;
   }
 
-  server = nimf_server_new (addr, &error);
-  g_free (addr);
+  server = nimf_server_new (path, &error);
+  g_free (path);
 
   if (server == NULL)
   {
