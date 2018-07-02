@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <libaudit.h>
 #include <gio/gunixsocketaddress.h>
+#include <signal.h>
 
 gboolean syslog_initialized = FALSE;
 
@@ -181,11 +182,11 @@ main (int argc, char **argv)
 
   g_unix_signal_add (SIGINT,  (GSourceFunc) g_main_loop_quit, loop);
   g_unix_signal_add (SIGTERM, (GSourceFunc) g_main_loop_quit, loop);
+  signal (SIGTSTP, SIG_IGN);
 
   g_main_loop_run (loop);
 
   g_main_loop_unref (loop);
-
   g_object_unref (server);
 
   if (syslog_initialized)
