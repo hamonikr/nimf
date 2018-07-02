@@ -61,7 +61,6 @@ struct _NimfServer
   guint16          next_id;
   gboolean         active;
   gulong           run_signal_handler_id;
-  guint            owner_id;
   /* settings */
   GSettings       *settings;
   NimfKey        **hotkeys;

@@ -43,10 +43,10 @@ struct _NimfClient
 {
   GObject parent_instance;
 
-  guint16  id;
-  guint    watcher_id;
-  uid_t    uid;
-  gboolean created;
+  guint16       id;
+  GFileMonitor *monitor;
+  uid_t         uid;
+  gboolean      created;
 };
 
 struct _NimfClientClass

@@ -303,28 +303,23 @@ nimf_client_connect (NimfClient *client)
 }
 
 static void
-on_name_appeared (GDBusConnection *connection,
-                  const gchar     *name,
-                  const gchar     *name_owner,
-                  gpointer         user_data)
+on_changed (GFileMonitor     *monitor,
+            GFile            *file,
+            GFile            *other_file,
+            GFileMonitorEvent event_type,
+            gpointer          user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfClient *client = user_data;
 
-  if (!nimf_client_is_connected ())
+  if ((event_type == G_FILE_MONITOR_EVENT_CREATED) &&
+      !nimf_client_is_connected ())
+
     nimf_client_connect (client);
 
   if (nimf_client_is_connected () && !client->created)
     nimf_client_create_context (client);
-}
-
-static void
-on_name_vanished (GDBusConnection *connection,
-                  const gchar     *name,
-                  gpointer         user_data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 static void
@@ -334,6 +329,7 @@ nimf_client_init (NimfClient *client)
 
   static guint16 next_id = 0;
   guint16 id;
+  gchar  *path;
 
   if ((client->uid = audit_getloginuid ()) == (uid_t) -1)
     client->uid = getuid ();
@@ -352,17 +348,19 @@ nimf_client_init (NimfClient *client)
   else
     g_hash_table_ref (nimf_client_table);
 
-  if (client->watcher_id == 0)
+  if (client->monitor == NULL)
   {
-    gchar *name;
+    GFile *file;
 
-    name = g_strdup_printf ("org.nimf-%d", client->uid);
-    client->watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION, name,
-                                           G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                           on_name_appeared,
-                                           on_name_vanished,
-                                           client, NULL);
-    g_free (name);
+    path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
+    file = g_file_new_for_path (path);
+
+    client->monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, NULL);
+    g_file_monitor_set_rate_limit (client->monitor, G_PRIORITY_LOW);
+    g_signal_connect (client->monitor, "changed", G_CALLBACK (on_changed), client);
+
+    g_object_unref (file);
+    g_free (path);
   }
 
   do {
@@ -402,8 +400,8 @@ nimf_client_finalize (GObject *object)
 
   if (g_hash_table_size (nimf_client_table) == 0)
   {
-    if (client->watcher_id > 0)
-      g_bus_unwatch_name (client->watcher_id);
+    if (client->monitor)
+      g_object_unref (client->monitor);
 
     g_hash_table_unref (nimf_client_table);
     g_slice_free       (NimfResult, nimf_client_result);

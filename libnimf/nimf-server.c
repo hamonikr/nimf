@@ -569,12 +569,6 @@ nimf_server_stop (NimfServer *server)
   g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
   server->run_signal_handler_id = 0;
 
-  if (server->owner_id > 0)
-  {
-    g_bus_unown_name (server->owner_id);
-    server->owner_id = 0;
-  }
-
   GHashTableIter iter;
   gpointer       service;
 
@@ -729,17 +723,6 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
 
     if (!nimf_service_start (NIMF_SERVICE (service)))
       g_hash_table_iter_remove (&iter);
-  }
-
-  if (server->owner_id == 0)
-  {
-    gchar *name;
-
-    name = g_strconcat ("org.nimf-", server->path + strlen (NIMF_BASE_ADDRESS), NULL);
-    server->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION, name,
-                                       G_BUS_NAME_OWNER_FLAGS_REPLACE,
-                                       NULL, NULL, NULL, NULL, NULL);
-    g_free (name);
   }
 
   server->active = TRUE;
