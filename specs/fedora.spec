@@ -110,5 +110,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* The Jul 5 2018 Hodong Kim <cogniti@gmail.com> - 2018.07.05-1
+* Thu Jul 5 2018 Hodong Kim <cogniti@gmail.com> - 2018.07.05-1
 - See https://gitlab.com/hodong/nimf/blob/master/debian/changelog
