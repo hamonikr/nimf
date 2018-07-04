@@ -626,8 +626,17 @@ on_changed_xkb_option (GSettings     *settings,
     return;
   }
 
-  offset  = g_strrstr (standard_output, "options:    ") + strlen ("options:    ");
-  options = g_strsplit (offset, ",", -1);
+  offset  = g_strrstr (standard_output, "options:    ");
+
+  if (offset)
+  {
+    offset += strlen ("options:    ");
+    options = g_strsplit (offset, ",", -1);
+  }
+  else
+  {
+    options = g_malloc0_n (1, sizeof (gchar *));
+  }
 
   /* clear xkb options, see a man page */
   g_spawn_command_line_sync ("setxkbmap -option", &standard_output,
