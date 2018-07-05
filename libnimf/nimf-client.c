@@ -238,27 +238,28 @@ nimf_client_connect (NimfClient *client)
                                                    G_UNIX_SOCKET_ADDRESS_PATH);
     if (nimf_client_socket)
     {
-      g_object_unref (nimf_client_socket);
-
       if (nimf_client_socket_source)
       {
         g_source_destroy (nimf_client_socket_source);
-        g_source_unref (nimf_client_socket_source);
+        g_source_unref   (nimf_client_socket_source);
+        nimf_client_socket_source = NULL;
       }
 
       if (nimf_client_default_source)
       {
         g_source_destroy (nimf_client_default_source);
-        g_source_unref (nimf_client_socket_source);
+        g_source_unref   (nimf_client_default_source);
+        nimf_client_default_source = NULL;
       }
+
+      g_object_unref (nimf_client_socket);
+      nimf_client_socket = NULL;
     }
 
     nimf_client_socket = g_socket_new (G_SOCKET_FAMILY_UNIX,
                                        G_SOCKET_TYPE_STREAM,
                                        G_SOCKET_PROTOCOL_DEFAULT,
                                        NULL);
-    g_object_add_weak_pointer (G_OBJECT (nimf_client_socket),
-                               (gpointer) &nimf_client_socket);
 
     for (retry_count = 0; retry_count < retry_limit; retry_count++)
     {
@@ -315,7 +316,6 @@ on_changed (GFileMonitor     *monitor,
 
   if ((event_type == G_FILE_MONITOR_EVENT_CREATED) &&
       !nimf_client_is_connected ())
-
     nimf_client_connect (client);
 
   if (nimf_client_is_connected () && !client->created)
@@ -421,11 +421,12 @@ nimf_client_finalize (GObject *object)
     if (nimf_client_default_source)
       g_source_unref     (nimf_client_default_source);
 
+    nimf_client_socket         = NULL;
     nimf_client_socket_source  = NULL;
     nimf_client_default_source = NULL;
-    nimf_client_context = NULL;
-    nimf_client_result  = NULL;
-    nimf_client_table   = NULL;
+    nimf_client_context        = NULL;
+    nimf_client_result         = NULL;
+    nimf_client_table          = NULL;
   }
 
   G_OBJECT_CLASS (nimf_client_parent_class)->finalize (object);
