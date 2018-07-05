@@ -42,3 +42,4 @@ po/nimf.pot
 tests/*.log
 tests/*.trs
 tests/test-nimf
+.buildconfig
