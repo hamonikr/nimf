@@ -157,17 +157,6 @@ main (int argc, char **argv)
   server = nimf_server_new ();
   g_free (path);
 
-  if (server == NULL)
-  {
-    g_critical ("%s", error->message);
-    g_clear_error (&error);
-
-    if (syslog_initialized)
-      closelog ();
-
-    return EXIT_FAILURE;
-  }
-
   if (!nimf_server_start (server, start_indicator))
   {
     g_object_unref (server);
