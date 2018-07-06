@@ -1,3 +1,9 @@
+nimf (2018.07.06) stable; urgency=medium
+
+  * Use file locking to ensure single instance (resolves #110)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 06 Jul 2018 23:10:53 +0900
+
 nimf (2018.07.05) stable; urgency=medium
 
   * Fixed segmentation fault (resolves #108)

@@ -30,6 +30,7 @@
 #include <libaudit.h>
 #include <gio/gunixsocketaddress.h>
 #include <signal.h>
+#include <sys/file.h>
 
 gboolean syslog_initialized = FALSE;
 
@@ -70,6 +71,54 @@ gboolean start_indicator_service (gchar *addr)
   return retval;
 }
 
+gboolean
+create_runtime_dir (uid_t uid)
+{
+  gchar   *path;
+  gboolean retval = TRUE;
+
+  path = g_strdup_printf (NIMF_RUNTIME_DIR, uid);
+
+  if (g_mkdir_with_parents (path, 0700))
+  {
+    g_critical (G_STRLOC": Can't create directory: %s", path);
+    retval = FALSE;
+  }
+
+  g_free (path);
+
+  return retval;
+}
+
+int
+open_lock_file (uid_t uid)
+{
+  gchar *path;
+  int    fd;
+
+  path = g_strdup_printf (NIMF_RUNTIME_DIR"/lock", uid);
+  fd = open (path, O_RDWR | O_CREAT, 0600);
+
+  if (fd == -1)
+    g_critical ("Failed to open lock file: %s", path);
+
+  g_free (path);
+
+  return fd;
+}
+
+void
+write_pid (int fd)
+{
+  gchar *pid;
+
+  ftruncate (fd, 0);
+  pid = g_strdup_printf ("%ld", (long int) getpid ());
+  write (fd, pid, strlen (pid) + 1);
+
+  g_free (pid);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -77,7 +126,7 @@ main (int argc, char **argv)
 
   NimfServer *server;
   GMainLoop  *loop;
-  gchar      *path;
+  int         fd;
   GError     *error = NULL;
   uid_t       uid;
   gboolean    retval = FALSE;
@@ -123,7 +172,7 @@ main (int argc, char **argv)
   if (is_version)
   {
     g_print ("%s %s\n", argv[0], VERSION);
-    exit (EXIT_SUCCESS);
+    return EXIT_SUCCESS;
   }
 
   if (no_daemon == FALSE)
@@ -139,32 +188,44 @@ main (int argc, char **argv)
     }
   }
 
-  uid = audit_getloginuid ();
-  if (uid == (uid_t) -1)
+  if ((uid = audit_getloginuid ()) == (uid_t) -1)
     uid = getuid ();
 
-  path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
-
   if (start_indicator)
-    retval = start_indicator_service (path);
-
-  if (retval)
   {
-    g_free (path);
-    return EXIT_SUCCESS;
+    gchar   *sock_path;
+    gboolean retval;
+
+    sock_path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", uid);
+    retval = start_indicator_service (sock_path);
+
+    g_free (sock_path);
+
+    if (retval)
+      return EXIT_SUCCESS;
   }
 
+  if (!create_runtime_dir (uid))
+    return EXIT_FAILURE;
+
+  fd = open_lock_file (uid);
+  if (fd == -1)
+    return EXIT_FAILURE;
+
+  if (flock (fd, LOCK_EX | LOCK_NB))
+  {
+    g_message ("Another instance appears to be running.");
+    return EXIT_FAILURE;
+  }
+
+  write_pid (fd);
+
   server = nimf_server_new ();
-  g_free (path);
 
   if (!nimf_server_start (server, start_indicator))
   {
-    g_object_unref (server);
-
-    if (syslog_initialized)
-      closelog ();
-
-    return EXIT_FAILURE;
+    retval = EXIT_FAILURE;
+    goto finally;
   }
 
   loop = g_main_loop_new (NULL, FALSE);
@@ -176,10 +237,26 @@ main (int argc, char **argv)
   g_main_loop_run (loop);
 
   g_main_loop_unref (loop);
+
+  retval = EXIT_SUCCESS;
+
+  finally:
+
   g_object_unref (server);
 
   if (syslog_initialized)
     closelog ();
 
-  return EXIT_SUCCESS;
+  if (flock (fd, LOCK_UN))
+  {
+    g_critical ("Failed to unlock file: "NIMF_RUNTIME_DIR"/lock", uid);
+    return EXIT_FAILURE;
+  }
+
+  gchar *path;
+  path = g_strdup_printf (NIMF_RUNTIME_DIR"/lock", uid);
+  unlink (path);
+  g_free (path);
+
+  return retval;
 }

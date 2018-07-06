@@ -589,10 +589,7 @@ nimf_server_finalize (GObject *object)
   NimfServer *server = NIMF_SERVER (object);
 
   if (server->run_signal_handler_id > 0)
-  {
     g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
-    g_unlink (server->path);
-  }
 
   if (server->listener != NULL)
     g_object_unref (server->listener);
@@ -611,6 +608,7 @@ nimf_server_finalize (GObject *object)
   g_hash_table_unref (server->trigger_gsettings);
   g_hash_table_unref (server->trigger_keys);
   nimf_key_freev (server->hotkeys);
+  g_unlink (server->path);
   g_free (server->path);
 
   G_OBJECT_CLASS (nimf_server_parent_class)->finalize (object);
@@ -672,7 +670,7 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
   if ((uid = audit_getloginuid ()) == (uid_t) -1)
     uid = getuid ();
 
-  server->path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", uid);
+  server->path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", uid);
   server->listener = G_SOCKET_LISTENER (g_socket_service_new ());
   /* server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1)); */
 

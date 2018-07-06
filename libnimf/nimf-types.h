@@ -30,8 +30,7 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_BASE_ADDRESS  "/tmp/nimf-"
-#define NIMF_ERROR         nimf_error_quark ()
+#define NIMF_ERROR  nimf_error_quark ()
 
 typedef enum
 {

@@ -29,6 +29,7 @@
 #include <libaudit.h>
 #include <glib.h>
 #include <glib/gstdio.h>
+#include "config.h"
 
 GMainContext      *nimf_client_context        = NULL;
 static GSource    *nimf_client_socket_source  = NULL;
@@ -218,7 +219,7 @@ nimf_client_connect (NimfClient *client)
   GStatBuf info;
   gint     retval;
 
-  path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
+  path   = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", client->uid);
   retval = g_stat (path, &info);
 
   if (retval == 0 && client->uid != info.st_uid)
@@ -361,7 +362,7 @@ nimf_client_init (NimfClient *client)
   {
     GFile *file;
 
-    path = g_strdup_printf (NIMF_BASE_ADDRESS"%d", client->uid);
+    path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", client->uid);
     file = g_file_new_for_path (path);
 
     client->monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, NULL);

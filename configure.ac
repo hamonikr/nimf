@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2018.07.05)
+AC_INIT(nimf, 2018.07.06)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -19,20 +19,6 @@ AS_IF([test "$CXX" = "g++"],
       AC_MSG_ERROR([C++ compiler is not found.]))])
 
 dnl ***************************************************************************
-dnl Libtool Versioning
-dnl ***************************************************************************
-# Before making a release, the LT_VERSION string should be modified.
-# The string is of the form C:R:A.
-# - If interfaces have been changed or added, but binary compatibility has
-#   been preserved, change to C+1:0:A+1
-# - If binary compatibility has been broken (eg removed or changed interfaces)
-#   change to C+1:0:0
-# - If the interface is the same as the previous version, change to C:R+1:A
-
-LIBNIMF_LT_VERSION=0:0:0
-AC_SUBST(LIBNIMF_LT_VERSION)
-
-dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************
 
@@ -45,8 +31,27 @@ AM_GLIB_DEFINE_LOCALEDIR(NIMF_LOCALE_DIR)
 
 LT_INIT([disable-static])
 
+dnl ***************************************************************************
+dnl libnimf
+dnl ***************************************************************************
+# Before making a release, the LT_VERSION string should be modified.
+# The string is of the form C:R:A.
+# - If interfaces have been changed or added, but binary compatibility has
+#   been preserved, change to C+1:0:A+1
+# - If binary compatibility has been broken (eg removed or changed interfaces)
+#   change to C+1:0:0
+# - If the interface is the same as the previous version, change to C:R+1:A
+
+LIBNIMF_LT_VERSION=0:0:0
+AC_SUBST(LIBNIMF_LT_VERSION)
+
 LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
 AC_SUBST(LIBNIMF_REQUIRES)
+
+AS_IF([test -d "/run/user"],     [NIMF_RUNTIME_DIR="/run/user/%d/nimf"],
+      [test -d "/var/run/user"], [NIMF_RUNTIME_DIR="/var/run/user/%d/nimf"],
+      [NIMF_RUNTIME_DIR="/tmp/nimf-%d"])
+AC_DEFINE_UNQUOTED(NIMF_RUNTIME_DIR, ["$NIMF_RUNTIME_DIR"], [Directory for storing a socket and a lock file])
 
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES])
 
