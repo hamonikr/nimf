@@ -103,6 +103,7 @@ fi
 %{_datadir}/glib-2.0/*
 %{_datadir}/icons/*
 %{_datadir}/locale/*
+%{_datadir}/man/*
 
 %files devel
 %{_includedir}/*
