@@ -6,7 +6,7 @@ libnimf_preedit_window_la_SOURCES = \
 	$(NULL)
 
 libnimf_preedit_window_la_CFLAGS = \
-	-Wall -Werror \
+	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_PREEDIT_WINDOW_DEPS_CFLAGS)

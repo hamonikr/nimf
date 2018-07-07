@@ -6,7 +6,7 @@ gsettings_SCHEMAS = org.nimf.engines.nimf-rime.gschema.xml
 
 libnimf_rime_la_SOURCES = nimf-rime.c
 libnimf_rime_la_CFLAGS  = \
-	-Wall -Werror \
+	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_RIME_DEPS_CFLAGS)

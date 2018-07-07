@@ -18,6 +18,9 @@ AS_IF([test "$CXX" = "g++"],
       [AS_IF([test "$GXX" != "yes"],
       AC_MSG_ERROR([C++ compiler is not found.]))])
 
+EXTRA_CFLAGS="-Wall -Werror -D_FORTIFY_SOURCE=2"
+AC_SUBST(EXTRA_CFLAGS)
+
 dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************

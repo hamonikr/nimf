@@ -9,7 +9,7 @@ mssymbol_DATA = mssymbol.txt
 
 libnimf_libhangul_la_SOURCES = nimf-libhangul.c
 libnimf_libhangul_la_CFLAGS  = \
-	-Wall -Werror \
+	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	-DMSSYMBOL_PATH=\"$(mssymboldir)/$(mssymbol_DATA)\" \

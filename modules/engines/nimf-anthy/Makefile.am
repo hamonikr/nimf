@@ -6,7 +6,7 @@ gsettings_SCHEMAS = org.nimf.engines.nimf-anthy.gschema.xml
 
 libnimf_anthy_la_SOURCES = nimf-anthy.c
 libnimf_anthy_la_CFLAGS  = \
-	-Wall -Werror \
+	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_ANTHY_DEPS_CFLAGS)

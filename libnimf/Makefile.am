@@ -45,8 +45,7 @@ libnimf_la_SOURCES = \
 	$(NULL)
 
 libnimf_la_CFLAGS = \
-	-Wall \
-	-Werror \
+	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DNIMF_COMPILATION \
 	-DG_LOG_DOMAIN=\"nimf\" \

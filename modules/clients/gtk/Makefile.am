@@ -2,7 +2,7 @@ gsettings_SCHEMAS = org.nimf.clients.gtk.gschema.xml
 @GSETTINGS_RULES@
 
 AM_CFLAGS = \
-	-Wall -Werror \
+	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
 	-DG_LOG_DOMAIN=\"nimf\"
 
