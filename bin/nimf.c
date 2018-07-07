@@ -200,29 +200,28 @@ main (int argc, char **argv)
   if ((uid = audit_getloginuid ()) == (uid_t) -1)
     uid = getuid ();
 
-  if (start_indicator)
-  {
-    gchar   *sock_path;
-    gboolean retval;
-
-    sock_path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", uid);
-    retval = start_indicator_service (sock_path);
-
-    g_free (sock_path);
-
-    if (retval)
-      return EXIT_SUCCESS;
-  }
-
   if (!create_runtime_dir (uid))
     return EXIT_FAILURE;
 
-  fd = open_lock_file (uid);
-  if (fd == -1)
+  if ((fd = open_lock_file (uid)) == -1)
     return EXIT_FAILURE;
 
   if (flock (fd, LOCK_EX | LOCK_NB))
   {
+    if (start_indicator)
+    {
+      gchar   *sock_path;
+      gboolean retval;
+
+      sock_path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", uid);
+      retval = start_indicator_service (sock_path);
+
+      g_free (sock_path);
+
+      if (retval)
+        return EXIT_SUCCESS;
+    }
+
     g_message ("Another instance appears to be running.");
     return EXIT_FAILURE;
   }
