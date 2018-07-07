@@ -107,16 +107,27 @@ open_lock_file (uid_t uid)
   return fd;
 }
 
-void
+gboolean
 write_pid (int fd)
 {
-  gchar *pid;
+  gchar  *pid;
+  ssize_t len;
+  ssize_t written;
 
-  ftruncate (fd, 0);
+  if (ftruncate (fd, 0))
+    return FALSE;
+
   pid = g_strdup_printf ("%ld", (long int) getpid ());
-  write (fd, pid, strlen (pid) + 1);
+
+  len = strlen (pid) + 1;
+  written = write (fd, pid, len);
 
   g_free (pid);
+
+  if (written != len)
+    return FALSE;
+
+  return TRUE;
 }
 
 int
@@ -124,7 +135,7 @@ main (int argc, char **argv)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServer *server;
+  NimfServer *server = NULL;
   GMainLoop  *loop;
   int         fd;
   GError     *error = NULL;
@@ -218,7 +229,11 @@ main (int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  write_pid (fd);
+  if (!write_pid (fd))
+  {
+    g_critical ("Can't write pid");
+    goto finally;
+  }
 
   server = nimf_server_new ();
 
@@ -242,7 +257,8 @@ main (int argc, char **argv)
 
   finally:
 
-  g_object_unref (server);
+  if (server)
+    g_object_unref (server);
 
   if (syslog_initialized)
     closelog ();
@@ -250,9 +266,10 @@ main (int argc, char **argv)
   if (flock (fd, LOCK_UN))
   {
     g_critical ("Failed to unlock file: "NIMF_RUNTIME_DIR"/lock", uid);
-    return EXIT_FAILURE;
+    retval = EXIT_FAILURE;
   }
 
+  close (fd);
   gchar *path;
   path = g_strdup_printf (NIMF_RUNTIME_DIR"/lock", uid);
   unlink (path);
