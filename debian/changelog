@@ -1,3 +1,11 @@
+nimf (2018.07.07) stable; urgency=medium
+
+  * Added simple manuals
+  * Fixed a potential error  #111
+  * Added EXTRA_CFLAGS: -D_FORTIFY_SOURCE=2  #111
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 07 Jul 2018 22:33:34 +0900
+
 nimf (2018.07.06) stable; urgency=medium
 
   * Use file locking to ensure single instance (resolves #110)
