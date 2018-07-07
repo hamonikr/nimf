@@ -36,24 +36,22 @@ gboolean syslog_initialized = FALSE;
 
 gboolean start_indicator_service (gchar *addr)
 {
-  GSocketAddress    *address;
-  GSocketClient     *client;
-  GSocketConnection *connection;
-  gboolean           retval = FALSE;
+  GSocketAddress *address;
+  GSocket        *socket;
+  gboolean        retval = FALSE;
 
   address = g_unix_socket_address_new_with_type (addr, -1,
                                                  G_UNIX_SOCKET_ADDRESS_PATH);
 
-  client = g_socket_client_new ();
+  socket = g_socket_new (G_SOCKET_FAMILY_UNIX,
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         NULL);
 
-  connection = g_socket_client_connect (client, G_SOCKET_CONNECTABLE (address),
-                                        NULL, NULL);
-
-  if (connection)
+  if (g_socket_connect (socket, address, NULL, NULL))
   {
     NimfMessage *message;
 
-    GSocket *socket = g_socket_connection_get_socket (connection);
     if (socket && !g_socket_is_closed (socket))
       nimf_send_message (socket, 0, NIMF_MESSAGE_START_INDICATOR,
                          NULL, 0, NULL);
@@ -62,10 +60,9 @@ gboolean start_indicator_service (gchar *addr)
     retval = *(gboolean *) message->data;
 
     nimf_message_unref (message);
-    g_object_unref (connection);
   }
 
-  g_object_unref (client);
+  g_object_unref (socket);
   g_object_unref (address);
 
   return retval;
