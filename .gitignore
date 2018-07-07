@@ -42,4 +42,6 @@ po/nimf.pot
 tests/*.log
 tests/*.trs
 tests/test-nimf
+# gnome-builder
 .buildconfig
+tags
