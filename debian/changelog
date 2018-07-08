@@ -1,3 +1,10 @@
+nimf (2018.07.08) UNRELEASED; urgency=medium
+
+  * Fixed a logic bug  #112
+  * Fixed segfault  #112
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 08 Jul 2018 22:37:29 +0900
+
 nimf (2018.07.07) stable; urgency=medium
 
   * Added simple manuals
