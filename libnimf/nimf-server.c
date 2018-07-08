@@ -564,20 +564,15 @@ nimf_server_stop (NimfServer *server)
   if (!server->active)
     return;
 
-  g_assert (server->run_signal_handler_id > 0);
-
-  g_signal_handler_disconnect (server->service, server->run_signal_handler_id);
-  server->run_signal_handler_id = 0;
-
   GHashTableIter iter;
   gpointer       service;
 
-  g_hash_table_iter_init (&iter, server->services);
+  g_socket_service_stop (server->service);
 
+  g_hash_table_iter_init (&iter, server->services);
   while (g_hash_table_iter_next (&iter, NULL, &service))
     nimf_service_stop (NIMF_SERVICE (service));
 
-  g_socket_service_stop (server->service);
   server->active = FALSE;
 }
 
@@ -590,9 +585,6 @@ nimf_server_finalize (GObject *object)
 
   if (server->active)
     nimf_server_stop (server);
-
-  if (server->run_signal_handler_id > 0)
-    g_signal_handler_disconnect (server->service, server->run_signal_handler_id);
 
   if (server->service != NULL)
     g_object_unref (server->service);
@@ -701,9 +693,8 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
 
   g_chmod (server->path, 0700);
 
-  server->run_signal_handler_id =
-    g_signal_connect (server->service, "incoming",
-                      (GCallback) on_new_connection, server);
+  g_signal_connect (server->service, "incoming",
+                    G_CALLBACK (on_new_connection), server);
 
   g_socket_service_start (server->service);
 

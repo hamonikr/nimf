@@ -60,7 +60,6 @@ struct _NimfServer
   gchar           *path;
   guint16          next_id;
   gboolean         active;
-  gulong           run_signal_handler_id;
   /* settings */
   GSettings       *settings;
   NimfKey        **hotkeys;
