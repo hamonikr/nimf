@@ -645,6 +645,9 @@ nimf_candidate_finalize (GObject *object)
 
   NimfCandidate *candidate = NIMF_CANDIDATE (object);
 
+  if (candidate->active)
+    nimf_candidate_stop (NIMF_SERVICE (candidate));
+
   gtk_widget_destroy (candidate->window);
   g_free (candidate->id);
 

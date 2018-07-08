@@ -209,6 +209,9 @@ nimf_preedit_window_finalize (GObject *object)
 
   NimfPreeditWindow *preedit_window = NIMF_PREEDIT_WINDOW (object);
 
+  if (preedit_window->active)
+    nimf_preedit_window_stop (NIMF_SERVICE (preedit_window));
+
   gtk_widget_destroy (preedit_window->window);
   g_free (preedit_window->id);
 

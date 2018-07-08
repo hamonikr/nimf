@@ -4,7 +4,7 @@
  * This file is part of Nimf.
  *
  * Copyright (C) 2012 Intel Corporation
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017,2018 Hodong Kim <cogniti@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -572,6 +572,9 @@ nimf_wayland_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfWayland *wayland = NIMF_WAYLAND (object);
+
+  if (wayland->active)
+    nimf_wayland_stop (NIMF_SERVICE (wayland));
 
   g_free (wayland->id);
 

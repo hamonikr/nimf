@@ -1,4 +1,12 @@
-nimf (2018.07.08) UNRELEASED; urgency=medium
+nimf (2018.07.09) stable; urgency=medium
+
+  * Fixed programming errors
+  * Call nimf_indicator_stop() in the nimf_indicator_finalize()
+    Fixed #113
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 09 Jul 2018 01:07:45 +0900
+
+nimf (2018.07.08) stable; urgency=medium
 
   * Fixed a logic bug  #112
   * Fixed segfault  #112
