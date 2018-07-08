@@ -588,6 +588,9 @@ nimf_server_finalize (GObject *object)
 
   NimfServer *server = NIMF_SERVER (object);
 
+  if (server->active)
+    nimf_server_stop (server);
+
   if (server->run_signal_handler_id > 0)
     g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
 
