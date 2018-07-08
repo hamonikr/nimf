@@ -294,6 +294,9 @@ nimf_indicator_finalize (GObject *object)
 
   NimfIndicator *indicator = NIMF_INDICATOR (object);
 
+  if (indicator->active)
+    nimf_indicator_stop (NIMF_SERVICE (indicator));
+
   g_free (indicator->engine_id);
   g_free (indicator->id);
 
