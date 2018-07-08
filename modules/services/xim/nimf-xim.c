@@ -524,9 +524,15 @@ static gboolean nimf_xim_start (NimfService *service)
 
   NimfXim *xim = NIMF_XIM (service);
   XIMS     xims;
+  const gchar *type;
 
   if (xim->active)
     return TRUE;
+
+  type = g_getenv ("XDG_SESSION_TYPE");
+
+  if (type && g_strcmp0 (type, "x11"))
+    return FALSE;
 
   xim->display = XOpenDisplay (NULL);
 
