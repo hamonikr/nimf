@@ -506,9 +506,15 @@ static gboolean nimf_wayland_start (NimfService *service)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfWayland *wayland = NIMF_WAYLAND (service);
+  const gchar *type;
 
   if (wayland->active)
     return TRUE;
+
+  type = g_getenv ("XDG_SESSION_TYPE");
+
+  if (type && g_strcmp0 (type, "wayland"))
+    return FALSE;
 
   wayland->display = wl_display_connect (NULL);
   if (wayland->display == NULL)
