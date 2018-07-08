@@ -267,10 +267,17 @@ main (int argc, char **argv)
   }
 
   close (fd);
-  gchar *path;
-  path = g_strdup_printf (NIMF_RUNTIME_DIR"/lock", uid);
-  unlink (path);
-  g_free (path);
+
+  gchar *file, *dir;
+
+  file = g_strdup_printf (NIMF_RUNTIME_DIR"/lock", uid);
+  dir  = g_strdup_printf (NIMF_RUNTIME_DIR, uid);
+
+  unlink (file);
+  rmdir  (dir);
+
+  g_free (file);
+  g_free (dir);
 
   return retval;
 }
