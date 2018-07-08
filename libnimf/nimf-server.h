@@ -55,7 +55,7 @@ struct _NimfServer
   GHashTable      *modules;
   GHashTable      *services;
   GList           *instances;
-  GSocketListener *listener;
+  GSocketService  *service;
   GHashTable      *connections;
   gchar           *path;
   guint16          next_id;
