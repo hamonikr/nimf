@@ -400,7 +400,7 @@ on_xerror (Display     *display,
   XGetErrorText (display, error->error_code, buf, 63);
   g_warning (G_STRLOC ": %s: XError: %s\n"
              "\ttype: %d, display name: %s, serial: %lu, error_code: %d,\n"
-             "\trequest_code: %d, minor_code: %d, resourceid=%lu\n",
+             "\trequest_code: %d, minor_code: %d, resourceid: %lu\n",
              G_STRFUNC, buf,
              error->type,
              display_name,
@@ -443,9 +443,10 @@ static gboolean nimf_xevent_source_check (GSource *source)
     return FALSE;
 }
 
-static gboolean nimf_xevent_source_dispatch (GSource     *source,
-                                             GSourceFunc  callback,
-                                             gpointer     user_data)
+static gboolean
+nimf_xevent_source_dispatch (GSource     *source,
+                             GSourceFunc  callback,
+                             gpointer     user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
