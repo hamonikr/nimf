@@ -23,7 +23,7 @@ Nimf provides:
     * C library and headers
 
 Project Homepage:
-  * https://gitlab.com/hodong/nimf
+  * https://gitlab.com/nimf-i18n/nimf
 
 
 License
@@ -50,11 +50,11 @@ Downloads
 
   * Clone with HTTPS
 
-    git clone https://gitlab.com/hodong/nimf.git
+    git clone https://gitlab.com/nimf-i18n/nimf.git
 
   * Download tar.gz
 
-    https://gitlab.com/hodong/nimf/-/archive/master/nimf-master.tar.gz
+    https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
 
 
 Compiling and installing
@@ -87,7 +87,7 @@ Compiling and installing
       username:~$ cd
       username:~$ mkdir tmp-build
       username:~$ cd tmp-build
-      username:~/tmp-build$ wget https://gitlab.com/hodong/nimf/-/archive/master/nimf-master.tar.gz
+      username:~/tmp-build$ wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
       username:~/tmp-build$ tar zxf nimf-master.tar.gz
       username:~/tmp-build$ cd nimf-master
       username:~/tmp-build/nimf-master$ dpkg-checkbuilddeps
@@ -137,8 +137,8 @@ Configure
 
   * For GNOME Shell, use 3rd party gnome-shell-extension-appindicator
 
-    https://extensions.gnome.org/extension/1031/topicons/
-    https://github.com/phocean/TopIcons-plus
+    https://github.com/ubuntu/gnome-shell-extension-appindicator
+    https://extensions.gnome.org/extension/615/appindicator-support/
 
   * Configure Hangul/Hanja key if you use a keyboard without hardware
     Hangul/Hanja key
@@ -168,13 +168,13 @@ Participate
   * Development
 
     You may send pull requests.
-    https://gitlab.com/hodong/nimf/merge_requests
+    https://gitlab.com/nimf-i18n/nimf/merge_requests
 
   * Translation
 
     You can make nimf.pot using the following commands.
 
-      git clone https://gitlab.com/hodong/nimf.git
+      git clone https://gitlab.com/nimf-i18n/nimf.git
       cd nimf
       ./autogen.sh
       cd po
@@ -185,6 +185,10 @@ Participate
 
 Support
 -------
+
+  * If you have a problem with Nimf, please report a bug.
+
+    https://gitlab.com/nimf-i18n/nimf/issues/new
 
   * Not Nimf bugs but your application bugs
 
