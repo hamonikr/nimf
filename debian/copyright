@@ -1,5 +1,5 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://gitlab.com/hodong/nimf
+Source: https://gitlab.com/nimf-i18n/nimf
 
 Files:     *
 Copyright: 2015-2018 Hodong Kim <cogniti@gmail.com>

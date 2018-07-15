@@ -4,7 +4,7 @@ Version:  2018.07.09
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
-URL:      https://gitlab.com/hodong/nimf
+URL:      https://gitlab.com/nimf-i18n/nimf
 Source0:  %{name}-%{version}.tar.xz
 
 BuildRequires: gcc-c++
@@ -113,4 +113,4 @@ fi
 
 %changelog
 * Mon Jul 9 2018 Hodong Kim <cogniti@gmail.com> - 2018.07.09-1
-- See https://gitlab.com/hodong/nimf/blob/master/debian/changelog
+- See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog

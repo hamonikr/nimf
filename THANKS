@@ -1,16 +1,16 @@
 Hansol Shin (hshin23) reported segfault.
-https://gitlab.com/hodong/nimf/issues/57
+https://gitlab.com/nimf-i18n/nimf/issues/57
 
 yueunseon reported: Support multi-user environment
-https://gitlab.com/hodong/nimf/issues/37
+https://gitlab.com/nimf-i18n/nimf/issues/37
 
 mxa reported: Compose key not supported in nimf
-https://gitlab.com/hodong/nimf/issues/33
+https://gitlab.com/nimf-i18n/nimf/issues/33
 
 JH (nemonein) reported issues.
-nimf-daemon freezes              https://gitlab.com/hodong/nimf/issues/22
-Side effect about singleton mode https://gitlab.com/hodong/nimf/issues/7
-Caps Lock doesn't work correctly https://gitlab.com/hodong/nimf/issues/2
+nimf-daemon freezes              https://gitlab.com/nimf-i18n/nimf/issues/22
+Side effect about singleton mode https://gitlab.com/nimf-i18n/nimf/issues/7
+Caps Lock doesn't work correctly https://gitlab.com/nimf-i18n/nimf/issues/2
 
 madhwang reported an issue about the open files limit.
 https://github.com/dasom-im/dasom/issues/64
