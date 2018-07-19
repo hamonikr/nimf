@@ -208,12 +208,12 @@ nimf_client_create_context (NimfClient *client)
 static void
 nimf_client_connect (NimfClient *client)
 {
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
   GMutex mutex;
 
   g_mutex_init (&mutex);
   g_mutex_lock (&mutex);
+
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   gchar   *path;
   GStatBuf info;
@@ -225,7 +225,7 @@ nimf_client_connect (NimfClient *client)
   if (retval == 0 && client->uid != info.st_uid)
   {
     g_critical (G_STRLOC ": %s: Can't authenticate", G_STRFUNC);
-    goto FINALLY;
+    goto finally;
   }
 
   if (!nimf_client_is_connected ())
@@ -299,7 +299,7 @@ nimf_client_connect (NimfClient *client)
     else
     {
       if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        g_critical (G_STRLOC ": %s: Socket file is not found", G_STRFUNC);
+        g_critical (G_STRLOC ": %s: Socket file is not found.", G_STRFUNC);
       else
         g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
 
@@ -307,7 +307,7 @@ nimf_client_connect (NimfClient *client)
     }
   }
 
-  FINALLY:
+  finally:
 
   g_free (path);
   g_mutex_unlock (&mutex);
@@ -324,12 +324,14 @@ on_changed (GFileMonitor     *monitor,
 
   NimfClient *client = user_data;
 
-  if ((event_type == G_FILE_MONITOR_EVENT_CREATED) &&
-      !nimf_client_is_connected ())
-    nimf_client_connect (client);
+  if (event_type == G_FILE_MONITOR_EVENT_CREATED)
+  {
+    if (!nimf_client_is_connected ())
+      nimf_client_connect (client);
 
-  if (nimf_client_is_connected () && !client->created)
-    nimf_client_create_context (client);
+    if (nimf_client_is_connected () && !client->created)
+      nimf_client_create_context (client);
+  }
 }
 
 static void
