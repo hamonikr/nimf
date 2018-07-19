@@ -408,11 +408,11 @@ nimf_client_finalize (GObject *object)
   g_hash_table_remove (nimf_client_table, GUINT_TO_POINTER (client->id));
   g_main_context_unref (nimf_client_context);
 
+  if (client->monitor)
+    g_object_unref (client->monitor);
+
   if (g_hash_table_size (nimf_client_table) == 0)
   {
-    if (client->monitor)
-      g_object_unref (client->monitor);
-
     g_hash_table_unref (nimf_client_table);
     g_slice_free       (NimfResult, nimf_client_result);
 
