@@ -731,7 +731,6 @@ nimf_settings_page_new (NimfSettings *nsettings,
 
   for (i = 0, l = key_list; l != NULL; l = l->next, i++)
   {
-    GVariant            *variant;
     GSettingsSchemaKey  *schema_key = NULL;
     NimfSettingsPageKey *page_key;
     const GVariantType  *type;
@@ -744,9 +743,8 @@ nimf_settings_page_new (NimfSettings *nsettings,
     if (g_str_has_prefix (key, "hidden-"))
       continue;
 
-    variant = g_settings_get_value (page->gsettings, key);
-    type = g_variant_get_type (variant);
     schema_key = g_settings_schema_get_key (schema, key);
+    type = g_settings_schema_key_get_value_type (schema_key);
     summary = g_settings_schema_key_get_summary     (schema_key);
     desc    = g_settings_schema_key_get_description (schema_key);
 
@@ -776,7 +774,6 @@ nimf_settings_page_new (NimfSettings *nsettings,
                G_STRFUNC, (gchar *) type);
 
     g_settings_schema_key_unref (schema_key);
-    g_variant_unref (variant);
   }
 
   g_strfreev (keys);
