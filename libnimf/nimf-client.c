@@ -216,26 +216,14 @@ nimf_client_connect (NimfClient *client)
 
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GStatBuf info;
-  gint     retval;
-
-  retval = g_stat (nimf_client_socket_path, &info);
-
-  if (retval == 0 && client->uid != info.st_uid)
-  {
-    g_critical (G_STRLOC ": %s: Can't authenticate", G_STRFUNC);
-    goto finally;
-  }
-
   if (!nimf_client_is_connected ())
   {
     GSocketAddress *address;
+    GStatBuf        info;
     gint            retry_limit = 4;
     gint            retry_count = 0;
     GError         *error = NULL;
 
-    address = g_unix_socket_address_new_with_type (nimf_client_socket_path, -1,
-                                                   G_UNIX_SOCKET_ADDRESS_PATH);
     if (nimf_client_socket)
     {
       if (nimf_client_socket_source)
@@ -260,19 +248,34 @@ nimf_client_connect (NimfClient *client)
                                        G_SOCKET_TYPE_STREAM,
                                        G_SOCKET_PROTOCOL_DEFAULT,
                                        NULL);
+    address = g_unix_socket_address_new_with_type (nimf_client_socket_path, -1,
+                                                   G_UNIX_SOCKET_ADDRESS_PATH);
 
     for (retry_count = 0; retry_count < retry_limit; retry_count++)
     {
       g_clear_error (&error);
 
-      if (g_socket_connect (nimf_client_socket, address, NULL, &error))
-        break;
-
-      if (!g_spawn_command_line_sync ("nimf --start-indicator",
-                                      NULL, NULL, NULL, NULL))
+      if (g_stat (nimf_client_socket_path, &info) == 0)
       {
-        g_critical ("Couldn't execute 'nimf --start-indicator'");
-        break;
+        if (client->uid == info.st_uid)
+        {
+          if (g_socket_connect (nimf_client_socket, address, NULL, &error))
+            break;
+        }
+        else
+        {
+          g_critical (G_STRLOC ": %s: Can't authenticate", G_STRFUNC);
+          break;
+        }
+      }
+      else
+      {
+        if (!g_spawn_command_line_sync ("nimf --start-indicator",
+                                        NULL, NULL, NULL, NULL))
+        {
+          g_critical ("Couldn't execute 'nimf --start-indicator'");
+          break;
+        }
       }
 
       g_usleep (G_USEC_PER_SEC);
@@ -305,8 +308,6 @@ nimf_client_connect (NimfClient *client)
       g_clear_error (&error);
     }
   }
-
-  finally:
 
   g_mutex_unlock (&mutex);
 }
