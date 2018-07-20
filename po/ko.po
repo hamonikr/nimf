@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 03:07+0900\n"
-"PO-Revision-Date: 2018-06-28 03:32+0900\n"
+"POT-Creation-Date: 2018-07-20 23:17+0900\n"
+"PO-Revision-Date: 2018-07-20 23:39+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:91
+#: ../bin/nimf.c:150
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다"
 
-#: ../bin/nimf.c:92
+#: ../bin/nimf.c:151
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../bin/nimf.c:93
+#: ../bin/nimf.c:152
 msgid "Version"
 msgstr "버전"
 
-#: ../bin/nimf.c:94
+#: ../bin/nimf.c:153
 msgid "Start indicator"
 msgstr "표시기를 시작합니다"
 
@@ -55,7 +55,7 @@ msgstr "취소 (_C)"
 msgid "Click here and then press key combination"
 msgstr "여기를 클릭한 후 키 조합을 누르세요"
 
-#: ../bin/nimf-settings.c:807
+#: ../bin/nimf-settings.c:804
 msgid "Nimf Settings"
 msgstr "님프 설정"
 
@@ -237,6 +237,22 @@ msgstr "UI l10n 을 위한 키 값"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
 msgid "'Kana input on the English Keyboard (pc104)'"
 msgstr "'영문 키보드로 가나 입력 (pc104)'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
+msgid "n input mode"
+msgstr "n 입력 모드"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
+msgid "Choose how you type hiragana letter n."
+msgstr "히라가나 문자 n을 입력하는 방법을 선택하세요."
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:17
+msgid "'Common practice'"
+msgstr "'일반적인 관행'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:18
+msgid "'Explicitly type nn'"
+msgstr "'명시적으로 nn을 누릅니다'"
 
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"

@@ -51,6 +51,7 @@ struct _NimfAnthy
   NimfKey          **katakana_keys;
   gchar             *input_mode;
   gboolean           input_mode_changed;
+  gint               n_input_mode;
 
   anthy_context_t  context;
   gint             current_segment;
@@ -65,6 +66,12 @@ struct _NimfAnthyClass
   /*< private >*/
   NimfEngineClass parent_class;
 };
+
+typedef enum
+{
+  COMMON,
+  EXPLICIT
+} NInputMode;
 
 static gint        nimf_anthy_ref_count = 0;
 static GHashTable *nimf_anthy_romaji = NULL;;
@@ -453,6 +460,13 @@ nimf_anthy_filter_event_romaji (NimfEngine    *engine,
           g_string_insert (anthy->preedit, anthy->preedit_offset + anthy->preedit_dx - 2, "っ");
           anthy->preedit_offset += strlen ("っ") - 1;
         }
+        else if (anthy->n_input_mode == COMMON && a == 'n' &&
+                 !(b == 'a' || b == 'e' || b == 'i' || b == 'o' || b == 'u' || b == 'n'))
+        {
+          g_string_erase  (anthy->preedit, anthy->preedit_offset + anthy->preedit_dx - 2, 1);
+          g_string_insert (anthy->preedit, anthy->preedit_offset + anthy->preedit_dx - 2, "ん");
+          anthy->preedit_offset += strlen ("ん") - 1;
+        }
 
         anthy->preedit_offset += anthy->preedit_dx - 1;
         anthy->preedit_dx = 1;
@@ -721,6 +735,18 @@ nimf_anthy_convert_to (NimfAnthy *anthy, int candidate_type)
   return g_string_free (string, FALSE);
 }
 
+static void
+nimf_anthy_replace_last_n (NimfAnthy *anthy)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (g_str_has_suffix (anthy->preedit->str, "n"))
+  {
+    g_string_erase  (anthy->preedit, anthy->preedit->len - 1, 1);
+    g_string_append (anthy->preedit, "ん");
+  }
+}
+
 static gboolean
 nimf_anthy_filter_event (NimfEngine    *engine,
                          NimfServiceIM *target,
@@ -733,6 +759,12 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
+
+  if (anthy->input_mode_changed)
+  {
+    nimf_anthy_reset (engine, target);
+    anthy->input_mode_changed = FALSE;
+  }
 
   if (nimf_candidatable_is_visible (anthy->candidatable))
   {
@@ -899,10 +931,17 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     }
   }
 
+  if ((event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
+      (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK))
+    return FALSE;
+
   if (event->key.keyval == NIMF_KEY_space)
   {
     anthy->current_segment = 0;
     struct anthy_conv_stat conv_stat;
+
+    if (anthy->n_input_mode == COMMON)
+      nimf_anthy_replace_last_n (anthy);
 
     anthy_set_string (anthy->context, anthy->preedit->str);
     anthy_get_stat (anthy->context, &conv_stat);
@@ -930,20 +969,13 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     return TRUE;
   }
 
-  if ((event->key.state & NIMF_MODIFIER_MASK) == NIMF_CONTROL_MASK ||
-      (event->key.state & NIMF_MODIFIER_MASK) == (NIMF_CONTROL_MASK | NIMF_MOD2_MASK))
-    return FALSE;
-
-  if (anthy->input_mode_changed)
-  {
-    nimf_anthy_reset (engine, target);
-    anthy->input_mode_changed = FALSE;
-  }
-
   if (event->key.keyval == NIMF_KEY_Return)
   {
     if (anthy->preedit->len > 0)
     {
+      if (anthy->n_input_mode == COMMON)
+        nimf_anthy_replace_last_n (anthy);
+
       nimf_anthy_reset (engine, target);
       retval = TRUE;
     }
@@ -1086,6 +1118,45 @@ on_changed_method (GSettings *settings,
   g_free (anthy->input_mode);
   anthy->input_mode = g_settings_get_string (settings, key);
   anthy->input_mode_changed = TRUE;
+}
+
+static gint
+nimf_anthy_get_n_input_mode (NimfAnthy *anthy)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar *mode;
+  gint   retval;
+
+  mode = g_settings_get_string (anthy->settings, "n-input-mode");
+
+  if (g_strcmp0 (mode, "common") == 0)
+    retval = COMMON;
+  else
+    retval = EXPLICIT;
+
+  g_free (mode);
+
+  return retval;
+}
+
+static void
+on_changed_n_input_mode (GSettings *settings,
+                         gchar     *key,
+                         NimfAnthy *anthy)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gchar *mode;
+
+  mode = g_settings_get_string (settings, key);
+
+  if (g_strcmp0 (mode, "common") == 0)
+    anthy->n_input_mode = COMMON;
+  else
+    anthy->n_input_mode = EXPLICIT;
+
+  g_free (mode);
 }
 
 static void
@@ -1468,8 +1539,9 @@ nimf_anthy_init (NimfAnthy *anthy)
   nimf_anthy_ref_count++;
   anthy_context_set_encoding (anthy->context, ANTHY_UTF8_ENCODING);
 
-  anthy->settings = g_settings_new ("org.nimf.engines.nimf-anthy");
-  anthy->input_mode = g_settings_get_string (anthy->settings, "input-mode");
+  anthy->settings     = g_settings_new ("org.nimf.engines.nimf-anthy");
+  anthy->input_mode   = g_settings_get_string (anthy->settings, "input-mode");
+  anthy->n_input_mode = nimf_anthy_get_n_input_mode (anthy);
   hiragana_keys = g_settings_get_strv   (anthy->settings, "hiragana-keys");
   katakana_keys = g_settings_get_strv   (anthy->settings, "katakana-keys");
   anthy->hiragana_keys = nimf_key_newv ((const gchar **) hiragana_keys);
@@ -1484,6 +1556,8 @@ nimf_anthy_init (NimfAnthy *anthy)
                     G_CALLBACK (on_changed_keys), anthy);
   g_signal_connect (anthy->settings, "changed::input-mode",
                     G_CALLBACK (on_changed_method), anthy);
+  g_signal_connect (anthy->settings, "changed::n-input-mode",
+                    G_CALLBACK (on_changed_n_input_mode), anthy);
 }
 
 static void

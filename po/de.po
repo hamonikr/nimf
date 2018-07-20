@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 03:07+0900\n"
-"PO-Revision-Date: 2018-06-28 03:13+0900\n"
+"POT-Creation-Date: 2018-07-20 23:17+0900\n"
+"PO-Revision-Date: 2018-07-20 23:20+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,19 +19,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/nimf.c:91
+#: ../bin/nimf.c:150
 msgid "Do not daemonize"
 msgstr "Nicht als Daemon starten"
 
-#: ../bin/nimf.c:92
+#: ../bin/nimf.c:151
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../bin/nimf.c:93
+#: ../bin/nimf.c:152
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf.c:94
+#: ../bin/nimf.c:153
 msgid "Start indicator"
 msgstr "Starte einen Indikator"
 
@@ -56,7 +56,7 @@ msgstr "Abbrechen (_C)"
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:807
+#: ../bin/nimf-settings.c:804
 msgid "Nimf Settings"
 msgstr "Nimf Einstellungen"
 
@@ -240,6 +240,22 @@ msgstr "Schlüsselwert für UI l10n"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
 msgid "'Kana input on the English Keyboard (pc104)'"
 msgstr "'Kana-Eingang auf der englischen Tastatur (pc104)'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
+msgid "n input mode"
+msgstr "n Eingabemodus"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
+msgid "Choose how you type hiragana letter n."
+msgstr "Wählen Sie, wie Sie den Hiragana-Buchstaben n eingeben."
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:17
+msgid "'Common practice'"
+msgstr "'Gang und gäbe sein'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:18
+msgid "'Explicitly type nn'"
+msgstr "'Typ Explizit nn'"
 
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"

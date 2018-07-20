@@ -29,8 +29,8 @@
     </key>
     <key type="s" name="input-mode">
       <choices>
-        <choice value='romaji'   /> <!-- Romaji -->
-        <choice value='pc104'    /> <!-- Standard English Keyboard pc104 -->
+        <choice value='romaji' /> <!-- Romaji -->
+        <choice value='pc104'  /> <!-- Standard English Keyboard pc104 -->
       </choices>
       <default>'romaji'</default>
       <summary>Japanese input mode</summary>
@@ -43,6 +43,25 @@
     </key>
     <key type="s" name="hidden-input-mode-pc104">
       <default l10n="messages">'Kana input on the English Keyboard (pc104)'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="n-input-mode">
+      <choices>
+        <choice value='common' />
+        <choice value='explicit' />
+      </choices>
+      <default>'common'</default>
+      <summary>n input mode</summary>
+      <description>Choose how you type hiragana letter n.</description>
+    </key>
+    <key type="s" name="hidden-n-input-mode-common">
+      <default l10n="messages">'Common practice'</default>
+      <summary>key value for UI l10n</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="hidden-n-input-mode-explicit">
+      <default l10n="messages">'Explicitly type nn'</default>
       <summary>key value for UI l10n</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>

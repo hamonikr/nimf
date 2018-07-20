@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 03:07+0900\n"
-"PO-Revision-Date: 2018-06-28 03:24+0900\n"
+"POT-Creation-Date: 2018-07-20 23:17+0900\n"
+"PO-Revision-Date: 2018-07-20 23:35+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:91
+#: ../bin/nimf.c:150
 msgid "Do not daemonize"
 msgstr "デーモン化しません"
 
-#: ../bin/nimf.c:92
+#: ../bin/nimf.c:151
 msgid "Log debugging message"
 msgstr "デバッグメッセージを記録します。"
 
-#: ../bin/nimf.c:93
+#: ../bin/nimf.c:152
 msgid "Version"
 msgstr "バージョン"
 
-#: ../bin/nimf.c:94
+#: ../bin/nimf.c:153
 msgid "Start indicator"
 msgstr "インジケータを開始します"
 
@@ -55,7 +55,7 @@ msgstr "キャンセル (_C)"
 msgid "Click here and then press key combination"
 msgstr "ここをクリックして、キーの組み合わせを押してください"
 
-#: ../bin/nimf-settings.c:807
+#: ../bin/nimf-settings.c:804
 msgid "Nimf Settings"
 msgstr "ニンフ設定"
 
@@ -85,7 +85,7 @@ msgstr "著作権 (c) 2015-2018 キム・ホドン"
 
 #: ../modules/services/indicator/nimf-indicator.c:107
 msgid "Hodong Kim, N"
-msgstr ""
+msgstr "キム・ホドン, N"
 
 #: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Website"
@@ -238,6 +238,22 @@ msgstr "UI l10nのためのキー値"
 msgid "'Kana input on the English Keyboard (pc104)'"
 msgstr "'英字キーボードの仮名入力 (pc104)'"
 
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
+msgid "n input mode"
+msgstr "n入力モード"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
+msgid "Choose how you type hiragana letter n."
+msgstr "ひらがな文字んを入力する方法を選択してください。"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:17
+msgid "'Common practice'"
+msgstr "'一般的な方法'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:18
+msgid "'Explicitly type nn'"
+msgstr "'明示的にnnと入力します'"
+
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"
 msgstr "'中国語 (chewing)'"
@@ -345,11 +361,11 @@ msgstr "'ハードウェアハングル/ハンジャキー'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
 msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
-msgstr "''"
+msgstr "'右Ctrlキーをハングルキー、右Altキーを漢字キー割り当て'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
 msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
-msgstr "'ハングルとして右Ctrl、右ハングルとしてAlt'"
+msgstr "'右Ctrlキーをハングルキー、右Altキーを漢字キー割り当て'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
