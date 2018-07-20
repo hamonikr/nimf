@@ -1,3 +1,10 @@
+nimf (2018.07.20) stable; urgency=medium
+
+  * Added a n-input-mode option (resolves #81 #85 #103)
+  * Fixed authentication logic
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 20 Jul 2018 23:43:55 +0900
+
 nimf (2018.07.19) stable; urgency=medium
 
   * Fixed segmentation fault (closes #115 #113)
