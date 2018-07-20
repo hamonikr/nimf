@@ -37,6 +37,7 @@ static GSource    *nimf_client_default_source = NULL;
 static GHashTable *nimf_client_table          = NULL;
 NimfResult        *nimf_client_result         = NULL;
 GSocket           *nimf_client_socket         = NULL;
+gchar             *nimf_client_socket_path    = NULL;
 
 G_DEFINE_ABSTRACT_TYPE (NimfClient, nimf_client, G_TYPE_OBJECT);
 
@@ -215,12 +216,10 @@ nimf_client_connect (NimfClient *client)
 
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar   *path;
   GStatBuf info;
   gint     retval;
 
-  path   = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", client->uid);
-  retval = g_stat (path, &info);
+  retval = g_stat (nimf_client_socket_path, &info);
 
   if (retval == 0 && client->uid != info.st_uid)
   {
@@ -235,7 +234,7 @@ nimf_client_connect (NimfClient *client)
     gint            retry_count = 0;
     GError         *error = NULL;
 
-    address = g_unix_socket_address_new_with_type (path, -1,
+    address = g_unix_socket_address_new_with_type (nimf_client_socket_path, -1,
                                                    G_UNIX_SOCKET_ADDRESS_PATH);
     if (nimf_client_socket)
     {
@@ -309,7 +308,6 @@ nimf_client_connect (NimfClient *client)
 
   finally:
 
-  g_free (path);
   g_mutex_unlock (&mutex);
 }
 
@@ -341,10 +339,12 @@ nimf_client_init (NimfClient *client)
 
   static guint16 next_id = 0;
   guint16 id;
-  gchar  *path;
 
   if ((client->uid = audit_getloginuid ()) == (uid_t) -1)
     client->uid = getuid ();
+
+  if (!nimf_client_socket_path)
+    nimf_client_socket_path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", client->uid);
 
   if (nimf_client_context == NULL)
     nimf_client_context = g_main_context_new ();
@@ -364,15 +364,12 @@ nimf_client_init (NimfClient *client)
   {
     GFile *file;
 
-    path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", client->uid);
-    file = g_file_new_for_path (path);
-
+    file = g_file_new_for_path (nimf_client_socket_path);
     client->monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, NULL);
     g_file_monitor_set_rate_limit (client->monitor, G_PRIORITY_LOW);
     g_signal_connect (client->monitor, "changed", G_CALLBACK (on_changed), client);
 
     g_object_unref (file);
-    g_free (path);
   }
 
   do {
@@ -433,12 +430,15 @@ nimf_client_finalize (GObject *object)
     if (nimf_client_default_source)
       g_source_unref     (nimf_client_default_source);
 
+    g_free (nimf_client_socket_path);
+
     nimf_client_socket         = NULL;
     nimf_client_socket_source  = NULL;
     nimf_client_default_source = NULL;
     nimf_client_context        = NULL;
     nimf_client_result         = NULL;
     nimf_client_table          = NULL;
+    nimf_client_socket_path    = NULL;
   }
 
   G_OBJECT_CLASS (nimf_client_parent_class)->finalize (object);
