@@ -2,7 +2,6 @@
 pkgname=nimf
 pkgver=master
 pkgrel=1
-epoch=
 pkgdesc=""
 arch=()
 url=""
