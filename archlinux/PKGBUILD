@@ -18,7 +18,6 @@ optdepends=('brise: Rime schema repository'
             'xorg-setxkbmap: Set the keyboard using the X Keyboard Extension')
 source=("https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2")
 md5sums=('SKIP')
-validpgpkeys=()
 
 prepare() {
 	cd "$pkgname-$pkgver"
