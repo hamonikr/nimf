@@ -8,7 +8,6 @@ url="https://gitlab.com/nimf-i18n/nimf"
 license=('LGPL3')
 depends=()
 makedepends=()
-checkdepends=()
 optdepends=()
 provides=()
 conflicts=()
