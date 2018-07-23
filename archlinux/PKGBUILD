@@ -1,6 +1,6 @@
 # Copyright (C) 2018 Hodong Kim <cogniti@gmail.com>
 pkgname=nimf
-pkgver=VERSION
+pkgver=master
 pkgrel=1
 epoch=
 pkgdesc=""
