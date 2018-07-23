@@ -2,7 +2,7 @@
 pkgname=nimf
 pkgver=master
 pkgrel=1
-pkgdesc=""
+pkgdesc="Nimf is an input method framework."
 arch=()
 url=""
 license=('LGPL3')
