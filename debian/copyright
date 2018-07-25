@@ -20,6 +20,10 @@ License:   LGPL-3+
  On Debian systems, the complete text of the GNU Library General
  Public License version 3 can be found in "/usr/share/common-licenses/LGPL-3".
 
+Files:     archlinux/PKGBUILD
+Copyright: it is in the public domain
+License:   public-domain
+
 Files:     modules/services/wayland/nimf-wayland.c
            modules/services/wayland/nimf-wayland.h
 Copyright: 2012, 2013 Intel Corporation
