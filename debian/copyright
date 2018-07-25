@@ -23,6 +23,8 @@ License:   LGPL-3+
 Files:     archlinux/PKGBUILD
 Copyright: it is in the public domain
 License:   public-domain
+ No license required for any purpose; the work is not subject to copyright in
+ any jurisdiction.
 
 Files:     modules/services/wayland/nimf-wayland.c
            modules/services/wayland/nimf-wayland.h
