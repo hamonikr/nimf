@@ -49,8 +49,6 @@ libnimf_la_CFLAGS = \
 	-I$(top_srcdir)/libnimf \
 	-DNIMF_COMPILATION \
 	-DG_LOG_DOMAIN=\"nimf\" \
-	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
-	-DNIMF_SERVICE_MODULE_DIR=\"$(libdir)/nimf/modules/services\" \
 	$(LIBNIMF_DEPS_CFLAGS)
 
 libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)

@@ -19,20 +19,12 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-#include "nimf-server.h"
-#include "nimf-private.h"
-#include "nimf-marshalers.h"
-#include "nimf-module.h"
-#include "nimf-service.h"
-#include "nimf-key-syms.h"
-#include "nimf-types.h"
-#include "nimf-service-im.h"
-#include "nimf-server-im.h"
-#include <gio/gunixsocketaddress.h>
-#include <string.h>
 #include <glib.h>
+#include <glib-object.h>
+#include "nimf-server.h"
+#include "nimf-service.h"
 #include <glib/gstdio.h>
+#include "nimf-marshalers.h"
 
 enum {
   ENGINE_CHANGED,
@@ -41,207 +33,6 @@ enum {
 };
 
 static guint nimf_server_signals[LAST_SIGNAL] = { 0 };
-
-static gboolean
-on_incoming_message_nimf (GSocket        *socket,
-                          GIOCondition    condition,
-                          NimfConnection *connection)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfMessage *message;
-  gboolean     retval;
-  nimf_message_unref (connection->result->reply);
-  connection->result->is_dispatched = TRUE;
-
-  if (condition & (G_IO_HUP | G_IO_ERR))
-  {
-    g_debug (G_STRLOC ": condition & (G_IO_HUP | G_IO_ERR)");
-
-    g_socket_close (socket, NULL);
-
-    GList *l;
-    for (l = connection->server->instances; l != NULL; l = l->next)
-      nimf_engine_reset (l->data, NULL);
-
-    connection->result->reply = NULL;
-    g_hash_table_remove (connection->server->connections,
-                         GUINT_TO_POINTER (nimf_connection_get_id (connection)));
-
-    return G_SOURCE_REMOVE;
-  }
-
-  message = nimf_recv_message (socket);
-  connection->result->reply = message;
-
-  if (G_UNLIKELY (message == NULL))
-  {
-    g_critical (G_STRLOC ": NULL message");
-    return G_SOURCE_CONTINUE;
-  }
-
-  NimfServerIM *im;
-  guint16       icid = message->header->icid;
-
-  im = g_hash_table_lookup (connection->ims, GUINT_TO_POINTER (icid));
-
-  switch (message->header->type)
-  {
-    case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_server_im_new (connection, connection->server);
-      NIMF_SERVICE_IM (im)->icid = icid;
-      g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
-
-      nimf_send_message (socket, icid, NIMF_MESSAGE_CREATE_CONTEXT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_DESTROY_CONTEXT:
-      g_hash_table_remove (connection->ims, GUINT_TO_POINTER (icid));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_FILTER_EVENT:
-      nimf_message_ref (message);
-      retval = nimf_service_im_filter_event (NIMF_SERVICE_IM (im), (NimfEvent *) message->data);
-      nimf_message_unref (message);
-      nimf_send_message (socket, icid, NIMF_MESSAGE_FILTER_EVENT_REPLY,
-                         &retval, sizeof (gboolean), NULL);
-      break;
-    case NIMF_MESSAGE_RESET:
-      nimf_service_im_reset (NIMF_SERVICE_IM (im));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_RESET_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_FOCUS_IN:
-      nimf_service_im_focus_in (NIMF_SERVICE_IM (im));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_IN_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_FOCUS_OUT:
-      nimf_service_im_focus_out (NIMF_SERVICE_IM (im));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_OUT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_SET_SURROUNDING:
-      {
-        nimf_message_ref (message);
-        gchar   *data     = message->data;
-        guint16  data_len = message->header->data_len;
-
-        gint   str_len      = data_len - 1 - 2 * sizeof (gint);
-        gint   cursor_index = *(gint *) (data + data_len - sizeof (gint));
-
-        nimf_service_im_set_surrounding (NIMF_SERVICE_IM (im), data, str_len, cursor_index);
-        nimf_message_unref (message);
-        nimf_send_message (socket, icid,
-                           NIMF_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
-      }
-      break;
-    case NIMF_MESSAGE_GET_SURROUNDING:
-      {
-        gchar *data;
-        gint   cursor_index;
-        gint   str_len = 0;
-
-        retval = nimf_service_im_get_surrounding (NIMF_SERVICE_IM (im), &data, &cursor_index);
-        str_len = strlen (data);
-        data = g_realloc (data, str_len + 1 + sizeof (gint) + sizeof (gboolean));
-        *(gint *) (data + str_len + 1) = cursor_index;
-        *(gboolean *) (data + str_len + 1 + sizeof (gint)) = retval;
-
-        nimf_send_message (socket, icid,
-                           NIMF_MESSAGE_GET_SURROUNDING_REPLY, data,
-                           str_len + 1 + sizeof (gint) + sizeof (gboolean),
-                           NULL);
-        g_free (data);
-      }
-      break;
-    case NIMF_MESSAGE_SET_CURSOR_LOCATION:
-      nimf_message_ref (message);
-      nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (im), (NimfRectangle *) message->data);
-      nimf_message_unref (message);
-      nimf_send_message (socket, icid, NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_SET_USE_PREEDIT:
-      nimf_message_ref (message);
-      nimf_service_im_set_use_preedit (NIMF_SERVICE_IM (im), *(gboolean *) message->data);
-      nimf_message_unref (message);
-      nimf_send_message (socket, icid, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_START_INDICATOR:
-      {
-        NimfService *service;
-        gboolean     retval = FALSE;
-
-        service = g_hash_table_lookup (connection->server->services,
-                                       "nimf-indicator");
-        if (!nimf_service_is_active (service))
-          retval = nimf_service_start (service);
-
-        nimf_send_message (socket, icid, NIMF_MESSAGE_START_INDICATOR_REPLY,
-                           &retval, sizeof (gboolean), NULL);
-      }
-      break;
-    case NIMF_MESSAGE_PREEDIT_START_REPLY:
-    case NIMF_MESSAGE_PREEDIT_CHANGED_REPLY:
-    case NIMF_MESSAGE_PREEDIT_END_REPLY:
-    case NIMF_MESSAGE_COMMIT_REPLY:
-    case NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_DELETE_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_BEEP_REPLY:
-      break;
-    default:
-      g_warning ("Unknown message type: %d", message->header->type);
-      break;
-  }
-
-  return G_SOURCE_CONTINUE;
-}
-
-static guint16
-nimf_server_add_connection (NimfServer     *server,
-                            NimfConnection *connection)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  guint16 id;
-
-  do
-    id = server->next_id++;
-  while (id == 0 || g_hash_table_contains (server->connections,
-                                           GUINT_TO_POINTER (id)));
-  connection->id = id;
-  connection->server = server;
-  g_hash_table_insert (server->connections, GUINT_TO_POINTER (id), connection);
-
-  return id;
-}
-
-static gboolean
-on_new_connection (GSocketService    *service,
-                   GSocketConnection *socket_connection,
-                   GObject           *source_object,
-                   NimfServer        *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfConnection *connection;
-  connection = nimf_connection_new ();
-  connection->socket = g_socket_connection_get_socket (socket_connection);
-  nimf_server_add_connection (server, connection);
-
-  connection->source = g_socket_create_source (connection->socket, G_IO_IN, NULL);
-  connection->socket_connection = g_object_ref (socket_connection);
-  g_source_set_can_recurse (connection->source, TRUE);
-  g_source_set_callback (connection->source,
-                         (GSourceFunc) on_incoming_message_nimf,
-                         connection, NULL);
-  g_source_attach (connection->source, NULL);
-
-  return TRUE;
-}
 
 G_DEFINE_TYPE (NimfServer, nimf_server, G_TYPE_OBJECT);
 
@@ -323,34 +114,6 @@ nimf_server_get_default_engine (NimfServer *server)
 }
 
 static void
-on_changed_trigger_keys (GSettings  *settings,
-                         gchar      *key,
-                         NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GHashTableIter iter;
-  gpointer       engine_id;
-  gpointer       gsettings;
-
-  g_hash_table_remove_all (server->trigger_keys);
-
-  g_hash_table_iter_init (&iter, server->trigger_gsettings);
-
-  while (g_hash_table_iter_next (&iter, &engine_id, &gsettings))
-  {
-    NimfKey **trigger_keys;
-    gchar   **strv;
-
-    strv = g_settings_get_strv (gsettings, "trigger-keys");
-    trigger_keys = nimf_key_newv ((const gchar **) strv);
-    g_hash_table_insert (server->trigger_keys,
-                         trigger_keys, g_strdup (engine_id));
-    g_strfreev (strv);
-  }
-}
-
-static void
 on_changed_hotkeys (GSettings  *settings,
                     gchar      *key,
                     NimfServer *server)
@@ -374,141 +137,6 @@ on_use_singleton (GSettings  *settings,
 
   server->use_singleton = g_settings_get_boolean (server->settings,
                                                   "use-singleton");
-}
-
- static void
-
-nimf_server_load_service (NimfServer  *server,
-                          const gchar *path)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfModule  *module;
-  NimfService *service;
-
-  module = nimf_module_new (path);
-
-  if (!g_type_module_use (G_TYPE_MODULE (module)))
-  {
-    g_warning (G_STRLOC ":" "Failed to load module: %s", path);
-    g_object_unref (module);
-    return;
-  }
-
-  service = g_object_new (module->type, "server", server, NULL);
-  g_hash_table_insert (server->services,
-                       g_strdup (nimf_service_get_id (service)), service);
-
-  g_type_module_unuse (G_TYPE_MODULE (module));
-}
-
-static void
-nimf_server_load_services (NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GDir        *dir;
-  GError      *error = NULL;
-  const gchar *filename;
-  gchar       *path;
-
-  dir = g_dir_open (NIMF_SERVICE_MODULE_DIR, 0, &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
-    g_clear_error (&error);
-    return;
-  }
-
-  while ((filename = g_dir_read_name (dir)))
-  {
-    path = g_build_path (G_DIR_SEPARATOR_S, NIMF_SERVICE_MODULE_DIR, filename, NULL);
-    nimf_server_load_service (server, path);
-    g_free (path);
-  }
-
-  g_dir_close (dir);
-}
-
-static void
-nimf_server_load_engines (NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  GSettingsSchemaSource  *source; /* do not free */
-  gchar                 **schema_ids;
-  gint                    i;
-
-  source = g_settings_schema_source_get_default ();
-  g_settings_schema_source_list_schemas (source, TRUE, &schema_ids, NULL);
-
-  for (i = 0; schema_ids[i] != NULL; i++)
-  {
-    if (g_str_has_prefix (schema_ids[i], "org.nimf.engines."))
-    {
-      GSettingsSchema *schema;
-      GSettings       *settings;
-      const gchar     *engine_id;
-      gboolean         active = TRUE;
-
-      engine_id = schema_ids[i] + strlen ("org.nimf.engines.");
-      schema = g_settings_schema_source_lookup (source, schema_ids[i], TRUE);
-      settings = g_settings_new (schema_ids[i]);
-
-      if (g_settings_schema_has_key (schema, "active"))
-        active = g_settings_get_boolean (settings, "active");
-
-      if (active)
-      {
-        NimfModule *module;
-        NimfEngine *engine;
-        gchar      *path;
-
-        path = g_module_build_path (NIMF_MODULE_DIR, engine_id);
-        module = nimf_module_new (path);
-
-        if (!g_type_module_use (G_TYPE_MODULE (module)))
-        {
-          g_warning (G_STRLOC ": Failed to load module: %s", path);
-
-          g_object_unref (module);
-          g_free (path);
-          g_object_unref (settings);
-          g_settings_schema_unref (schema);
-
-          continue;
-        }
-
-        g_hash_table_insert (server->modules, g_strdup (path), module);
-        engine = g_object_new (module->type, "server", server, NULL);
-        server->instances = g_list_prepend (server->instances, engine);
-        g_type_module_unuse (G_TYPE_MODULE (module));
-
-        if (g_settings_schema_has_key (schema, "trigger-keys"))
-        {
-          NimfKey **trigger_keys;
-          gchar   **strv;
-
-          strv = g_settings_get_strv (settings, "trigger-keys");
-          trigger_keys = nimf_key_newv ((const gchar **) strv);
-          g_hash_table_insert (server->trigger_keys,
-                               trigger_keys, g_strdup (engine_id));
-          g_hash_table_insert (server->trigger_gsettings,
-                               g_strdup (engine_id), settings);
-          g_signal_connect (settings, "changed::trigger-keys",
-                            G_CALLBACK (on_changed_trigger_keys), server);
-          g_strfreev (strv);
-        }
-
-        g_free (path);
-      }
-
-      g_settings_schema_unref (schema);
-    }
-  }
-
-  g_strfreev (schema_ids);
 }
 
 static void
@@ -537,23 +165,13 @@ nimf_server_init (NimfServer *server)
                                              g_free, NULL);
   server->services  = g_hash_table_new_full (g_str_hash, g_str_equal,
                                              g_free, g_object_unref);
-
-  nimf_server_load_services (server);
-
-  server->candidatable = g_hash_table_lookup (server->services, "nimf-candidate");
-  server->preeditable  = g_hash_table_lookup (server->services, "nimf-preedit-window");
-  nimf_service_start (NIMF_SERVICE (server->candidatable));
-  nimf_service_start (NIMF_SERVICE (server->preeditable));
-
-  nimf_server_load_engines  (server);
-
   server->connections = g_hash_table_new_full (g_direct_hash,
                                                g_direct_equal,
                                                NULL,
                                                (GDestroyNotify) g_object_unref);
 }
 
-void
+static void
 nimf_server_stop (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -637,83 +255,6 @@ nimf_server_class_init (NimfServerClass *class)
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_STRING);
-}
-
-NimfServer *
-nimf_server_new ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return g_object_new (NIMF_TYPE_SERVER, NULL);
-}
-
-gboolean
-nimf_server_start (NimfServer *server, gboolean start_indicator)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_val_if_fail (NIMF_IS_SERVER (server), FALSE);
-
-  if (server->active)
-    return TRUE;
-
-  GSocketAddress *address;
-  GError         *error = NULL;
-
-  server->path = nimf_get_socket_path ();
-  server->service = g_socket_service_new ();
-
-  if (g_unix_socket_address_abstract_names_supported ())
-    address = g_unix_socket_address_new_with_type (server->path, -1,
-                                                   G_UNIX_SOCKET_ADDRESS_PATH);
-  else
-  {
-    g_critical ("Abstract UNIX domain socket names are not supported.");
-    return FALSE;
-  }
-
-  g_socket_listener_add_address (G_SOCKET_LISTENER (server->service), address,
-                                 G_SOCKET_TYPE_STREAM,
-                                 G_SOCKET_PROTOCOL_DEFAULT,
-                                 NULL, NULL, &error);
-  g_object_unref (address);
-
-  if (error)
-  {
-    g_critical ("%s", error->message);
-    g_clear_error (&error);
-
-    return FALSE;
-  }
-
-  g_chmod (server->path, 0700);
-
-  g_signal_connect (server->service, "incoming",
-                    G_CALLBACK (on_new_connection), server);
-
-  g_socket_service_start (server->service);
-
-  GHashTableIter iter;
-  gpointer       service;
-
-  g_hash_table_iter_init (&iter, server->services);
-
-  while (g_hash_table_iter_next (&iter, NULL, &service))
-  {
-    if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-indicator") && !start_indicator)
-      continue;
-    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-candidate"))
-      continue;
-    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
-      continue;
-
-    if (!nimf_service_start (NIMF_SERVICE (service)))
-      g_hash_table_iter_remove (&iter);
-  }
-
-  server->active = TRUE;
-
-  return TRUE;
 }
 
 void nimf_server_set_engine_by_id (NimfServer  *server,

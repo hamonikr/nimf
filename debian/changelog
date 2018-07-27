@@ -1,3 +1,13 @@
+nimf (2018.07.27) stable; urgency=medium
+
+  * Some code inside nimf-server.* has been moved to bin/nimf.c #16
+  * Determine socket path, lock path at runtime #16
+    https://gitlab.com/nimf-i18n/nimf/issues/16#note_89891251
+  * archlinux/PKGBUILD file is in the public domain
+  * ln -sf debian/changelog NEWS
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 27 Jul 2018 22:45:14 +0900
+
 nimf (2018.07.20) stable; urgency=medium
 
   * Added a n-input-mode option (resolves #81 #85 #103)
