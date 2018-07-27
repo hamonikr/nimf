@@ -33,7 +33,6 @@
 #include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-#include <libaudit.h>
 
 enum {
   ENGINE_CHANGED,
@@ -660,12 +659,8 @@ nimf_server_start (NimfServer *server, gboolean start_indicator)
 
   GSocketAddress *address;
   GError         *error = NULL;
-  uid_t           uid;
 
-  if ((uid = audit_getloginuid ()) == (uid_t) -1)
-    uid = getuid ();
-
-  server->path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", uid);
+  server->path = nimf_get_socket_path ();
   server->service = g_socket_service_new ();
 
   if (g_unix_socket_address_abstract_names_supported ())

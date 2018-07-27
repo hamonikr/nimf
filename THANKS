@@ -1,3 +1,8 @@
+5HARK <blgf6190 at gmail com> reported:
+Determining NIMF_RUNTIME_DIR, NIMF_MODULE_DIR at compile time causes problems
+when distributing static libnimf.a.
+https://gitlab.com/nimf-i18n/nimf/issues/16#note_89891251
+
 Hansol Shin (hshin23) reported segfault.
 https://gitlab.com/nimf-i18n/nimf/issues/57
 

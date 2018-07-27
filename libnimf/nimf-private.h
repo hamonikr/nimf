@@ -66,6 +66,8 @@ void         nimf_result_iteration_until (NimfResult      *result,
                                           GMainContext    *main_context,
                                           guint16          icid,
                                           NimfMessageType  type);
+gchar       *nimf_get_socket_path (void);
+
 G_END_DECLS
 
 #endif /* __NIMF_PRIVATE_H__ */

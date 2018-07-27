@@ -29,7 +29,7 @@
 #include <libaudit.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-#include "config.h"
+#include "nimf-private.h"
 
 GMainContext      *nimf_client_context        = NULL;
 static GSource    *nimf_client_socket_source  = NULL;
@@ -345,7 +345,7 @@ nimf_client_init (NimfClient *client)
     client->uid = getuid ();
 
   if (!nimf_client_socket_path)
-    nimf_client_socket_path = g_strdup_printf (NIMF_RUNTIME_DIR"/socket", client->uid);
+    nimf_client_socket_path = nimf_get_socket_path ();
 
   if (nimf_client_context == NULL)
     nimf_client_context = g_main_context_new ();

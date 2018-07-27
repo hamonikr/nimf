@@ -50,12 +50,6 @@ AC_SUBST(LIBNIMF_LT_VERSION)
 
 LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
 AC_SUBST(LIBNIMF_REQUIRES)
-
-AS_IF([test -d "/run/user"],     [NIMF_RUNTIME_DIR="/run/user/%d/nimf"],
-      [test -d "/var/run/user"], [NIMF_RUNTIME_DIR="/var/run/user/%d/nimf"],
-      [NIMF_RUNTIME_DIR="/tmp/nimf-%d"])
-AC_DEFINE_UNQUOTED(NIMF_RUNTIME_DIR, ["$NIMF_RUNTIME_DIR"], [Directory for storing a socket and a lock file])
-
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************

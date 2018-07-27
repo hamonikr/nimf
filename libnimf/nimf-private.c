@@ -3,7 +3,7 @@
  * nimf-private.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -21,6 +21,14 @@
 
 #include "nimf-private.h"
 #include <syslog.h>
+
+gchar *
+nimf_get_socket_path ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf/socket", NULL);
+}
 
 void
 nimf_send_message (GSocket         *socket,
