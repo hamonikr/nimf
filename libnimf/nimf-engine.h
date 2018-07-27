@@ -48,6 +48,15 @@ typedef struct _NimfEngine        NimfEngine;
 typedef struct _NimfEngineClass   NimfEngineClass;
 typedef struct _NimfEnginePrivate NimfEnginePrivate;
 
+typedef struct _NimfServer NimfServer;
+
+struct _NimfEnginePrivate
+{
+  NimfServer *server;
+  gchar      *surrounding_text;
+  gint        surrounding_cursor_index;
+};
+
 struct _NimfEngine
 {
   GObject parent_instance;

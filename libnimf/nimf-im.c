@@ -20,14 +20,10 @@
  */
 
 #include "nimf-im.h"
-#include "nimf-events.h"
-#include "nimf-types.h"
-#include "nimf-key-syms.h"
+#include <string.h>
 #include "nimf-marshalers.h"
-#include <gio/gunixsocketaddress.h>
 #include "nimf-message.h"
 #include "nimf-private.h"
-#include <string.h>
 
 enum {
   PREEDIT_START,

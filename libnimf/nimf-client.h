@@ -24,8 +24,6 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
-#include "nimf-types.h"
-#include "nimf-private.h"
 
 G_BEGIN_DECLS
 

@@ -3,7 +3,7 @@
  * nimf-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -27,12 +27,9 @@
 #endif
 
 #include <glib-object.h>
-#include <gio/gio.h>
 #include "nimf-client.h"
 #include "nimf-events.h"
-#include "nimf-engine.h"
-#include "nimf-message.h"
-#include "nimf-private.h"
+#include "nimf-types.h"
 
 G_BEGIN_DECLS
 
@@ -50,7 +47,6 @@ struct _NimfIM
 {
   NimfClient parent_instance;
 
-  NimfEngine       *engine;
   gchar            *preedit_string;
   NimfPreeditAttr **preedit_attrs;
   gint              cursor_pos;

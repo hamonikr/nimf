@@ -20,8 +20,6 @@
  */
 
 #include "nimf-events.h"
-#include "nimf-types.h"
-#include "nimf-key-syms.h"
 #include <string.h>
 
 /* only for PC keyboards */

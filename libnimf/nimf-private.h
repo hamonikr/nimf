@@ -32,17 +32,6 @@
 
 G_BEGIN_DECLS
 
-typedef struct _NimfServer NimfServer;
-
-typedef struct _NimfEnginePrivate NimfEnginePrivate;
-
-struct _NimfEnginePrivate
-{
-  NimfServer *server;
-  gchar      *surrounding_text;
-  gint        surrounding_cursor_index;
-};
-
 typedef struct _NimfResult NimfResult;
 
 struct _NimfResult
