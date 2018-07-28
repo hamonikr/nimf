@@ -8,6 +8,8 @@ libnimf_candidate_la_SOURCES = \
 libnimf_candidate_la_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
+	-I$(top_srcdir)/libnimf/client \
+	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_CANDIDATE_DEPS_CFLAGS)
 

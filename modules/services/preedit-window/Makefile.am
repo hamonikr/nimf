@@ -8,6 +8,8 @@ libnimf_preedit_window_la_SOURCES = \
 libnimf_preedit_window_la_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
+	-I$(top_srcdir)/libnimf/client \
+	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_PREEDIT_WINDOW_DEPS_CFLAGS)
 

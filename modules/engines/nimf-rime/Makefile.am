@@ -8,6 +8,8 @@ libnimf_rime_la_SOURCES = nimf-rime.c
 libnimf_rime_la_CFLAGS  = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
+	-I$(top_srcdir)/libnimf/client \
+	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_RIME_DEPS_CFLAGS)
 

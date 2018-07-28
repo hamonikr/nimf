@@ -4,6 +4,8 @@ gsettings_SCHEMAS = org.nimf.clients.gtk.gschema.xml
 AM_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
+	-I$(top_srcdir)/libnimf/client \
+	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\"
 
 # for gtk3

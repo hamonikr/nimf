@@ -9,38 +9,38 @@ BUILT_SOURCES = \
 
 libnimf_la_SOURCES = \
 	nimf.h \
-	nimf-client.h \
-	nimf-client.c \
-	nimf-private.h \
-	nimf-private.c \
-	nimf-im.c \
-	nimf-im.h \
-	nimf-types.c \
-	nimf-types.h \
 	nimf-events.c \
 	nimf-events.h \
-	nimf-engine.c \
-	nimf-engine.h \
-	nimf-module.h \
-	nimf-module.c \
-	nimf-key-syms.h \
 	nimf-key-syms.c \
-	nimf-message.h \
+	nimf-key-syms.h \
 	nimf-message.c \
-	nimf-connection.c \
-	nimf-connection.h \
-	nimf-candidatable.c \
-	nimf-candidatable.h \
-	nimf-preeditable.c \
-	nimf-preeditable.h \
-	nimf-server.c \
-	nimf-server.h \
-	nimf-server-im.c \
-	nimf-server-im.h \
-	nimf-service.c \
-	nimf-service.h \
-	nimf-service-im.c \
-	nimf-service-im.h \
+	nimf-message.h \
+	nimf-private.c \
+	nimf-private.h \
+	nimf-types.c \
+	nimf-types.h \
+	client/nimf-client.c \
+	client/nimf-client.h \
+	client/nimf-im.c \
+	client/nimf-im.h \
+	server/nimf-candidatable.c \
+	server/nimf-candidatable.h \
+	server/nimf-connection.c \
+	server/nimf-connection.h \
+	server/nimf-engine.c \
+	server/nimf-engine.h \
+	server/nimf-module.c \
+	server/nimf-module.h \
+	server/nimf-preeditable.c \
+	server/nimf-preeditable.h \
+	server/nimf-server.c \
+	server/nimf-server.h \
+	server/nimf-server-im.c \
+	server/nimf-server-im.h \
+	server/nimf-service.c \
+	server/nimf-service.h \
+	server/nimf-service-im.c \
+	server/nimf-service-im.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
@@ -56,21 +56,22 @@ libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
 nimfincludedir = $(includedir)/nimf
 nimfinclude_HEADERS = \
 	nimf.h \
-	nimf-candidatable.h \
-	nimf-client.h \
-	nimf-connection.h \
-	nimf-engine.h \
 	nimf-enum-types.h \
 	nimf-events.h \
-	nimf-im.h \
 	nimf-key-syms.h \
 	nimf-message.h \
-	nimf-preeditable.h \
 	nimf-private.h \
-	nimf-server.h \
-	nimf-service.h \
-	nimf-service-im.h \
-	nimf-types.h
+	nimf-types.h \
+	client/nimf-client.h \
+	client/nimf-im.h \
+	server/nimf-candidatable.h \
+	server/nimf-connection.h \
+	server/nimf-engine.h \
+	server/nimf-preeditable.h \
+	server/nimf-server.h \
+	server/nimf-service.h \
+	server/nimf-service-im.h \
+	$(NULL)
 
 nimf-marshalers.h: nimf-marshalers.list
 	$(AM_V_GEN) glib-genmarshal --prefix=nimf_cclosure_marshal \

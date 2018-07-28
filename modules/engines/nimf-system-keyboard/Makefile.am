@@ -8,6 +8,8 @@ libnimf_system_keyboard_la_SOURCES = nimf-system-keyboard.c
 libnimf_system_keyboard_la_CFLAGS  = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
+	-I$(top_srcdir)/libnimf/client \
+	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_SYSTEM_KEYBOARD_DEPS_CFLAGS)
 
