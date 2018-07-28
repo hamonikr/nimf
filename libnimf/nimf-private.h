@@ -27,8 +27,8 @@
 #endif
 
 #include <glib-object.h>
-#include "nimf-server.h"
 #include "nimf-message.h"
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
