@@ -1,3 +1,13 @@
+nimf (2018.07.28) stable; urgency=medium
+
+  * Copied audit_getloginuid() form libaudit.c #16
+    https://gitlab.com/nimf-i18n/nimf/issues/16#note_90922785
+    Because Telegram also supports Ubuntu 12.04, but Ubuntu 12.04 does not have
+    libaudit.
+  * Code cleanup: including headers #16
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 28 Jul 2018 16:36:34 +0900
+
 nimf (2018.07.27) stable; urgency=medium
 
   * Some code inside nimf-server.* has been moved to bin/nimf.c #16

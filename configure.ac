@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2018.07.27)
+AC_INIT(nimf, 2018.07.28)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -48,7 +48,7 @@ dnl ***************************************************************************
 LIBNIMF_LT_VERSION=0:0:0
 AC_SUBST(LIBNIMF_LT_VERSION)
 
-LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0 audit"
+LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0"
 AC_SUBST(LIBNIMF_REQUIRES)
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES])
 
@@ -191,8 +191,7 @@ dnl ***************************************************************************
 dnl nimf server
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_DEPS,
-                  [glib-2.0 gio-unix-2.0 gobject-2.0 audit gmodule-2.0])
+PKG_CHECK_MODULES(NIMF_DEPS, [glib-2.0 gio-unix-2.0 gobject-2.0 gmodule-2.0])
 
 dnl ***************************************************************************
 dnl nimf-indicator

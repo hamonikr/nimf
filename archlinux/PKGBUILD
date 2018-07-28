@@ -15,10 +15,9 @@ license=('LGPL3')
 makedepends=('binutils' 'autoconf' 'automake' 'gcc' 'make' 'glib2' 'intltool'
              'gtk3' 'gtk2' 'qt4' 'qt5-base' 'libappindicator-gtk3' 'librsvg'
              'noto-fonts-cjk' 'libhangul' 'anthy' 'libchewing' 'librime'
-             'libxkbcommon' 'wayland' 'audit')
+             'libxkbcommon' 'wayland')
 depends=('glib2' 'gtk3' 'gtk2' 'qt4' 'qt5-base' 'libappindicator-gtk3'
-         'libhangul' 'anthy' 'libchewing' 'librime' 'libxkbcommon' 'wayland'
-         'audit')
+         'libhangul' 'anthy' 'libchewing' 'librime' 'libxkbcommon' 'wayland')
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts'
             'xorg-setxkbmap: Set the keyboard using the X Keyboard Extension')
@@ -33,7 +32,7 @@ pkgver() {
 build() {
 	cd "$srcdir/nimf-master"
 	./autogen.sh --prefix=/usr
-	make
+	make -j 4
 }
 
 package() {

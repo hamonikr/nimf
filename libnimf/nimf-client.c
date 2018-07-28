@@ -26,10 +26,12 @@
 #include <gio/gunixsocketaddress.h>
 #include <string.h>
 #include <unistd.h>
-#include <libaudit.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include "nimf-private.h"
+#include <errno.h>
+#include <fcntl.h>
+#include <stdlib.h>
 
 GMainContext      *nimf_client_context        = NULL;
 static GSource    *nimf_client_socket_source  = NULL;
@@ -333,6 +335,40 @@ on_changed (GFileMonitor     *monitor,
   }
 }
 
+/*
+ * Copied audit_getloginuid() form libaudit.c #16
+ * https://raw.githubusercontent.com/linux-audit/audit-userspace/master/lib/libaudit.c
+ *
+ * Reason:
+ * https://gitlab.com/nimf-i18n/nimf/issues/16#note_90922785
+ * Because Telegram also supports Ubuntu 12.04, but Ubuntu 12.04 does not have
+ * libaudit.
+ */
+uid_t _audit_getloginuid_(void)
+{
+	uid_t uid;
+	int len, in;
+	char buf[16];
+
+	errno = 0;
+	in = open("/proc/self/loginuid", O_NOFOLLOW|O_RDONLY);
+	if (in < 0)
+		return -1;
+	do {
+		len = read(in, buf, sizeof(buf));
+	} while (len < 0 && errno == EINTR);
+	close(in);
+	if (len < 0 || len >= sizeof(buf))
+		return -1;
+	buf[len] = 0;
+	errno = 0;
+	uid = strtol(buf, 0, 10);
+	if (errno)
+		return -1;
+	else
+		return uid;
+}
+
 static void
 nimf_client_init (NimfClient *client)
 {
@@ -341,7 +377,7 @@ nimf_client_init (NimfClient *client)
   static guint16 next_id = 0;
   guint16 id;
 
-  if ((client->uid = audit_getloginuid ()) == (uid_t) -1)
+  if ((client->uid = _audit_getloginuid_ ()) == (uid_t) -1)
     client->uid = getuid ();
 
   if (!nimf_client_socket_path)

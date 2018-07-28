@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2018.07.27
+Version:  2018.07.28
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -26,7 +26,6 @@ BuildRequires: libchewing-devel
 BuildRequires: librime-devel >= 1.2.9
 BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
-BuildRequires: audit-libs-devel
 
 Requires:         im-chooser
 Requires:         xorg-x11-xkb-utils
@@ -111,5 +110,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Fri Jul 27 2018 Hodong Kim <cogniti@gmail.com> - 2018.07.27-1
+* Sat Jul 28 2018 Hodong Kim <cogniti@gmail.com> - 2018.07.28-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog
