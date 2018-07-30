@@ -140,6 +140,23 @@ Configure
     https://github.com/ubuntu/gnome-shell-extension-appindicator
     https://extensions.gnome.org/extension/615/appindicator-support/
 
+  * Enable Nimf using im-config (for Debian variants users):
+
+      im-config -n nimf
+
+  * Enable Nimf on other systems:
+
+    Create a file and write the following lines to ~/.config/environment.d/50-nimf.conf
+
+      GTK_IM_MODULE=nimf
+      QT4_IM_MODULE=nimf
+      QT_IM_MODULE=nimf
+      XMODIFIERS=@im=nimf
+
+    Then append the following line to ~/.xprofile
+
+      export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)
+
   * Configure Hangul/Hanja key if you use a keyboard without hardware
     Hangul/Hanja key
 
