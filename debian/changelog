@@ -1,3 +1,10 @@
+nimf (2018.08.03) stable; urgency=medium
+
+  * Fixed undefined symbols #16
+  * Add how to enable Nimf in README by Bumsik Kim <k.bumsik at gmail com>
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 03 Aug 2018 02:29:05 +0900
+
 nimf (2018.08.02) stable; urgency=medium
 
   * Added dynamic loading by dlopen() #16

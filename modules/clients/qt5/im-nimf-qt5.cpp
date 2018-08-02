@@ -54,6 +54,9 @@ typedef struct
                                        const char          *text,
                                        gint                 len,
                                        gint                 cursor_index);
+  NimfEvent * (* event_new)           (NimfEventType     type);
+  void        (* event_free)          (NimfEvent        *event);
+  void        (* preedit_attr_freev)  (NimfPreeditAttr **attrs);
 } NimfAPI;
 
 void    *libnimf  = NULL;
@@ -203,7 +206,11 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
     attrs << attr;
   }
 
+#ifndef USE_DLFCN
   nimf_preedit_attr_freev (preedit_attrs);
+#else
+  nimf_api->preedit_attr_freev (preedit_attrs);
+#endif
 
   // cursor attribute
   attrs << QInputMethodEvent::Attribute (QInputMethodEvent::Cursor,
@@ -445,7 +452,12 @@ NimfInputContext::filterEvent (const QEvent *event)
       return false;
   }
 
+#ifndef USE_DLFCN
   nimf_event = nimf_event_new (type);
+#else
+  nimf_event = nimf_api->event_new (type);
+#endif
+
   nimf_event->key.state            = key_event->nativeModifiers  ();
   nimf_event->key.keyval           = key_event->nativeVirtualKey ();
   nimf_event->key.hardware_keycode = key_event->nativeScanCode   (); /* FIXME: guint16 quint32 */
@@ -456,7 +468,11 @@ NimfInputContext::filterEvent (const QEvent *event)
   retval = nimf_api->im_filter_event (m_im, nimf_event);
 #endif
 
+#ifndef USE_DLFCN
   nimf_event_free (nimf_event);
+#else
+  nimf_api->event_free (nimf_event);
+#endif
 
   return retval;
 }
@@ -548,7 +564,7 @@ public:
     g_debug (G_STRLOC ": %s", G_STRFUNC);
 
 #ifdef USE_DLFCN
-    libnimf = dlopen ("libnimf.so", RTLD_LAZY);
+    libnimf = dlopen ("libnimf.so.0", RTLD_LAZY);
 
     if (libnimf)
     {
@@ -563,7 +579,9 @@ public:
       nimf_api->im_set_use_preedit     = reinterpret_cast<void (*)(NimfIM *, gboolean)> (dlsym (libnimf, "nimf_im_set_use_preedit"));
       nimf_api->im_get_surrounding     = reinterpret_cast<gboolean (*)(NimfIM *, gchar **, gint *)> (dlsym (libnimf, "nimf_im_get_surrounding"));
       nimf_api->im_set_surrounding     = reinterpret_cast<void (*)(NimfIM *, const char *, gint, gint)> (dlsym (libnimf, "nimf_im_set_surrounding"));
-      nimf_api->im_set_surrounding = nimf_im_set_surrounding;
+      nimf_api->event_new              = reinterpret_cast<NimfEvent * (*) (NimfEventType)> (dlsym (libnimf, "nimf_event_new"));
+      nimf_api->event_free             = reinterpret_cast<void (*) (NimfEvent *)> (dlsym (libnimf, "nimf_event_free"));
+      nimf_api->preedit_attr_freev     = reinterpret_cast<void (*) (NimfPreeditAttr **)> (dlsym (libnimf, "nimf_preedit_attr_freev"));
     }
 #endif
   }
