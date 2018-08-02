@@ -1,3 +1,12 @@
+nimf (2018.08.02) stable; urgency=medium
+
+  * Added dynamic loading by dlopen() #16
+  * Fixed a memory leak
+  * Separate client-side and server-side files #16
+  * Fixed including header file #16
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 02 Aug 2018 22:18:57 +0900
+
 nimf (2018.07.28) stable; urgency=medium
 
   * Copied audit_getloginuid() form libaudit.c #16
