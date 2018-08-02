@@ -100,10 +100,10 @@ public:
                                                       gchar     *key,
                                                       gpointer   user_data);
 private:
-  NimfIM           *m_im;
-  NimfRectangle     m_cursor_area;
-  GSettings        *m_settings;
-  NimfEventHandler *m_handler;
+  NimfIM           *m_im          = NULL;
+  GSettings        *m_settings    = NULL;
+  NimfEventHandler *m_handler     = NULL;
+  NimfRectangle     m_cursor_area = {0, 0, 0, 0};
 };
 
 /* nimf signal callbacks */
@@ -273,7 +273,6 @@ NimfInputContext::NimfInputContext ()
 
   g_signal_connect (m_settings, "changed::reset-on-mouse-button-press",
                     G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this);
-  m_handler = NULL;
   g_signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
                                      "reset-on-mouse-button-press");
 }
@@ -285,8 +284,11 @@ NimfInputContext::~NimfInputContext ()
   if (m_handler)
     delete m_handler;
 
-  g_object_unref (m_im);
-  g_object_unref (m_settings);
+  if (m_im)
+    g_object_unref (m_im);
+
+  if (m_settings)
+    g_object_unref (m_settings);
 }
 
 bool
