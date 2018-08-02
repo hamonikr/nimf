@@ -140,11 +140,11 @@ Configure
     https://github.com/ubuntu/gnome-shell-extension-appindicator
     https://extensions.gnome.org/extension/615/appindicator-support/
 
-  * Enable Nimf using im-config (for Debian variants users):
+  * How to enable Nimf on systems using im-config
 
       im-config -n nimf
 
-  * Enable Nimf on other systems:
+  * How to enable Nimf on systems using systemd v233 or later
 
     Create a file and write the following lines to ~/.config/environment.d/50-nimf.conf
 
