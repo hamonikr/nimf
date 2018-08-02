@@ -159,6 +159,9 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
                                        format);
     attrs << attr;
   }
+
+  nimf_preedit_attr_freev (preedit_attrs);
+
   // cursor attribute
   attrs << QInputMethodEvent::Attribute (QInputMethodEvent::Cursor,
                                          cursor_pos, true, 0);
@@ -170,8 +173,6 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
     return;
 
   QCoreApplication::sendEvent (object, &event);
-
-  nimf_preedit_attr_freev (preedit_attrs);
 }
 
 void
