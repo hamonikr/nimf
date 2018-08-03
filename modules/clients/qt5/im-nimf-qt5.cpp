@@ -141,10 +141,10 @@ public:
                                                       gchar     *key,
                                                       gpointer   user_data);
 private:
-  NimfIM           *m_im          = NULL;
-  GSettings        *m_settings    = NULL;
-  NimfEventHandler *m_handler     = NULL;
-  NimfRectangle     m_cursor_area = {0, 0, 0, 0};
+  NimfIM           *m_im;
+  GSettings        *m_settings;
+  NimfEventHandler *m_handler;
+  NimfRectangle     m_cursor_area;
 };
 
 /* nimf signal callbacks */
@@ -300,6 +300,14 @@ NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
 NimfInputContext::NimfInputContext ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  m_im                 = NULL;
+  m_settings           = NULL;
+  m_handler            = NULL;
+  m_cursor_area.x      = 0;
+  m_cursor_area.y      = 0;
+  m_cursor_area.width  = 0;
+  m_cursor_area.height = 0;
 
 #ifndef USE_DLFCN
   m_im = nimf_im_new ();
