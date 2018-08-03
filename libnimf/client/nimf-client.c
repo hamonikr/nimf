@@ -305,7 +305,7 @@ nimf_client_connect (NimfClient *client)
       if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
         g_critical (G_STRLOC ": %s: Socket file is not found.", G_STRFUNC);
       else
-        g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+        g_critical (G_STRLOC ": %s: Couldn't connect to nimf server", G_STRFUNC);
 
       g_clear_error (&error);
     }
