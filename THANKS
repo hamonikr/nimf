@@ -1,4 +1,8 @@
 5HARK <blgf6190 at gmail com> reported:
+A problem occurs when statically linking libnimf and then dynamically loading
+client modules.
+https://gitlab.com/nimf-i18n/nimf/issues/16#note_90967748
+
 Determining NIMF_RUNTIME_DIR, NIMF_MODULE_DIR at compile time causes problems
 when distributing static libnimf.a.
 https://gitlab.com/nimf-i18n/nimf/issues/16#note_89891251
