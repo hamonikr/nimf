@@ -98,36 +98,5 @@
       <summary>Ignore reset() in commit callback</summary>
       <description>Ignore reset() called by commit callback in application</description>
     </key>
-    <key type="s" name="xkb-option">
-      <choices>
-        <choice value='not-assigned'      /> <!-- Not assigned -->
-        <choice value='korean-hw-keys'    /> <!-- Hardware Hangul/Hanja keys -->
-        <choice value='korean-ralt-rctrl' /> <!-- Right Alt as Hangul, right Ctrl as Hanja -->
-        <choice value='korean-rctrl-ralt' /> <!-- Right Ctrl as Hangul, right Alt as Hanja -->
-      </choices>
-      <default>'not-assigned'</default>
-      <summary>Korean Hangul/Hanja XKB Option</summary>
-      <description>Korean Hangul/Hanja keys</description>
-    </key>
-    <key type="s" name="hidden-xkb-option-not-assigned">
-      <default l10n="messages">'Not assigned'</default>
-      <summary>key value for UI l10n</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="s" name="hidden-xkb-option-korean-hw-keys">
-      <default l10n="messages">'Hardware Hangul/Hanja keys'</default>
-      <summary>key value for UI l10n</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="s" name="hidden-xkb-option-korean-ralt-rctrl">
-      <default l10n="messages">'Right Alt as Hangul, right Ctrl as Hanja'</default>
-      <summary>key value for UI l10n</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="s" name="hidden-xkb-option-korean-rctrl-ralt">
-      <default l10n="messages">'Right Ctrl as Hangul, right Alt as Hanja'</default>
-      <summary>key value for UI l10n</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
   </schema>
 </schemalist>

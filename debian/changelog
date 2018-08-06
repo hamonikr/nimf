@@ -1,3 +1,10 @@
+nimf (2018.08.06) UNRELEASED; urgency=medium
+
+  * Removed a Korean xkb option #105
+  * Fixed a segmentation fault
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 06 Aug 2018 22:31:31 +0900
+
 nimf (2018.08.03) stable; urgency=medium
 
   * Fixed undefined symbols #16

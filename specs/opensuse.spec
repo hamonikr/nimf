@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2018.08.03
+Version:  2018.08.06
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -29,7 +29,6 @@ BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 
 Requires:         im-chooser
-Requires:         setxkbmap
 Requires:         anthy
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
@@ -111,5 +110,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Fri Aug 3 2018 Hodong Kim <cogniti@gmail.com> - 2018.08.03-1
+* Mon Aug 6 2018 Hodong Kim <cogniti@gmail.com> - 2018.08.06-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 03:07+0900\n"
-"PO-Revision-Date: 2018-06-28 03:44+0900\n"
+"POT-Creation-Date: 2018-08-06 22:05+0900\n"
+"PO-Revision-Date: 2018-08-06 22:17+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:91
+#: ../bin/nimf.c:597
 msgid "Do not daemonize"
 msgstr "不要化为守护进程"
 
-#: ../bin/nimf.c:92
+#: ../bin/nimf.c:598
 msgid "Log debugging message"
 msgstr "日志调试消息"
 
-#: ../bin/nimf.c:93
+#: ../bin/nimf.c:599
 msgid "Version"
 msgstr "版本"
 
-#: ../bin/nimf.c:94
+#: ../bin/nimf.c:600
 msgid "Start indicator"
 msgstr "开始指示器"
 
@@ -237,6 +237,22 @@ msgstr "UI l10n的键值"
 msgid "'Kana input on the English Keyboard (pc104)'"
 msgstr "'英文键盘上的假名输入 (pc104)'"
 
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
+msgid "n input mode"
+msgstr "n输入模式"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
+msgid "Choose how you type hiragana letter n."
+msgstr "选择你输入平假名字母n的方式。"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:17
+msgid "'Common practice'"
+msgstr "'常见做法'"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:18
+msgid "'Explicitly type nn'"
+msgstr "'明确输入nn'"
+
 #: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
 msgid "'Chinese (chewing)'"
 msgstr "'中文 (chewing)'"
@@ -325,30 +341,6 @@ msgstr "忽略提交回调中的reset()"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
 msgstr "忽略应用程序中由提交回调调用的reset()"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:26
-msgid "Korean Hangul/Hanja XKB Option"
-msgstr "韩国Hangul/Hanja XKB选项"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:27
-msgid "Korean Hangul/Hanja keys"
-msgstr "韩文Hangul/Hanja钥匙"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:28
-msgid "'Not assigned'"
-msgstr "'未分配'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:29
-msgid "'Hardware Hangul/Hanja keys'"
-msgstr "'硬件Hangul/Hanja钥匙'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
-msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
-msgstr "'右侧的Alt作为Hangul，右侧的Ctrl作为Hanja'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
-msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
-msgstr "'右侧Ctrl作为Hangul，右侧Alt作为Hanja'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"

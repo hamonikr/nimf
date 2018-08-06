@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-20 23:17+0900\n"
-"PO-Revision-Date: 2018-07-20 23:35+0900\n"
+"POT-Creation-Date: 2018-08-06 22:05+0900\n"
+"PO-Revision-Date: 2018-08-06 22:15+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:150
+#: ../bin/nimf.c:597
 msgid "Do not daemonize"
 msgstr "デーモン化しません"
 
-#: ../bin/nimf.c:151
+#: ../bin/nimf.c:598
 msgid "Log debugging message"
 msgstr "デバッグメッセージを記録します。"
 
-#: ../bin/nimf.c:152
+#: ../bin/nimf.c:599
 msgid "Version"
 msgstr "バージョン"
 
-#: ../bin/nimf.c:153
+#: ../bin/nimf.c:600
 msgid "Start indicator"
 msgstr "インジケータを開始します"
 
@@ -342,30 +342,6 @@ msgstr "commitコールバックでreset()を無視します"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
 msgstr "アプリケーションでcommitコールバックが呼び出されるreset()を無視します"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:26
-msgid "Korean Hangul/Hanja XKB Option"
-msgstr "韓国ハングル/ハンジャXKBオプション"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:27
-msgid "Korean Hangul/Hanja keys"
-msgstr "韓国語ハングル/ハンジャーキー"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:28
-msgid "'Not assigned'"
-msgstr "'割り当てられていない'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:29
-msgid "'Hardware Hangul/Hanja keys'"
-msgstr "'ハードウェアハングル/ハンジャキー'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
-msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
-msgstr "'右Ctrlキーをハングルキー、右Altキーを漢字キー割り当て'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
-msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
-msgstr "'右Ctrlキーをハングルキー、右Altキーを漢字キー割り当て'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"

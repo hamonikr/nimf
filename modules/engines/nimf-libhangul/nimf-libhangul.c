@@ -605,77 +605,6 @@ on_changed_layout (GSettings     *settings,
 }
 
 static void
-on_changed_xkb_option (GSettings     *settings,
-                       gchar         *key,
-                       NimfLibhangul *hangul)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  const gchar *offset;
-  gchar       *standard_output;
-  gchar       *xkb_option;
-  gchar      **options;
-  gboolean     retval;
-  gint         i;
-
-  retval = g_spawn_command_line_sync ("setxkbmap -query", &standard_output,
-                                      NULL, NULL, NULL);
-  if (!retval)
-  {
-    g_warning ("Can't configure XKB option");
-    return;
-  }
-
-  offset  = g_strrstr (standard_output, "options:    ");
-
-  if (offset)
-  {
-    offset += strlen ("options:    ");
-    options = g_strsplit (offset, ",", -1);
-  }
-  else
-  {
-    options = g_malloc0_n (1, sizeof (gchar *));
-  }
-
-  /* clear xkb options, see a man page */
-  g_spawn_command_line_sync ("setxkbmap -option", &standard_output,
-                             NULL, NULL, NULL);
-  /* set other options */
-  for (i = 0; options[i]; i++)
-  {
-    if (g_strcmp0 (options[i], "korean:hw_keys")    &&
-        g_strcmp0 (options[i], "korean:ralt_rctrl") &&
-        g_strcmp0 (options[i], "korean:rctrl_ralt"))
-    {
-      gchar *command;
-
-      command = g_strconcat ("setxkbmap -option ", options[i], NULL);
-      g_spawn_command_line_sync (command, NULL, NULL, NULL, NULL);
-
-      g_free (command);
-    }
-  }
-
-  xkb_option = g_settings_get_string (settings, key);
-
-  /* set one korean option */
-  if (!g_strcmp0 (xkb_option, "korean-hw-keys"))
-    g_spawn_command_line_sync ("setxkbmap -option korean:hw_keys",
-                               NULL, NULL, NULL, NULL);
-  else if (!g_strcmp0 (xkb_option, "korean-ralt-rctrl"))
-    g_spawn_command_line_sync ("setxkbmap -option korean:ralt_rctrl",
-                               NULL, NULL, NULL, NULL);
-  else if (!g_strcmp0 (xkb_option, "korean-rctrl-ralt"))
-    g_spawn_command_line_sync ("setxkbmap -option korean:rctrl_ralt",
-                               NULL, NULL, NULL, NULL);
-
-  g_free (standard_output);
-  g_free (xkb_option);
-  g_strfreev (options);
-}
-
-static void
 on_changed_auto_reordering (GSettings     *settings,
                             gchar         *key,
                             NimfLibhangul *hangul)
@@ -774,9 +703,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
                     G_CALLBACK (on_changed_auto_reordering), hangul);
   g_signal_connect (hangul->settings, "changed::ignore-reset-in-commit-cb",
                     G_CALLBACK (on_changed_ignore_reset_in_commit_cb), hangul);
-  g_signal_connect (hangul->settings, "changed::xkb-option",
-                    G_CALLBACK (on_changed_xkb_option), hangul);
-  on_changed_xkb_option (hangul->settings, "xkb-option", hangul);
 }
 
 static void

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-20 23:17+0900\n"
-"PO-Revision-Date: 2018-07-20 23:20+0900\n"
+"POT-Creation-Date: 2018-08-06 22:05+0900\n"
+"PO-Revision-Date: 2018-08-06 22:11+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,19 +19,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/nimf.c:150
+#: ../bin/nimf.c:597
 msgid "Do not daemonize"
 msgstr "Nicht als Daemon starten"
 
-#: ../bin/nimf.c:151
+#: ../bin/nimf.c:598
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../bin/nimf.c:152
+#: ../bin/nimf.c:599
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf.c:153
+#: ../bin/nimf.c:600
 msgid "Start indicator"
 msgstr "Starte einen Indikator"
 
@@ -345,32 +345,6 @@ msgstr "Ignoriere reset() in commit Rückmeldung"
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
 msgid "Ignore reset() called by commit callback in application"
 msgstr ""
-"Ignoriere reset(), welches von commit Rückmeldung einer Anwendung aufgerufen "
-"wurde"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:26
-msgid "Korean Hangul/Hanja XKB Option"
-msgstr ""
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:27
-msgid "Korean Hangul/Hanja keys"
-msgstr ""
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:28
-msgid "'Not assigned'"
-msgstr ""
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:29
-msgid "'Hardware Hangul/Hanja keys'"
-msgstr "'Hardware Hangul / Hanja Schlüssel'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:30
-msgid "'Right Alt as Hangul, right Ctrl as Hanja'"
-msgstr "'Rechts Alt wie Hangul, rechts Strg als Hanja'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:31
-msgid "'Right Ctrl as Hangul, right Alt as Hanja'"
-msgstr "'Rechts Strg als Hangul, rechts Alt wie Hanja'"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
