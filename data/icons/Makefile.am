@@ -69,6 +69,16 @@ $(status_48_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 48x48; \
 	  $(RSVG_CONVERT) -w 48 -h 48 scalable/`basename "$@" .png`.svg -o $@
 
+# 96x96 icons
+
+status_96_icondir   = $(icon_themedir)/96x96/status/
+status_96_icon_tmp  = $(status_scalable_icon_DATA:scalable/%=96x96/%)
+status_96_icon_DATA = $(status_96_icon_tmp:.svg=.png)
+
+$(status_96_icon_DATA): $(status_scalable_icon_DATA)
+	$(AM_V_GEN) $(MKDIR_P) 96x96; \
+	  $(RSVG_CONVERT) -w 96 -h 96 scalable/`basename "$@" .png`.svg -o $@
+
 # 256x256 icons
 
 status_256_icondir   = $(icon_themedir)/256x256/status/
@@ -80,7 +90,7 @@ $(status_256_icon_DATA): $(status_scalable_icon_DATA)
 	  $(RSVG_CONVERT) -w 256 -h 256 scalable/`basename "$@" .png`.svg -o $@
 
 clean-local:
-	-rmdir 16x16 22x22 24x24 32x32 48x48 256x256
+	-rmdir 16x16 22x22 24x24 32x32 48x48 96x96 256x256
 
 uninstall-hook:
 	 rm    -f $(DESTDIR)$(icon_themedir)/icon-theme.cache
@@ -89,6 +99,7 @@ uninstall-hook:
 	-rmdir -p $(DESTDIR)$(icon_themedir)/24x24/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/32x32/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/48x48/status
+	-rmdir -p $(DESTDIR)$(icon_themedir)/96x96/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/256x256/status
 	-rmdir -p $(DESTDIR)$(icon_themedir)/scalable/status
 	-$(GTK_UPDATE_ICON_CACHE) -f -t $(icon_themedir)
@@ -98,6 +109,7 @@ CLEANFILES = $(status_16_icon_DATA) \
 	           $(status_24_icon_DATA) \
 	           $(status_32_icon_DATA) \
 	           $(status_48_icon_DATA) \
+	           $(status_96_icon_DATA) \
 	           $(status_256_icon_DATA)
 
 DISTCLEANFILES = Makefile.in
