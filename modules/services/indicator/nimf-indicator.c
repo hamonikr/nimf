@@ -87,7 +87,8 @@ on_menu_about (GSimpleAction *action,
 
   gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
   gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
-  gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
+  gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"),
+                          _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
 
   parent = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   about_dialog = gtk_about_dialog_new ();
