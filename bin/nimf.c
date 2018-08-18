@@ -37,8 +37,6 @@
 #include <sys/file.h>
 #include <glib-unix.h>
 
-gboolean syslog_initialized = FALSE;
-
 static gboolean
 start_indicator_service (gchar *addr)
 {
@@ -631,12 +629,11 @@ main (int argc, char **argv)
     return EXIT_SUCCESS;
   }
 
+  openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
+  g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
+
   if (no_daemon == FALSE)
   {
-    openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
-    syslog_initialized = TRUE;
-    g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
-
     if (daemon (0, 0) != 0)
     {
       g_critical ("Couldn't daemonize.");
@@ -701,8 +698,7 @@ main (int argc, char **argv)
   if (server)
     g_object_unref (server);
 
-  if (syslog_initialized)
-    closelog ();
+  closelog ();
 
   if (flock (fd, LOCK_UN))
   {
