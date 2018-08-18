@@ -96,7 +96,7 @@ nimf_send_message (GSocket         *socket,
   /* debug message */
   const gchar *name = nimf_message_get_name (message);
   if (name)
-    g_debug ("send: %s, fd: %d", name, g_socket_get_fd(socket));
+    g_debug ("send: %s, icid: %d, fd: %d", name, icid, g_socket_get_fd(socket));
   else
     g_error (G_STRLOC ": unknown message type");
 
@@ -164,7 +164,7 @@ NimfMessage *nimf_recv_message (GSocket *socket)
   /* debug message */
   const gchar *name = nimf_message_get_name (message);
   if (name)
-    g_debug ("recv: %s, fd: %d", name, g_socket_get_fd (socket));
+    g_debug ("recv: %s, icid: %d, fd: %d", name, message->header->icid, g_socket_get_fd (socket));
   else
     g_error (G_STRLOC ": unknown message type");
 
