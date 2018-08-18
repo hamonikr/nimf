@@ -515,6 +515,24 @@ nimf_server_start (NimfServer *server,
   nimf_service_start (NIMF_SERVICE (server->candidatable));
   nimf_service_start (NIMF_SERVICE (server->preeditable));
 
+  GHashTableIter iter;
+  gpointer       service;
+
+  g_hash_table_iter_init (&iter, server->services);
+
+  while (g_hash_table_iter_next (&iter, NULL, &service))
+  {
+    if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-indicator") && !start_indicator)
+      continue;
+    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-candidate"))
+      continue;
+    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
+      continue;
+
+    if (!nimf_service_start (NIMF_SERVICE (service)))
+      g_hash_table_iter_remove (&iter);
+  }
+
   nimf_server_load_engines  (server);
 
   GSocketAddress *address;
@@ -552,24 +570,6 @@ nimf_server_start (NimfServer *server,
                     G_CALLBACK (on_new_connection), server);
 
   g_socket_service_start (server->service);
-
-  GHashTableIter iter;
-  gpointer       service;
-
-  g_hash_table_iter_init (&iter, server->services);
-
-  while (g_hash_table_iter_next (&iter, NULL, &service))
-  {
-    if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-indicator") && !start_indicator)
-      continue;
-    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-candidate"))
-      continue;
-    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
-      continue;
-
-    if (!nimf_service_start (NIMF_SERVICE (service)))
-      g_hash_table_iter_remove (&iter);
-  }
 
   server->active = TRUE;
 
