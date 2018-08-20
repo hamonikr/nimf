@@ -513,6 +513,8 @@ nimf_server_start (NimfServer *server,
   nimf_service_start (NIMF_SERVICE (server->candidatable));
   nimf_service_start (NIMF_SERVICE (server->preeditable));
 
+  nimf_server_load_engines  (server);
+
   GHashTableIter iter;
   gpointer       service;
 
@@ -530,8 +532,6 @@ nimf_server_start (NimfServer *server,
     if (!nimf_service_start (NIMF_SERVICE (service)))
       g_hash_table_iter_remove (&iter);
   }
-
-  nimf_server_load_engines  (server);
 
   GSocketAddress *address;
   GError         *error = NULL;
