@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-09 23:07+0900\n"
-"PO-Revision-Date: 2018-08-09 23:19+0900\n"
+"POT-Creation-Date: 2018-08-21 23:18+0900\n"
+"PO-Revision-Date: 2018-08-21 23:21+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -18,19 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:597
-msgid "Do not daemonize"
-msgstr "デーモン化しません"
-
-#: ../bin/nimf.c:598
+#: ../bin/nimf.c:594
 msgid "Log debugging message"
 msgstr "デバッグメッセージを記録します。"
 
-#: ../bin/nimf.c:599
+#: ../bin/nimf.c:595
 msgid "Version"
 msgstr "バージョン"
 
-#: ../bin/nimf.c:600
+#: ../bin/nimf.c:596
 msgid "Start indicator"
 msgstr "インジケータを開始します"
 

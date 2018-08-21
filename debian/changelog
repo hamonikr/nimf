@@ -1,4 +1,15 @@
-nimf (2018.08.06) UNRELEASED; urgency=medium
+nimf (2018.08.21) stable; urgency=medium
+
+  * Removed --no-daemon option (closes #138)
+  * Used g_socket_send_message() #138
+    Deadlock is reduced by one call.
+  * Added a documenter
+    https://gitlab.com/nimf-i18n/nimf/merge_requests/2
+  * Generate 96x96 icons
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 21 Aug 2018 23:25:22 +0900
+
+nimf (2018.08.06) stable; urgency=medium
 
   * Removed a Korean xkb option #105
   * Fixed a segmentation fault

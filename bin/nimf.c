@@ -585,14 +585,12 @@ main (int argc, char **argv)
   GError     *error  = NULL;
   gboolean    retval = FALSE;
 
-  gboolean no_daemon  = FALSE;
   gboolean is_debug   = FALSE;
   gboolean is_version = FALSE;
   gboolean start_indicator = FALSE;
 
   GOptionContext *context;
   GOptionEntry    entries[] = {
-    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon, N_("Do not daemonize"), NULL},
     {"debug", 0, 0, G_OPTION_ARG_NONE, &is_debug, N_("Log debugging message"), NULL},
     {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
     {"start-indicator", 0, 0, G_OPTION_ARG_NONE, &start_indicator, N_("Start indicator"), NULL},
@@ -632,13 +630,10 @@ main (int argc, char **argv)
   openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
   g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
 
-  if (no_daemon == FALSE)
+  if (daemon (0, 0) != 0)
   {
-    if (daemon (0, 0) != 0)
-    {
-      g_critical ("Couldn't daemonize.");
-      return EXIT_FAILURE;
-    }
+    g_critical ("Couldn't daemonize.");
+    return EXIT_FAILURE;
   }
 
   if (!create_nimf_runtime_dir ())
