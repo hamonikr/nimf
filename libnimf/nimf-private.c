@@ -40,24 +40,28 @@ nimf_send_message (GSocket         *socket,
 {
   g_debug (G_STRLOC ": %s: fd = %d", G_STRFUNC, g_socket_get_fd (socket));
 
-  NimfMessage *message;
-  const NimfMessageHeader *header;
-  GError *error = NULL;
-  gssize n_written;
+  NimfMessage   *message;
+  GError        *error = NULL;
+  gssize         n_written;
+  GOutputVector  vectors[2] = { { NULL, }, };
 
   message = nimf_message_new_full (type, icid,
                                    data, data_len, data_destroy_func);
-  header  = nimf_message_get_header (message);
 
-  n_written = g_socket_send (socket,
-                             (gchar *) header,
-                             nimf_message_get_header_size (),
-                             NULL, &error);
+  vectors[0].buffer = nimf_message_get_header (message);
+  vectors[0].size   = nimf_message_get_header_size ();
+  vectors[1].buffer = message->data;
+  vectors[1].size   = message->header->data_len;
 
-  if (G_UNLIKELY (n_written < nimf_message_get_header_size ()))
+  n_written = g_socket_send_message (socket, NULL, vectors,
+                                     message->header->data_len > 0 ? 2 : 1,
+                                     NULL, 0, 0, NULL, &error);
+
+  if (G_UNLIKELY (n_written != nimf_message_get_header_size () + message->header->data_len))
   {
-    g_critical (G_STRLOC ": %s: sent %"G_GSSIZE_FORMAT" less than %d",
-                G_STRFUNC, n_written, nimf_message_get_header_size ());
+    g_critical (G_STRLOC ": %s: n_written %"G_GSSIZE_FORMAT" differs from %d",
+                G_STRFUNC, n_written, nimf_message_get_header_size () + message->header->data_len);
+
     if (error)
     {
       g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
@@ -67,30 +71,6 @@ nimf_send_message (GSocket         *socket,
     nimf_message_unref (message);
 
     return;
-  }
-
-  if (G_LIKELY (message->header->data_len > 0))
-  {
-    n_written = g_socket_send (socket,
-                               message->data,
-                               message->header->data_len,
-                               NULL, &error);
-
-    if (G_UNLIKELY (n_written < message->header->data_len))
-    {
-      g_critical (G_STRLOC ": %s: sent %"G_GSSIZE_FORMAT" less than %d",
-                  G_STRFUNC, n_written, message->header->data_len);
-
-      if (error)
-      {
-        g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
-        g_error_free (error);
-      }
-
-      nimf_message_unref (message);
-
-      return;
-    }
   }
 
   /* debug message */
