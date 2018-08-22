@@ -18,7 +18,13 @@ AS_IF([test "$CXX" = "g++"],
       [AS_IF([test "$GXX" != "yes"],
       AC_MSG_ERROR([C++ compiler is not found.]))])
 
-EXTRA_CFLAGS="-Wall -Werror"
+AC_ARG_ENABLE([hardening],
+  AS_HELP_STRING([--disable-hardening], [Disable hardening]))
+
+AS_IF([test "x$enable_hardening" != "xno"],
+      [EXTRA_CFLAGS="-Wall -Werror -D_FORTIFY_SOURCE=2"],
+      [EXTRA_CFLAGS="-Wall -Werror"])
+
 AC_SUBST(EXTRA_CFLAGS)
 
 dnl ***************************************************************************
