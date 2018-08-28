@@ -1,3 +1,9 @@
+nimf (2018.08.29) stable; urgency=medium
+
+  * Fixed compile errors on Fedora
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 29 Aug 2018 03:16:30 +0900
+
 nimf (2018.08.28) stable; urgency=medium
 
   * 법적 고지 및 면책 조항 추가

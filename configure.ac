@@ -22,7 +22,7 @@ dnl Process this file with autoconf to produce a configure script.
 # Nimf 개발자는 귀하가 사용하시는 배포판에 대해 기술 지원을 해드려야 할 의무가 없습니다.
 #
 
-AC_INIT(nimf, 2018.08.28)
+AC_INIT(nimf, 2018.08.29)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
