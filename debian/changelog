@@ -1,3 +1,9 @@
+nimf (2018.08.31) stable; urgency=medium
+
+  * Delete legal notices and disclaimers
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 31 Aug 2018 02:00:58 +0900
+
 nimf (2018.08.29) stable; urgency=medium
 
   * Fixed compile errors on Fedora
