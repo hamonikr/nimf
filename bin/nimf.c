@@ -530,7 +530,11 @@ nimf_server_start (NimfServer *server,
       continue;
 
     if (!nimf_service_start (NIMF_SERVICE (service)))
-      g_hash_table_iter_remove (&iter);
+    {
+      if (g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)),
+                                          "nimf-indicator"))
+        g_hash_table_iter_remove (&iter);
+    }
   }
 
   GSocketAddress *address;

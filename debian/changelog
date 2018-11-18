@@ -1,3 +1,9 @@
+nimf (2018.11.19) stable; urgency=medium
+
+  * Initialize indicator once (fixed #147)
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 19 Nov 2018 03:59:09 +0900
+
 nimf (2018.08.31) stable; urgency=medium
 
   * Delete legal notices and disclaimers
