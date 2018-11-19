@@ -26,7 +26,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 #include "nimf-im.h"
-
+#define USE_DLFCN
 #ifdef USE_DLFCN
 
 #include <dlfcn.h>
@@ -57,6 +57,29 @@ typedef struct
   NimfEvent * (* event_new)           (NimfEventType     type);
   void        (* event_free)          (NimfEvent        *event);
   void        (* preedit_attr_freev)  (NimfPreeditAttr **attrs);
+  // glib, gobject, gio
+  void        (* free)                 (gpointer       mem);
+  gboolean    (* settings_get_boolean) (GSettings     *settings,
+                                        const gchar   *key);
+  GSettings * (* settings_new)         (const gchar   *schema_id);
+  void        (* signal_emit_by_name)  (gpointer       instance,
+                                        const gchar   *detailed_signal,
+                                        ...);
+  void        (* object_unref)         (gpointer       object);
+  gulong      (* signal_connect_data)  (gpointer       instance,
+                                        const gchar   *detailed_signal,
+                                        GCallback      c_handler,
+                                        gpointer       data,
+                                        GClosureNotify destroy_data,
+                                        GConnectFlags  connect_flags);
+  GSettingsSchemaSource *
+              (* settings_schema_source_get_default) (void);
+  GSettingsSchema *
+              (* settings_schema_source_lookup)
+                                        (GSettingsSchemaSource *source,
+                                         const gchar           *schema_id,
+                                         gboolean               recursive);
+  void        (* settings_schema_unref) (GSettingsSchema       *schema);
 } NimfAPI;
 
 void    *libnimf  = NULL;
@@ -151,19 +174,25 @@ private:
 void
 NimfInputContext::on_preedit_start (NimfIM *im, gpointer user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 }
 
 void
 NimfInputContext::on_preedit_end (NimfIM *im, gpointer user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 }
 
 void
 NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   NimfPreeditAttr **preedit_attrs;
   gchar            *str;
@@ -178,7 +207,11 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
 #endif
 
   QString preeditText = QString::fromUtf8 (str);
+#ifndef USE_DLFCN
   g_free (str);
+#else
+  nimf_api->free (str);
+#endif
   QList <QInputMethodEvent::Attribute> attrs;
 
   for (i = 0; i < (guint) preeditText.size(); i++)
@@ -243,7 +276,9 @@ NimfInputContext::on_commit (NimfIM      *im,
                              const gchar *text,
                              gpointer     user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   QString str = QString::fromUtf8 (text);
   QInputMethodEvent event;
@@ -260,7 +295,10 @@ NimfInputContext::on_commit (NimfIM      *im,
 gboolean
 NimfInputContext::on_retrieve_surrounding (NimfIM *im, gpointer user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
+
   return FALSE;
 }
 
@@ -270,14 +308,19 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
                                          gint      n_chars,
                                          gpointer  user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
+
   return FALSE;
 }
 
 void
 NimfInputContext::on_beep (NimfIM *im, gpointer user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   QApplication::beep();
 }
@@ -287,11 +330,17 @@ NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
                                                           gchar     *key,
                                                           gpointer   user_data)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
 
+#ifndef USE_DLFCN
   if (g_settings_get_boolean (settings, key))
+#else
+  if (nimf_api->settings_get_boolean (settings, key))
+#endif
   {
     if (context->m_handler == NULL)
     {
@@ -312,7 +361,9 @@ NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
 
 NimfInputContext::NimfInputContext ()
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   m_im                 = NULL;
   m_settings           = NULL;
@@ -324,13 +375,7 @@ NimfInputContext::NimfInputContext ()
 
 #ifndef USE_DLFCN
   m_im = nimf_im_new ();
-#else
-  g_return_if_fail (nimf_api != NULL);
-  m_im = nimf_api->im_new ();
-#endif
-
   m_settings = g_settings_new ("org.nimf.clients.qt5");
-
   g_signal_connect (m_im, "preedit-start",
                     G_CALLBACK (NimfInputContext::on_preedit_start), this);
   g_signal_connect (m_im, "preedit-end",
@@ -352,26 +397,83 @@ NimfInputContext::NimfInputContext ()
                     G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this);
   g_signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
                                      "reset-on-mouse-button-press");
+#else
+  if (nimf_api == NULL)
+  {
+    qWarning("nimf_api is not initialized");
+    return;
+  }
+
+  GSettingsSchemaSource *source;
+  GSettingsSchema       *schema;
+
+  source = nimf_api->settings_schema_source_get_default ();
+  schema = nimf_api->settings_schema_source_lookup (source, "org.nimf.clients.qt5", TRUE);
+
+  if (schema == NULL)
+  {
+    qWarning("org.nimf.clients.qt5 schema is not found.");
+    return;
+  }
+
+  nimf_api->settings_schema_unref (schema);
+
+  m_im = nimf_api->im_new ();
+  m_settings = nimf_api->settings_new ("org.nimf.clients.qt5");
+  nimf_api->signal_connect_data (m_im, "preedit-start",
+                    G_CALLBACK (NimfInputContext::on_preedit_start), this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_connect_data (m_im, "preedit-end",
+                    G_CALLBACK (NimfInputContext::on_preedit_end), this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_connect_data (m_im, "preedit-changed",
+                    G_CALLBACK (NimfInputContext::on_preedit_changed), this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_connect_data (m_im, "commit",
+                    G_CALLBACK (NimfInputContext::on_commit), this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_connect_data (m_im, "retrieve-surrounding",
+                    G_CALLBACK (NimfInputContext::on_retrieve_surrounding),
+                    this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_connect_data (m_im, "delete-surrounding",
+                    G_CALLBACK (NimfInputContext::on_delete_surrounding),
+                    this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_connect_data (m_im, "beep",
+                    G_CALLBACK (NimfInputContext::on_beep), this, NULL, (GConnectFlags) 0);
+
+  nimf_api->signal_connect_data (m_settings, "changed::reset-on-mouse-button-press",
+                    G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this, NULL, (GConnectFlags) 0);
+  nimf_api->signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
+                                     "reset-on-mouse-button-press");
+#endif
 }
 
 NimfInputContext::~NimfInputContext ()
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   if (m_handler)
     delete m_handler;
 
   if (m_im)
+#ifndef USE_DLFCN
     g_object_unref (m_im);
+#else
+    nimf_api->object_unref (m_im);
+#endif
 
   if (m_settings)
+#ifndef USE_DLFCN
     g_object_unref (m_settings);
+#else
+    nimf_api->object_unref (m_settings);
+#endif
 }
 
 bool
 NimfInputContext::isValid () const
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
 #ifdef USE_DLFCN
   if (nimf_api == NULL)
@@ -384,9 +486,9 @@ NimfInputContext::isValid () const
 void
 NimfInputContext::reset ()
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-#ifndef USE_DLFCN
   nimf_im_reset (m_im);
 #else
   nimf_api->im_reset (m_im);
@@ -396,9 +498,9 @@ NimfInputContext::reset ()
 void
 NimfInputContext::commit ()
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-#ifndef USE_DLFCN
   nimf_im_reset (m_im);
 #else
   nimf_api->im_reset (m_im);
@@ -408,7 +510,9 @@ NimfInputContext::commit ()
 void
 NimfInputContext::update (Qt::InputMethodQueries queries) /* FIXME */
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   if (queries & Qt::ImCursorRectangle)
   {
@@ -443,13 +547,17 @@ NimfInputContext::update (Qt::InputMethodQueries queries) /* FIXME */
 void
 NimfInputContext::invokeAction(QInputMethod::Action, int cursorPosition)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 }
 
 bool
 NimfInputContext::filterEvent (const QEvent *event)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   if (G_UNLIKELY (!qApp->focusObject() || !inputMethodAccepted()))
     return false;
@@ -485,13 +593,9 @@ NimfInputContext::filterEvent (const QEvent *event)
 
 #ifndef USE_DLFCN
   retval = nimf_im_filter_event (m_im, nimf_event);
-#else
-  retval = nimf_api->im_filter_event (m_im, nimf_event);
-#endif
-
-#ifndef USE_DLFCN
   nimf_event_free (nimf_event);
 #else
+  retval = nimf_api->im_filter_event (m_im, nimf_event);
   nimf_api->event_free (nimf_event);
 #endif
 
@@ -501,54 +605,70 @@ NimfInputContext::filterEvent (const QEvent *event)
 QRectF
 NimfInputContext::keyboardRect() const
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
   return QRectF ();
 }
 
 bool
 NimfInputContext::isAnimating() const
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
   return false;
 }
 
 void
 NimfInputContext::showInputPanel()
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 }
 
 void
 NimfInputContext::hideInputPanel()
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 }
 
 bool
 NimfInputContext::isInputPanelVisible() const
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
   return false;
 }
 
 QLocale
 NimfInputContext::locale() const
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
   return QLocale ();
 }
 
 Qt::LayoutDirection
 NimfInputContext::inputDirection() const
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
   return Qt::LayoutDirection ();
 }
 
 void
 NimfInputContext::setFocusObject (QObject *object)
 {
+#ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
   if (!object || !inputMethodAccepted())
 #ifndef USE_DLFCN
@@ -582,39 +702,55 @@ class NimfInputContextPlugin : public QPlatformInputContextPlugin
 public:
   NimfInputContextPlugin ()
   {
+#ifndef USE_DLFCN
     g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
 #ifdef USE_DLFCN
     libnimf = dlopen ("libnimf.so.0", RTLD_LAZY);
 
     if (libnimf)
     {
-      nimf_api = g_slice_new0 (NimfAPI);
-      nimf_api->im_new                 = reinterpret_cast<NimfIM* (*)()> (dlsym (libnimf, "nimf_im_new"));
-      nimf_api->im_focus_in            = reinterpret_cast<void (*)(NimfIM *)> (dlsym (libnimf, "nimf_im_focus_in"));
-      nimf_api->im_focus_out           = reinterpret_cast<void (*)(NimfIM *)> (dlsym (libnimf, "nimf_im_focus_out"));
-      nimf_api->im_reset               = reinterpret_cast<void (*)(NimfIM *)> (dlsym (libnimf, "nimf_im_reset"));
-      nimf_api->im_filter_event        = reinterpret_cast<gboolean (*)(NimfIM *, NimfEvent *)> (dlsym (libnimf, "nimf_im_filter_event"));
-      nimf_api->im_get_preedit_string  = reinterpret_cast<void (*)(NimfIM *, gchar **, NimfPreeditAttr ***, gint *)> (dlsym (libnimf, "nimf_im_get_preedit_string"));
-      nimf_api->im_set_cursor_location = reinterpret_cast<void (*)(NimfIM *, const NimfRectangle *)> (dlsym (libnimf, "nimf_im_set_cursor_location"));
-      nimf_api->im_set_use_preedit     = reinterpret_cast<void (*)(NimfIM *, gboolean)> (dlsym (libnimf, "nimf_im_set_use_preedit"));
-      nimf_api->im_get_surrounding     = reinterpret_cast<gboolean (*)(NimfIM *, gchar **, gint *)> (dlsym (libnimf, "nimf_im_get_surrounding"));
-      nimf_api->im_set_surrounding     = reinterpret_cast<void (*)(NimfIM *, const char *, gint, gint)> (dlsym (libnimf, "nimf_im_set_surrounding"));
+      nimf_api = new NimfAPI;
+      nimf_api->im_new                 = reinterpret_cast<NimfIM* (*) ()> (dlsym (libnimf, "nimf_im_new"));
+      nimf_api->im_focus_in            = reinterpret_cast<void (*) (NimfIM*)> (dlsym (libnimf, "nimf_im_focus_in"));
+      nimf_api->im_focus_out           = reinterpret_cast<void (*) (NimfIM*)> (dlsym (libnimf, "nimf_im_focus_out"));
+      nimf_api->im_reset               = reinterpret_cast<void (*) (NimfIM*)> (dlsym (libnimf, "nimf_im_reset"));
+      nimf_api->im_filter_event        = reinterpret_cast<gboolean (*) (NimfIM*, NimfEvent*)> (dlsym (libnimf, "nimf_im_filter_event"));
+      nimf_api->im_get_preedit_string  = reinterpret_cast<void (*) (NimfIM*, gchar**, NimfPreeditAttr***, gint*)> (dlsym (libnimf, "nimf_im_get_preedit_string"));
+      nimf_api->im_set_cursor_location = reinterpret_cast<void (*) (NimfIM*, const NimfRectangle*)> (dlsym (libnimf, "nimf_im_set_cursor_location"));
+      nimf_api->im_set_use_preedit     = reinterpret_cast<void (*) (NimfIM*, gboolean)> (dlsym (libnimf, "nimf_im_set_use_preedit"));
+      nimf_api->im_get_surrounding     = reinterpret_cast<gboolean (*) (NimfIM*, gchar**, gint*)> (dlsym (libnimf, "nimf_im_get_surrounding"));
+      nimf_api->im_set_surrounding     = reinterpret_cast<void (*) (NimfIM*, const char*, gint, gint)> (dlsym (libnimf, "nimf_im_set_surrounding"));
       nimf_api->event_new              = reinterpret_cast<NimfEvent * (*) (NimfEventType)> (dlsym (libnimf, "nimf_event_new"));
-      nimf_api->event_free             = reinterpret_cast<void (*) (NimfEvent *)> (dlsym (libnimf, "nimf_event_free"));
-      nimf_api->preedit_attr_freev     = reinterpret_cast<void (*) (NimfPreeditAttr **)> (dlsym (libnimf, "nimf_preedit_attr_freev"));
+      nimf_api->event_free             = reinterpret_cast<void (*) (NimfEvent*)> (dlsym (libnimf, "nimf_event_free"));
+      nimf_api->preedit_attr_freev     = reinterpret_cast<void (*) (NimfPreeditAttr**)> (dlsym (libnimf, "nimf_preedit_attr_freev"));
+      // glib, gobject, gio
+      nimf_api->free                  = reinterpret_cast<void (*) (gpointer)> (dlsym (libnimf, "g_free"));
+      nimf_api->settings_get_boolean  = reinterpret_cast<gboolean (*) (GSettings*, const gchar*)> (dlsym (libnimf, "g_settings_get_boolean"));
+      nimf_api->settings_new          = reinterpret_cast<GSettings* (*) (const gchar*)> (dlsym (libnimf, "g_settings_new"));
+      nimf_api->signal_emit_by_name   = reinterpret_cast<void (*) (gpointer, const gchar*, ...)> (dlsym (libnimf, "g_signal_emit_by_name"));
+      nimf_api->object_unref          = reinterpret_cast<void (*) (gpointer)> (dlsym (libnimf, "g_object_unref"));
+      nimf_api->signal_connect_data   = reinterpret_cast<gulong (*) (gpointer, const gchar*, GCallback, gpointer, GClosureNotify, GConnectFlags)> (dlsym (libnimf, "g_signal_connect_data"));
+      nimf_api->settings_schema_source_get_default
+                                      = reinterpret_cast<GSettingsSchemaSource* (*) ()> (dlsym (libnimf, "g_settings_schema_source_get_default"));
+      nimf_api->settings_schema_source_lookup
+                                      = reinterpret_cast<GSettingsSchema* (*) (GSettingsSchemaSource *, const gchar*, gboolean)> (dlsym (libnimf, "g_settings_schema_source_lookup"));
+      nimf_api->settings_schema_unref = reinterpret_cast<void (*) (GSettingsSchema*)> (dlsym (libnimf, "g_settings_schema_unref"));
     }
 #endif
   }
 
   ~NimfInputContextPlugin ()
   {
+#ifndef USE_DLFCN
     g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
 #ifdef USE_DLFCN
     if (nimf_api)
     {
-      g_slice_free (NimfAPI, nimf_api);
+      delete nimf_api;
       nimf_api = NULL;
     }
 
@@ -628,7 +764,9 @@ public:
 
   virtual QStringList keys () const
   {
+#ifndef USE_DLFCN
     g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
     return QStringList () <<  "nimf";
   }
@@ -636,7 +774,9 @@ public:
   virtual QPlatformInputContext *create (const QString     &key,
                                          const QStringList &paramList)
   {
+#ifndef USE_DLFCN
     g_debug (G_STRLOC ": %s", G_STRFUNC);
+#endif
 
     return new NimfInputContext ();
   }
