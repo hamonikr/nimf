@@ -168,7 +168,8 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
   NimfPreeditAttr **preedit_attrs;
   gchar            *str;
   gint              cursor_pos;
-  gint              i;
+  gint              offset = 0;
+  guint             i, j, len;
 
 #ifndef USE_DLFCN
   nimf_im_get_preedit_string (im, &str, &preedit_attrs, &cursor_pos);
@@ -180,29 +181,41 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
   g_free (str);
   QList <QInputMethodEvent::Attribute> attrs;
 
-  // preedit text attribute
-  for (i = 0; preedit_attrs[i] != NULL; i++)
+  for (i = 0; i < (guint) preeditText.size(); i++)
   {
-    QTextCharFormat format;
-
-    switch (preedit_attrs[i]->type)
+    if (preeditText.at(i).isLowSurrogate())
     {
-      case NIMF_PREEDIT_ATTR_HIGHLIGHT:
-        format.setBackground(Qt::green);
-        format.setForeground(Qt::black);
-        break;
-      case NIMF_PREEDIT_ATTR_UNDERLINE:
-        format.setUnderlineStyle(QTextCharFormat::DashUnderline);
-        break;
-      default:
-        format.setUnderlineStyle(QTextCharFormat::DashUnderline);
-        break;
+      offset++;
+      continue;
     }
 
+    QTextCharFormat format;
+
+    for (j = 0; preedit_attrs[j]; j++)
+    {
+      switch (preedit_attrs[j]->type)
+      {
+        case NIMF_PREEDIT_ATTR_HIGHLIGHT:
+          if (preedit_attrs[j]->start_index <= i - offset &&
+              preedit_attrs[j]->end_index   >  i - offset)
+          {
+            format.setBackground(Qt::green);
+            format.setForeground(Qt::black);
+          }
+          break;
+        case NIMF_PREEDIT_ATTR_UNDERLINE:
+          if (preedit_attrs[j]->start_index <= i - offset &&
+              preedit_attrs[j]->end_index   >  i - offset)
+            format.setUnderlineStyle(QTextCharFormat::DashUnderline);
+          break;
+        default:
+          break;
+      }
+    }
+
+    preeditText.at(i).isHighSurrogate() ? len = 2 : len = 1;
     QInputMethodEvent::Attribute attr (QInputMethodEvent::TextFormat,
-                                       preedit_attrs[i]->start_index,
-                                       preedit_attrs[i]->end_index - preedit_attrs[i]->start_index,
-                                       format);
+                                       i, len, format);
     attrs << attr;
   }
 
@@ -214,7 +227,7 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
 
   // cursor attribute
   attrs << QInputMethodEvent::Attribute (QInputMethodEvent::Cursor,
-                                         cursor_pos, true, 0);
+                                         cursor_pos + offset, true, 0);
 
   QInputMethodEvent event (preeditText, attrs);
   QObject *object = qApp->focusObject ();
