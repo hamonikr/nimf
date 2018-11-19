@@ -26,7 +26,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 #include "nimf-im.h"
-#define USE_DLFCN
+
 #ifdef USE_DLFCN
 
 #include <dlfcn.h>

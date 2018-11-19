@@ -1,3 +1,9 @@
+nimf (2018.11.20.1) stable; urgency=medium
+
+  * Turn off USE_DLFCN by default
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 20 Nov 2018 07:57:05 +0900
+
 nimf (2018.11.20) stable; urgency=medium
 
   * Fixed dynamic loading for Telegram (resolves #16)
