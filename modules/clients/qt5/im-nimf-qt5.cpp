@@ -475,6 +475,9 @@ NimfInputContext::isValid () const
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 #endif
 
+  if (m_im == NULL)
+    return false;
+
 #ifdef USE_DLFCN
   if (nimf_api == NULL)
     return false;

@@ -1,3 +1,9 @@
+nimf (2018.11.21) stable; urgency=medium
+
+  * im-nimf-qt5: if (m_im == NULL) return false;
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 21 Nov 2018 10:07:33 +0900
+
 nimf (2018.11.20.1) stable; urgency=medium
 
   * Turn off USE_DLFCN by default
