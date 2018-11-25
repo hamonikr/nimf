@@ -162,108 +162,106 @@ static gboolean nimf_indicator_start (NimfService *service)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfIndicator *indicator = NIMF_INDICATOR (service);
-  static gsize active = 0;
+
+  if (indicator->active)
+    return TRUE;
 
   if (!gtk_init_check (NULL, NULL))
     return FALSE;
 
-  if (g_once_init_enter (&active))
+  GtkWidget *gtk_menu;
+  GMenu     *menu;
+
+  menu = g_menu_new ();
+  gtk_menu = gtk_menu_new_from_model (G_MENU_MODEL (menu));
+  indicator->appindicator = app_indicator_new ("nimf-indicator",
+                                               "nimf-focus-out",
+                                               APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+  app_indicator_set_status (indicator->appindicator,
+                            APP_INDICATOR_STATUS_ACTIVE);
+  app_indicator_set_icon_full (indicator->appindicator,
+                               "nimf-focus-out", "Nimf");
+  app_indicator_set_menu (indicator->appindicator, GTK_MENU (gtk_menu));
+
+  g_signal_connect (service->server, "engine-changed",
+                    G_CALLBACK (on_engine_changed), indicator);
+  g_signal_connect (service->server, "engine-status-changed",
+                    G_CALLBACK (on_engine_status_changed), indicator);
+  /* menu */
+  GMenu               *section1;
+  GMenu               *section2;
+  GMenuItem           *settings_menu;
+  GMenuItem           *about_menu;
+  GIcon               *settings_icon;
+  GIcon               *about_icon;
+  GSimpleActionGroup  *group;
+  gchar              **engine_ids;
+  guint                i;
+
+  const GActionEntry entries[] = {
+    { "engine",   on_menu_engine,   "s",  NULL, NULL },
+    { "settings", on_menu_settings, NULL, NULL, NULL },
+    { "about",    on_menu_about,    NULL, NULL, NULL }
+  };
+
+  section1 = g_menu_new ();
+  section2 = g_menu_new ();
+  group    = g_simple_action_group_new ();
+  g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), service->server);
+  gtk_widget_insert_action_group (gtk_menu, "indicator", G_ACTION_GROUP (group));
+
+  engine_ids = nimf_server_get_loaded_engine_ids (service->server);
+
+  for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
   {
-    GtkWidget *gtk_menu;
-    GMenu     *menu;
+    GMenuItem *engine_menu;
+    GSettings *settings;
+    gchar     *schema_id;
+    gchar     *name;
 
-    menu = g_menu_new ();
-    gtk_menu = gtk_menu_new_from_model (G_MENU_MODEL (menu));
-    indicator->appindicator = app_indicator_new ("nimf-indicator",
-                                                 "nimf-focus-out",
-                                                 APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
-    app_indicator_set_status (indicator->appindicator,
-                              APP_INDICATOR_STATUS_ACTIVE);
-    app_indicator_set_icon_full (indicator->appindicator,
-                                 "nimf-focus-out", "Nimf");
-    app_indicator_set_menu (indicator->appindicator, GTK_MENU (gtk_menu));
+    schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
+    settings = g_settings_new (schema_id);
+    name = g_settings_get_string (settings, "hidden-schema-name");
 
-    g_signal_connect (service->server, "engine-changed",
-                      G_CALLBACK (on_engine_changed), indicator);
-    g_signal_connect (service->server, "engine-status-changed",
-                      G_CALLBACK (on_engine_status_changed), indicator);
-    /* menu */
-    GMenu               *section1;
-    GMenu               *section2;
-    GMenuItem           *settings_menu;
-    GMenuItem           *about_menu;
-    GIcon               *settings_icon;
-    GIcon               *about_icon;
-    GSimpleActionGroup  *group;
-    gchar              **engine_ids;
-    guint                i;
+    engine_menu = g_menu_item_new (name, "indicator.engine");
+    g_menu_item_set_attribute (engine_menu, G_MENU_ATTRIBUTE_TARGET, "s", engine_ids[i]);
+    g_menu_append_item (section1, engine_menu);
 
-    const GActionEntry entries[] = {
-      { "engine",   on_menu_engine,   "s",  NULL, NULL },
-      { "settings", on_menu_settings, NULL, NULL, NULL },
-      { "about",    on_menu_about,    NULL, NULL, NULL }
-    };
-
-    section1 = g_menu_new ();
-    section2 = g_menu_new ();
-    group    = g_simple_action_group_new ();
-    g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), service->server);
-    gtk_widget_insert_action_group (gtk_menu, "indicator", G_ACTION_GROUP (group));
-
-    engine_ids = nimf_server_get_loaded_engine_ids (service->server);
-
-    for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
-    {
-      GMenuItem *engine_menu;
-      GSettings *settings;
-      gchar     *schema_id;
-      gchar     *name;
-
-      schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
-      settings = g_settings_new (schema_id);
-      name = g_settings_get_string (settings, "hidden-schema-name");
-
-      engine_menu = g_menu_item_new (name, "indicator.engine");
-      g_menu_item_set_attribute (engine_menu, G_MENU_ATTRIBUTE_TARGET, "s", engine_ids[i]);
-      g_menu_append_item (section1, engine_menu);
-
-      g_object_unref (engine_menu);
-      g_free (name);
-      g_free (schema_id);
-      g_object_unref (settings);
-    }
-
-    settings_menu = g_menu_item_new (_("Settings"), "indicator.settings");
-    about_menu    = g_menu_item_new (_("About"),    "indicator.about");
-
-    settings_icon = g_icon_new_for_string ("preferences-system", NULL);
-    about_icon    = g_icon_new_for_string ("help-about", NULL);
-
-    g_menu_item_set_icon (settings_menu, settings_icon);
-    g_menu_item_set_icon (about_menu, about_icon);
-
-    g_menu_append_item (section2, settings_menu);
-    g_menu_append_item (section2, about_menu);
-
-    g_menu_append_section (menu, NULL, G_MENU_MODEL (section1));
-    g_menu_append_section (menu, NULL, G_MENU_MODEL (section2));
-
-    g_object_unref (section1);
-    g_object_unref (section2);
-    g_object_unref (settings_icon);
-    g_object_unref (about_icon);
-    g_object_unref (settings_menu);
-    g_object_unref (about_menu);
-    g_object_unref (group);
-    g_strfreev (engine_ids);
-
-    gtk_widget_show_all (gtk_menu);
-    g_once_init_leave (&active, TRUE);
+    g_object_unref (engine_menu);
+    g_free (name);
+    g_free (schema_id);
+    g_object_unref (settings);
   }
 
-  indicator->active = active;
+  settings_menu = g_menu_item_new (_("Settings"), "indicator.settings");
+  about_menu    = g_menu_item_new (_("About"),    "indicator.about");
 
-  return indicator->active;
+  settings_icon = g_icon_new_for_string ("preferences-system", NULL);
+  about_icon    = g_icon_new_for_string ("help-about", NULL);
+
+  g_menu_item_set_icon (settings_menu, settings_icon);
+  g_menu_item_set_icon (about_menu, about_icon);
+
+  g_menu_append_item (section2, settings_menu);
+  g_menu_append_item (section2, about_menu);
+
+  g_menu_append_section (menu, NULL, G_MENU_MODEL (section1));
+  g_menu_append_section (menu, NULL, G_MENU_MODEL (section2));
+
+  g_object_unref (section1);
+  g_object_unref (section2);
+  g_object_unref (settings_icon);
+  g_object_unref (about_icon);
+  g_object_unref (settings_menu);
+  g_object_unref (about_menu);
+  g_object_unref (group);
+  g_strfreev (engine_ids);
+
+  gtk_widget_show_all (gtk_menu);
+
+  indicator->active = TRUE;
+
+  return TRUE;
 }
 
 static void nimf_indicator_stop (NimfService *service)
