@@ -109,6 +109,18 @@ open_lock_file ()
   return fd;
 }
 
+static int
+set_lock (int fd, int type)
+{
+  struct flock lock;
+  lock.l_type   = type;
+  lock.l_start  = 0;
+  lock.l_whence = SEEK_SET;
+  lock.l_len    = 0;
+
+  return fcntl (fd, F_SETLK, &lock);
+}
+
 static gboolean
 write_pid (int fd)
 {
@@ -646,24 +658,35 @@ main (int argc, char **argv)
   if ((fd = open_lock_file ()) == -1)
     return EXIT_FAILURE;
 
-  if (flock (fd, LOCK_EX | LOCK_NB))
+  if (set_lock (fd, F_WRLCK))
   {
-    if (start_indicator)
+    if (errno == EACCES || errno == EAGAIN)
     {
-      gchar   *sock_path;
-      gboolean retval;
+      if (start_indicator)
+      {
+        gchar   *sock_path;
+        gboolean retval;
 
-      sock_path = nimf_get_socket_path ();
-      retval = start_indicator_service (sock_path);
+        sock_path = nimf_get_socket_path ();
+        retval = start_indicator_service (sock_path);
 
-      g_free (sock_path);
+        g_free (sock_path);
 
-      if (retval)
-        return EXIT_SUCCESS;
+        if (retval)
+          return EXIT_SUCCESS;
+      }
+
+      close(fd);
+      g_message ("Another instance appears to be running: %s", strerror (errno));
+
+      return EXIT_FAILURE;
     }
+    else
+    {
+      g_warning ("%s", strerror (errno));
 
-    g_message ("Another instance appears to be running.");
-    return EXIT_FAILURE;
+      return EXIT_FAILURE;
+    }
   }
 
   if (!write_pid (fd))
@@ -699,7 +722,7 @@ main (int argc, char **argv)
 
   closelog ();
 
-  if (flock (fd, LOCK_UN))
+  if (set_lock (fd, F_UNLCK))
   {
     g_critical ("Failed to unlock file: %s/nimf/lock", g_get_user_runtime_dir ());
     retval = EXIT_FAILURE;
