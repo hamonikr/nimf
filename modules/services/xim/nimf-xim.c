@@ -557,6 +557,73 @@ static gboolean nimf_xim_start (NimfService *service)
   xim->atom_xconnect  = XInternAtom (xim->display, "_XIM_XCONNECT", False);
   xim->atom_protocol  = XInternAtom (xim->display, "_XIM_PROTOCOL", False);
 
+/*
+ * https://www.x.org/releases/X11R7.7/doc/libX11/libX11/libX11.html
+ * https://www.x.org/releases/X11R7.7/doc/libX11/XIM/xim.html
+ *
+ * The preedit category defines what type of support is provided by the input
+ * method for preedit information.
+ *
+ * XIMPreeditArea      (as known as off-the-spot)
+ *
+ * The client application provides display windows for the pre-edit data to the
+ * input method which displays into them directly.
+ * If chosen, the input method would require the client to provide some area
+ * values for it to do its preediting. Refer to XIC values XNArea and
+ * XNAreaNeeded.
+ *
+ * XIMPreeditCallbacks (as known as on-the-spot)
+ *
+ * The client application is directed by the IM Server to display all pre-edit
+ * data at the site of text insertion. The client registers callbacks invoked by
+ * the input method during pre-editing.
+ * If chosen, the input method would require the client to define the set of
+ * preedit callbacks. Refer to XIC values XNPreeditStartCallback,
+ * XNPreeditDoneCallback, XNPreeditDrawCallback, and XNPreeditCaretCallback.
+ *
+ * XIMPreeditPosition  (as known as over-the-spot)
+ *
+ * The input method displays pre-edit data in a window which it brings up
+ * directly over the text insertion position.
+ * If chosen, the input method would require the client to provide positional
+ * values. Refer to XIC values XNSpotLocation and XNFocusWindow.
+ *
+ * XIMPreeditNothing   (as known as root-window)
+ *
+ * The input method displays all pre-edit data in a separate area of the screen
+ * in a window specific to the input method.
+ * If chosen, the input method can function without any preedit values.
+ *
+ * XIMPreeditNone      none
+ *
+ * The input method does not provide any preedit feedback. Any preedit value is
+ * ignored. This style is mutually exclusive with the other preedit styles.
+ *
+ *
+ * The status category defines what type of support is provided by the input
+ * method for status information.
+ *
+ * XIMStatusArea
+ *
+ * The input method requires the client to provide some area values for it to do
+ * its status feedback. See XNArea and XNAreaNeeded.
+ *
+ * XIMStatusCallbacks
+ *
+ * The input method requires the client to define the set of status callbacks,
+ * XNStatusStartCallback, XNStatusDoneCallback, and XNStatusDrawCallback.
+ *
+ * XIMStatusNothing
+ *
+ * The input method can function without any status values.
+ *
+ * XIMStatusNone
+ *
+ * The input method does not provide any status feedback. If chosen, any status
+ * value is ignored. This style is mutually exclusive with the other status
+ * styles.
+ */
+
   XIMStyle im_styles [] = {
     XIMPreeditPosition  | XIMStatusNothing,
     XIMPreeditCallbacks | XIMStatusNothing,
