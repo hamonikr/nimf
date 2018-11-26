@@ -57,21 +57,32 @@ typedef struct
   NimfEvent * (* event_new)           (NimfEventType     type);
   void        (* event_free)          (NimfEvent        *event);
   void        (* preedit_attr_freev)  (NimfPreeditAttr **attrs);
-  // glib, gobject, gio
-  void        (* free)                 (gpointer       mem);
+} NimfAPI;
+
+typedef struct
+{
+  void (* free) (gpointer mem);
+} GLibAPI;
+
+typedef struct
+{
+  gulong (* signal_connect_data) (gpointer       instance,
+                                  const gchar   *detailed_signal,
+                                  GCallback      c_handler,
+                                  gpointer       data,
+                                  GClosureNotify destroy_data,
+                                  GConnectFlags  connect_flags);
+  void   (* signal_emit_by_name) (gpointer       instance,
+                                  const gchar   *detailed_signal,
+                                  ...);
+  void   (* object_unref)        (gpointer       object);
+} GObjectAPI;
+
+typedef struct
+{
+  GSettings * (* settings_new)         (const gchar   *schema_id);
   gboolean    (* settings_get_boolean) (GSettings     *settings,
                                         const gchar   *key);
-  GSettings * (* settings_new)         (const gchar   *schema_id);
-  void        (* signal_emit_by_name)  (gpointer       instance,
-                                        const gchar   *detailed_signal,
-                                        ...);
-  void        (* object_unref)         (gpointer       object);
-  gulong      (* signal_connect_data)  (gpointer       instance,
-                                        const gchar   *detailed_signal,
-                                        GCallback      c_handler,
-                                        gpointer       data,
-                                        GClosureNotify destroy_data,
-                                        GConnectFlags  connect_flags);
   GSettingsSchemaSource *
               (* settings_schema_source_get_default) (void);
   GSettingsSchema *
@@ -80,10 +91,16 @@ typedef struct
                                          const gchar           *schema_id,
                                          gboolean               recursive);
   void        (* settings_schema_unref) (GSettingsSchema       *schema);
-} NimfAPI;
+} GIOAPI;
 
-void    *libnimf  = NULL;
-NimfAPI *nimf_api = NULL;
+void *libnimf    = NULL;
+void *libglib    = NULL;
+void *libgobject = NULL;
+void *libgio     = NULL;
+NimfAPI    *nimf_api    = NULL;
+GLibAPI    *glib_api    = NULL;
+GObjectAPI *gobject_api = NULL;
+GIOAPI     *gio_api     = NULL;
 
 #endif
 
@@ -210,7 +227,7 @@ NimfInputContext::on_preedit_changed (NimfIM *im, gpointer user_data)
 #ifndef USE_DLFCN
   g_free (str);
 #else
-  nimf_api->free (str);
+  glib_api->free (str);
 #endif
   QList <QInputMethodEvent::Attribute> attrs;
 
@@ -339,7 +356,7 @@ NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
 #ifndef USE_DLFCN
   if (g_settings_get_boolean (settings, key))
 #else
-  if (nimf_api->settings_get_boolean (settings, key))
+  if (gio_api->settings_get_boolean (settings, key))
 #endif
   {
     if (context->m_handler == NULL)
@@ -398,17 +415,17 @@ NimfInputContext::NimfInputContext ()
   g_signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
                                      "reset-on-mouse-button-press");
 #else
-  if (nimf_api == NULL)
+  if (!nimf_api || !glib_api || !gobject_api || !gio_api)
   {
-    qWarning("nimf_api is not initialized");
+    qWarning("The libraries for nimf are not ready.");
     return;
   }
 
   GSettingsSchemaSource *source;
   GSettingsSchema       *schema;
 
-  source = nimf_api->settings_schema_source_get_default ();
-  schema = nimf_api->settings_schema_source_lookup (source, "org.nimf.clients.qt5", TRUE);
+  source = gio_api->settings_schema_source_get_default ();
+  schema = gio_api->settings_schema_source_lookup (source, "org.nimf.clients.qt5", TRUE);
 
   if (schema == NULL)
   {
@@ -416,31 +433,30 @@ NimfInputContext::NimfInputContext ()
     return;
   }
 
-  nimf_api->settings_schema_unref (schema);
+  gio_api->settings_schema_unref (schema);
 
   m_im = nimf_api->im_new ();
-  m_settings = nimf_api->settings_new ("org.nimf.clients.qt5");
-  nimf_api->signal_connect_data (m_im, "preedit-start",
-                    G_CALLBACK (NimfInputContext::on_preedit_start), this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_connect_data (m_im, "preedit-end",
-                    G_CALLBACK (NimfInputContext::on_preedit_end), this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_connect_data (m_im, "preedit-changed",
-                    G_CALLBACK (NimfInputContext::on_preedit_changed), this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_connect_data (m_im, "commit",
-                    G_CALLBACK (NimfInputContext::on_commit), this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_connect_data (m_im, "retrieve-surrounding",
-                    G_CALLBACK (NimfInputContext::on_retrieve_surrounding),
-                    this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_connect_data (m_im, "delete-surrounding",
-                    G_CALLBACK (NimfInputContext::on_delete_surrounding),
-                    this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_connect_data (m_im, "beep",
-                    G_CALLBACK (NimfInputContext::on_beep), this, NULL, (GConnectFlags) 0);
-
-  nimf_api->signal_connect_data (m_settings, "changed::reset-on-mouse-button-press",
-                    G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this, NULL, (GConnectFlags) 0);
-  nimf_api->signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
-                                     "reset-on-mouse-button-press");
+  m_settings = gio_api->settings_new ("org.nimf.clients.qt5");
+  gobject_api->signal_connect_data (m_im, "preedit-start",
+                                    G_CALLBACK (NimfInputContext::on_preedit_start), this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_im, "preedit-end",
+                                    G_CALLBACK (NimfInputContext::on_preedit_end), this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_im, "preedit-changed",
+                                    G_CALLBACK (NimfInputContext::on_preedit_changed), this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_im, "commit",
+                                    G_CALLBACK (NimfInputContext::on_commit), this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_im, "retrieve-surrounding",
+                                    G_CALLBACK (NimfInputContext::on_retrieve_surrounding),
+                                    this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_im, "delete-surrounding",
+                                    G_CALLBACK (NimfInputContext::on_delete_surrounding),
+                                    this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_im, "beep",
+                                    G_CALLBACK (NimfInputContext::on_beep), this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_connect_data (m_settings, "changed::reset-on-mouse-button-press",
+                                    G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this, NULL, (GConnectFlags) 0);
+  gobject_api->signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
+                                    "reset-on-mouse-button-press");
 #endif
 }
 
@@ -457,14 +473,14 @@ NimfInputContext::~NimfInputContext ()
 #ifndef USE_DLFCN
     g_object_unref (m_im);
 #else
-    nimf_api->object_unref (m_im);
+    gobject_api->object_unref (m_im);
 #endif
 
   if (m_settings)
 #ifndef USE_DLFCN
     g_object_unref (m_settings);
 #else
-    nimf_api->object_unref (m_settings);
+    gobject_api->object_unref (m_settings);
 #endif
 }
 
@@ -477,11 +493,6 @@ NimfInputContext::isValid () const
 
   if (m_im == NULL)
     return false;
-
-#ifdef USE_DLFCN
-  if (nimf_api == NULL)
-    return false;
-#endif
 
   return true;
 }
@@ -710,7 +721,10 @@ public:
 #endif
 
 #ifdef USE_DLFCN
-    libnimf = dlopen ("libnimf.so.0", RTLD_LAZY);
+    libnimf    = dlopen ("libnimf.so.0",        RTLD_LAZY);
+    libglib    = dlopen ("libglib-2.0.so.0",    RTLD_LAZY);
+    libgobject = dlopen ("libgobject-2.0.so.0", RTLD_LAZY);
+    libgio     = dlopen ("libgio-2.0.so.0",     RTLD_LAZY);
 
     if (libnimf)
     {
@@ -728,18 +742,32 @@ public:
       nimf_api->event_new              = reinterpret_cast<NimfEvent * (*) (NimfEventType)> (dlsym (libnimf, "nimf_event_new"));
       nimf_api->event_free             = reinterpret_cast<void (*) (NimfEvent*)> (dlsym (libnimf, "nimf_event_free"));
       nimf_api->preedit_attr_freev     = reinterpret_cast<void (*) (NimfPreeditAttr**)> (dlsym (libnimf, "nimf_preedit_attr_freev"));
-      // glib, gobject, gio
-      nimf_api->free                  = reinterpret_cast<void (*) (gpointer)> (dlsym (libnimf, "g_free"));
-      nimf_api->settings_get_boolean  = reinterpret_cast<gboolean (*) (GSettings*, const gchar*)> (dlsym (libnimf, "g_settings_get_boolean"));
-      nimf_api->settings_new          = reinterpret_cast<GSettings* (*) (const gchar*)> (dlsym (libnimf, "g_settings_new"));
-      nimf_api->signal_emit_by_name   = reinterpret_cast<void (*) (gpointer, const gchar*, ...)> (dlsym (libnimf, "g_signal_emit_by_name"));
-      nimf_api->object_unref          = reinterpret_cast<void (*) (gpointer)> (dlsym (libnimf, "g_object_unref"));
-      nimf_api->signal_connect_data   = reinterpret_cast<gulong (*) (gpointer, const gchar*, GCallback, gpointer, GClosureNotify, GConnectFlags)> (dlsym (libnimf, "g_signal_connect_data"));
-      nimf_api->settings_schema_source_get_default
-                                      = reinterpret_cast<GSettingsSchemaSource* (*) ()> (dlsym (libnimf, "g_settings_schema_source_get_default"));
-      nimf_api->settings_schema_source_lookup
-                                      = reinterpret_cast<GSettingsSchema* (*) (GSettingsSchemaSource *, const gchar*, gboolean)> (dlsym (libnimf, "g_settings_schema_source_lookup"));
-      nimf_api->settings_schema_unref = reinterpret_cast<void (*) (GSettingsSchema*)> (dlsym (libnimf, "g_settings_schema_unref"));
+    }
+
+    if (libglib)
+    {
+      glib_api = new GLibAPI;
+      glib_api->free = reinterpret_cast<void (*) (gpointer)> (dlsym (libglib, "g_free"));
+    }
+
+    if (libgobject)
+    {
+      gobject_api = new GObjectAPI;
+      gobject_api->signal_connect_data = reinterpret_cast<gulong (*) (gpointer, const gchar*, GCallback, gpointer, GClosureNotify, GConnectFlags)> (dlsym (libnimf, "g_signal_connect_data"));
+      gobject_api->signal_emit_by_name = reinterpret_cast<void (*) (gpointer, const gchar*, ...)> (dlsym (libnimf, "g_signal_emit_by_name"));
+      gobject_api->object_unref        = reinterpret_cast<void (*) (gpointer)> (dlsym (libgobject, "g_object_unref"));
+    }
+
+    if (libgio)
+    {
+      gio_api = new GIOAPI;
+      gio_api->settings_new          = reinterpret_cast<GSettings* (*) (const gchar*)> (dlsym (libgio, "g_settings_new"));
+      gio_api->settings_get_boolean  = reinterpret_cast<gboolean (*) (GSettings*, const gchar*)> (dlsym (libgio, "g_settings_get_boolean"));
+      gio_api->settings_schema_source_get_default
+                                     = reinterpret_cast<GSettingsSchemaSource* (*) ()> (dlsym (libgio, "g_settings_schema_source_get_default"));
+      gio_api->settings_schema_source_lookup
+                                     = reinterpret_cast<GSettingsSchema* (*) (GSettingsSchemaSource *, const gchar*, gboolean)> (dlsym (libgio, "g_settings_schema_source_lookup"));
+      gio_api->settings_schema_unref = reinterpret_cast<void (*) (GSettingsSchema*)> (dlsym (libgio, "g_settings_schema_unref"));
     }
 #endif
   }
@@ -751,16 +779,38 @@ public:
 #endif
 
 #ifdef USE_DLFCN
-    if (nimf_api)
-    {
-      delete nimf_api;
-      nimf_api = NULL;
-    }
+    delete nimf_api;
+    delete glib_api;
+    delete gobject_api;
+    delete gio_api;
+
+    nimf_api    = NULL;
+    glib_api    = NULL;
+    gobject_api = NULL;
+    gio_api     = NULL;
 
     if (libnimf)
     {
       dlclose (libnimf);
       libnimf = NULL;
+    }
+
+    if (libglib)
+    {
+      dlclose (libglib);
+      libglib = NULL;
+    }
+
+    if (libgobject)
+    {
+      dlclose (libgobject);
+      libgobject = NULL;
+    }
+
+    if (libgio)
+    {
+      dlclose (libgio);
+      libgio = NULL;
     }
 #endif
   }
