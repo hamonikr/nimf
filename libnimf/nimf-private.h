@@ -56,6 +56,8 @@ void         nimf_result_iteration_until (NimfResult      *result,
                                           guint16          icid,
                                           NimfMessageType  type);
 gchar       *nimf_get_socket_path (void);
+gchar       *nimf_get_lock_path   (void);
+gchar       *nimf_get_nimf_path   (void);
 
 G_END_DECLS
 

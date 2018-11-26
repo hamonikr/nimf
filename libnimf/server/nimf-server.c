@@ -216,12 +216,10 @@ nimf_server_finalize (GObject *object)
   }
 
   g_hash_table_unref (server->connections);
-  g_object_unref (server->settings);
+  g_object_unref     (server->settings);
   g_hash_table_unref (server->trigger_gsettings);
   g_hash_table_unref (server->trigger_keys);
-  nimf_key_freev (server->hotkeys);
-  g_unlink (server->path);
-  g_free (server->path);
+  nimf_key_freev     (server->hotkeys);
 
   G_OBJECT_CLASS (nimf_server_parent_class)->finalize (object);
 }

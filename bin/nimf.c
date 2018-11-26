@@ -26,15 +26,13 @@
 #include "nimf-private.h"
 #include <glib/gstdio.h>
 #include <fcntl.h>
-#include <string.h>
+#include "nimf-server.h"
 #include "nimf-server-im.h"
 #include "nimf-service.h"
 #include "nimf-module.h"
 #include <glib/gi18n.h>
 #include "config.h"
-#include <stdlib.h>
 #include <syslog.h>
-#include <sys/file.h>
 #include <glib-unix.h>
 
 static gboolean
@@ -76,18 +74,18 @@ start_indicator_service (gchar *addr)
 static gboolean
 create_nimf_runtime_dir ()
 {
-  gchar   *runtime_dir;
+  gchar   *nimf_path;
   gboolean retval = TRUE;
 
-  runtime_dir = g_strconcat (g_get_user_runtime_dir (), "/nimf", NULL);
+  nimf_path = nimf_get_nimf_path ();
 
-  if (g_mkdir_with_parents (runtime_dir, 0700))
+  if (g_mkdir_with_parents (nimf_path, 0700))
   {
-    g_critical (G_STRLOC": Can't create directory: %s", runtime_dir);
+    g_critical (G_STRLOC": Can't create directory: %s", nimf_path);
     retval = FALSE;
   }
 
-  g_free (runtime_dir);
+  g_free (nimf_path);
 
   return retval;
 }
@@ -98,7 +96,7 @@ open_lock_file ()
   gchar *path;
   int    fd;
 
-  path = g_strconcat (g_get_user_runtime_dir (), "/nimf/lock", NULL);
+  path = nimf_get_lock_path ();
   fd = g_open (path, O_RDWR | O_CREAT, 0600);
 
   if (fd == -1)
@@ -514,6 +512,7 @@ nimf_server_start (NimfServer *server,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_return_val_if_fail (NIMF_IS_SERVER (server), FALSE);
+  g_return_val_if_fail (g_unix_socket_address_abstract_names_supported (), FALSE);
 
   if (server->active)
     return TRUE;
@@ -550,44 +549,34 @@ nimf_server_start (NimfServer *server,
   }
 
   GSocketAddress *address;
+  gchar          *path;
   GError         *error = NULL;
 
-  server->path = nimf_get_socket_path ();
   server->service = g_socket_service_new ();
-
-  if (g_unix_socket_address_abstract_names_supported ())
-    address = g_unix_socket_address_new_with_type (server->path, -1,
-                                                   G_UNIX_SOCKET_ADDRESS_PATH);
-  else
-  {
-    g_critical ("Abstract UNIX domain socket names are not supported.");
-    return FALSE;
-  }
-
+  path = nimf_get_socket_path ();
+  address = g_unix_socket_address_new_with_type (path, -1,
+                                                 G_UNIX_SOCKET_ADDRESS_PATH);
   g_socket_listener_add_address (G_SOCKET_LISTENER (server->service), address,
                                  G_SOCKET_TYPE_STREAM,
                                  G_SOCKET_PROTOCOL_DEFAULT,
                                  NULL, NULL, &error);
   g_object_unref (address);
+  g_chmod (path, 0700);
+  g_free  (path);
 
   if (error)
   {
-    g_critical ("%s", error->message);
+    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
     g_clear_error (&error);
 
     return FALSE;
   }
 
-  g_chmod (server->path, 0700);
-
   g_signal_connect (server->service, "incoming",
                     G_CALLBACK (on_new_connection), server);
-
   g_socket_service_start (server->service);
 
-  server->active = TRUE;
-
-  return TRUE;
+  return server->active = TRUE;
 }
 
 int
@@ -724,22 +713,25 @@ main (int argc, char **argv)
 
   if (set_lock (fd, F_UNLCK))
   {
-    g_critical ("Failed to unlock file: %s/nimf/lock", g_get_user_runtime_dir ());
+    g_critical ("Failed to unlock file: %s", nimf_get_lock_path ());
     retval = EXIT_FAILURE;
   }
 
   close (fd);
 
-  gchar *file, *dir;
+  gchar *lock_path, *sock_path, *nimf_path;
 
-  file = g_strconcat (g_get_user_runtime_dir (), "/nimf/lock", NULL);
-  dir  = g_strconcat (g_get_user_runtime_dir (), "/nimf", NULL);
+  lock_path = nimf_get_lock_path   ();
+  sock_path = nimf_get_socket_path ();
+  nimf_path = nimf_get_nimf_path   ();
 
-  g_unlink (file);
-  g_rmdir  (dir);
+  g_unlink (lock_path);
+  g_unlink (sock_path);
+  g_rmdir  (nimf_path);
 
-  g_free (file);
-  g_free (dir);
+  g_free (lock_path);
+  g_free (sock_path);
+  g_free (nimf_path);
 
   return retval;
 }

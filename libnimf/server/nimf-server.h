@@ -56,7 +56,6 @@ struct _NimfServer
   GList           *instances;
   GSocketService  *service;
   GHashTable      *connections;
-  gchar           *path;
   guint16          next_id;
   gboolean         active;
   /* settings */

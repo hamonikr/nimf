@@ -30,6 +30,22 @@ nimf_get_socket_path ()
   return g_strconcat (g_get_user_runtime_dir (), "/nimf/socket", NULL);
 }
 
+gchar *
+nimf_get_lock_path ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf/lock", NULL);
+}
+
+gchar *
+nimf_get_nimf_path ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf", NULL);
+}
+
 void
 nimf_send_message (GSocket         *socket,
                    guint16          icid,

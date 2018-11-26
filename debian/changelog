@@ -1,3 +1,10 @@
+nimf (2018.11.26) stable; urgency=medium
+
+  * Fixed dynamic loading for Telegram (resolves #16)
+  * Use fcntl() instead of flock() (resolves #147)
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 26 Nov 2018 11:18:53 +0900
+
 nimf (2018.11.21) stable; urgency=medium
 
   * im-nimf-qt5: if (m_im == NULL) return false;
