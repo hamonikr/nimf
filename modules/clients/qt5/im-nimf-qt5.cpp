@@ -753,8 +753,8 @@ public:
     if (libgobject)
     {
       gobject_api = new GObjectAPI;
-      gobject_api->signal_connect_data = reinterpret_cast<gulong (*) (gpointer, const gchar*, GCallback, gpointer, GClosureNotify, GConnectFlags)> (dlsym (libnimf, "g_signal_connect_data"));
-      gobject_api->signal_emit_by_name = reinterpret_cast<void (*) (gpointer, const gchar*, ...)> (dlsym (libnimf, "g_signal_emit_by_name"));
+      gobject_api->signal_connect_data = reinterpret_cast<gulong (*) (gpointer, const gchar*, GCallback, gpointer, GClosureNotify, GConnectFlags)> (dlsym (libgobject, "g_signal_connect_data"));
+      gobject_api->signal_emit_by_name = reinterpret_cast<void (*) (gpointer, const gchar*, ...)> (dlsym (libgobject, "g_signal_emit_by_name"));
       gobject_api->object_unref        = reinterpret_cast<void (*) (gpointer)> (dlsym (libgobject, "g_object_unref"));
     }
 
