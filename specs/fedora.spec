@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2018.11.27
+Version:  2018.12.01
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -90,7 +90,6 @@ fi
 %files
 %config %{_xinputconf}
 %config %{_sysconfdir}/apparmor.d/abstractions/nimf
-%config %{_sysconfdir}/xdg/autostart/nimf.desktop
 %{_bindir}/*
 %{_libdir}/gtk-2.0/*
 %{_libdir}/gtk-3.0/*
@@ -109,5 +108,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Tue Nov 27 2018 Hodong Kim <cogniti@gmail.com> - 2018.11.27-1
+* Sat Dec 1 2018 Hodong Kim <cogniti@gmail.com> - 2018.12.01-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog

@@ -48,6 +48,7 @@ struct _NimfIndicator
   gboolean      active;
   AppIndicator *appindicator;
   gchar        *engine_id;
+  guint         watcher_id;
 };
 
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
@@ -157,17 +158,19 @@ static gboolean nimf_indicator_is_active (NimfService *service)
   return NIMF_INDICATOR (service)->active;
 }
 
-static gboolean nimf_indicator_start (NimfService *service)
+static void
+on_watcher_appeared (GDBusConnection *connection,
+                     const gchar     *name,
+                     const gchar     *name_owner,
+                     gpointer         user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfIndicator *indicator = NIMF_INDICATOR (service);
-
-  if (indicator->active)
-    return TRUE;
+  NimfIndicator *indicator = user_data;
+  NimfService   *service   = NIMF_SERVICE (indicator);
 
   if (!gtk_init_check (NULL, NULL))
-    return FALSE;
+    return;
 
   GtkWidget *gtk_menu;
   GMenu     *menu;
@@ -256,12 +259,26 @@ static gboolean nimf_indicator_start (NimfService *service)
   g_object_unref (about_menu);
   g_object_unref (group);
   g_strfreev (engine_ids);
+  g_bus_unwatch_name (indicator->watcher_id);
 
   gtk_widget_show_all (gtk_menu);
+}
 
-  indicator->active = TRUE;
+static gboolean nimf_indicator_start (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return TRUE;
+  NimfIndicator *indicator = NIMF_INDICATOR (service);
+
+  if (indicator->active)
+    return TRUE;
+
+  indicator->watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
+                                            "org.kde.StatusNotifierWatcher",
+                                            G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                            on_watcher_appeared, NULL,
+                                            indicator, NULL);
+  return indicator->active = TRUE;
 }
 
 static void nimf_indicator_stop (NimfService *service)

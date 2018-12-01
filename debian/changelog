@@ -1,3 +1,9 @@
+nimf (2018.12.01) stable; urgency=medium
+
+  * Use g_bus_watch_name() (resolves #147)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 01 Dec 2018 12:34:33 +0900
+
 nimf (2018.11.27) stable; urgency=medium
 
   * Fixed wrong cursor location on HiDPI (resolves #44)

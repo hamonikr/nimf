@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2018.11.27)
+AC_INIT(nimf, 2018.12.01)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -197,7 +197,7 @@ dnl ***************************************************************************
 dnl nimf server
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_DEPS, [glib-2.0 gio-unix-2.0 gobject-2.0 gmodule-2.0])
+PKG_CHECK_MODULES(NIMF_DEPS, [glib-2.0 gio-2.0 gobject-2.0 gmodule-2.0])
 
 dnl ***************************************************************************
 dnl nimf-indicator
@@ -255,7 +255,6 @@ AC_OUTPUT([
   bin/Makefile
   data/Makefile
   data/apparmor-abstractions/Makefile
-  data/autostart/Makefile
   data/icons/Makefile
   data/im-config/Makefile
   data/imsettings/Makefile

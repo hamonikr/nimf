@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 23:18+0900\n"
-"PO-Revision-Date: 2018-08-21 23:21+0900\n"
+"POT-Creation-Date: 2018-12-01 12:29+0900\n"
+"PO-Revision-Date: 2018-12-01 12:31+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,17 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:594
+#: ../bin/nimf.c:552
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../bin/nimf.c:595
+#: ../bin/nimf.c:553
 msgid "Version"
 msgstr "버전"
-
-#: ../bin/nimf.c:596
-msgid "Start indicator"
-msgstr "표시기를 시작합니다"
 
 #: ../bin/nimf-settings.c:458
 #, c-format
@@ -57,7 +53,7 @@ msgstr "님프 설정"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:565
-#: ../modules/services/indicator/nimf-indicator.c:107
+#: ../modules/services/indicator/nimf-indicator.c:108
 msgid "Nimf"
 msgstr "님프"
 
@@ -65,37 +61,37 @@ msgstr "님프"
 msgid "Rime"
 msgstr "라임"
 
-#: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
 #: ../modules/services/indicator/nimf-indicator.c:90
+#: ../modules/services/indicator/nimf-indicator.c:91
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:91
+#: ../modules/services/indicator/nimf-indicator.c:92
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr "김범식 <k.bumsik@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:102
+#: ../modules/services/indicator/nimf-indicator.c:103
 msgid "Nimf is an input method framework"
 msgstr "님프는 입력 방법 프레임워크입니다"
 
-#: ../modules/services/indicator/nimf-indicator.c:103
+#: ../modules/services/indicator/nimf-indicator.c:104
 msgid "Copyright (c) 2015-2018 Hodong Kim"
 msgstr "저작권 (c) 2015-2018 김호동"
 
-#: ../modules/services/indicator/nimf-indicator.c:108
+#: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Hodong Kim, N"
 msgstr "김호동, N"
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:112
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:238
+#: ../modules/services/indicator/nimf-indicator.c:239
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:239
+#: ../modules/services/indicator/nimf-indicator.c:240
 msgid "About"
 msgstr "정보"
 

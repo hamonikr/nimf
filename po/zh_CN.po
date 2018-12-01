@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 23:18+0900\n"
-"PO-Revision-Date: 2018-08-21 23:22+0900\n"
+"POT-Creation-Date: 2018-12-01 12:29+0900\n"
+"PO-Revision-Date: 2018-12-01 12:31+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -18,17 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:594
+#: ../bin/nimf.c:552
 msgid "Log debugging message"
 msgstr "日志调试消息"
 
-#: ../bin/nimf.c:595
+#: ../bin/nimf.c:553
 msgid "Version"
 msgstr "版本"
-
-#: ../bin/nimf.c:596
-msgid "Start indicator"
-msgstr "开始指示器"
 
 #: ../bin/nimf-settings.c:458
 #, c-format
@@ -57,7 +53,7 @@ msgstr "宁芙设置"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:565
-#: ../modules/services/indicator/nimf-indicator.c:107
+#: ../modules/services/indicator/nimf-indicator.c:108
 msgid "Nimf"
 msgstr "宁芙"
 
@@ -65,37 +61,37 @@ msgstr "宁芙"
 msgid "Rime"
 msgstr "中州韵"
 
-#: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
 #: ../modules/services/indicator/nimf-indicator.c:90
+#: ../modules/services/indicator/nimf-indicator.c:91
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "金豪东 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:91
+#: ../modules/services/indicator/nimf-indicator.c:92
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:102
+#: ../modules/services/indicator/nimf-indicator.c:103
 msgid "Nimf is an input method framework"
 msgstr "宁芙是一个输入法框架。"
 
-#: ../modules/services/indicator/nimf-indicator.c:103
+#: ../modules/services/indicator/nimf-indicator.c:104
 msgid "Copyright (c) 2015-2018 Hodong Kim"
 msgstr "版权所有 (c) 2015-2018 金豪东"
 
-#: ../modules/services/indicator/nimf-indicator.c:108
+#: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Hodong Kim, N"
 msgstr "金豪东，N"
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:112
 msgid "Website"
 msgstr "网站"
 
-#: ../modules/services/indicator/nimf-indicator.c:238
+#: ../modules/services/indicator/nimf-indicator.c:239
 msgid "Settings"
 msgstr "设置"
 
-#: ../modules/services/indicator/nimf-indicator.c:239
+#: ../modules/services/indicator/nimf-indicator.c:240
 msgid "About"
 msgstr "关于"
 

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 23:18+0900\n"
-"PO-Revision-Date: 2018-08-21 23:20+0900\n"
+"POT-Creation-Date: 2018-12-01 12:29+0900\n"
+"PO-Revision-Date: 2018-12-01 12:30+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,17 +19,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/nimf.c:594
+#: ../bin/nimf.c:552
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../bin/nimf.c:595
+#: ../bin/nimf.c:553
 msgid "Version"
 msgstr ""
-
-#: ../bin/nimf.c:596
-msgid "Start indicator"
-msgstr "Starte einen Indikator"
 
 #: ../bin/nimf-settings.c:458
 #, c-format
@@ -58,7 +54,7 @@ msgstr "Nimf Einstellungen"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:565
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:108
 msgid "Nimf"
 msgstr ""
 
@@ -66,37 +62,37 @@ msgstr ""
 msgid "Rime"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:88
 #: ../modules/services/indicator/nimf-indicator.c:89
 #: ../modules/services/indicator/nimf-indicator.c:90
+#: ../modules/services/indicator/nimf-indicator.c:91
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:91
+#: ../modules/services/indicator/nimf-indicator.c:92
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:102
+#: ../modules/services/indicator/nimf-indicator.c:103
 msgid "Nimf is an input method framework"
 msgstr "Nimf ist eine Texteingabemethode"
 
-#: ../modules/services/indicator/nimf-indicator.c:103
+#: ../modules/services/indicator/nimf-indicator.c:104
 msgid "Copyright (c) 2015-2018 Hodong Kim"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:108
+#: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:112
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:238
+#: ../modules/services/indicator/nimf-indicator.c:239
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:239
+#: ../modules/services/indicator/nimf-indicator.c:240
 msgid "About"
 msgstr "Über"
 

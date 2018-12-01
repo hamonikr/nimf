@@ -74,9 +74,6 @@ typedef enum
   /* misc */
   NIMF_MESSAGE_BEEP,
   NIMF_MESSAGE_BEEP_REPLY,
-  /* command */
-  NIMF_MESSAGE_START_INDICATOR,
-  NIMF_MESSAGE_START_INDICATOR_REPLY
 } NimfMessageType;
 
 struct _NimfMessageHeader

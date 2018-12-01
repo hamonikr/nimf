@@ -35,7 +35,7 @@ nimf_get_lock_path ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_strconcat (g_get_user_runtime_dir (), "/nimf/lock", NULL);
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf/lock.pid", NULL);
 }
 
 gchar *

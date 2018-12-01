@@ -255,14 +255,19 @@ nimf_client_connect (NimfClient *client)
 
     for (retry_count = 0; retry_count < retry_limit; retry_count++)
     {
-      g_clear_error (&error);
-
       if (g_stat (nimf_client_socket_path, &info) == 0)
       {
         if (client->uid == info.st_uid)
         {
           if (g_socket_connect (nimf_client_socket, address, NULL, &error))
+          {
             break;
+          }
+          else
+          {
+            g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+            g_clear_error (&error);
+          }
         }
         else
         {
@@ -270,16 +275,17 @@ nimf_client_connect (NimfClient *client)
           break;
         }
       }
-      else
+
+      g_message ("Trying to execute nimf");
+
+      if (!g_spawn_command_line_sync ("nimf", NULL, NULL, NULL, &error))
       {
-        if (!g_spawn_command_line_sync ("nimf --start-indicator",
-                                        NULL, NULL, NULL, NULL))
-        {
-          g_critical ("Couldn't execute 'nimf --start-indicator'");
-          break;
-        }
+        g_critical ("Couldn't execute 'nimf': %s", error->message);
+        g_clear_error (&error);
+        break;
       }
 
+      g_message ("Waiting for 1 sec");
       g_usleep (G_USEC_PER_SEC);
     }
 
@@ -302,12 +308,7 @@ nimf_client_connect (NimfClient *client)
     }
     else
     {
-      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        g_critical (G_STRLOC ": %s: Socket file is not found.", G_STRFUNC);
-      else
-        g_critical (G_STRLOC ": %s: Couldn't connect to nimf server", G_STRFUNC);
-
-      g_clear_error (&error);
+      g_critical (G_STRLOC ": %s: Couldn't connect to nimf server", G_STRFUNC);
     }
   }
 
