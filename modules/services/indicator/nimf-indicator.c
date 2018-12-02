@@ -290,7 +290,8 @@ static void nimf_indicator_stop (NimfService *service)
   if (!indicator->active)
     return;
 
-  g_object_unref (NIMF_INDICATOR (service)->appindicator);
+  if (indicator->appindicator)
+    g_object_unref (indicator->appindicator);
 
   indicator->active = FALSE;
 }
