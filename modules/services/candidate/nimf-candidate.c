@@ -75,20 +75,37 @@ nimf_candidate_show (NimfCandidatable *candidatable,
 
   GtkRequisition  natural_size;
   int             x, y, w, h;
-  int             screen_width, screen_height;
+  int             screen_width = 0, monitor_height;
+  GdkRectangle    geometry;
 
-  #if GTK_CHECK_VERSION (3, 22, 0)
-    GdkRectangle  geometry;
-    GdkDisplay   *display = gtk_widget_get_display (candidate->window);
-    GdkWindow    *window  = gtk_widget_get_window  (candidate->window);
-    GdkMonitor   *monitor = gdk_display_get_monitor_at_window (display, window);
+#if GTK_CHECK_VERSION (3, 22, 0)
+  GdkMonitor   *monitor;
+  GdkDisplay   *display = gtk_widget_get_display (candidate->window);
+  int           n_monitors = gdk_display_get_n_monitors (display);
+  gint          i;
+
+  for (i = 0; i < n_monitors; i++)
+  {
+    monitor = gdk_display_get_monitor (display, i);
     gdk_monitor_get_geometry (monitor, &geometry);
-    screen_width  = geometry.width;
-    screen_height = geometry.height;
-  #else
-    screen_width  = gdk_screen_width ();
-    screen_height = gdk_screen_height ();
-  #endif
+    screen_width = screen_width + geometry.width;
+  }
+
+  monitor = gdk_display_get_monitor_at_point (display,
+                                              target->cursor_area.x,
+                                              target->cursor_area.y);
+  gdk_monitor_get_geometry (monitor, &geometry);
+#else
+  GdkWindow *window = gtk_widget_get_window (candidate->window);
+  GdkScreen *screen = gdk_window_get_screen (window);
+  gint monitor_num = gdk_screen_get_monitor_at_point (screen,
+                                                      target->cursor_area.x,
+                                                      target->cursor_area.y);
+  gdk_screen_get_monitor_geometry (screen, monitor_num, &geometry);
+  screen_width  = gdk_screen_get_width (screen);
+#endif
+
+  monitor_height = geometry.height;
 
   candidate->target = target;
 
@@ -109,7 +126,7 @@ nimf_candidate_show (NimfCandidatable *candidatable,
   if (x + w > screen_width)
     x = screen_width - w;
 
-  if (y + h > screen_height)
+  if (y + h > monitor_height)
     y = target->cursor_area.y - h;
 
   gtk_window_move (GTK_WINDOW (candidate->window), x, y);
