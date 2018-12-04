@@ -1,3 +1,11 @@
+nimf (2018.12.05) stable; urgency=medium
+
+  * Fixed cursor location
+  * Fixed wrong candidate window location (resolves #83)
+    Support multiple monitors
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 05 Dec 2018 02:29:11 +0900
+
 nimf (2018.12.04) stable; urgency=medium
 
   * Fixed wrong candidate window location (resolves #83)
