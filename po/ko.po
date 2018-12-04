@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-01 12:29+0900\n"
-"PO-Revision-Date: 2018-12-01 12:31+0900\n"
+"POT-Creation-Date: 2018-12-05 05:20+0900\n"
+"PO-Revision-Date: 2018-12-05 05:20+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:552
+#: ../bin/nimf.c:551
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../bin/nimf.c:553
+#: ../bin/nimf.c:552
 msgid "Version"
 msgstr "버전"
 
@@ -132,8 +132,10 @@ msgid "Use singleton mode"
 msgstr "싱글톤 모드를 사용합니다"
 
 #: ../libnimf/org.nimf.gschema.xml.h:6
-msgid "Use singleton"
-msgstr "싱글톤 모드를 사용합니다"
+msgid ""
+"Create one instance per language engine. Singleton mode reduces memory usage."
+msgstr "언어 엔진 당 하나의 인스턴스를 만듭니다. 싱글톤 모드는 메모리 "
+"사용량을 감소시킵니다."
 
 #: ../libnimf/org.nimf.gschema.xml.h:7
 msgid "'Services'"

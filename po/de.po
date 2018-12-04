@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-01 12:29+0900\n"
-"PO-Revision-Date: 2018-12-01 12:30+0900\n"
+"POT-Creation-Date: 2018-12-05 05:20+0900\n"
+"PO-Revision-Date: 2018-12-05 05:20+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/nimf.c:552
+#: ../bin/nimf.c:551
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../bin/nimf.c:553
+#: ../bin/nimf.c:552
 msgid "Version"
 msgstr ""
 
@@ -133,8 +133,11 @@ msgid "Use singleton mode"
 msgstr "Singleton mode verwenden"
 
 #: ../libnimf/org.nimf.gschema.xml.h:6
-msgid "Use singleton"
-msgstr "Singleton verwenden"
+msgid ""
+"Create one instance per language engine. Singleton mode reduces memory usage."
+msgstr ""
+"Erstellen Sie eine Instanz pro Sprachmodul. Der Singleton-Modus reduziert den"
+" Speicherbedarf."
 
 #: ../libnimf/org.nimf.gschema.xml.h:7
 msgid "'Services'"

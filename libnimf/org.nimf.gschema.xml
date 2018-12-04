@@ -17,7 +17,8 @@
     <key type="b" name="use-singleton">
       <default>true</default>
       <summary>Use singleton mode</summary>
-      <description>Use singleton</description>
+      <description>Create one instance per language engine.
+                   Singleton mode reduces memory usage.</description>
     </key>
   </schema>
   <schema id="org.nimf.services" path="/org/nimf/services/" gettext-domain="nimf">
