@@ -49,7 +49,7 @@ struct _NimfXimIM
 {
   NimfServiceIM parent_instance;
   guint16   connect_id;
-  gint      preedit_length;
+  gint      prev_preedit_length;
   CARD32    input_style;
   gboolean  draw_preedit_on_the_server_side;
   Window    client_window;

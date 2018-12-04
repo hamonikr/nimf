@@ -34,6 +34,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "IMdkit.h"
 #include "Xi18n.h"
 #include "XimFunc.h"
+#include <glib.h>
 
 extern Xi18nClient *_Xi18nFindClient (Xi18n, CARD16);
 
@@ -44,7 +45,6 @@ static char *xi18n_setIMValues (XIMS, XIMArg *);
 static char *xi18n_getIMValues (XIMS, XIMArg *);
 static Status xi18n_forwardEvent (XIMS, XPointer);
 static Status xi18n_commit (XIMS, XPointer);
-static int xi18n_callCallback (XIMS, XPointer);
 static int xi18n_preeditStart (XIMS, XPointer);
 static int xi18n_preeditEnd (XIMS, XPointer);
 static int xi18n_syncXlib (XIMS, XPointer);
@@ -64,7 +64,6 @@ IMMethodsRec Xi18n_im_methods =
     xi18n_getIMValues,
     xi18n_forwardEvent,
     xi18n_commit,
-    xi18n_callCallback,
     xi18n_preeditStart,
     xi18n_preeditEnd,
     xi18n_syncXlib,
@@ -670,7 +669,6 @@ static int DeleteXi18nAtom(Xi18n i18n_core)
 static void *xi18n_setup (Display *dpy, XIMArg *args)
 {
     Xi18n i18n_core;
-    CARD16 endian = 1;
 
     if ((i18n_core = (Xi18n) malloc (sizeof (Xi18nCore))) == (Xi18n) NULL)
         return NULL;
@@ -686,7 +684,7 @@ static void *xi18n_setup (Display *dpy, XIMArg *args)
         return NULL;
     }
     /*endif*/
-    if (*(char *) &endian)
+    if (G_BYTE_ORDER == G_LITTLE_ENDIAN)
         i18n_core->address.im_byteOrder = 'l';
     else
         i18n_core->address.im_byteOrder = 'B';
@@ -1021,7 +1019,7 @@ static Status xi18n_commit (XIMS ims, XPointer xp)
     return True;
 }
 
-static int xi18n_callCallback (XIMS ims, XPointer xp)
+int nimf_xim_call_callback (XIMS ims, XPointer xp)
 {
     IMProtocol *call_data = (IMProtocol *)xp;
     switch (call_data->major_code)

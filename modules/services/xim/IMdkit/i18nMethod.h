@@ -40,6 +40,9 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <X11/Xproto.h>
 #undef NEED_EVENTS
 
+#include "IMdkit.h"
+
 Bool WaitXSelectionRequest (Display *dpy, XEvent *ev, XPointer client_data);
+int  nimf_xim_call_callback (XIMS ims, XPointer);
 
 #endif /* I18N_METHOD_H */

@@ -21,6 +21,7 @@
 
 #include "nimf-xim-im.h"
 #include <X11/Xutil.h>
+#include "IMdkit/i18nMethod.h"
 
 G_DEFINE_TYPE (NimfXimIM, nimf_xim_im, NIMF_TYPE_SERVICE_IM);
 
@@ -63,7 +64,7 @@ static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
   preedit_cb_data.major_code = XIM_PREEDIT_DONE;
   preedit_cb_data.connect_id = xim_im->connect_id;
   preedit_cb_data.icid       = im->icid;
-  IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
+  nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
 }
 
 static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
@@ -80,7 +81,7 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
   preedit_cb_data.major_code = XIM_PREEDIT_START;
   preedit_cb_data.connect_id = xim_im->connect_id;
   preedit_cb_data.icid       = im->icid;
-  IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
+  nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
 }
 
 static void
@@ -127,7 +128,7 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   preedit_cb_data.icid = im->icid;
   preedit_cb_data.todo.draw.caret = cursor_pos;
   preedit_cb_data.todo.draw.chg_first = 0;
-  preedit_cb_data.todo.draw.chg_length = xim_im->preedit_length;
+  preedit_cb_data.todo.draw.chg_length = xim_im->prev_preedit_length;
   preedit_cb_data.todo.draw.text = &text;
 
   text.feedback = feedback;
@@ -140,7 +141,7 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
     text.encoding_is_wchar = 0;
     text.length = strlen ((char *) text_property.value);
     text.string.multi_byte = (char *) text_property.value;
-    IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
+    nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
     XFree (text_property.value);
   }
   else
@@ -148,11 +149,11 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
     text.encoding_is_wchar = 0;
     text.length = 0;
     text.string.multi_byte = "";
-    IMCallCallback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
+    nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
     len = 0;
   }
 
-  xim_im->preedit_length = len;
+  xim_im->prev_preedit_length = len;
 
   g_free (feedback);
 }
