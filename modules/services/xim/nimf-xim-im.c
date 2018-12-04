@@ -125,7 +125,7 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   preedit_cb_data.major_code = XIM_PREEDIT_DRAW;
   preedit_cb_data.connect_id = xim_im->connect_id;
   preedit_cb_data.icid = im->icid;
-  preedit_cb_data.todo.draw.caret = len;
+  preedit_cb_data.todo.draw.caret = cursor_pos;
   preedit_cb_data.todo.draw.chg_first = 0;
   preedit_cb_data.todo.draw.chg_length = xim_im->preedit_length;
   preedit_cb_data.todo.draw.text = &text;
