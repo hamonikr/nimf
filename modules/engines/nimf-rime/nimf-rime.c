@@ -367,6 +367,16 @@ static void on_notification (void          *context_object,
               g_settings_get_boolean (rime->settings, "simplification"))
       g_settings_set_boolean (rime->settings, "simplification", FALSE);
   }
+  else if (!g_strcmp0 (message_type, "deploy"))
+  {
+    if (!g_strcmp0 (message_value, "start"))
+      g_message ("Rime is under maintenance ...");
+    else if (!g_strcmp0 (message_value, "success"))
+      g_message ("Rime is ready.");
+    else if (!g_strcmp0 (message_value, "failure"))
+      g_warning ("Rime has encountered an error. "
+                 "See /tmp/nimf-rime.WARNING for details.");
+  }
 }
 
 static void
@@ -387,6 +397,7 @@ nimf_rime_init (NimfRime *rime)
   {
     gchar *user_data_dir;
 
+    RimeSetupLogging ("nimf-rime");
     user_data_dir = g_strconcat (g_getenv ("HOME"), "/.config/nimf/rime", NULL);
 
     if (!g_file_test (user_data_dir, G_FILE_TEST_IS_DIR))
@@ -398,8 +409,8 @@ nimf_rime_init (NimfRime *rime)
     traits.user_data_dir          = user_data_dir;
     traits.distribution_name      = _("Rime");
     traits.distribution_code_name = "nimf-rime";
-    traits.distribution_version   = "1.2";
-    traits.app_name               = "rime.nimf";
+    traits.distribution_version   = rime_get_api()->get_version();
+    traits.app_name               = "nimf-rime";
 
     RimeInitialize (&traits);
     RimeStartMaintenance (False);
