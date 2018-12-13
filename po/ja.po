@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-05 05:20+0900\n"
-"PO-Revision-Date: 2018-12-05 05:20+0900\n"
+"POT-Creation-Date: 2018-12-13 10:57+0900\n"
+"PO-Revision-Date: 2018-12-13 10:57+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -103,7 +103,6 @@ msgstr "'ニンフ'"
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
-#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
@@ -115,7 +114,6 @@ msgstr "nimf-settingsのためのスキーマ名"
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
-#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
@@ -187,14 +185,12 @@ msgid "'Japanese (anthy)'"
 msgstr "'日本語 (anthy)'"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:4
-#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:4
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:4
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:4
 msgid "Active engine"
 msgstr "エンジン有効に"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
-#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:5
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:5
 msgid "The engine will be loaded on startup if available. Restart required"
@@ -253,11 +249,6 @@ msgstr "'一般的な方法'"
 msgid "'Explicitly type nn'"
 msgstr "'明示的にnnと入力します'"
 
-#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:1
-msgid "'Chinese (chewing)'"
-msgstr "'中国語 (chewing)'"
-
-#: ../modules/engines/nimf-chewing/org.nimf.engines.nimf-chewing.gschema.xml.h:6
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
 msgid "Trigger keys for switching Chinese / System"
 msgstr "中国語/システムの切り替え用のトリガーキー"

@@ -23,7 +23,6 @@ BuildRequires: noto-sans-cjk-fonts
 BuildRequires: libhangul-devel
 BuildRequires: anthy-devel
 BuildRequires: anthy
-BuildRequires: libchewing-devel
 BuildRequires: librime-devel >= 1.2.9
 BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel

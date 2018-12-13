@@ -7,7 +7,6 @@ status_scalable_icon_DATA = \
 	scalable/nimf-system-keyboard.svg \
 	scalable/nimf-libhangul.svg \
 	scalable/nimf-anthy.svg \
-	scalable/nimf-chewing.svg \
 	scalable/nimf-rime-simplified.svg \
 	scalable/nimf-rime-traditional.svg
 
