@@ -1,5 +1,5 @@
 # German translation for Nimf
-# Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
 # Hodong Kim <cogniti@gmail.com>, 2015-2018.
 # N <abonnements@revolwear.com>, 2017.
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-13 10:57+0900\n"
-"PO-Revision-Date: 2018-12-13 10:57+0900\n"
+"POT-Creation-Date: 2019-01-09 06:19+0900\n"
+"PO-Revision-Date: 2019-01-09 06:23+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -48,7 +48,7 @@ msgstr "Abbrechen (_C)"
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:804
+#: ../bin/nimf-settings.c:804 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "Nimf Einstellungen"
 
@@ -58,7 +58,7 @@ msgstr "Nimf Einstellungen"
 msgid "Nimf"
 msgstr ""
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:399
+#: ../modules/engines/nimf-rime/nimf-rime.c:410
 msgid "Rime"
 msgstr ""
 
@@ -252,10 +252,6 @@ msgstr "'Gang und gäbe sein'"
 msgid "'Explicitly type nn'"
 msgstr "'Typ Explizit nn'"
 
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
-msgid "Trigger keys for switching Chinese / System"
-msgstr "Auslösertasten um Chinesisch / System umzuschalten"
-
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
 msgstr "'Koreanisch (libhangul)'"
@@ -339,6 +335,10 @@ msgstr ""
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'Chinesisch (rime)'"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
+msgid "Trigger keys for switching Chinese / System"
+msgstr "Auslösertasten um Chinesisch / System umzuschalten"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
 msgid "Simplified Chinese"

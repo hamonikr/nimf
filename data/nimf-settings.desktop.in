@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+_Name=Nimf Settings
+Exec=nimf-settings
+Icon=nimf-logo
+Terminal=false

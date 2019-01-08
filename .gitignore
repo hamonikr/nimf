@@ -38,9 +38,11 @@ data/icons/32x32/
 data/icons/48x48/
 data/icons/96x96/
 data/icons/256x256/
+data/nimf-settings.desktop
 input-method-unstable-v1-client-protocol.h
 input-method-unstable-v1-protocol.c
 po/nimf.pot
+po/.intltool-merge-cache
 tests/*.log
 tests/*.trs
 tests/test-nimf

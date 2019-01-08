@@ -1,5 +1,5 @@
 # Chinese translation for Nimf
-# Copyright (C) 2017-2018 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
 # Hodong Kim <cogniti@gmail.com>, 2017-2018.
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-13 10:57+0900\n"
-"PO-Revision-Date: 2018-12-13 10:57+0900\n"
+"POT-Creation-Date: 2019-01-09 06:19+0900\n"
+"PO-Revision-Date: 2019-01-09 06:27+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -47,7 +47,7 @@ msgstr "取消 (_C)"
 msgid "Click here and then press key combination"
 msgstr "请单击此处，然后按组合键"
 
-#: ../bin/nimf-settings.c:804
+#: ../bin/nimf-settings.c:804 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "宁芙设置"
 
@@ -57,7 +57,7 @@ msgstr "宁芙设置"
 msgid "Nimf"
 msgstr "宁芙"
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:399
+#: ../modules/engines/nimf-rime/nimf-rime.c:410
 msgid "Rime"
 msgstr "中州韵"
 
@@ -246,10 +246,6 @@ msgstr "'常见做法'"
 msgid "'Explicitly type nn'"
 msgstr "'明确输入nn'"
 
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
-msgid "Trigger keys for switching Chinese / System"
-msgstr "用于切换中文/系统的触发键"
-
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
 msgstr "'韩语 (libhangul)'"
@@ -333,6 +329,10 @@ msgstr "忽略应用程序中由提交回调调用的reset()"
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'中文 (rime)'"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
+msgid "Trigger keys for switching Chinese / System"
+msgstr "用于切换中文/系统的触发键"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
 msgid "Simplified Chinese"

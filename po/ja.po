@@ -1,5 +1,5 @@
 # Japanese translation for Nimf
-# Copyright (C) 2017,2018 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
 # Hodong Kim <cogniti@gmail.com>, 2017,2018.
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-13 10:57+0900\n"
-"PO-Revision-Date: 2018-12-13 10:57+0900\n"
+"POT-Creation-Date: 2019-01-09 06:19+0900\n"
+"PO-Revision-Date: 2019-01-09 06:25+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -47,7 +47,7 @@ msgstr "キャンセル (_C)"
 msgid "Click here and then press key combination"
 msgstr "ここをクリックして、キーの組み合わせを押してください"
 
-#: ../bin/nimf-settings.c:804
+#: ../bin/nimf-settings.c:804 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "ニンフ設定"
 
@@ -57,7 +57,7 @@ msgstr "ニンフ設定"
 msgid "Nimf"
 msgstr "ニンフ"
 
-#: ../modules/engines/nimf-rime/nimf-rime.c:399
+#: ../modules/engines/nimf-rime/nimf-rime.c:410
 msgid "Rime"
 msgstr "ライム"
 
@@ -249,10 +249,6 @@ msgstr "'一般的な方法'"
 msgid "'Explicitly type nn'"
 msgstr "'明示的にnnと入力します'"
 
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
-msgid "Trigger keys for switching Chinese / System"
-msgstr "中国語/システムの切り替え用のトリガーキー"
-
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
 msgstr "'韓国語 (libhangul)'"
@@ -336,6 +332,10 @@ msgstr "アプリケーションでcommitコールバックが呼び出される
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'中国語 (rime)'"
+
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
+msgid "Trigger keys for switching Chinese / System"
+msgstr "中国語/システムの切り替え用のトリガーキー"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
 msgid "Simplified Chinese"

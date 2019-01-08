@@ -1,6 +1,7 @@
 # List of source files containing translatable strings.
 bin/nimf.c
 bin/nimf-settings.c
+data/nimf-settings.desktop.in
 modules/clients/gtk/im-nimf.c
 modules/engines/nimf-anthy/nimf-anthy.c
 modules/engines/nimf-libhangul/nimf-libhangul.c
