@@ -3,7 +3,7 @@
  * nimf-settings.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -21,6 +21,8 @@
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <libxklavier/xklavier.h>
+#include <gdk/gdkx.h>
 #include "config.h"
 #include "nimf.h"
 
@@ -30,6 +32,17 @@
 #define NIMF_IS_SETTINGS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SETTINGS))
 #define NIMF_IS_SETTINGS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_SETTINGS))
 #define NIMF_SETTINGS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SETTINGS, NimfSettingsClass))
+
+typedef struct _NimfXkb
+{
+  XklEngine  *engine;
+  GtkWidget  *options_box;
+  GtkWidget  *vbox;
+  gchar     **options;
+  gint        options_len;
+  GSList     *toggle_buttons;
+  GSList     *radio_group;
+} NimfXkb;
 
 typedef struct _NimfSettings      NimfSettings;
 typedef struct _NimfSettingsClass NimfSettingsClass;
@@ -41,6 +54,7 @@ struct _NimfSettings
   GApplication          *app;
   GPtrArray             *pages;
   GSettingsSchemaSource *schema_source; /* do not free */
+  NimfXkb               *xkb;
 };
 
 struct _NimfSettingsClass
@@ -788,6 +802,123 @@ void on_destroy (GtkWidget *widget, GApplication *app)
   g_application_release (app);
 }
 
+static void
+build_xkb_options (GtkToggleButton *toggle_button,
+                   NimfXkb         *xkb)
+{
+  if (gtk_toggle_button_get_active (toggle_button))
+  {
+    gchar *name = g_strdup (gtk_widget_get_name (GTK_WIDGET (toggle_button)));
+    xkb->options_len += 1;
+    xkb->options = g_realloc_n (xkb->options,
+                                xkb->options_len + 1,
+                                sizeof (gchar *));
+    xkb->options[xkb->options_len - 1] = name;
+    xkb->options[xkb->options_len]     = NULL;
+  }
+}
+
+static void
+on_toggled (GtkToggleButton *toggle_button,
+            NimfXkb         *xkb)
+{
+  if (GTK_IS_RADIO_BUTTON (toggle_button) &&
+      !gtk_toggle_button_get_active (toggle_button))
+    return;
+
+  if (xkb->options_len > 0)
+  {
+    xkb->options_len = 0;
+    xkb->options = g_realloc_n (xkb->options, 1, sizeof (gchar *));
+    xkb->options[0] = NULL;
+  }
+
+  g_slist_foreach (xkb->toggle_buttons, (GFunc) build_xkb_options, xkb);
+
+  XklConfigRec *rec;
+  GSettings    *settings;
+
+  rec = xkl_config_rec_new ();
+  xkl_config_rec_get_from_server (rec, xkb->engine);
+  g_strfreev (rec->options);
+  rec->options = g_strdupv (xkb->options);
+  xkl_config_rec_activate (rec, xkb->engine);
+
+  settings = g_settings_new ("org.nimf.settings");
+  g_settings_set_strv (settings, "xkb-options",
+                       (const gchar *const *) xkb->options);
+
+  g_object_unref (settings);
+  g_object_unref (rec);
+
+}
+
+static void
+configure_button (GtkWidget *button, const XklConfigItem *item, NimfXkb *xkb)
+{
+  gtk_widget_set_name (button, item->name);
+
+  if (g_strv_contains ((const gchar * const *) xkb->options, item->name))
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
+
+  g_signal_connect (button, "toggled", G_CALLBACK (on_toggled), xkb);
+  xkb->toggle_buttons = g_slist_append (xkb->toggle_buttons, button);
+  gtk_box_pack_start (GTK_BOX (xkb->vbox), button, FALSE, FALSE, 0);
+}
+
+static void
+build_check_button_option (XklConfigRegistry   *config,
+                           const XklConfigItem *item,
+                           NimfXkb             *xkb)
+{
+  configure_button (gtk_check_button_new_with_label (item->description),
+                    item, xkb);
+}
+
+static void
+build_radio_button_option (XklConfigRegistry   *config,
+                           const XklConfigItem *item,
+                           NimfXkb             *xkb)
+{
+  GtkWidget *radio_button;
+  radio_button = gtk_radio_button_new_with_label (xkb->radio_group,
+                                                  item->description);
+  xkb->radio_group  = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_button));
+  configure_button (radio_button, item, xkb);
+}
+
+static void
+build_option_group (XklConfigRegistry   *config,
+                    const XklConfigItem *item,
+                    NimfXkb             *xkb)
+{
+  xkb->radio_group = NULL;
+  GtkWidget *expander = gtk_expander_new (item->description);
+  xkb->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_widget_set_margin_start  (xkb->vbox, 15);
+  gtk_container_add (GTK_CONTAINER (expander), xkb->vbox);
+  gtk_box_pack_start (GTK_BOX (xkb->options_box), expander, FALSE, FALSE, 0);
+
+  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), XCI_PROP_ALLOW_MULTIPLE_SELECTION)))
+  {
+    xkl_config_registry_foreach_option (config, item->name,
+                                        (XklConfigItemProcessFunc) build_check_button_option,
+                                        xkb);
+  }
+  else
+  {
+    GtkWidget *radio_button;
+    radio_button = gtk_radio_button_new_with_label (xkb->radio_group,
+                                                    _("Default"));
+    g_signal_connect (radio_button, "toggled", G_CALLBACK (on_toggled), xkb);
+    xkb->radio_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_button));
+    gtk_box_pack_start (GTK_BOX (xkb->vbox), radio_button, FALSE, FALSE, 0);
+    xkl_config_registry_foreach_option (config, item->name,
+                                        (XklConfigItemProcessFunc) build_radio_button_option,
+                                        xkb);
+  }
+}
+
 static GtkWidget *
 nimf_settings_build_main_window (NimfSettings *nsettings)
 {
@@ -816,7 +947,8 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
                                          &non_relocatable, NULL);
 
   for (i = 0; non_relocatable[i] != NULL; i++)
-    if (g_str_has_prefix (non_relocatable[i], "org.nimf"))
+    if (g_str_has_prefix (non_relocatable[i], "org.nimf") &&
+        g_strcmp0 (non_relocatable[i], "org.nimf.settings"))
       schema_list = g_list_prepend (schema_list, non_relocatable[i]);
 
   for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison);
@@ -835,9 +967,46 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
     g_ptr_array_add (nsettings->pages, page);
   }
 
+  /* build xkb options box */
+  XklConfigRegistry *config_registry;
+  XklConfigRec      *rec;
+  GSettings         *settings;
+  GtkWidget         *scrolled_w2;
+
+  scrolled_w2 = gtk_scrolled_window_new (NULL, NULL);
+  settings = g_settings_new ("org.nimf.settings");
+  nsettings->xkb->options = g_settings_get_strv (settings, "xkb-options");
+  nsettings->xkb->options_len = g_strv_length (nsettings->xkb->options);
+  nsettings->xkb->options_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_widget_set_margin_start  (nsettings->xkb->options_box, 15);
+  gtk_widget_set_margin_end    (nsettings->xkb->options_box, 15);
+  gtk_widget_set_margin_top    (nsettings->xkb->options_box, 15);
+  gtk_widget_set_margin_bottom (nsettings->xkb->options_box, 15);
+
+  nsettings->xkb->engine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY
+                                                    (gdk_display_get_default ()));
+
+  config_registry = xkl_config_registry_get_instance (nsettings->xkb->engine);
+  xkl_config_registry_load (config_registry, TRUE);
+  xkl_config_registry_foreach_option_group (config_registry,
+                                            (ConfigItemProcessFunc) build_option_group,
+                                            nsettings->xkb);
+  rec = xkl_config_rec_new ();
+  xkl_config_rec_get_from_server (rec, nsettings->xkb->engine);
+  g_strfreev (rec->options);
+  rec->options = g_strdupv (nsettings->xkb->options);
+  xkl_config_rec_activate (rec, nsettings->xkb->engine);
+
+  g_object_unref (settings);
+  g_object_unref (rec);
+  g_object_unref (config_registry);
+
+  gtk_container_add (GTK_CONTAINER (scrolled_w2), nsettings->xkb->options_box);
+  gtk_stack_add_titled (GTK_STACK (stack), scrolled_w2, "xkb-options", _("XKB Options"));
+
   gtk_container_add (GTK_CONTAINER (window), box);
 
-  g_strfreev (non_relocatable);
+  g_strfreev  (non_relocatable);
   g_list_free (schema_list);
 
   g_signal_connect (window, "destroy",
@@ -892,6 +1061,8 @@ nimf_settings_init (NimfSettings *nsettings)
   nsettings->pages = g_ptr_array_new_with_free_func ((GDestroyNotify) nimf_settings_page_free);
   nsettings->app = g_application_new ("org.nimf.settings",
                                       G_APPLICATION_FLAGS_NONE);
+  nsettings->xkb = g_slice_new0 (NimfXkb);
+
   g_signal_connect (nsettings->app, "activate",
                     G_CALLBACK (on_activate), nsettings);
 }
@@ -902,7 +1073,12 @@ nimf_settings_finalize (GObject *object)
   NimfSettings *nsettings = NIMF_SETTINGS (object);
 
   g_ptr_array_unref (nsettings->pages);
-  g_object_unref (nsettings->app);
+  g_object_unref    (nsettings->app);
+  g_strfreev        (nsettings->xkb->options);
+  g_object_unref    (nsettings->xkb->engine);
+  g_slist_free      (nsettings->xkb->toggle_buttons);
+  g_slist_free      (nsettings->xkb->radio_group);
+  g_slice_free      (NimfXkb, nsettings->xkb);
 
   G_OBJECT_CLASS (nimf_settings_parent_class)->finalize (object);
 }

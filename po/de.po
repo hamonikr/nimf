@@ -1,7 +1,7 @@
 # German translation for Nimf
 # Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2018.
+# Hodong Kim <cogniti@gmail.com>, 2015-2019.
 # N <abonnements@revolwear.com>, 2017.
 #
 #, fuzzy
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 06:19+0900\n"
-"PO-Revision-Date: 2019-01-09 06:23+0900\n"
+"POT-Creation-Date: 2019-01-21 21:44+0900\n"
+"PO-Revision-Date: 2019-01-21 21:46+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -27,34 +27,42 @@ msgstr "Debug Nachrichten protokollieren"
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf-settings.c:458
+#: ../bin/nimf-settings.c:472
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
 
-#: ../bin/nimf-settings.c:519
+#: ../bin/nimf-settings.c:533
 msgid "Press key combination"
 msgstr "Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:522
+#: ../bin/nimf-settings.c:536
 msgid "_OK"
 msgstr "Bestätigen (_O)"
 
-#: ../bin/nimf-settings.c:523
+#: ../bin/nimf-settings.c:537
 msgid "_Cancel"
 msgstr "Abbrechen (_C)"
 
-#: ../bin/nimf-settings.c:535
+#: ../bin/nimf-settings.c:549
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:804 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings.c:912
+msgid "Default"
+msgstr "Standard"
+
+#: ../bin/nimf-settings.c:935 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "Nimf Einstellungen"
 
+#: ../bin/nimf-settings.c:1005
+msgid "XKB Options"
+msgstr "XKB-Optionen"
+
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:565
-#: ../modules/services/indicator/nimf-indicator.c:108
+#: ../modules/services/indicator/nimf-indicator.c:110
 msgid "Nimf"
 msgstr ""
 
@@ -62,39 +70,43 @@ msgstr ""
 msgid "Rime"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:89
-#: ../modules/services/indicator/nimf-indicator.c:90
 #: ../modules/services/indicator/nimf-indicator.c:91
+#: ../modules/services/indicator/nimf-indicator.c:92
+#: ../modules/services/indicator/nimf-indicator.c:93
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:92
+#: ../modules/services/indicator/nimf-indicator.c:94
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:103
+#: ../modules/services/indicator/nimf-indicator.c:105
 msgid "Nimf is an input method framework"
 msgstr "Nimf ist eine Texteingabemethode"
 
-#: ../modules/services/indicator/nimf-indicator.c:104
-msgid "Copyright (c) 2015-2018 Hodong Kim"
+#: ../modules/services/indicator/nimf-indicator.c:106
+msgid "Copyright (c) 2015-2019 Hodong Kim"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Hodong Kim, N"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:112
+#: ../modules/services/indicator/nimf-indicator.c:114
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:239
+#: ../modules/services/indicator/nimf-indicator.c:241
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:240
+#: ../modules/services/indicator/nimf-indicator.c:242
 msgid "About"
 msgstr "Über"
+
+#: ../bin/org.nimf.settings.gschema.xml.h:1
+msgid "xkb options"
+msgstr "xkb-optionen"
 
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"

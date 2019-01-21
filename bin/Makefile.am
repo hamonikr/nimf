@@ -2,6 +2,9 @@ bin_PROGRAMS = nimf nimf-settings
 
 man_MANS = nimf.1 nimf-settings.1
 
+gsettings_SCHEMAS = org.nimf.settings.gschema.xml
+@GSETTINGS_RULES@
+
 AM_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \

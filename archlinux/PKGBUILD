@@ -15,9 +15,9 @@ license=('LGPL3')
 makedepends=('binutils' 'autoconf' 'automake' 'gcc' 'make' 'glib2' 'intltool'
              'gtk3' 'gtk2' 'qt4' 'qt5-base' 'libappindicator-gtk3' 'librsvg'
              'noto-fonts-cjk' 'libhangul' 'anthy' 'librime' 'libxkbcommon'
-             'wayland')
+             'wayland' 'libxklavier')
 depends=('glib2' 'gtk3' 'gtk2' 'qt4' 'qt5-base' 'libappindicator-gtk3'
-         'libhangul' 'anthy' 'librime' 'libxkbcommon' 'wayland')
+         'libhangul' 'anthy' 'librime' 'libxkbcommon' 'wayland' 'libxklavier')
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts')
 source=("https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2")

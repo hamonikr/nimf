@@ -1,3 +1,14 @@
+nimf (2019.01.21) stable; urgency=medium
+
+  * Support for xkb options (closes #105)
+  * Added nimf-settings.desktop
+  * Removed nimf-chewing (closes #140)
+    Use nimf-rime with bopomofo
+  * nimf-rime: Print deploy messages
+  * Update translations for singleton mode #147
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 21 Jan 2019 23:34:30 +0900
+
 nimf (2018.12.05) stable; urgency=medium
 
   * Fixed cursor location

@@ -3,7 +3,7 @@
  * nimf-indicator.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -24,6 +24,8 @@
 #include <gtk/gtk.h>
 #include "nimf.h"
 #include <libappindicator/app-indicator.h>
+#include <libxklavier/xklavier.h>
+#include <gdk/gdkx.h>
 
 #define NIMF_TYPE_INDICATOR             (nimf_indicator_get_type ())
 #define NIMF_INDICATOR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_INDICATOR, NimfIndicator))
@@ -101,7 +103,7 @@ on_menu_about (GSimpleAction *action,
     "artists",            artists,
     "authors",            authors,
     "comments",           _("Nimf is an input method framework"),
-    "copyright",          _("Copyright (c) 2015-2018 Hodong Kim"),
+    "copyright",          _("Copyright (c) 2015-2019 Hodong Kim"),
     "documenters",        documenters,
     "license-type",       GTK_LICENSE_LGPL_3_0,
     "logo-icon-name",     "nimf-logo",
@@ -262,6 +264,25 @@ on_watcher_appeared (GDBusConnection *connection,
   g_bus_unwatch_name (indicator->watcher_id);
 
   gtk_widget_show_all (gtk_menu);
+
+  /* activate xkb options */
+  XklConfigRec *rec;
+  GSettings    *settings;
+  XklEngine    *engine;
+
+  engine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY
+                                      (gdk_display_get_default ()));
+  rec = xkl_config_rec_new ();
+  settings = g_settings_new ("org.nimf.settings");
+
+  xkl_config_rec_get_from_server (rec, engine);
+  g_strfreev (rec->options);
+  rec->options = g_settings_get_strv (settings, "xkb-options");
+  xkl_config_rec_activate (rec, engine);
+
+  g_object_unref (settings);
+  g_object_unref (rec);
+  g_object_unref (engine);
 }
 
 static gboolean nimf_indicator_start (NimfService *service)

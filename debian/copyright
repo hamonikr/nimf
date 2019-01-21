@@ -2,7 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: https://gitlab.com/nimf-i18n/nimf
 
 Files:     *
-Copyright: 2015-2018 Hodong Kim <cogniti@gmail.com>
+Copyright: 2015-2019 Hodong Kim <cogniti@gmail.com>
 License:   LGPL-3+
  This library is free software: you can redistribute it and/or modify it
  under the terms of the GNU Lesser General Public License as published
