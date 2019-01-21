@@ -97,6 +97,7 @@ fi
 %{_libdir}/nimf/*
 %{_libdir}/qt4/*
 %{_libdir}/qt5/*
+%{_datadir}/applications/*
 %{_datadir}/glib-2.0/*
 %{_datadir}/icons/*
 %{_datadir}/locale/*
