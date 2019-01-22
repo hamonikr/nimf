@@ -1,3 +1,10 @@
+nimf (2019.01.22) stable; urgency=medium
+
+  * nimf-settings: Forced GDK backend to x11 (#105)
+    because of the Xwayland environment
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 22 Jan 2019 22:37:27 +0900
+
 nimf (2019.01.21) stable; urgency=medium
 
   * Support for xkb options (closes #105)

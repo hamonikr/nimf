@@ -985,7 +985,6 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
 
   nsettings->xkb->engine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY
                                                     (gdk_display_get_default ()));
-
   config_registry = xkl_config_registry_get_instance (nsettings->xkb->engine);
   xkl_config_registry_load (config_registry, TRUE);
   xkl_config_registry_foreach_option_group (config_registry,
@@ -1097,6 +1096,7 @@ int main (int argc, char **argv)
   int status;
 
   g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
+  g_setenv ("GDK_BACKEND", "x11", TRUE);
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);
