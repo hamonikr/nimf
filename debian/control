@@ -81,7 +81,7 @@ Description: Input Method Framework (development file)
 
 Package: nimf-anthy
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, anthy
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf, anthy
 Suggests: fonts-noto-cjk
 Description: Japanese input module for Nimf, based on anthy
  Nimf is an input method framework which has a module-based client-server
@@ -92,7 +92,7 @@ Description: Japanese input module for Nimf, based on anthy
 
 Package: nimf-libhangul
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
 Suggests: fonts-noto-cjk
 Description: Korean input module for Nimf, based on libhangul
  Nimf is an input method framework which has a module-based client-server
@@ -103,7 +103,7 @@ Description: Korean input module for Nimf, based on libhangul
 
 Package: nimf-rime
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
 Recommends: librime-data
 Suggests: fonts-noto-cjk
 Description: Chinese input module for Nimf, based on rime
