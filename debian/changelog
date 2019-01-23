@@ -1,3 +1,9 @@
+nimf (2019.01.23) stable; urgency=medium
+
+  * debian: Add missing org.nimf.settings.gschema.xml
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 23 Jan 2019 13:41:19 +0900
+
 nimf (2019.01.22) stable; urgency=medium
 
   * nimf-settings: Forced GDK backend to x11 (#105)
