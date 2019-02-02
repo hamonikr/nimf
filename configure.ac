@@ -78,14 +78,14 @@ AS_IF([test "x$HAVE_ANTHY_DIC" != "xyes"],
       AC_MSG_ERROR([anthy.dic is not found.]))
 
 dnl ***************************************************************************
-dnl  Qt
+dnl im-nimf-qt4  im-nimf-qt5
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_QT4_DEPS, [QtGui], [],
+PKG_CHECK_MODULES(IM_NIMF_QT4_DEPS, [QtGui], [],
   [AC_MSG_ERROR([No package 'QtGui' found.
   If you are using Debian, please install 'libqt4-dev'.])])
 
-PKG_CHECK_MODULES(NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [],
+PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [],
   [AC_MSG_ERROR([Package requirements (Qt5Core Qt5Gui Qt5Widgets) were not met:
   If you are using Debian, please install 'qtbase5-dev'.])])
 
