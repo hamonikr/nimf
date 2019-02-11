@@ -316,7 +316,7 @@ nimf_gtk_im_context_set_surrounding (GtkIMContext *context,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   nimf_im_set_surrounding (NIMF_GTK_IM_CONTEXT (context)->im,
-                           text, len, cursor_index);
+                           text, len, g_utf8_strlen (text, cursor_index));
 }
 
 GtkIMContext *
