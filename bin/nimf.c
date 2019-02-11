@@ -3,7 +3,7 @@
  * nimf.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -219,25 +219,6 @@ on_incoming_message_nimf (GSocket        *socket,
         nimf_message_unref (message);
         nimf_send_message (socket, icid,
                            NIMF_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
-      }
-      break;
-    case NIMF_MESSAGE_GET_SURROUNDING:
-      {
-        gchar *data;
-        gint   cursor_index;
-        gint   str_len = 0;
-
-        retval = nimf_service_im_get_surrounding (NIMF_SERVICE_IM (im), &data, &cursor_index);
-        str_len = strlen (data);
-        data = g_realloc (data, str_len + 1 + sizeof (gint) + sizeof (gboolean));
-        *(gint *) (data + str_len + 1) = cursor_index;
-        *(gboolean *) (data + str_len + 1 + sizeof (gint)) = retval;
-
-        nimf_send_message (socket, icid,
-                           NIMF_MESSAGE_GET_SURROUNDING_REPLY, data,
-                           str_len + 1 + sizeof (gint) + sizeof (gboolean),
-                           NULL);
-        g_free (data);
       }
       break;
     case NIMF_MESSAGE_SET_CURSOR_LOCATION:

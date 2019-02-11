@@ -3,7 +3,7 @@
  * im-nimf-qt5.cpp
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -47,9 +47,6 @@ typedef struct
                                        const NimfRectangle *area);
   void     (* im_set_use_preedit)     (NimfIM              *im,
                                        gboolean             use_preedit);
-  gboolean (* im_get_surrounding)     (NimfIM              *im,
-                                       gchar              **text,
-                                       gint                *cursor_index);
   void     (* im_set_surrounding)     (NimfIM              *im,
                                        const char          *text,
                                        gint                 len,
@@ -737,7 +734,6 @@ public:
       nimf_api->im_get_preedit_string  = reinterpret_cast<void (*) (NimfIM*, gchar**, NimfPreeditAttr***, gint*)> (dlsym (libnimf, "nimf_im_get_preedit_string"));
       nimf_api->im_set_cursor_location = reinterpret_cast<void (*) (NimfIM*, const NimfRectangle*)> (dlsym (libnimf, "nimf_im_set_cursor_location"));
       nimf_api->im_set_use_preedit     = reinterpret_cast<void (*) (NimfIM*, gboolean)> (dlsym (libnimf, "nimf_im_set_use_preedit"));
-      nimf_api->im_get_surrounding     = reinterpret_cast<gboolean (*) (NimfIM*, gchar**, gint*)> (dlsym (libnimf, "nimf_im_get_surrounding"));
       nimf_api->im_set_surrounding     = reinterpret_cast<void (*) (NimfIM*, const char*, gint, gint)> (dlsym (libnimf, "nimf_im_set_surrounding"));
       nimf_api->event_new              = reinterpret_cast<NimfEvent * (*) (NimfEventType)> (dlsym (libnimf, "nimf_event_new"));
       nimf_api->event_free             = reinterpret_cast<void (*) (NimfEvent*)> (dlsym (libnimf, "nimf_event_free"));

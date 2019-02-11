@@ -3,7 +3,7 @@
  * nimf-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -90,60 +90,6 @@ void nimf_im_set_use_preedit (NimfIM   *im,
                      (gchar *) &use_preedit, sizeof (gboolean), NULL);
   nimf_result_iteration_until (nimf_client_result, nimf_client_context,
                                client->id, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY);
-}
-
-gboolean nimf_im_get_surrounding (NimfIM  *im,
-                                  gchar  **text,
-                                  gint    *cursor_index)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_val_if_fail (NIMF_IS_IM (im), FALSE);
-
-  NimfClient *client = NIMF_CLIENT (im);
-
-  if (!nimf_client_is_connected ())
-  {
-    if (text)
-      *text = g_strdup ("");
-
-    if (cursor_index)
-      *cursor_index = 0;
-
-    g_warning ("socket is closed");
-
-    return FALSE;
-  }
-
-  nimf_send_message (nimf_client_socket, client->id, NIMF_MESSAGE_GET_SURROUNDING,
-                     NULL, 0, NULL);
-  nimf_result_iteration_until (nimf_client_result, nimf_client_context,
-                               client->id, NIMF_MESSAGE_GET_SURROUNDING_REPLY);
-
-  if (nimf_client_result->reply == NULL)
-  {
-    if (text)
-      *text = g_strdup ("");
-
-    if (cursor_index)
-      *cursor_index = 0;
-
-    return FALSE;
-  }
-
-  if (text)
-    *text = g_strndup (nimf_client_result->reply->data,
-                       nimf_client_result->reply->header->data_len - 1 -
-                       sizeof (gint) - sizeof (gboolean));
-
-  if (cursor_index)
-  {
-    *cursor_index = *(gint *) (nimf_client_result->reply->data +
-                               nimf_client_result->reply->header->data_len -
-                               sizeof (gint) - sizeof (gboolean));
-  }
-
-  return *(gboolean *) (nimf_client_result->reply->data - sizeof (gboolean));
 }
 
 void nimf_im_set_surrounding (NimfIM     *im,

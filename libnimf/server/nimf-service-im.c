@@ -3,7 +3,7 @@
  * nimf-service-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -359,21 +359,6 @@ nimf_service_im_set_surrounding (NimfServiceIM *im,
     return;
 
   nimf_engine_set_surrounding (im->engine, text, len, cursor_index);
-}
-
-gboolean
-nimf_service_im_get_surrounding (NimfServiceIM  *im,
-                                 gchar         **text,
-                                 gint           *cursor_index)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_val_if_fail (im != NULL, FALSE);
-
-  if (G_UNLIKELY (im->engine == NULL))
-    return FALSE;
-
-  return nimf_engine_get_surrounding (im->engine, im, text, cursor_index);
 }
 
 void

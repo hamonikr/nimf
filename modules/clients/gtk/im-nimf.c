@@ -3,7 +3,7 @@
  * im-nimf.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -307,17 +307,6 @@ nimf_gtk_im_context_set_use_preedit (GtkIMContext *context,
   nimf_im_set_use_preedit (NIMF_GTK_IM_CONTEXT (context)->im, use_preedit);
 }
 
-static gboolean
-nimf_gtk_im_context_get_surrounding (GtkIMContext  *context,
-                                     gchar        **text,
-                                     gint          *cursor_index)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return nimf_im_get_surrounding (NIMF_GTK_IM_CONTEXT (context)->im,
-                                  text, cursor_index);
-}
-
 static void
 nimf_gtk_im_context_set_surrounding (GtkIMContext *context,
                                      const char   *text,
@@ -549,7 +538,6 @@ nimf_gtk_im_context_class_init (NimfGtkIMContextClass *class)
   im_context_class->set_cursor_location = nimf_gtk_im_context_set_cursor_location;
   im_context_class->set_use_preedit     = nimf_gtk_im_context_set_use_preedit;
   im_context_class->set_surrounding     = nimf_gtk_im_context_set_surrounding;
-  im_context_class->get_surrounding     = nimf_gtk_im_context_get_surrounding;
 
   object_class->finalize = nimf_gtk_im_context_finalize;
 }

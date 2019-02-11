@@ -3,7 +3,7 @@
  * nimf-client.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -176,7 +176,6 @@ on_incoming_message (GSocket      *socket,
     case NIMF_MESSAGE_FOCUS_IN_REPLY:
     case NIMF_MESSAGE_FOCUS_OUT_REPLY:
     case NIMF_MESSAGE_SET_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_GET_SURROUNDING_REPLY:
     case NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY:
     case NIMF_MESSAGE_SET_USE_PREEDIT_REPLY:
       break;

@@ -3,7 +3,7 @@
  * nimf-service-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -98,9 +98,6 @@ void         nimf_service_im_set_surrounding     (NimfServiceIM  *im,
                                                   const char     *text,
                                                   gint            len,
                                                   gint            cursor_index);
-gboolean     nimf_service_im_get_surrounding     (NimfServiceIM  *im,
-                                                  gchar         **text,
-                                                  gint           *cursor_index);
 void         nimf_service_im_set_use_preedit     (NimfServiceIM  *im,
                                                   gboolean        use_preedit);
 void         nimf_service_im_set_cursor_location (NimfServiceIM  *im,
