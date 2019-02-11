@@ -308,13 +308,13 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
                                      const gchar         *schema_id,
                                      GList               *key_list)
 {
-  GtkListStore *store;
+  GtkTreeStore *store;
   GtkWidget    *combo;
   GtkWidget    *hbox;
   gchar        *detailed_signal;
   GtkTreeIter   iter;
 
-  store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
   combo = gtk_combo_box_text_new ();
   gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (store));
   g_object_unref (store);
@@ -357,8 +357,8 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
       if (g_settings_schema_has_key (schema, "active") == FALSE ||
           g_settings_get_boolean (gsettings, "active"))
       {
-        gtk_list_store_append (store, &iter);
-        gtk_list_store_set (store, &iter, 0, name, 1, id2, -1);
+        gtk_tree_store_append (store, &iter, NULL);
+        gtk_tree_store_set (store, &iter, 0, name, 1, id2, -1);
       }
 
       if (g_settings_schema_has_key (schema, "active"))
@@ -389,6 +389,79 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
 
     id1 = g_settings_get_string (page_key->gsettings, page_key->key);
 
+    if (!g_strcmp0 (page_key->key, "get-input-methods"))
+    {
+      const gchar *engine_id;
+      GModule *module;
+      gchar ** (* get_input_methods) ();
+      gchar **strv;
+      gchar  *path;
+      gchar  *prefix;
+      gchar  *api;
+
+      engine_id = schema_id + strlen ("org.nimf.engines.");
+      path   = g_module_build_path (NIMF_MODULE_DIR, engine_id);
+      module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+
+      strv = g_strsplit (engine_id, "-", -1);
+      prefix = g_strjoinv ("_", strv);
+      api = g_strjoin ("_", prefix, "get_input_methods", NULL);
+
+      if (g_module_symbol (module, api, (gpointer *) &get_input_methods))
+      {
+        GtkTreeIter parent;
+        gchar **methods = get_input_methods ();
+        gchar  *group = NULL;
+        gint    i;
+
+        for (i = 0; methods[i]; i++)
+        {
+          gchar **tokens;
+          gchar  *label;
+          gchar  *label_id;
+
+          tokens = g_strsplit (methods[i], ":", -1);
+          const gchar *lang = tokens[0];
+          label = g_strdup_printf ("%s (%s)", lang, tokens[2]);
+          label_id = g_strjoin (":", tokens[1], tokens[2], NULL);
+
+          if (g_strcmp0 (lang, group))
+          {
+            gtk_tree_store_append (store, &parent, NULL);
+            gtk_tree_store_set    (store, &parent, 0, lang, -1);
+          }
+
+          gtk_tree_store_append (store, &iter, &parent);
+          gtk_tree_store_set    (store, &iter, 0, label,
+                                               1, label_id, -1);
+
+          if (g_strcmp0 (id1, label_id) == 0)
+            gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo), &iter);
+
+          g_free (label);
+          g_free (label_id);
+          g_free (group);
+          group = g_strdup (lang);
+          g_strfreev (tokens);
+        }
+
+        gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), 0,
+                                              GTK_SORT_ASCENDING);
+        g_free (group);
+        g_strfreev (methods);
+      }
+      else
+      {
+        g_warning (G_STRLOC ": %s", g_module_error ());
+      }
+
+      g_free (prefix);
+      g_free (api);
+      g_strfreev (strv);
+      g_module_close (module);
+      g_free (path);
+    }
+
     for (list = key_list; list != NULL; list = list->next)
     {
       gchar *key2;
@@ -403,8 +476,8 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
         const gchar *id2 = key2 + strlen (prefix);
 
         val = g_settings_get_string (page_key->gsettings, key2);
-        gtk_list_store_append (store, &iter);
-        gtk_list_store_set (store, &iter, 0, val,
+        gtk_tree_store_append (store, &iter, NULL);
+        gtk_tree_store_set (store, &iter, 0, val,
                                           1, id2, -1);
 
         if (g_strcmp0 (id1, id2) == 0)
