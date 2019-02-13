@@ -432,7 +432,8 @@ on_get_surrounding_text (MInputContext *context,
 
   NimfM17n *m17n = context->arg;
 
-  g_return_if_fail (NIMF_IS_M17N (m17n) && nimf_service_im_target);
+  if (!NIMF_IS_M17N (m17n) || !nimf_service_im_target)
+    return;
 
   gchar *text;
   gint   cursor_pos, nchars, nbytes;
@@ -443,8 +444,8 @@ on_get_surrounding_text (MInputContext *context,
                                nimf_service_im_target,
                                &text,
                                &cursor_pos);
-
-  g_return_if_fail (text != NULL);
+  if (text == NULL)
+    return;
 
   nchars = g_utf8_strlen (text, -1);
   nbytes = strlen (text);
@@ -491,7 +492,8 @@ on_delete_surrounding_text (MInputContext *context,
 
   NimfM17n *m17n = context->arg;
 
-  g_return_if_fail (NIMF_IS_M17N (m17n) && nimf_service_im_target);
+  if (!NIMF_IS_M17N (m17n) || !nimf_service_im_target)
+    return;
 
   int len = (long) mplist_value (m17n->ic->plist);
 
