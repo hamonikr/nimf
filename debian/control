@@ -43,6 +43,10 @@ Description: Input Method Framework
      * nimf including IMdkit(XIM)
   * Language Engine:
      * System keyboard input module
+     * Chinese: nimf-rime
+     * Japanese: nimf-anthy
+     * Korean: nimf-libhangul
+     * Other languages: nimf-m17n
   * Service Modules:
      * Indicator (based on appindicator)
      * Wayland
@@ -100,6 +104,17 @@ Description: Korean input module for Nimf, based on libhangul
  synchronously with the Nimf server via a Unix socket.
  .
  This package provides a Korean input module based on libhangul.
+
+Package: nimf-m17n
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
+Suggests: fonts-noto-cjk, m17n-lib-mimx
+Description: Multilingual input module for Nimf, based on m17n
+ Nimf is an input method framework which has a module-based client-server
+ architecture in which an application acts as a client and communicates
+ synchronously with the Nimf server via a Unix socket.
+ .
+ This package provides a multilingual input module based on m17n.
 
 Package: nimf-rime
 Architecture: any

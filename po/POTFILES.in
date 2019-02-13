@@ -5,6 +5,7 @@ data/nimf-settings.desktop.in
 modules/clients/gtk/im-nimf.c
 modules/engines/nimf-anthy/nimf-anthy.c
 modules/engines/nimf-libhangul/nimf-libhangul.c
+modules/engines/nimf-m17n/nimf-m17n.c
 modules/engines/nimf-rime/nimf-rime.c
 modules/engines/nimf-system-keyboard/nimf-system-keyboard.c
 modules/services/indicator/nimf-indicator.c
@@ -14,6 +15,7 @@ modules/services/indicator/nimf-indicator.c
 [type: gettext/gsettings]modules/clients/qt5/org.nimf.clients.qt5.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml
 [type: gettext/gsettings]modules/services/xim/org.nimf.services.xim.gschema.xml

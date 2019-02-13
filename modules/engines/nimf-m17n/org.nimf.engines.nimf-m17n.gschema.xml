@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-m17n"
+          path="/org/nimf/engines/nimf-m17n/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Other languages (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active">
+      <default>true</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; m']</default>
+      <summary>Trigger keys for switching m17n / System</summary>
+      <description>Trigger keys for switching m17n / System</description>
+    </key>
+    <key type="s" name="get-input-methods">
+      <default>''</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+</schemalist>

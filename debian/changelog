@@ -1,3 +1,12 @@
+nimf (2019.02.13) stable; urgency=medium
+
+  * Added nimf-m17n engine (closes #143)
+  * nimf-settings: Added "get-input-methods" for nimf-m17n
+  * Fixed wrong cursor_index
+  * Removed unused get_surrounding APIs
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 13 Feb 2019 17:21:54 +0900
+
 nimf (2019.01.23) stable; urgency=medium
 
   * debian: Add missing org.nimf.settings.gschema.xml

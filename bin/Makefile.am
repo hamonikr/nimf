@@ -11,13 +11,13 @@ AM_CFLAGS = \
 	-I$(top_srcdir)/libnimf/client \
 	-I$(top_srcdir)/libnimf/server \
 	-DNIMF_COMPILATION \
+	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	-DG_LOG_DOMAIN=\"nimf\"
 
 nimf_SOURCES = nimf.c
 nimf_CFLAGS = \
 	$(LIBNIMF_DEPS_CFLAGS) \
 	$(NIMF_DEPS_CFLAGS) \
-	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	-DNIMF_SERVICE_MODULE_DIR=\"$(libdir)/nimf/modules/services\" \
 	$(AM_CFLAGS)
 
