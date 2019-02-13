@@ -1,3 +1,9 @@
+nimf (2019.02.14) stable; urgency=medium
+
+  * nimf-libhangul: Improved Hanja conversion (closes #217)
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 14 Feb 2019 00:11:47 +0900
+
 nimf (2019.02.13) stable; urgency=medium
 
   * Added nimf-m17n engine (closes #143)

@@ -3,7 +3,7 @@
  * nimf-libhangul.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -181,10 +181,16 @@ on_candidate_clicked (NimfEngine    *engine,
 
   if (text)
   {
-    /* hangul_ic 내부의 commit text가 사라집니다 */
+    /* commit text inside hangul_ic disappears */
     hangul_ic_reset (hangul->context);
+
+    if (hangul->preedit_string[0] == 0)
+      nimf_engine_emit_delete_surrounding (engine, target, -1, 1);
+
     nimf_libhangul_emit_commit (engine, target, text);
-    nimf_libhangul_update_preedit (engine, target, g_strdup (""));
+
+    if (hangul->preedit_string[0] != 0)
+      nimf_libhangul_update_preedit (engine, target, g_strdup (""));
   }
 
   nimf_candidatable_hide (hangul->candidatable);
@@ -399,13 +405,35 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
   {
     if (nimf_candidatable_is_visible (hangul->candidatable) == FALSE)
     {
+      gchar item[4];
+      const char *key = hangul->preedit_string;
+
+      if (hangul->preedit_string[0] == 0)
+      {
+        gchar *text;
+        gint   cursor_pos;
+
+        nimf_engine_get_surrounding (engine, target, &text, &cursor_pos);
+
+        if (text && cursor_pos > 0)
+        {
+          gchar *p = g_utf8_offset_to_pointer (text, cursor_pos - 1);
+          g_utf8_strncpy (item, p, 1);
+
+          if (g_utf8_validate (item, -1, NULL))
+            key = item;
+        }
+
+        g_free (text);
+      }
+
       hanja_list_delete (hangul->hanja_list);
       nimf_candidatable_clear (hangul->candidatable, target);
-      hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_hanja_table,
-                                                    hangul->preedit_string);
+      hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_hanja_table, key);
+
       if (hangul->hanja_list == NULL)
-        hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_symbol_table,
-                                                      hangul->preedit_string);
+        hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_symbol_table, key);
+
       hangul->n_pages = (hanja_list_get_size (hangul->hanja_list) + 9) / 10;
       hangul->current_page = 1;
       nimf_libhangul_update_page (engine, target);
