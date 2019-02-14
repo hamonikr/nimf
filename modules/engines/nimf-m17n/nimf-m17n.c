@@ -72,7 +72,7 @@ nimf_m17n_update_preedit (NimfEngine    *engine,
 
   /* preedit-start */
   if (m17n->preedit_state == NIMF_PREEDIT_STATE_END &&
-      mtext_len (m17n->ic->preedit) > 0)
+      new_preedit[0] != 0)
   {
     m17n->preedit_state = NIMF_PREEDIT_STATE_START;
     nimf_engine_emit_preedit_start (engine, target);
@@ -93,7 +93,7 @@ nimf_m17n_update_preedit (NimfEngine    *engine,
   }
   /* preedit-end */
   if (m17n->preedit_state == NIMF_PREEDIT_STATE_START &&
-      mtext_len (m17n->ic->preedit) > 0)
+      m17n->preedit[0] == 0)
   {
     m17n->preedit_state = NIMF_PREEDIT_STATE_END;
     nimf_engine_emit_preedit_end (engine, target);
@@ -360,13 +360,27 @@ nimf_m17n_filter_event (NimfEngine    *engine,
     symbol = Mnil;
   }
 
-  if (mtext_len (m17n->ic->preedit) > 0)
-  {
-    gchar *new_preedit = nimf_m17n_mtext_to_utf8 (m17n, m17n->ic->preedit);
-    nimf_m17n_update_preedit (engine, target, new_preedit);
-  }
-
   retval = minput_filter (m17n->ic, symbol, NULL);
+
+  if (!retval)
+  {
+    MText *produced;
+    produced = mtext ();
+    retval = !minput_lookup (m17n->ic, symbol, NULL, produced);
+
+    if (mtext_len (produced) > 0)
+    {
+      gchar *buf;
+      buf = nimf_m17n_mtext_to_utf8 (m17n, produced);
+
+      if (m17n->converter->nbytes > 0)
+        nimf_engine_emit_commit (engine, target, (const gchar *) buf);
+
+      g_free (buf);
+    }
+
+    m17n_object_unref (produced);
+  }
 
   if (m17n->ic->preedit_changed)
   {
@@ -397,26 +411,6 @@ nimf_m17n_filter_event (NimfEngine    *engine,
   else
   {
     nimf_candidatable_hide (m17n->candidatable);
-  }
-
-  if (!retval)
-  {
-    MText *produced;
-    produced = mtext ();
-    retval = !minput_lookup (m17n->ic, symbol, NULL, produced);
-
-    if (mtext_len (produced) > 0)
-    {
-      gchar *buf;
-      buf = nimf_m17n_mtext_to_utf8 (m17n, produced);
-
-      if (m17n->converter->nbytes > 0)
-        nimf_engine_emit_commit (engine, target, (const gchar *) buf);
-
-      g_free (buf);
-    }
-
-    m17n_object_unref (produced);
   }
 
   nimf_service_im_target = NULL;
