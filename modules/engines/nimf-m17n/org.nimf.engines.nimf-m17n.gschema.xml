@@ -18,7 +18,7 @@
       <description>Trigger keys for switching m17n / System</description>
     </key>
     <key type="s" name="get-input-methods">
-      <default>''</default>
+      <default>'vi:telex'</default>
       <summary>Input method</summary>
       <description>Input method</description>
     </key>

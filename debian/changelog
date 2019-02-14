@@ -1,3 +1,10 @@
+nimf (2019.02.15) stable; urgency=medium
+
+  * nimf-m17n: Fixed segmentation fault (close #264)
+  * nimf-m17n: Fixed updating preedit string
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 15 Feb 2019 00:38:01 +0900
+
 nimf (2019.02.14) stable; urgency=medium
 
   * nimf-libhangul: Improved Hanja conversion (closes #217)

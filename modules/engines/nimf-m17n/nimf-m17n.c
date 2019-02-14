@@ -106,9 +106,9 @@ nimf_m17n_reset (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
-
   NimfM17n *m17n = NIMF_M17N (engine);
+
+  g_return_if_fail (m17n->im != NULL);
 
   nimf_candidatable_hide (m17n->candidatable);
   minput_filter (m17n->ic, Mnil, NULL);
@@ -122,7 +122,7 @@ nimf_m17n_focus_in (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
+  g_return_if_fail (NIMF_M17N (engine)->im != NULL);
 }
 
 void
@@ -131,7 +131,7 @@ nimf_m17n_focus_out (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_ENGINE (engine));
+  g_return_if_fail (NIMF_M17N (engine)->im != NULL);
 
   nimf_m17n_reset (engine, target);
 }
@@ -245,14 +245,16 @@ nimf_m17n_filter_event (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  NimfM17n *m17n = NIMF_M17N (engine);
+
+  g_return_val_if_fail (m17n->im != NULL, FALSE);
+
   if (event->key.type   == NIMF_EVENT_KEY_RELEASE ||
       event->key.keyval == NIMF_KEY_Shift_L       ||
       event->key.keyval == NIMF_KEY_Shift_R)
     return FALSE;
 
   nimf_service_im_target = target;
-
-  NimfM17n *m17n = NIMF_M17N (engine);
   guint keyval = event->key.keyval;
   gboolean move = FALSE;
 
@@ -516,16 +518,25 @@ nimf_m17n_open_im (NimfM17n *m17n)
   M17N_INIT();
 
   strv = g_strsplit (m17n->method, ":", 2);
-  m17n->im = minput_open_im (msymbol (strv[0]), msymbol (strv[1]), NULL);
 
-  mplist_put (m17n->im->driver.callback_list, Minput_get_surrounding_text,
-                                              on_get_surrounding_text);
-  mplist_put (m17n->im->driver.callback_list, Minput_delete_surrounding_text,
-                                              on_delete_surrounding_text);
-  m17n->ic = minput_create_ic (m17n->im, m17n);
-  m17n->converter = mconv_buffer_converter (Mcoding_utf_8, NULL, 0);
+  if (g_strv_length (strv) > 1)
+  {
+    m17n->im = minput_open_im (msymbol (strv[0]), msymbol (strv[1]), NULL);
+
+    if (m17n->im)
+    {
+      mplist_put (m17n->im->driver.callback_list,
+                  Minput_get_surrounding_text, on_get_surrounding_text);
+      mplist_put (m17n->im->driver.callback_list,
+                  Minput_delete_surrounding_text, on_delete_surrounding_text);
+      m17n->ic = minput_create_ic (m17n->im, m17n);
+      m17n->converter = mconv_buffer_converter (Mcoding_utf_8, NULL, 0);
+    }
+  }
 
   g_strfreev (strv);
+
+  g_return_if_fail (m17n->im != NULL);
 }
 
 static void
@@ -533,9 +544,19 @@ nimf_m17n_close_im (NimfM17n *m17n)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  mconv_free_converter (m17n->converter);
-  minput_destroy_ic    (m17n->ic);
-  minput_close_im      (m17n->im);
+  if (m17n->converter)
+    mconv_free_converter (m17n->converter);
+
+  if (m17n->ic)
+    minput_destroy_ic    (m17n->ic);
+
+  if (m17n->im)
+    minput_close_im      (m17n->im);
+
+
+  m17n->converter = NULL;
+  m17n->ic        = NULL;
+  m17n->im        = NULL;
 
   M17N_FINI ();
 
@@ -551,7 +572,10 @@ on_changed_method (GSettings *settings,
 
   g_free (m17n->method);
   m17n->method = g_settings_get_string (settings, key);
-  minput_reset_ic (m17n->ic);
+
+  if (m17n->ic)
+    minput_reset_ic (m17n->ic);
+
   nimf_m17n_close_im (m17n);
   nimf_m17n_open_im  (m17n);
 }
@@ -737,7 +761,8 @@ nimf_m17n_get_input_methods ()
   methods = g_malloc0_n (1, sizeof (gchar *));
   imlist = minput_list (Mnil);
 
-  for (pl = imlist, i = 0; mplist_key (pl) != Mnil; pl = mplist_next (pl), i++)
+  i = 0;
+  for (pl = imlist; mplist_key (pl) != Mnil; pl = mplist_next (pl))
   {
     MPlist *p = mplist_value (pl);
     MSymbol lang, name, sane;
@@ -759,6 +784,7 @@ nimf_m17n_get_input_methods ()
       methods[i] = g_strjoin (":", language, code, msymbol_name (name), NULL);
       methods = g_realloc_n (methods, sizeof (gchar *), i + 2);
       methods[i + 1] = NULL;
+      i++;
     }
   }
 
