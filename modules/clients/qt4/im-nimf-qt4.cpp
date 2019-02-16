@@ -3,7 +3,7 @@
  * im-nimf-qt4.cpp
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -155,8 +155,19 @@ NimfInputContext::on_retrieve_surrounding (NimfIM *im, gpointer user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  // TODO
-  return FALSE;
+  QWidget *widget = qApp->focusWidget();
+
+  if (!widget)
+    return FALSE;
+
+  NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
+
+  QString string = widget->inputMethodQuery (Qt::ImSurroundingText).toString ();
+  uint pos = widget->inputMethodQuery (Qt::ImCursorPosition).toUInt ();
+
+  nimf_im_set_surrounding (context->m_im,
+                           string.toUtf8().constData(), -1, pos);
+  return TRUE;
 }
 
 gboolean
@@ -167,8 +178,16 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  // TODO
-  return FALSE;
+  QWidget *widget = qApp->focusWidget();
+
+  if (!widget)
+    return FALSE;
+
+  QInputMethodEvent event;
+  event.setCommitString ("", offset, n_chars);
+  QCoreApplication::sendEvent (widget, &event);
+
+  return TRUE;
 }
 
 void
