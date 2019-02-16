@@ -3,7 +3,7 @@
  * nimf-types.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -87,8 +87,8 @@ typedef struct {
 } NimfRectangle;
 
 typedef struct {
-  guint mods;
-  guint keyval;
+  guint32 mods;
+  guint32 keyval;
 } NimfKey;
 
 typedef enum

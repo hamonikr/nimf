@@ -600,7 +600,7 @@ NimfInputContext::filterEvent (const QEvent *event)
 
   nimf_event->key.state            = key_event->nativeModifiers  ();
   nimf_event->key.keyval           = key_event->nativeVirtualKey ();
-  nimf_event->key.hardware_keycode = key_event->nativeScanCode   (); /* FIXME: guint16 quint32 */
+  nimf_event->key.hardware_keycode = key_event->nativeScanCode   ();
 
 #ifndef USE_DLFCN
   retval = nimf_im_filter_event (m_im, nimf_event);

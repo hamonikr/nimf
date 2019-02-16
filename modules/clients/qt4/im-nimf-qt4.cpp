@@ -317,7 +317,7 @@ NimfInputContext::filterEvent (const QEvent *event)
   nimf_event = nimf_event_new (type);
   nimf_event->key.state            = key_event->nativeModifiers  ();
   nimf_event->key.keyval           = key_event->nativeVirtualKey ();
-  nimf_event->key.hardware_keycode = key_event->nativeScanCode   (); /* FIXME: guint16 quint32 */
+  nimf_event->key.hardware_keycode = key_event->nativeScanCode   ();
 
   retval = nimf_im_filter_event (m_im, nimf_event);
   nimf_event_free (nimf_event);

@@ -3,7 +3,7 @@
  * nimf-events.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -46,9 +46,9 @@ typedef enum
 struct _NimfEventKey
 {
   NimfEventType type;
-  guint         state;
-  guint         keyval;
-  guint16       hardware_keycode;
+  guint32       state;
+  guint32       keyval;
+  guint32       hardware_keycode;
 };
 
 union _NimfEvent
