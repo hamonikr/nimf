@@ -433,7 +433,7 @@ on_get_surrounding_text (MInputContext *context,
 
   gchar *text;
   gint   cursor_pos, nchars, nbytes;
-  MText *mt, *surround;
+  MText *mt, *surround = NULL;
   int    len, pos;
 
   nimf_engine_get_surrounding (NIMF_ENGINE (m17n),
@@ -470,10 +470,9 @@ on_get_surrounding_text (MInputContext *context,
 
     surround = mtext_duplicate (mt, cursor_pos, pos);
   }
-  else
-  {
+
+  if (!surround)
     surround = mtext ();
-  }
 
   m17n_object_unref (mt);
   mplist_set (m17n->ic->plist, Mtext, surround);
