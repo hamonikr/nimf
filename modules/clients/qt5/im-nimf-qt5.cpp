@@ -313,7 +313,31 @@ NimfInputContext::on_retrieve_surrounding (NimfIM *im, gpointer user_data)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 #endif
 
-  return FALSE;
+  QObject *object = qApp->focusObject();
+
+  if (!object)
+    return FALSE;
+
+  NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
+
+  QInputMethodQueryEvent surrounding_query (Qt::ImSurroundingText);
+  QInputMethodQueryEvent position_query    (Qt::ImCursorPosition);
+
+  QCoreApplication::sendEvent (object, &surrounding_query);
+  QCoreApplication::sendEvent (object, &position_query);
+
+  QString string = surrounding_query.value (Qt::ImSurroundingText).toString();
+  uint pos = position_query.value (Qt::ImCursorPosition).toUInt();
+
+#ifndef USE_DLFCN
+  nimf_im_set_surrounding (context->m_im,
+                           string.toUtf8().constData(), -1, pos);
+#else
+  nimf_api->im_set_surrounding (context->m_im,
+                                string.toUtf8().constData(), -1, pos);
+#endif
+
+  return TRUE;
 }
 
 gboolean
@@ -326,7 +350,16 @@ NimfInputContext::on_delete_surrounding (NimfIM   *im,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 #endif
 
-  return FALSE;
+  QObject *object = qApp->focusObject();
+
+  if (!object)
+    return FALSE;
+
+  QInputMethodEvent event;
+  event.setCommitString ("", offset, n_chars);
+  QCoreApplication::sendEvent (object, &event);
+
+  return TRUE;
 }
 
 void
@@ -519,7 +552,7 @@ NimfInputContext::commit ()
 }
 
 void
-NimfInputContext::update (Qt::InputMethodQueries queries) /* FIXME */
+NimfInputContext::update (Qt::InputMethodQueries queries)
 {
 #ifndef USE_DLFCN
   g_debug (G_STRLOC ": %s", G_STRFUNC);
