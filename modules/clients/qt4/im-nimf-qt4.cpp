@@ -59,10 +59,16 @@ public:
                                            gpointer     user_data);
   static void     on_beep                 (NimfIM      *im,
                                            gpointer     user_data);
+  // settings
+  static void on_changed_reset_on_mouse_button_press (GSettings *settings,
+                                                      gchar     *key,
+                                                      gpointer   user_data);
 private:
   NimfIM        *m_im;
   bool           m_isComposing;
   NimfRectangle  m_cursor_area;
+  GSettings     *m_settings;
+  gboolean       m_reset;
 };
 
 /* nimf signal callbacks */
@@ -198,13 +204,27 @@ NimfInputContext::on_beep (NimfIM *im, gpointer user_data)
   QApplication::beep();
 }
 
+void
+NimfInputContext::on_changed_reset_on_mouse_button_press (GSettings *settings,
+                                                          gchar     *key,
+                                                          gpointer   user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfInputContext *context = static_cast<NimfInputContext *>(user_data);
+
+  context->m_reset = g_settings_get_boolean (settings, key);
+
+  g_message ("%d", context->m_reset);
+}
+
 NimfInputContext::NimfInputContext ()
   : m_isComposing(false)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   m_im = nimf_im_new ();
-
+  m_settings = g_settings_new ("org.nimf.clients.qt4");
   g_signal_connect (m_im, "preedit-start",
                     G_CALLBACK (NimfInputContext::on_preedit_start), this);
   g_signal_connect (m_im, "preedit-end",
@@ -217,10 +237,13 @@ NimfInputContext::NimfInputContext ()
                     G_CALLBACK (NimfInputContext::on_retrieve_surrounding),
                     this);
   g_signal_connect (m_im, "delete-surrounding",
-                    G_CALLBACK (NimfInputContext::on_delete_surrounding),
-                    this);
+                    G_CALLBACK (NimfInputContext::on_delete_surrounding), this);
   g_signal_connect (m_im, "beep",
                     G_CALLBACK (NimfInputContext::on_beep), this);
+  g_signal_connect (m_settings, "changed::reset-on-mouse-button-press",
+                    G_CALLBACK (NimfInputContext::on_changed_reset_on_mouse_button_press), this);
+  g_signal_emit_by_name (m_settings, "changed::reset-on-mouse-button-press",
+                                     "reset-on-mouse-button-press");
 }
 
 NimfInputContext::~NimfInputContext ()
@@ -228,6 +251,7 @@ NimfInputContext::~NimfInputContext ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_object_unref (m_im);
+  g_object_unref (m_settings);
 }
 
 QString
@@ -327,8 +351,8 @@ NimfInputContext::filterEvent (const QEvent *event)
       type = NIMF_EVENT_KEY_RELEASE;
       break;
     case QEvent::MouseButtonPress:
-      /* TODO: Provide as a option */
-      nimf_im_reset (m_im);
+      if (m_reset)
+        nimf_im_reset (m_im);
     default:
       return false;
   }
