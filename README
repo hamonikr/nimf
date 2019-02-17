@@ -102,8 +102,8 @@ Compiling and installing
       username:~/tmp-build/nimf-master$ debuild
       username:~/tmp-build/nimf-master$ cd ..
       username:~/tmp-build$ ls
-      libnimf0_YYYY.mm.dd_amd64.deb
-      libnimf0-dbgsym_YYYY.mm.dd_amd64.deb
+      libnimf1_YYYY.mm.dd_amd64.deb
+      libnimf1-dbgsym_YYYY.mm.dd_amd64.deb
       nimf_YYYY.mm.dd_amd64.build
       nimf_YYYY.mm.dd_amd64.buildinfo
       nimf_YYYY.mm.dd_amd64.changes
@@ -125,7 +125,7 @@ Compiling and installing
     Install deb packages.
 
       username:~/tmp-build$ sudo dpkg -i nimf_YYYY.mm.dd_amd64.deb \
-      libnimf0_YYYY.mm.dd_amd64.deb nimf-anthy_YYYY.mm.dd_amd64.deb \
+      libnimf1_YYYY.mm.dd_amd64.deb nimf-anthy_YYYY.mm.dd_amd64.deb \
       nimf-libhangul_YYYY.mm.dd_amd64.deb nimf-m17n_YYYY.mm.dd_amd64.deb \
       nimf-rime_YYYY.mm.dd_amd64.deb
 

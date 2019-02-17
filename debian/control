@@ -59,7 +59,7 @@ Description: Input Method Framework
   * Settings tool to configure the Nimf:
      * nimf-settings
 
-Package: libnimf0
+Package: libnimf1
 Section: libs
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
@@ -75,7 +75,7 @@ Package: nimf-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends},
-         libnimf0 (= ${binary:Version}),
+         libnimf1 (= ${binary:Version}),
          libglib2.0-dev
 Description: Input Method Framework (development file)
  Nimf is an input method framework which has a module-based client-server

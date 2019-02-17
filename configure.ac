@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.02.15)
+AC_INIT(nimf, 2019.02.17)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -51,7 +51,7 @@ dnl ***************************************************************************
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-LIBNIMF_LT_VERSION=0:0:0
+LIBNIMF_LT_VERSION=1:0:0
 AC_SUBST(LIBNIMF_LT_VERSION)
 
 LIBNIMF_REQUIRES="glib-2.0 gio-2.0 gio-unix-2.0 gmodule-2.0"

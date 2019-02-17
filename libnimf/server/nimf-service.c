@@ -160,8 +160,6 @@ nimf_service_class_init (NimfServiceClass *class)
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  class->get_id = nimf_service_real_get_id;
-
   object_class->finalize     = nimf_service_finalize;
   object_class->set_property = nimf_service_set_property;
   object_class->get_property = nimf_service_get_property;

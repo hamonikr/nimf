@@ -1,3 +1,12 @@
+nimf (2019.02.17) stable; urgency=medium
+
+  * nimf-qt4: Added "reset-on-mouse-button-press" option
+  * nimf-qt4: support for surrounding text
+  * nimf-qt5: support for surrounding text
+  * NimfEventKey: Fixed data types
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 17 Feb 2019 12:50:10 +0900
+
 nimf (2019.02.15) stable; urgency=medium
 
   * nimf-m17n: Fixed segmentation fault (close #264)
