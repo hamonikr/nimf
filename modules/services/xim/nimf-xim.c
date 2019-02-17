@@ -3,7 +3,7 @@
  * nimf-xim.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -30,12 +30,12 @@ static void nimf_xim_set_engine_by_id (NimfService *service,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GHashTableIter iter;
-  gpointer       im;
+  NimfXim       *xim = NIMF_XIM (service);
+  NimfServiceIM *im;
 
-  g_hash_table_iter_init (&iter, NIMF_XIM (service)->ims);
-
-  while (g_hash_table_iter_next (&iter, NULL, &im))
+  im = g_hash_table_lookup (xim->ims,
+                            GUINT_TO_POINTER (service->server->last_focused_icid));
+  if (im)
     nimf_service_im_set_engine_by_id (im, engine_id);
 }
 
@@ -310,6 +310,16 @@ static int nimf_xim_forward_event (NimfXim              *xim,
   return 1;
 }
 
+static const gchar *
+nimf_xim_get_id (NimfService *service)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_val_if_fail (NIMF_IS_SERVICE (service), NULL);
+
+  return NIMF_XIM (service)->id;
+}
+
 static int nimf_xim_set_ic_focus (NimfXim             *xim,
                                   IMChangeFocusStruct *data)
 {
@@ -320,6 +330,12 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
            G_STRFUNC, data->icid, im->icid);
 
   nimf_service_im_focus_in (im);
+
+  NimfService *service = NIMF_SERVICE (xim);
+
+  service->server->last_focused_conn_id = 0;
+  service->server->last_focused_icid    = im->icid;
+  service->server->last_focused_service = nimf_xim_get_id (service);
 
   return 1;
 }
@@ -759,16 +775,6 @@ static void nimf_xim_stop (NimfService *service)
   }
 
   xim->active = FALSE;
-}
-
-static const gchar *
-nimf_xim_get_id (NimfService *service)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_val_if_fail (NIMF_IS_SERVICE (service), NULL);
-
-  return NIMF_XIM (service)->id;
 }
 
 static void

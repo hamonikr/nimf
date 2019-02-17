@@ -3,7 +3,7 @@
  * nimf-server.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -260,19 +260,29 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GHashTableIter iter;
-  gpointer       conn;
-  gpointer       service;
+  /* TODO: This method is inconsistent.
+   * We need to create a NIM service module. */
 
-  g_hash_table_iter_init (&iter, server->connections);
+  if (server->last_focused_conn_id > 0)
+  {
+    NimfConnection *connection;
+    connection = g_hash_table_lookup (server->connections,
+                                      GUINT_TO_POINTER (server->last_focused_conn_id));
+    if (connection)
+      nimf_connection_set_engine_by_id (connection, id);
+  }
 
-  while (g_hash_table_iter_next (&iter, NULL, &conn))
-    nimf_connection_set_engine_by_id (NIMF_CONNECTION (conn), id);
+  GHashTableIter  iter;
+  gpointer        service;
 
   g_hash_table_iter_init (&iter, server->services);
 
   while (g_hash_table_iter_next (&iter, NULL, &service))
-    nimf_service_set_engine_by_id (service, id);
+  {
+    if (!g_strcmp0 (server->last_focused_service,
+                    nimf_service_get_id (service)))
+      nimf_service_set_engine_by_id (service, id);
+  }
 }
 
 gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)

@@ -3,7 +3,7 @@
  * nimf-server.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -57,6 +57,9 @@ struct _NimfServer
   GSocketService  *service;
   GHashTable      *connections;
   guint16          next_id;
+  guint16          last_focused_conn_id;
+  guint16          last_focused_icid;
+  const gchar     *last_focused_service;
   gboolean         active;
   /* settings */
   GSettings       *settings;

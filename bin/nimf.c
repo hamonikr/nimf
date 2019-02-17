@@ -200,6 +200,9 @@ on_incoming_message_nimf (GSocket        *socket,
       nimf_service_im_focus_in (NIMF_SERVICE_IM (im));
       nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_IN_REPLY,
                          NULL, 0, NULL);
+      connection->server->last_focused_conn_id = connection->id;
+      connection->server->last_focused_icid    = icid;
+      connection->server->last_focused_service = NULL;
       break;
     case NIMF_MESSAGE_FOCUS_OUT:
       nimf_service_im_focus_out (NIMF_SERVICE_IM (im));

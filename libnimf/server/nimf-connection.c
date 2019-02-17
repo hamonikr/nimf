@@ -3,7 +3,7 @@
  * nimf-connection.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -40,7 +40,10 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   g_hash_table_iter_init (&iter, connection->ims);
 
   while (g_hash_table_iter_next (&iter, NULL, &im))
-    nimf_service_im_set_engine_by_id (im, engine_id);
+  {
+    if (NIMF_SERVICE_IM (im)->icid == connection->server->last_focused_icid)
+      nimf_service_im_set_engine_by_id (im, engine_id);
+  }
 }
 
 static void
