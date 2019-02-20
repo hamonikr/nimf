@@ -3,7 +3,7 @@
  * nimf-engine.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -375,4 +375,36 @@ nimf_engine_class_init (NimfEngineClass *class)
                                                         "server",
                                                         NIMF_TYPE_SERVER,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+}
+
+NimfEngineInfo *
+nimf_engine_info_new ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_slice_new0 (NimfEngineInfo);
+}
+
+void
+nimf_engine_info_free (NimfEngineInfo *info)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (info)
+    g_slice_free (NimfEngineInfo, info);
+}
+
+void
+nimf_engine_info_freev (NimfEngineInfo **infos)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (infos)
+  {
+    int i;
+    for (i = 0; infos[i]; i++)
+      nimf_engine_info_free (infos[i]);
+
+    g_free (infos);
+  }
 }

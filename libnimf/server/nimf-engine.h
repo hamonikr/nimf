@@ -3,7 +3,7 @@
  * nimf-engine.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -62,6 +62,13 @@ struct _NimfEngine
   GObject parent_instance;
   NimfEnginePrivate *priv;
 };
+
+typedef struct
+{
+  gchar *method_id; /* method id */
+  gchar *label;     /* Human readable label */
+  gchar *group;     /* Human readable group name */
+} NimfEngineInfo;
 
 struct _NimfEngineClass
 {
@@ -145,8 +152,12 @@ gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
 void     nimf_engine_emit_beep                 (NimfEngine       *engine,
                                                 NimfServiceIM    *im);
 /* info */
-const gchar *nimf_engine_get_id        (NimfEngine *engine);
-const gchar *nimf_engine_get_icon_name (NimfEngine *engine);
+const gchar    *nimf_engine_get_id        (NimfEngine *engine);
+const gchar    *nimf_engine_get_icon_name (NimfEngine *engine);
+NimfEngineInfo *nimf_engine_info_new      (void);
+void            nimf_engine_info_free     (NimfEngineInfo  *info);
+void            nimf_engine_info_freev    (NimfEngineInfo **infos);
+
 /* candidate */
 NimfCandidatable *nimf_engine_get_candidatable (NimfEngine *engine);
 
