@@ -295,7 +295,7 @@ static gboolean nimf_indicator_start (NimfService *service)
     return TRUE;
 
   indicator->watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                                            "org.kde.StatusNotifierWatcher",
+                                            "org.freedesktop.Notifications",
                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
                                             on_watcher_appeared, NULL,
                                             indicator, NULL);
