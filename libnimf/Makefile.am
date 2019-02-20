@@ -35,6 +35,7 @@ libnimf_la_SOURCES = \
 	server/nimf-preeditable.h \
 	server/nimf-server.c \
 	server/nimf-server.h \
+	server/nimf-server-private.h \
 	server/nimf-server-im.c \
 	server/nimf-server-im.h \
 	server/nimf-service.c \

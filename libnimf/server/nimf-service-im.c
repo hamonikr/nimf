@@ -24,6 +24,7 @@
 #include <string.h>
 #include "nimf-preeditable.h"
 #include "nimf-key-syms.h"
+#include "nimf-server-private.h"
 
 G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 
@@ -179,6 +180,7 @@ void nimf_service_im_focus_in (NimfServiceIM *im)
     return;
 
   nimf_engine_focus_in (im->engine, im);
+  nimf_server_set_last_focused_im (im->server, im);
   nimf_service_im_engine_changed (im, nimf_engine_get_id (im->engine),
                                   nimf_engine_get_icon_name (im->engine));
 }
@@ -193,7 +195,10 @@ void nimf_service_im_focus_out (NimfServiceIM *im)
     return;
 
   nimf_engine_focus_out (im->engine, im);
-  nimf_service_im_engine_changed (im, NULL, "nimf-focus-out");
+
+  if (nimf_server_get_last_focused_im (im->server) == im)
+    nimf_service_im_engine_changed (im, NULL, "nimf-focus-out");
+
   nimf_preeditable_hide (im->server->preeditable);
 }
 

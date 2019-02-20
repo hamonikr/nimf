@@ -1,3 +1,16 @@
+nimf (2019.02.20) stable; urgency=medium
+
+  * Fixed emitting invalid "engine-changed" signal
+  * Display submenu in the indicator
+  * nimf-indicator: Fixed not working on Cinnamon
+  * Added *_set_engine()
+  * Added nimf_connection_set_engine()
+  * Added nimf_engine_set_method()
+  * Added NimfEngineInfo
+  * Fixed changing engine (closes #260)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 20 Feb 2019 23:14:21 +0900
+
 nimf (2019.02.17) stable; urgency=medium
 
   * nimf-qt4: Added "reset-on-mouse-button-press" option

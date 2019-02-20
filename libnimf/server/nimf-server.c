@@ -26,6 +26,11 @@
 #include <glib/gstdio.h>
 #include "nimf-marshalers.h"
 
+struct _NimfServerPrivate
+{
+  NimfServiceIM *last_focused_im;
+};
+
 enum {
   ENGINE_CHANGED,
   ENGINE_STATUS_CHANGED,
@@ -34,7 +39,7 @@ enum {
 
 static guint nimf_server_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (NimfServer, nimf_server, G_TYPE_OBJECT);
+ G_DEFINE_TYPE_WITH_PRIVATE (NimfServer, nimf_server, G_TYPE_OBJECT);
 
 static gint
 on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
@@ -143,6 +148,8 @@ static void
 nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  server->priv = nimf_server_get_instance_private (server);
 
   server->settings = g_settings_new ("org.nimf");
   server->use_singleton = g_settings_get_boolean (server->settings,
@@ -338,4 +345,21 @@ gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
   }
 
   return engine_ids;
+}
+
+NimfServiceIM *
+nimf_server_get_last_focused_im (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return server->priv->last_focused_im;
+}
+
+void
+nimf_server_set_last_focused_im (NimfServer    *server,
+                                 NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  server->priv->last_focused_im = im;
 }

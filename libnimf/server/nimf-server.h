@@ -44,12 +44,14 @@ G_BEGIN_DECLS
 
 typedef struct _NimfEngine      NimfEngine;
 
-typedef struct _NimfServer      NimfServer;
-typedef struct _NimfServerClass NimfServerClass;
+typedef struct _NimfServer        NimfServer;
+typedef struct _NimfServerClass   NimfServerClass;
+typedef struct _NimfServerPrivate NimfServerPrivate;
 
 struct _NimfServer
 {
   GObject parent_instance;
+  NimfServerPrivate *priv;
 
   GHashTable      *modules;
   GHashTable      *services;
