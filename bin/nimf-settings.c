@@ -87,6 +87,25 @@ static GtkWidget *nimf_settings_window = NULL;
 
 G_DEFINE_TYPE (NimfSettings, nimf_settings, G_TYPE_OBJECT);
 
+gboolean
+on_foreach (GtkTreeModel *model,
+            GtkTreePath  *path,
+            GtkTreeIter  *iter,
+            gpointer      user_data)
+{
+  gchar *id;
+  GtkWidget *widget = user_data;
+  gtk_tree_model_get (model, iter, 1, &id, -1);
+
+  if (!g_strcmp0 (id, gtk_widget_get_name (widget)))
+  {
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), iter);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 static void
 on_gsettings_changed (GSettings *settings,
                       gchar     *key,
@@ -107,6 +126,14 @@ on_gsettings_changed (GSettings *settings,
 
     id = g_settings_get_string (settings, key);
     retval = gtk_combo_box_set_active_id (GTK_COMBO_BOX (widget), id);
+
+    GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
+
+    if (!retval)
+    {
+      gtk_widget_set_name (widget, id);
+      gtk_tree_model_foreach (model, on_foreach, widget);
+    }
 
     if (retval == FALSE && g_strcmp0 (key, "default-engine") == 0)
       g_settings_set_string (settings, key, "nimf-system-keyboard");
@@ -389,11 +416,11 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
 
     id1 = g_settings_get_string (page_key->gsettings, page_key->key);
 
-    if (!g_strcmp0 (page_key->key, "get-input-methods"))
+    if (!g_strcmp0 (page_key->key, "get-engine-info-list"))
     {
       const gchar *engine_id;
       GModule *module;
-      gchar ** (* get_input_methods) ();
+      NimfEngineInfo ** (* get_engine_info_list) ();
       gchar **strv;
       gchar  *path;
       gchar  *prefix;
@@ -405,50 +432,38 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
 
       strv = g_strsplit (engine_id, "-", -1);
       prefix = g_strjoinv ("_", strv);
-      api = g_strjoin ("_", prefix, "get_input_methods", NULL);
+      api = g_strjoin ("_", prefix, "get_engine_info_list", NULL);
 
-      if (g_module_symbol (module, api, (gpointer *) &get_input_methods))
+      if (g_module_symbol (module, api, (gpointer *) &get_engine_info_list))
       {
         GtkTreeIter parent;
-        gchar **methods = get_input_methods ();
-        gchar  *group = NULL;
+        NimfEngineInfo **infos = get_engine_info_list ();
+        const gchar *prev_group = NULL;
         gint    i;
 
-        for (i = 0; methods[i]; i++)
+        for (i = 0; infos[i]; i++)
         {
-          gchar **tokens;
-          gchar  *label;
-          gchar  *label_id;
-
-          tokens = g_strsplit (methods[i], ":", -1);
-          const gchar *lang = tokens[0];
-          label = g_strdup_printf ("%s (%s)", lang, tokens[2]);
-          label_id = g_strjoin (":", tokens[1], tokens[2], NULL);
-
-          if (g_strcmp0 (lang, group))
+          if (infos[i]->group && g_strcmp0 (infos[i]->group, prev_group))
           {
             gtk_tree_store_append (store, &parent, NULL);
-            gtk_tree_store_set    (store, &parent, 0, lang, -1);
+            gtk_tree_store_set    (store, &parent, 0, infos[i]->group, -1);
           }
 
-          gtk_tree_store_append (store, &iter, &parent);
-          gtk_tree_store_set    (store, &iter, 0, label,
-                                               1, label_id, -1);
+          if (infos[i]->group)
+            gtk_tree_store_append (store, &iter, &parent);
+          else
+            gtk_tree_store_append (store, &iter, NULL);
 
-          if (g_strcmp0 (id1, label_id) == 0)
+          gtk_tree_store_set (store, &iter, 0, infos[i]->label,
+                                            1, infos[i]->method_id, -1);
+
+          if (g_strcmp0 (id1, infos[i]->method_id) == 0)
             gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo), &iter);
 
-          g_free (label);
-          g_free (label_id);
-          g_free (group);
-          group = g_strdup (lang);
-          g_strfreev (tokens);
+          prev_group = infos[i]->group;
         }
 
-        gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), 0,
-                                              GTK_SORT_ASCENDING);
-        g_free (group);
-        g_strfreev (methods);
+        nimf_engine_info_freev (infos);
       }
       else
       {

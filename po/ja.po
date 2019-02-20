@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-13 15:17+0900\n"
-"PO-Revision-Date: 2019-02-13 16:24+0900\n"
+"POT-Creation-Date: 2019-02-20 20:53+0900\n"
+"PO-Revision-Date: 2019-02-20 21:09+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -18,306 +18,306 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:532
+#: ../bin/nimf.c:535
 msgid "Log debugging message"
 msgstr "デバッグメッセージを記録します。"
 
-#: ../bin/nimf.c:533
+#: ../bin/nimf.c:536
 msgid "Version"
 msgstr "バージョン"
 
-#: ../bin/nimf-settings.c:545
+#: ../bin/nimf-settings.c:560
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "バグを報告してください。 (keyval: %d)"
 
-#: ../bin/nimf-settings.c:606
+#: ../bin/nimf-settings.c:621
 msgid "Press key combination"
 msgstr "キーの組み合わせを押してください"
 
-#: ../bin/nimf-settings.c:609
+#: ../bin/nimf-settings.c:624
 msgid "_OK"
 msgstr "よし (_O)"
 
-#: ../bin/nimf-settings.c:610
+#: ../bin/nimf-settings.c:625
 msgid "_Cancel"
 msgstr "キャンセル (_C)"
 
-#: ../bin/nimf-settings.c:622
+#: ../bin/nimf-settings.c:637
 msgid "Click here and then press key combination"
 msgstr "ここをクリックして、キーの組み合わせを押してください"
 
-#: ../bin/nimf-settings.c:985
+#: ../bin/nimf-settings.c:1000
 msgid "Default"
 msgstr "デフォルト"
 
-#: ../bin/nimf-settings.c:1008 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings.c:1023 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "ニンフ設定"
 
-#: ../bin/nimf-settings.c:1077
+#: ../bin/nimf-settings.c:1092
 msgid "XKB Options"
 msgstr "XKBオプション"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:553
-#: ../modules/services/indicator/nimf-indicator.c:110
+#: ../modules/services/indicator/nimf-indicator.c:117
 msgid "Nimf"
 msgstr "ニンフ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:659
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:689
 msgid "Amharic"
 msgstr "アムハラ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:660
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:690
 msgid "Arabic"
 msgstr "アラビア語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:661
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:691
 msgid "Assamese"
 msgstr "アッサム"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:662
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:692
 msgid "Athabaskan languages"
 msgstr "アサバスカ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:663
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:693
 msgid "Belarusian"
 msgstr "ベラルーシ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:664
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:694
 msgid "Siksika"
 msgstr "シクシカ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:665
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:695
 msgid "Bengali"
 msgstr "ベンガル語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:666
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:696
 msgid "Tibetan"
 msgstr "チベット語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:667
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:697
 msgid "Chamic Languages"
 msgstr "カミック言語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:668
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:698
 msgid "Cree"
 msgstr "クリー語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:669
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:699
 msgid "Czech"
 msgstr "チェコ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:670
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:700
 msgid "Danish"
 msgstr "デンマーク語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:671
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:701
 msgid "Divehi"
 msgstr "ディヴェヒ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:672
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:702
 msgid "Greek"
 msgstr "ギリシャ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:673
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:703
 msgid "English"
 msgstr "英語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:674
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:704
 msgid "Esperanto"
 msgstr "エスペラント"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:675
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:705
 msgid "Persian"
 msgstr "ペルシャ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:676
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:706
 msgid "French"
 msgstr "フランス語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:677
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:707
 msgid "Ancient Greek"
 msgstr "古代ギリシャ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:678
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:708
 msgid "Gujarati"
 msgstr "グジャラート語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:679
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:709
 msgid "Hebrew"
 msgstr "ヘブライ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:680
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:710
 msgid "Hindi"
 msgstr "ヒンディー語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:681
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:711
 msgid "Croatian"
 msgstr "クロアチア語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:682
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:712
 msgid "Hungarian"
 msgstr "ハンガリー語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:683
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:713
 msgid "Armenian"
 msgstr "アルメニア語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:684
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:714
 msgid "Sichuan Yi"
 msgstr "四川省"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:685
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:715
 msgid "Inuktitut"
 msgstr "イヌクティット"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:686
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:716
 msgid "Japanese"
 msgstr "日本語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:687
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:717
 msgid "Georgian"
 msgstr "グルジア語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:688
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:718
 msgid "Kazakh"
 msgstr "カザフ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:689
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:719
 msgid "Khmer"
 msgstr "クメール語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:690
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:720
 msgid "Kannada"
 msgstr "カンナダ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:691
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:721
 msgid "Korean"
 msgstr "韓国語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:692
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:722
 msgid "Kashmiri"
 msgstr "カシミリ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:693
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:723
 msgid "Lao"
 msgstr "ラオス"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:694
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:724
 msgid "Maithili"
 msgstr "マイティリ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:695
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:725
 msgid "Malayalam"
 msgstr "マラヤーラム語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:696
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:726
 msgid "Marathi"
 msgstr "マラーティー語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:697
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:727
 msgid "Burmese"
 msgstr "ビルマ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:698
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:728
 msgid "Nepali"
 msgstr "ネパール語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:699
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:729
 msgid "Naskapi language"
 msgstr "ナスカピ言語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:700
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:730
 msgid "Ojibwa"
 msgstr "オジブワ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:701
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:731
 msgid "Oriya"
 msgstr "オリヤ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:702
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:732
 msgid "Punjabi"
 msgstr "パンジャブ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:703
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:733
 msgid "Pushto"
 msgstr "プシュト"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:704
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:734
 msgid "Russian"
 msgstr "ロシア"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:705
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:735
 msgid "Sanskrit"
 msgstr "サンスクリット"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:706
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:736
 msgid "Sindhi"
 msgstr "シンディ"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:707
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:737
 msgid "Sinhalese"
 msgstr "シンハラ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:708
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:738
 msgid "Slovak"
 msgstr "スロバキア"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:709
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:739
 msgid "Serbian"
 msgstr "セルビア語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:710
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:740
 msgid "Swedish"
 msgstr "スウェーデンの"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:711
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:741
 msgid "Tai Viet"
 msgstr "太極拳"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:712
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:742
 msgid "Tamil"
 msgstr "タミル語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:713
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:743
 msgid "Telugu"
 msgstr "テルグ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:714
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:744
 msgid "Thai"
 msgstr "タイ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:715
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:745
 msgid "Etc"
 msgstr "等"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:716
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:746
 msgid "Uighur"
 msgstr "ウイグル語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:717
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:747
 msgid "Ukrainian"
 msgstr "ウクライナ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:718
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:748
 msgid "Urdu"
 msgstr "ウルドゥー語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:719
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:749
 msgid "Uzbek"
 msgstr "ウズベク語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:720
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:750
 msgid "Vietnamese"
 msgstr "ベトナム語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:721
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:751
 msgid "Yiddish"
 msgstr "イディッシュ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:722
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:752
 msgid "Chinese"
 msgstr "中国語"
 
@@ -325,37 +325,37 @@ msgstr "中国語"
 msgid "Rime"
 msgstr "ライム"
 
-#: ../modules/services/indicator/nimf-indicator.c:91
-#: ../modules/services/indicator/nimf-indicator.c:92
-#: ../modules/services/indicator/nimf-indicator.c:93
+#: ../modules/services/indicator/nimf-indicator.c:98
+#: ../modules/services/indicator/nimf-indicator.c:99
+#: ../modules/services/indicator/nimf-indicator.c:100
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "キム・ホドン <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:94
+#: ../modules/services/indicator/nimf-indicator.c:101
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr "キム・ボムシク <k.bumsik@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:105
+#: ../modules/services/indicator/nimf-indicator.c:112
 msgid "Nimf is an input method framework"
 msgstr "ニンフはインプットメソッドフレームワークです。"
 
-#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:113
 msgid "Copyright (c) 2015-2019 Hodong Kim"
 msgstr "著作権 (c) 2015-2019 キム・ホドン"
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:118
 msgid "Hodong Kim, N"
 msgstr "キム・ホドン, N"
 
-#: ../modules/services/indicator/nimf-indicator.c:114
+#: ../modules/services/indicator/nimf-indicator.c:121
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: ../modules/services/indicator/nimf-indicator.c:241
+#: ../modules/services/indicator/nimf-indicator.c:284
 msgid "Settings"
 msgstr "設定"
 
-#: ../modules/services/indicator/nimf-indicator.c:242
+#: ../modules/services/indicator/nimf-indicator.c:285
 msgid "About"
 msgstr "情報"
 
@@ -369,6 +369,7 @@ msgstr "'ニンフ'"
 
 #: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
@@ -381,6 +382,7 @@ msgstr "nimf-settingsのためのスキーマ名"
 
 #: ../libnimf/org.nimf.gschema.xml.h:3
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
@@ -442,9 +444,14 @@ msgstr "すべてのキーイベントを送出する前に、それらをろ過
 "これは、複数のアプリケーションのバグを回避します。"
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:4
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "マウスボタンをクリックしたときにリセットします"
+
+#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:1
+msgid "'Qt4'"
+msgstr ""
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"
@@ -497,7 +504,6 @@ msgid "'Romaji'"
 msgstr "'ロマジ'"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
 msgid "key value for UI l10n"
 msgstr "UI l10nのためのキー値"
 
@@ -526,78 +532,43 @@ msgid "'Korean (libhangul)'"
 msgstr "'韓国語 (libhangul)'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
-msgid "Korean keyboard layout"
-msgstr "韓国語のキーボード配列"
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:7
+msgid "Input method"
+msgstr "入力方式"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
-msgid "'Dubeolsik'"
-msgstr "'2ボル式'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
-msgid "'Dubeolsik Yetgeul'"
-msgstr "'2ボル式古文'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:10
-msgid "'Ahnmatae'"
-msgstr "'アンマテ'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
-msgid "'Sebeolsik Final'"
-msgstr "'3ボル式最終'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
-msgid "'Sebeolsik 390'"
-msgstr "'3ボル式390'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
-msgid "'Sebeolsik Noshift'"
-msgstr "'3ボル式純下'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:14
-msgid "'Sebeolsik Yetgeul'"
-msgstr "'3ボル式古文'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:15
-msgid "'Sebeolsik Dubeol Layout'"
-msgstr "'3ボル式二着配列'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:16
-msgid "'Romaja'"
-msgstr "'ローマ字'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:17
 msgid "Trigger keys for switching Korean / System"
 msgstr "韓国語/システムの切り替え用のトリガーキー"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:18
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
 msgid "Binding to change Korean / System"
 msgstr "韓国/システムを変更するためのバインディング"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:19
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
 msgid "Hotkey for Hanja"
 msgstr "漢字のためのホットキー"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:20
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:10
 msgid "Binding to Hanja key"
 msgstr "漢字キーのバインディング"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:21
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
 msgid "Use a rule composing double consonants"
 msgstr "二重子音組み合わせルールを使用します"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:22
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
 msgid "compose a double consonant on pressing same consonant twice"
 msgstr "同じ子音を二度押すと、二重子音を組み合わせます"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:23
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
 msgid "Auto-reordering in Dubeolsik"
 msgstr "2ボル式で自動並べ替え"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:24
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:14
 msgid "Ignore reset() in commit callback"
 msgstr "commitコールバックでreset()を無視します"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:25
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:15
 msgid "Ignore reset() called by commit callback in application"
 msgstr "アプリケーションでcommitコールバックが呼び出されるreset()を無視します"
 
@@ -608,10 +579,6 @@ msgstr "'その他の言語（m17n）'"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:6
 msgid "Trigger keys for switching m17n / System"
 msgstr "m17n/システムの切り替え用のトリガーキー"
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:7
-msgid "Input method"
-msgstr "入力方式"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"

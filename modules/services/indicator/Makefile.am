@@ -11,6 +11,7 @@ libnimf_indicator_la_CFLAGS = \
 	-I$(top_srcdir)/libnimf/client \
 	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
+	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	$(NIMF_INDICATOR_DEPS_CFLAGS)
 
 libnimf_indicator_la_LDFLAGS = -avoid-version -module $(NIMF_INDICATOR_DEPS_LIBS)

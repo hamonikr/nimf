@@ -48,7 +48,7 @@ struct _NimfLibhangul
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
   gboolean            is_auto_reordering;
-  gchar              *layout;
+  gchar              *method;
   /* workaround: ignore reset called by commit callback in application */
   gboolean            ignore_reset_in_commit_cb;
   gboolean            is_committing;
@@ -563,13 +563,13 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
     return retval;
   }
 
-  if (G_UNLIKELY (g_strcmp0 (hangul->layout, "ro") == 0))
+  if (G_UNLIKELY (g_strcmp0 (hangul->method, "ro") == 0))
     keyval = event->key.keyval;
   else
     keyval = nimf_event_keycode_to_qwerty_keyval (event);
 
   if (!hangul->is_double_consonant_rule &&
-      (g_strcmp0 (hangul->layout, "2") == 0) && /* 두벌식에만 적용 */
+      (g_strcmp0 (hangul->method, "2") == 0) &&
       nimf_libhangul_filter_leading_consonant (engine, target, keyval))
     return TRUE;
 
@@ -612,7 +612,7 @@ nimf_libhangul_update_transition_cb (NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if ((g_strcmp0 (hangul->layout, "2") == 0) && !hangul->is_auto_reordering)
+  if ((g_strcmp0 (hangul->method, "2") == 0) && !hangul->is_auto_reordering)
     hangul_ic_connect_callback (hangul->context, "transition",
                                 on_libhangul_transition, NULL);
   else
@@ -620,15 +620,15 @@ nimf_libhangul_update_transition_cb (NimfLibhangul *hangul)
 }
 
 static void
-on_changed_layout (GSettings     *settings,
+on_changed_method (GSettings     *settings,
                    gchar         *key,
                    NimfLibhangul *hangul)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_free (hangul->layout);
-  hangul->layout = g_settings_get_string (settings, key);
-  hangul_ic_select_keyboard (hangul->context, hangul->layout);
+  g_free (hangul->method);
+  hangul->method = g_settings_get_string (settings, key);
+  hangul_ic_select_keyboard (hangul->context, hangul->method);
   nimf_libhangul_update_transition_cb (hangul);
 }
 
@@ -689,7 +689,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   gchar **hanja_keys;
 
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
-  hangul->layout = g_settings_get_string (hangul->settings, "layout");
+  hangul->method = g_settings_get_string (hangul->settings, "get-engine-info-list");
   hangul->is_double_consonant_rule =
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
   hangul->is_auto_reordering =
@@ -699,7 +699,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   hanja_keys = g_settings_get_strv (hangul->settings, "hanja-keys");
   hangul->hanja_keys = nimf_key_newv ((const gchar **) hanja_keys);
-  hangul->context = hangul_ic_new (hangul->layout);
+  hangul->context = hangul_ic_new (hangul->method);
 
   hangul->id = g_strdup ("nimf-libhangul");
   hangul->preedit_string = g_strdup ("");
@@ -719,8 +719,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   nimf_libhangul_update_transition_cb (hangul);
 
-  g_signal_connect (hangul->settings, "changed::layout",
-                    G_CALLBACK (on_changed_layout), hangul);
+  g_signal_connect (hangul->settings, "changed::get-engine-info-list",
+                    G_CALLBACK (on_changed_method), hangul);
   g_signal_connect (hangul->settings, "changed::trigger-keys",
                     G_CALLBACK (on_changed_keys), hangul);
   g_signal_connect (hangul->settings, "changed::hanja-keys",
@@ -751,7 +751,7 @@ nimf_libhangul_finalize (GObject *object)
   g_free (hangul->preedit_string);
   nimf_preedit_attr_freev (hangul->preedit_attrs);
   g_free (hangul->id);
-  g_free (hangul->layout);
+  g_free (hangul->method);
   nimf_key_freev (hangul->hanja_keys);
   g_object_unref (hangul->settings);
 
@@ -776,6 +776,16 @@ nimf_libhangul_get_icon_name (NimfEngine *engine)
   g_return_val_if_fail (NIMF_IS_ENGINE (engine), NULL);
 
   return NIMF_LIBHANGUL (engine)->id;
+}
+
+void
+nimf_libhangul_set_method (NimfEngine *engine, const gchar *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_settings_set_string (NIMF_LIBHANGUL (engine)->settings,
+                         "get-engine-info-list",
+                         method_id);
 }
 
 static void
@@ -808,6 +818,7 @@ nimf_libhangul_class_init (NimfLibhangulClass *class)
 
   engine_class->get_id             = nimf_libhangul_get_id;
   engine_class->get_icon_name      = nimf_libhangul_get_icon_name;
+  engine_class->set_method         = nimf_libhangul_set_method;
 
   object_class->constructed = nimf_libhangul_constructed;
   object_class->finalize    = nimf_libhangul_finalize;
@@ -817,6 +828,30 @@ static void
 nimf_libhangul_class_finalize (NimfLibhangulClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+NimfEngineInfo **
+nimf_libhangul_get_engine_info_list ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfEngineInfo **infos;
+  unsigned int n_methods = hangul_keyboard_list_get_count ();
+  gint             i;
+
+  infos = g_malloc0_n (1, sizeof (NimfEngineInfo *));
+
+  for (i = 0; i < n_methods; i++)
+  {
+    infos[i] = nimf_engine_info_new ();
+    infos[i]->method_id = g_strdup (hangul_keyboard_list_get_keyboard_id (i));
+    infos[i]->label     = g_strdup (hangul_keyboard_list_get_keyboard_name (i));
+    infos[i]->group     = NULL;
+    infos = g_realloc_n (infos, sizeof (NimfEngineInfo *), i + 2);
+    infos[i + 1] = NULL;
+  }
+
+  return infos;
 }
 
 void module_register_type (GTypeModule *type_module)
