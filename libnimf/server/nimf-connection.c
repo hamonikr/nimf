@@ -46,6 +46,25 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   }
 }
 
+void
+nimf_connection_set_engine (NimfConnection *connection,
+                            const gchar    *engine_id,
+                            const gchar    *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GHashTableIter iter;
+  gpointer       im;
+
+  g_hash_table_iter_init (&iter, connection->ims);
+
+  while (g_hash_table_iter_next (&iter, NULL, &im))
+  {
+    if (NIMF_SERVICE_IM (im)->icid == connection->server->last_focused_icid)
+      nimf_service_im_set_engine (im, engine_id, method_id);
+  }
+}
+
 static void
 nimf_connection_init (NimfConnection *connection)
 {
