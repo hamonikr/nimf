@@ -105,6 +105,9 @@ void         nimf_service_im_set_cursor_location (NimfServiceIM  *im,
 void         nimf_service_im_reset               (NimfServiceIM  *im);
 void         nimf_service_im_set_engine_by_id    (NimfServiceIM  *im,
                                                   const gchar    *engine_id);
+void         nimf_service_im_set_engine          (NimfServiceIM  *im,
+                                                  const gchar    *engine_id,
+                                                  const gchar    *method_id);
 void         nimf_service_im_engine_changed      (NimfServiceIM  *im,
                                                   const gchar    *engine_id,
                                                   const gchar    *name);

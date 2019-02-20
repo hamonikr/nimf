@@ -442,6 +442,28 @@ nimf_service_im_set_engine_by_id (NimfServiceIM *im,
                                   nimf_engine_get_icon_name (im->engine));
 }
 
+void
+nimf_service_im_set_engine (NimfServiceIM *im,
+                            const gchar   *engine_id,
+                            const gchar   *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfEngine *engine;
+
+  if (im->server->use_singleton)
+    engine = nimf_server_get_instance (im->server, engine_id);
+  else
+    engine = nimf_service_im_get_instance (im, engine_id);
+
+  g_return_if_fail (engine != NULL);
+
+  im->engine = engine;
+  nimf_engine_set_method (engine, method_id);
+  nimf_service_im_engine_changed (im, engine_id,
+                                  nimf_engine_get_icon_name (im->engine));
+}
+
 static NimfEngine *
 nimf_service_im_get_default_engine (NimfServiceIM *im)
 {

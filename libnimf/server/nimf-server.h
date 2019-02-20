@@ -95,6 +95,9 @@ NimfEngine *nimf_server_get_instance          (NimfServer   *server,
                                                const gchar  *module_name);
 void        nimf_server_set_engine_by_id      (NimfServer   *server,
                                                const gchar  *id);
+void        nimf_server_set_engine            (NimfServer   *server,
+                                               const gchar  *engine_id,
+                                               const gchar  *method_id);
 gchar     **nimf_server_get_loaded_engine_ids (NimfServer   *server);
 
 G_END_DECLS

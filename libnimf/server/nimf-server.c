@@ -285,6 +285,37 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
   }
 }
 
+void nimf_server_set_engine (NimfServer  *server,
+                             const gchar *engine_id,
+                             const gchar *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* TODO: This method is inconsistent.
+   * We need to create a NIM service module. */
+
+  if (server->last_focused_conn_id > 0)
+  {
+    NimfConnection *connection;
+    connection = g_hash_table_lookup (server->connections,
+                                      GUINT_TO_POINTER (server->last_focused_conn_id));
+    if (connection)
+      nimf_connection_set_engine (connection, engine_id, method_id);
+  }
+
+  GHashTableIter  iter;
+  gpointer        service;
+
+  g_hash_table_iter_init (&iter, server->services);
+
+  while (g_hash_table_iter_next (&iter, NULL, &service))
+  {
+    if (!g_strcmp0 (server->last_focused_service,
+                    nimf_service_get_id (service)))
+      nimf_service_set_engine (service, engine_id, method_id);
+  }
+}
+
 gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

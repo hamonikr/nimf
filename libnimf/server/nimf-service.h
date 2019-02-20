@@ -3,7 +3,7 @@
  * nimf-service.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -60,6 +60,9 @@ struct _NimfServiceClass
   gboolean      (* is_active)        (NimfService *service);
   void          (* set_engine_by_id) (NimfService *service,
                                       const gchar *engine_id);
+  void          (* set_engine      ) (NimfService *service,
+                                      const gchar *engine_id,
+                                      const gchar *method_id);
 };
 
 GType        nimf_service_get_type         (void) G_GNUC_CONST;
@@ -69,6 +72,9 @@ gboolean     nimf_service_is_active        (NimfService *service);
 const gchar *nimf_service_get_id           (NimfService *service);
 void         nimf_service_set_engine_by_id (NimfService *service,
                                             const gchar *engine_id);
+void         nimf_service_set_engine       (NimfService *service,
+                                            const gchar *engine_id,
+                                            const gchar *method_id);
 
 G_END_DECLS
 
