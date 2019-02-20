@@ -1,3 +1,9 @@
+nimf (2019.02.21) stable; urgency=medium
+
+  * Fixed: an unresolvable reference
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 21 Feb 2019 00:02:34 +0900
+
 nimf (2019.02.20) stable; urgency=medium
 
   * Fixed emitting invalid "engine-changed" signal
