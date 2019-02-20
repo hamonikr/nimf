@@ -231,7 +231,7 @@ on_watcher_appeared (GDBusConnection *connection,
       gboolean    gnome;
       gint        j;
 
-      gnome = !g_strcmp0 (g_getenv ("XDG_CURRENT_DESKTOP"), "GNOME");
+      gnome = g_str_has_suffix (g_getenv ("XDG_CURRENT_DESKTOP"), "GNOME");
 
       for (j = 0; infos[j]; j++)
       {
