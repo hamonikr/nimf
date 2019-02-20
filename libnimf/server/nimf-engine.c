@@ -171,6 +171,18 @@ nimf_engine_get_surrounding (NimfEngine     *engine,
 }
 
 void
+nimf_engine_set_method (NimfEngine  *engine,
+                        const gchar *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
+
+  if (class->set_method)
+    class->set_method (engine, method_id);
+}
+
+void
 nimf_engine_emit_preedit_start (NimfEngine    *engine,
                                 NimfServiceIM *im)
 {

@@ -94,6 +94,8 @@ struct _NimfEngineClass
                                    NimfServiceIM       *im,
                                    gchar              **text,
                                    gint                *cursor_index);
+  void     (* set_method)         (NimfEngine          *engine,
+                                   const gchar         *method_id);
   /* candidate */
   gboolean (* candidate_page_up)   (NimfEngine         *engine,
                                     NimfServiceIM      *im);
@@ -130,6 +132,8 @@ gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
                                                 gchar              **text,
                                                 gint                *cursor_index);
 void     nimf_engine_status_changed            (NimfEngine          *engine);
+void     nimf_engine_set_method                (NimfEngine          *engine,
+                                                const gchar         *method_id);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine       *engine,
                                                 NimfServiceIM    *im);
