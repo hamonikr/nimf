@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 16:17+0900\n"
-"PO-Revision-Date: 2019-02-21 16:31+0900\n"
+"POT-Creation-Date: 2019-02-21 16:39+0900\n"
+"PO-Revision-Date: 2019-02-21 16:46+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -397,8 +397,8 @@ msgid "Copyright (c) 2015-2019 Hodong Kim"
 msgstr "저작권 (c) 2015-2019 김호동"
 
 #: ../modules/services/indicator/nimf-indicator.c:118
-msgid "Hodong Kim, N"
-msgstr "김호동, N"
+msgid "Hodong Kim, Max Neupert"
+msgstr "김호동, Max Neupert"
 
 #: ../modules/services/indicator/nimf-indicator.c:121
 msgid "Website"
