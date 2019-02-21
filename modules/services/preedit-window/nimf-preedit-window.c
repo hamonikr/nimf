@@ -3,7 +3,7 @@
  * nimf-preedit-window.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2017,2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -101,6 +101,13 @@ static void nimf_preedit_window_hide (NimfPreeditable *preeditable)
   gtk_widget_hide (NIMF_PREEDIT_WINDOW (preeditable)->window);
 }
 
+static gboolean nimf_preedit_window_is_visible (NimfPreeditable *preeditable)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return gtk_widget_is_visible (NIMF_PREEDIT_WINDOW (preeditable)->window);
+}
+
 static void nimf_preedit_window_set_text (NimfPreeditable *preeditable,
                                           const gchar     *text)
 {
@@ -125,6 +132,7 @@ nimf_preedit_window_iface_init (NimfPreeditableInterface *iface)
 {
   iface->show                = nimf_preedit_window_show;
   iface->hide                = nimf_preedit_window_hide;
+  iface->is_visible          = nimf_preedit_window_is_visible;
   iface->set_text            = nimf_preedit_window_set_text;
   iface->set_cursor_location = nimf_preedit_window_set_cursor_location;
 }

@@ -3,7 +3,7 @@
  * nimf-preeditable.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -39,20 +39,22 @@ struct _NimfPreeditableInterface
 {
   GTypeInterface parent;
 
-  void (* show)                (NimfPreeditable     *preeditable);
-  void (* hide)                (NimfPreeditable     *preeditable);
-  void (* set_text)            (NimfPreeditable     *preeditable,
-                                const gchar         *text);
-  void (* set_cursor_location) (NimfPreeditable     *preeditable,
-                                const NimfRectangle *area);
+  void     (* show)                (NimfPreeditable     *preeditable);
+  void     (* hide)                (NimfPreeditable     *preeditable);
+  gboolean (* is_visible)          (NimfPreeditable     *preeditable);
+  void     (* set_text)            (NimfPreeditable     *preeditable,
+                                    const gchar         *text);
+  void     (* set_cursor_location) (NimfPreeditable     *preeditable,
+                                    const NimfRectangle *area);
 };
 
-void nimf_preeditable_show                (NimfPreeditable     *preeditable);
-void nimf_preeditable_hide                (NimfPreeditable     *preeditable);
-void nimf_preeditable_set_text            (NimfPreeditable     *preeditable,
-                                           const gchar         *text);
-void nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,
-                                           const NimfRectangle *area);
+void     nimf_preeditable_show                (NimfPreeditable     *preeditable);
+void     nimf_preeditable_hide                (NimfPreeditable     *preeditable);
+gboolean nimf_preeditable_is_visible          (NimfPreeditable     *preeditable);
+void     nimf_preeditable_set_text            (NimfPreeditable     *preeditable,
+                                               const gchar         *text);
+void     nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,
+                                               const NimfRectangle *area);
 
 G_END_DECLS
 

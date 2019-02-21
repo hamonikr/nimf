@@ -3,7 +3,7 @@
  * nimf-preeditable.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -54,6 +54,30 @@ void nimf_preeditable_hide (NimfPreeditable *preeditable)
 
   if (iface->hide)
     iface->hide (preeditable);
+}
+
+/**
+ * nimf_preeditable_is_visible:
+ * @preeditable: a #NimfPreeditable
+ *
+ * Determines whether the preeditable is marked as visible.
+ *
+ * Returns: %TRUE if the preeditable is visible
+ */
+gboolean nimf_preeditable_is_visible (NimfPreeditable *preeditable)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfPreeditableInterface *iface;
+
+  g_return_val_if_fail (NIMF_IS_PREEDITABLE (preeditable), FALSE);
+
+  iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
+
+  if (iface->is_visible)
+    return iface->is_visible (preeditable);
+
+  return FALSE;
 }
 
 void nimf_preeditable_set_text (NimfPreeditable *preeditable,
