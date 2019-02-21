@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 09:22+0900\n"
-"PO-Revision-Date: 2019-02-21 09:26+0900\n"
+"POT-Creation-Date: 2019-02-21 10:06+0900\n"
+"PO-Revision-Date: 2019-02-21 10:10+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -331,30 +331,31 @@ msgid "Etc"
 msgstr "Usw"
 
 #: ../modules/engines/nimf-m17n/nimf-m17n.c:746
-msgid "Uighur"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:747
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:748
 msgid "Ukrainian"
 msgstr "Ukrainisch"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:748
-msgid "Urdu"
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:747
+msgid "Uighur"
 msgstr ""
 
 #: ../modules/engines/nimf-m17n/nimf-m17n.c:749
+msgid "Urdu"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:750
 msgid "Uzbek"
 msgstr "Usbekisch"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:750
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:751
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:751
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:752
 msgid "Yiddish"
 msgstr "Jiddisch"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:752
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:753
 msgid "Chinese"
 msgstr "Chinesisch"
 

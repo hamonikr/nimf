@@ -743,6 +743,7 @@ static const Country country[] = {
   {"te",  N_("Telugu")},
   {"th",  N_("Thai")},
   {"t",   N_("Etc")},
+  {"ua",  N_("Ukrainian")},
   {"ug",  N_("Uighur")},
   {"uk",  N_("Ukrainian")},
   {"ur",  N_("Urdu")},

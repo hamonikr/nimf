@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 09:22+0900\n"
-"PO-Revision-Date: 2019-02-21 09:30+0900\n"
+"POT-Creation-Date: 2019-02-21 10:06+0900\n"
+"PO-Revision-Date: 2019-02-21 10:12+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -330,30 +330,31 @@ msgid "Etc"
 msgstr "等"
 
 #: ../modules/engines/nimf-m17n/nimf-m17n.c:746
-msgid "Uighur"
-msgstr "ウイグル語"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:747
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:748
 msgid "Ukrainian"
 msgstr "ウクライナ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:748
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:747
+msgid "Uighur"
+msgstr "ウイグル語"
+
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:749
 msgid "Urdu"
 msgstr "ウルドゥー語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:749
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:750
 msgid "Uzbek"
 msgstr "ウズベク語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:750
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:751
 msgid "Vietnamese"
 msgstr "ベトナム語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:751
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:752
 msgid "Yiddish"
 msgstr "イディッシュ語"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:752
+#: ../modules/engines/nimf-m17n/nimf-m17n.c:753
 msgid "Chinese"
 msgstr "中国語"
 
