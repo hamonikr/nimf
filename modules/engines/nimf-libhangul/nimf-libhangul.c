@@ -64,6 +64,23 @@ struct _NimfLibhangulClass
   NimfEngineClass parent_class;
 };
 
+typedef struct {
+  const gchar *id;
+  const gchar *name;
+} Keyboard;
+
+static const Keyboard keyboards[] = {
+  {"2",   N_("Dubeolsik")},
+  {"2y",  N_("Dubeolsik Yetgeul")},
+  {"32",  N_("Sebeolsik Dubeol Layout")},
+  {"39",  N_("Sebeolsik 390")},
+  {"3f",  N_("Sebeolsik Final")},
+  {"3s",  N_("Sebeolsik Noshift")},
+  {"3y",  N_("Sebeolsik Yetgeul")},
+  {"ro",  N_("Romaja")},
+  {"ahn", N_("Ahnmatae")}
+};
+
 static HanjaTable *nimf_libhangul_hanja_table  = NULL;
 static HanjaTable *nimf_libhangul_symbol_table = NULL;
 static gint        nimf_libhangul_hanja_table_ref_count = 0;
@@ -836,20 +853,20 @@ nimf_libhangul_get_engine_info_list ()
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfEngineInfo **infos;
-  unsigned int n_methods = hangul_keyboard_list_get_count ();
+  gint             n_methods = G_N_ELEMENTS (keyboards);
   gint             i;
 
-  infos = g_malloc0_n (1, sizeof (NimfEngineInfo *));
+  infos = g_malloc (sizeof (NimfEngineInfo *) * n_methods + 1);
 
   for (i = 0; i < n_methods; i++)
   {
     infos[i] = nimf_engine_info_new ();
-    infos[i]->method_id = g_strdup (hangul_keyboard_list_get_keyboard_id (i));
-    infos[i]->label     = g_strdup (hangul_keyboard_list_get_keyboard_name (i));
+    infos[i]->method_id = g_strdup (keyboards[i].id);
+    infos[i]->label     = g_strdup (gettext (keyboards[i].name));
     infos[i]->group     = NULL;
-    infos = g_realloc_n (infos, sizeof (NimfEngineInfo *), i + 2);
-    infos[i + 1] = NULL;
   }
+
+  infos[n_methods] = NULL;
 
   return infos;
 }

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-20 20:53+0900\n"
-"PO-Revision-Date: 2019-02-20 21:15+0900\n"
+"POT-Creation-Date: 2019-02-21 09:22+0900\n"
+"PO-Revision-Date: 2019-02-21 09:35+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -64,6 +64,42 @@ msgstr "XKB选项"
 #: ../modules/services/indicator/nimf-indicator.c:117
 msgid "Nimf"
 msgstr "宁芙"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
+msgid "Dubeolsik"
+msgstr "两套式"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:74
+msgid "Dubeolsik Yetgeul"
+msgstr "两套式古文"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:75
+msgid "Sebeolsik Dubeol Layout"
+msgstr "三套式两套布局"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:76
+msgid "Sebeolsik 390"
+msgstr "三套式390"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:77
+msgid "Sebeolsik Final"
+msgstr "三套式最终"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:78
+msgid "Sebeolsik Noshift"
+msgstr "三套式纯下"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:79
+msgid "Sebeolsik Yetgeul"
+msgstr "三套式古文"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:80
+msgid "Romaja"
+msgstr "罗马字"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:81
+msgid "Ahnmatae"
+msgstr "安马泰"
 
 #: ../modules/engines/nimf-m17n/nimf-m17n.c:689
 msgid "Amharic"

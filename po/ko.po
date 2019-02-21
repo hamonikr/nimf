@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-20 20:53+0900\n"
-"PO-Revision-Date: 2019-02-20 21:12+0900\n"
+"POT-Creation-Date: 2019-02-21 09:22+0900\n"
+"PO-Revision-Date: 2019-02-21 09:33+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -64,6 +64,42 @@ msgstr "XKB 옵션"
 #: ../modules/services/indicator/nimf-indicator.c:117
 msgid "Nimf"
 msgstr "님프"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
+msgid "Dubeolsik"
+msgstr "두벌식"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:74
+msgid "Dubeolsik Yetgeul"
+msgstr "두벌식 옛글"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:75
+msgid "Sebeolsik Dubeol Layout"
+msgstr "세벌식 두벌 배열"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:76
+msgid "Sebeolsik 390"
+msgstr "세벌식 390"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:77
+msgid "Sebeolsik Final"
+msgstr "세벌식 최종"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:78
+msgid "Sebeolsik Noshift"
+msgstr "세벌식 순아래"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:79
+msgid "Sebeolsik Yetgeul"
+msgstr "세벌식 옛글"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:80
+msgid "Romaja"
+msgstr "로마자"
+
+#: ../modules/engines/nimf-libhangul/nimf-libhangul.c:81
+msgid "Ahnmatae"
+msgstr "안마태"
 
 #: ../modules/engines/nimf-m17n/nimf-m17n.c:689
 msgid "Amharic"
