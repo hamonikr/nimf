@@ -3,7 +3,7 @@
  * nimf-anthy.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -49,8 +49,8 @@ struct _NimfAnthy
   GSettings         *settings;
   NimfKey          **hiragana_keys;
   NimfKey          **katakana_keys;
-  gchar             *input_mode;
-  gboolean           input_mode_changed;
+  gchar             *method;
+  gboolean           method_changed;
   gint               n_input_mode;
 
   anthy_context_t  context;
@@ -760,10 +760,10 @@ nimf_anthy_filter_event (NimfEngine    *engine,
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
 
-  if (anthy->input_mode_changed)
+  if (anthy->method_changed)
   {
     nimf_anthy_reset (engine, target);
-    anthy->input_mode_changed = FALSE;
+    anthy->method_changed = FALSE;
   }
 
   if (nimf_candidatable_is_visible (anthy->candidatable))
@@ -864,7 +864,7 @@ nimf_anthy_filter_event (NimfEngine    *engine,
       case NIMF_KEY_KP_8:
       case NIMF_KEY_KP_9:
         {
-          if (g_strcmp0 (anthy->input_mode,"romaji"))
+          if (g_strcmp0 (anthy->method,"romaji"))
             break;
 
           if (anthy->current_page < 1)
@@ -1072,7 +1072,7 @@ nimf_anthy_filter_event (NimfEngine    *engine,
   }
   else if (event->key.keyval > 127)
     retval = FALSE;
-  else if (g_strcmp0 (anthy->input_mode, "romaji") == 0)
+  else if (g_strcmp0 (anthy->method, "romaji") == 0)
     retval = nimf_anthy_filter_event_romaji (engine, target, event);
   else
     retval = nimf_anthy_filter_event_pc104 (engine, target, event);
@@ -1115,9 +1115,9 @@ on_changed_method (GSettings *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_free (anthy->input_mode);
-  anthy->input_mode = g_settings_get_string (settings, key);
-  anthy->input_mode_changed = TRUE;
+  g_free (anthy->method);
+  anthy->method = g_settings_get_string (settings, key);
+  anthy->method_changed = TRUE;
 }
 
 static gint
@@ -1539,8 +1539,8 @@ nimf_anthy_init (NimfAnthy *anthy)
   nimf_anthy_ref_count++;
   anthy_context_set_encoding (anthy->context, ANTHY_UTF8_ENCODING);
 
-  anthy->settings     = g_settings_new ("org.nimf.engines.nimf-anthy");
-  anthy->input_mode   = g_settings_get_string (anthy->settings, "input-mode");
+  anthy->settings = g_settings_new ("org.nimf.engines.nimf-anthy");
+  anthy->method   = g_settings_get_string (anthy->settings, "get-engine-info-list");
   anthy->n_input_mode = nimf_anthy_get_n_input_mode (anthy);
   hiragana_keys = g_settings_get_strv   (anthy->settings, "hiragana-keys");
   katakana_keys = g_settings_get_strv   (anthy->settings, "katakana-keys");
@@ -1554,7 +1554,7 @@ nimf_anthy_init (NimfAnthy *anthy)
                     G_CALLBACK (on_changed_keys), anthy);
   g_signal_connect (anthy->settings, "changed::katakana-keys",
                     G_CALLBACK (on_changed_keys), anthy);
-  g_signal_connect (anthy->settings, "changed::input-mode",
+  g_signal_connect (anthy->settings, "changed::get-engine-info-list",
                     G_CALLBACK (on_changed_method), anthy);
   g_signal_connect (anthy->settings, "changed::n-input-mode",
                     G_CALLBACK (on_changed_n_input_mode), anthy);
@@ -1574,7 +1574,7 @@ nimf_anthy_finalize (GObject *object)
   g_string_free (anthy->preedit, TRUE);
   nimf_key_freev (anthy->hiragana_keys);
   nimf_key_freev (anthy->katakana_keys);
-  g_free (anthy->input_mode);
+  g_free (anthy->method);
   g_object_unref (anthy->settings);
 
   if (--nimf_anthy_ref_count == 0)
@@ -1606,6 +1606,16 @@ nimf_anthy_get_icon_name (NimfEngine *engine)
   return NIMF_ANTHY (engine)->id;
 }
 
+void
+nimf_anthy_set_method (NimfEngine *engine, const gchar *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_settings_set_string (NIMF_ANTHY (engine)->settings,
+                         "get-engine-info-list",
+                         method_id);
+}
+
 static void
 nimf_anthy_constructed (GObject *object)
 {
@@ -1634,8 +1644,9 @@ nimf_anthy_class_init (NimfAnthyClass *class)
   engine_class->candidate_clicked   = on_candidate_clicked;
   engine_class->candidate_scrolled  = on_candidate_scrolled;
 
-  engine_class->get_id             = nimf_anthy_get_id;
-  engine_class->get_icon_name      = nimf_anthy_get_icon_name;
+  engine_class->get_id        = nimf_anthy_get_id;
+  engine_class->get_icon_name = nimf_anthy_get_icon_name;
+  engine_class->set_method    = nimf_anthy_set_method;
 
   object_class->constructed = nimf_anthy_constructed;
   object_class->finalize    = nimf_anthy_finalize;
@@ -1645,6 +1656,40 @@ static void
 nimf_anthy_class_finalize (NimfAnthyClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+typedef struct {
+  const gchar *id;
+  const gchar *name;
+} Method;
+
+static const Method methods[] = {
+  {"romaji", N_("Romaji")},
+  {"pc104",  N_("English Keyboard (pc104)")}
+};
+
+NimfEngineInfo **
+nimf_anthy_get_engine_info_list ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfEngineInfo **infos;
+  gint             n_methods = G_N_ELEMENTS (methods);
+  gint             i;
+
+  infos = g_malloc (sizeof (NimfEngineInfo *) * n_methods + 1);
+
+  for (i = 0; i < n_methods; i++)
+  {
+    infos[i] = nimf_engine_info_new ();
+    infos[i]->method_id = g_strdup (methods[i].id);
+    infos[i]->label     = g_strdup (gettext (methods[i].name));
+    infos[i]->group     = NULL;
+  }
+
+  infos[n_methods] = NULL;
+
+  return infos;
 }
 
 void

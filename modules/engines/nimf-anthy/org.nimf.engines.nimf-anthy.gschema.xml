@@ -27,24 +27,10 @@
       <summary>Hotkey for Katakana</summary>
       <description>Hotkeys for converting to Katakana</description>
     </key>
-    <key type="s" name="input-mode">
-      <choices>
-        <choice value='romaji' /> <!-- Romaji -->
-        <choice value='pc104'  /> <!-- Standard English Keyboard pc104 -->
-      </choices>
+    <key type="s" name="get-engine-info-list">
       <default>'romaji'</default>
-      <summary>Japanese input mode</summary>
-      <description>Japanese input mode</description>
-    </key>
-    <key type="s" name="hidden-input-mode-romaji">
-      <default l10n="messages">'Romaji'</default>
-      <summary>key value for UI l10n</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="s" name="hidden-input-mode-pc104">
-      <default l10n="messages">'Kana input on the English Keyboard (pc104)'</default>
-      <summary>key value for UI l10n</summary>
-      <description>This key is intended for nimf-settings.</description>
+      <summary>Input method</summary>
+      <description>Input method</description>
     </key>
     <key type="s" name="n-input-mode">
       <choices>

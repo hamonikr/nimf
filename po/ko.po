@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 10:06+0900\n"
-"PO-Revision-Date: 2019-02-21 10:13+0900\n"
+"POT-Creation-Date: 2019-02-21 10:58+0900\n"
+"PO-Revision-Date: 2019-02-21 11:14+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -64,6 +64,14 @@ msgstr "XKB 옵션"
 #: ../modules/services/indicator/nimf-indicator.c:117
 msgid "Nimf"
 msgstr "님프"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1667
+msgid "Romaji"
+msgstr "로마지"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1668
+msgid "English Keyboard (pc104)"
+msgstr "영문 키보드 (pc104)"
 
 #: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
 msgid "Dubeolsik"
@@ -532,45 +540,34 @@ msgid "Hotkeys for converting to Katakana"
 msgstr "가타카나로 변환하기 위한 단축키"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:11
-msgid "Japanese input mode"
-msgstr "일본어 입력 모드"
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:7
+msgid "Input method"
+msgstr "입력 방법"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:12
-msgid "'Romaji'"
-msgstr "'로마지'"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
-msgid "key value for UI l10n"
-msgstr "UI l10n 을 위한 키 값"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
-msgid "'Kana input on the English Keyboard (pc104)'"
-msgstr "'영문 키보드로 가나 입력 (pc104)'"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
 msgid "n input mode"
 msgstr "n 입력 모드"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
 msgid "Choose how you type hiragana letter n."
 msgstr "히라가나 문자 n을 입력하는 방법을 선택하세요."
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:17
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
 msgid "'Common practice'"
 msgstr "'일반적인 관행'"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:18
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
+msgid "key value for UI l10n"
+msgstr "UI l10n 을 위한 키 값"
+
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
 msgid "'Explicitly type nn'"
 msgstr "'명시적으로 nn을 누릅니다'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
 msgstr "'한국어 (libhangul)'"
-
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:7
-msgid "Input method"
-msgstr "입력 방법"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
 msgid "Trigger keys for switching Korean / System"
