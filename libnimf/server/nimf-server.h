@@ -89,18 +89,19 @@ struct _NimfServerClass
                                   const gchar *icon_name);
 };
 
-GType       nimf_server_get_type              (void) G_GNUC_CONST;
-NimfEngine *nimf_server_get_default_engine    (NimfServer   *server);
-NimfEngine *nimf_server_get_next_instance     (NimfServer   *server,
-                                               NimfEngine   *engine);
-NimfEngine *nimf_server_get_instance          (NimfServer   *server,
-                                               const gchar  *module_name);
-void        nimf_server_set_engine_by_id      (NimfServer   *server,
-                                               const gchar  *id);
-void        nimf_server_set_engine            (NimfServer   *server,
-                                               const gchar  *engine_id,
-                                               const gchar  *method_id);
-gchar     **nimf_server_get_loaded_engine_ids (NimfServer   *server);
+GType        nimf_server_get_type              (void) G_GNUC_CONST;
+NimfEngine  *nimf_server_get_default_engine    (NimfServer   *server);
+NimfEngine  *nimf_server_get_next_instance     (NimfServer   *server,
+                                                NimfEngine   *engine);
+NimfEngine  *nimf_server_get_instance          (NimfServer   *server,
+                                                const gchar  *module_name);
+void         nimf_server_set_engine_by_id      (NimfServer   *server,
+                                                const gchar  *id);
+void         nimf_server_set_engine            (NimfServer   *server,
+                                                const gchar  *engine_id,
+                                                const gchar  *method_id);
+gchar      **nimf_server_get_loaded_engine_ids (NimfServer   *server);
+NimfServer  *nimf_server_get_default           (void);
 
 G_END_DECLS
 

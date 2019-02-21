@@ -38,8 +38,9 @@ enum {
 };
 
 static guint nimf_server_signals[LAST_SIGNAL] = { 0 };
+static NimfServer *nimf_server = NULL;
 
- G_DEFINE_TYPE_WITH_PRIVATE (NimfServer, nimf_server, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (NimfServer, nimf_server, G_TYPE_OBJECT);
 
 static gint
 on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
@@ -118,6 +119,23 @@ nimf_server_get_default_engine (NimfServer *server)
   return engine;
 }
 
+/**
+ * nimf_server_get_default:
+ *
+ * Returns the default #NimfServer instance.
+ *
+ * If there is no default server then %NULL is returned.
+ *
+ * Returns: (transfer none): the default server, or %NULL
+ */
+NimfServer *
+nimf_server_get_default ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return nimf_server;
+}
+
 static void
 on_changed_hotkeys (GSettings  *settings,
                     gchar      *key,
@@ -149,6 +167,7 @@ nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  nimf_server = server;
   server->priv = nimf_server_get_instance_private (server);
 
   server->settings = g_settings_new ("org.nimf");
