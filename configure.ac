@@ -244,10 +244,16 @@ AM_CONDITIONAL([WITH_IMSETTINGS_DATA],
                [test "$with_imsettings_data" = "yes"])
 
 dnl ***************************************************************************
-dnl test-nimf
+dnl test nimf
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(TEST_NIMF_DEPS, [glib-2.0])
+
+dnl ***************************************************************************
+dnl Check for gtk-doc
+dnl ***************************************************************************
+
+GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
 
 dnl ***************************************************************************
 
@@ -261,6 +267,7 @@ AC_OUTPUT([
   data/icons/Makefile
   data/im-config/Makefile
   data/imsettings/Makefile
+  docs/Makefile
   libnimf/Makefile
   libnimf/nimf.pc
   modules/Makefile

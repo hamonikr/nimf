@@ -49,3 +49,5 @@ tests/test-nimf
 # gnome-builder
 .buildconfig
 tags
+# docs
+gtk-doc.make

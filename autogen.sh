@@ -27,6 +27,14 @@ if test -z $LIBTOOLIZE; then
     exit 1
 fi
 
+GTKDOCIZE=`which gtkdocize`
+if test -z $GTKDOCIZE; then
+    echo "gtkdocize not found, please install gtk-doc-tools package"
+    exit 1
+else
+    gtkdocize || exit $?
+fi
+
 INTLTOOLIZE=`which intltoolize`
 if test -z $INTLTOOLIZE; then
     echo "intltoolize not found, please install intltool package"

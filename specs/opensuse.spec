@@ -28,6 +28,7 @@ BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 BuildRequires: libxklavier-devel
 BuildRequires: m17n-lib-devel
+BuildRequires: gtk-doc
 
 Requires:         im-chooser
 Requires:         anthy

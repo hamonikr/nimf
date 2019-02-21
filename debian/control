@@ -24,7 +24,8 @@ Build-Depends: debhelper (>= 9),
                libwayland-dev,
                wayland-protocols,
                libxklavier-dev,
-               libm17n-dev
+               libm17n-dev,
+               gtk-doc-tools
 Standards-Version: 3.9.8
 Homepage: https://gitlab.com/nimf-i18n/nimf
 

@@ -1,4 +1,4 @@
-SUBDIRS = libnimf modules bin po data tests
+SUBDIRS = libnimf modules bin po data tests docs
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -9,7 +9,8 @@ DISTCLEANFILES = \
 	aclocal.m4 \
 	config.h.in \
 	config.h.in~ \
-	configure
+	configure \
+	gtk-doc.make
 
 clean-local:
 	-debian/rules clean
