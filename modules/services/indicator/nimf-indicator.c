@@ -201,10 +201,9 @@ on_watcher_appeared (GDBusConnection *connection,
     gchar     *schema_id;
     gchar     *schema_name;
     GModule   *module;
-    gchar    **strv;
     gchar     *path;
-    gchar     *prefix;
-    gchar     *api;
+    gchar     *symbol_name;
+    gchar     *p;
     NimfEngineInfo ** (* get_engine_info_list) ();
 
     schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
@@ -214,11 +213,13 @@ on_watcher_appeared (GDBusConnection *connection,
     path   = g_module_build_path (NIMF_MODULE_DIR, engine_ids[i]);
     module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 
-    strv = g_strsplit (engine_ids[i], "-", -1);
-    prefix = g_strjoinv ("_", strv);
-    api = g_strjoin ("_", prefix, "get_engine_info_list", NULL);
+    symbol_name = g_strdup_printf ("%s_get_engine_info_list", engine_ids[i]);
 
-    if (g_module_symbol (module, api, (gpointer *) &get_engine_info_list))
+    for (p = symbol_name; *p; p++)
+      if (*p == '-')
+        *p = '_';
+
+    if (g_module_symbol (module, symbol_name, (gpointer *) &get_engine_info_list))
     {
       GtkWidget *submenu1 = gtk_menu_new ();
       engine_menu = gtk_menu_item_new_with_label (schema_name);
@@ -270,9 +271,7 @@ on_watcher_appeared (GDBusConnection *connection,
 
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), engine_menu);
 
-    g_free (prefix);
-    g_free (api);
-    g_strfreev (strv);
+    g_free (symbol_name);
     g_module_close (module);
     g_free (path);
     g_free (schema_name);

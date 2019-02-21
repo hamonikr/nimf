@@ -1128,7 +1128,7 @@ nimf_anthy_get_n_input_mode (NimfAnthy *anthy)
   gchar *mode;
   gint   retval;
 
-  mode = g_settings_get_string (anthy->settings, "n-input-mode");
+  mode = g_settings_get_string (anthy->settings, "get-n-input-mode-list");
 
   if (g_strcmp0 (mode, "common") == 0)
     retval = COMMON;
@@ -1556,7 +1556,7 @@ nimf_anthy_init (NimfAnthy *anthy)
                     G_CALLBACK (on_changed_keys), anthy);
   g_signal_connect (anthy->settings, "changed::get-engine-info-list",
                     G_CALLBACK (on_changed_method), anthy);
-  g_signal_connect (anthy->settings, "changed::n-input-mode",
+  g_signal_connect (anthy->settings, "changed::get-n-input-mode-list",
                     G_CALLBACK (on_changed_n_input_mode), anthy);
 }
 
@@ -1684,6 +1684,35 @@ nimf_anthy_get_engine_info_list ()
     infos[i] = nimf_engine_info_new ();
     infos[i]->method_id = g_strdup (methods[i].id);
     infos[i]->label     = g_strdup (gettext (methods[i].name));
+    infos[i]->group     = NULL;
+  }
+
+  infos[n_methods] = NULL;
+
+  return infos;
+}
+
+static const Method modes[] = {
+  {"common",   N_("Common practice")},
+  {"explicit", N_("Explicitly type nn")}
+};
+
+NimfEngineInfo **
+nimf_anthy_get_n_input_mode_list ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfEngineInfo **infos;
+  gint             n_methods = G_N_ELEMENTS (modes);
+  gint             i;
+
+  infos = g_malloc (sizeof (NimfEngineInfo *) * n_methods + 1);
+
+  for (i = 0; i < n_methods; i++)
+  {
+    infos[i] = nimf_engine_info_new ();
+    infos[i]->method_id = g_strdup (modes[i].id);
+    infos[i]->label     = g_strdup (gettext (modes[i].name));
     infos[i]->group     = NULL;
   }
 

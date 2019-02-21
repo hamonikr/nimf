@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 10:58+0900\n"
-"PO-Revision-Date: 2019-02-21 11:18+0900\n"
+"POT-Creation-Date: 2019-02-21 16:17+0900\n"
+"PO-Revision-Date: 2019-02-21 16:34+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -26,36 +26,36 @@ msgstr "日志调试消息"
 msgid "Version"
 msgstr "版本"
 
-#: ../bin/nimf-settings.c:560
+#: ../bin/nimf-settings.c:531
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "请报告错误。(keyval: %d)"
 
-#: ../bin/nimf-settings.c:621
+#: ../bin/nimf-settings.c:592
 msgid "Press key combination"
 msgstr "请按组合键"
 
-#: ../bin/nimf-settings.c:624
+#: ../bin/nimf-settings.c:595
 msgid "_OK"
 msgstr "确定 (_O)"
 
-#: ../bin/nimf-settings.c:625
+#: ../bin/nimf-settings.c:596
 msgid "_Cancel"
 msgstr "取消 (_C)"
 
-#: ../bin/nimf-settings.c:637
+#: ../bin/nimf-settings.c:608
 msgid "Click here and then press key combination"
 msgstr "请单击此处，然后按组合键"
 
-#: ../bin/nimf-settings.c:1000
+#: ../bin/nimf-settings.c:971
 msgid "Default"
 msgstr "默认"
 
-#: ../bin/nimf-settings.c:1023 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings.c:994 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "宁芙设置"
 
-#: ../bin/nimf-settings.c:1092
+#: ../bin/nimf-settings.c:1063
 msgid "XKB Options"
 msgstr "XKB选项"
 
@@ -72,6 +72,14 @@ msgstr "罗马字"
 #: ../modules/engines/nimf-anthy/nimf-anthy.c:1668
 msgid "English Keyboard (pc104)"
 msgstr "英文键盘（pc104）"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1696
+msgid "Common practice"
+msgstr "常见做法"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1697
+msgid "Explicitly type nn"
+msgstr "明确输入nn"
 
 #: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
 msgid "Dubeolsik"
@@ -396,11 +404,11 @@ msgstr "金豪东，N"
 msgid "Website"
 msgstr "网站"
 
-#: ../modules/services/indicator/nimf-indicator.c:284
+#: ../modules/services/indicator/nimf-indicator.c:283
 msgid "Settings"
 msgstr "设置"
 
-#: ../modules/services/indicator/nimf-indicator.c:285
+#: ../modules/services/indicator/nimf-indicator.c:284
 msgid "About"
 msgstr "关于"
 
@@ -550,18 +558,6 @@ msgstr "n输入模式"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
 msgid "Choose how you type hiragana letter n."
 msgstr "选择你输入平假名字母n的方式。"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
-msgid "'Common practice'"
-msgstr "'常见做法'"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
-msgid "key value for UI l10n"
-msgstr "UI l10n的键值"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
-msgid "'Explicitly type nn'"
-msgstr "'明确输入nn'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"

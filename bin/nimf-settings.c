@@ -412,32 +412,32 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
   else if (g_str_has_prefix (page_key->key, "hidden-") == FALSE)
   {
     gchar *id1;
-    GList *list;
 
     id1 = g_settings_get_string (page_key->gsettings, page_key->key);
 
-    if (!g_strcmp0 (page_key->key, "get-engine-info-list"))
+    if (g_str_has_prefix (page_key->key, "get-"))
     {
       const gchar *engine_id;
       GModule *module;
-      NimfEngineInfo ** (* get_engine_info_list) ();
-      gchar **strv;
+      NimfEngineInfo ** (* function) ();
       gchar  *path;
-      gchar  *prefix;
-      gchar  *api;
+      gchar  *symbol_name;
+      gchar  *p;
 
       engine_id = schema_id + strlen ("org.nimf.engines.");
       path   = g_module_build_path (NIMF_MODULE_DIR, engine_id);
       module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 
-      strv = g_strsplit (engine_id, "-", -1);
-      prefix = g_strjoinv ("_", strv);
-      api = g_strjoin ("_", prefix, "get_engine_info_list", NULL);
+      symbol_name = g_strdup_printf ("%s_%s", engine_id, page_key->key);
 
-      if (g_module_symbol (module, api, (gpointer *) &get_engine_info_list))
+      for (p = symbol_name; *p; p++)
+        if (*p == '-')
+          *p = '_';
+
+      if (g_module_symbol (module, symbol_name, (gpointer *) &function))
       {
         GtkTreeIter parent;
-        NimfEngineInfo **infos = get_engine_info_list ();
+        NimfEngineInfo **infos = function ();
         const gchar *prev_group = NULL;
         gint    i;
 
@@ -470,38 +470,9 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
         g_warning (G_STRLOC ": %s", g_module_error ());
       }
 
-      g_free (prefix);
-      g_free (api);
-      g_strfreev (strv);
+      g_free (symbol_name);
       g_module_close (module);
       g_free (path);
-    }
-
-    for (list = key_list; list != NULL; list = list->next)
-    {
-      gchar *key2;
-      gchar *prefix;
-
-      key2 = list->data;
-      prefix = g_strdup_printf ("hidden-%s-", page_key->key);
-
-      if (g_str_has_prefix (key2, prefix))
-      {
-        gchar *val;
-        const gchar *id2 = key2 + strlen (prefix);
-
-        val = g_settings_get_string (page_key->gsettings, key2);
-        gtk_tree_store_append (store, &iter, NULL);
-        gtk_tree_store_set (store, &iter, 0, val,
-                                          1, id2, -1);
-
-        if (g_strcmp0 (id1, id2) == 0)
-          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo), &iter);
-
-        g_free (val);
-      }
-
-      g_free (prefix);
     }
 
     g_free (id1);

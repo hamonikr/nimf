@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 10:58+0900\n"
-"PO-Revision-Date: 2019-02-21 11:11+0900\n"
+"POT-Creation-Date: 2019-02-21 16:17+0900\n"
+"PO-Revision-Date: 2019-02-21 16:28+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ja\n"
@@ -26,36 +26,36 @@ msgstr "デバッグメッセージを記録します。"
 msgid "Version"
 msgstr "バージョン"
 
-#: ../bin/nimf-settings.c:560
+#: ../bin/nimf-settings.c:531
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "バグを報告してください。 (keyval: %d)"
 
-#: ../bin/nimf-settings.c:621
+#: ../bin/nimf-settings.c:592
 msgid "Press key combination"
 msgstr "キーの組み合わせを押してください"
 
-#: ../bin/nimf-settings.c:624
+#: ../bin/nimf-settings.c:595
 msgid "_OK"
 msgstr "よし (_O)"
 
-#: ../bin/nimf-settings.c:625
+#: ../bin/nimf-settings.c:596
 msgid "_Cancel"
 msgstr "キャンセル (_C)"
 
-#: ../bin/nimf-settings.c:637
+#: ../bin/nimf-settings.c:608
 msgid "Click here and then press key combination"
 msgstr "ここをクリックして、キーの組み合わせを押してください"
 
-#: ../bin/nimf-settings.c:1000
+#: ../bin/nimf-settings.c:971
 msgid "Default"
 msgstr "デフォルト"
 
-#: ../bin/nimf-settings.c:1023 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings.c:994 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "ニンフ設定"
 
-#: ../bin/nimf-settings.c:1092
+#: ../bin/nimf-settings.c:1063
 msgid "XKB Options"
 msgstr "XKBオプション"
 
@@ -72,6 +72,14 @@ msgstr "ロマジ"
 #: ../modules/engines/nimf-anthy/nimf-anthy.c:1668
 msgid "English Keyboard (pc104)"
 msgstr "英語キーボード（pc104）"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1696
+msgid "Common practice"
+msgstr "一般的な方法"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1697
+msgid "Explicitly type nn"
+msgstr "明示的にnnと入力します"
 
 #: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
 msgid "Dubeolsik"
@@ -396,11 +404,11 @@ msgstr "キム・ホドン, N"
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: ../modules/services/indicator/nimf-indicator.c:284
+#: ../modules/services/indicator/nimf-indicator.c:283
 msgid "Settings"
 msgstr "設定"
 
-#: ../modules/services/indicator/nimf-indicator.c:285
+#: ../modules/services/indicator/nimf-indicator.c:284
 msgid "About"
 msgstr "情報"
 
@@ -553,18 +561,6 @@ msgstr "n入力モード"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
 msgid "Choose how you type hiragana letter n."
 msgstr "ひらがな文字んを入力する方法を選択してください。"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
-msgid "'Common practice'"
-msgstr "'一般的な方法'"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
-msgid "key value for UI l10n"
-msgstr "UI l10nのためのキー値"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
-msgid "'Explicitly type nn'"
-msgstr "'明示的にnnと入力します'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"

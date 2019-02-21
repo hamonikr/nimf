@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 10:58+0900\n"
-"PO-Revision-Date: 2019-02-21 11:14+0900\n"
+"POT-Creation-Date: 2019-02-21 16:17+0900\n"
+"PO-Revision-Date: 2019-02-21 16:31+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -26,36 +26,36 @@ msgstr "디버깅 메시지를 기록합니다"
 msgid "Version"
 msgstr "버전"
 
-#: ../bin/nimf-settings.c:560
+#: ../bin/nimf-settings.c:531
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "버그를 제보해 주세요. (keyval: %d)"
 
-#: ../bin/nimf-settings.c:621
+#: ../bin/nimf-settings.c:592
 msgid "Press key combination"
 msgstr "키 조합을 누르세요"
 
-#: ../bin/nimf-settings.c:624
+#: ../bin/nimf-settings.c:595
 msgid "_OK"
 msgstr "예 (_O)"
 
-#: ../bin/nimf-settings.c:625
+#: ../bin/nimf-settings.c:596
 msgid "_Cancel"
 msgstr "취소 (_C)"
 
-#: ../bin/nimf-settings.c:637
+#: ../bin/nimf-settings.c:608
 msgid "Click here and then press key combination"
 msgstr "여기를 클릭한 후 키 조합을 누르세요"
 
-#: ../bin/nimf-settings.c:1000
+#: ../bin/nimf-settings.c:971
 msgid "Default"
 msgstr "기본값"
 
-#: ../bin/nimf-settings.c:1023 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings.c:994 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "님프 설정"
 
-#: ../bin/nimf-settings.c:1092
+#: ../bin/nimf-settings.c:1063
 msgid "XKB Options"
 msgstr "XKB 옵션"
 
@@ -72,6 +72,14 @@ msgstr "로마지"
 #: ../modules/engines/nimf-anthy/nimf-anthy.c:1668
 msgid "English Keyboard (pc104)"
 msgstr "영문 키보드 (pc104)"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1696
+msgid "Common practice"
+msgstr "일반적인 관행"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1697
+msgid "Explicitly type nn"
+msgstr "명시적으로 nn을 누릅니다"
 
 #: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
 msgid "Dubeolsik"
@@ -396,11 +404,11 @@ msgstr "김호동, N"
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:284
+#: ../modules/services/indicator/nimf-indicator.c:283
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:285
+#: ../modules/services/indicator/nimf-indicator.c:284
 msgid "About"
 msgstr "정보"
 
@@ -552,18 +560,6 @@ msgstr "n 입력 모드"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
 msgid "Choose how you type hiragana letter n."
 msgstr "히라가나 문자 n을 입력하는 방법을 선택하세요."
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
-msgid "'Common practice'"
-msgstr "'일반적인 관행'"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
-msgid "key value for UI l10n"
-msgstr "UI l10n 을 위한 키 값"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
-msgid "'Explicitly type nn'"
-msgstr "'명시적으로 nn을 누릅니다'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"

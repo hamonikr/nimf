@@ -2,15 +2,15 @@
 # Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
 # Hodong Kim <cogniti@gmail.com>, 2015-2019.
-# N <abonnements@revolwear.com>, 2017.
+# Max Neupert <abonnements@revolwear.com>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 10:58+0900\n"
-"PO-Revision-Date: 2019-02-21 11:06+0900\n"
+"POT-Creation-Date: 2019-02-21 16:17+0900\n"
+"PO-Revision-Date: 2019-02-21 16:25+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -27,36 +27,36 @@ msgstr "Debug Nachrichten protokollieren"
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf-settings.c:560
+#: ../bin/nimf-settings.c:531
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
 
-#: ../bin/nimf-settings.c:621
+#: ../bin/nimf-settings.c:592
 msgid "Press key combination"
 msgstr "Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:624
+#: ../bin/nimf-settings.c:595
 msgid "_OK"
 msgstr "Bestätigen (_O)"
 
-#: ../bin/nimf-settings.c:625
+#: ../bin/nimf-settings.c:596
 msgid "_Cancel"
 msgstr "Abbrechen (_C)"
 
-#: ../bin/nimf-settings.c:637
+#: ../bin/nimf-settings.c:608
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:1000
+#: ../bin/nimf-settings.c:971
 msgid "Default"
 msgstr "Standard"
 
-#: ../bin/nimf-settings.c:1023 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings.c:994 ../data/nimf-settings.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "Nimf Einstellungen"
 
-#: ../bin/nimf-settings.c:1092
+#: ../bin/nimf-settings.c:1063
 msgid "XKB Options"
 msgstr "XKB-Optionen"
 
@@ -73,6 +73,14 @@ msgstr ""
 #: ../modules/engines/nimf-anthy/nimf-anthy.c:1668
 msgid "English Keyboard (pc104)"
 msgstr "Englische Tastatur (pc104)"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1696
+msgid "Common practice"
+msgstr "Gang und gäbe sein"
+
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1697
+msgid "Explicitly type nn"
+msgstr "Geben Sie explizit nn ein"
 
 #: ../modules/engines/nimf-libhangul/nimf-libhangul.c:73
 msgid "Dubeolsik"
@@ -397,11 +405,11 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:284
+#: ../modules/services/indicator/nimf-indicator.c:283
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:285
+#: ../modules/services/indicator/nimf-indicator.c:284
 msgid "About"
 msgstr "Über"
 
@@ -556,18 +564,6 @@ msgstr "n Eingabemodus"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
 msgid "Choose how you type hiragana letter n."
 msgstr "Wählen Sie, wie Sie den Hiragana-Buchstaben n eingeben."
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:14
-msgid "'Common practice'"
-msgstr "'Gang und gäbe sein'"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:15
-msgid "key value for UI l10n"
-msgstr "Schlüsselwert für UI l10n"
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:16
-msgid "'Explicitly type nn'"
-msgstr "'Typ Explizit nn'"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
