@@ -3,7 +3,7 @@
  * nimf-xim-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -24,6 +24,62 @@
 #include "IMdkit/i18nMethod.h"
 
 G_DEFINE_TYPE (NimfXimIM, nimf_xim_im, NIMF_TYPE_SERVICE_IM);
+
+void nimf_xim_im_set_cursor_location (NimfXimIM *xim_im,
+                                      gint       x,
+                                      gint       y)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfRectangle area = {0};
+  Window        window;
+
+  if (xim_im->focus_window)
+    window = xim_im->focus_window;
+  else
+    window = xim_im->client_window;
+
+  if (window)
+  {
+    Window             child;
+    XWindowAttributes  attr;
+    const char        *xft_dpi;
+    int dpi   = 0;
+    int dpi_x = 0;
+    int dpi_y = 0;
+
+    XGetWindowAttributes (xim_im->xim->display, window, &attr);
+
+    if (x < 0 && y < 0)
+      XTranslateCoordinates (xim_im->xim->display, window, attr.root,
+                             0, attr.height, &area.x, &area.y, &child);
+    else
+      XTranslateCoordinates (xim_im->xim->display, window, attr.root,
+                             x, y, &area.x, &area.y, &child);
+
+    xft_dpi = XGetDefault (xim_im->xim->display, "Xft", "dpi");
+
+    if (xft_dpi)
+      dpi = atoi (xft_dpi);
+
+    if (dpi)
+    {
+      area.x = (double) area.x * (96.0 / dpi);
+      area.y = (double) area.y * (96.0 / dpi);
+    }
+    else
+    {
+      dpi_x = ((double) WidthOfScreen    (attr.screen)) * 25.4 /
+              ((double) WidthMMOfScreen  (attr.screen));
+      dpi_y = ((double) HeightOfScreen   (attr.screen)) * 25.4 /
+              ((double) HeightMMOfScreen (attr.screen));
+      area.x = (double) area.x * (96.0 / dpi_x);
+      area.y = (double) area.y * (96.0 / dpi_y);
+    }
+  }
+
+  nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (xim_im), &area);
+}
 
 static void
 nimf_xim_im_emit_commit (NimfServiceIM *im,

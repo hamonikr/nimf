@@ -3,7 +3,7 @@
  * nimf-xim-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -57,9 +57,12 @@ struct _NimfXimIM
   NimfXim  *xim;
 };
 
-GType nimf_xim_im_get_type (void) G_GNUC_CONST;
-NimfXimIM *nimf_xim_im_new (NimfServer *server,
-                            NimfXim    *xim);
+GType      nimf_xim_im_get_type            (void) G_GNUC_CONST;
+NimfXimIM *nimf_xim_im_new                 (NimfServer *server,
+                                            NimfXim    *xim);
+void       nimf_xim_im_set_cursor_location (NimfXimIM  *xim_im,
+                                            gint        x,
+                                            gint        y);
 
 G_END_DECLS
 

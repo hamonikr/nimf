@@ -57,61 +57,6 @@ nimf_xim_add_im (NimfXim   *xim,
   return icid;
 }
 
-static void nimf_xim_set_cursor_location (NimfXim          *xim,
-                                          IMChangeICStruct *data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfServiceIM *im;
-  NimfXimIM     *xim_im;
-  NimfRectangle  area = {0};
-
-  im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
-  xim_im = NIMF_XIM_IM (im);
-
-  Window window;
-
-  if (xim_im->focus_window)
-    window = xim_im->focus_window;
-  else
-    window = xim_im->client_window;
-
-  if (window)
-  {
-    Window             child;
-    XWindowAttributes  attr;
-    const char        *xft_dpi;
-    int dpi   = 0;
-    int dpi_x = 0;
-    int dpi_y = 0;
-
-    XGetWindowAttributes (xim->display, window, &attr);
-    XTranslateCoordinates(xim->display, window, attr.root,
-                          0, attr.height, &area.x, &area.y, &child);
-    xft_dpi = XGetDefault (xim->display, "Xft", "dpi");
-
-    if (xft_dpi)
-      dpi = atoi (xft_dpi);
-
-    if (dpi)
-    {
-      area.x = (double) area.x * (96.0 / dpi);
-      area.y = (double) area.y * (96.0 / dpi);
-    }
-    else
-    {
-      dpi_x = ((double) WidthOfScreen    (attr.screen)) * 25.4 /
-              ((double) WidthMMOfScreen  (attr.screen));
-      dpi_y = ((double) HeightOfScreen   (attr.screen)) * 25.4 /
-              ((double) HeightMMOfScreen (attr.screen));
-      area.x = (double) area.x * (96.0 / dpi_x);
-      area.y = (double) area.y * (96.0 / dpi_y);
-    }
-  }
-
-  nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (xim_im), &area);
-}
-
 static int nimf_xim_set_ic_values (NimfXim          *xim,
                                    IMChangeICStruct *data)
 {
@@ -168,9 +113,19 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
           break;
       }
     }
+    else if (g_strcmp0 (XNSpotLocation, data->preedit_attr[i].name) == 0)
+    {
+      nimf_xim_im_set_cursor_location (xim_im,
+                                  ((XPoint *) data->preedit_attr[i].value)->x,
+                                  ((XPoint *) data->preedit_attr[i].value)->y);
+      if (nimf_preeditable_is_visible (NIMF_SERVICE_IM (xim_im)->server->preeditable))
+        nimf_preeditable_show (NIMF_SERVICE_IM (xim_im)->server->preeditable);
+    }
     else
+    {
       g_critical (G_STRLOC ": %s: %s is ignored",
                   G_STRFUNC, data->preedit_attr[i].name);
+    }
   }
 
   for (i = 0; i < data->status_attr_num; i++)
@@ -304,8 +259,6 @@ static int nimf_xim_forward_event (NimfXim              *xim,
 
   if (G_UNLIKELY (!retval))
     IMForwardEvent (xim->xims, (XPointer) data);
-  else
-    nimf_xim_set_cursor_location (xim, (IMChangeICStruct *) data);
 
   return 1;
 }
@@ -782,11 +735,9 @@ nimf_xim_init (NimfXim *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  xim->id = g_strdup ("nimf-xim");
-  xim->ims = g_hash_table_new_full (g_direct_hash,
-                                         g_direct_equal,
-                                         NULL,
-                                         (GDestroyNotify) g_object_unref);
+  xim->id  = g_strdup ("nimf-xim");
+  xim->ims = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
+                                    (GDestroyNotify) g_object_unref);
   xim->settings = g_settings_new ("org.nimf.services.xim");
 }
 
