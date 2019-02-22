@@ -31,13 +31,13 @@ libnimf_la_SOURCES = \
 	server/nimf-engine.h \
 	server/nimf-module.c \
 	server/nimf-module.h \
+	server/nimf-nim-im.c \
+	server/nimf-nim-im.h \
 	server/nimf-preeditable.c \
 	server/nimf-preeditable.h \
 	server/nimf-server.c \
 	server/nimf-server.h \
 	server/nimf-server-private.h \
-	server/nimf-server-im.c \
-	server/nimf-server-im.h \
 	server/nimf-service.c \
 	server/nimf-service.h \
 	server/nimf-service-im.c \

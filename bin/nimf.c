@@ -26,7 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "nimf-server.h"
-#include "nimf-server-im.h"
+#include "nimf-nim-im.h"
 #include "nimf-module.h"
 #include "nimf-service.h"
 #include <gio/gunixsocketaddress.h>
@@ -164,7 +164,7 @@ on_incoming_message_nimf (GSocket        *socket,
     return G_SOURCE_CONTINUE;
   }
 
-  NimfServerIM *im;
+  NimfNimIM *im;
   guint16       icid = message->header->icid;
 
   im = g_hash_table_lookup (connection->ims, GUINT_TO_POINTER (icid));
@@ -172,7 +172,7 @@ on_incoming_message_nimf (GSocket        *socket,
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_server_im_new (connection, connection->server);
+      im = nimf_nim_im_new (connection, connection->server);
       NIMF_SERVICE_IM (im)->icid = icid;
       g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
 
