@@ -6,6 +6,7 @@ Nimf provides:
   * Input Method Server:
     * nimf
   * Language Engines:
+    * System keyboard
     * Chinese (based on librime)
     * Japanese (based on anthy)
     * Korean (based on libhangul)
@@ -13,6 +14,7 @@ Nimf provides:
   * Service Modules:
     * Indicator (based on appindicator)
     * Wayland
+    * NIM (Nimf Input Method)
     * XIM (based on IMdkit)
     * Preedit window
     * Candidate

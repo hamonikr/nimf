@@ -191,10 +191,6 @@ nimf_server_init (NimfServer *server)
                                              g_free, NULL);
   server->services  = g_hash_table_new_full (g_str_hash, g_str_equal,
                                              g_free, g_object_unref);
-  server->connections = g_hash_table_new_full (g_direct_hash,
-                                               g_direct_equal,
-                                               NULL,
-                                               (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -209,8 +205,6 @@ nimf_server_stop (NimfServer *server)
 
   GHashTableIter iter;
   gpointer       service;
-
-  g_socket_service_stop (server->service);
 
   g_hash_table_iter_init (&iter, server->services);
   while (g_hash_table_iter_next (&iter, NULL, &service))
@@ -229,9 +223,6 @@ nimf_server_finalize (GObject *object)
   if (server->active)
     nimf_server_stop (server);
 
-  if (server->service != NULL)
-    g_object_unref (server->service);
-
   g_hash_table_unref (server->modules);
   g_hash_table_unref (server->services);
 
@@ -241,7 +232,6 @@ nimf_server_finalize (GObject *object)
     server->instances = NULL;
   }
 
-  g_hash_table_unref (server->connections);
   g_object_unref     (server->settings);
   g_hash_table_unref (server->trigger_gsettings);
   g_hash_table_unref (server->trigger_keys);
@@ -286,18 +276,6 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  /* TODO: This method is inconsistent.
-   * We need to create a NIM service module. */
-
-  if (server->last_focused_conn_id > 0)
-  {
-    NimfConnection *connection;
-    connection = g_hash_table_lookup (server->connections,
-                                      GUINT_TO_POINTER (server->last_focused_conn_id));
-    if (connection)
-      nimf_connection_set_engine_by_id (connection, id);
-  }
-
   GHashTableIter  iter;
   gpointer        service;
 
@@ -316,18 +294,6 @@ void nimf_server_set_engine (NimfServer  *server,
                              const gchar *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  /* TODO: This method is inconsistent.
-   * We need to create a NIM service module. */
-
-  if (server->last_focused_conn_id > 0)
-  {
-    NimfConnection *connection;
-    connection = g_hash_table_lookup (server->connections,
-                                      GUINT_TO_POINTER (server->last_focused_conn_id));
-    if (connection)
-      nimf_connection_set_engine (connection, engine_id, method_id);
-  }
 
   GHashTableIter  iter;
   gpointer        service;

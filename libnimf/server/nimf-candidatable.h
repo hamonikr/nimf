@@ -3,7 +3,7 @@
  * nimf-candidatable.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2018,2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -21,10 +21,6 @@
 
 #ifndef __NIMF_CANDIDATABLE_H__
 #define __NIMF_CANDIDATABLE_H__
-
-#if !defined (__NIMF_H_INSIDE__) && !defined (NIMF_COMPILATION)
-#error "Only <nimf.h> can be included directly."
-#endif
 
 #include <glib-object.h>
 #include "nimf-service-im.h"

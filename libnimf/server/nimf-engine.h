@@ -22,10 +22,6 @@
 #ifndef __NIMF_ENGINE_H__
 #define __NIMF_ENGINE_H__
 
-#if !defined (__NIMF_H_INSIDE__) && !defined (NIMF_COMPILATION)
-#error "Only <nimf.h> can be included directly."
-#endif
-
 #include <glib-object.h>
 #include "nimf-events.h"
 #include "nimf-types.h"

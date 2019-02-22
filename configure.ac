@@ -194,6 +194,12 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)
 
 dnl ***************************************************************************
+dnl nimf-nim
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_NIM_DEPS, [$LIBNIMF_REQUIRES] glib-2.0 gio-2.0)
+
+dnl ***************************************************************************
 dnl nimf server
 dnl ***************************************************************************
 
@@ -284,6 +290,7 @@ AC_OUTPUT([
   modules/services/Makefile
   modules/services/candidate/Makefile
   modules/services/indicator/Makefile
+  modules/services/nim/Makefile
   modules/services/preedit-window/Makefile
   modules/services/wayland/Makefile
   modules/services/xim/Makefile

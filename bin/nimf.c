@@ -26,10 +26,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "nimf-server.h"
-#include "nimf-nim-im.h"
 #include "nimf-module.h"
 #include "nimf-service.h"
-#include <gio/gunixsocketaddress.h>
 #include <glib/gi18n.h>
 #include "config.h"
 #include <syslog.h>
@@ -103,177 +101,6 @@ write_pid (int fd)
 
   if (written != len)
     return FALSE;
-
-  return TRUE;
-}
-
-static guint16
-nimf_server_add_connection (NimfServer     *server,
-                            NimfConnection *connection)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  guint16 id;
-
-  do
-    id = server->next_id++;
-  while (id == 0 || g_hash_table_contains (server->connections,
-                                           GUINT_TO_POINTER (id)));
-  connection->id = id;
-  connection->server = server;
-  g_hash_table_insert (server->connections, GUINT_TO_POINTER (id), connection);
-
-  return id;
-}
-
-static gboolean
-on_incoming_message_nimf (GSocket        *socket,
-                          GIOCondition    condition,
-                          NimfConnection *connection)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfMessage *message;
-  gboolean     retval;
-  nimf_message_unref (connection->result->reply);
-  connection->result->is_dispatched = TRUE;
-
-  if (condition & (G_IO_HUP | G_IO_ERR))
-  {
-    g_debug (G_STRLOC ": condition & (G_IO_HUP | G_IO_ERR)");
-
-    g_socket_close (socket, NULL);
-
-    GList *l;
-    for (l = connection->server->instances; l != NULL; l = l->next)
-      nimf_engine_reset (l->data, NULL);
-
-    connection->result->reply = NULL;
-    g_hash_table_remove (connection->server->connections,
-                         GUINT_TO_POINTER (nimf_connection_get_id (connection)));
-
-    return G_SOURCE_REMOVE;
-  }
-
-  message = nimf_recv_message (socket);
-  connection->result->reply = message;
-
-  if (G_UNLIKELY (message == NULL))
-  {
-    g_critical (G_STRLOC ": NULL message");
-    return G_SOURCE_CONTINUE;
-  }
-
-  NimfNimIM *im;
-  guint16       icid = message->header->icid;
-
-  im = g_hash_table_lookup (connection->ims, GUINT_TO_POINTER (icid));
-
-  switch (message->header->type)
-  {
-    case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_nim_im_new (connection);
-      NIMF_SERVICE_IM (im)->icid = icid;
-      g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
-
-      nimf_send_message (socket, icid, NIMF_MESSAGE_CREATE_CONTEXT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_DESTROY_CONTEXT:
-      g_hash_table_remove (connection->ims, GUINT_TO_POINTER (icid));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_DESTROY_CONTEXT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_FILTER_EVENT:
-      nimf_message_ref (message);
-      retval = nimf_service_im_filter_event (NIMF_SERVICE_IM (im), (NimfEvent *) message->data);
-      nimf_message_unref (message);
-      nimf_send_message (socket, icid, NIMF_MESSAGE_FILTER_EVENT_REPLY,
-                         &retval, sizeof (gboolean), NULL);
-      break;
-    case NIMF_MESSAGE_RESET:
-      nimf_service_im_reset (NIMF_SERVICE_IM (im));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_RESET_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_FOCUS_IN:
-      nimf_service_im_focus_in (NIMF_SERVICE_IM (im));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_IN_REPLY,
-                         NULL, 0, NULL);
-      connection->server->last_focused_conn_id = connection->id;
-      connection->server->last_focused_icid    = icid;
-      connection->server->last_focused_service = NULL;
-      break;
-    case NIMF_MESSAGE_FOCUS_OUT:
-      nimf_service_im_focus_out (NIMF_SERVICE_IM (im));
-      nimf_send_message (socket, icid, NIMF_MESSAGE_FOCUS_OUT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_SET_SURROUNDING:
-      {
-        nimf_message_ref (message);
-        gchar   *data     = message->data;
-        guint16  data_len = message->header->data_len;
-
-        gint   str_len      = data_len - 1 - 2 * sizeof (gint);
-        gint   cursor_index = *(gint *) (data + data_len - sizeof (gint));
-
-        nimf_service_im_set_surrounding (NIMF_SERVICE_IM (im), data, str_len, cursor_index);
-        nimf_message_unref (message);
-        nimf_send_message (socket, icid,
-                           NIMF_MESSAGE_SET_SURROUNDING_REPLY, NULL, 0, NULL);
-      }
-      break;
-    case NIMF_MESSAGE_SET_CURSOR_LOCATION:
-      nimf_message_ref (message);
-      nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (im), (NimfRectangle *) message->data);
-      nimf_message_unref (message);
-      nimf_send_message (socket, icid, NIMF_MESSAGE_SET_CURSOR_LOCATION_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_SET_USE_PREEDIT:
-      nimf_message_ref (message);
-      nimf_service_im_set_use_preedit (NIMF_SERVICE_IM (im), *(gboolean *) message->data);
-      nimf_message_unref (message);
-      nimf_send_message (socket, icid, NIMF_MESSAGE_SET_USE_PREEDIT_REPLY,
-                         NULL, 0, NULL);
-      break;
-    case NIMF_MESSAGE_PREEDIT_START_REPLY:
-    case NIMF_MESSAGE_PREEDIT_CHANGED_REPLY:
-    case NIMF_MESSAGE_PREEDIT_END_REPLY:
-    case NIMF_MESSAGE_COMMIT_REPLY:
-    case NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_DELETE_SURROUNDING_REPLY:
-    case NIMF_MESSAGE_BEEP_REPLY:
-      break;
-    default:
-      g_warning ("Unknown message type: %d", message->header->type);
-      break;
-  }
-
-  return G_SOURCE_CONTINUE;
-}
-
-static gboolean
-on_new_connection (GSocketService    *service,
-                   GSocketConnection *socket_connection,
-                   GObject           *source_object,
-                   NimfServer        *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfConnection *connection;
-  connection = nimf_connection_new ();
-  connection->socket = g_socket_connection_get_socket (socket_connection);
-  nimf_server_add_connection (server, connection);
-
-  connection->source = g_socket_create_source (connection->socket, G_IO_IN, NULL);
-  connection->socket_connection = g_object_ref (socket_connection);
-  g_source_set_can_recurse (connection->source, TRUE);
-  g_source_set_callback (connection->source,
-                         (GSourceFunc) on_incoming_message_nimf,
-                         connection, NULL);
-  g_source_attach (connection->source, NULL);
 
   return TRUE;
 }
@@ -474,34 +301,6 @@ nimf_server_start (NimfServer *server)
     if (!nimf_service_start (NIMF_SERVICE (service)))
       g_hash_table_iter_remove (&iter);
   }
-
-  GSocketAddress *address;
-  gchar          *path;
-  GError         *error = NULL;
-
-  server->service = g_socket_service_new ();
-  path = nimf_get_socket_path ();
-  address = g_unix_socket_address_new_with_type (path, -1,
-                                                 G_UNIX_SOCKET_ADDRESS_PATH);
-  g_socket_listener_add_address (G_SOCKET_LISTENER (server->service), address,
-                                 G_SOCKET_TYPE_STREAM,
-                                 G_SOCKET_PROTOCOL_DEFAULT,
-                                 NULL, NULL, &error);
-  g_object_unref (address);
-  g_chmod (path, 0600);
-  g_free  (path);
-
-  if (error)
-  {
-    g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
-    g_clear_error (&error);
-
-    return FALSE;
-  }
-
-  g_signal_connect (server->service, "incoming",
-                    G_CALLBACK (on_new_connection), server);
-  g_socket_service_start (server->service);
 
   return server->active = TRUE;
 }

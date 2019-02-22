@@ -22,10 +22,6 @@
 #ifndef __NIMF_SERVER_H__
 #define __NIMF_SERVER_H__
 
-#if !defined (__NIMF_H_INSIDE__) && !defined (NIMF_COMPILATION)
-#error "Only <nimf.h> can be included directly."
-#endif
-
 #include <glib-object.h>
 #include <gio/gio.h>
 #include "nimf-types.h"
@@ -56,11 +52,6 @@ struct _NimfServer
   GHashTable      *modules;
   GHashTable      *services;
   GList           *instances;
-  GSocketService  *service;
-  GHashTable      *connections;
-  guint16          next_id;
-  guint16          last_focused_conn_id;
-  guint16          last_focused_icid;
   const gchar     *last_focused_service;
   gboolean         active;
   /* settings */

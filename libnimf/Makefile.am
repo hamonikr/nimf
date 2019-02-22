@@ -25,14 +25,10 @@ libnimf_la_SOURCES = \
 	client/nimf-im.h \
 	server/nimf-candidatable.c \
 	server/nimf-candidatable.h \
-	server/nimf-connection.c \
-	server/nimf-connection.h \
 	server/nimf-engine.c \
 	server/nimf-engine.h \
 	server/nimf-module.c \
 	server/nimf-module.h \
-	server/nimf-nim-im.c \
-	server/nimf-nim-im.h \
 	server/nimf-preeditable.c \
 	server/nimf-preeditable.h \
 	server/nimf-server.c \
@@ -66,7 +62,6 @@ nimfinclude_HEADERS = \
 	client/nimf-client.h \
 	client/nimf-im.h \
 	server/nimf-candidatable.h \
-	server/nimf-connection.h \
 	server/nimf-engine.h \
 	server/nimf-preeditable.h \
 	server/nimf-server.h \

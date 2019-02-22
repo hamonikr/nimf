@@ -22,15 +22,9 @@
 #ifndef __NIMF_CONNECTION_H__
 #define __NIMF_CONNECTION_H__
 
-#if !defined (__NIMF_H_INSIDE__) && !defined (NIMF_COMPILATION)
-#error "Only <nimf.h> can be included directly."
-#endif
-
 #include <glib-object.h>
-#include "nimf-engine.h"
-#include "nimf-server.h"
 #include "nimf-private.h"
-#include <X11/Xlib.h>
+#include "nimf-nim.h"
 
 G_BEGIN_DECLS
 
@@ -41,9 +35,8 @@ G_BEGIN_DECLS
 #define NIMF_IS_CONNECTION_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_CONNECTION))
 #define NIMF_CONNECTION_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_CONNECTION, NimfConnectionClass))
 
-typedef struct _NimfServer NimfServer;
-typedef struct _NimfEngine NimfEngine;
 typedef struct _NimfResult NimfResult;
+typedef struct _NimfNim    NimfNim;
 
 typedef struct _NimfConnection      NimfConnection;
 typedef struct _NimfConnectionClass NimfConnectionClass;
@@ -53,7 +46,7 @@ struct _NimfConnection
   GObject parent_instance;
 
   guint16            id;
-  NimfServer        *server;
+  NimfNim           *nim;
   GSocket           *socket;
   NimfResult        *result;
   GSource           *source;

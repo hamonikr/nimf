@@ -50,7 +50,7 @@ struct _NimfNimIM
 
 GType      nimf_nim_im_get_type (void) G_GNUC_CONST;
 NimfNimIM *nimf_nim_im_new      (NimfConnection *connection);
+
 G_END_DECLS
 
 #endif /* __NIMF_NIM_IM_H__ */
-

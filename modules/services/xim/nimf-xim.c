@@ -34,7 +34,7 @@ static void nimf_xim_set_engine_by_id (NimfService *service,
   NimfServiceIM *im;
 
   im = g_hash_table_lookup (xim->ims,
-                            GUINT_TO_POINTER (service->server->last_focused_icid));
+                            GUINT_TO_POINTER (xim->last_focused_icid));
   if (im)
     nimf_service_im_set_engine_by_id (im, engine_id);
 }
@@ -286,8 +286,7 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
 
   NimfService *service = NIMF_SERVICE (xim);
 
-  service->server->last_focused_conn_id = 0;
-  service->server->last_focused_icid    = im->icid;
+  xim->last_focused_icid    = im->icid;
   service->server->last_focused_service = nimf_xim_get_id (service);
 
   return 1;

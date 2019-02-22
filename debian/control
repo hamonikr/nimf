@@ -42,9 +42,9 @@ Description: Input Method Framework
  .
  This package provides:
   * Input Method Server:
-     * nimf including IMdkit(XIM)
+     * nimf
   * Language Engine:
-     * System keyboard input module
+     * System keyboard
      * Chinese: nimf-rime
      * Japanese: nimf-anthy
      * Korean: nimf-libhangul
@@ -52,6 +52,7 @@ Description: Input Method Framework
   * Service Modules:
      * Indicator (based on appindicator)
      * Wayland
+     * NIM (Nimf Input Method)
      * XIM (based on IMdkit)
      * Preedit window
      * Candidate
