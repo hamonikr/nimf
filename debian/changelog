@@ -1,3 +1,16 @@
+nimf (2019.02.23) stable; urgency=medium
+
+  * Added missig nimf_xim_set_engine()
+  * Detached nimf-nim service from nimf-server
+  * Added nimf_server_get_default()
+  * Handle XNSpotLocation (#266)
+  * Added nimf_preeditable_is_visible()
+  * Fixed translator-credits
+  * nimf-anthy: Added submenu
+  * nimf-libhangul: Fixed localization
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 23 Feb 2019 00:18:12 +0900
+
 nimf (2019.02.21) stable; urgency=medium
 
   * Fixed: an unresolvable reference

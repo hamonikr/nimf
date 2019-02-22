@@ -33,7 +33,7 @@ Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: im-config, nimf-anthy | nimf-libhangul | nimf-rime
+Recommends: im-config, nimf-anthy | nimf-libhangul | nimf-m17n | nimf-rime
 Suggests: fonts-noto-cjk
 Description: Input Method Framework
  Nimf is an input method framework which has a module-based client-server

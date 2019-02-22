@@ -25,6 +25,21 @@
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
 
+static void nimf_xim_set_engine (NimfService *service,
+                                 const gchar *engine_id,
+                                 const gchar *method_id)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfXim       *xim = NIMF_XIM (service);
+  NimfServiceIM *im;
+
+  im = g_hash_table_lookup (xim->ims,
+                            GUINT_TO_POINTER (xim->last_focused_icid));
+  if (im)
+    nimf_service_im_set_engine (im, engine_id, method_id);
+}
+
 static void nimf_xim_set_engine_by_id (NimfService *service,
                                        const gchar *engine_id)
 {
@@ -769,6 +784,7 @@ nimf_xim_class_init (NimfXimClass *class)
   service_class->start            = nimf_xim_start;
   service_class->stop             = nimf_xim_stop;
   service_class->is_active        = nimf_xim_is_active;
+  service_class->set_engine       = nimf_xim_set_engine;
   service_class->set_engine_by_id = nimf_xim_set_engine_by_id;
 
   object_class->finalize = nimf_xim_finalize;
