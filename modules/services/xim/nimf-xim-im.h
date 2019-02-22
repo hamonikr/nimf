@@ -58,8 +58,7 @@ struct _NimfXimIM
 };
 
 GType      nimf_xim_im_get_type            (void) G_GNUC_CONST;
-NimfXimIM *nimf_xim_im_new                 (NimfServer *server,
-                                            NimfXim    *xim);
+NimfXimIM *nimf_xim_im_new                 (NimfXim    *xim);
 void       nimf_xim_im_set_cursor_location (NimfXimIM  *xim_im,
                                             gint        x,
                                             gint        y);

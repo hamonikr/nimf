@@ -78,7 +78,7 @@ struct _NimfServiceIM
 
   NimfEngine       *engine;
   guint16           icid;
-  NimfServer       *server; /* prop */
+  NimfServer       *server;
   gboolean          use_preedit;
   NimfRectangle     cursor_area;
   GList            *engines;

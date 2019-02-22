@@ -28,12 +28,6 @@
 
 G_DEFINE_ABSTRACT_TYPE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
 
-enum
-{
-  PROP_0,
-  PROP_SERVICE_IM_SERVER
-};
-
 void nimf_service_im_emit_preedit_start (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -508,6 +502,7 @@ nimf_service_im_constructed (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfServiceIM *im = NIMF_SERVICE_IM (object);
+  im->server        = nimf_server_get_default ();
   im->use_preedit   = TRUE;
   im->preedit_state = NIMF_PREEDIT_STATE_END;
 
@@ -544,64 +539,12 @@ nimf_service_im_finalize (GObject *object)
 }
 
 static void
-nimf_service_im_set_property (GObject      *object,
-                              guint         prop_id,
-                              const GValue *value,
-                              GParamSpec   *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfServiceIM *im = NIMF_SERVICE_IM (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVICE_IM_SERVER:
-      im->server = g_value_get_object (value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-nimf_service_im_get_property (GObject    *object,
-                              guint       prop_id,
-                              GValue     *value,
-                              GParamSpec *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfServiceIM *im = NIMF_SERVICE_IM (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVICE_IM_SERVER:
-      g_value_set_object (value, im->server);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
 nimf_service_im_class_init (NimfServiceIMClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize = nimf_service_im_finalize;
-  object_class->set_property = nimf_service_im_set_property;
-  object_class->get_property = nimf_service_im_get_property;
-  object_class->constructed  = nimf_service_im_constructed;
-
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE_IM_SERVER,
-                                   g_param_spec_object ("server",
-                                                        "server",
-                                                        "server",
-                                                        NIMF_TYPE_SERVER,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+  object_class->finalize    = nimf_service_im_finalize;
+  object_class->constructed = nimf_service_im_constructed;
 }

@@ -3,7 +3,7 @@
  * nimf-wayland-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -24,14 +24,13 @@
 
 G_DEFINE_TYPE (NimfWaylandIM, nimf_wayland_im, NIMF_TYPE_SERVICE_IM);
 
-NimfWaylandIM *nimf_wayland_im_new (NimfServer  *server,
-                                    NimfWayland *wayland)
+NimfWaylandIM *nimf_wayland_im_new (NimfWayland *wayland)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfWaylandIM *im;
 
-  im = g_object_new (NIMF_TYPE_WAYLAND_IM, "server", server, NULL);
+  im = g_object_new (NIMF_TYPE_WAYLAND_IM, NULL);
   im->wayland = wayland;
 
   return im;

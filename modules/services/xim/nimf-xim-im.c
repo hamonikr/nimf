@@ -228,14 +228,13 @@ on_changed_draw_preedit_on_the_server_side (GSettings *settings,
     nimf_service_im_set_use_preedit (NIMF_SERVICE_IM (xim_im), FALSE);
 }
 
-NimfXimIM *nimf_xim_im_new (NimfServer *server,
-                            NimfXim    *xim)
+NimfXimIM *nimf_xim_im_new (NimfXim *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIM *xim_im;
 
-  xim_im = g_object_new (NIMF_TYPE_XIM_IM, "server", server, NULL);
+  xim_im = g_object_new (NIMF_TYPE_XIM_IM, NULL);
   xim_im->xim = xim;
 
   xim_im->draw_preedit_on_the_server_side =

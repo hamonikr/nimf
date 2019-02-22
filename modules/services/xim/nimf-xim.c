@@ -147,7 +147,7 @@ static int nimf_xim_create_ic (NimfXim          *xim,
 
   if (!xim_im)
   {
-    xim_im = nimf_xim_im_new (NIMF_SERVICE (xim)->server, xim);
+    xim_im = nimf_xim_im_new (xim);
     xim_im->connect_id = data->connect_id;
     data->icid = nimf_xim_add_im (xim, xim_im);
     g_debug (G_STRLOC ": icid = %d", data->icid);

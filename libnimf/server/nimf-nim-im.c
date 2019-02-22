@@ -165,12 +165,11 @@ void nimf_nim_im_emit_beep (NimfServiceIM *im)
                                NIMF_MESSAGE_BEEP_REPLY);
 }
 
-NimfNimIM *nimf_nim_im_new (NimfConnection *connection,
-                            NimfServer     *server)
+NimfNimIM *nimf_nim_im_new (NimfConnection *connection)
 {
   NimfNimIM *nim_im;
 
-  nim_im = g_object_new (NIMF_TYPE_NIM_IM, "server", server, NULL);
+  nim_im = g_object_new (NIMF_TYPE_NIM_IM, NULL);
   nim_im->connection = connection;
 
   return nim_im;

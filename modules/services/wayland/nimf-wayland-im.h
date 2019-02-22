@@ -3,7 +3,7 @@
  * nimf-wayland-im.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2017 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -51,8 +51,7 @@ struct _NimfWaylandIM
 };
 
 GType          nimf_wayland_im_get_type (void) G_GNUC_CONST;
-NimfWaylandIM *nimf_wayland_im_new      (NimfServer  *server,
-                                         NimfWayland *wayland);
+NimfWaylandIM *nimf_wayland_im_new      (NimfWayland *wayland);
 
 G_END_DECLS
 

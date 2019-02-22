@@ -172,7 +172,7 @@ on_incoming_message_nimf (GSocket        *socket,
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_nim_im_new (connection, connection->server);
+      im = nimf_nim_im_new (connection);
       NIMF_SERVICE_IM (im)->icid = icid;
       g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
 

@@ -4,7 +4,7 @@
  * This file is part of Nimf.
  *
  * Copyright (C) 2012 Intel Corporation
- * Copyright (C) 2017,2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -538,7 +538,7 @@ static gboolean nimf_wayland_start (NimfService *service)
     return FALSE;
   }
 
-  wayland->im = nimf_wayland_im_new (NIMF_SERVICE (wayland)->server, wayland);
+  wayland->im = nimf_wayland_im_new (wayland);
   wayland->context = NULL;
   wayland->event_source = nimf_wayland_source_new (wayland);
   g_source_attach (wayland->event_source, NULL);
