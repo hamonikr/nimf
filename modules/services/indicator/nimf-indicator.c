@@ -342,14 +342,23 @@ static gboolean nimf_indicator_start (NimfService *service)
     return TRUE;
 
   const gchar *name;
+  const gchar *desktop = g_getenv ("XDG_SESSION_DESKTOP");
 
-  /* Workaround for Cinnamon */
-  /* Cinnamon doesn't provide "org.kde.StatusNotifierWatcher" */
-  if (g_strcmp0 (g_getenv ("XDG_SESSION_DESKTOP"), "cinnamon"))
-    name = "org.kde.StatusNotifierWatcher";
-  else
+  /* Cinnamon and Mate doesn't provide "org.kde.StatusNotifierWatcher" */
+  if (!g_strcmp0 (desktop, "cinnamon"))
     name = "org.freedesktop.Notifications";
+  else if (!g_strcmp0 (desktop, "mate"))
+    name = "org.mate.Panel";
+  else
+    name = "org.kde.StatusNotifierWatcher";
 
+  /* After the watch is ready, nimf-indicator should be started.
+   * Otherwise, the icon of nimf-indicator may appears strange in some
+   * environments. In addition, after the window manager sets the xkb options,
+   * the nimf-indicator will set the xkb options again.
+   * So we will delay the launch of the nimf-indicator until the watcher is
+   * ready.
+   */
   indicator->watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                             name,
                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
