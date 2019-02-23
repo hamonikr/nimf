@@ -21,6 +21,7 @@
 
 #include "nimf-engine.h"
 #include "nimf-private.h"
+#include "nimf-server.h"
 
 enum
 {

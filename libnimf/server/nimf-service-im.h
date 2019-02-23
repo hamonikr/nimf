@@ -23,9 +23,9 @@
 #define __NIMF_SERVICE_IM_H__
 
 #include <glib.h>
+#include "nimf-types.h"
+#include "nimf-events.h"
 #include "nimf-engine.h"
-#include "nimf-server.h"
-#include "nimf-enum-types.h"
 
 G_BEGIN_DECLS
 
@@ -36,11 +36,11 @@ G_BEGIN_DECLS
 #define NIMF_IS_SERVICE_IM_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_SERVICE_IM))
 #define NIMF_SERVICE_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVICE_IM, NimfServiceIMClass))
 
-typedef struct _NimfEngine     NimfEngine;
-typedef struct _NimfConnection NimfConnection;
+typedef struct _NimfEngine NimfEngine;
 
-typedef struct _NimfServiceIM      NimfServiceIM;
-typedef struct _NimfServiceIMClass NimfServiceIMClass;
+typedef struct _NimfServiceIM        NimfServiceIM;
+typedef struct _NimfServiceIMClass   NimfServiceIMClass;
+typedef struct _NimfServiceIMPrivate NimfServiceIMPrivate;
 
 struct _NimfServiceIMClass
 {
@@ -67,13 +67,9 @@ struct _NimfServiceIMClass
 struct _NimfServiceIM
 {
   GObject parent_instance;
+  NimfServiceIMPrivate *priv;
 
-   /*< private >*/
-  GObjectClass parent_class;
-
-  NimfEngine       *engine;
   guint16           icid;
-  NimfServer       *server;
   gboolean          use_preedit;
   NimfRectangle     cursor_area;
   GList            *engines;
@@ -106,6 +102,7 @@ void         nimf_service_im_set_engine          (NimfServiceIM  *im,
 void         nimf_service_im_engine_changed      (NimfServiceIM  *im,
                                                   const gchar    *engine_id,
                                                   const gchar    *name);
+NimfEngine  *nimf_service_im_get_engine          (NimfServiceIM  *im);
 /* signals */
 void     nimf_service_im_emit_preedit_start        (NimfServiceIM    *im);
 void     nimf_service_im_emit_preedit_changed      (NimfServiceIM    *im,

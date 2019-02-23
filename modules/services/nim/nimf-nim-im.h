@@ -24,6 +24,7 @@
 
 #include <glib-object.h>
 #include "nimf-service-im.h"
+#include "nimf-connection.h"
 
 G_BEGIN_DECLS
 

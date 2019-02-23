@@ -3,7 +3,7 @@
  * nimf-candidate.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -331,12 +331,13 @@ nimf_candidate_select_previous_item (NimfCandidatable *candidatable)
   else
   {
     NimfEngineClass *engine_class;
-    engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+    NimfEngine      *engine;
+    engine = nimf_service_im_get_engine (candidate->target);
+    engine_class = NIMF_ENGINE_GET_CLASS (engine);
 
     if (engine_class->candidate_page_up)
     {
-      if (engine_class->candidate_page_up (candidate->target->engine,
-                                           candidate->target))
+      if (engine_class->candidate_page_up (engine, candidate->target))
         nimf_candidate_select_last_item_in_page (candidatable);
     }
   }
@@ -369,12 +370,13 @@ nimf_candidate_select_next_item (NimfCandidatable *candidatable)
   else
   {
     NimfEngineClass *engine_class;
-    engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+    NimfEngine      *engine;
+    engine = nimf_service_im_get_engine (candidate->target);
+    engine_class = NIMF_ENGINE_GET_CLASS (engine);
 
     if (engine_class->candidate_page_down)
     {
-      if (engine_class->candidate_page_down (candidate->target->engine,
-                                             candidate->target))
+      if (engine_class->candidate_page_down (engine, candidate->target))
         nimf_candidate_select_first_item_in_page (candidatable);
     }
   }
@@ -446,11 +448,13 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfEngineClass *engine_class;
+  NimfEngine      *engine;
 
-  g_return_if_fail (candidate->target &&
-                    NIMF_IS_ENGINE (candidate->target->engine));
+  engine = nimf_service_im_get_engine (candidate->target);
 
-  engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+  g_return_if_fail (candidate->target && NIMF_IS_ENGINE (engine));
+
+  engine_class = NIMF_ENGINE_GET_CLASS (engine);
 
   gchar *text;
   gint  *indices = gtk_tree_path_get_indices (path);
@@ -458,7 +462,7 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
   text = nimf_candidate_get_selected_text (NIMF_CANDIDATABLE (candidate));
 
   if (engine_class->candidate_clicked)
-    engine_class->candidate_clicked (candidate->target->engine,
+    engine_class->candidate_clicked (engine,
                                      candidate->target, text, indices[0]);
   g_free (text);
 }
@@ -471,8 +475,9 @@ on_range_change_value (GtkRange      *range,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_val_if_fail (candidate->target &&
-                        NIMF_IS_ENGINE (candidate->target->engine), FALSE);
+  NimfEngine *engine = nimf_service_im_get_engine (candidate->target);
+
+  g_return_val_if_fail (candidate->target && NIMF_IS_ENGINE (engine), FALSE);
 
   NimfEngineClass *engine_class;
   GtkAdjustment   *adjustment;
@@ -487,11 +492,11 @@ on_range_change_value (GtkRange      *range,
   if (value > upper - 1)
     value = upper - 1;
 
-  engine_class = NIMF_ENGINE_GET_CLASS (candidate->target->engine);
+  engine_class = NIMF_ENGINE_GET_CLASS (engine);
 
   if (engine_class->candidate_scrolled)
-    engine_class->candidate_scrolled (candidate->target->engine,
-                                      candidate->target, value);
+    engine_class->candidate_scrolled (engine, candidate->target, value);
+
   return FALSE;
 }
 
