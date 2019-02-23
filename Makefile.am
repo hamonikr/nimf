@@ -1,4 +1,4 @@
-SUBDIRS = libnimf modules bin po data tests docs
+SUBDIRS = libnimf modules bin po data docs
 
 ACLOCAL_AMFLAGS = -I m4
 

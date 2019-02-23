@@ -43,9 +43,6 @@ input-method-unstable-v1-client-protocol.h
 input-method-unstable-v1-protocol.c
 po/nimf.pot
 po/.intltool-merge-cache
-tests/*.log
-tests/*.trs
-tests/test-nimf
 # gnome-builder
 .buildconfig
 tags

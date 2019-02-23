@@ -1,3 +1,12 @@
+nimf (2019.02.24) stable; urgency=medium
+
+  * Fixed that the indicator does not appear in MATE (closes #267)
+  * Updated icons
+  * Fixed watcher name
+    Cinnamon doesn't provide "org.kde.StatusNotifierWatcher"
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 24 Feb 2019 00:07:52 +0900
+
 nimf (2019.02.23) stable; urgency=medium
 
   * Added missig nimf_xim_set_engine()
