@@ -33,6 +33,26 @@ G_DECLARE_INTERFACE (NimfCandidatable, nimf_candidatable, NIMF, CANDIDATABLE, GO
 
 typedef struct _NimfServiceIM NimfServiceIM;
 
+/**
+ * NimfCandidatableInterface:
+ * @parent: The parent interface.
+ * @show: Shows the candidatable.
+ * @hide: Hides the candidatable.
+ * @is_visible: Determines whether the candidatable is visible.
+ * @clear: Clears the contents of the candidatable.
+ * @set_page_values: Sets page values.
+ * @append: Appends a new candidate.
+ * @get_selected_index: Gets the index of the selected candidatable.
+ * @get_selected_text: Gets the text of the selected candidatable.
+ * @select_first_item_in_page: Selects first item in page.
+ * @select_last_item_in_page: Selects last item in page.
+ * @select_item_by_index_in_page: Selects item in page with the index given as the argument.
+ * @select_previous_item: Selects previus item.
+ * @select_next_item: Selects a next item.
+ * @set_auxiliary_text: Selects auxiliary text.
+ *
+ * Provides an interface for candidate window.
+ */
 struct _NimfCandidatableInterface
 {
   GTypeInterface parent;
