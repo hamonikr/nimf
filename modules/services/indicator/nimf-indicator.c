@@ -341,8 +341,17 @@ static gboolean nimf_indicator_start (NimfService *service)
   if (indicator->active)
     return TRUE;
 
+  const gchar *name;
+
+  /* Workaround for Cinnamon */
+  /* Cinnamon doesn't provide "org.kde.StatusNotifierWatcher" */
+  if (g_strcmp0 (g_getenv ("XDG_SESSION_DESKTOP"), "cinnamon"))
+    name = "org.kde.StatusNotifierWatcher";
+  else
+    name = "org.freedesktop.Notifications";
+
   indicator->watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                                            "org.freedesktop.Notifications",
+                                            name,
                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
                                             on_watcher_appeared, NULL,
                                             indicator, NULL);
