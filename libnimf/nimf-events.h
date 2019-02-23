@@ -32,6 +32,12 @@ G_BEGIN_DECLS
 typedef struct _NimfEventKey NimfEventKey;
 typedef union  _NimfEvent    NimfEvent;
 
+/**
+ * NimfEventType:
+ * @NIMF_EVENT_NOTHING: a special code to indicate a null event.
+ * @NIMF_EVENT_KEY_PRESS: a key has been pressed.
+ * @NIMF_EVENT_KEY_RELEASE: a key has been released.
+ */
 typedef enum
 {
   NIMF_EVENT_NOTHING     = -1,
@@ -39,6 +45,19 @@ typedef enum
   NIMF_EVENT_KEY_RELEASE =  1,
 } NimfEventType;
 
+/**
+ * NimfEventKey:
+ * @type: the type of the event (%NIMF_EVENT_KEY_PRESS or
+ *   %NIMF_EVENT_KEY_RELEASE).
+ * @state: (type NimfModifierType): a bit-mask representing the state of
+ *   the modifier keys (e.g. Control, Shift and Alt) and the pointer
+ *   buttons. See #NimfModifierType.
+ * @keyval: the key that was pressed or released. See the
+ *   `nimf-key-syms.h` header file for a complete list of Nimf key codes.
+ * @hardware_keycode: the raw code of the key that was pressed or released.
+ *
+ * Describes a key press or key release event.
+ */
 struct _NimfEventKey
 {
   NimfEventType type;
