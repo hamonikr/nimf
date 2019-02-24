@@ -1133,7 +1133,10 @@ nimf_settings_finalize (GObject *object)
   g_ptr_array_unref (nsettings->pages);
   g_object_unref    (nsettings->app);
   g_strfreev        (nsettings->xkb->options);
-  g_object_unref    (nsettings->xkb->engine);
+
+  if (nsettings->xkb->engine)
+    g_object_unref  (nsettings->xkb->engine);
+
   g_slist_free      (nsettings->xkb->toggle_buttons);
   g_slist_free      (nsettings->xkb->radio_group);
   g_slice_free      (NimfXkb, nsettings->xkb);
