@@ -21,8 +21,8 @@
 
 #include "nimf-nim-im.h"
 #include <string.h>
-#include "nimf-private.h"
 #include "nimf-connection.h"
+#include "nimf-message-private.h"
 
 G_DEFINE_TYPE (NimfNimIM, nimf_nim_im, NIMF_TYPE_SERVICE_IM);
 

@@ -28,7 +28,8 @@
 #include <unistd.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-#include "nimf-private.h"
+#include "nimf-utils.h"
+#include "nimf-message-private.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>

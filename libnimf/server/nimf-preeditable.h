@@ -31,6 +31,18 @@ G_BEGIN_DECLS
 
 G_DECLARE_INTERFACE (NimfPreeditable, nimf_preeditable, NIMF, PREEDITABLE, GObject)
 
+/**
+ * NimfPreeditableInterface:
+ * @parent: The parent interface.
+ * @show: Shows the preeditable.
+ * @hide: Hides the preeditable.
+ * @is_visible: Determines whether the preeditable is visible.
+ * @set_text: Sets the text in the preeditable to the given value, replacing
+ *   the current contents.
+ * @set_cursor_location: Sets the cursor position.
+ *
+ * Provides an interface for preedit window.
+ */
 struct _NimfPreeditableInterface
 {
   GTypeInterface parent;

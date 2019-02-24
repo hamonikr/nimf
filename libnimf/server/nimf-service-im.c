@@ -20,7 +20,7 @@
  */
 
 #include "nimf-service-im.h"
-#include "nimf-module.h"
+#include "nimf-module-private.h"
 #include <string.h>
 #include "nimf-preeditable.h"
 #include "nimf-key-syms.h"
@@ -223,8 +223,7 @@ nimf_service_im_create_engines (NimfServiceIM *im)
   while (g_hash_table_iter_next (&iter, NULL, &module))
   {
     NimfEngine *engine;
-    engine = g_object_new (NIMF_MODULE (module)->type, "server",
-                           im->priv->server, NULL);
+    engine = g_object_new (NIMF_MODULE (module)->type, NULL);
     engines = g_list_prepend (engines, engine);
   }
 
@@ -472,6 +471,7 @@ nimf_service_im_set_engine (NimfServiceIM *im,
 
 /**
  * nimf_service_im_get_engine:
+ * @im: a #NimfServiceIM
  *
  * Returns the associated #NimfEngine instance.
  *

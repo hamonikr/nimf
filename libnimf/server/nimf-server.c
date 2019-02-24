@@ -194,34 +194,17 @@ nimf_server_init (NimfServer *server)
 }
 
 static void
-nimf_server_stop (NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_SERVER (server));
-
-  if (!server->active)
-    return;
-
-  GHashTableIter iter;
-  gpointer       service;
-
-  g_hash_table_iter_init (&iter, server->services);
-  while (g_hash_table_iter_next (&iter, NULL, &service))
-    nimf_service_stop (NIMF_SERVICE (service));
-
-  server->active = FALSE;
-}
-
-static void
 nimf_server_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServer *server = NIMF_SERVER (object);
+  NimfServer     *server = NIMF_SERVER (object);
+  GHashTableIter  iter;
+  gpointer        service;
 
-  if (server->active)
-    nimf_server_stop (server);
+  g_hash_table_iter_init (&iter, server->services);
+  while (g_hash_table_iter_next (&iter, NULL, &service))
+    nimf_service_stop (NIMF_SERVICE (service));
 
   g_hash_table_unref (server->modules);
   g_hash_table_unref (server->services);

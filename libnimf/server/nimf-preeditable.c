@@ -32,11 +32,9 @@ void nimf_preeditable_show (NimfPreeditable *preeditable)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfPreeditableInterface *iface;
-
   g_return_if_fail (NIMF_IS_PREEDITABLE (preeditable));
 
-  iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
+  NimfPreeditableInterface *iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
 
   if (iface->show)
     iface->show (preeditable);
@@ -46,11 +44,9 @@ void nimf_preeditable_hide (NimfPreeditable *preeditable)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfPreeditableInterface *iface;
-
   g_return_if_fail (NIMF_IS_PREEDITABLE (preeditable));
 
-  iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
+  NimfPreeditableInterface *iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
 
   if (iface->hide)
     iface->hide (preeditable);
@@ -68,11 +64,9 @@ gboolean nimf_preeditable_is_visible (NimfPreeditable *preeditable)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfPreeditableInterface *iface;
-
   g_return_val_if_fail (NIMF_IS_PREEDITABLE (preeditable), FALSE);
 
-  iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
+  NimfPreeditableInterface *iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
 
   if (iface->is_visible)
     return iface->is_visible (preeditable);
@@ -85,11 +79,9 @@ void nimf_preeditable_set_text (NimfPreeditable *preeditable,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfPreeditableInterface *iface;
-
   g_return_if_fail (NIMF_IS_PREEDITABLE (preeditable));
 
-  iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
+  NimfPreeditableInterface *iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
 
   if (iface->set_text)
     iface->set_text (preeditable, text);
@@ -100,11 +92,9 @@ void nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfPreeditableInterface *iface;
-
   g_return_if_fail (NIMF_IS_PREEDITABLE (preeditable));
 
-  iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
+  NimfPreeditableInterface *iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
 
   if (iface->set_cursor_location)
     iface->set_cursor_location (preeditable, area);

@@ -20,19 +20,27 @@
  */
 
 #include <glib.h>
-#include "nimf-private.h"
+#include "nimf-utils.h"
 #include <glib/gstdio.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "nimf-server.h"
-#include "nimf-module.h"
+#include "nimf-module-private.h"
 #include "nimf-service.h"
 #include <glib/gi18n.h>
 #include "config.h"
 #include <syslog.h>
 #include <errno.h>
 #include <glib-unix.h>
+
+static gchar *
+nimf_get_nimf_path ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf", NULL);
+}
 
 static gboolean
 create_nimf_runtime_dir ()
@@ -51,6 +59,14 @@ create_nimf_runtime_dir ()
   g_free (nimf_path);
 
   return retval;
+}
+
+static gchar *
+nimf_get_lock_path ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf/lock.pid", NULL);
 }
 
 static int
@@ -274,9 +290,6 @@ nimf_server_start (NimfServer *server)
 
   g_return_val_if_fail (NIMF_IS_SERVER (server), FALSE);
 
-  if (server->active)
-    return TRUE;
-
   nimf_server_load_services (server);
 
   server->candidatable = g_hash_table_lookup (server->services, "nimf-candidate");
@@ -302,7 +315,7 @@ nimf_server_start (NimfServer *server)
       g_hash_table_iter_remove (&iter);
   }
 
-  return server->active = TRUE;
+  return TRUE;
 }
 
 static void unlink_socket_file ()
@@ -313,6 +326,53 @@ static void unlink_socket_file ()
   path = nimf_get_socket_path ();
   g_unlink (path);
   g_free (path);
+}
+
+static void
+nimf_log_default_handler (const gchar    *log_domain,
+                          GLogLevelFlags  log_level,
+                          const gchar    *message,
+                          gboolean       *debug)
+{
+  int priority;
+  const gchar *prefix;
+
+  switch (log_level & G_LOG_LEVEL_MASK)
+  {
+    case G_LOG_LEVEL_ERROR:
+      priority = LOG_ERR;
+      prefix = "ERROR **";
+      break;
+    case G_LOG_LEVEL_CRITICAL:
+      priority = LOG_CRIT;
+      prefix = "CRITICAL **";
+      break;
+    case G_LOG_LEVEL_WARNING:
+      priority = LOG_WARNING;
+      prefix = "WARNING **";
+      break;
+    case G_LOG_LEVEL_MESSAGE:
+      priority = LOG_NOTICE;
+      prefix = "Message";
+      break;
+    case G_LOG_LEVEL_INFO:
+      priority = LOG_INFO;
+      prefix = "INFO";
+      break;
+    case G_LOG_LEVEL_DEBUG:
+      priority = LOG_DEBUG;
+      prefix = "DEBUG";
+      break;
+    default:
+      priority = LOG_NOTICE;
+      prefix = "LOG";
+      break;
+  }
+
+  if (priority == LOG_DEBUG && (debug == NULL || *debug == FALSE))
+    return;
+
+  syslog (priority, "%s-%s: %s", log_domain, prefix, message ? message : "(NULL) message");
 }
 
 int
@@ -443,8 +503,8 @@ main (int argc, char **argv)
 
   gchar *lock_path, *nimf_path;
 
-  lock_path = nimf_get_lock_path   ();
-  nimf_path = nimf_get_nimf_path   ();
+  lock_path = nimf_get_lock_path ();
+  nimf_path = nimf_get_nimf_path ();
 
   unlink_socket_file ();
   g_unlink (lock_path);

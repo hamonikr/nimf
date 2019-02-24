@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.02.24)
+AC_INIT(nimf, 2019.02.25)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -262,6 +262,8 @@ GLIB_GSETTINGS
 AC_OUTPUT([
   Makefile
   bin/Makefile
+  bin/nimf/Makefile
+  bin/nimf-settings/Makefile
   data/Makefile
   data/apparmor-abstractions/Makefile
   data/icons/Makefile

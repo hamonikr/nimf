@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
- * nimf-message.h
+ * nimf-message-private.h
  * This file is part of Nimf.
  *
  * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
@@ -21,9 +21,11 @@
 
 #ifndef __NIMF_MESSAGE_H__
 #define __NIMF_MESSAGE_H__
+#ifndef __GTK_DOC_IGNORE__
 
 #include <glib-object.h>
 #include "nimf-events.h"
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -85,6 +87,14 @@ struct _NimfMessage
   gint               ref_count;
 };
 
+typedef struct _NimfResult NimfResult;
+
+struct _NimfResult
+{
+  gboolean     is_dispatched;
+  NimfMessage *reply;
+};
+
 NimfMessage  *nimf_message_new              (void);
 NimfMessage  *nimf_message_new_full         (NimfMessageType  type,
                                              guint16          im_id,
@@ -105,6 +115,20 @@ guint16       nimf_message_get_body_size    (NimfMessage     *message);
 const gchar  *nimf_message_get_name         (NimfMessage     *message);
 const gchar  *nimf_message_get_name_by_type (NimfMessageType  type);
 
+void         nimf_result_iteration_until (NimfResult      *result,
+                                          GMainContext    *main_context,
+                                          guint16          icid,
+                                          NimfMessageType  type);
+void         nimf_send_message           (GSocket         *socket,
+                                          guint16          im_id,
+                                          NimfMessageType  type,
+                                          gpointer         data,
+                                          guint16          data_len,
+                                          GDestroyNotify   data_destroy_func);
+NimfMessage *nimf_recv_message           (GSocket         *socket);
+
+
 G_END_DECLS
 
+#endif /* __GTK_DOC_IGNORE__ */
 #endif /* __NIMF_MESSAGE_H__ */

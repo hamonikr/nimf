@@ -20,63 +20,15 @@
  */
 
 #include "nimf-engine.h"
-#include "nimf-private.h"
 #include "nimf-server.h"
 
-enum
+struct _NimfEnginePrivate
 {
-  PROP_0,
-  PROP_SERVER
+  gchar *surrounding_text;
+  gint   surrounding_cursor_index;
 };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (NimfEngine, nimf_engine, G_TYPE_OBJECT);
-
-static void
-nimf_engine_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (object));
-
-  NimfEngine *engine = NIMF_ENGINE (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVER:
-      engine->priv->server = g_value_get_object (value);
-      g_object_notify_by_pspec (object, pspec);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-nimf_engine_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_ENGINE (object));
-
-  NimfEngine *engine = NIMF_ENGINE (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVER:
-      g_value_set_object (value, engine->priv->server);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
 
 void nimf_engine_reset (NimfEngine    *engine,
                         NimfServiceIM *im)
@@ -248,7 +200,9 @@ nimf_engine_status_changed (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_signal_emit_by_name (engine->priv->server, "engine-status-changed",
+  NimfServer *server = nimf_server_get_default ();
+
+  g_signal_emit_by_name (server, "engine-status-changed",
                          nimf_engine_get_id (engine),
                          nimf_engine_get_icon_name (engine));
 }
@@ -336,7 +290,7 @@ nimf_engine_get_candidatable (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return engine->priv->server->candidatable;
+  return nimf_server_get_default ()->candidatable;
 }
 
 static const gchar *
@@ -370,24 +324,13 @@ nimf_engine_class_init (NimfEngineClass *class)
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize     = nimf_engine_finalize;
-
-  object_class->set_property = nimf_engine_set_property;
-  object_class->get_property = nimf_engine_get_property;
-
   class->filter_event        = nimf_engine_real_filter_event;
   class->set_surrounding     = nimf_engine_real_set_surrounding;
   class->get_surrounding     = nimf_engine_real_get_surrounding;
   class->get_id              = nimf_engine_real_get_id;
   class->get_icon_name       = nimf_engine_real_get_icon_name;
 
-  g_object_class_install_property (object_class,
-                                   PROP_SERVER,
-                                   g_param_spec_object ("server",
-                                                        "server",
-                                                        "server",
-                                                        NIMF_TYPE_SERVER,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+  object_class->finalize     = nimf_engine_finalize;
 }
 
 NimfEngineInfo *

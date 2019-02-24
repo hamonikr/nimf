@@ -12,8 +12,8 @@ configure
 *.lo
 *.pc
 *.o
-/bin/nimf
-/bin/nimf-settings
+/bin/nimf/nimf
+/bin/nimf-settings/nimf-settings
 libtool
 m4/
 stamp-h1
@@ -23,6 +23,9 @@ stamp-h1
 *.typelib
 nimf-enum-types.c
 nimf-enum-types.h
+nimf-message-enum-types.c
+nimf-message-enum-types.h
+nimf-message-enum-types-private.h
 nimf-marshalers.c
 nimf-marshalers.h
 *.moc

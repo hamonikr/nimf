@@ -23,8 +23,8 @@
 #define __NIMF_CONNECTION_H__
 
 #include <glib-object.h>
-#include "nimf-private.h"
 #include "nimf-nim.h"
+#include "nimf-message-private.h"
 
 G_BEGIN_DECLS
 
@@ -34,9 +34,6 @@ G_BEGIN_DECLS
 #define NIMF_IS_CONNECTION(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_CONNECTION))
 #define NIMF_IS_CONNECTION_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_CONNECTION))
 #define NIMF_CONNECTION_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_CONNECTION, NimfConnectionClass))
-
-typedef struct _NimfResult NimfResult;
-typedef struct _NimfNim    NimfNim;
 
 typedef struct _NimfConnection      NimfConnection;
 typedef struct _NimfConnectionClass NimfConnectionClass;

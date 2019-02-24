@@ -16,9 +16,8 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "nimf-enum-types.h"
-#include "nimf-key-syms.h"
-#include "nimf-types.h"
+#include "nimf-message-enum-types-private.h"
+#include "nimf-message-private.h"
 
 /*** END file-header ***/
 

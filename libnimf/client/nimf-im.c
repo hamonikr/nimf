@@ -22,8 +22,7 @@
 #include "nimf-im.h"
 #include <string.h>
 #include "nimf-marshalers.h"
-#include "nimf-message.h"
-#include "nimf-private.h"
+#include "nimf-message-private.h"
 
 enum {
   PREEDIT_START,

@@ -24,18 +24,17 @@
 
 #include <glib-object.h>
 #include "nimf-events.h"
-#include "nimf-types.h"
 #include "nimf-service-im.h"
 #include "nimf-candidatable.h"
 
 G_BEGIN_DECLS
 
-#define NIMF_TYPE_ENGINE             (nimf_engine_get_type ())
-#define NIMF_ENGINE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_ENGINE, NimfEngine))
-#define NIMF_ENGINE_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_ENGINE, NimfEngineClass))
-#define NIMF_IS_ENGINE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_ENGINE))
-#define NIMF_IS_ENGINE_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_ENGINE))
-#define NIMF_ENGINE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
+#define NIMF_TYPE_ENGINE           (nimf_engine_get_type ())
+#define NIMF_ENGINE(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_ENGINE, NimfEngine))
+#define NIMF_ENGINE_CLASS(obj)     (G_TYPE_CHECK_CLASS_CAST ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
+#define NIMF_IS_ENGINE(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_ENGINE))
+#define NIMF_IS_ENGINE_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE ((obj), NIMF_TYPE_ENGINE))
+#define NIMF_ENGINE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
 
 typedef struct _NimfServiceIM    NimfServiceIM;
 typedef struct _NimfCandidatable NimfCandidatable;
@@ -44,21 +43,18 @@ typedef struct _NimfEngine        NimfEngine;
 typedef struct _NimfEngineClass   NimfEngineClass;
 typedef struct _NimfEnginePrivate NimfEnginePrivate;
 
-typedef struct _NimfServer NimfServer;
-
-struct _NimfEnginePrivate
-{
-  NimfServer *server;
-  gchar      *surrounding_text;
-  gint        surrounding_cursor_index;
-};
-
 struct _NimfEngine
 {
   GObject parent_instance;
   NimfEnginePrivate *priv;
 };
 
+/**
+ * NimfEngineInfo:
+ * @method_id: method id of the engine
+ * @label: human readable label
+ * @group: human readable group name
+ */
 typedef struct
 {
   gchar *method_id; /* method id */

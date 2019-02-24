@@ -53,7 +53,6 @@ struct _NimfServer
   GHashTable      *services;
   GList           *instances;
   const gchar     *last_focused_service;
-  gboolean         active;
   /* settings */
   GSettings       *settings;
   NimfKey        **hotkeys;
@@ -97,4 +96,3 @@ NimfServer  *nimf_server_get_default           (void);
 G_END_DECLS
 
 #endif /* __NIMF_SERVER_H__ */
-

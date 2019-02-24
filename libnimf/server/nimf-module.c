@@ -20,7 +20,7 @@
  */
 
 #include "config.h"
-#include "nimf-module.h"
+#include "nimf-module-private.h"
 #include <gio/gio.h>
 
 G_DEFINE_TYPE (NimfModule, nimf_module, G_TYPE_TYPE_MODULE);

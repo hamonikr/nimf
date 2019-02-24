@@ -3,7 +3,7 @@
  * nimf-types.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015,2016 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -51,7 +51,7 @@ nimf_key_new_from_nicks (const gchar **nicks)
       flags_value = g_flags_get_value_by_nick (flags_class, nicks[i]);
 
       if (flags_value)
-        key->mods |= flags_value->value;
+        key->state |= flags_value->value;
       else
         g_warning ("NimfModifierType doesn't have a member with that nickname: %s", nicks[i]);
     }

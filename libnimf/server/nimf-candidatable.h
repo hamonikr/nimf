@@ -33,6 +33,9 @@ G_DECLARE_INTERFACE (NimfCandidatable, nimf_candidatable, NIMF, CANDIDATABLE, GO
 
 typedef struct _NimfServiceIM NimfServiceIM;
 
+typedef struct _NimfCandidatable          NimfCandidatable; /* dummy typedef */
+typedef struct _NimfCandidatableInterface NimfCandidatableInterface;
+
 /**
  * NimfCandidatableInterface:
  * @parent: The parent interface.

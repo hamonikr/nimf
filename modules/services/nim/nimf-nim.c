@@ -21,7 +21,7 @@
 
 #include "nimf-nim.h"
 #include "nimf-nim-im.h"
-#include "nimf-message.h"
+#include "nimf-message-private.h"
 #include "nimf-connection.h"
 #include <gio/gunixsocketaddress.h>
 #include <glib.h>
@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "nimf-utils.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfNim, nimf_nim, NIMF_TYPE_SERVICE);
 

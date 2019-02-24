@@ -22,7 +22,6 @@
 #include "nimf-connection.h"
 #include "nimf-events.h"
 #include "nimf-marshalers.h"
-#include "nimf-private.h"
 #include "nimf-service-im.h"
 #include <string.h>
 

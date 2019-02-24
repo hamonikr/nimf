@@ -1,3 +1,9 @@
+nimf (2019.02.25) stable; urgency=medium
+
+  * Delay the launch of the nimf-indicator until the watcher is ready
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 25 Feb 2019 00:40:11 +0900
+
 nimf (2019.02.24) stable; urgency=medium
 
   * Fixed that the indicator does not appear in MATE (closes #267)
