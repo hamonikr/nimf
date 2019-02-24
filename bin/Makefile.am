@@ -2,6 +2,14 @@ bin_PROGRAMS = nimf nimf-settings
 
 man_MANS = nimf.1 nimf-settings.1
 
+applicationsdir   = $(datadir)/applications
+applications_DATA = nimf-settings.desktop
+
+autostartdir   = /etc/xdg/autostart
+autostart_DATA = nimf-settings-autostart.desktop
+
+@INTLTOOL_DESKTOP_RULE@
+
 gsettings_SCHEMAS = org.nimf.settings.gschema.xml
 @GSETTINGS_RULES@
 
@@ -32,4 +40,7 @@ nimf_settings_CFLAGS = \
 nimf_settings_LDFLAGS = $(NIMF_SETTINGS_DEPS_LIBS)
 nimf_settings_LDADD   = $(top_builddir)/libnimf/libnimf.la
 
-DISTCLEANFILES = Makefile.in
+DISTCLEANFILES = \
+		Makefile.in \
+		nimf-settings.desktop \
+		nimf-settings-autostart.desktop

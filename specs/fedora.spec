@@ -104,6 +104,7 @@ fi
 %{_datadir}/icons/*
 %{_datadir}/locale/*
 %{_datadir}/man/*
+%{_sysconfdir}/xdg/autostart/*
 
 %files devel
 %{_includedir}/*
