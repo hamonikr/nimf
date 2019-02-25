@@ -121,7 +121,6 @@ on_incoming (GSocket        *socket,
                          NULL, 0, NULL);
       connection->nim->last_focused_conn_id = connection->id;
       connection->nim->last_focused_icid    = icid;
-      server->last_focused_service = nimf_nim_get_id (NIMF_SERVICE (connection->nim));
       break;
     case NIMF_MESSAGE_FOCUS_OUT:
       nimf_service_im_focus_out (NIMF_SERVICE_IM (im));

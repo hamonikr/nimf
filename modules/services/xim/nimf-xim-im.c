@@ -246,6 +246,14 @@ NimfXimIM *nimf_xim_im_new (NimfXim *xim)
   return xim_im;
 }
 
+const gchar *
+nimf_xim_im_get_service_id (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return nimf_service_get_id (NIMF_SERVICE (NIMF_XIM_IM (im)->xim));
+}
+
 static void
 nimf_xim_im_init (NimfXimIM *nimf_xim_im)
 {
@@ -272,6 +280,7 @@ nimf_xim_im_class_init (NimfXimIMClass *class)
   service_im_class->emit_preedit_start   = nimf_xim_im_emit_preedit_start;
   service_im_class->emit_preedit_changed = nimf_xim_im_emit_preedit_changed;
   service_im_class->emit_preedit_end     = nimf_xim_im_emit_preedit_end;
+  service_im_class->get_service_id       = nimf_xim_im_get_service_id;
 
   object_class->finalize = nimf_xim_im_finalize;
 }

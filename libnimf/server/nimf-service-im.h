@@ -49,6 +49,8 @@ struct _NimfServiceIMClass
 
   /*< public >*/
   /* Virtual functions */
+  const gchar * (* get_service_id) (NimfServiceIM *im);
+
   void     (* emit_commit)               (NimfServiceIM    *im,
                                           const gchar      *text);
   void     (* emit_preedit_start)        (NimfServiceIM    *im);
@@ -103,6 +105,7 @@ void         nimf_service_im_engine_changed      (NimfServiceIM  *im,
                                                   const gchar    *engine_id,
                                                   const gchar    *name);
 NimfEngine  *nimf_service_im_get_engine          (NimfServiceIM  *im);
+const gchar *nimf_service_im_get_service_id      (NimfServiceIM  *im);
 /* signals */
 void     nimf_service_im_emit_preedit_start        (NimfServiceIM    *im);
 void     nimf_service_im_emit_preedit_changed      (NimfServiceIM    *im,

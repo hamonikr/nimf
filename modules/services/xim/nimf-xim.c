@@ -299,12 +299,7 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
            G_STRFUNC, data->icid, im->icid);
 
   nimf_service_im_focus_in (im);
-
-  NimfService *service = NIMF_SERVICE (xim);
-  NimfServer  *server  = nimf_server_get_default ();
-
   xim->last_focused_icid = im->icid;
-  server->last_focused_service = nimf_xim_get_id (service);
 
   return 1;
 }

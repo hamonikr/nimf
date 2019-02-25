@@ -42,8 +42,8 @@ void nimf_service_im_emit_preedit_start (NimfServiceIM *im)
   if (G_UNLIKELY (!im))
     return;
 
-  NimfServiceIMClass *class = NIMF_SERVICE_IM_GET_CLASS (im);
-  NimfServer        *server = nimf_server_get_default ();
+  NimfServiceIMClass *class  = NIMF_SERVICE_IM_GET_CLASS (im);
+  NimfServer         *server = nimf_server_get_default ();
 
   if (class->emit_preedit_start)
     class->emit_preedit_start (im);
@@ -189,6 +189,7 @@ void nimf_service_im_focus_in (NimfServiceIM *im)
 
   nimf_engine_focus_in (im->priv->engine, im);
   nimf_server_set_last_focused_im (server, im);
+  server->last_focused_service = nimf_service_im_get_service_id (im);
   nimf_service_im_engine_changed (im, nimf_engine_get_id (im->priv->engine),
                                   nimf_engine_get_icon_name (im->priv->engine));
 }
@@ -480,6 +481,31 @@ nimf_service_im_set_engine (NimfServiceIM *im,
   nimf_engine_set_method (engine, method_id);
   nimf_service_im_engine_changed (im, engine_id,
                                   nimf_engine_get_icon_name (im->priv->engine));
+}
+
+/**
+ * nimf_service_im_get_service_id:
+ * @im: a #NimfServiceIM
+ *
+ * Returns: (transfer none): a service id
+ */
+const gchar *
+nimf_service_im_get_service_id (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfServiceIMClass *class = NIMF_SERVICE_IM_GET_CLASS (im);
+
+  if (class->get_service_id)
+  {
+    return class->get_service_id (im);
+  }
+  else
+  {
+    g_critical (G_STRLOC ": %s: You should implement your_get_service_id ()",
+                G_STRFUNC);
+    return NULL;
+  }
 }
 
 /**

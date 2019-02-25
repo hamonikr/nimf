@@ -167,6 +167,16 @@ void nimf_nim_im_emit_beep (NimfServiceIM *im)
                                NIMF_MESSAGE_BEEP_REPLY);
 }
 
+const gchar *
+nimf_nim_im_get_service_id (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfService *service = NIMF_SERVICE (NIMF_NIM_IM (im)->connection->nim);
+
+  return nimf_service_get_id (service);
+}
+
 NimfNimIM *nimf_nim_im_new ()
 {
   return g_object_new (NIMF_TYPE_NIM_IM, NULL);
@@ -198,4 +208,5 @@ nimf_nim_im_class_init (NimfNimIMClass *class)
   service_im_class->emit_retrieve_surrounding = nimf_nim_im_emit_retrieve_surrounding;
   service_im_class->emit_delete_surrounding = nimf_nim_im_emit_delete_surrounding;
   service_im_class->emit_beep            = nimf_nim_im_emit_beep;
+  service_im_class->get_service_id       = nimf_nim_im_get_service_id;
 }
