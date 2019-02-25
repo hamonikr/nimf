@@ -139,7 +139,7 @@ nimf_server_load_service (NimfServer  *server,
     return;
   }
 
-  service = g_object_new (module->type, "server", server, NULL);
+  service = g_object_new (module->type, NULL);
   g_hash_table_insert (server->services,
                        g_strdup (nimf_service_get_id (service)), service);
 
@@ -253,7 +253,7 @@ nimf_server_load_engines (NimfServer *server)
         }
 
         g_hash_table_insert (server->modules, g_strdup (path), module);
-        engine = g_object_new (module->type, "server", server, NULL);
+        engine = g_object_new (module->type, NULL);
         server->instances = g_list_prepend (server->instances, engine);
         g_type_module_unuse (G_TYPE_MODULE (module));
 

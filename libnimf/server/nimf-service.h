@@ -27,7 +27,6 @@
 #endif
 
 #include <glib-object.h>
-#include "nimf-server.h"
 
 G_BEGIN_DECLS
 
@@ -44,7 +43,6 @@ typedef struct _NimfServiceClass  NimfServiceClass;
 struct _NimfService
 {
   GObject parent_instance;
-  NimfServer *server;
 };
 
 struct _NimfServiceClass

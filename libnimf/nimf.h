@@ -3,7 +3,7 @@
  * nimf.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -35,6 +35,7 @@
 #include "nimf-service.h"
 #include "nimf-service-im.h"
 #include "nimf-types.h"
+#include "nimf-utils.h"
 
 #undef __NIMF_H_INSIDE__
 

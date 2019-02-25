@@ -13,7 +13,6 @@ libnimf_la_SOURCES = \
 	nimf.h \
 	nimf-events.c \
 	nimf-events.h \
-	nimf-key-syms.c \
 	nimf-key-syms.h \
 	nimf-message.c \
 	nimf-message-private.h \

@@ -120,71 +120,14 @@ nimf_service_set_engine (NimfService *service,
 }
 
 static void
-nimf_service_set_property (GObject      *object,
-                           guint         prop_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_SERVICE (object));
-
-  NimfService *service = NIMF_SERVICE (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVER:
-      service->server = g_value_get_object (value);
-      g_object_notify_by_pspec (object, pspec);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
-nimf_service_get_property (GObject    *object,
-                           guint       prop_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (NIMF_IS_SERVICE (object));
-
-  NimfService *service = NIMF_SERVICE (object);
-
-  switch (prop_id)
-  {
-    case PROP_SERVER:
-      g_value_set_object (value, service->server);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-  }
-}
-
-static void
 nimf_service_class_init (NimfServiceClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize     = nimf_service_finalize;
-  object_class->set_property = nimf_service_set_property;
-  object_class->get_property = nimf_service_get_property;
-
   class->get_id    = nimf_service_real_get_id;
   class->is_active = nimf_service_real_is_active;
 
-  g_object_class_install_property (object_class,
-                                   PROP_SERVER,
-                                   g_param_spec_object ("server",
-                                                        "server",
-                                                        "server",
-                                                        NIMF_TYPE_SERVER,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+  object_class->finalize = nimf_service_finalize;
 }

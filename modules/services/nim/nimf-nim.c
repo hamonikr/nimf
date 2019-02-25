@@ -44,9 +44,9 @@ nimf_nim_get_id (NimfService *service)
 }
 
 static gboolean
-on_incoming_message_nimf (GSocket        *socket,
-                          GIOCondition    condition,
-                          NimfConnection *connection)
+on_incoming (GSocket        *socket,
+             GIOCondition    condition,
+             NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -90,7 +90,8 @@ on_incoming_message_nimf (GSocket        *socket,
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_nim_im_new (connection);
+      im = nimf_nim_im_new ();
+      im->connection = connection;
       NIMF_SERVICE_IM (im)->icid = icid;
       g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
 
@@ -208,7 +209,7 @@ on_new_connection (GSocketService    *service,
   connection->socket_connection = g_object_ref (socket_connection);
   g_source_set_can_recurse (connection->source, TRUE);
   g_source_set_callback (connection->source,
-                         (GSourceFunc) on_incoming_message_nimf,
+                         (GSourceFunc) on_incoming,
                          connection, NULL);
   g_source_attach (connection->source, NULL);
 

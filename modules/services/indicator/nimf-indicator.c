@@ -176,7 +176,6 @@ on_name_appeared (GDBusConnection *connection,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfIndicator *indicator = user_data;
-  NimfService   *service   = NIMF_SERVICE (indicator);
 
   if (!gtk_init_check (NULL, NULL))
     return;
@@ -191,8 +190,9 @@ on_name_appeared (GDBusConnection *connection,
   GtkWidget  *about_menu;
   gchar     **engine_ids;
   guint       i;
+  NimfServer *server = nimf_server_get_default ();
 
-  engine_ids = nimf_server_get_loaded_engine_ids (service->server);
+  engine_ids = nimf_server_get_loaded_engine_ids (server);
 
   for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
   {
@@ -249,7 +249,7 @@ on_name_appeared (GDBusConnection *connection,
         gtk_widget_set_name (menu_item, engine_method);
         g_free (engine_method);
         g_signal_connect (menu_item, "activate",
-                          G_CALLBACK (on_menu_engine), service->server);
+                          G_CALLBACK (on_menu_engine), server);
 
         if (!gnome && infos[j]->group)
           gtk_menu_shell_append (GTK_MENU_SHELL (submenu2), menu_item);
@@ -266,7 +266,7 @@ on_name_appeared (GDBusConnection *connection,
       engine_menu = gtk_menu_item_new_with_label (schema_name);
       gtk_widget_set_name (engine_menu, engine_ids[i]);
       g_signal_connect (engine_menu, "activate",
-                        G_CALLBACK (on_menu_engine), service->server);
+                        G_CALLBACK (on_menu_engine), server);
     }
 
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), engine_menu);
@@ -307,9 +307,9 @@ on_name_appeared (GDBusConnection *connection,
                                "nimf-focus-out", "Nimf");
   app_indicator_set_menu (indicator->appindicator, GTK_MENU (menu));
 
-  g_signal_connect (service->server, "engine-changed",
+  g_signal_connect (server, "engine-changed",
                     G_CALLBACK (on_engine_changed), indicator);
-  g_signal_connect (service->server, "engine-status-changed",
+  g_signal_connect (server, "engine-status-changed",
                     G_CALLBACK (on_engine_status_changed), indicator);
 
   /* activate xkb options */
