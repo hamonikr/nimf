@@ -3,7 +3,7 @@
  * nimf-server-private.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2019 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -26,11 +26,27 @@
 
 G_BEGIN_DECLS
 
-NimfServiceIM *nimf_server_get_last_focused_im (NimfServer    *server);
-void           nimf_server_set_last_focused_im (NimfServer    *server,
-                                                NimfServiceIM *im);
+struct _NimfServerPrivate
+{
+  GHashTable    *modules;
+  GHashTable    *services;
+  GList         *instances;
+  NimfServiceIM *last_focused_im;
+  const gchar   *last_focused_service;
+  GSettings     *settings;
+  NimfKey      **hotkeys;
+  GHashTable    *trigger_gsettings;
+  GHashTable    *trigger_keys;
+  gboolean       use_singleton;
+};
 
 G_END_DECLS
+
+NimfEngine *nimf_server_get_default_engine (NimfServer  *server);
+NimfEngine *nimf_server_get_next_instance  (NimfServer  *server,
+                                            NimfEngine  *engine);
+NimfEngine  *nimf_server_get_instance      (NimfServer  *server,
+                                            const gchar *module_name);
 
 #endif /* __NIMF_SERVER_PRIVATE_H__ */
 

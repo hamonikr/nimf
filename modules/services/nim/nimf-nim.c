@@ -54,7 +54,6 @@ on_incoming (GSocket        *socket,
   gboolean     retval;
   nimf_message_unref (connection->result->reply);
   connection->result->is_dispatched = TRUE;
-  NimfServer *server = nimf_server_get_default ();
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
@@ -62,9 +61,13 @@ on_incoming (GSocket        *socket,
 
     g_socket_close (socket, NULL);
 
-    GList *l;
-    for (l = server->instances; l != NULL; l = l->next)
-      nimf_engine_reset (l->data, NULL);
+    GHashTableIter  iter;
+    gpointer        im;
+
+    g_hash_table_iter_init (&iter, connection->ims);
+
+    while (g_hash_table_iter_next (&iter, NULL, &im))
+      nimf_service_im_reset (im);
 
     connection->result->reply = NULL;
     g_hash_table_remove (connection->nim->connections,

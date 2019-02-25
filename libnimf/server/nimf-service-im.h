@@ -74,7 +74,6 @@ struct _NimfServiceIM
   guint16           icid;
   gboolean          use_preedit;
   NimfRectangle     cursor_area;
-  GList            *engines;
   /* preedit */
   NimfPreeditState  preedit_state;
   gchar            *preedit_string;

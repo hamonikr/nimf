@@ -26,6 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "nimf-server.h"
+#include "nimf-server-private.h"
 #include "nimf-module-private.h"
 #include "nimf-service.h"
 #include <glib/gi18n.h>
@@ -140,7 +141,7 @@ nimf_server_load_service (NimfServer  *server,
   }
 
   service = g_object_new (module->type, NULL);
-  g_hash_table_insert (server->services,
+  g_hash_table_insert (server->priv->services,
                        g_strdup (nimf_service_get_id (service)), service);
 
   g_type_module_unuse (G_TYPE_MODULE (module));
@@ -186,9 +187,9 @@ on_changed_trigger_keys (GSettings  *settings,
   gpointer       engine_id;
   gpointer       gsettings;
 
-  g_hash_table_remove_all (server->trigger_keys);
+  g_hash_table_remove_all (server->priv->trigger_keys);
 
-  g_hash_table_iter_init (&iter, server->trigger_gsettings);
+  g_hash_table_iter_init (&iter, server->priv->trigger_gsettings);
 
   while (g_hash_table_iter_next (&iter, &engine_id, &gsettings))
   {
@@ -197,7 +198,7 @@ on_changed_trigger_keys (GSettings  *settings,
 
     strv = g_settings_get_strv (gsettings, "trigger-keys");
     trigger_keys = nimf_key_newv ((const gchar **) strv);
-    g_hash_table_insert (server->trigger_keys,
+    g_hash_table_insert (server->priv->trigger_keys,
                          trigger_keys, g_strdup (engine_id));
     g_strfreev (strv);
   }
@@ -252,9 +253,9 @@ nimf_server_load_engines (NimfServer *server)
           continue;
         }
 
-        g_hash_table_insert (server->modules, g_strdup (path), module);
+        g_hash_table_insert (server->priv->modules, g_strdup (path), module);
         engine = g_object_new (module->type, NULL);
-        server->instances = g_list_prepend (server->instances, engine);
+        server->priv->instances = g_list_prepend (server->priv->instances, engine);
         g_type_module_unuse (G_TYPE_MODULE (module));
 
         if (g_settings_schema_has_key (schema, "trigger-keys"))
@@ -264,9 +265,9 @@ nimf_server_load_engines (NimfServer *server)
 
           strv = g_settings_get_strv (settings, "trigger-keys");
           trigger_keys = nimf_key_newv ((const gchar **) strv);
-          g_hash_table_insert (server->trigger_keys,
+          g_hash_table_insert (server->priv->trigger_keys,
                                trigger_keys, g_strdup (engine_id));
-          g_hash_table_insert (server->trigger_gsettings,
+          g_hash_table_insert (server->priv->trigger_gsettings,
                                g_strdup (engine_id), settings);
           g_signal_connect (settings, "changed::trigger-keys",
                             G_CALLBACK (on_changed_trigger_keys), server);
@@ -292,8 +293,8 @@ nimf_server_start (NimfServer *server)
 
   nimf_server_load_services (server);
 
-  server->candidatable = g_hash_table_lookup (server->services, "nimf-candidate");
-  server->preeditable  = g_hash_table_lookup (server->services, "nimf-preedit-window");
+  server->candidatable = g_hash_table_lookup (server->priv->services, "nimf-candidate");
+  server->preeditable  = g_hash_table_lookup (server->priv->services, "nimf-preedit-window");
   nimf_service_start (NIMF_SERVICE (server->candidatable));
   nimf_service_start (NIMF_SERVICE (server->preeditable));
 
@@ -302,7 +303,7 @@ nimf_server_start (NimfServer *server)
   GHashTableIter iter;
   gpointer       service;
 
-  g_hash_table_iter_init (&iter, server->services);
+  g_hash_table_iter_init (&iter, server->priv->services);
 
   while (g_hash_table_iter_next (&iter, NULL, &service))
   {

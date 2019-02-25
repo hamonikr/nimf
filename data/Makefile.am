@@ -7,3 +7,5 @@ endif
 if WITH_IMSETTINGS_DATA
   SUBDIRS += imsettings
 endif
+
+DISTCLEANFILES = Makefile.in

@@ -22,14 +22,10 @@
 #include <glib.h>
 #include <glib-object.h>
 #include "nimf-server.h"
+#include "nimf-server-private.h"
 #include "nimf-service.h"
 #include <glib/gstdio.h>
 #include "nimf-marshalers.h"
-
-struct _NimfServerPrivate
-{
-  NimfServiceIM *last_focused_im;
-};
 
 enum {
   ENGINE_CHANGED,
@@ -58,7 +54,7 @@ nimf_server_get_instance (NimfServer  *server,
 
   GList *list;
 
-  list = g_list_find_custom (g_list_first (server->instances), id,
+  list = g_list_find_custom (g_list_first (server->priv->instances), id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -73,17 +69,17 @@ nimf_server_get_next_instance (NimfServer *server, NimfEngine *engine)
 
   GList *list;
 
-  server->instances = g_list_first (server->instances);
-  server->instances = g_list_find  (server->instances, engine);
+  server->priv->instances = g_list_first (server->priv->instances);
+  server->priv->instances = g_list_find  (server->priv->instances, engine);
 
-  list = g_list_next (server->instances);
+  list = g_list_next (server->priv->instances);
 
   if (list == NULL)
-    list = g_list_first (server->instances);
+    list = g_list_first (server->priv->instances);
 
   if (list)
   {
-    server->instances = list;
+    server->priv->instances = list;
     return list->data;
   }
 
@@ -145,8 +141,8 @@ on_changed_hotkeys (GSettings  *settings,
 
   gchar **keys = g_settings_get_strv (settings, key);
 
-  nimf_key_freev (server->hotkeys);
-  server->hotkeys = nimf_key_newv ((const gchar **) keys);
+  nimf_key_freev (server->priv->hotkeys);
+  server->priv->hotkeys = nimf_key_newv ((const gchar **) keys);
 
   g_strfreev (keys);
 }
@@ -158,8 +154,8 @@ on_use_singleton (GSettings  *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  server->use_singleton = g_settings_get_boolean (server->settings,
-                                                  "use-singleton");
+  server->priv->use_singleton = g_settings_get_boolean (server->priv->settings,
+                                                        "use-singleton");
 }
 
 static void
@@ -170,27 +166,27 @@ nimf_server_init (NimfServer *server)
   nimf_server = server;
   server->priv = nimf_server_get_instance_private (server);
 
-  server->settings = g_settings_new ("org.nimf");
-  server->use_singleton = g_settings_get_boolean (server->settings,
-                                                  "use-singleton");
-  server->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                     g_free, g_object_unref);
-  server->trigger_keys = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                (GDestroyNotify) nimf_key_freev,
-                                                g_free);
-  gchar **hotkeys = g_settings_get_strv (server->settings, "hotkeys");
-  server->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
+  server->priv->settings = g_settings_new ("org.nimf");
+  server->priv->use_singleton = g_settings_get_boolean (server->priv->settings,
+                                                        "use-singleton");
+  server->priv->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                           g_free, g_object_unref);
+  server->priv->trigger_keys = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                                      (GDestroyNotify) nimf_key_freev,
+                                                      g_free);
+  gchar **hotkeys = g_settings_get_strv (server->priv->settings, "hotkeys");
+  server->priv->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
   g_strfreev (hotkeys);
 
-  g_signal_connect (server->settings, "changed::hotkeys",
+  g_signal_connect (server->priv->settings, "changed::hotkeys",
                     G_CALLBACK (on_changed_hotkeys), server);
-  g_signal_connect (server->settings, "changed::use-singleton",
+  g_signal_connect (server->priv->settings, "changed::use-singleton",
                     G_CALLBACK (on_use_singleton), server);
 
-  server->modules   = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                             g_free, NULL);
-  server->services  = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                             g_free, g_object_unref);
+  server->priv->modules  = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                  g_free, NULL);
+  server->priv->services = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                  g_free, g_object_unref);
 }
 
 static void
@@ -202,23 +198,23 @@ nimf_server_finalize (GObject *object)
   GHashTableIter  iter;
   gpointer        service;
 
-  g_hash_table_iter_init (&iter, server->services);
+  g_hash_table_iter_init (&iter, server->priv->services);
   while (g_hash_table_iter_next (&iter, NULL, &service))
     nimf_service_stop (NIMF_SERVICE (service));
 
-  g_hash_table_unref (server->modules);
-  g_hash_table_unref (server->services);
+  g_hash_table_unref (server->priv->modules);
+  g_hash_table_unref (server->priv->services);
 
-  if (server->instances)
+  if (server->priv->instances)
   {
-    g_list_free_full (server->instances, g_object_unref);
-    server->instances = NULL;
+    g_list_free_full (server->priv->instances, g_object_unref);
+    server->priv->instances = NULL;
   }
 
-  g_object_unref     (server->settings);
-  g_hash_table_unref (server->trigger_gsettings);
-  g_hash_table_unref (server->trigger_keys);
-  nimf_key_freev     (server->hotkeys);
+  g_object_unref     (server->priv->settings);
+  g_hash_table_unref (server->priv->trigger_gsettings);
+  g_hash_table_unref (server->priv->trigger_keys);
+  nimf_key_freev     (server->priv->hotkeys);
 
   G_OBJECT_CLASS (nimf_server_parent_class)->finalize (object);
 }
@@ -262,11 +258,11 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
   GHashTableIter  iter;
   gpointer        service;
 
-  g_hash_table_iter_init (&iter, server->services);
+  g_hash_table_iter_init (&iter, server->priv->services);
 
   while (g_hash_table_iter_next (&iter, NULL, &service))
   {
-    if (!g_strcmp0 (server->last_focused_service,
+    if (!g_strcmp0 (server->priv->last_focused_service,
                     nimf_service_get_id (service)))
       nimf_service_set_engine_by_id (service, id);
   }
@@ -281,11 +277,11 @@ void nimf_server_set_engine (NimfServer  *server,
   GHashTableIter  iter;
   gpointer        service;
 
-  g_hash_table_iter_init (&iter, server->services);
+  g_hash_table_iter_init (&iter, server->priv->services);
 
   while (g_hash_table_iter_next (&iter, NULL, &service))
   {
-    if (!g_strcmp0 (server->last_focused_service,
+    if (!g_strcmp0 (server->priv->last_focused_service,
                     nimf_service_get_id (service)))
       nimf_service_set_engine (service, engine_id, method_id);
   }
@@ -302,7 +298,7 @@ gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 
   engine_ids = g_malloc0_n (1, sizeof (gchar *));
 
-  for (list = g_list_first (server->instances), i = 0;
+  for (list = g_list_first (server->priv->instances), i = 0;
        list != NULL;
        list = list->next, i++)
   {
