@@ -397,23 +397,20 @@ static int
 on_xerror (Display     *display,
            XErrorEvent *error)
 {
-  gchar  buf[64];
-  gchar *display_name;
+  gchar buf[64];
 
-  display_name = DisplayString (error->display);
   XGetErrorText (display, error->error_code, buf, 63);
   g_warning (G_STRLOC ": %s: XError: %s\n"
              "\ttype: %d, display name: %s, serial: %lu, error_code: %d,\n"
              "\trequest_code: %d, minor_code: %d, resourceid: %lu\n",
              G_STRFUNC, buf,
              error->type,
-             display_name,
+             DisplayString (error->display),
              error->serial,
              error->error_code,
              error->request_code,
              error->minor_code,
              error->resourceid);
-  g_free (display_name);
 
   return 1;
 }
