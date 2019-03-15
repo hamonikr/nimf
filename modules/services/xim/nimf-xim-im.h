@@ -51,7 +51,6 @@ struct _NimfXimIM
   guint16   connect_id;
   gint      prev_preedit_length;
   CARD32    input_style;
-  gboolean  draw_preedit_on_the_server_side;
   Window    client_window;
   Window    focus_window;
   NimfXim  *xim;

@@ -89,9 +89,7 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
     if (!g_strcmp0 (XNInputStyle, data->ic_attr[i].name))
     {
       xim_im->input_style = (*(CARD32*) data->ic_attr[i].value) & XIMPreeditCallbacks;
-
-      if (xim_im->draw_preedit_on_the_server_side || !xim_im->input_style)
-        nimf_service_im_set_use_preedit (im, FALSE);
+      nimf_service_im_set_use_preedit (im, !!xim_im->input_style);
     }
     else if (!g_strcmp0 (XNClientWindow, data->ic_attr[i].name))
     {
@@ -199,12 +197,6 @@ static int nimf_xim_get_ic_values (NimfXim          *xim,
       data->ic_attr[i].value = g_malloc (sizeof (CARD32));
       *(CARD32 *) data->ic_attr[i].value = KeyPressMask | KeyReleaseMask;
     }
-    else if (g_strcmp0 (XNSeparatorofNestedList, data->ic_attr[i].name) == 0)
-    {
-      data->ic_attr[i].value_length = sizeof (CARD16);
-      data->ic_attr[i].value = g_malloc (sizeof (CARD16));
-      *(CARD16 *) data->ic_attr[i].value = 0;
-    }
     else
       g_critical (G_STRLOC ": %s: %s is ignored",
                   G_STRFUNC, data->ic_attr[i].name);
@@ -300,6 +292,9 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
 
   nimf_service_im_focus_in (im);
   xim->last_focused_icid = im->icid;
+
+  if (!im->use_preedit)
+    nimf_xim_im_set_cursor_location (NIMF_XIM_IM (im), -1, -1);
 
   return 1;
 }
@@ -624,15 +619,15 @@ static gboolean nimf_xim_start (NimfService *service)
  */
 
   XIMStyle im_styles [] = {
+    /* over-the-spot */
     XIMPreeditPosition  | XIMStatusNothing,
-    XIMPreeditCallbacks | XIMStatusNothing,
+    XIMPreeditPosition  | XIMStatusNone,
+    /* on-root-window */
     XIMPreeditNothing   | XIMStatusNothing,
-    XIMPreeditPosition  | XIMStatusCallbacks,
-    XIMPreeditCallbacks | XIMStatusCallbacks,
-    XIMPreeditNothing   | XIMStatusCallbacks,
-    XIMPreeditCallbacks | XIMStatusNone, /* on-the-spot */
-    XIMPreeditNothing   | XIMStatusNone, /* on-root-window */
-    XIMPreeditNone      | XIMStatusNone, /* do not anyhing */
+    XIMPreeditNothing   | XIMStatusNone,
+    /* on-the-spot */
+    XIMPreeditCallbacks | XIMStatusNothing,
+    XIMPreeditCallbacks | XIMStatusNone,
     0
   };
 
@@ -744,7 +739,6 @@ nimf_xim_init (NimfXim *xim)
   xim->id  = g_strdup ("nimf-xim");
   xim->ims = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
                                     (GDestroyNotify) g_object_unref);
-  xim->settings = g_settings_new ("org.nimf.services.xim");
 }
 
 static void nimf_xim_finalize (GObject *object)
@@ -759,7 +753,6 @@ static void nimf_xim_finalize (GObject *object)
 
   g_hash_table_unref (xim->ims);
   g_free (xim->id);
-  g_object_unref (xim->settings);
 
   G_OBJECT_CLASS (nimf_xim_parent_class)->finalize (object);
 }

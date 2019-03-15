@@ -20,4 +20,3 @@ modules/services/indicator/nimf-indicator.c
 [type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml
-[type: gettext/gsettings]modules/services/xim/org.nimf.services.xim.gschema.xml

@@ -51,7 +51,6 @@ struct _NimfXim
   guint16     next_icid;
   guint16     last_focused_icid;
   XIMS        xims;
-  GSettings  *settings;
   gboolean    active;
 
   Display *display;

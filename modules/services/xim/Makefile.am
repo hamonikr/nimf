@@ -1,9 +1,6 @@
 moduledir = $(libdir)/nimf/modules/services
 module_LTLIBRARIES = libnimf-xim.la
 
-gsettings_SCHEMAS = org.nimf.services.xim.gschema.xml
-@GSETTINGS_RULES@
-
 IMdkit_SOURCES = \
 	IMdkit/FrameMgr.h \
 	IMdkit/IMdkit.h \

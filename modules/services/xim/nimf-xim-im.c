@@ -214,20 +214,6 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   g_free (feedback);
 }
 
-static void
-on_changed_draw_preedit_on_the_server_side (GSettings *settings,
-                                            gchar     *key,
-                                            NimfXimIM *xim_im)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  xim_im->draw_preedit_on_the_server_side =
-    g_settings_get_boolean (xim_im->xim->settings, key);
-
-  if (xim_im->draw_preedit_on_the_server_side || !xim_im->input_style)
-    nimf_service_im_set_use_preedit (NIMF_SERVICE_IM (xim_im), FALSE);
-}
-
 NimfXimIM *nimf_xim_im_new (NimfXim *xim)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -237,12 +223,6 @@ NimfXimIM *nimf_xim_im_new (NimfXim *xim)
   xim_im = g_object_new (NIMF_TYPE_XIM_IM, NULL);
   xim_im->xim = xim;
 
-  xim_im->draw_preedit_on_the_server_side =
-    g_settings_get_boolean (xim->settings, "draw-preedit-on-the-server-side");
-
-  g_signal_connect (xim->settings, "changed::draw-preedit-on-the-server-side",
-                    G_CALLBACK (on_changed_draw_preedit_on_the_server_side),
-                    xim_im);
   return xim_im;
 }
 

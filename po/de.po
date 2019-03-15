@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 16:39+0900\n"
-"PO-Revision-Date: 2019-02-21 16:41+0900\n"
+"POT-Creation-Date: 2019-03-15 22:33+0900\n"
+"PO-Revision-Date: 2019-03-15 22:37+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,44 +19,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/nimf.c:535
+#: ../bin/nimf/nimf.c:395
 msgid "Log debugging message"
 msgstr "Debug Nachrichten protokollieren"
 
-#: ../bin/nimf.c:536
+#: ../bin/nimf/nimf.c:396
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf-settings.c:531
+#: ../bin/nimf-settings/nimf-settings.c:531
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
 
-#: ../bin/nimf-settings.c:592
+#: ../bin/nimf-settings/nimf-settings.c:592
 msgid "Press key combination"
 msgstr "Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:595
+#: ../bin/nimf-settings/nimf-settings.c:595
 msgid "_OK"
 msgstr "Bestätigen (_O)"
 
-#: ../bin/nimf-settings.c:596
+#: ../bin/nimf-settings/nimf-settings.c:596
 msgid "_Cancel"
 msgstr "Abbrechen (_C)"
 
-#: ../bin/nimf-settings.c:608
+#: ../bin/nimf-settings/nimf-settings.c:608
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings.c:971
+#: ../bin/nimf-settings/nimf-settings.c:971
 msgid "Default"
 msgstr "Standard"
 
-#: ../bin/nimf-settings.c:994 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings/nimf-settings.c:994
+#: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "Nimf Einstellungen"
 
-#: ../bin/nimf-settings.c:1063
+#: ../bin/nimf-settings/nimf-settings.c:1063
 msgid "XKB Options"
 msgstr "XKB-Optionen"
 
@@ -413,7 +415,7 @@ msgstr "Einstellungen"
 msgid "About"
 msgstr "Über"
 
-#: ../bin/org.nimf.settings.gschema.xml.h:1
+#: ../bin/nimf-settings/org.nimf.settings.gschema.xml.h:1
 msgid "xkb options"
 msgstr "xkb-optionen"
 
@@ -430,7 +432,6 @@ msgstr ""
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:2
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:2
 msgid "schema name for nimf-settings"
 msgstr "nimf-settings Schema name"
 
@@ -443,7 +444,6 @@ msgstr "nimf-settings Schema name"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:3
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
 msgstr "Dieser Schlüssel ist für nimf-settings bestimmt."
 
@@ -640,15 +640,3 @@ msgstr ""
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:4
 msgid "Trigger keys for switching to System Keyboard"
 msgstr "Auslösetasten für den Wechsel zur Systemtastatur"
-
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:1
-msgid "'XIM'"
-msgstr ""
-
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:4
-msgid "Always draw preedit string on the server-side"
-msgstr "Zeichnen Sie immer eine Preedit-Zeichenfolge auf der Serverseite"
-
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:5
-msgid "If you have trouble viewing preedit string, check this option."
-msgstr "Wenn Sie Probleme beim Anzeigen der Pre-Edit-Zeichenfolge haben, aktivieren Sie diese Option."

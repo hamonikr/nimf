@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 16:39+0900\n"
-"PO-Revision-Date: 2019-02-21 16:47+0900\n"
+"POT-Creation-Date: 2019-03-15 22:33+0900\n"
+"PO-Revision-Date: 2019-03-15 22:42+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: zh-CN\n"
@@ -18,44 +18,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf.c:535
+#: ../bin/nimf/nimf.c:395
 msgid "Log debugging message"
 msgstr "日志调试消息"
 
-#: ../bin/nimf.c:536
+#: ../bin/nimf/nimf.c:396
 msgid "Version"
 msgstr "版本"
 
-#: ../bin/nimf-settings.c:531
+#: ../bin/nimf-settings/nimf-settings.c:531
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "请报告错误。(keyval: %d)"
 
-#: ../bin/nimf-settings.c:592
+#: ../bin/nimf-settings/nimf-settings.c:592
 msgid "Press key combination"
 msgstr "请按组合键"
 
-#: ../bin/nimf-settings.c:595
+#: ../bin/nimf-settings/nimf-settings.c:595
 msgid "_OK"
 msgstr "确定 (_O)"
 
-#: ../bin/nimf-settings.c:596
+#: ../bin/nimf-settings/nimf-settings.c:596
 msgid "_Cancel"
 msgstr "取消 (_C)"
 
-#: ../bin/nimf-settings.c:608
+#: ../bin/nimf-settings/nimf-settings.c:608
 msgid "Click here and then press key combination"
 msgstr "请单击此处，然后按组合键"
 
-#: ../bin/nimf-settings.c:971
+#: ../bin/nimf-settings/nimf-settings.c:971
 msgid "Default"
 msgstr "默认"
 
-#: ../bin/nimf-settings.c:994 ../data/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings/nimf-settings.c:994
+#: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
+#: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "宁芙设置"
 
-#: ../bin/nimf-settings.c:1063
+#: ../bin/nimf-settings/nimf-settings.c:1063
 msgid "XKB Options"
 msgstr "XKB选项"
 
@@ -412,7 +414,7 @@ msgstr "设置"
 msgid "About"
 msgstr "关于"
 
-#: ../bin/org.nimf.settings.gschema.xml.h:1
+#: ../bin/nimf-settings/org.nimf.settings.gschema.xml.h:1
 msgid "xkb options"
 msgstr "xkb选项"
 
@@ -429,7 +431,6 @@ msgstr "'宁芙'"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:2
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:2
 msgid "schema name for nimf-settings"
 msgstr "nimf-settings的方案名称"
 
@@ -442,7 +443,6 @@ msgstr "nimf-settings的方案名称"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:3
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
 msgstr "这个键是为nimf-settings准备的。"
 
@@ -632,15 +632,3 @@ msgstr "'系统键盘'"
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:4
 msgid "Trigger keys for switching to System Keyboard"
 msgstr "触发键切换到系统键盘"
-
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:1
-msgid "'XIM'"
-msgstr ""
-
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:4
-msgid "Always draw preedit string on the server-side"
-msgstr "总是在服务器端绘制预编译字符串"
-
-#: ../modules/services/xim/org.nimf.services.xim.gschema.xml.h:5
-msgid "If you have trouble viewing preedit string, check this option."
-msgstr "如果您在查看预编辑字符串时遇到问题，请选中此选项。"

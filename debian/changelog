@@ -1,3 +1,10 @@
+nimf (2019.03.15) stable; urgency=medium
+
+  * nimf-xim: Fixed input styles (closes #150)
+  * nimf-xim: Fixed a segmentation fault
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 15 Mar 2019 22:46:05 +0900
+
 nimf (2019.02.25) stable; urgency=medium
 
   * Delay the launch of the nimf-indicator until the watcher is ready
