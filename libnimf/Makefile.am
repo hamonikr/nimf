@@ -20,8 +20,6 @@ libnimf_la_SOURCES = \
 	nimf-types.h \
 	nimf-utils.c \
 	nimf-utils.h \
-	client/nimf-client.c \
-	client/nimf-client.h \
 	client/nimf-im.c \
 	client/nimf-im.h \
 	server/nimf-candidatable.c \
@@ -59,7 +57,6 @@ nimfinclude_HEADERS = \
 	nimf-key-syms.h \
 	nimf-types.h \
 	nimf-utils.h \
-	client/nimf-client.h \
 	client/nimf-im.h \
 	server/nimf-candidatable.h \
 	server/nimf-engine.h \

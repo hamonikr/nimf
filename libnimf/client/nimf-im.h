@@ -27,7 +27,6 @@
 #endif
 
 #include <glib-object.h>
-#include "nimf-client.h"
 #include "nimf-events.h"
 #include "nimf-types.h"
 
@@ -40,22 +39,20 @@ G_BEGIN_DECLS
 #define NIMF_IS_IM_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_IM))
 #define NIMF_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_IM, NimfIMClass))
 
-typedef struct _NimfIM      NimfIM;
-typedef struct _NimfIMClass NimfIMClass;
+typedef struct _NimfIM        NimfIM;
+typedef struct _NimfIMClass   NimfIMClass;
+typedef struct _NimfIMPrivate NimfIMPrivate;
 
 struct _NimfIM
 {
-  NimfClient parent_instance;
-
-  gchar            *preedit_string;
-  NimfPreeditAttr **preedit_attrs;
-  gint              cursor_pos;
+  GObject parent_instance;
+  NimfIMPrivate *priv;
 };
 
 struct _NimfIMClass
 {
   /*< private >*/
-  NimfClientClass parent_class;
+  GObjectClass parent_class;
 
   /*< public >*/
   /* Signals */
