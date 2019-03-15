@@ -160,13 +160,6 @@ Configure
 
       export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)
 
-  * Configure Hangul/Hanja key if you use a keyboard without hardware
-    Hangul/Hanja key
-
-    If you are using xkb-data 2.14 or newer, then select "Right Alt as Hangul,
-    right Ctrl as Hanja" or "Right Ctrl as Hangul, right Alt as Hanja" from
-    gnome-tweak-tool.
-
 
 Debugging
 ---------
