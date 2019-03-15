@@ -27,6 +27,7 @@
 #include <glib/gstdio.h>
 #include <gio/gunixsocketaddress.h>
 #include "nimf-utils.h"
+#include <stdlib.h>
 
 enum {
   PREEDIT_START,
