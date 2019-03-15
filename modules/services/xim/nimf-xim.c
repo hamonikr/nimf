@@ -400,17 +400,15 @@ on_xerror (Display     *display,
   gchar buf[64];
 
   XGetErrorText (display, error->error_code, buf, 63);
-  g_warning (G_STRLOC ": %s: XError: %s\n"
-             "\ttype: %d, display name: %s, serial: %lu, error_code: %d,\n"
-             "\trequest_code: %d, minor_code: %d, resourceid: %lu\n",
-             G_STRFUNC, buf,
-             error->type,
-             DisplayString (error->display),
-             error->serial,
-             error->error_code,
-             error->request_code,
-             error->minor_code,
-             error->resourceid);
+
+  g_warning (G_STRLOC ": %s: %s", G_STRFUNC, buf);
+  g_warning ("type: %d",         error->type);
+  g_warning ("display name: %s", DisplayString (error->display));
+  g_warning ("serial: %lu",      error->serial);
+  g_warning ("error_code: %d",   error->error_code);
+  g_warning ("request_code: %d", error->request_code);
+  g_warning ("minor_code: %d",   error->minor_code);
+  g_warning ("resourceid: %lu",  error->resourceid);
 
   return 1;
 }
