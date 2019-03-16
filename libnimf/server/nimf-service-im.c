@@ -44,13 +44,9 @@ void nimf_service_im_emit_preedit_start (NimfServiceIM *im)
     return;
 
   NimfServiceIMClass *class  = NIMF_SERVICE_IM_GET_CLASS (im);
-  NimfServer         *server = nimf_server_get_default ();
 
   if (class->emit_preedit_start)
     class->emit_preedit_start (im);
-
-  if (!im->use_preedit)
-    nimf_preeditable_show (server->preeditable);
 }
 
 void
@@ -77,8 +73,17 @@ nimf_service_im_emit_preedit_changed (NimfServiceIM    *im,
   if (class->emit_preedit_changed)
     class->emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
 
-  if (!im->use_preedit)
-    nimf_preeditable_set_text (server->preeditable, preedit_string);
+  if (!im->use_preedit &&
+      !nimf_candidatable_is_visible (server->candidatable) &&
+      strlen (preedit_string))
+  {
+    nimf_preeditable_set_text (server->preeditable, preedit_string, cursor_pos);
+    nimf_preeditable_show (server->preeditable);
+  }
+  else
+  {
+    nimf_preeditable_hide (server->preeditable);
+  }
 }
 
 void
@@ -409,6 +414,14 @@ nimf_service_im_set_use_preedit (NimfServiceIM *im,
                                                 im->preedit_cursor_pos);
     }
   }
+}
+
+gboolean
+nimf_service_im_get_use_preedit (NimfServiceIM *im)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return im->use_preedit;
 }
 
 void

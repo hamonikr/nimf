@@ -51,7 +51,8 @@ struct _NimfPreeditableInterface
   void     (* hide)                (NimfPreeditable     *preeditable);
   gboolean (* is_visible)          (NimfPreeditable     *preeditable);
   void     (* set_text)            (NimfPreeditable     *preeditable,
-                                    const gchar         *text);
+                                    const gchar         *text,
+                                    gint                 cursor_pos);
   void     (* set_cursor_location) (NimfPreeditable     *preeditable,
                                     const NimfRectangle *area);
 };
@@ -60,7 +61,8 @@ void     nimf_preeditable_show                (NimfPreeditable     *preeditable)
 void     nimf_preeditable_hide                (NimfPreeditable     *preeditable);
 gboolean nimf_preeditable_is_visible          (NimfPreeditable     *preeditable);
 void     nimf_preeditable_set_text            (NimfPreeditable     *preeditable,
-                                               const gchar         *text);
+                                               const gchar         *text,
+                                               gint                 cursor_pos);
 void     nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,
                                                const NimfRectangle *area);
 

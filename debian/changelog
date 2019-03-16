@@ -1,3 +1,9 @@
+nimf (2019.03.17) stable; urgency=medium
+
+  * Fixed how to display the preeditable
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 17 Mar 2019 05:15:55 +0900
+
 nimf (2019.03.15) stable; urgency=medium
 
   * nimf-xim: Fixed input styles (closes #150)

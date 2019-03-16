@@ -92,6 +92,7 @@ void         nimf_service_im_set_surrounding     (NimfServiceIM  *im,
                                                   gint            cursor_index);
 void         nimf_service_im_set_use_preedit     (NimfServiceIM  *im,
                                                   gboolean        use_preedit);
+gboolean     nimf_service_im_get_use_preedit     (NimfServiceIM  *im);
 void         nimf_service_im_set_cursor_location (NimfServiceIM  *im,
                                                   const NimfRectangle *area);
 void         nimf_service_im_reset               (NimfServiceIM  *im);

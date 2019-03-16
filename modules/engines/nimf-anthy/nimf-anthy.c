@@ -98,6 +98,12 @@ nimf_anthy_update_preedit_state (NimfEngine    *engine,
   nimf_engine_emit_preedit_changed (engine, target, new_preedit,
                                     anthy->preedit_attrs, cursor_pos);
 
+  if (!nimf_service_im_get_use_preedit (target))
+    nimf_candidatable_set_auxiliary_text (anthy->candidatable,
+                                          anthy->preedit->str,
+                                          g_utf8_strlen (anthy->preedit->str,
+                                                         anthy->preedit_offset + anthy->preedit_dx));
+
   if (anthy->preedit_state == NIMF_PREEDIT_STATE_START &&
       anthy->preedit->len == 0)
   {
@@ -955,7 +961,8 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     if (anthy->preedit->len > 0)
     {
       if (!nimf_candidatable_is_visible (anthy->candidatable))
-        nimf_candidatable_show (anthy->candidatable, target, FALSE);
+        nimf_candidatable_show (anthy->candidatable, target,
+                                !nimf_service_im_get_use_preedit (target));
 
       anthy->current_segment = 0;
       nimf_anthy_convert_preedit_text (engine, target);

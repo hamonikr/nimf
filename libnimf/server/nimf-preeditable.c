@@ -75,7 +75,8 @@ gboolean nimf_preeditable_is_visible (NimfPreeditable *preeditable)
 }
 
 void nimf_preeditable_set_text (NimfPreeditable *preeditable,
-                                const gchar     *text)
+                                const gchar     *text,
+                                gint             cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -84,7 +85,7 @@ void nimf_preeditable_set_text (NimfPreeditable *preeditable,
   NimfPreeditableInterface *iface = NIMF_PREEDITABLE_GET_IFACE (preeditable);
 
   if (iface->set_text)
-    iface->set_text (preeditable, text);
+    iface->set_text (preeditable, text, cursor_pos);
 }
 
 void nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,

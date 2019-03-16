@@ -424,6 +424,7 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
     {
       gchar item[4];
       const char *key = hangul->preedit_string;
+      gboolean use_preedit;
 
       if (hangul->preedit_string[0] == 0)
       {
@@ -454,7 +455,13 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
       hangul->n_pages = (hanja_list_get_size (hangul->hanja_list) + 9) / 10;
       hangul->current_page = 1;
       nimf_libhangul_update_page (engine, target);
-      nimf_candidatable_show (hangul->candidatable, target, FALSE);
+      use_preedit = nimf_service_im_get_use_preedit (target);
+
+      if (!use_preedit)
+        nimf_candidatable_set_auxiliary_text (hangul->candidatable,
+                                              key, g_utf8_strlen (key, -1));
+
+      nimf_candidatable_show (hangul->candidatable, target, !use_preedit);
       nimf_candidatable_select_first_item_in_page (hangul->candidatable);
     }
     else
