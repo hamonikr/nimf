@@ -83,15 +83,16 @@ nimf_service_ic_emit_preedit_changed (NimfServiceIC    *im,
     class->emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
 
   if (!im->priv->use_preedit &&
-      !nimf_candidatable_is_visible (server->candidatable) &&
+      !nimf_candidatable_is_visible (server->priv->candidatable) &&
       strlen (preedit_string))
   {
-    nimf_preeditable_set_text (server->preeditable, preedit_string, cursor_pos);
-    nimf_preeditable_show (server->preeditable);
+    nimf_preeditable_set_text (server->priv->preeditable,
+                               preedit_string, cursor_pos);
+    nimf_preeditable_show (server->priv->preeditable);
   }
   else
   {
-    nimf_preeditable_hide (server->preeditable);
+    nimf_preeditable_hide (server->priv->preeditable);
   }
 }
 
@@ -112,7 +113,7 @@ nimf_service_ic_emit_preedit_end (NimfServiceIC *im)
     class->emit_preedit_end (im);
 
   if (!im->priv->use_preedit)
-    nimf_preeditable_hide (server->preeditable);
+    nimf_preeditable_hide (server->priv->preeditable);
 }
 
 void
@@ -227,7 +228,7 @@ void nimf_service_ic_focus_out (NimfServiceIC *im)
   if (server->priv->last_focused_im == im)
     nimf_service_ic_engine_changed (im, NULL, "nimf-focus-out");
 
-  nimf_preeditable_hide (server->preeditable);
+  nimf_preeditable_hide (server->priv->preeditable);
 }
 
 static gint
@@ -450,7 +451,7 @@ nimf_service_ic_set_cursor_location (NimfServiceIC       *im,
   *im->priv->cursor_area = *area;
 
   if (!im->priv->use_preedit)
-    nimf_preeditable_set_cursor_location (server->preeditable, area);
+    nimf_preeditable_set_cursor_location (server->priv->preeditable, area);
 }
 
 /**

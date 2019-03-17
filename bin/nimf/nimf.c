@@ -293,10 +293,12 @@ nimf_server_start (NimfServer *server)
 
   nimf_server_load_services (server);
 
-  server->candidatable = g_hash_table_lookup (server->priv->services, "nimf-candidate");
-  server->preeditable  = g_hash_table_lookup (server->priv->services, "nimf-preedit-window");
-  nimf_service_start (NIMF_SERVICE (server->candidatable));
-  nimf_service_start (NIMF_SERVICE (server->preeditable));
+  server->priv->candidatable = g_hash_table_lookup (server->priv->services,
+                                                    "nimf-candidate");
+  server->priv->preeditable  = g_hash_table_lookup (server->priv->services,
+                                                    "nimf-preedit-window");
+  nimf_service_start (NIMF_SERVICE (server->priv->candidatable));
+  nimf_service_start (NIMF_SERVICE (server->priv->preeditable));
 
   nimf_server_load_engines  (server);
 

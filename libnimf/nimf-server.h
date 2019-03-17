@@ -24,7 +24,6 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
-#include "nimf-candidatable.h"
 #include "nimf-preeditable.h"
 
 G_BEGIN_DECLS
@@ -44,9 +43,6 @@ struct _NimfServer
 {
   GObject parent_instance;
   NimfServerPrivate *priv;
-  /* facilities */
-  NimfCandidatable *candidatable;
-  NimfPreeditable  *preeditable;
 };
 
 struct _NimfServerClass
@@ -64,14 +60,15 @@ struct _NimfServerClass
                                   const gchar *icon_name);
 };
 
-GType        nimf_server_get_type              (void) G_GNUC_CONST;
-void         nimf_server_set_engine_by_id      (NimfServer   *server,
-                                                const gchar  *id);
-void         nimf_server_set_engine            (NimfServer   *server,
-                                                const gchar  *engine_id,
-                                                const gchar  *method_id);
-gchar      **nimf_server_get_loaded_engine_ids (NimfServer   *server);
-NimfServer  *nimf_server_get_default           (void);
+GType            nimf_server_get_type              (void) G_GNUC_CONST;
+void             nimf_server_set_engine_by_id      (NimfServer   *server,
+                                                    const gchar  *id);
+void             nimf_server_set_engine            (NimfServer   *server,
+                                                    const gchar  *engine_id,
+                                                    const gchar  *method_id);
+gchar          **nimf_server_get_loaded_engine_ids (NimfServer   *server);
+NimfServer      *nimf_server_get_default           (void);
+NimfPreeditable *nimf_server_get_preeditable       (NimfServer   *server);
 
 G_END_DECLS
 

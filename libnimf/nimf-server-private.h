@@ -23,6 +23,7 @@
 #define __NIMF_SERVER_PRIVATE_H__
 
 #include "nimf-server.h"
+#include "nimf-service-ic.h"
 
 G_BEGIN_DECLS
 
@@ -38,6 +39,9 @@ struct _NimfServerPrivate
   GHashTable    *trigger_gsettings;
   GHashTable    *trigger_keys;
   gboolean       use_singleton;
+  /* facilities */
+  NimfCandidatable *candidatable;
+  NimfPreeditable  *preeditable;
 };
 
 G_END_DECLS
@@ -45,7 +49,7 @@ G_END_DECLS
 NimfEngine *nimf_server_get_default_engine (NimfServer  *server);
 NimfEngine *nimf_server_get_next_instance  (NimfServer  *server,
                                             NimfEngine  *engine);
-NimfEngine  *nimf_server_get_instance      (NimfServer  *server,
+NimfEngine *nimf_server_get_instance       (NimfServer  *server,
                                             const gchar *module_name);
 
 #endif /* __NIMF_SERVER_PRIVATE_H__ */

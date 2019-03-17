@@ -113,9 +113,10 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
       nimf_xim_im_set_cursor_location (xim_im,
                                   ((XPoint *) data->preedit_attr[i].value)->x,
                                   ((XPoint *) data->preedit_attr[i].value)->y);
-      NimfServer *server = nimf_server_get_default ();
-      if (nimf_preeditable_is_visible (server->preeditable))
-        nimf_preeditable_show (server->preeditable);
+      NimfServer      *server      = nimf_server_get_default ();
+      NimfPreeditable *preeditable = nimf_server_get_preeditable (server);
+      if (nimf_preeditable_is_visible (preeditable))
+        nimf_preeditable_show (preeditable);
     }
     else
     {

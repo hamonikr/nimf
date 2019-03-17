@@ -132,6 +132,23 @@ nimf_server_get_default ()
   return nimf_server;
 }
 
+/**
+ * nimf_server_get_preeditable:
+ *
+ * Returns the #NimfPreeditable instance.
+ *
+ * If there is no default preeditable then %NULL is returned.
+ *
+ * Returns: (transfer none): a #NimfPreeditable, or %NULL
+ */
+NimfPreeditable *
+nimf_server_get_preeditable (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return server->priv->preeditable;
+}
+
 static void
 on_changed_hotkeys (GSettings  *settings,
                     gchar      *key,

@@ -21,6 +21,7 @@
 
 #include "nimf-engine.h"
 #include "nimf-server.h"
+#include "nimf-server-private.h"
 
 struct _NimfEnginePrivate
 {
@@ -290,7 +291,7 @@ nimf_engine_get_candidatable (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_server_get_default ()->candidatable;
+  return nimf_server_get_default ()->priv->candidatable;
 }
 
 static const gchar *
