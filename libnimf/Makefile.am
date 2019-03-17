@@ -10,15 +10,15 @@ BUILT_SOURCES = \
 	$(NULL)
 
 libnimf_la_SOURCES = \
-	client/nimf-im.c \
-	client/nimf-im.h \
+	nimf.h \
 	nimf-candidatable.c \
 	nimf-candidatable.h \
 	nimf-engine.c \
 	nimf-engine.h \
 	nimf-events.c \
 	nimf-events.h \
-	nimf.h \
+	nimf-im.c \
+	nimf-im.h \
 	nimf-key-syms.h \
 	nimf-message.c \
 	nimf-message-private.h \
@@ -51,12 +51,12 @@ libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
 
 nimfincludedir = $(includedir)/nimf
 nimfinclude_HEADERS = \
-	client/nimf-im.h \
+	nimf.h \
 	nimf-candidatable.h \
 	nimf-engine.h \
 	nimf-enum-types.h \
 	nimf-events.h \
-	nimf.h \
+	nimf-im.h \
 	nimf-key-syms.h \
 	nimf-preeditable.h \
 	nimf-server.h \
