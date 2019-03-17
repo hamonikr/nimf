@@ -70,8 +70,6 @@ struct _NimfServiceIM
 {
   GObject parent_instance;
   NimfServiceIMPrivate *priv;
-
-  NimfRectangle *cursor_area;
 };
 
 GType nimf_service_im_get_type    (void) G_GNUC_CONST;
@@ -88,6 +86,8 @@ void         nimf_service_im_set_use_preedit     (NimfServiceIM  *im,
 gboolean     nimf_service_im_get_use_preedit     (NimfServiceIM  *im);
 void         nimf_service_im_set_cursor_location (NimfServiceIM  *im,
                                                   const NimfRectangle *area);
+const NimfRectangle *
+             nimf_service_im_get_cursor_location (NimfServiceIM  *im);
 void         nimf_service_im_reset               (NimfServiceIM  *im);
 void         nimf_service_im_set_engine_by_id    (NimfServiceIM  *im,
                                                   const gchar    *engine_id);

@@ -73,22 +73,24 @@ nimf_candidate_show (NimfCandidatable *candidatable,
 
   NimfCandidate *candidate = NIMF_CANDIDATE (candidatable);
 
-  GtkRequisition  natural_size;
-  int             x, y, w, h;
-  GdkRectangle    geometry;
+  GtkRequisition       natural_size;
+  int                  x, y, w, h;
+  GdkRectangle         geometry;
+  const NimfRectangle *cursor_area;
+
+  cursor_area = nimf_service_im_get_cursor_location (target);
 
 #if GTK_CHECK_VERSION (3, 22, 0)
   GdkDisplay *display = gtk_widget_get_display (candidate->window);
   GdkMonitor *monitor;
   monitor = gdk_display_get_monitor_at_point (display,
-                                              target->cursor_area->x,
-                                              target->cursor_area->y);
+                                              cursor_area->x, cursor_area->y);
   gdk_monitor_get_geometry (monitor, &geometry);
 #else
   GdkScreen *screen = gtk_widget_get_screen (candidate->window);
   gint  monitor_num = gdk_screen_get_monitor_at_point (screen,
-                                                       target->cursor_area.x,
-                                                       target->cursor_area.y);
+                                                       cursor_area->x,
+                                                       cursor_area->y);
   gdk_screen_get_monitor_geometry (screen, monitor_num, &geometry);
 #endif
 
@@ -105,15 +107,15 @@ nimf_candidate_show (NimfCandidatable *candidatable,
                      natural_size.width, natural_size.height);
   gtk_window_get_size (GTK_WINDOW (candidate->window), &w, &h);
 
-  x = target->cursor_area->x - target->cursor_area->width;
-  y = target->cursor_area->y + target->cursor_area->height;
+  x = cursor_area->x - cursor_area->width;
+  y = cursor_area->y + cursor_area->height;
 
   if (x + w > geometry.x + geometry.width)
     x = geometry.x + geometry.width - w;
 
   if ((y + h > geometry.y + geometry.height) &&
-      ((target->cursor_area->y - h) >= geometry.y))
-    y = target->cursor_area->y - h;
+      ((cursor_area->y - h) >= geometry.y))
+    y = cursor_area->y - h;
 
   gtk_window_move (GTK_WINDOW (candidate->window), x, y);
 }
