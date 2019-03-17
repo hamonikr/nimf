@@ -10,33 +10,33 @@ BUILT_SOURCES = \
 	$(NULL)
 
 libnimf_la_SOURCES = \
-	nimf.h \
+	client/nimf-im.c \
+	client/nimf-im.h \
+	nimf-candidatable.c \
+	nimf-candidatable.h \
+	nimf-engine.c \
+	nimf-engine.h \
 	nimf-events.c \
 	nimf-events.h \
+	nimf.h \
 	nimf-key-syms.h \
 	nimf-message.c \
 	nimf-message-private.h \
+	nimf-module.c \
+	nimf-module-private.h \
+	nimf-preeditable.c \
+	nimf-preeditable.h \
+	nimf-server.c \
+	nimf-server.h \
+	nimf-server-private.h \
+	nimf-service.c \
+	nimf-service.h \
+	nimf-service-im.c \
+	nimf-service-im.h \
 	nimf-types.c \
 	nimf-types.h \
 	nimf-utils.c \
 	nimf-utils.h \
-	client/nimf-im.c \
-	client/nimf-im.h \
-	server/nimf-candidatable.c \
-	server/nimf-candidatable.h \
-	server/nimf-engine.c \
-	server/nimf-engine.h \
-	server/nimf-module.c \
-	server/nimf-module-private.h \
-	server/nimf-preeditable.c \
-	server/nimf-preeditable.h \
-	server/nimf-server.c \
-	server/nimf-server.h \
-	server/nimf-server-private.h \
-	server/nimf-service.c \
-	server/nimf-service.h \
-	server/nimf-service-im.c \
-	server/nimf-service-im.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
@@ -51,19 +51,19 @@ libnimf_la_LDFLAGS = -version-info $(LIBNIMF_LT_VERSION) $(LIBNIMF_DEPS_LIBS)
 
 nimfincludedir = $(includedir)/nimf
 nimfinclude_HEADERS = \
-	nimf.h \
+	client/nimf-im.h \
+	nimf-candidatable.h \
+	nimf-engine.h \
 	nimf-enum-types.h \
 	nimf-events.h \
+	nimf.h \
 	nimf-key-syms.h \
+	nimf-preeditable.h \
+	nimf-server.h \
+	nimf-service.h \
+	nimf-service-im.h \
 	nimf-types.h \
 	nimf-utils.h \
-	client/nimf-im.h \
-	server/nimf-candidatable.h \
-	server/nimf-engine.h \
-	server/nimf-preeditable.h \
-	server/nimf-server.h \
-	server/nimf-service.h \
-	server/nimf-service-im.h \
 	$(NULL)
 
 nimf-marshalers.h: nimf-marshalers.list
