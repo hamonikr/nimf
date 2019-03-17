@@ -334,14 +334,14 @@ gboolean nimf_service_ic_filter_event (NimfServiceIC *im,
         if (g_strcmp0 (nimf_engine_get_id (im->priv->engine), engine_id) != 0)
         {
           if (server->priv->use_singleton)
-            im->priv->engine = nimf_server_get_instance (server, engine_id);
+            im->priv->engine = nimf_server_get_engine_by_id (server, engine_id);
           else
             im->priv->engine = nimf_service_ic_get_instance (im, engine_id);
         }
         else
         {
           if (server->priv->use_singleton)
-            im->priv->engine = nimf_server_get_instance (server, "nimf-system-keyboard");
+            im->priv->engine = nimf_server_get_engine_by_id (server, "nimf-system-keyboard");
           else
             im->priv->engine = nimf_service_ic_get_instance (im, "nimf-system-keyboard");
         }
@@ -488,7 +488,7 @@ nimf_service_ic_set_engine_by_id (NimfServiceIC *im,
   NimfServer *server = nimf_server_get_default ();
 
   if (server->priv->use_singleton)
-    engine = nimf_server_get_instance (server, engine_id);
+    engine = nimf_server_get_engine_by_id (server, engine_id);
   else
     engine = nimf_service_ic_get_instance (im, engine_id);
 
@@ -510,7 +510,7 @@ nimf_service_ic_set_engine (NimfServiceIC *im,
   NimfServer *server = nimf_server_get_default ();
 
   if (server->priv->use_singleton)
-    engine = nimf_server_get_instance (server, engine_id);
+    engine = nimf_server_get_engine_by_id (server, engine_id);
   else
     engine = nimf_service_ic_get_instance (im, engine_id);
 

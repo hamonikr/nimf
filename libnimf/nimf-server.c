@@ -47,8 +47,8 @@ on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
 }
 
 NimfEngine *
-nimf_server_get_instance (NimfServer  *server,
-                          const gchar *id)
+nimf_server_get_engine_by_id (NimfServer  *server,
+                              const gchar *id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -99,14 +99,14 @@ nimf_server_get_default_engine (NimfServer *server)
 
   settings  = g_settings_new ("org.nimf.engines");
   engine_id = g_settings_get_string (settings, "default-engine");
-  engine    = nimf_server_get_instance (server, engine_id);
+  engine    = nimf_server_get_engine_by_id (server, engine_id);
 
   if (G_UNLIKELY (engine == NULL))
   {
     g_settings_reset (settings, "default-engine");
     g_free (engine_id);
     engine_id = g_settings_get_string (settings, "default-engine");
-    engine = nimf_server_get_instance (server, engine_id);
+    engine = nimf_server_get_engine_by_id (server, engine_id);
   }
 
   g_free (engine_id);
@@ -268,7 +268,7 @@ nimf_server_class_init (NimfServerClass *class)
 }
 
 void nimf_server_set_engine_by_id (NimfServer  *server,
-                                   const gchar *id)
+                                   const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -281,7 +281,7 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
   {
     if (!g_strcmp0 (server->priv->last_focused_service,
                     nimf_service_get_id (service)))
-      nimf_service_set_engine_by_id (service, id);
+      nimf_service_set_engine_by_id (service, engine_id);
   }
 }
 

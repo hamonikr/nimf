@@ -49,8 +49,8 @@ G_END_DECLS
 NimfEngine *nimf_server_get_default_engine (NimfServer  *server);
 NimfEngine *nimf_server_get_next_instance  (NimfServer  *server,
                                             NimfEngine  *engine);
-NimfEngine *nimf_server_get_instance       (NimfServer  *server,
-                                            const gchar *module_name);
+NimfEngine *nimf_server_get_engine_by_id   (NimfServer  *server,
+                                            const gchar *engine_id);
 
 #endif /* __NIMF_SERVER_PRIVATE_H__ */
 
