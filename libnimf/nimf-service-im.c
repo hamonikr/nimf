@@ -30,8 +30,14 @@
 
 struct _NimfServiceIMPrivate
 {
-  NimfEngine *engine;
-  GList      *engines;
+  NimfEngine       *engine;
+  GList            *engines;
+  gboolean          use_preedit;
+  /* preedit */
+  NimfPreeditState  preedit_state;
+  gchar            *preedit_string;
+  NimfPreeditAttr **preedit_attrs;
+  gint              preedit_cursor_pos;
 };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (NimfServiceIM, nimf_service_im, G_TYPE_OBJECT);
@@ -43,9 +49,11 @@ void nimf_service_im_emit_preedit_start (NimfServiceIM *im)
   if (G_UNLIKELY (!im))
     return;
 
+  im->priv->preedit_state = NIMF_PREEDIT_STATE_START;
+
   NimfServiceIMClass *class  = NIMF_SERVICE_IM_GET_CLASS (im);
 
-  if (class->emit_preedit_start)
+  if (class->emit_preedit_start && im->priv->use_preedit)
     class->emit_preedit_start (im);
 }
 
@@ -60,20 +68,20 @@ nimf_service_im_emit_preedit_changed (NimfServiceIM    *im,
   if (G_UNLIKELY (!im))
     return;
 
-  g_free (im->preedit_string);
-  nimf_preedit_attr_freev (im->preedit_attrs);
+  g_free (im->priv->preedit_string);
+  nimf_preedit_attr_freev (im->priv->preedit_attrs);
 
-  im->preedit_string = g_strdup (preedit_string);
-  im->preedit_attrs = nimf_preedit_attrs_copy (attrs);
-  im->preedit_cursor_pos = cursor_pos;
+  im->priv->preedit_string     = g_strdup (preedit_string);
+  im->priv->preedit_attrs      = nimf_preedit_attrs_copy (attrs);
+  im->priv->preedit_cursor_pos = cursor_pos;
 
   NimfServiceIMClass *class  = NIMF_SERVICE_IM_GET_CLASS (im);
   NimfServer         *server = nimf_server_get_default ();
 
-  if (class->emit_preedit_changed)
+  if (class->emit_preedit_changed && im->priv->use_preedit)
     class->emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
 
-  if (!im->use_preedit &&
+  if (!im->priv->use_preedit &&
       !nimf_candidatable_is_visible (server->candidatable) &&
       strlen (preedit_string))
   {
@@ -94,13 +102,15 @@ nimf_service_im_emit_preedit_end (NimfServiceIM *im)
   if (G_UNLIKELY (!im))
     return;
 
+  im->priv->preedit_state = NIMF_PREEDIT_STATE_END;
+
   NimfServiceIMClass *class  = NIMF_SERVICE_IM_GET_CLASS (im);
   NimfServer         *server = nimf_server_get_default ();
 
-  if (class->emit_preedit_end)
+  if (class->emit_preedit_end && im->priv->use_preedit)
     class->emit_preedit_end (im);
 
-  if (!im->use_preedit)
+  if (!im->priv->use_preedit)
     nimf_preeditable_hide (server->preeditable);
 }
 
@@ -186,7 +196,7 @@ void nimf_service_im_focus_in (NimfServiceIM *im)
 {
   g_return_if_fail (im != NULL);
 
-  g_debug (G_STRLOC ": %s: im icid = %d", G_STRFUNC, im->icid);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   if (G_UNLIKELY (im->priv->engine == NULL))
     return;
@@ -204,7 +214,7 @@ void nimf_service_im_focus_out (NimfServiceIM *im)
 {
   g_return_if_fail (im != NULL);
 
-  g_debug (G_STRLOC ": %s: im icid = %d", G_STRFUNC, im->icid);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   if (G_UNLIKELY (im->priv->engine == NULL))
     return;
@@ -390,28 +400,28 @@ nimf_service_im_set_use_preedit (NimfServiceIM *im,
 
   g_return_if_fail (im != NULL);
 
-  if (im->use_preedit == TRUE && use_preedit == FALSE)
+  if (im->priv->use_preedit == TRUE && use_preedit == FALSE)
   {
-    im->use_preedit = FALSE;
+    im->priv->use_preedit = FALSE;
 
-    if (im->preedit_state == NIMF_PREEDIT_STATE_START)
+    if (im->priv->preedit_state == NIMF_PREEDIT_STATE_START)
     {
-      nimf_service_im_emit_preedit_changed (im, im->preedit_string,
-                                                im->preedit_attrs,
-                                                im->preedit_cursor_pos);
+      nimf_service_im_emit_preedit_changed (im, im->priv->preedit_string,
+                                                im->priv->preedit_attrs,
+                                                im->priv->preedit_cursor_pos);
       nimf_service_im_emit_preedit_end (im);
     }
   }
-  else if (im->use_preedit == FALSE && use_preedit == TRUE)
+  else if (im->priv->use_preedit == FALSE && use_preedit == TRUE)
   {
-    im->use_preedit = TRUE;
+    im->priv->use_preedit = TRUE;
 
-    if (im->preedit_string[0] != 0)
+    if (im->priv->preedit_string[0] != 0)
     {
       nimf_service_im_emit_preedit_start   (im);
-      nimf_service_im_emit_preedit_changed (im, im->preedit_string,
-                                                im->preedit_attrs,
-                                                im->preedit_cursor_pos);
+      nimf_service_im_emit_preedit_changed (im, im->priv->preedit_string,
+                                                im->priv->preedit_attrs,
+                                                im->priv->preedit_cursor_pos);
     }
   }
 }
@@ -421,7 +431,7 @@ nimf_service_im_get_use_preedit (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return im->use_preedit;
+  return im->priv->use_preedit;
 }
 
 void
@@ -438,7 +448,7 @@ nimf_service_im_set_cursor_location (NimfServiceIM       *im,
   NimfServer *server = nimf_server_get_default ();
   im->cursor_area    = *area;
 
-  if (!im->use_preedit)
+  if (!im->priv->use_preedit)
     nimf_preeditable_set_cursor_location (server->preeditable, area);
 }
 
@@ -580,8 +590,8 @@ nimf_service_im_constructed (GObject *object)
   NimfServiceIM *im     = NIMF_SERVICE_IM (object);
   NimfServer    *server = nimf_server_get_default ();
 
-  im->use_preedit   = TRUE;
-  im->preedit_state = NIMF_PREEDIT_STATE_END;
+  im->priv->use_preedit   = TRUE;
+  im->priv->preedit_state = NIMF_PREEDIT_STATE_END;
 
   if (server->priv->use_singleton)
   {
@@ -593,10 +603,10 @@ nimf_service_im_constructed (GObject *object)
     im->priv->engine  = nimf_service_im_get_default_engine (im);
   }
 
-  im->preedit_string = g_strdup ("");
-  im->preedit_attrs = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
-  im->preedit_attrs[0] = NULL;
-  im->preedit_cursor_pos = 0;
+  im->priv->preedit_string     = g_strdup ("");
+  im->priv->preedit_attrs      = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
+  im->priv->preedit_attrs[0]   = NULL;
+  im->priv->preedit_cursor_pos = 0;
 }
 
 static void
@@ -609,8 +619,8 @@ nimf_service_im_finalize (GObject *object)
   if (im->priv->engines)
     g_list_free_full (im->priv->engines, g_object_unref);
 
-  g_free (im->preedit_string);
-  nimf_preedit_attr_freev (im->preedit_attrs);
+  g_free (im->priv->preedit_string);
+  nimf_preedit_attr_freev (im->priv->preedit_attrs);
 
   G_OBJECT_CLASS (nimf_service_im_parent_class)->finalize (object);
 }

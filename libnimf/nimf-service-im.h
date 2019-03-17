@@ -71,14 +71,7 @@ struct _NimfServiceIM
   GObject parent_instance;
   NimfServiceIMPrivate *priv;
 
-  guint16           icid;
-  gboolean          use_preedit;
-  NimfRectangle     cursor_area;
-  /* preedit */
-  NimfPreeditState  preedit_state;
-  gchar            *preedit_string;
-  NimfPreeditAttr **preedit_attrs;
-  gint              preedit_cursor_pos;
+  NimfRectangle cursor_area;
 };
 
 GType nimf_service_im_get_type    (void) G_GNUC_CONST;

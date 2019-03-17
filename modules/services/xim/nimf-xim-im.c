@@ -94,10 +94,10 @@ nimf_xim_im_emit_commit (NimfServiceIM *im,
                                &property);
 
   IMCommitStruct commit_data = {0};
-  commit_data.major_code = XIM_COMMIT;
-  commit_data.connect_id = xim_im->connect_id;
-  commit_data.icid       = im->icid;
-  commit_data.flag       = XimLookupChars;
+  commit_data.major_code    = XIM_COMMIT;
+  commit_data.connect_id    = xim_im->connect_id;
+  commit_data.icid          = xim_im->icid;
+  commit_data.flag          = XimLookupChars;
   commit_data.commit_string = (gchar *) property.value;
   IMCommitString (xim_im->xim->xims, (XPointer) &commit_data);
 
@@ -111,15 +111,14 @@ static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
 
   IMPreeditStateStruct preedit_state_data = {0};
-
   preedit_state_data.connect_id = xim_im->connect_id;
-  preedit_state_data.icid       = im->icid;
+  preedit_state_data.icid       = xim_im->icid;
   IMPreeditEnd (xim_im->xim->xims, (XPointer) &preedit_state_data);
 
   IMPreeditCBStruct preedit_cb_data = {0};
   preedit_cb_data.major_code = XIM_PREEDIT_DONE;
   preedit_cb_data.connect_id = xim_im->connect_id;
-  preedit_cb_data.icid       = im->icid;
+  preedit_cb_data.icid       = xim_im->icid;
   nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
 }
 
@@ -128,15 +127,16 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIM *xim_im = NIMF_XIM_IM (im);
-  IMPreeditStateStruct preedit_state_data = {0};
 
+  IMPreeditStateStruct preedit_state_data = {0};
   preedit_state_data.connect_id = xim_im->connect_id;
-  preedit_state_data.icid       = im->icid;
+  preedit_state_data.icid       = xim_im->icid;
   IMPreeditStart (xim_im->xim->xims, (XPointer) &preedit_state_data);
+
   IMPreeditCBStruct preedit_cb_data = {0};
   preedit_cb_data.major_code = XIM_PREEDIT_START;
   preedit_cb_data.connect_id = xim_im->connect_id;
-  preedit_cb_data.icid       = im->icid;
+  preedit_cb_data.icid       = xim_im->icid;
   nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
 }
 
@@ -179,13 +179,13 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
 
   feedback[len] = 0;
 
-  preedit_cb_data.major_code = XIM_PREEDIT_DRAW;
-  preedit_cb_data.connect_id = xim_im->connect_id;
-  preedit_cb_data.icid = im->icid;
-  preedit_cb_data.todo.draw.caret = cursor_pos;
-  preedit_cb_data.todo.draw.chg_first = 0;
+  preedit_cb_data.major_code           = XIM_PREEDIT_DRAW;
+  preedit_cb_data.connect_id           = xim_im->connect_id;
+  preedit_cb_data.icid                 = xim_im->icid;
+  preedit_cb_data.todo.draw.caret      = cursor_pos;
+  preedit_cb_data.todo.draw.chg_first  = 0;
   preedit_cb_data.todo.draw.chg_length = xim_im->prev_preedit_length;
-  preedit_cb_data.todo.draw.text = &text;
+  preedit_cb_data.todo.draw.text       = &text;
 
   text.feedback = feedback;
 
@@ -214,16 +214,20 @@ nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
   g_free (feedback);
 }
 
-NimfXimIM *nimf_xim_im_new (NimfXim *xim)
+NimfXimIM *
+nimf_xim_im_new (NimfXim *xim,
+                 guint16  connect_id,
+                 guint16  icid)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfXimIM *xim_im;
+  NimfXimIM *im = g_object_new (NIMF_TYPE_XIM_IM, NULL);
 
-  xim_im = g_object_new (NIMF_TYPE_XIM_IM, NULL);
-  xim_im->xim = xim;
+  im->xim        = xim;
+  im->connect_id = connect_id;
+  im->icid       = icid;
 
-  return xim_im;
+  return im;
 }
 
 const gchar *

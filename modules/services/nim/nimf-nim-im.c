@@ -34,9 +34,9 @@ nimf_nim_im_emit_commit (NimfServiceIM *im,
 
   NimfNimIM *nim_im = NIMF_NIM_IM (im);
 
-  nimf_send_message (nim_im->connection->socket, im->icid, NIMF_MESSAGE_COMMIT,
-                     (gchar *) text, strlen (text) + 1, NULL);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
+                     NIMF_MESSAGE_COMMIT, (gchar *) text, strlen (text) + 1, NULL);
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_COMMIT_REPLY);
 }
 
@@ -44,17 +44,12 @@ void nimf_nim_im_emit_preedit_start (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (im->use_preedit == FALSE &&
-                  im->preedit_state == NIMF_PREEDIT_STATE_END))
-    return;
-
   NimfNimIM *nim_im = NIMF_NIM_IM (im);
 
-  nimf_send_message (nim_im->connection->socket, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
                      NIMF_MESSAGE_PREEDIT_START, NULL, 0, NULL);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_PREEDIT_START_REPLY);
-  im->preedit_state = NIMF_PREEDIT_STATE_START;
 }
 
 void
@@ -64,10 +59,6 @@ nimf_nim_im_emit_preedit_changed (NimfServiceIM    *im,
                                   gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_UNLIKELY (im->use_preedit == FALSE &&
-                  im->preedit_state == NIMF_PREEDIT_STATE_END))
-    return;
 
   NimfNimIM *nim_im = NIMF_NIM_IM (im);
   gchar *data;
@@ -88,10 +79,10 @@ nimf_nim_im_emit_preedit_changed (NimfServiceIM    *im,
 
   *(gint *) (data + data_len - sizeof (gint)) = cursor_pos;
 
-  nimf_send_message (nim_im->connection->socket, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
                      NIMF_MESSAGE_PREEDIT_CHANGED,
                      data, data_len, g_free);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_PREEDIT_CHANGED_REPLY);
 }
 
@@ -99,17 +90,12 @@ void nimf_nim_im_emit_preedit_end (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (im->use_preedit == FALSE &&
-                  im->preedit_state == NIMF_PREEDIT_STATE_END))
-    return;
-
   NimfNimIM *nim_im = NIMF_NIM_IM (im);
 
-  nimf_send_message (nim_im->connection->socket, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
                      NIMF_MESSAGE_PREEDIT_END, NULL, 0, NULL);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_PREEDIT_END_REPLY);
-  im->preedit_state = NIMF_PREEDIT_STATE_END;
 }
 
 gboolean
@@ -119,9 +105,9 @@ nimf_nim_im_emit_retrieve_surrounding (NimfServiceIM *im)
 
   NimfNimIM *nim_im = NIMF_NIM_IM (im);
 
-  nimf_send_message (nim_im->connection->socket, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
                      NIMF_MESSAGE_RETRIEVE_SURROUNDING, NULL, 0, NULL);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY);
 
   if (nim_im->connection->result->reply == NULL)
@@ -143,10 +129,10 @@ nimf_nim_im_emit_delete_surrounding (NimfServiceIM *im,
   data[0] = offset;
   data[1] = n_chars;
 
-  nimf_send_message (nim_im->connection->socket, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
                      NIMF_MESSAGE_DELETE_SURROUNDING,
                      data, 2 * sizeof (gint), g_free);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_DELETE_SURROUNDING_REPLY);
 
   if (nim_im->connection->result->reply == NULL)
@@ -161,9 +147,9 @@ void nimf_nim_im_emit_beep (NimfServiceIM *im)
 
   NimfNimIM *nim_im = NIMF_NIM_IM (im);
 
-  nimf_send_message (nim_im->connection->socket, im->icid,
+  nimf_send_message (nim_im->connection->socket, nim_im->icid,
                      NIMF_MESSAGE_BEEP, NULL, 0, NULL);
-  nimf_result_iteration_until (nim_im->connection->result, NULL, im->icid,
+  nimf_result_iteration_until (nim_im->connection->result, NULL, nim_im->icid,
                                NIMF_MESSAGE_BEEP_REPLY);
 }
 
@@ -177,26 +163,40 @@ nimf_nim_im_get_service_id (NimfServiceIM *im)
   return nimf_service_get_id (service);
 }
 
-NimfNimIM *nimf_nim_im_new ()
+NimfNimIM *
+nimf_nim_im_new (guint16         icid,
+                 NimfConnection *connection)
 {
-  return g_object_new (NIMF_TYPE_NIM_IM, NULL);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfNimIM *im = g_object_new (NIMF_TYPE_NIM_IM, NULL);
+
+  im->connection = connection;
+  im->icid = icid;
+
+  return im;
 }
 
 static void
 nimf_nim_im_init (NimfNimIM *nim_im)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 static void
 nimf_nim_im_finalize (GObject *object)
 {
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
   G_OBJECT_CLASS (nimf_nim_im_parent_class)->finalize (object);
 }
 
 static void
 nimf_nim_im_class_init (NimfNimIMClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GObjectClass       *object_class     = G_OBJECT_CLASS (class);
   NimfServiceIMClass *service_im_class = NIMF_SERVICE_IM_CLASS (class);
 
   object_class->finalize = nimf_nim_im_finalize;

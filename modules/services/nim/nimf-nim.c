@@ -93,11 +93,8 @@ on_incoming (GSocket        *socket,
   switch (message->header->type)
   {
     case NIMF_MESSAGE_CREATE_CONTEXT:
-      im = nimf_nim_im_new ();
-      im->connection = connection;
-      NIMF_SERVICE_IM (im)->icid = icid;
+      im = nimf_nim_im_new (icid, connection);
       g_hash_table_insert (connection->ims, GUINT_TO_POINTER (icid), im);
-
       nimf_send_message (socket, icid, NIMF_MESSAGE_CREATE_CONTEXT_REPLY,
                          NULL, 0, NULL);
       break;
@@ -321,8 +318,7 @@ nimf_nim_init (NimfNim *nim)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   nim->id  = g_strdup ("nimf-nim");
-  nim->connections = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                            NULL,
+  nim->connections = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
                                             (GDestroyNotify) g_object_unref);
 }
 

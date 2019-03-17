@@ -52,12 +52,6 @@ nimf_wayland_im_emit_commit (NimfServiceIM *im,
 void nimf_wayland_im_emit_preedit_start (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_UNLIKELY (im->use_preedit == FALSE &&
-                  im->preedit_state == NIMF_PREEDIT_STATE_END))
-    return;
-
-  im->preedit_state = NIMF_PREEDIT_STATE_START;
 }
 
 void
@@ -67,10 +61,6 @@ nimf_wayland_im_emit_preedit_changed (NimfServiceIM    *im,
                                       gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_UNLIKELY (im->use_preedit == FALSE &&
-                  im->preedit_state == NIMF_PREEDIT_STATE_END))
-    return;
 
   NimfWayland *wayland = NIMF_WAYLAND_IM (im)->wayland;
 
@@ -82,12 +72,6 @@ nimf_wayland_im_emit_preedit_changed (NimfServiceIM    *im,
 void nimf_wayland_im_emit_preedit_end (NimfServiceIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (G_UNLIKELY (im->use_preedit == FALSE &&
-                  im->preedit_state == NIMF_PREEDIT_STATE_END))
-    return;
-
-  im->preedit_state = NIMF_PREEDIT_STATE_END;
 }
 
 static void

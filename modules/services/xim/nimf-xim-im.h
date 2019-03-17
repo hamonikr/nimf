@@ -49,6 +49,7 @@ struct _NimfXimIM
 {
   NimfServiceIM parent_instance;
   guint16   connect_id;
+  guint16   icid;
   gint      prev_preedit_length;
   CARD32    input_style;
   Window    client_window;
@@ -56,8 +57,10 @@ struct _NimfXimIM
   NimfXim  *xim;
 };
 
-GType      nimf_xim_im_get_type            (void) G_GNUC_CONST;
-NimfXimIM *nimf_xim_im_new                 (NimfXim    *xim);
+GType      nimf_xim_im_get_type (void) G_GNUC_CONST;
+NimfXimIM *nimf_xim_im_new      (NimfXim *xim,
+                                 guint16  connect_id,
+                                 guint16  icid);
 void       nimf_xim_im_set_cursor_location (NimfXimIM  *xim_im,
                                             gint        x,
                                             gint        y);

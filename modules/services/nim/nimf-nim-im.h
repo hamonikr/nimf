@@ -47,10 +47,11 @@ struct _NimfNimIM
 {
   NimfServiceIM parent_instance;
   NimfConnection *connection;
+  guint16         icid;
 };
 
 GType      nimf_nim_im_get_type (void) G_GNUC_CONST;
-NimfNimIM *nimf_nim_im_new      (void);
+NimfNimIM *nimf_nim_im_new      (guint16 icid, NimfConnection *connection);
 
 G_END_DECLS
 

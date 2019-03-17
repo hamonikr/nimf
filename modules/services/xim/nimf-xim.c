@@ -54,24 +54,6 @@ static void nimf_xim_set_engine_by_id (NimfService *service,
     nimf_service_im_set_engine_by_id (im, engine_id);
 }
 
-static guint16
-nimf_xim_add_im (NimfXim   *xim,
-                 NimfXimIM *xim_im)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  guint16 icid;
-
-  do
-    icid = xim->next_icid++;
-  while (icid == 0 || g_hash_table_contains (xim->ims,
-                                             GUINT_TO_POINTER (icid)));
-  NIMF_SERVICE_IM (xim_im)->icid = icid;
-  g_hash_table_insert (xim->ims, GUINT_TO_POINTER (icid), xim_im);
-
-  return icid;
-}
-
 static int nimf_xim_set_ic_values (NimfXim          *xim,
                                    IMChangeICStruct *data)
 {
@@ -161,9 +143,16 @@ static int nimf_xim_create_ic (NimfXim          *xim,
 
   if (!xim_im)
   {
-    xim_im = nimf_xim_im_new (xim);
-    xim_im->connect_id = data->connect_id;
-    data->icid = nimf_xim_add_im (xim, xim_im);
+    guint16 icid;
+
+    do
+      icid = xim->next_icid++;
+    while (icid == 0 ||
+           g_hash_table_contains (xim->ims, GUINT_TO_POINTER (icid)));
+
+    xim_im = nimf_xim_im_new (xim, data->connect_id, icid);
+    g_hash_table_insert (xim->ims, GUINT_TO_POINTER (icid), xim_im);
+    data->icid = icid;
     g_debug (G_STRLOC ": icid = %d", data->icid);
   }
 
@@ -209,7 +198,7 @@ static int nimf_xim_get_ic_values (NimfXim          *xim,
       data->preedit_attr[i].value_length = sizeof (XIMPreeditState);
       data->preedit_attr[i].value = g_malloc (sizeof (XIMPreeditState));
 
-      if (im->use_preedit)
+      if (nimf_service_im_get_use_preedit (im))
         *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditEnable;
       else
         *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditDisable;
@@ -288,12 +277,12 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
   g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
-           G_STRFUNC, data->icid, im->icid);
+           G_STRFUNC, data->icid, NIMF_XIM_IM (im)->icid);
 
   nimf_service_im_focus_in (im);
-  xim->last_focused_icid = im->icid;
+  xim->last_focused_icid = NIMF_XIM_IM (im)->icid;
 
-  if (!im->use_preedit)
+  if (!nimf_service_im_get_use_preedit (im))
     nimf_xim_im_set_cursor_location (NIMF_XIM_IM (im), -1, -1);
 
   return 1;
