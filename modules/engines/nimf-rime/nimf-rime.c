@@ -62,7 +62,7 @@ static gint nimf_rime_ref_count = 0;
 G_DEFINE_DYNAMIC_TYPE (NimfRime, nimf_rime, NIMF_TYPE_ENGINE);
 
 static void nimf_rime_update_preedit (NimfEngine    *engine,
-                                      NimfServiceIM *target,
+                                      NimfServiceIC *target,
                                       const gchar   *new_preedit,
                                       gint           cursor_pos)
 {
@@ -91,7 +91,7 @@ static void nimf_rime_update_preedit (NimfEngine    *engine,
 }
 
 void nimf_rime_reset (NimfEngine    *engine,
-                      NimfServiceIM *target)
+                      NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -104,14 +104,14 @@ void nimf_rime_reset (NimfEngine    *engine,
 
 void
 nimf_rime_focus_in (NimfEngine    *engine,
-                    NimfServiceIM *context)
+                    NimfServiceIC *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
 nimf_rime_focus_out (NimfEngine    *engine,
-                     NimfServiceIM *target)
+                     NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -121,7 +121,7 @@ nimf_rime_focus_out (NimfEngine    *engine,
 
 static void
 nimf_rime_update_candidate (NimfEngine    *engine,
-                            NimfServiceIM *target)
+                            NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -161,7 +161,7 @@ nimf_rime_update_candidate (NimfEngine    *engine,
 }
 
 static void nimf_rime_update_preedit2 (NimfEngine    *engine,
-                                       NimfServiceIM *target)
+                                       NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -191,7 +191,7 @@ static void nimf_rime_update_preedit2 (NimfEngine    *engine,
 }
 
 static void nimf_rime_update (NimfEngine    *engine,
-                              NimfServiceIM *target)
+                              NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -236,7 +236,7 @@ static void nimf_rime_update (NimfEngine    *engine,
 
 static void
 on_candidate_clicked (NimfEngine    *engine,
-                      NimfServiceIM *target,
+                      NimfServiceIC *target,
                       gchar         *text,
                       gint           index)
 {
@@ -264,7 +264,7 @@ on_candidate_clicked (NimfEngine    *engine,
 }
 
 static gboolean
-nimf_rime_page_up (NimfEngine *engine, NimfServiceIM *target)
+nimf_rime_page_up (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -275,7 +275,7 @@ nimf_rime_page_up (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static gboolean
-nimf_rime_page_down (NimfEngine *engine, NimfServiceIM *target)
+nimf_rime_page_down (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -287,7 +287,7 @@ nimf_rime_page_down (NimfEngine *engine, NimfServiceIM *target)
 
 static void
 on_candidate_scrolled (NimfEngine    *engine,
-                       NimfServiceIM *target,
+                       NimfServiceIC *target,
                        gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -314,7 +314,7 @@ on_candidate_scrolled (NimfEngine    *engine,
 
 gboolean
 nimf_rime_filter_event (NimfEngine    *engine,
-                        NimfServiceIM *target,
+                        NimfServiceIC *target,
                         NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

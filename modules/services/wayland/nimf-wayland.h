@@ -45,7 +45,7 @@
 #define NIMF_IS_WAYLAND_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_WAYLAND))
 #define NIMF_WAYLAND_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_WAYLAND, NimfWaylandClass))
 
-typedef struct _NimfWaylandIM  NimfWaylandIM;
+typedef struct _NimfWaylandIC  NimfWaylandIC;
 
 typedef struct _NimfWayland      NimfWayland;
 typedef struct _NimfWaylandClass NimfWaylandClass;
@@ -62,7 +62,7 @@ struct _NimfWayland
   GSource       *event_source;
   gchar         *id;
   gboolean       active;
-  NimfWaylandIM *im;
+  NimfWaylandIC *ic;
 
   struct zwp_input_method_v1 *input_method;
   struct zwp_input_method_context_v1 *context;

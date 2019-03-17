@@ -59,11 +59,11 @@ struct _NimfM17nClass
 
 G_DEFINE_DYNAMIC_TYPE (NimfM17n, nimf_m17n, NIMF_TYPE_ENGINE);
 
-static NimfServiceIM *nimf_service_im_target = NULL;
+static NimfServiceIC *nimf_service_im_target = NULL;
 
 static void
 nimf_m17n_update_preedit (NimfEngine    *engine,
-                          NimfServiceIM *target,
+                          NimfServiceIC *target,
                           gchar         *new_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -102,7 +102,7 @@ nimf_m17n_update_preedit (NimfEngine    *engine,
 
 void
 nimf_m17n_reset (NimfEngine    *engine,
-                 NimfServiceIM *target)
+                 NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -118,7 +118,7 @@ nimf_m17n_reset (NimfEngine    *engine,
 
 void
 nimf_m17n_focus_in (NimfEngine    *engine,
-                    NimfServiceIM *target)
+                    NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -127,7 +127,7 @@ nimf_m17n_focus_in (NimfEngine    *engine,
 
 void
 nimf_m17n_focus_out (NimfEngine    *engine,
-                     NimfServiceIM *target)
+                     NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -156,7 +156,7 @@ nimf_m17n_mtext_to_utf8 (NimfM17n *m17n, MText *mt)
 
 static void
 nimf_m17n_update_candidate (NimfEngine    *engine,
-                            NimfServiceIM *target)
+                            NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -240,7 +240,7 @@ nimf_m17n_page_down (NimfM17n *m17n)
 
 gboolean
 nimf_m17n_filter_event (NimfEngine    *engine,
-                        NimfServiceIM *target,
+                        NimfServiceIC *target,
                         NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);

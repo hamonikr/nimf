@@ -33,7 +33,7 @@
 #include "nimf-preeditable.h"
 #include "nimf-server.h"
 #include "nimf-service.h"
-#include "nimf-service-im.h"
+#include "nimf-service-ic.h"
 #include "nimf-types.h"
 #include "nimf-utils.h"
 

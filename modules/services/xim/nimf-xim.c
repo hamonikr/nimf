@@ -32,12 +32,12 @@ static void nimf_xim_set_engine (NimfService *service,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXim       *xim = NIMF_XIM (service);
-  NimfServiceIM *im;
+  NimfServiceIC *im;
 
   im = g_hash_table_lookup (xim->ims,
                             GUINT_TO_POINTER (xim->last_focused_icid));
   if (im)
-    nimf_service_im_set_engine (im, engine_id, method_id);
+    nimf_service_ic_set_engine (im, engine_id, method_id);
 }
 
 static void nimf_xim_set_engine_by_id (NimfService *service,
@@ -46,12 +46,12 @@ static void nimf_xim_set_engine_by_id (NimfService *service,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXim       *xim = NIMF_XIM (service);
-  NimfServiceIM *im;
+  NimfServiceIC *im;
 
   im = g_hash_table_lookup (xim->ims,
                             GUINT_TO_POINTER (xim->last_focused_icid));
   if (im)
-    nimf_service_im_set_engine_by_id (im, engine_id);
+    nimf_service_ic_set_engine_by_id (im, engine_id);
 }
 
 static int nimf_xim_set_ic_values (NimfXim          *xim,
@@ -59,7 +59,7 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServiceIM *im;
+  NimfServiceIC *im;
   NimfXimIM     *xim_im;
   CARD16 i;
 
@@ -71,7 +71,7 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
     if (!g_strcmp0 (XNInputStyle, data->ic_attr[i].name))
     {
       xim_im->input_style = (*(CARD32*) data->ic_attr[i].value) & XIMPreeditCallbacks;
-      nimf_service_im_set_use_preedit (im, !!xim_im->input_style);
+      nimf_service_ic_set_use_preedit (im, !!xim_im->input_style);
     }
     else if (!g_strcmp0 (XNClientWindow, data->ic_attr[i].name))
     {
@@ -95,10 +95,10 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
       switch (state)
       {
         case XIMPreeditEnable:
-          nimf_service_im_set_use_preedit (im, TRUE);
+          nimf_service_ic_set_use_preedit (im, TRUE);
           break;
         case XIMPreeditDisable:
-          nimf_service_im_set_use_preedit (im, FALSE);
+          nimf_service_ic_set_use_preedit (im, FALSE);
           break;
         case XIMPreeditUnKnown:
           break;
@@ -174,7 +174,7 @@ static int nimf_xim_get_ic_values (NimfXim          *xim,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServiceIM *im;
+  NimfServiceIC *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
   CARD16 i;
 
@@ -198,7 +198,7 @@ static int nimf_xim_get_ic_values (NimfXim          *xim,
       data->preedit_attr[i].value_length = sizeof (XIMPreeditState);
       data->preedit_attr[i].value = g_malloc (sizeof (XIMPreeditState));
 
-      if (nimf_service_im_get_use_preedit (im))
+      if (nimf_service_ic_get_use_preedit (im))
         *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditEnable;
       else
         *(XIMPreeditState *) data->preedit_attr[i].value = XIMPreeditDisable;
@@ -249,9 +249,9 @@ static int nimf_xim_forward_event (NimfXim              *xim,
   state = event->key.state & ~consumed;
   event->key.state |= (NimfModifierType) state;
 
-  NimfServiceIM *im;
+  NimfServiceIC *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
-  retval  = nimf_service_im_filter_event (im, event);
+  retval  = nimf_service_ic_filter_event (im, event);
   nimf_event_free (event);
 
   if (G_UNLIKELY (!retval))
@@ -273,16 +273,16 @@ nimf_xim_get_id (NimfService *service)
 static int nimf_xim_set_ic_focus (NimfXim             *xim,
                                   IMChangeFocusStruct *data)
 {
-  NimfServiceIM *im;
+  NimfServiceIC *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
   g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
            G_STRFUNC, data->icid, NIMF_XIM_IM (im)->icid);
 
-  nimf_service_im_focus_in (im);
+  nimf_service_ic_focus_in (im);
   xim->last_focused_icid = NIMF_XIM_IM (im)->icid;
 
-  if (!nimf_service_im_get_use_preedit (im))
+  if (!nimf_service_ic_get_use_preedit (im))
     nimf_xim_im_set_cursor_location (NIMF_XIM_IM (im), -1, -1);
 
   return 1;
@@ -291,12 +291,12 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
 static int nimf_xim_unset_ic_focus (NimfXim             *xim,
                                     IMChangeFocusStruct *data)
 {
-  NimfServiceIM *im;
+  NimfServiceIC *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
 
   g_debug (G_STRLOC ": %s, icid = %d", G_STRFUNC, data->icid);
 
-  nimf_service_im_focus_out (im);
+  nimf_service_ic_focus_out (im);
 
   return 1;
 }
@@ -306,9 +306,9 @@ static int nimf_xim_reset_ic (NimfXim         *xim,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServiceIM *im;
+  NimfServiceIC *im;
   im = g_hash_table_lookup (xim->ims, GUINT_TO_POINTER (data->icid));
-  nimf_service_im_reset (im);
+  nimf_service_ic_reset (im);
 
   return 1;
 }

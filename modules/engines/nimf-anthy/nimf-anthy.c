@@ -80,7 +80,7 @@ G_DEFINE_DYNAMIC_TYPE (NimfAnthy, nimf_anthy, NIMF_TYPE_ENGINE);
 
 static void
 nimf_anthy_update_preedit_state (NimfEngine    *engine,
-                                 NimfServiceIM *target,
+                                 NimfServiceIC *target,
                                  const gchar   *new_preedit,
                                  gint           cursor_pos)
 {
@@ -98,7 +98,7 @@ nimf_anthy_update_preedit_state (NimfEngine    *engine,
   nimf_engine_emit_preedit_changed (engine, target, new_preedit,
                                     anthy->preedit_attrs, cursor_pos);
 
-  if (!nimf_service_im_get_use_preedit (target))
+  if (!nimf_service_ic_get_use_preedit (target))
     nimf_candidatable_set_auxiliary_text (anthy->candidatable,
                                           anthy->preedit->str,
                                           g_utf8_strlen (anthy->preedit->str,
@@ -114,7 +114,7 @@ nimf_anthy_update_preedit_state (NimfEngine    *engine,
 
 static void
 nimf_anthy_emit_commit (NimfEngine    *engine,
-                        NimfServiceIM *target)
+                        NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -143,7 +143,7 @@ nimf_anthy_emit_commit (NimfEngine    *engine,
 
 void
 nimf_anthy_reset (NimfEngine    *engine,
-                  NimfServiceIM *target)
+                  NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -159,14 +159,14 @@ nimf_anthy_reset (NimfEngine    *engine,
 
 void
 nimf_anthy_focus_in (NimfEngine    *engine,
-                     NimfServiceIM *target)
+                     NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
 nimf_anthy_focus_out (NimfEngine    *engine,
-                      NimfServiceIM *target)
+                      NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -184,7 +184,7 @@ nimf_anthy_get_current_page (NimfEngine *engine)
 
 static void
 nimf_anthy_convert_preedit_text (NimfEngine    *engine,
-                                 NimfServiceIM *target)
+                                 NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -227,7 +227,7 @@ nimf_anthy_convert_preedit_text (NimfEngine    *engine,
 
 static void
 nimf_anthy_update_preedit_text (NimfEngine    *engine,
-                                NimfServiceIM *target)
+                                NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -244,7 +244,7 @@ nimf_anthy_update_preedit_text (NimfEngine    *engine,
 
 static void
 nimf_anthy_update_page (NimfEngine    *engine,
-                        NimfServiceIM *target)
+                        NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -276,7 +276,7 @@ nimf_anthy_update_page (NimfEngine    *engine,
 
 static void
 on_candidate_clicked (NimfEngine    *engine,
-                      NimfServiceIM *target,
+                      NimfServiceIC *target,
                       gchar         *text,
                       gint           index)
 {
@@ -289,7 +289,7 @@ on_candidate_clicked (NimfEngine    *engine,
 }
 
 static void
-nimf_anthy_page_end (NimfEngine *engine, NimfServiceIM *target)
+nimf_anthy_page_end (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -307,7 +307,7 @@ nimf_anthy_page_end (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static gboolean
-nimf_anthy_page_up (NimfEngine *engine, NimfServiceIM *target)
+nimf_anthy_page_up (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -327,7 +327,7 @@ nimf_anthy_page_up (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static void
-nimf_anthy_page_home (NimfEngine *engine, NimfServiceIM *target)
+nimf_anthy_page_home (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -345,7 +345,7 @@ nimf_anthy_page_home (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static gboolean
-nimf_anthy_page_down (NimfEngine *engine, NimfServiceIM *target)
+nimf_anthy_page_down (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -366,7 +366,7 @@ nimf_anthy_page_down (NimfEngine *engine, NimfServiceIM *target)
 
 static void
 on_candidate_scrolled (NimfEngine    *engine,
-                       NimfServiceIM *target,
+                       NimfServiceIC *target,
                        gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -391,7 +391,7 @@ on_candidate_scrolled (NimfEngine    *engine,
 
 static void
 nimf_anthy_update_candidate (NimfEngine    *engine,
-                             NimfServiceIM *target)
+                             NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -419,7 +419,7 @@ nimf_anthy_update_candidate (NimfEngine    *engine,
 
 static gboolean
 nimf_anthy_filter_event_romaji (NimfEngine    *engine,
-                                NimfServiceIM *target,
+                                NimfServiceIC *target,
                                 NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -510,7 +510,7 @@ nimf_anthy_preedit_offset_has_suffix (NimfAnthy *anthy, const gchar *suffix)
 
 static gboolean
 nimf_anthy_filter_event_pc104 (NimfEngine    *engine,
-                               NimfServiceIM *target,
+                               NimfServiceIC *target,
                                NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -755,7 +755,7 @@ nimf_anthy_replace_last_n (NimfAnthy *anthy)
 
 static gboolean
 nimf_anthy_filter_event (NimfEngine    *engine,
-                         NimfServiceIM *target,
+                         NimfServiceIC *target,
                          NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -962,7 +962,7 @@ nimf_anthy_filter_event (NimfEngine    *engine,
     {
       if (!nimf_candidatable_is_visible (anthy->candidatable))
         nimf_candidatable_show (anthy->candidatable, target,
-                                !nimf_service_im_get_use_preedit (target));
+                                !nimf_service_ic_get_use_preedit (target));
 
       anthy->current_segment = 0;
       nimf_anthy_convert_preedit_text (engine, target);

@@ -23,7 +23,7 @@
 #define __NIMF_CANDIDATABLE_H__
 
 #include <glib-object.h>
-#include "nimf-service-im.h"
+#include "nimf-service-ic.h"
 
 G_BEGIN_DECLS
 
@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 
 G_DECLARE_INTERFACE (NimfCandidatable, nimf_candidatable, NIMF, CANDIDATABLE, GObject)
 
-typedef struct _NimfServiceIM NimfServiceIM;
+typedef struct _NimfServiceIC NimfServiceIC;
 
 typedef struct _NimfCandidatable          NimfCandidatable; /* dummy typedef */
 typedef struct _NimfCandidatableInterface NimfCandidatableInterface;
@@ -61,14 +61,14 @@ struct _NimfCandidatableInterface
   GTypeInterface parent;
 
   void     (* show)                         (NimfCandidatable *candidatable,
-                                             NimfServiceIM    *target,
+                                             NimfServiceIC    *target,
                                              gboolean          show_entry);
   void     (* hide)                         (NimfCandidatable *candidatable);
   gboolean (* is_visible)                   (NimfCandidatable *candidatable);
   void     (* clear)                        (NimfCandidatable *candidatable,
-                                             NimfServiceIM    *target);
+                                             NimfServiceIC    *target);
   void     (* set_page_values)              (NimfCandidatable *candidatable,
-                                             NimfServiceIM    *target,
+                                             NimfServiceIC    *target,
                                              gint              page_index,
                                              gint              n_pages,
                                              gint              page_size);
@@ -89,14 +89,14 @@ struct _NimfCandidatableInterface
 };
 
 void     nimf_candidatable_show            (NimfCandidatable *candidatable,
-                                            NimfServiceIM    *target,
+                                            NimfServiceIC    *target,
                                             gboolean          show_entry);
 void     nimf_candidatable_hide            (NimfCandidatable *candidatable);
 gboolean nimf_candidatable_is_visible      (NimfCandidatable *candidatable);
 void     nimf_candidatable_clear           (NimfCandidatable *candidatable,
-                                            NimfServiceIM    *target);
+                                            NimfServiceIC    *target);
 void     nimf_candidatable_set_page_values (NimfCandidatable *candidatable,
-                                            NimfServiceIM    *target,
+                                            NimfServiceIC    *target,
                                             gint              page_index,
                                             gint              n_pages,
                                             gint              page_size);

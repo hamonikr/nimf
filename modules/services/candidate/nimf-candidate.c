@@ -46,7 +46,7 @@ struct _NimfCandidate
   gchar    *id;
   gboolean  active;
 
-  NimfServiceIM *target;
+  NimfServiceIC *target;
   GtkWidget     *window;
   GtkWidget     *entry;
   GtkWidget     *treeview;
@@ -66,7 +66,7 @@ enum
 
 static void
 nimf_candidate_show (NimfCandidatable *candidatable,
-                     NimfServiceIM    *target,
+                     NimfServiceIC    *target,
                      gboolean          show_entry)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -78,7 +78,7 @@ nimf_candidate_show (NimfCandidatable *candidatable,
   GdkRectangle         geometry;
   const NimfRectangle *cursor_area;
 
-  cursor_area = nimf_service_im_get_cursor_location (target);
+  cursor_area = nimf_service_ic_get_cursor_location (target);
 
 #if GTK_CHECK_VERSION (3, 22, 0)
   GdkDisplay *display = gtk_widget_get_display (candidate->window);
@@ -138,7 +138,7 @@ nimf_candidate_is_visible (NimfCandidatable *candidatable)
 
 static void
 nimf_candidate_set_page_values (NimfCandidatable *candidatable,
-                                NimfServiceIM    *target,
+                                NimfServiceIC    *target,
                                 gint              page_index,
                                 gint              n_pages,
                                 gint              page_size)
@@ -162,7 +162,7 @@ nimf_candidate_set_page_values (NimfCandidatable *candidatable,
 
 static void
 nimf_candidate_clear (NimfCandidatable *candidatable,
-                      NimfServiceIM    *target)
+                      NimfServiceIC    *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -334,7 +334,7 @@ nimf_candidate_select_previous_item (NimfCandidatable *candidatable)
   {
     NimfEngineClass *engine_class;
     NimfEngine      *engine;
-    engine = nimf_service_im_get_engine (candidate->target);
+    engine = nimf_service_ic_get_engine (candidate->target);
     engine_class = NIMF_ENGINE_GET_CLASS (engine);
 
     if (engine_class->candidate_page_up)
@@ -373,7 +373,7 @@ nimf_candidate_select_next_item (NimfCandidatable *candidatable)
   {
     NimfEngineClass *engine_class;
     NimfEngine      *engine;
-    engine = nimf_service_im_get_engine (candidate->target);
+    engine = nimf_service_ic_get_engine (candidate->target);
     engine_class = NIMF_ENGINE_GET_CLASS (engine);
 
     if (engine_class->candidate_page_down)
@@ -452,7 +452,7 @@ on_tree_view_row_activated (GtkTreeView       *tree_view,
   NimfEngineClass *engine_class;
   NimfEngine      *engine;
 
-  engine = nimf_service_im_get_engine (candidate->target);
+  engine = nimf_service_ic_get_engine (candidate->target);
 
   g_return_if_fail (candidate->target && NIMF_IS_ENGINE (engine));
 
@@ -477,7 +477,7 @@ on_range_change_value (GtkRange      *range,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEngine *engine = nimf_service_im_get_engine (candidate->target);
+  NimfEngine *engine = nimf_service_ic_get_engine (candidate->target);
 
   g_return_val_if_fail (candidate->target && NIMF_IS_ENGINE (engine), FALSE);
 

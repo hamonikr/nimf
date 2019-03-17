@@ -89,7 +89,7 @@ G_DEFINE_DYNAMIC_TYPE (NimfLibhangul, nimf_libhangul, NIMF_TYPE_ENGINE);
 
 static void
 nimf_libhangul_update_preedit (NimfEngine    *engine,
-                               NimfServiceIM *target,
+                               NimfServiceIC *target,
                                gchar         *new_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -126,7 +126,7 @@ nimf_libhangul_update_preedit (NimfEngine    *engine,
 
 void
 nimf_libhangul_emit_commit (NimfEngine    *engine,
-                            NimfServiceIM *target,
+                            NimfServiceIC *target,
                             const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -139,7 +139,7 @@ nimf_libhangul_emit_commit (NimfEngine    *engine,
 
 void
 nimf_libhangul_reset (NimfEngine    *engine,
-                      NimfServiceIM *target)
+                      NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -168,7 +168,7 @@ nimf_libhangul_reset (NimfEngine    *engine,
 
 void
 nimf_libhangul_focus_in (NimfEngine    *engine,
-                         NimfServiceIM *target)
+                         NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -177,7 +177,7 @@ nimf_libhangul_focus_in (NimfEngine    *engine,
 
 void
 nimf_libhangul_focus_out (NimfEngine    *engine,
-                          NimfServiceIM *target)
+                          NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -188,7 +188,7 @@ nimf_libhangul_focus_out (NimfEngine    *engine,
 
 static void
 on_candidate_clicked (NimfEngine    *engine,
-                      NimfServiceIM *target,
+                      NimfServiceIC *target,
                       gchar         *text,
                       gint           index)
 {
@@ -223,7 +223,7 @@ nimf_libhangul_get_current_page (NimfEngine *engine)
 
 static void
 nimf_libhangul_update_page (NimfEngine    *engine,
-                            NimfServiceIM *target)
+                            NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -250,7 +250,7 @@ nimf_libhangul_update_page (NimfEngine    *engine,
 }
 
 static gboolean
-nimf_libhangul_page_up (NimfEngine *engine, NimfServiceIM *target)
+nimf_libhangul_page_up (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -273,7 +273,7 @@ nimf_libhangul_page_up (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static gboolean
-nimf_libhangul_page_down (NimfEngine *engine, NimfServiceIM *target)
+nimf_libhangul_page_down (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -296,7 +296,7 @@ nimf_libhangul_page_down (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static void
-nimf_libhangul_page_home (NimfEngine *engine, NimfServiceIM *target)
+nimf_libhangul_page_home (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -317,7 +317,7 @@ nimf_libhangul_page_home (NimfEngine *engine, NimfServiceIM *target)
 }
 
 static void
-nimf_libhangul_page_end (NimfEngine *engine, NimfServiceIM *target)
+nimf_libhangul_page_end (NimfEngine *engine, NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -339,7 +339,7 @@ nimf_libhangul_page_end (NimfEngine *engine, NimfServiceIM *target)
 
 static void
 on_candidate_scrolled (NimfEngine    *engine,
-                       NimfServiceIM *target,
+                       NimfServiceIC *target,
                        gdouble        value)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -364,7 +364,7 @@ on_candidate_scrolled (NimfEngine    *engine,
 
 static gboolean
 nimf_libhangul_filter_leading_consonant (NimfEngine    *engine,
-                                         NimfServiceIM *target,
+                                         NimfServiceIC *target,
                                          guint          keyval)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -396,7 +396,7 @@ nimf_libhangul_filter_leading_consonant (NimfEngine    *engine,
 
 gboolean
 nimf_libhangul_filter_event (NimfEngine    *engine,
-                             NimfServiceIM *target,
+                             NimfServiceIC *target,
                              NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -455,7 +455,7 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
       hangul->n_pages = (hanja_list_get_size (hangul->hanja_list) + 9) / 10;
       hangul->current_page = 1;
       nimf_libhangul_update_page (engine, target);
-      use_preedit = nimf_service_im_get_use_preedit (target);
+      use_preedit = nimf_service_ic_get_use_preedit (target);
 
       if (!use_preedit)
         nimf_candidatable_set_auxiliary_text (hangul->candidatable,

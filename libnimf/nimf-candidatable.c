@@ -31,7 +31,7 @@ nimf_candidatable_default_init (NimfCandidatableInterface *iface)
 
 void
 nimf_candidatable_show (NimfCandidatable *candidatable,
-                        NimfServiceIM    *target,
+                        NimfServiceIC    *target,
                         gboolean          show_entry)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -80,7 +80,7 @@ nimf_candidatable_is_visible (NimfCandidatable *candidatable)
 
 void
 nimf_candidatable_clear (NimfCandidatable *candidatable,
-                         NimfServiceIM    *target)
+                         NimfServiceIC    *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -96,7 +96,7 @@ nimf_candidatable_clear (NimfCandidatable *candidatable,
 
 void
 nimf_candidatable_set_page_values (NimfCandidatable *candidatable,
-                                   NimfServiceIM    *target,
+                                   NimfServiceIC    *target,
                                    gint              page_index,
                                    gint              n_pages,
                                    gint              page_size)

@@ -22,9 +22,9 @@
 #include "nimf-connection.h"
 #include "nimf-events.h"
 #include "nimf-marshalers.h"
-#include "nimf-service-im.h"
+#include "nimf-service-ic.h"
 #include <string.h>
-#include "nimf-nim-im.h"
+#include "nimf-nim-ic.h"
 
 G_DEFINE_TYPE (NimfConnection, nimf_connection, G_TYPE_OBJECT);
 
@@ -42,7 +42,7 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   while (g_hash_table_iter_next (&iter, NULL, &im))
   {
     if (NIMF_NIM_IM (im)->icid == connection->nim->last_focused_icid)
-      nimf_service_im_set_engine_by_id (im, engine_id);
+      nimf_service_ic_set_engine_by_id (im, engine_id);
   }
 }
 
@@ -61,7 +61,7 @@ nimf_connection_set_engine (NimfConnection *connection,
   while (g_hash_table_iter_next (&iter, NULL, &im))
   {
     if (NIMF_NIM_IM (im)->icid == connection->nim->last_focused_icid)
-      nimf_service_im_set_engine (im, engine_id, method_id);
+      nimf_service_ic_set_engine (im, engine_id, method_id);
   }
 }
 

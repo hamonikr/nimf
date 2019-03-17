@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
- * nimf-nim-im.h
+ * nimf-nim-ic.h
  * This file is part of Nimf.
  *
  * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
@@ -19,11 +19,11 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __NIMF_NIM_IM_H__
-#define __NIMF_NIM_IM_H__
+#ifndef __NIMF_NIM_IC_H__
+#define __NIMF_NIM_IC_H__
 
 #include <glib-object.h>
-#include "nimf-service-im.h"
+#include "nimf-service-ic.h"
 #include "nimf-connection.h"
 
 G_BEGIN_DECLS
@@ -40,12 +40,12 @@ typedef struct _NimfNimIMClass NimfNimIMClass;
 
 struct _NimfNimIMClass
 {
-  NimfServiceIMClass parent_class;
+  NimfServiceICClass parent_class;
 };
 
 struct _NimfNimIM
 {
-  NimfServiceIM parent_instance;
+  NimfServiceIC parent_instance;
   NimfConnection *connection;
   guint16         icid;
 };
@@ -55,4 +55,4 @@ NimfNimIM *nimf_nim_im_new      (guint16 icid, NimfConnection *connection);
 
 G_END_DECLS
 
-#endif /* __NIMF_NIM_IM_H__ */
+#endif /* __NIMF_NIM_IC_H__ */

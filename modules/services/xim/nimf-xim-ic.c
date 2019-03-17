@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
- * nimf-xim-im.c
+ * nimf-xim-ic.c
  * This file is part of Nimf.
  *
  * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
@@ -19,11 +19,11 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "nimf-xim-im.h"
+#include "nimf-xim-ic.h"
 #include <X11/Xutil.h>
 #include "IMdkit/i18nMethod.h"
 
-G_DEFINE_TYPE (NimfXimIM, nimf_xim_im, NIMF_TYPE_SERVICE_IM);
+G_DEFINE_TYPE (NimfXimIM, nimf_xim_im, NIMF_TYPE_SERVICE_IC);
 
 void nimf_xim_im_set_cursor_location (NimfXimIM *xim_im,
                                       gint       x,
@@ -78,11 +78,11 @@ void nimf_xim_im_set_cursor_location (NimfXimIM *xim_im,
     }
   }
 
-  nimf_service_im_set_cursor_location (NIMF_SERVICE_IM (xim_im), &area);
+  nimf_service_ic_set_cursor_location (NIMF_SERVICE_IC (xim_im), &area);
 }
 
 static void
-nimf_xim_im_emit_commit (NimfServiceIM *im,
+nimf_xim_im_emit_commit (NimfServiceIC *im,
                          const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -104,7 +104,7 @@ nimf_xim_im_emit_commit (NimfServiceIM *im,
   XFree (property.value);
 }
 
-static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
+static void nimf_xim_im_emit_preedit_end (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -122,7 +122,7 @@ static void nimf_xim_im_emit_preedit_end (NimfServiceIM *im)
   nimf_xim_call_callback (xim_im->xim->xims, (XPointer) &preedit_cb_data);
 }
 
-static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
+static void nimf_xim_im_emit_preedit_start (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -141,7 +141,7 @@ static void nimf_xim_im_emit_preedit_start (NimfServiceIM *im)
 }
 
 static void
-nimf_xim_im_emit_preedit_changed (NimfServiceIM    *im,
+nimf_xim_im_emit_preedit_changed (NimfServiceIC    *im,
                                   const gchar      *preedit_string,
                                   NimfPreeditAttr **attrs,
                                   gint              cursor_pos)
@@ -231,7 +231,7 @@ nimf_xim_im_new (NimfXim *xim,
 }
 
 const gchar *
-nimf_xim_im_get_service_id (NimfServiceIM *im)
+nimf_xim_im_get_service_id (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -258,7 +258,7 @@ nimf_xim_im_class_init (NimfXimIMClass *class)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GObjectClass       *object_class     = G_OBJECT_CLASS (class);
-  NimfServiceIMClass *service_im_class = NIMF_SERVICE_IM_CLASS (class);
+  NimfServiceICClass *service_im_class = NIMF_SERVICE_IC_CLASS (class);
 
   service_im_class->emit_commit          = nimf_xim_im_emit_commit;
   service_im_class->emit_preedit_start   = nimf_xim_im_emit_preedit_start;

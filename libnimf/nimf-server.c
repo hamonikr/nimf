@@ -311,7 +311,7 @@ gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
   return engine_ids;
 }
 
-NimfServiceIM *
+NimfServiceIC *
 nimf_server_get_last_focused_im (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -321,7 +321,7 @@ nimf_server_get_last_focused_im (NimfServer *server)
 
 void
 nimf_server_set_last_focused_im (NimfServer    *server,
-                                 NimfServiceIM *im)
+                                 NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

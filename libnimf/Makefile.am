@@ -31,8 +31,8 @@ libnimf_la_SOURCES = \
 	nimf-server-private.h \
 	nimf-service.c \
 	nimf-service.h \
-	nimf-service-im.c \
-	nimf-service-im.h \
+	nimf-service-ic.c \
+	nimf-service-ic.h \
 	nimf-types.c \
 	nimf-types.h \
 	nimf-utils.c \
@@ -61,7 +61,7 @@ nimfinclude_HEADERS = \
 	nimf-preeditable.h \
 	nimf-server.h \
 	nimf-service.h \
-	nimf-service-im.h \
+	nimf-service-ic.h \
 	nimf-types.h \
 	nimf-utils.h \
 	$(NULL)

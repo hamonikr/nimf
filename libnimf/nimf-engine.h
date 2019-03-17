@@ -24,7 +24,7 @@
 
 #include <glib-object.h>
 #include "nimf-events.h"
-#include "nimf-service-im.h"
+#include "nimf-service-ic.h"
 #include "nimf-candidatable.h"
 
 G_BEGIN_DECLS
@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 #define NIMF_IS_ENGINE_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE ((obj), NIMF_TYPE_ENGINE))
 #define NIMF_ENGINE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
 
-typedef struct _NimfServiceIM    NimfServiceIM;
+typedef struct _NimfServiceIC    NimfServiceIC;
 typedef struct _NimfCandidatable NimfCandidatable;
 
 typedef struct _NimfEngine        NimfEngine;
@@ -70,35 +70,35 @@ struct _NimfEngineClass
   /*< public >*/
   /* Virtual functions */
   gboolean (* filter_event)       (NimfEngine          *engine,
-                                   NimfServiceIM       *im,
+                                   NimfServiceIC       *im,
                                    NimfEvent           *event);
   void     (* reset)              (NimfEngine          *engine,
-                                   NimfServiceIM       *im);
+                                   NimfServiceIC       *im);
   void     (* focus_in)           (NimfEngine          *engine,
-                                   NimfServiceIM       *im);
+                                   NimfServiceIC       *im);
   void     (* focus_out)          (NimfEngine          *engine,
-                                   NimfServiceIM       *im);
+                                   NimfServiceIC       *im);
   void     (* set_surrounding)    (NimfEngine          *engine,
                                    const char          *text,
                                    gint                 len,
                                    gint                 cursor_index);
   gboolean (* get_surrounding)    (NimfEngine          *engine,
-                                   NimfServiceIM       *im,
+                                   NimfServiceIC       *im,
                                    gchar              **text,
                                    gint                *cursor_index);
   void     (* set_method)         (NimfEngine          *engine,
                                    const gchar         *method_id);
   /* candidate */
   gboolean (* candidate_page_up)   (NimfEngine         *engine,
-                                    NimfServiceIM      *im);
+                                    NimfServiceIC      *im);
   gboolean (* candidate_page_down) (NimfEngine         *engine,
-                                    NimfServiceIM      *im);
+                                    NimfServiceIC      *im);
   void     (* candidate_clicked)   (NimfEngine         *engine,
-                                    NimfServiceIM      *im,
+                                    NimfServiceIC      *im,
                                     gchar              *text,
                                     gint                index);
   void     (* candidate_scrolled)  (NimfEngine         *engine,
-                                    NimfServiceIM      *im,
+                                    NimfServiceIC      *im,
                                     gdouble             value);
   /* info */
   const gchar * (* get_id)        (NimfEngine          *engine);
@@ -107,20 +107,20 @@ struct _NimfEngineClass
 
 GType    nimf_engine_get_type                  (void) G_GNUC_CONST;
 gboolean nimf_engine_filter_event              (NimfEngine          *engine,
-                                                NimfServiceIM       *im,
+                                                NimfServiceIC       *im,
                                                 NimfEvent           *event);
 void     nimf_engine_reset                     (NimfEngine          *engine,
-                                                NimfServiceIM       *im);
+                                                NimfServiceIC       *im);
 void     nimf_engine_focus_in                  (NimfEngine          *engine,
-                                                NimfServiceIM       *im);
+                                                NimfServiceIC       *im);
 void     nimf_engine_focus_out                 (NimfEngine          *engine,
-                                                NimfServiceIM       *im);
+                                                NimfServiceIC       *im);
 void     nimf_engine_set_surrounding           (NimfEngine          *engine,
                                                 const char          *text,
                                                 gint                 len,
                                                 gint                 cursor_index);
 gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
-                                                NimfServiceIM       *im,
+                                                NimfServiceIC       *im,
                                                 gchar              **text,
                                                 gint                *cursor_index);
 void     nimf_engine_status_changed            (NimfEngine          *engine);
@@ -128,25 +128,25 @@ void     nimf_engine_set_method                (NimfEngine          *engine,
                                                 const gchar         *method_id);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine       *engine,
-                                                NimfServiceIM    *im);
+                                                NimfServiceIC    *im);
 void     nimf_engine_emit_preedit_changed      (NimfEngine       *engine,
-                                                NimfServiceIM    *im,
+                                                NimfServiceIC    *im,
                                                 const gchar      *preedit_string,
                                                 NimfPreeditAttr **attrs,
                                                 gint              cursor_pos);
 void     nimf_engine_emit_preedit_end          (NimfEngine       *engine,
-                                                NimfServiceIM    *im);
+                                                NimfServiceIC    *im);
 void     nimf_engine_emit_commit               (NimfEngine       *engine,
-                                                NimfServiceIM    *im,
+                                                NimfServiceIC    *im,
                                                 gchar const      *text);
 gboolean nimf_engine_emit_retrieve_surrounding (NimfEngine       *engine,
-                                                NimfServiceIM    *im);
+                                                NimfServiceIC    *im);
 gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
-                                                NimfServiceIM    *im,
+                                                NimfServiceIC    *im,
                                                 gint              offset,
                                                 gint              n_chars);
 void     nimf_engine_emit_beep                 (NimfEngine       *engine,
-                                                NimfServiceIM    *im);
+                                                NimfServiceIC    *im);
 /* info */
 const gchar    *nimf_engine_get_id        (NimfEngine *engine);
 const gchar    *nimf_engine_get_icon_name (NimfEngine *engine);

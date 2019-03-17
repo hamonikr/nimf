@@ -28,8 +28,8 @@ IMdkit_SOURCES = \
 libnimf_xim_la_SOURCES = \
 	nimf-xim.c \
 	nimf-xim.h \
-	nimf-xim-im.c \
-	nimf-xim-im.h \
+	nimf-xim-ic.c \
+	nimf-xim-ic.h \
 	$(IMdkit_SOURCES) \
 	$(NULL)
 

@@ -27,7 +27,7 @@
 #include <glib/gi18n.h>
 #include <X11/XKBlib.h>
 #include "IMdkit/Xi18n.h"
-#include "nimf-xim-im.h"
+#include "nimf-xim-ic.h"
 
 G_BEGIN_DECLS
 

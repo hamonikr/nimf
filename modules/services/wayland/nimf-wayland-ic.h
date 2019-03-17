@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
- * nimf-wayland-im.h
+ * nimf-wayland-ic.h
  * This file is part of Nimf.
  *
  * Copyright (C) 2017-2019 Hodong Kim <cogniti@gmail.com>
@@ -19,41 +19,41 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __NIMF_WAYLAND_IM_H__
-#define __NIMF_WAYLAND_IM_H__
+#ifndef __NIMF_WAYLAND_IC_H__
+#define __NIMF_WAYLAND_IC_H__
 
 #include "nimf.h"
 #include "nimf-wayland.h"
 
 G_BEGIN_DECLS
 
-#define NIMF_TYPE_WAYLAND_IM             (nimf_wayland_im_get_type ())
-#define NIMF_WAYLAND_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_WAYLAND_IM, NimfWaylandIM))
-#define NIMF_WAYLAND_IM_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_WAYLAND_IM, NimfWaylandIMClass))
+#define NIMF_TYPE_WAYLAND_IM             (nimf_wayland_ic_get_type ())
+#define NIMF_WAYLAND_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_WAYLAND_IM, NimfWaylandIC))
+#define NIMF_WAYLAND_IM_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_WAYLAND_IM, NimfWaylandICClass))
 #define NIMF_IS_WAYLAND_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_WAYLAND_IM))
 #define NIMF_IS_WAYLAND_IM_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_WAYLAND_IM))
-#define NIMF_WAYLAND_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_WAYLAND_IM, NimfWaylandIMClass))
+#define NIMF_WAYLAND_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_WAYLAND_IM, NimfWaylandICClass))
 
 typedef struct _NimfWayland NimfWayland;
 
-typedef struct _NimfWaylandIM      NimfWaylandIM;
-typedef struct _NimfWaylandIMClass NimfWaylandIMClass;
+typedef struct _NimfWaylandIC      NimfWaylandIC;
+typedef struct _NimfWaylandICClass NimfWaylandICClass;
 
-struct _NimfWaylandIMClass
+struct _NimfWaylandICClass
 {
-  NimfServiceIMClass parent_class;
+  NimfServiceICClass parent_class;
 };
 
-struct _NimfWaylandIM
+struct _NimfWaylandIC
 {
-  NimfServiceIM parent_instance;
+  NimfServiceIC parent_instance;
   NimfWayland *wayland;
 };
 
-GType          nimf_wayland_im_get_type (void) G_GNUC_CONST;
-NimfWaylandIM *nimf_wayland_im_new      (NimfWayland *wayland);
+GType          nimf_wayland_ic_get_type (void) G_GNUC_CONST;
+NimfWaylandIC *nimf_wayland_ic_new      (NimfWayland *wayland);
 
 G_END_DECLS
 
-#endif /* __NIMF_WAYLAND_IM_H__ */
+#endif /* __NIMF_WAYLAND_IC_H__ */
 

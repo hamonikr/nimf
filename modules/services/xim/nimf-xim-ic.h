@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
- * nimf-xim-im.h
+ * nimf-xim-ic.h
  * This file is part of Nimf.
  *
  * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
@@ -19,8 +19,8 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __NIMF_XIM_IM_H__
-#define __NIMF_XIM_IM_H__
+#ifndef __NIMF_XIM_IC_H__
+#define __NIMF_XIM_IC_H__
 
 #include <glib-object.h>
 #include "nimf.h"
@@ -42,12 +42,12 @@ typedef struct _NimfXimIMClass NimfXimIMClass;
 
 struct _NimfXimIMClass
 {
-  NimfServiceIMClass parent_class;
+  NimfServiceICClass parent_class;
 };
 
 struct _NimfXimIM
 {
-  NimfServiceIM parent_instance;
+  NimfServiceIC parent_instance;
   guint16   connect_id;
   guint16   icid;
   gint      prev_preedit_length;
@@ -67,5 +67,5 @@ void       nimf_xim_im_set_cursor_location (NimfXimIM  *xim_im,
 
 G_END_DECLS
 
-#endif /* __NIMF_XIM_IM_H__ */
+#endif /* __NIMF_XIM_IC_H__ */
 

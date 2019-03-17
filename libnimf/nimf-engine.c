@@ -31,7 +31,7 @@ struct _NimfEnginePrivate
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (NimfEngine, nimf_engine, G_TYPE_OBJECT);
 
 void nimf_engine_reset (NimfEngine    *engine,
-                        NimfServiceIM *im)
+                        NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -44,7 +44,7 @@ void nimf_engine_reset (NimfEngine    *engine,
 }
 
 void nimf_engine_focus_in (NimfEngine    *engine,
-                           NimfServiceIM *im)
+                           NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -57,7 +57,7 @@ void nimf_engine_focus_in (NimfEngine    *engine,
 }
 
 void nimf_engine_focus_out (NimfEngine    *engine,
-                            NimfServiceIM *im)
+                            NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -70,7 +70,7 @@ void nimf_engine_focus_out (NimfEngine    *engine,
 }
 
 gboolean nimf_engine_filter_event (NimfEngine    *engine,
-                                   NimfServiceIM *im,
+                                   NimfServiceIC *im,
                                    NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -81,7 +81,7 @@ gboolean nimf_engine_filter_event (NimfEngine    *engine,
 }
 
 gboolean nimf_engine_real_filter_event (NimfEngine    *engine,
-                                        NimfServiceIM *im,
+                                        NimfServiceIC *im,
                                         NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -108,7 +108,7 @@ nimf_engine_set_surrounding (NimfEngine *engine,
 
 gboolean
 nimf_engine_get_surrounding (NimfEngine     *engine,
-                             NimfServiceIM  *im,
+                             NimfServiceIC  *im,
                              gchar         **text,
                              gint           *cursor_index)
 {
@@ -137,62 +137,62 @@ nimf_engine_set_method (NimfEngine  *engine,
 
 void
 nimf_engine_emit_preedit_start (NimfEngine    *engine,
-                                NimfServiceIM *im)
+                                NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_service_im_emit_preedit_start (im);
+  nimf_service_ic_emit_preedit_start (im);
 }
 
 void
 nimf_engine_emit_preedit_changed (NimfEngine       *engine,
-                                  NimfServiceIM    *im,
+                                  NimfServiceIC    *im,
                                   const gchar      *preedit_string,
                                   NimfPreeditAttr **attrs,
                                   gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_service_im_emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
+  nimf_service_ic_emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
 }
 
 void
 nimf_engine_emit_preedit_end (NimfEngine    *engine,
-                              NimfServiceIM *im)
+                              NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_service_im_emit_preedit_end (im);
+  nimf_service_ic_emit_preedit_end (im);
 }
 
 void
 nimf_engine_emit_commit (NimfEngine    *engine,
-                         NimfServiceIM *im,
+                         NimfServiceIC *im,
                          const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_service_im_emit_commit (im, text);
+  nimf_service_ic_emit_commit (im, text);
 }
 
 gboolean
 nimf_engine_emit_delete_surrounding (NimfEngine    *engine,
-                                     NimfServiceIM *im,
+                                     NimfServiceIC *im,
                                      gint           offset,
                                      gint           n_chars)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_service_im_emit_delete_surrounding (im, offset, n_chars);
+  return nimf_service_ic_emit_delete_surrounding (im, offset, n_chars);
 }
 
 gboolean
 nimf_engine_emit_retrieve_surrounding (NimfEngine    *engine,
-                                       NimfServiceIM *im)
+                                       NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_service_im_emit_retrieve_surrounding (im);
+  return nimf_service_ic_emit_retrieve_surrounding (im);
 }
 
 void
@@ -209,11 +209,11 @@ nimf_engine_status_changed (NimfEngine *engine)
 
 void
 nimf_engine_emit_beep (NimfEngine    *engine,
-                       NimfServiceIM *im)
+                       NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_service_im_emit_beep (im);
+  nimf_service_ic_emit_beep (im);
 }
 
 static void
@@ -251,7 +251,7 @@ nimf_engine_real_set_surrounding (NimfEngine *engine,
 
 static gboolean
 nimf_engine_real_get_surrounding (NimfEngine     *engine,
-                                  NimfServiceIM  *im,
+                                  NimfServiceIC  *im,
                                   gchar         **text,
                                   gint           *cursor_index)
 {

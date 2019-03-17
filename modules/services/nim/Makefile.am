@@ -4,8 +4,8 @@ module_LTLIBRARIES = libnimf-nim.la
 libnimf_nim_la_SOURCES = \
 	nimf-nim.c \
 	nimf-nim.h \
-	nimf-nim-im.c \
-	nimf-nim-im.h \
+	nimf-nim-ic.c \
+	nimf-nim-ic.h \
 	nimf-connection.c \
 	nimf-connection.h \
 	$(NULL)

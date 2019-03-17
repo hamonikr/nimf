@@ -10,8 +10,8 @@ BUILT_SOURCES = \
 
 libnimf_wayland_la_SOURCES = \
 	nimf-wayland.c \
-	nimf-wayland-im.c \
-	nimf-wayland-im.h \
+	nimf-wayland-ic.c \
+	nimf-wayland-ic.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 

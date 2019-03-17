@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /*
- * nimf-nim-im.c
+ * nimf-nim-ic.c
  * This file is part of Nimf.
  *
  * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
@@ -19,15 +19,15 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "nimf-nim-im.h"
+#include "nimf-nim-ic.h"
 #include <string.h>
 #include "nimf-connection.h"
 #include "nimf-message-private.h"
 
-G_DEFINE_TYPE (NimfNimIM, nimf_nim_im, NIMF_TYPE_SERVICE_IM);
+G_DEFINE_TYPE (NimfNimIM, nimf_nim_im, NIMF_TYPE_SERVICE_IC);
 
 void
-nimf_nim_im_emit_commit (NimfServiceIM *im,
+nimf_nim_im_emit_commit (NimfServiceIC *im,
                          const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -40,7 +40,7 @@ nimf_nim_im_emit_commit (NimfServiceIM *im,
                                NIMF_MESSAGE_COMMIT_REPLY);
 }
 
-void nimf_nim_im_emit_preedit_start (NimfServiceIM *im)
+void nimf_nim_im_emit_preedit_start (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -53,7 +53,7 @@ void nimf_nim_im_emit_preedit_start (NimfServiceIM *im)
 }
 
 void
-nimf_nim_im_emit_preedit_changed (NimfServiceIM    *im,
+nimf_nim_im_emit_preedit_changed (NimfServiceIC    *im,
                                   const gchar      *preedit_string,
                                   NimfPreeditAttr **attrs,
                                   gint              cursor_pos)
@@ -86,7 +86,7 @@ nimf_nim_im_emit_preedit_changed (NimfServiceIM    *im,
                                NIMF_MESSAGE_PREEDIT_CHANGED_REPLY);
 }
 
-void nimf_nim_im_emit_preedit_end (NimfServiceIM *im)
+void nimf_nim_im_emit_preedit_end (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -99,7 +99,7 @@ void nimf_nim_im_emit_preedit_end (NimfServiceIM *im)
 }
 
 gboolean
-nimf_nim_im_emit_retrieve_surrounding (NimfServiceIM *im)
+nimf_nim_im_emit_retrieve_surrounding (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -117,7 +117,7 @@ nimf_nim_im_emit_retrieve_surrounding (NimfServiceIM *im)
 }
 
 gboolean
-nimf_nim_im_emit_delete_surrounding (NimfServiceIM *im,
+nimf_nim_im_emit_delete_surrounding (NimfServiceIC *im,
                                      gint           offset,
                                      gint           n_chars)
 {
@@ -141,7 +141,7 @@ nimf_nim_im_emit_delete_surrounding (NimfServiceIM *im,
   return *(gboolean *) (nim_im->connection->result->reply->data);
 }
 
-void nimf_nim_im_emit_beep (NimfServiceIM *im)
+void nimf_nim_im_emit_beep (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -154,7 +154,7 @@ void nimf_nim_im_emit_beep (NimfServiceIM *im)
 }
 
 const gchar *
-nimf_nim_im_get_service_id (NimfServiceIM *im)
+nimf_nim_im_get_service_id (NimfServiceIC *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -197,7 +197,7 @@ nimf_nim_im_class_init (NimfNimIMClass *class)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GObjectClass       *object_class     = G_OBJECT_CLASS (class);
-  NimfServiceIMClass *service_im_class = NIMF_SERVICE_IM_CLASS (class);
+  NimfServiceICClass *service_im_class = NIMF_SERVICE_IC_CLASS (class);
 
   object_class->finalize = nimf_nim_im_finalize;
 

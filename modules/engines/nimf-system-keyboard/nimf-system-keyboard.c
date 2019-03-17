@@ -132,7 +132,7 @@ nimf_system_keyboard_finalize (GObject *object)
 
 static void
 nimf_system_keyboard_update_preedit (NimfEngine    *engine,
-                                     NimfServiceIM *target,
+                                     NimfServiceIC *target,
                                      gchar         *new_preedit)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -171,7 +171,7 @@ nimf_system_keyboard_update_preedit (NimfEngine    *engine,
 
 static gboolean
 nimf_system_keyboard_filter_event (NimfEngine    *engine,
-                                   NimfServiceIM *target,
+                                   NimfServiceIC *target,
                                    NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -224,7 +224,7 @@ nimf_system_keyboard_filter_event (NimfEngine    *engine,
 
 static void
 nimf_system_keyboard_reset (NimfEngine    *engine,
-                            NimfServiceIM *target)
+                            NimfServiceIC *target)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
