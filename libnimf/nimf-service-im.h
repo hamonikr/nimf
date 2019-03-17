@@ -71,7 +71,7 @@ struct _NimfServiceIM
   GObject parent_instance;
   NimfServiceIMPrivate *priv;
 
-  NimfRectangle cursor_area;
+  NimfRectangle *cursor_area;
 };
 
 GType nimf_service_im_get_type    (void) G_GNUC_CONST;

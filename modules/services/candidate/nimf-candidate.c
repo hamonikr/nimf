@@ -81,8 +81,8 @@ nimf_candidate_show (NimfCandidatable *candidatable,
   GdkDisplay *display = gtk_widget_get_display (candidate->window);
   GdkMonitor *monitor;
   monitor = gdk_display_get_monitor_at_point (display,
-                                              target->cursor_area.x,
-                                              target->cursor_area.y);
+                                              target->cursor_area->x,
+                                              target->cursor_area->y);
   gdk_monitor_get_geometry (monitor, &geometry);
 #else
   GdkScreen *screen = gtk_widget_get_screen (candidate->window);
@@ -105,15 +105,15 @@ nimf_candidate_show (NimfCandidatable *candidatable,
                      natural_size.width, natural_size.height);
   gtk_window_get_size (GTK_WINDOW (candidate->window), &w, &h);
 
-  x = target->cursor_area.x - target->cursor_area.width;
-  y = target->cursor_area.y + target->cursor_area.height;
+  x = target->cursor_area->x - target->cursor_area->width;
+  y = target->cursor_area->y + target->cursor_area->height;
 
   if (x + w > geometry.x + geometry.width)
     x = geometry.x + geometry.width - w;
 
   if ((y + h > geometry.y + geometry.height) &&
-      ((target->cursor_area.y - h) >= geometry.y))
-    y = target->cursor_area.y - h;
+      ((target->cursor_area->y - h) >= geometry.y))
+    y = target->cursor_area->y - h;
 
   gtk_window_move (GTK_WINDOW (candidate->window), x, y);
 }

@@ -446,7 +446,7 @@ nimf_service_im_set_cursor_location (NimfServiceIM       *im,
     return;
 
   NimfServer *server = nimf_server_get_default ();
-  im->cursor_area    = *area;
+  *im->cursor_area   = *area;
 
   if (!im->priv->use_preedit)
     nimf_preeditable_set_cursor_location (server->preeditable, area);
@@ -580,6 +580,7 @@ nimf_service_im_init (NimfServiceIM *im)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   im->priv = nimf_service_im_get_instance_private (im);
+  im->cursor_area = g_slice_new0 (NimfRectangle);
 }
 
 static void
@@ -619,8 +620,9 @@ nimf_service_im_finalize (GObject *object)
   if (im->priv->engines)
     g_list_free_full (im->priv->engines, g_object_unref);
 
-  g_free (im->priv->preedit_string);
+  g_free                  (im->priv->preedit_string);
   nimf_preedit_attr_freev (im->priv->preedit_attrs);
+  g_slice_free            (NimfRectangle, im->cursor_area);
 
   G_OBJECT_CLASS (nimf_service_im_parent_class)->finalize (object);
 }
