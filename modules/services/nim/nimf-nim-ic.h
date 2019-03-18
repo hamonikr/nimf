@@ -28,30 +28,30 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_TYPE_NIM_IM             (nimf_nim_im_get_type ())
-#define NIMF_NIM_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_NIM_IM, NimfNimIM))
-#define NIMF_NIM_IM_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_NIM_IM, NimfNimIMClass))
-#define NIMF_IS_NIM_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_NIM_IM))
-#define NIMF_IS_NIM_IM_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_NIM_IM))
-#define NIMF_NIM_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_NIM_IM, NimfNimIMClass))
+#define NIMF_TYPE_NIM_IC             (nimf_nim_ic_get_type ())
+#define NIMF_NIM_IC(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_NIM_IC, NimfNimIC))
+#define NIMF_NIM_IC_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_NIM_IC, NimfNimICClass))
+#define NIMF_IS_NIM_IC(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_NIM_IC))
+#define NIMF_IS_NIM_IC_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_NIM_IC))
+#define NIMF_NIM_IC_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_NIM_IC, NimfNimICClass))
 
-typedef struct _NimfNimIM      NimfNimIM;
-typedef struct _NimfNimIMClass NimfNimIMClass;
+typedef struct _NimfNimIC      NimfNimIC;
+typedef struct _NimfNimICClass NimfNimICClass;
 
-struct _NimfNimIMClass
+struct _NimfNimICClass
 {
   NimfServiceICClass parent_class;
 };
 
-struct _NimfNimIM
+struct _NimfNimIC
 {
   NimfServiceIC parent_instance;
   NimfConnection *connection;
   guint16         icid;
 };
 
-GType      nimf_nim_im_get_type (void) G_GNUC_CONST;
-NimfNimIM *nimf_nim_im_new      (guint16 icid, NimfConnection *connection);
+GType      nimf_nim_ic_get_type (void) G_GNUC_CONST;
+NimfNimIC *nimf_nim_ic_new      (guint16 icid, NimfConnection *connection);
 
 G_END_DECLS
 

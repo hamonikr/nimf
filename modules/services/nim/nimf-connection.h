@@ -48,7 +48,7 @@ struct _NimfConnection
   NimfResult        *result;
   GSource           *source;
   GSocketConnection *socket_connection;
-  GHashTable        *ims;
+  GHashTable        *ics;
 };
 
 struct _NimfConnectionClass

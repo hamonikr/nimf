@@ -37,11 +37,11 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   GHashTableIter iter;
   gpointer       im;
 
-  g_hash_table_iter_init (&iter, connection->ims);
+  g_hash_table_iter_init (&iter, connection->ics);
 
   while (g_hash_table_iter_next (&iter, NULL, &im))
   {
-    if (NIMF_NIM_IM (im)->icid == connection->nim->last_focused_icid)
+    if (NIMF_NIM_IC (im)->icid == connection->nim->last_focused_icid)
       nimf_service_ic_set_engine_by_id (im, engine_id);
   }
 }
@@ -56,11 +56,11 @@ nimf_connection_set_engine (NimfConnection *connection,
   GHashTableIter iter;
   gpointer       im;
 
-  g_hash_table_iter_init (&iter, connection->ims);
+  g_hash_table_iter_init (&iter, connection->ics);
 
   while (g_hash_table_iter_next (&iter, NULL, &im))
   {
-    if (NIMF_NIM_IM (im)->icid == connection->nim->last_focused_icid)
+    if (NIMF_NIM_IC (im)->icid == connection->nim->last_focused_icid)
       nimf_service_ic_set_engine (im, engine_id, method_id);
   }
 }
@@ -71,9 +71,8 @@ nimf_connection_init (NimfConnection *connection)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   connection->result = g_slice_new0 (NimfResult);
-  connection->ims    = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                              NULL,
-                                              (GDestroyNotify) g_object_unref);
+  connection->ics = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
+                                           (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -94,7 +93,7 @@ nimf_connection_finalize (GObject *object)
     g_object_unref (connection->socket_connection);
 
   g_slice_free (NimfResult, connection->result);
-  g_hash_table_unref (connection->ims);
+  g_hash_table_unref (connection->ics);
 
   G_OBJECT_CLASS (nimf_connection_parent_class)->finalize (object);
 }
