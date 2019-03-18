@@ -27,12 +27,12 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_TYPE_WAYLAND_IM             (nimf_wayland_ic_get_type ())
-#define NIMF_WAYLAND_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_WAYLAND_IM, NimfWaylandIC))
-#define NIMF_WAYLAND_IM_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_WAYLAND_IM, NimfWaylandICClass))
-#define NIMF_IS_WAYLAND_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_WAYLAND_IM))
-#define NIMF_IS_WAYLAND_IM_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_WAYLAND_IM))
-#define NIMF_WAYLAND_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_WAYLAND_IM, NimfWaylandICClass))
+#define NIMF_TYPE_WAYLAND_IC             (nimf_wayland_ic_get_type ())
+#define NIMF_WAYLAND_IC(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_WAYLAND_IC, NimfWaylandIC))
+#define NIMF_WAYLAND_IC_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_WAYLAND_IC, NimfWaylandICClass))
+#define NIMF_IS_WAYLAND_IC(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_WAYLAND_IC))
+#define NIMF_IS_WAYLAND_IC_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_WAYLAND_IC))
+#define NIMF_WAYLAND_IC_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_WAYLAND_IC, NimfWaylandICClass))
 
 typedef struct _NimfWayland NimfWayland;
 

@@ -28,54 +28,54 @@ NimfWaylandIC *nimf_wayland_ic_new (NimfWayland *wayland)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfWaylandIC *im;
+  NimfWaylandIC *wic;
 
-  im = g_object_new (NIMF_TYPE_WAYLAND_IM, NULL);
-  im->wayland = wayland;
+  wic = g_object_new (NIMF_TYPE_WAYLAND_IC, NULL);
+  wic->wayland = wayland;
 
-  return im;
+  return wic;
 }
 
 void
-nimf_wayland_ic_emit_commit (NimfServiceIC *im,
+nimf_wayland_ic_emit_commit (NimfServiceIC *ic,
                              const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfWayland *wayland = NIMF_WAYLAND_IM (im)->wayland;
+  NimfWayland *wayland = NIMF_WAYLAND_IC (ic)->wayland;
 
   zwp_input_method_context_v1_commit_string (wayland->context,
                                              wayland->serial,
                                              text);
 }
 
-void nimf_wayland_ic_emit_preedit_start (NimfServiceIC *im)
+void nimf_wayland_ic_emit_preedit_start (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 void
-nimf_wayland_ic_emit_preedit_changed (NimfServiceIC    *im,
+nimf_wayland_ic_emit_preedit_changed (NimfServiceIC    *ic,
                                       const gchar      *preedit_string,
                                       NimfPreeditAttr **attrs,
                                       gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfWayland *wayland = NIMF_WAYLAND_IM (im)->wayland;
+  NimfWayland *wayland = NIMF_WAYLAND_IC (ic)->wayland;
 
   zwp_input_method_context_v1_preedit_cursor (wayland->context, cursor_pos);
   zwp_input_method_context_v1_preedit_string (wayland->context,
                wayland->serial, preedit_string, preedit_string);
 }
 
-void nimf_wayland_ic_emit_preedit_end (NimfServiceIC *im)
+void nimf_wayland_ic_emit_preedit_end (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
 static void
-nimf_wayland_ic_init (NimfWaylandIC *im)
+nimf_wayland_ic_init (NimfWaylandIC *wic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }

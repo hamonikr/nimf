@@ -62,7 +62,7 @@ struct _NimfWayland
   GSource       *event_source;
   gchar         *id;
   gboolean       active;
-  NimfWaylandIC *ic;
+  NimfWaylandIC *wic;
 
   struct zwp_input_method_v1 *input_method;
   struct zwp_input_method_context_v1 *context;
