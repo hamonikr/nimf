@@ -29,23 +29,23 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_TYPE_XIM_IM             (nimf_xim_im_get_type ())
-#define NIMF_XIM_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_XIM_IM, NimfXimIM))
-#define NIMF_XIM_IM_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_XIM_IM, NimfXimIMClass))
-#define NIMF_IS_XIM_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_XIM_IM))
-#define NIMF_IS_XIM_IM_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_XIM_IM))
-#define NIMF_XIM_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_XIM_IM, NimfXimIMClass))
+#define NIMF_TYPE_XIM_IC             (nimf_xim_ic_get_type ())
+#define NIMF_XIM_IC(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_XIM_IC, NimfXimIC))
+#define NIMF_XIM_IC_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_XIM_IC, NimfXimICClass))
+#define NIMF_IS_XIM_IC(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_XIM_IC))
+#define NIMF_IS_XIM_IC_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_XIM_IC))
+#define NIMF_XIM_IC_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_XIM_IC, NimfXimICClass))
 
 typedef struct _NimfXim        NimfXim;
-typedef struct _NimfXimIM      NimfXimIM;
-typedef struct _NimfXimIMClass NimfXimIMClass;
+typedef struct _NimfXimIC      NimfXimIC;
+typedef struct _NimfXimICClass NimfXimICClass;
 
-struct _NimfXimIMClass
+struct _NimfXimICClass
 {
   NimfServiceICClass parent_class;
 };
 
-struct _NimfXimIM
+struct _NimfXimIC
 {
   NimfServiceIC parent_instance;
   guint16   connect_id;
@@ -57,11 +57,11 @@ struct _NimfXimIM
   NimfXim  *xim;
 };
 
-GType      nimf_xim_im_get_type (void) G_GNUC_CONST;
-NimfXimIM *nimf_xim_im_new      (NimfXim *xim,
+GType      nimf_xim_ic_get_type (void) G_GNUC_CONST;
+NimfXimIC *nimf_xim_ic_new      (NimfXim *xim,
                                  guint16  connect_id,
                                  guint16  icid);
-void       nimf_xim_im_set_cursor_location (NimfXimIM  *xim_im,
+void       nimf_xim_ic_set_cursor_location (NimfXimIC  *xic,
                                             gint        x,
                                             gint        y);
 

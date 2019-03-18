@@ -47,7 +47,7 @@ struct _NimfXim
 
   GSource    *xevent_source;
   gchar      *id;
-  GHashTable *ims;
+  GHashTable *ics;
   guint16     next_icid;
   guint16     last_focused_icid;
   XIMS        xims;
