@@ -26,8 +26,6 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_ERROR  nimf_error_quark ()
-
 /* copied from GdkModifierType in gdktypes.h for compatibility */
 /**
  * NimfModifierType:
@@ -177,7 +175,6 @@ typedef struct {
   guint end_index; /* in characters. The character at this index is not included */
 } NimfPreeditAttr;
 
-GQuark    nimf_error_quark        (void);
 NimfKey  *nimf_key_new            (void);
 NimfKey  *nimf_key_new_from_nicks (const gchar **nicks);
 void      nimf_key_free           (NimfKey      *key);

@@ -22,8 +22,6 @@
 #include "nimf-types.h"
 #include "nimf-enum-types.h"
 
-G_DEFINE_QUARK (nimf-error-quark, nimf_error)
-
 NimfKey *
 nimf_key_new ()
 {
