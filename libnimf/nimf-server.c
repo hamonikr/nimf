@@ -134,6 +134,7 @@ nimf_server_get_default ()
 
 /**
  * nimf_server_get_preeditable:
+ * @server: a #NimfServer
  *
  * Returns the #NimfPreeditable instance.
  *
@@ -285,6 +286,12 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
   }
 }
 
+/**
+ * nimf_server_set_engine:
+ * @server: a #NimfServer
+ * @engine_id: engine id
+ * @method_id: method id
+ */
 void nimf_server_set_engine (NimfServer  *server,
                              const gchar *engine_id,
                              const gchar *method_id)
@@ -304,6 +311,14 @@ void nimf_server_set_engine (NimfServer  *server,
   }
 }
 
+/**
+ * nimf_server_get_loaded_engine_ids:
+ * @server: a #NimfServer
+ *
+ * The array is %NULL terminated.
+ *
+ * Returns: (transfer full): a newly allocated %NULL-terminated engine id array
+ */
 gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
