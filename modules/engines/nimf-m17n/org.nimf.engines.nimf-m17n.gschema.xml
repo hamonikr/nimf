@@ -17,7 +17,7 @@
       <summary>Trigger keys for switching m17n / System</summary>
       <description>Trigger keys for switching m17n / System</description>
     </key>
-    <key type="s" name="get-engine-info-list">
+    <key type="s" name="get-method-infos">
       <default>'vi:telex'</default>
       <summary>Input method</summary>
       <description>Input method</description>

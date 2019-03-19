@@ -175,6 +175,19 @@ typedef struct {
   guint end_index; /* in characters. The character at this index is not included */
 } NimfPreeditAttr;
 
+/**
+ * NimfMethodInfo:
+ * @method_id: method id of the engine
+ * @label: human readable label
+ * @group: human readable group name
+ */
+typedef struct
+{
+  gchar *method_id; /* method id */
+  gchar *label;     /* Human readable label */
+  gchar *group;     /* Human readable group name */
+} NimfMethodInfo;
+
 NimfKey  *nimf_key_new            (void);
 NimfKey  *nimf_key_new_from_nicks (const gchar **nicks);
 void      nimf_key_free           (NimfKey      *key);
@@ -187,6 +200,10 @@ NimfPreeditAttr  *nimf_preedit_attr_new   (NimfPreeditAttrType type,
 NimfPreeditAttr **nimf_preedit_attrs_copy (NimfPreeditAttr   **attrs);
 void              nimf_preedit_attr_free  (NimfPreeditAttr    *attr);
 void              nimf_preedit_attr_freev (NimfPreeditAttr   **attrs);
+
+NimfMethodInfo *nimf_method_info_new      (void);
+void            nimf_method_info_free     (NimfMethodInfo  *info);
+void            nimf_method_info_freev    (NimfMethodInfo **infos);
 
 G_END_DECLS
 

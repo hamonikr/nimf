@@ -204,7 +204,7 @@ on_name_appeared (GDBusConnection *connection,
     gchar     *path;
     gchar     *symbol_name;
     gchar     *p;
-    NimfEngineInfo ** (* get_engine_info_list) ();
+    NimfMethodInfo ** (* get_method_infos) ();
 
     schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
     settings = g_settings_new (schema_id);
@@ -213,19 +213,19 @@ on_name_appeared (GDBusConnection *connection,
     path   = g_module_build_path (NIMF_MODULE_DIR, engine_ids[i]);
     module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 
-    symbol_name = g_strdup_printf ("%s_get_engine_info_list", engine_ids[i]);
+    symbol_name = g_strdup_printf ("%s_get_method_infos", engine_ids[i]);
 
     for (p = symbol_name; *p; p++)
       if (*p == '-')
         *p = '_';
 
-    if (g_module_symbol (module, symbol_name, (gpointer *) &get_engine_info_list))
+    if (g_module_symbol (module, symbol_name, (gpointer *) &get_method_infos))
     {
       GtkWidget *submenu1 = gtk_menu_new ();
       engine_menu = gtk_menu_item_new_with_label (schema_name);
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (engine_menu), submenu1);
 
-      NimfEngineInfo **infos = get_engine_info_list ();
+      NimfMethodInfo **infos = get_method_infos ();
       const char *prev_group = NULL;
       GtkWidget  *submenu2   = NULL;
       gchar      *engine_method;
@@ -259,7 +259,7 @@ on_name_appeared (GDBusConnection *connection,
         prev_group = infos[j]->group;
       }
 
-      nimf_engine_info_freev (infos);
+      nimf_method_info_freev (infos);
     }
     else
     {

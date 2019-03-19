@@ -333,35 +333,3 @@ nimf_engine_class_init (NimfEngineClass *class)
 
   object_class->finalize     = nimf_engine_finalize;
 }
-
-NimfEngineInfo *
-nimf_engine_info_new ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return g_slice_new0 (NimfEngineInfo);
-}
-
-void
-nimf_engine_info_free (NimfEngineInfo *info)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (info)
-    g_slice_free (NimfEngineInfo, info);
-}
-
-void
-nimf_engine_info_freev (NimfEngineInfo **infos)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (infos)
-  {
-    int i;
-    for (i = 0; infos[i]; i++)
-      nimf_engine_info_free (infos[i]);
-
-    g_free (infos);
-  }
-}

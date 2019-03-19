@@ -586,12 +586,12 @@ nimf_m17n_init (NimfM17n *m17n)
 
   m17n->id       = g_strdup ("nimf-m17n");
   m17n->settings = g_settings_new ("org.nimf.engines.nimf-m17n");
-  m17n->method   = g_settings_get_string (m17n->settings, "get-engine-info-list");
+  m17n->method   = g_settings_get_string (m17n->settings, "get-method-infos");
   m17n->preedit_attrs = g_malloc_n (2, sizeof (NimfPreeditAttr *));
 
   nimf_m17n_open_im (m17n);
 
-  g_signal_connect (m17n->settings, "changed::get-engine-info-list",
+  g_signal_connect (m17n->settings, "changed::get-method-infos",
                     G_CALLBACK (on_changed_method), m17n);
 }
 
@@ -638,8 +638,7 @@ nimf_m17n_set_method (NimfEngine *engine, const gchar *method_id)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_settings_set_string (NIMF_M17N (engine)->settings,
-                         "get-engine-info-list",
-                         method_id);
+                         "get-method-infos", method_id);
 }
 
 static void
@@ -761,8 +760,8 @@ on_sort (gconstpointer a,
 
   gint retval;
 
-  const NimfEngineInfo *info1 = *(NimfEngineInfo **) a;
-  const NimfEngineInfo *info2 = *(NimfEngineInfo **) b;
+  const NimfMethodInfo *info1 = *(NimfMethodInfo **) a;
+  const NimfMethodInfo *info2 = *(NimfMethodInfo **) b;
 
   retval = g_strcmp0 (info1->group, info2->group);
 
@@ -772,12 +771,12 @@ on_sort (gconstpointer a,
   return retval;
 }
 
-NimfEngineInfo **
-nimf_m17n_get_engine_info_list ()
+NimfMethodInfo **
+nimf_m17n_get_method_infos ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEngineInfo *info;
+  NimfMethodInfo *info;
   GHashTable *table;
   MPlist *imlist, *pl;
   gint i;
@@ -810,7 +809,7 @@ nimf_m17n_get_engine_info_list ()
       if (!group)
         group = code;
 
-      info = nimf_engine_info_new ();
+      info = nimf_method_info_new ();
       info->method_id = g_strdup_printf ("%s:%s", code, msymbol_name (name));
       info->label     = g_strdup_printf ("%s (%s)", group, msymbol_name (name));
       info->group     = g_strdup (group);
@@ -826,7 +825,7 @@ nimf_m17n_get_engine_info_list ()
   g_hash_table_destroy (table);
   M17N_FINI();
 
-  return (NimfEngineInfo **) g_ptr_array_free (array, FALSE);
+  return (NimfMethodInfo **) g_ptr_array_free (array, FALSE);
 }
 
 void module_register_type (GTypeModule *type_module)

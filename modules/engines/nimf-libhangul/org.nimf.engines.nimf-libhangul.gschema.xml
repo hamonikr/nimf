@@ -12,7 +12,7 @@
       <summary>Active engine</summary>
       <description>The engine will be loaded on startup if available. Restart required</description>
     </key>
-    <key type="s" name="get-engine-info-list">
+    <key type="s" name="get-method-infos">
       <default>'2'</default>
       <summary>Input method</summary>
       <description>Input method</description>

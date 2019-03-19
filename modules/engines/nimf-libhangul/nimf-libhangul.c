@@ -713,7 +713,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   gchar **hanja_keys;
 
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
-  hangul->method = g_settings_get_string (hangul->settings, "get-engine-info-list");
+  hangul->method = g_settings_get_string (hangul->settings, "get-method-infos");
   hangul->is_double_consonant_rule =
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
   hangul->is_auto_reordering =
@@ -743,7 +743,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   nimf_libhangul_update_transition_cb (hangul);
 
-  g_signal_connect (hangul->settings, "changed::get-engine-info-list",
+  g_signal_connect (hangul->settings, "changed::get-method-infos",
                     G_CALLBACK (on_changed_method), hangul);
   g_signal_connect (hangul->settings, "changed::trigger-keys",
                     G_CALLBACK (on_changed_keys), hangul);
@@ -808,8 +808,7 @@ nimf_libhangul_set_method (NimfEngine *engine, const gchar *method_id)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_settings_set_string (NIMF_LIBHANGUL (engine)->settings,
-                         "get-engine-info-list",
-                         method_id);
+                         "get-method-infos", method_id);
 }
 
 static void
@@ -854,20 +853,20 @@ nimf_libhangul_class_finalize (NimfLibhangulClass *class)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
-NimfEngineInfo **
-nimf_libhangul_get_engine_info_list ()
+NimfMethodInfo **
+nimf_libhangul_get_method_infos ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEngineInfo **infos;
+  NimfMethodInfo **infos;
   gint             n_methods = G_N_ELEMENTS (keyboards);
   gint             i;
 
-  infos = g_malloc (sizeof (NimfEngineInfo *) * n_methods + 1);
+  infos = g_malloc (sizeof (NimfMethodInfo *) * n_methods + 1);
 
   for (i = 0; i < n_methods; i++)
   {
-    infos[i] = nimf_engine_info_new ();
+    infos[i] = nimf_method_info_new ();
     infos[i]->method_id = g_strdup (keyboards[i].id);
     infos[i]->label     = g_strdup (gettext (keyboards[i].name));
     infos[i]->group     = NULL;

@@ -419,7 +419,7 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
     {
       const gchar *engine_id;
       GModule *module;
-      NimfEngineInfo ** (* function) ();
+      NimfMethodInfo ** (* function) ();
       gchar  *path;
       gchar  *symbol_name;
       gchar  *p;
@@ -437,7 +437,7 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
       if (g_module_symbol (module, symbol_name, (gpointer *) &function))
       {
         GtkTreeIter parent;
-        NimfEngineInfo **infos = function ();
+        NimfMethodInfo **infos = function ();
         const gchar *prev_group = NULL;
         gint    i;
 
@@ -463,7 +463,7 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
           prev_group = infos[i]->group;
         }
 
-        nimf_engine_info_freev (infos);
+        nimf_method_info_freev (infos);
       }
       else
       {

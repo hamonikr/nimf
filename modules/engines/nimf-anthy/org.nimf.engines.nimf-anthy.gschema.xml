@@ -27,7 +27,7 @@
       <summary>Hotkey for Katakana</summary>
       <description>Hotkeys for converting to Katakana</description>
     </key>
-    <key type="s" name="get-engine-info-list">
+    <key type="s" name="get-method-infos">
       <default>'romaji'</default>
       <summary>Input method</summary>
       <description>Input method</description>

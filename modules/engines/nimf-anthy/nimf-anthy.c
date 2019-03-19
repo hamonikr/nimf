@@ -1547,7 +1547,7 @@ nimf_anthy_init (NimfAnthy *anthy)
   anthy_context_set_encoding (anthy->context, ANTHY_UTF8_ENCODING);
 
   anthy->settings = g_settings_new ("org.nimf.engines.nimf-anthy");
-  anthy->method   = g_settings_get_string (anthy->settings, "get-engine-info-list");
+  anthy->method   = g_settings_get_string (anthy->settings, "get-method-infos");
   anthy->n_input_mode = nimf_anthy_get_n_input_mode (anthy);
   hiragana_keys = g_settings_get_strv   (anthy->settings, "hiragana-keys");
   katakana_keys = g_settings_get_strv   (anthy->settings, "katakana-keys");
@@ -1561,7 +1561,7 @@ nimf_anthy_init (NimfAnthy *anthy)
                     G_CALLBACK (on_changed_keys), anthy);
   g_signal_connect (anthy->settings, "changed::katakana-keys",
                     G_CALLBACK (on_changed_keys), anthy);
-  g_signal_connect (anthy->settings, "changed::get-engine-info-list",
+  g_signal_connect (anthy->settings, "changed::get-method-infos",
                     G_CALLBACK (on_changed_method), anthy);
   g_signal_connect (anthy->settings, "changed::get-n-input-mode-list",
                     G_CALLBACK (on_changed_n_input_mode), anthy);
@@ -1619,8 +1619,7 @@ nimf_anthy_set_method (NimfEngine *engine, const gchar *method_id)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_settings_set_string (NIMF_ANTHY (engine)->settings,
-                         "get-engine-info-list",
-                         method_id);
+                         "get-method-infos", method_id);
 }
 
 static void
@@ -1675,20 +1674,20 @@ static const Method methods[] = {
   {"pc104",  N_("English Keyboard (pc104)")}
 };
 
-NimfEngineInfo **
-nimf_anthy_get_engine_info_list ()
+NimfMethodInfo **
+nimf_anthy_get_method_infos ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEngineInfo **infos;
+  NimfMethodInfo **infos;
   gint             n_methods = G_N_ELEMENTS (methods);
   gint             i;
 
-  infos = g_malloc (sizeof (NimfEngineInfo *) * n_methods + 1);
+  infos = g_malloc (sizeof (NimfMethodInfo *) * n_methods + 1);
 
   for (i = 0; i < n_methods; i++)
   {
-    infos[i] = nimf_engine_info_new ();
+    infos[i] = nimf_method_info_new ();
     infos[i]->method_id = g_strdup (methods[i].id);
     infos[i]->label     = g_strdup (gettext (methods[i].name));
     infos[i]->group     = NULL;
@@ -1704,20 +1703,20 @@ static const Method modes[] = {
   {"explicit", N_("Explicitly type nn")}
 };
 
-NimfEngineInfo **
+NimfMethodInfo **
 nimf_anthy_get_n_input_mode_list ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfEngineInfo **infos;
+  NimfMethodInfo **infos;
   gint             n_methods = G_N_ELEMENTS (modes);
   gint             i;
 
-  infos = g_malloc (sizeof (NimfEngineInfo *) * n_methods + 1);
+  infos = g_malloc (sizeof (NimfMethodInfo *) * n_methods + 1);
 
   for (i = 0; i < n_methods; i++)
   {
-    infos[i] = nimf_engine_info_new ();
+    infos[i] = nimf_method_info_new ();
     infos[i]->method_id = g_strdup (modes[i].id);
     infos[i]->label     = g_strdup (gettext (modes[i].name));
     infos[i]->group     = NULL;

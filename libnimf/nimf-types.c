@@ -171,3 +171,35 @@ void nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
     g_free (attrs);
   }
 }
+
+NimfMethodInfo *
+nimf_method_info_new ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  return g_slice_new0 (NimfMethodInfo);
+}
+
+void
+nimf_method_info_free (NimfMethodInfo *info)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (info)
+    g_slice_free (NimfMethodInfo, info);
+}
+
+void
+nimf_method_info_freev (NimfMethodInfo **infos)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (infos)
+  {
+    int i;
+    for (i = 0; infos[i]; i++)
+      nimf_method_info_free (infos[i]);
+
+    g_free (infos);
+  }
+}

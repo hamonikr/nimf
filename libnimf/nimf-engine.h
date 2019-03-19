@@ -49,19 +49,6 @@ struct _NimfEngine
   NimfEnginePrivate *priv;
 };
 
-/**
- * NimfEngineInfo:
- * @method_id: method id of the engine
- * @label: human readable label
- * @group: human readable group name
- */
-typedef struct
-{
-  gchar *method_id; /* method id */
-  gchar *label;     /* Human readable label */
-  gchar *group;     /* Human readable group name */
-} NimfEngineInfo;
-
 struct _NimfEngineClass
 {
   /*< private >*/
@@ -150,10 +137,6 @@ void     nimf_engine_emit_beep                 (NimfEngine       *engine,
 /* info */
 const gchar    *nimf_engine_get_id        (NimfEngine *engine);
 const gchar    *nimf_engine_get_icon_name (NimfEngine *engine);
-NimfEngineInfo *nimf_engine_info_new      (void);
-void            nimf_engine_info_free     (NimfEngineInfo  *info);
-void            nimf_engine_info_freev    (NimfEngineInfo **infos);
-
 /* candidate */
 NimfCandidatable *nimf_engine_get_candidatable (NimfEngine *engine);
 
