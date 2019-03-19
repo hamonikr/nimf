@@ -25,9 +25,10 @@
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
 
-static void nimf_xim_set_engine (NimfService *service,
-                                 const gchar *engine_id,
-                                 const gchar *method_id)
+static void
+nimf_xim_change_engine (NimfService *service,
+                        const gchar *engine_id,
+                        const gchar *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -37,11 +38,12 @@ static void nimf_xim_set_engine (NimfService *service,
   ic = g_hash_table_lookup (xim->ics,
                             GUINT_TO_POINTER (xim->last_focused_icid));
   if (ic)
-    nimf_service_ic_set_engine (ic, engine_id, method_id);
+    nimf_service_ic_change_engine (ic, engine_id, method_id);
 }
 
-static void nimf_xim_set_engine_by_id (NimfService *service,
-                                       const gchar *engine_id)
+static void
+nimf_xim_change_engine_by_id (NimfService *service,
+                              const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -51,7 +53,7 @@ static void nimf_xim_set_engine_by_id (NimfService *service,
   ic = g_hash_table_lookup (xim->ics,
                             GUINT_TO_POINTER (xim->last_focused_icid));
   if (ic)
-    nimf_service_ic_set_engine_by_id (ic, engine_id);
+    nimf_service_ic_change_engine_by_id (ic, engine_id);
 }
 
 static int nimf_xim_set_ic_values (NimfXim          *xim,
@@ -755,12 +757,12 @@ nimf_xim_class_init (NimfXimClass *class)
   GObjectClass     *object_class  = G_OBJECT_CLASS (class);
   NimfServiceClass *service_class = NIMF_SERVICE_CLASS (class);
 
-  service_class->get_id           = nimf_xim_get_id;
-  service_class->start            = nimf_xim_start;
-  service_class->stop             = nimf_xim_stop;
-  service_class->is_active        = nimf_xim_is_active;
-  service_class->set_engine       = nimf_xim_set_engine;
-  service_class->set_engine_by_id = nimf_xim_set_engine_by_id;
+  service_class->get_id              = nimf_xim_get_id;
+  service_class->start               = nimf_xim_start;
+  service_class->stop                = nimf_xim_stop;
+  service_class->is_active           = nimf_xim_is_active;
+  service_class->change_engine       = nimf_xim_change_engine;
+  service_class->change_engine_by_id = nimf_xim_change_engine_by_id;
 
   object_class->finalize = nimf_xim_finalize;
 }

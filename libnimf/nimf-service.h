@@ -52,27 +52,27 @@ struct _NimfServiceClass
 
   /*< public >*/
   /* Virtual functions */
-  const gchar * (* get_id)           (NimfService *service);
-  gboolean      (* start)            (NimfService *service);
-  void          (* stop)             (NimfService *service);
-  gboolean      (* is_active)        (NimfService *service);
-  void          (* set_engine_by_id) (NimfService *service,
-                                      const gchar *engine_id);
-  void          (* set_engine      ) (NimfService *service,
-                                      const gchar *engine_id,
-                                      const gchar *method_id);
+  const gchar * (* get_id)              (NimfService *service);
+  gboolean      (* start)               (NimfService *service);
+  void          (* stop)                (NimfService *service);
+  gboolean      (* is_active)           (NimfService *service);
+  void          (* change_engine_by_id) (NimfService *service,
+                                         const gchar *engine_id);
+  void          (* change_engine)       (NimfService *service,
+                                         const gchar *engine_id,
+                                         const gchar *method_id);
 };
 
-GType        nimf_service_get_type         (void) G_GNUC_CONST;
-gboolean     nimf_service_start            (NimfService *service);
-void         nimf_service_stop             (NimfService *service);
-gboolean     nimf_service_is_active        (NimfService *service);
-const gchar *nimf_service_get_id           (NimfService *service);
-void         nimf_service_set_engine_by_id (NimfService *service,
-                                            const gchar *engine_id);
-void         nimf_service_set_engine       (NimfService *service,
-                                            const gchar *engine_id,
-                                            const gchar *method_id);
+GType        nimf_service_get_type            (void) G_GNUC_CONST;
+gboolean     nimf_service_start               (NimfService *service);
+void         nimf_service_stop                (NimfService *service);
+gboolean     nimf_service_is_active           (NimfService *service);
+const gchar *nimf_service_get_id              (NimfService *service);
+void         nimf_service_change_engine_by_id (NimfService *service,
+                                               const gchar *engine_id);
+void         nimf_service_change_engine       (NimfService *service,
+                                               const gchar *engine_id,
+                                               const gchar *method_id);
 
 G_END_DECLS
 

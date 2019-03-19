@@ -59,9 +59,10 @@ struct _NimfConnectionClass
 GType           nimf_connection_get_type         (void) G_GNUC_CONST;
 NimfConnection *nimf_connection_new              (void);
 guint16         nimf_connection_get_id           (NimfConnection  *connection);
-void            nimf_connection_set_engine_by_id (NimfConnection  *connection,
+void            nimf_connection_change_engine_by_id
+                                                 (NimfConnection  *connection,
                                                   const gchar     *engine_id);
-void            nimf_connection_set_engine       (NimfConnection  *connection,
+void            nimf_connection_change_engine    (NimfConnection  *connection,
                                                   const gchar     *engine_id,
                                                   const gchar     *method_id);
 G_END_DECLS

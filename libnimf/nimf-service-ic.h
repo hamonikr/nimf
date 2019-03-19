@@ -89,9 +89,9 @@ void         nimf_service_ic_set_cursor_location (NimfServiceIC  *im,
 const NimfRectangle *
              nimf_service_ic_get_cursor_location (NimfServiceIC  *im);
 void         nimf_service_ic_reset               (NimfServiceIC  *im);
-void         nimf_service_ic_set_engine_by_id    (NimfServiceIC  *im,
+void         nimf_service_ic_change_engine_by_id (NimfServiceIC  *im,
                                                   const gchar    *engine_id);
-void         nimf_service_ic_set_engine          (NimfServiceIC  *im,
+void         nimf_service_ic_change_engine       (NimfServiceIC  *im,
                                                   const gchar    *engine_id,
                                                   const gchar    *method_id);
 void         nimf_service_ic_engine_changed      (NimfServiceIC  *im,

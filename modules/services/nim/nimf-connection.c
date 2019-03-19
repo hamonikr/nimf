@@ -29,8 +29,8 @@
 G_DEFINE_TYPE (NimfConnection, nimf_connection, G_TYPE_OBJECT);
 
 void
-nimf_connection_set_engine_by_id (NimfConnection *connection,
-                                  const gchar    *engine_id)
+nimf_connection_change_engine_by_id (NimfConnection *connection,
+                                     const gchar    *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -42,14 +42,14 @@ nimf_connection_set_engine_by_id (NimfConnection *connection,
   while (g_hash_table_iter_next (&iter, NULL, &im))
   {
     if (NIMF_NIM_IC (im)->icid == connection->nim->last_focused_icid)
-      nimf_service_ic_set_engine_by_id (im, engine_id);
+      nimf_service_ic_change_engine_by_id (im, engine_id);
   }
 }
 
 void
-nimf_connection_set_engine (NimfConnection *connection,
-                            const gchar    *engine_id,
-                            const gchar    *method_id)
+nimf_connection_change_engine (NimfConnection *connection,
+                               const gchar    *engine_id,
+                               const gchar    *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -61,7 +61,7 @@ nimf_connection_set_engine (NimfConnection *connection,
   while (g_hash_table_iter_next (&iter, NULL, &im))
   {
     if (NIMF_NIM_IC (im)->icid == connection->nim->last_focused_icid)
-      nimf_service_ic_set_engine (im, engine_id, method_id);
+      nimf_service_ic_change_engine (im, engine_id, method_id);
   }
 }
 

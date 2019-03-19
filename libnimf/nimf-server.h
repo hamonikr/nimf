@@ -61,9 +61,9 @@ struct _NimfServerClass
 };
 
 GType            nimf_server_get_type              (void) G_GNUC_CONST;
-void             nimf_server_set_engine_by_id      (NimfServer   *server,
-                                                    const gchar  *id);
-void             nimf_server_set_engine            (NimfServer   *server,
+void             nimf_server_change_engine_by_id   (NimfServer   *server,
+                                                    const gchar  *engine_id);
+void             nimf_server_change_engine         (NimfServer   *server,
                                                     const gchar  *engine_id,
                                                     const gchar  *method_id);
 gchar          **nimf_server_get_loaded_engine_ids (NimfServer   *server);

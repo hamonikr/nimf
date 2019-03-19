@@ -479,8 +479,8 @@ void nimf_service_ic_reset (NimfServiceIC *im)
 }
 
 void
-nimf_service_ic_set_engine_by_id (NimfServiceIC *im,
-                                  const gchar   *engine_id)
+nimf_service_ic_change_engine_by_id (NimfServiceIC *im,
+                                     const gchar   *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -500,9 +500,9 @@ nimf_service_ic_set_engine_by_id (NimfServiceIC *im,
 }
 
 void
-nimf_service_ic_set_engine (NimfServiceIC *im,
-                            const gchar   *engine_id,
-                            const gchar   *method_id)
+nimf_service_ic_change_engine (NimfServiceIC *im,
+                               const gchar   *engine_id,
+                               const gchar   *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

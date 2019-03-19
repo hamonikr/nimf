@@ -215,9 +215,9 @@ on_new_connection (GSocketService    *service,
   return TRUE;
 }
 
-static void nimf_nim_set_engine (NimfService *service,
-                                 const gchar *engine_id,
-                                 const gchar *method_id)
+static void nimf_nim_change_engine (NimfService *service,
+                                    const gchar *engine_id,
+                                    const gchar *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -229,12 +229,12 @@ static void nimf_nim_set_engine (NimfService *service,
     connection = g_hash_table_lookup (nim->connections,
                                       GUINT_TO_POINTER (nim->last_focused_conn_id));
     if (connection)
-      nimf_connection_set_engine (connection, engine_id, method_id);
+      nimf_connection_change_engine (connection, engine_id, method_id);
   }
 }
 
-static void nimf_nim_set_engine_by_id (NimfService *service,
-                                       const gchar *engine_id)
+static void nimf_nim_change_engine_by_id (NimfService *service,
+                                          const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -246,7 +246,7 @@ static void nimf_nim_set_engine_by_id (NimfService *service,
     connection = g_hash_table_lookup (nim->connections,
                                       GUINT_TO_POINTER (nim->last_focused_conn_id));
     if (connection)
-      nimf_connection_set_engine_by_id (connection, engine_id);
+      nimf_connection_change_engine_by_id (connection, engine_id);
   }
 }
 
@@ -349,12 +349,12 @@ nimf_nim_class_init (NimfNimClass *class)
   GObjectClass     *object_class  = G_OBJECT_CLASS (class);
   NimfServiceClass *service_class = NIMF_SERVICE_CLASS (class);
 
-  service_class->get_id           = nimf_nim_get_id;
-  service_class->start            = nimf_nim_start;
-  service_class->stop             = nimf_nim_stop;
-  service_class->is_active        = nimf_nim_is_active;
-  service_class->set_engine       = nimf_nim_set_engine;
-  service_class->set_engine_by_id = nimf_nim_set_engine_by_id;
+  service_class->get_id              = nimf_nim_get_id;
+  service_class->start               = nimf_nim_start;
+  service_class->stop                = nimf_nim_stop;
+  service_class->is_active           = nimf_nim_is_active;
+  service_class->change_engine       = nimf_nim_change_engine;
+  service_class->change_engine_by_id = nimf_nim_change_engine_by_id;
 
   object_class->finalize = nimf_nim_finalize;
 }

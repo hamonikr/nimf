@@ -70,9 +70,9 @@ on_menu_engine (GtkMenuItem *menuitem,
   strv = g_strsplit (engine_method, ",", -1);
 
   if (g_strv_length (strv) == 1)
-    nimf_server_set_engine_by_id (server, engine_method);
+    nimf_server_change_engine_by_id (server, engine_method);
   else
-    nimf_server_set_engine (server, strv[0], strv[1]);
+    nimf_server_change_engine (server, strv[0], strv[1]);
 
   g_strfreev (strv);
 }

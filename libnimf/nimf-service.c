@@ -95,28 +95,28 @@ gboolean nimf_service_is_active (NimfService *service)
 }
 
 void
-nimf_service_set_engine_by_id (NimfService *service,
-                               const gchar *engine_id)
+nimf_service_change_engine_by_id (NimfService *service,
+                                  const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfServiceClass *class = NIMF_SERVICE_GET_CLASS (service);
 
-  if (class->set_engine_by_id)
-    class->set_engine_by_id (service, engine_id);
+  if (class->change_engine_by_id)
+    class->change_engine_by_id (service, engine_id);
 }
 
 void
-nimf_service_set_engine (NimfService *service,
-                         const gchar *engine_id,
-                         const gchar *method_id)
+nimf_service_change_engine (NimfService *service,
+                            const gchar *engine_id,
+                            const gchar *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfServiceClass *class = NIMF_SERVICE_GET_CLASS (service);
 
-  if (class->set_engine_by_id)
-    class->set_engine (service, engine_id, method_id);
+  if (class->change_engine_by_id)
+    class->change_engine (service, engine_id, method_id);
 }
 
 static void

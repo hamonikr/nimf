@@ -39,22 +39,22 @@ static NimfServer *nimf_server = NULL;
 G_DEFINE_TYPE_WITH_PRIVATE (NimfServer, nimf_server, G_TYPE_OBJECT);
 
 static gint
-on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
+on_comparing_engine_with_id (NimfEngine *engine, const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_strcmp0 (nimf_engine_get_id (engine), id);
+  return g_strcmp0 (nimf_engine_get_id (engine), engine_id);
 }
 
 NimfEngine *
 nimf_server_get_engine_by_id (NimfServer  *server,
-                              const gchar *id)
+                              const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GList *list;
 
-  list = g_list_find_custom (g_list_first (server->priv->instances), id,
+  list = g_list_find_custom (g_list_first (server->priv->instances), engine_id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -268,8 +268,14 @@ nimf_server_class_init (NimfServerClass *class)
                   G_TYPE_STRING);
 }
 
-void nimf_server_set_engine_by_id (NimfServer  *server,
-                                   const gchar *engine_id)
+/**
+ * nimf_server_change_engine_by_id:
+ * @server: a #NimfServer
+ * @engine_id: engine id
+ */
+void
+nimf_server_change_engine_by_id (NimfServer  *server,
+                                 const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -282,19 +288,20 @@ void nimf_server_set_engine_by_id (NimfServer  *server,
   {
     if (!g_strcmp0 (server->priv->last_focused_service,
                     nimf_service_get_id (service)))
-      nimf_service_set_engine_by_id (service, engine_id);
+      nimf_service_change_engine_by_id (service, engine_id);
   }
 }
 
 /**
- * nimf_server_set_engine:
+ * nimf_server_change_engine:
  * @server: a #NimfServer
  * @engine_id: engine id
  * @method_id: method id
  */
-void nimf_server_set_engine (NimfServer  *server,
-                             const gchar *engine_id,
-                             const gchar *method_id)
+void
+nimf_server_change_engine (NimfServer  *server,
+                           const gchar *engine_id,
+                           const gchar *method_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -307,7 +314,7 @@ void nimf_server_set_engine (NimfServer  *server,
   {
     if (!g_strcmp0 (server->priv->last_focused_service,
                     nimf_service_get_id (service)))
-      nimf_service_set_engine (service, engine_id, method_id);
+      nimf_service_change_engine (service, engine_id, method_id);
   }
 }
 
