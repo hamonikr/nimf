@@ -65,14 +65,6 @@ struct _NimfEngineClass
                                    NimfServiceIC       *im);
   void     (* focus_out)          (NimfEngine          *engine,
                                    NimfServiceIC       *im);
-  void     (* set_surrounding)    (NimfEngine          *engine,
-                                   const char          *text,
-                                   gint                 len,
-                                   gint                 cursor_index);
-  gboolean (* get_surrounding)    (NimfEngine          *engine,
-                                   NimfServiceIC       *im,
-                                   gchar              **text,
-                                   gint                *cursor_index);
   void     (* set_method)         (NimfEngine          *engine,
                                    const gchar         *method_id);
   /* candidate */

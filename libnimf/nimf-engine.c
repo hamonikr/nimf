@@ -78,16 +78,10 @@ gboolean nimf_engine_filter_event (NimfEngine    *engine,
 
   NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
 
-  return class->filter_event (engine, im, event);
-}
-
-gboolean nimf_engine_real_filter_event (NimfEngine    *engine,
-                                        NimfServiceIC *im,
-                                        NimfEvent     *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return FALSE;
+  if (class->filter_event)
+    return class->filter_event (engine, im, event);
+  else
+    return FALSE;
 }
 
 void
@@ -101,10 +95,9 @@ nimf_engine_set_surrounding (NimfEngine *engine,
   g_return_if_fail (NIMF_IS_ENGINE (engine));
   g_return_if_fail (text != NULL || len == 0);
 
-  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
-
-  if (class->set_surrounding)
-    class->set_surrounding (engine, text, len, cursor_index);
+  g_free (engine->priv->surrounding_text);
+  engine->priv->surrounding_text         = g_strndup (text, len);
+  engine->priv->surrounding_cursor_index = cursor_index;
 }
 
 gboolean
@@ -115,11 +108,22 @@ nimf_engine_get_surrounding (NimfEngine     *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gboolean retval = FALSE;
-  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
+  gboolean retval = nimf_engine_emit_retrieve_surrounding (engine, im);
 
-  if (class->get_surrounding)
-    retval = class->get_surrounding (engine, im, text, cursor_index);
+  if (retval)
+  {
+    if (engine->priv->surrounding_text)
+      *text = g_strdup (engine->priv->surrounding_text);
+    else
+      *text = g_strdup ("");
+
+    *cursor_index = engine->priv->surrounding_cursor_index;
+  }
+  else
+  {
+    *text = NULL;
+    *cursor_index = 0;
+  }
 
   return retval;
 }
@@ -201,9 +205,7 @@ nimf_engine_status_changed (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServer *server = nimf_server_get_default ();
-
-  g_signal_emit_by_name (server, "engine-status-changed",
+  g_signal_emit_by_name (nimf_server_get_default (), "engine-status-changed",
                          nimf_engine_get_id (engine),
                          nimf_engine_get_icon_name (engine));
 }
@@ -237,53 +239,19 @@ nimf_engine_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_engine_parent_class)->finalize (object);
 }
 
-static void
-nimf_engine_real_set_surrounding (NimfEngine *engine,
-                                  const char *text,
-                                  gint        len,
-                                  gint        cursor_index)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_free (engine->priv->surrounding_text);
-  engine->priv->surrounding_text         = g_strndup (text, len);
-  engine->priv->surrounding_cursor_index = cursor_index;
-}
-
-static gboolean
-nimf_engine_real_get_surrounding (NimfEngine     *engine,
-                                  NimfServiceIC  *im,
-                                  gchar         **text,
-                                  gint           *cursor_index)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gboolean retval = nimf_engine_emit_retrieve_surrounding (engine, im);
-
-  if (retval)
-  {
-    if (engine->priv->surrounding_text)
-      *text = g_strdup (engine->priv->surrounding_text);
-    else
-      *text = g_strdup ("");
-
-    *cursor_index = engine->priv->surrounding_cursor_index;
-  }
-  else
-  {
-    *text = NULL;
-    *cursor_index = 0;
-  }
-
-  return retval;
-}
-
 const gchar *
 nimf_engine_get_id (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return NIMF_ENGINE_GET_CLASS (engine)->get_id (engine);
+  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
+
+  if (class->get_id)
+    return class->get_id (engine);
+  else
+    g_critical ("You should implement your_engine_get_id ()");
+
+  return NULL;
 }
 
 NimfCandidatable *
@@ -294,26 +262,17 @@ nimf_engine_get_candidatable (NimfEngine *engine)
   return nimf_server_get_default ()->priv->candidatable;
 }
 
-static const gchar *
-nimf_engine_real_get_id (NimfEngine *engine)
-{
-  g_critical (G_STRLOC ": %s: You should implement your_engine_get_id ()",
-              G_STRFUNC);
-  return NULL;
-}
-
 const gchar *
 nimf_engine_get_icon_name (NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return NIMF_ENGINE_GET_CLASS (engine)->get_icon_name (engine);
-}
+  NimfEngineClass *class = NIMF_ENGINE_GET_CLASS (engine);
 
-static const gchar *
-nimf_engine_real_get_icon_name (NimfEngine *engine)
-{
-  g_error ("You should implement your_engine_get_icon_name ()");
+  if (class->get_icon_name)
+    return class->get_icon_name (engine);
+  else
+    g_critical ("You should implement your_engine_get_icon_name ()");
 
   return NULL;
 }
@@ -323,13 +282,5 @@ nimf_engine_class_init (NimfEngineClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-  class->filter_event        = nimf_engine_real_filter_event;
-  class->set_surrounding     = nimf_engine_real_set_surrounding;
-  class->get_surrounding     = nimf_engine_real_get_surrounding;
-  class->get_id              = nimf_engine_real_get_id;
-  class->get_icon_name       = nimf_engine_real_get_icon_name;
-
-  object_class->finalize     = nimf_engine_finalize;
+  G_OBJECT_CLASS (class)->finalize = nimf_engine_finalize;
 }
