@@ -177,8 +177,8 @@ nimf_candidate_clear (NimfCandidatable *candidatable,
 
 static void
 nimf_candidate_append (NimfCandidatable *candidatable,
-                       const gchar      *item1,
-                       const gchar      *item2)
+                       const gchar      *text1,
+                       const gchar      *text2)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -194,11 +194,11 @@ nimf_candidate_append (NimfCandidatable *candidatable,
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set    (GTK_LIST_STORE (model), &iter,
                          INDEX_COLUMN, (n_row + 1) % 10,
-                         MAIN_COLUMN, item1, -1);
+                         MAIN_COLUMN, text1, -1);
 
-  if (item2)
+  if (text2)
     gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                        EXTRA_COLUMN, item2, -1);
+                        EXTRA_COLUMN, text2, -1);
 }
 
 static gint

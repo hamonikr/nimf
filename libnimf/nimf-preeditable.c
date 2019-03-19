@@ -56,9 +56,7 @@ void nimf_preeditable_hide (NimfPreeditable *preeditable)
  * nimf_preeditable_is_visible:
  * @preeditable: a #NimfPreeditable
  *
- * Determines whether the preeditable is marked as visible.
- *
- * Returns: %TRUE if the preeditable is visible
+ * Returns: %TRUE if the @preeditable is visible
  */
 gboolean nimf_preeditable_is_visible (NimfPreeditable *preeditable)
 {

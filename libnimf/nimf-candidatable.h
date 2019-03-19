@@ -101,8 +101,8 @@ void     nimf_candidatable_set_page_values (NimfCandidatable *candidatable,
                                             gint              n_pages,
                                             gint              page_size);
 void     nimf_candidatable_append          (NimfCandidatable *candidatable,
-                                            const gchar      *item1,
-                                            const gchar      *item2);
+                                            const gchar      *text1,
+                                            const gchar      *text2);
 gint     nimf_candidatable_get_selected_index
                                            (NimfCandidatable *candidatable);
 gchar   *nimf_candidatable_get_selected_text

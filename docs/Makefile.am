@@ -1,4 +1,4 @@
-DOC_MODULE=libnimf
+DOC_MODULE=nimf
 
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 

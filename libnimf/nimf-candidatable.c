@@ -3,7 +3,7 @@
  * nimf-candidatable.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2018,2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -29,6 +29,12 @@ nimf_candidatable_default_init (NimfCandidatableInterface *iface)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
+/**
+ * nimf_candidatable_show:
+ * @candidatable: a #NimfCandidatable
+ * @target: a #NimfServiceIC
+ * @show_entry: %TRUE if the entry for auxiliary text should be shown
+ */
 void
 nimf_candidatable_show (NimfCandidatable *candidatable,
                         NimfServiceIC    *target,
@@ -46,6 +52,12 @@ nimf_candidatable_show (NimfCandidatable *candidatable,
     iface->show (candidatable, target, show_entry);
 }
 
+/**
+ * nimf_candidatable_hide:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Hides the candidatable
+ */
 void
 nimf_candidatable_hide (NimfCandidatable *candidatable)
 {
@@ -61,6 +73,12 @@ nimf_candidatable_hide (NimfCandidatable *candidatable)
     iface->hide (candidatable);
 }
 
+/**
+ * nimf_candidatable_is_visible:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Returns: %TRUE if the @candidatable is visible
+ */
 gboolean
 nimf_candidatable_is_visible (NimfCandidatable *candidatable)
 {
@@ -78,6 +96,13 @@ nimf_candidatable_is_visible (NimfCandidatable *candidatable)
   return FALSE;
 }
 
+/**
+ * nimf_candidatable_clear:
+ * @candidatable: a #NimfCandidatable
+ * @target: a #NimfServiceIC
+ *
+ * Clears the contents of the candidatable
+ */
 void
 nimf_candidatable_clear (NimfCandidatable *candidatable,
                          NimfServiceIC    *target)
@@ -94,6 +119,16 @@ nimf_candidatable_clear (NimfCandidatable *candidatable,
     iface->clear (candidatable, target);
 }
 
+/**
+ * nimf_candidatable_set_page_values:
+ * @candidatable: a #NimfCandidatable
+ * @target: a #NimfServiceIC
+ * @page_index: page index
+ * @n_pages: the number of pages
+ * @page_size: page size
+ *
+ * Sets page values.
+ */
 void
 nimf_candidatable_set_page_values (NimfCandidatable *candidatable,
                                    NimfServiceIC    *target,
@@ -117,10 +152,19 @@ nimf_candidatable_set_page_values (NimfCandidatable *candidatable,
                             page_size);
 }
 
+/**
+ * nimf_candidatable_append:
+ * @candidatable: a #NimfCandidatable
+ * @text1: text for the first column; @text1 must be non-%NULL.
+ * @text2: (nullable): text for the second column; @text2 allows %NULL.
+ *
+ * After appending a row, adds @text1 to the first column and @text2 to the
+ * second column.
+ */
 void
 nimf_candidatable_append (NimfCandidatable *candidatable,
-                          const gchar      *item1,
-                          const gchar      *item2)
+                          const gchar      *text1,
+                          const gchar      *text2)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -131,9 +175,15 @@ nimf_candidatable_append (NimfCandidatable *candidatable,
   iface = NIMF_CANDIDATABLE_GET_IFACE (candidatable);
 
   if (iface->append)
-    iface->append (candidatable, item1, item2);
+    iface->append (candidatable, text1, text2);
 }
 
+/**
+ * nimf_candidatable_get_selected_index:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Returns: index of the selected row
+ */
 gint
 nimf_candidatable_get_selected_index (NimfCandidatable *candidatable)
 {
@@ -151,6 +201,12 @@ nimf_candidatable_get_selected_index (NimfCandidatable *candidatable)
   return 0;
 }
 
+/**
+ * nimf_candidatable_get_selected_text:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Returns: text of the first column in the selected row
+ */
 gchar *
 nimf_candidatable_get_selected_text (NimfCandidatable *candidatable)
 {
@@ -168,6 +224,12 @@ nimf_candidatable_get_selected_text (NimfCandidatable *candidatable)
   return NULL;
 }
 
+/**
+ * nimf_candidatable_select_first_item_in_page:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Selects the first item in the page.
+ */
 void
 nimf_candidatable_select_first_item_in_page (NimfCandidatable *candidatable)
 {
@@ -183,6 +245,12 @@ nimf_candidatable_select_first_item_in_page (NimfCandidatable *candidatable)
     iface->select_first_item_in_page (candidatable);
 }
 
+/**
+ * nimf_candidatable_select_last_item_in_page:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Selects the last item in the page.
+ */
 void
 nimf_candidatable_select_last_item_in_page (NimfCandidatable *candidatable)
 {
@@ -198,6 +266,13 @@ nimf_candidatable_select_last_item_in_page (NimfCandidatable *candidatable)
     iface->select_last_item_in_page (candidatable);
 }
 
+/**
+ * nimf_candidatable_select_item_by_index_in_page:
+ * @candidatable: a #NimfCandidatable
+ * @index: a gint
+ *
+ * Selects an item by the index in the page.
+ */
 void
 nimf_candidatable_select_item_by_index_in_page (NimfCandidatable *candidatable,
                                                 gint              index)
@@ -214,6 +289,12 @@ nimf_candidatable_select_item_by_index_in_page (NimfCandidatable *candidatable,
     iface->select_item_by_index_in_page (candidatable, index);
 }
 
+/**
+ * nimf_candidatable_select_previous_item:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Selects the previous item.
+ */
 void
 nimf_candidatable_select_previous_item (NimfCandidatable *candidatable)
 {
@@ -229,6 +310,12 @@ nimf_candidatable_select_previous_item (NimfCandidatable *candidatable)
     iface->select_previous_item (candidatable);
 }
 
+/**
+ * nimf_candidatable_select_next_item:
+ * @candidatable: a #NimfCandidatable
+ *
+ * Selects the next item.
+ */
 void
 nimf_candidatable_select_next_item (NimfCandidatable *candidatable)
 {
@@ -244,6 +331,14 @@ nimf_candidatable_select_next_item (NimfCandidatable *candidatable)
     iface->select_next_item (candidatable);
 }
 
+/**
+ * nimf_candidatable_set_auxiliary_text:
+ * @candidatable: a #NimfCandidatable
+ * @text: text
+ * @cursor_pos: cursor position within @text
+ *
+ * Sets auxiliary text.
+ */
 void
 nimf_candidatable_set_auxiliary_text (NimfCandidatable *candidatable,
                                       const gchar      *text,
