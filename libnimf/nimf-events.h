@@ -27,8 +27,6 @@
 
 G_BEGIN_DECLS
 
-#define NIMF_TYPE_EVENT (nimf_event_get_type ())
-
 typedef struct _NimfEventKey NimfEventKey;
 typedef union  _NimfEvent    NimfEvent;
 
@@ -66,15 +64,20 @@ struct _NimfEventKey
   guint32       hardware_keycode;
 };
 
+/**
+ * NimfEvent:
+ * @type: a #NimfEventType
+ * @key: a #NimfEventKey
+ *
+ * A #NimfEvent contains a union.
+ */
 union _NimfEvent
 {
   NimfEventType type;
   NimfEventKey  key;
 };
 
-GType      nimf_event_get_type (void) G_GNUC_CONST;
 NimfEvent *nimf_event_new                      (NimfEventType     type);
-NimfEvent *nimf_event_copy                     (NimfEvent        *event);
 void       nimf_event_free                     (NimfEvent        *event);
 gboolean   nimf_event_matches                  (NimfEvent        *event,
                                                 const NimfKey   **keys);

@@ -11,6 +11,7 @@ HFILE_GLOB=$(top_srcdir)/libnimf/*.h
 CFILE_GLOB=$(top_srcdir)/libnimf/*.c
 
 IGNORE_HFILES= \
+	nimf-marshalers-private.h \
 	nimf-message-enum-types-private.h \
 	nimf-message-private.h \
 	nimf-module-private.h \

@@ -59,7 +59,7 @@ struct _NimfIMClass
   void     (*preedit_start)        (NimfIM *im);
   void     (*preedit_end)          (NimfIM *im);
   void     (*preedit_changed)      (NimfIM *im);
-  void     (*commit)               (NimfIM *im, const gchar *str);
+  void     (*commit)               (NimfIM *im, const gchar *text);
   gboolean (*retrieve_surrounding) (NimfIM *im);
   gboolean (*delete_surrounding)   (NimfIM *im,
                                     gint    offset,

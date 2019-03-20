@@ -25,7 +25,7 @@
  * nimf_event_keycode_to_qwerty_keyval:
  * @event: a #NimfEvent
  *
- * Converts a #NimfEvent to qwerty keyval. Use only for PC keyboards
+ * Converts @event to qwerty keyval. Use only for PC keyboards.
  *
  * Returns: the #guint value
  */
@@ -87,9 +87,9 @@ nimf_event_keycode_to_qwerty_keyval (const NimfEvent *event)
 /**
  * nimf_event_matches:
  * @event: a #NimfEvent
- * @keys: a %NULL-terminated array of #NimfKey.
+ * @keys: a %NULL-terminated array of #NimfKey
  *
- * Checks if a #NimfEvent matches one of the elements in keys.
+ * Checks if @event matches one of the @keys.
  *
  * Returns: #TRUE if a match was found.
  */
@@ -145,9 +145,7 @@ nimf_event_new (NimfEventType type)
  * nimf_event_free:
  * @event: a #NimfEvent
  *
- * Frees a #NimfEvent, freeing any resources associated with it. Note that this
- *   function should only be called with events returned from functions such as
- *   #nimf_event_copy() and #nimf_event_new().
+ * Frees @event.
  */
 void
 nimf_event_free (NimfEvent *event)
@@ -158,28 +156,3 @@ nimf_event_free (NimfEvent *event)
 
   g_slice_free (NimfEvent, event);
 }
-
-/**
- * nimf_event_copy:
- * @event: a #NimfEvent
- *
- * Copies a #NimfEvent
- *
- * Returns: a copy of event. The returned #NimfEvent should be freed with
- *   #nimf_event_free().
- */
-NimfEvent *
-nimf_event_copy (NimfEvent *event)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_val_if_fail (event != NULL, NULL);
-
-  NimfEvent *new_event;
-  new_event = nimf_event_new (NIMF_EVENT_NOTHING);
-  *new_event = *event;
-
-  return new_event;
-}
-
-G_DEFINE_BOXED_TYPE (NimfEvent, nimf_event, nimf_event_copy, nimf_event_free)

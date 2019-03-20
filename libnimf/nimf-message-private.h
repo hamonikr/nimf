@@ -21,7 +21,6 @@
 
 #ifndef __NIMF_MESSAGE_H__
 #define __NIMF_MESSAGE_H__
-#ifndef __GTK_DOC_IGNORE__
 
 #include <glib-object.h>
 #include "nimf-events.h"
@@ -130,5 +129,4 @@ NimfMessage *nimf_recv_message           (GSocket         *socket);
 
 G_END_DECLS
 
-#endif /* __GTK_DOC_IGNORE__ */
 #endif /* __NIMF_MESSAGE_H__ */

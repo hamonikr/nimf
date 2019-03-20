@@ -21,7 +21,7 @@
 
 #include "nimf-im.h"
 #include <string.h>
-#include "nimf-marshalers.h"
+#include "nimf-marshalers-private.h"
 #include "nimf-message-private.h"
 #include <errno.h>
 #include <glib/gstdio.h>
@@ -421,8 +421,7 @@ nimf_im_set_cursor_location (NimfIM              *im,
 /**
  * nimf_im_set_use_preedit:
  * @im: a #NimfIM
- * @use_preedit: whether the input method should use an on-the-spot input
- *               style.
+ * @use_preedit: whether the input method should use an on-the-spot input style
  *
  * If @use_preedit is %FALSE (default is %TRUE), then the input method may use
  * some other input styles, such as over-the-spot, off-the-spot or root-window.
@@ -514,10 +513,10 @@ nimf_im_focus_in (NimfIM *im)
  * @attrs:      (out) (transfer full): location to store the retrieved
  *              attribute array. When you are done with this array, you
  *              must free it with nimf_preedit_attr_freev().
- * @cursor_pos: (out): location to store position of cursor (in characters)
- *              within the preedit string.
+ * @cursor_pos: (out) (transfer full): location to store position of cursor (in
+ *              characters) within the preedit string.
  *
- * Retrieve the current preedit string, a array of attributes to apply to the
+ * Retrieve the current preedit string, an array of attributes to apply to the
  * string and position of cursor within the preedit string from the input
  * method.
  */
@@ -566,9 +565,9 @@ nimf_im_reset (NimfIM *im)
  * @im: a #NimfIM
  * @event: a #NimfEvent
  *
- * Let the input method handle the event.
+ * Let the input method handle the @event.
  *
- * Returns: %TRUE if the input method handled the event.
+ * Returns: %TRUE if the input method handled the @event.
  */
 gboolean
 nimf_im_filter_event (NimfIM    *im,
@@ -736,7 +735,7 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::preedit-start:
-   * @im: the object on which the signal is emitted
+   * @im: a #NimfIM
    *
    * The #NimfIM::preedit-start signal is emitted when a new preediting
    * sequence starts.
@@ -752,7 +751,7 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::preedit-end:
-   * @im: the object on which the signal is emitted
+   * @im: a #NimfIM
    *
    * The #NimfIM::preedit-end signal is emitted when a preediting sequence has
    * been completed or canceled.
@@ -768,12 +767,10 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::preedit-changed:
-   * @im: the object on which the signal is emitted
+   * @im: a #NimfIM
    *
    * The #NimfIM::preedit-changed signal is emitted whenever the preedit
-   * sequence currently being entered has changed.  It is also emitted at the
-   * end of a preedit sequence, in which case nimf_im_get_preedit_string()
-   * returns the empty string.
+   * sequence has been changed.
    */
   im_signals[PREEDIT_CHANGED] =
     g_signal_new (g_intern_static_string ("preedit-changed"),
@@ -786,12 +783,11 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::commit:
-   * @im: the object on which the signal is emitted
-   * @str: the completed character(s) entered by the user
+   * @im: a #NimfIM
+   * @text: text to commit
    *
    * The #NimfIM::commit signal is emitted when a complete input sequence has
-   * been entered by the user. This can be a single character immediately after
-   * a key press or the final result of preediting.
+   * been entered by the user.
    */
   im_signals[COMMIT] =
     g_signal_new (g_intern_static_string ("commit"),
@@ -805,12 +801,12 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::retrieve-surrounding:
-   * @im: the object on which the signal is emitted
+   * @im: a #NimfIM
    *
    * The #NimfIM::retrieve-surrounding signal is emitted when the input method
-   * requires the context surrounding the cursor. The callback should set the
-   * input method surrounding context by calling the
-   * nimf_im_set_surrounding() method.
+   * requires the text surrounding the cursor. The callback should set the
+   * input method surrounding text by calling the nimf_im_set_surrounding()
+   * method.
    *
    * Returns: %TRUE if the signal was handled.
    */
@@ -825,13 +821,13 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::delete-surrounding:
-   * @im: the object on which the signal is emitted
+   * @im: a #NimfIM
    * @offset:  the character offset from the cursor position of the text to be
    *           deleted. A negative value indicates a position before the cursor.
    * @n_chars: the number of characters to be deleted
    *
    * The #NimfIM::delete-surrounding signal is emitted when the input method
-   * needs to delete all or part of the context surrounding the cursor.
+   * needs to delete all or part of the text surrounding the cursor.
    *
    * Returns: %TRUE if the signal was handled.
    */
@@ -848,7 +844,7 @@ nimf_im_class_init (NimfIMClass *klass)
 
   /**
    * NimfIM::beep:
-   * @im: the object on which the signal is emitted
+   * @im: a #NimfIM
    *
    * The #NimfIM::beep signal is emitted when the input method needs to beep,
    * if supported.

@@ -25,7 +25,7 @@
 #include "nimf-server-private.h"
 #include "nimf-service.h"
 #include <glib/gstdio.h>
-#include "nimf-marshalers.h"
+#include "nimf-marshalers-private.h"
 
 enum {
   ENGINE_CHANGED,

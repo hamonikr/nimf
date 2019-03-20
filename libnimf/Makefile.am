@@ -1,10 +1,10 @@
 lib_LTLIBRARIES = libnimf.la
 
 BUILT_SOURCES = \
-	nimf-enum-types.h \
 	nimf-enum-types.c \
-	nimf-marshalers.h \
+	nimf-enum-types.h \
 	nimf-marshalers.c \
+	nimf-marshalers-private.h \
 	nimf-message-enum-types-private.h \
 	nimf-message-enum-types.c \
 	$(NULL)
@@ -66,29 +66,31 @@ nimfinclude_HEADERS = \
 	nimf-utils.h \
 	$(NULL)
 
-nimf-marshalers.h: nimf-marshalers.list
+nimf-marshalers-private.h: nimf-marshalers.list
 	$(AM_V_GEN) glib-genmarshal --prefix=nimf_cclosure_marshal \
-	                            --header nimf-marshalers.list > nimf-marshalers.h
+	                            --header nimf-marshalers.list \
+	                            > nimf-marshalers-private.h
 
 nimf-marshalers.c: nimf-marshalers.list
 	$(AM_V_GEN) glib-genmarshal --prefix=nimf_cclosure_marshal \
-	                            --body nimf-marshalers.list > nimf-marshalers.c
+	                            --body nimf-marshalers.list \
+	                            > nimf-marshalers.c
 
 nimf-enum-types.h: nimf-key-syms.h \
 	                 nimf-types.h \
 	                 nimf-enum-types.h.template
 	$(AM_V_GEN) glib-mkenums --identifier-prefix Nimf \
 	                         --template nimf-enum-types.h.template \
-	                           nimf-key-syms.h \
-	                           nimf-types.h > nimf-enum-types.h
+	                           nimf-key-syms.h nimf-types.h \
+	                         > nimf-enum-types.h
 
 nimf-enum-types.c: nimf-key-syms.h \
 	                 nimf-types.h \
 	                 nimf-enum-types.c.template
 	$(AM_V_GEN) glib-mkenums --identifier-prefix Nimf \
 	                         --template nimf-enum-types.c.template \
-	                           nimf-key-syms.h \
-	                           nimf-types.h > nimf-enum-types.c
+	                           nimf-key-syms.h nimf-types.h \
+	                         > nimf-enum-types.c
 
 nimf-message-enum-types-private.h: \
 	nimf-message-private.h \
