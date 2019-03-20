@@ -49,6 +49,20 @@ struct _NimfEngine
   NimfEnginePrivate *priv;
 };
 
+/**
+ * NimfEngineClass:
+ * @filter_event: If the language engine consumes the event, returns %TRUE.
+ * @reset: Resets the language engine.
+ * @focus_in: Called via nimf_im_focus_in() when the caller has gained focus.
+ * @focus_out: Called via nimf_im_focus_out() when the caller has lost focus.
+ * @set_method: Sets the method in the language engine.
+ * @candidate_page_up: handler when candidate page up
+ * @candidate_page_down: handler when candidate page down
+ * @candidate_clicked: handler when candidate clicked
+ * @candidate_scrolled: handler when candidate scrolled
+ * @get_id: Gets the language engine id.
+ * @get_icon_name: Gets the language engine name.
+ */
 struct _NimfEngineClass
 {
   /*< private >*/
@@ -57,27 +71,27 @@ struct _NimfEngineClass
   /*< public >*/
   /* Virtual functions */
   gboolean (* filter_event)       (NimfEngine          *engine,
-                                   NimfServiceIC       *im,
+                                   NimfServiceIC       *ic,
                                    NimfEvent           *event);
   void     (* reset)              (NimfEngine          *engine,
-                                   NimfServiceIC       *im);
+                                   NimfServiceIC       *ic);
   void     (* focus_in)           (NimfEngine          *engine,
-                                   NimfServiceIC       *im);
+                                   NimfServiceIC       *ic);
   void     (* focus_out)          (NimfEngine          *engine,
-                                   NimfServiceIC       *im);
+                                   NimfServiceIC       *ic);
   void     (* set_method)         (NimfEngine          *engine,
                                    const gchar         *method_id);
   /* candidate */
   gboolean (* candidate_page_up)   (NimfEngine         *engine,
-                                    NimfServiceIC      *im);
+                                    NimfServiceIC      *ic);
   gboolean (* candidate_page_down) (NimfEngine         *engine,
-                                    NimfServiceIC      *im);
+                                    NimfServiceIC      *ic);
   void     (* candidate_clicked)   (NimfEngine         *engine,
-                                    NimfServiceIC      *im,
+                                    NimfServiceIC      *ic,
                                     gchar              *text,
                                     gint                index);
   void     (* candidate_scrolled)  (NimfEngine         *engine,
-                                    NimfServiceIC      *im,
+                                    NimfServiceIC      *ic,
                                     gdouble             value);
   /* info */
   const gchar * (* get_id)        (NimfEngine          *engine);
@@ -86,20 +100,20 @@ struct _NimfEngineClass
 
 GType    nimf_engine_get_type                  (void) G_GNUC_CONST;
 gboolean nimf_engine_filter_event              (NimfEngine          *engine,
-                                                NimfServiceIC       *im,
+                                                NimfServiceIC       *ic,
                                                 NimfEvent           *event);
 void     nimf_engine_reset                     (NimfEngine          *engine,
-                                                NimfServiceIC       *im);
+                                                NimfServiceIC       *ic);
 void     nimf_engine_focus_in                  (NimfEngine          *engine,
-                                                NimfServiceIC       *im);
+                                                NimfServiceIC       *ic);
 void     nimf_engine_focus_out                 (NimfEngine          *engine,
-                                                NimfServiceIC       *im);
+                                                NimfServiceIC       *ic);
 void     nimf_engine_set_surrounding           (NimfEngine          *engine,
                                                 const char          *text,
                                                 gint                 len,
                                                 gint                 cursor_index);
 gboolean nimf_engine_get_surrounding           (NimfEngine          *engine,
-                                                NimfServiceIC       *im,
+                                                NimfServiceIC       *ic,
                                                 gchar              **text,
                                                 gint                *cursor_index);
 void     nimf_engine_status_changed            (NimfEngine          *engine);
@@ -107,28 +121,28 @@ void     nimf_engine_set_method                (NimfEngine          *engine,
                                                 const gchar         *method_id);
 /* signals */
 void     nimf_engine_emit_preedit_start        (NimfEngine       *engine,
-                                                NimfServiceIC    *im);
+                                                NimfServiceIC    *ic);
 void     nimf_engine_emit_preedit_changed      (NimfEngine       *engine,
-                                                NimfServiceIC    *im,
+                                                NimfServiceIC    *ic,
                                                 const gchar      *preedit_string,
                                                 NimfPreeditAttr **attrs,
                                                 gint              cursor_pos);
 void     nimf_engine_emit_preedit_end          (NimfEngine       *engine,
-                                                NimfServiceIC    *im);
+                                                NimfServiceIC    *ic);
 void     nimf_engine_emit_commit               (NimfEngine       *engine,
-                                                NimfServiceIC    *im,
+                                                NimfServiceIC    *ic,
                                                 gchar const      *text);
 gboolean nimf_engine_emit_retrieve_surrounding (NimfEngine       *engine,
-                                                NimfServiceIC    *im);
+                                                NimfServiceIC    *ic);
 gboolean nimf_engine_emit_delete_surrounding   (NimfEngine       *engine,
-                                                NimfServiceIC    *im,
+                                                NimfServiceIC    *ic,
                                                 gint              offset,
                                                 gint              n_chars);
 void     nimf_engine_emit_beep                 (NimfEngine       *engine,
-                                                NimfServiceIC    *im);
+                                                NimfServiceIC    *ic);
 /* info */
-const gchar    *nimf_engine_get_id        (NimfEngine *engine);
-const gchar    *nimf_engine_get_icon_name (NimfEngine *engine);
+const gchar      *nimf_engine_get_id           (NimfEngine *engine);
+const gchar      *nimf_engine_get_icon_name    (NimfEngine *engine);
 /* candidate */
 NimfCandidatable *nimf_engine_get_candidatable (NimfEngine *engine);
 

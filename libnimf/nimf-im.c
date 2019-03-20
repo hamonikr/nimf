@@ -378,7 +378,7 @@ on_changed (GFileMonitor     *monitor,
  * nimf_im_focus_out:
  * @im: a #NimfIM
  *
- * Notify the input method that the caller has lost focus.
+ * Notifies the input method that the caller has lost focus.
  */
 void
 nimf_im_focus_out (NimfIM *im)
@@ -399,7 +399,7 @@ nimf_im_focus_out (NimfIM *im)
  * @im: a #NimfIM
  * @area: new location
  *
- * Notify the input method that a change in cursor position has been made. The
+ * Notifies the input method that a change in cursor position has been made. The
  * location is the position of a window position in root window coordinates.
  */
 void
@@ -446,12 +446,13 @@ nimf_im_set_use_preedit (NimfIM   *im,
 /**
  * nimf_im_set_surrounding:
  * @im: a #NimfIM
- * @text: text surrounding the insertion point, as UTF-8.
+ * @text: surrounding text
  * @len: the byte length of @text, or -1 if @text is nul-terminated.
- * @cursor_index: the character index of the insertion cursor within @text.
+ * @cursor_index: the character index of the cursor within @text.
  *
- * Sets surrounding text in the input method. This function is expected to be
- * called in response to the NimfIM::retrieve_surrounding signal.
+ * Sets surrounding text to input method. This function is expected to be
+ * called in response to NimfIM::retrieve-surrounding which is emitted by
+ * nimf_engine_emit_retrieve_surrounding().
  */
 void
 nimf_im_set_surrounding (NimfIM     *im,
@@ -489,7 +490,7 @@ nimf_im_set_surrounding (NimfIM     *im,
  * nimf_im_focus_in:
  * @im: a #NimfIM
  *
- * Notify the input method that the caller has gained focus.
+ * Notifies the input method that the caller has gained focus.
  */
 void
 nimf_im_focus_in (NimfIM *im)
@@ -737,8 +738,8 @@ nimf_im_class_init (NimfIMClass *klass)
    * NimfIM::preedit-start:
    * @im: the object on which the signal is emitted
    *
-   * The ::preedit-start signal is emitted when a new preediting sequence
-   * starts.
+   * The #NimfIM::preedit-start signal is emitted when a new preediting
+   * sequence starts.
    */
   im_signals[PREEDIT_START] =
     g_signal_new (g_intern_static_string ("preedit-start"),
@@ -753,8 +754,8 @@ nimf_im_class_init (NimfIMClass *klass)
    * NimfIM::preedit-end:
    * @im: the object on which the signal is emitted
    *
-   * The ::preedit-end signal is emitted when a preediting sequence has been
-   * completed or canceled.
+   * The #NimfIM::preedit-end signal is emitted when a preediting sequence has
+   * been completed or canceled.
    */
   im_signals[PREEDIT_END] =
     g_signal_new (g_intern_static_string ("preedit-end"),
@@ -769,10 +770,10 @@ nimf_im_class_init (NimfIMClass *klass)
    * NimfIM::preedit-changed:
    * @im: the object on which the signal is emitted
    *
-   * The ::preedit-changed signal is emitted whenever the preedit sequence
-   * currently being entered has changed.  It is also emitted at the end of a
-   * preedit sequence, in which case nimf_im_get_preedit_string() returns the
-   * empty string.
+   * The #NimfIM::preedit-changed signal is emitted whenever the preedit
+   * sequence currently being entered has changed.  It is also emitted at the
+   * end of a preedit sequence, in which case nimf_im_get_preedit_string()
+   * returns the empty string.
    */
   im_signals[PREEDIT_CHANGED] =
     g_signal_new (g_intern_static_string ("preedit-changed"),
@@ -788,9 +789,9 @@ nimf_im_class_init (NimfIMClass *klass)
    * @im: the object on which the signal is emitted
    * @str: the completed character(s) entered by the user
    *
-   * The ::commit signal is emitted when a complete input sequence has been
-   * entered by the user. This can be a single character immediately after a
-   * key press or the final result of preediting.
+   * The #NimfIM::commit signal is emitted when a complete input sequence has
+   * been entered by the user. This can be a single character immediately after
+   * a key press or the final result of preediting.
    */
   im_signals[COMMIT] =
     g_signal_new (g_intern_static_string ("commit"),
@@ -806,7 +807,7 @@ nimf_im_class_init (NimfIMClass *klass)
    * NimfIM::retrieve-surrounding:
    * @im: the object on which the signal is emitted
    *
-   * The ::retrieve-surrounding signal is emitted when the input method
+   * The #NimfIM::retrieve-surrounding signal is emitted when the input method
    * requires the context surrounding the cursor. The callback should set the
    * input method surrounding context by calling the
    * nimf_im_set_surrounding() method.
@@ -829,7 +830,7 @@ nimf_im_class_init (NimfIMClass *klass)
    *           deleted. A negative value indicates a position before the cursor.
    * @n_chars: the number of characters to be deleted
    *
-   * The ::delete-surrounding signal is emitted when the input method
+   * The #NimfIM::delete-surrounding signal is emitted when the input method
    * needs to delete all or part of the context surrounding the cursor.
    *
    * Returns: %TRUE if the signal was handled.
@@ -849,8 +850,8 @@ nimf_im_class_init (NimfIMClass *klass)
    * NimfIM::beep:
    * @im: the object on which the signal is emitted
    *
-   * The ::beep signal is emitted when the input method needs to beep, if
-   * supported.
+   * The #NimfIM::beep signal is emitted when the input method needs to beep,
+   * if supported.
    */
   im_signals[BEEP] =
     g_signal_new (g_intern_static_string ("beep"),
