@@ -22,6 +22,12 @@
 #include "nimf-utils.h"
 #include "nimf-enum-types.h"
 
+/**
+ * nimf_keyval_to_keysym_name:
+ * @keyval: a keyval
+ *
+ * Returns: keysym name
+ */
 const gchar *
 nimf_keyval_to_keysym_name (guint keyval)
 {
@@ -32,6 +38,11 @@ nimf_keyval_to_keysym_name (guint keyval)
   return enum_value ? enum_value->value_nick : NULL;
 }
 
+/**
+ * nimf_get_socket_path:
+ *
+ * Returns: nimf socket path, which should be freed with g_free()
+ */
 gchar *
 nimf_get_socket_path ()
 {

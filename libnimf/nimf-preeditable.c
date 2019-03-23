@@ -23,12 +23,20 @@
 
 G_DEFINE_INTERFACE (NimfPreeditable, nimf_preeditable, G_TYPE_OBJECT)
 
-static void nimf_preeditable_default_init (NimfPreeditableInterface *iface)
+static void
+nimf_preeditable_default_init (NimfPreeditableInterface *iface)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 }
 
-void nimf_preeditable_show (NimfPreeditable *preeditable)
+/**
+ * nimf_preeditable_show:
+ * @preeditable: a #NimfPreeditable
+ *
+ * Shows @preeditable
+ */
+void
+nimf_preeditable_show (NimfPreeditable *preeditable)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -40,7 +48,14 @@ void nimf_preeditable_show (NimfPreeditable *preeditable)
     iface->show (preeditable);
 }
 
-void nimf_preeditable_hide (NimfPreeditable *preeditable)
+/**
+ * nimf_preeditable_hide:
+ * @preeditable: a #NimfPreeditable
+ *
+ * Hides the @preeditable
+ */
+void
+nimf_preeditable_hide (NimfPreeditable *preeditable)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -58,7 +73,8 @@ void nimf_preeditable_hide (NimfPreeditable *preeditable)
  *
  * Returns: %TRUE if the @preeditable is visible
  */
-gboolean nimf_preeditable_is_visible (NimfPreeditable *preeditable)
+gboolean
+nimf_preeditable_is_visible (NimfPreeditable *preeditable)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -72,9 +88,18 @@ gboolean nimf_preeditable_is_visible (NimfPreeditable *preeditable)
   return FALSE;
 }
 
-void nimf_preeditable_set_text (NimfPreeditable *preeditable,
-                                const gchar     *text,
-                                gint             cursor_pos)
+/**
+ * nimf_preeditable_set_text:
+ * @preeditable: a #NimfPreeditable
+ * @text: text
+ * @cursor_pos: cursor position
+ *
+ * Sets @text to @preeditable.
+ */
+void
+nimf_preeditable_set_text (NimfPreeditable *preeditable,
+                           const gchar     *text,
+                           gint             cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -86,8 +111,17 @@ void nimf_preeditable_set_text (NimfPreeditable *preeditable,
     iface->set_text (preeditable, text, cursor_pos);
 }
 
-void nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,
-                                           const NimfRectangle *area)
+/**
+ * nimf_preeditable_set_cursor_location:
+ * @preeditable: a #NimfPreeditable
+ * @area: a #NimfRectangle
+ *
+ * Notifies the @preeditable that a change in cursor position has been made.
+ * The location is the position of a window position in root window coordinates.
+ */
+void
+nimf_preeditable_set_cursor_location (NimfPreeditable     *preeditable,
+                                      const NimfRectangle *area)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 

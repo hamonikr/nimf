@@ -43,22 +43,36 @@ nimf_service_finalize (GObject *object)
   G_OBJECT_CLASS (nimf_service_parent_class)->finalize (object);
 }
 
-const gchar *nimf_service_real_get_id (NimfService *service)
+/**
+ * nimf_service_get_id:
+ * @service: a #NimfService
+ */
+const gchar
+*nimf_service_get_id (NimfService *service)
 {
-  g_error (G_STRLOC ": %s: You should implement your_service_get_id ()",
-           G_STRFUNC);
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfServiceClass *class = NIMF_SERVICE_GET_CLASS (service);
+
+  if (class->get_id (service))
+    return class->get_id (service);
+  else
+    g_error (G_STRLOC ": %s: You should implement your_service_get_id ()",
+             G_STRFUNC);
 
   return NULL;
 }
 
-const gchar *nimf_service_get_id (NimfService *service)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return NIMF_SERVICE_GET_CLASS (service)->get_id (service);
-}
-
-gboolean nimf_service_start (NimfService *service)
+/**
+ * nimf_service_start:
+ * @service: a #NimfService
+ *
+ * Starts @service.
+ *
+ * returns: %TRUE if a service is started.
+ */
+gboolean
+nimf_service_start (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -70,7 +84,14 @@ gboolean nimf_service_start (NimfService *service)
     return FALSE;
 }
 
-void nimf_service_stop (NimfService *service)
+/**
+ * nimf_service_stop:
+ * @service: a #NimfService
+ *
+ * Stops a @service.
+ */
+void
+nimf_service_stop (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -80,20 +101,33 @@ void nimf_service_stop (NimfService *service)
     class->stop (service);
 }
 
-gboolean nimf_service_real_is_active (NimfService *service)
-{
-  g_error (G_STRLOC ": %s: You should implement your_service_is_active ()",
-           G_STRFUNC);
-  return FALSE;
-}
-
-gboolean nimf_service_is_active (NimfService *service)
+/**
+ * nimf_service_is_active:
+ * @service: a #NimfService
+ *
+ * Returns: %TRUE if a service is active
+ */
+gboolean
+nimf_service_is_active (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return NIMF_SERVICE_GET_CLASS (service)->is_active (service);
+  NimfServiceClass *class = NIMF_SERVICE_GET_CLASS (service);
+
+  if (class->is_active (service))
+    return class->is_active (service);
+  else
+    g_error (G_STRLOC ": %s: You should implement your_service_is_active ()",
+             G_STRFUNC);
+
+  return FALSE;
 }
 
+/**
+ * nimf_service_change_engine_by_id:
+ * @service: a #NimfService
+ * @engine_id: engine id
+ */
 void
 nimf_service_change_engine_by_id (NimfService *service,
                                   const gchar *engine_id)
@@ -106,6 +140,12 @@ nimf_service_change_engine_by_id (NimfService *service,
     class->change_engine_by_id (service, engine_id);
 }
 
+/**
+ * nimf_service_change_engine:
+ * @service: a #NimfService
+ * @engine_id: engine id
+ * @method_id: method id
+ */
 void
 nimf_service_change_engine (NimfService *service,
                             const gchar *engine_id,
@@ -124,10 +164,5 @@ nimf_service_class_init (NimfServiceClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-  class->get_id    = nimf_service_real_get_id;
-  class->is_active = nimf_service_real_is_active;
-
-  object_class->finalize = nimf_service_finalize;
+  G_OBJECT_CLASS (class)->finalize = nimf_service_finalize;
 }

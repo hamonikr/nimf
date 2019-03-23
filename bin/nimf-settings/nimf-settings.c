@@ -1152,6 +1152,21 @@ nimf_settings_class_init (NimfSettingsClass *klass)
   object_class->finalize = nimf_settings_finalize;
 }
 
+/**
+ * PROGRAM:nimf-settings
+ * @short_description: Tools for setting nimf input method
+ * @synopsis: nimf-settings [*OPTIONS*...]
+ * @see_also: nimf-settings(1)
+ * @-h, --help: Show help options
+ * @--help-all: Show all help options
+ * @--help-gapplication: Show GApplication options
+ * @--gapplication-service: Enter GApplication service mode (use from D-Bus
+ *   service files)
+ *
+ * nimf-settings is a tool for the nimf input method.
+ *
+ * Returns: Zero on success, non-zero on failure
+ */
 int main (int argc, char **argv)
 {
   NimfSettings *nsettings;

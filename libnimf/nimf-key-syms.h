@@ -402,8 +402,6 @@ typedef enum
   NIMF_KEY_WLAN             = 0x1008ff95 /*< nick=WLAN >*/
 } NimfKeySym;
 
-const gchar *nimf_keyval_to_keysym_name (guint keyval);
-
 G_END_DECLS
 
 #endif /* __NIMF_KEY_SYMS_H__ */

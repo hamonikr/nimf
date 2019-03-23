@@ -22,6 +22,12 @@
 #include "nimf-types.h"
 #include "nimf-enum-types.h"
 
+/**
+ * nimf_key_new:
+ *
+ * Return: a newly-allocated #NimfKey; The returned #NimfKey should be freed
+ * with nimf_key_free().
+ */
 NimfKey *
 nimf_key_new ()
 {
@@ -30,6 +36,13 @@ nimf_key_new ()
   return g_slice_new0 (NimfKey);
 }
 
+/**
+ * nimf_key_new_from_nicks:
+ * @nicks: an array of gchar
+ *
+ * Return: a newly-allocated #NimfKey; The returned #NimfKey should be freed
+ * with nimf_key_free().
+ */
 NimfKey *
 nimf_key_new_from_nicks (const gchar **nicks)
 {
@@ -70,7 +83,15 @@ nimf_key_new_from_nicks (const gchar **nicks)
   return key;
 }
 
-NimfKey **nimf_key_newv (const gchar **keys)
+/**
+ * nimf_key_newv:
+ * @keys: an array of gchar
+ *
+ * Returns: a newly-allocated array of #NimfKey; The returned an array of
+ * #NimfKey should be freed with nimf_key_freev().
+ */
+NimfKey **
+nimf_key_newv (const gchar **keys)
 {
   NimfKey **nimf_keys = g_malloc0_n (1, sizeof (NimfKey *));
 
@@ -89,6 +110,12 @@ NimfKey **nimf_key_newv (const gchar **keys)
   return nimf_keys;
 }
 
+/**
+ * nimf_key_freev:
+ * @keys: an array of #NimfKey
+ *
+ * Frees an array of @keys
+ */
 void
 nimf_key_freev (NimfKey **keys)
 {
@@ -104,6 +131,12 @@ nimf_key_freev (NimfKey **keys)
   }
 }
 
+/**
+ * nimf_key_free:
+ * @key: a #NimfKey
+ *
+ * Frees a @key
+ */
 void
 nimf_key_free (NimfKey *key)
 {
@@ -114,9 +147,20 @@ nimf_key_free (NimfKey *key)
   g_slice_free (NimfKey, key);
 }
 
-NimfPreeditAttr *nimf_preedit_attr_new (NimfPreeditAttrType type,
-                                        guint               start_index,
-                                        guint               end_index)
+/**
+ * nimf_preedit_attr_new:
+ * @type: a #NimfPreeditAttrType
+ * @start_index: start index in characters
+ * @end_index: end index in characters; The character at this index is not
+ *   included.
+ *
+ * Returns: a newly-allocated #NimfPreeditAttr; The returned #NimfPreeditAttr
+ * should be freed with nimf_preedit_attr_free().
+ */
+NimfPreeditAttr *
+nimf_preedit_attr_new (NimfPreeditAttrType type,
+                       guint               start_index,
+                       guint               end_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -130,7 +174,15 @@ NimfPreeditAttr *nimf_preedit_attr_new (NimfPreeditAttrType type,
   return attr;
 }
 
-NimfPreeditAttr **nimf_preedit_attrs_copy (NimfPreeditAttr **attrs)
+/**
+ * nimf_preedit_attrs_copy:
+ * @attrs: an array of #NimfPreeditAttr
+ *
+ * Returns: a newly allocated array of #NimfPreeditAttr, which should be freed
+ *   with nimf_preedit_attr_freev().
+ */
+NimfPreeditAttr **
+nimf_preedit_attrs_copy (NimfPreeditAttr **attrs)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -151,14 +203,28 @@ NimfPreeditAttr **nimf_preedit_attrs_copy (NimfPreeditAttr **attrs)
   return preedit_attrs;
 }
 
-void nimf_preedit_attr_free (NimfPreeditAttr *attr)
+/**
+ * nimf_preedit_attr_free:
+ * @attr: a #NimfPreeditAttr
+ *
+ * Frees a @attr
+ */
+void
+nimf_preedit_attr_free (NimfPreeditAttr *attr)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   g_free (attr);
 }
 
-void nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
+/**
+ * nimf_preedit_attr_freev:
+ * @attrs: an array of #NimfPreeditAttr
+ *
+ * Frees an array of @attr
+ */
+void
+nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -172,6 +238,12 @@ void nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
   }
 }
 
+/**
+ * nimf_method_info_new:
+ *
+ * returns: a newly-allocated a #NimfMethodInfo; The returned #NimfMethodInfo
+ * should be freed with nimf_method_info_free().
+ */
 NimfMethodInfo *
 nimf_method_info_new ()
 {
@@ -180,6 +252,12 @@ nimf_method_info_new ()
   return g_slice_new0 (NimfMethodInfo);
 }
 
+/**
+ * nimf_method_info_free:
+ * @info: a #NimfMethodInfo
+ *
+ * Frees an @info.
+ */
 void
 nimf_method_info_free (NimfMethodInfo *info)
 {
@@ -189,6 +267,12 @@ nimf_method_info_free (NimfMethodInfo *info)
     g_slice_free (NimfMethodInfo, info);
 }
 
+/**
+ * nimf_method_info_freev:
+ * @infos: an array of #NimfMethodInfo
+ *
+ * Frees an array of @info.
+ */
 void
 nimf_method_info_freev (NimfMethodInfo **infos)
 {

@@ -122,7 +122,8 @@ nimf_server_get_default_engine (NimfServer *server)
  *
  * If there is no default server then %NULL is returned.
  *
- * Returns: (transfer none): the default server, or %NULL
+ * Returns: (transfer none): the default server, or %NULL if server is not
+ * running
  */
 NimfServer *
 nimf_server_get_default ()
@@ -246,6 +247,15 @@ nimf_server_class_init (NimfServerClass *class)
 
   object_class->finalize = nimf_server_finalize;
 
+  /**
+   * NimfServer::engine-changed:
+   * @server: a #NimfServer
+   * @engine_id: engine id
+   * @icon_name: icon name
+   *
+   * The #NimfServer::engine-changed signal is emitted when the engine is
+   * changed.
+   */
   nimf_server_signals[ENGINE_CHANGED] =
     g_signal_new (g_intern_static_string ("engine-changed"),
                   G_TYPE_FROM_CLASS (class),
@@ -256,6 +266,15 @@ nimf_server_class_init (NimfServerClass *class)
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_STRING);
+  /**
+   * NimfServer::engine-status-changed:
+   * @server: a #NimfServer
+   * @engine_id: engine id
+   * @icon_name: icon name
+   *
+   * The #NimfServer::engine-status-changed signal is emitted when the engine
+   * status is changed.
+   */
   nimf_server_signals[ENGINE_STATUS_CHANGED] =
     g_signal_new (g_intern_static_string ("engine-status-changed"),
                   G_TYPE_FROM_CLASS (class),
@@ -322,7 +341,7 @@ nimf_server_change_engine (NimfServer  *server,
  * nimf_server_get_loaded_engine_ids:
  * @server: a #NimfServer
  *
- * The array is %NULL terminated.
+ * The array is %NULL-terminated.
  *
  * Returns: (transfer full): a newly allocated %NULL-terminated engine id array
  */

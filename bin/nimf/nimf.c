@@ -378,6 +378,19 @@ nimf_log_default_handler (const gchar    *log_domain,
   syslog (priority, "%s-%s: %s", log_domain, prefix, message ? message : "(NULL) message");
 }
 
+/**
+ * PROGRAM:nimf
+ * @short_description: Nimf input method daemon
+ * @synopsis: nimf [*OPTIONS*...]
+ * @see_also: nimf(1)
+ * @-h, --help: Print the help message
+ * @--debug: Log debugging message
+ * @--version: Print the version number
+ *
+ * nimf is an input method daemon.
+ *
+ * Returns: Zero on success, non-zero on failure
+ */
 int
 main (int argc, char **argv)
 {

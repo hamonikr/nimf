@@ -45,6 +45,15 @@ struct _NimfService
   GObject parent_instance;
 };
 
+/**
+ * NimfServiceClass:
+ * @get_id: Returns a service id.
+ * @start: Starts a service.
+ * @stop: Stops a service.
+ * @is_active: Whether a service is active or not
+ * @change_engine_by_id: Changes an engine by engine id.
+ * @change_engine: Changes an engine with engine id and method id.
+ */
 struct _NimfServiceClass
 {
   /*< private >*/

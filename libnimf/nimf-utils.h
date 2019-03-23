@@ -26,7 +26,8 @@
 
 G_BEGIN_DECLS
 
-gchar *nimf_get_socket_path (void);
+const gchar *nimf_keyval_to_keysym_name (guint keyval);
+gchar       *nimf_get_socket_path       (void);
 
 G_END_DECLS
 

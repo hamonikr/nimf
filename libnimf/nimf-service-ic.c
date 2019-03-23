@@ -43,46 +43,61 @@ struct _NimfServiceICPrivate
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (NimfServiceIC, nimf_service_ic, G_TYPE_OBJECT);
 
-void nimf_service_ic_emit_preedit_start (NimfServiceIC *im)
+/**
+ * nimf_service_ic_emit_preedit_start:
+ * @ic: a #NimfServiceIC
+ *
+ * Emits a #NimfIM::preedit-start signal.
+ */
+void nimf_service_ic_emit_preedit_start (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return;
 
-  im->priv->preedit_state = NIMF_PREEDIT_STATE_START;
+  ic->priv->preedit_state = NIMF_PREEDIT_STATE_START;
 
-  NimfServiceICClass *class  = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class  = NIMF_SERVICE_IC_GET_CLASS (ic);
 
-  if (class->emit_preedit_start && im->priv->use_preedit)
-    class->emit_preedit_start (im);
+  if (class->emit_preedit_start && ic->priv->use_preedit)
+    class->emit_preedit_start (ic);
 }
 
+/**
+ * nimf_service_ic_emit_preedit_changed:
+ * @ic: a #NimfServiceIC
+ * @preedit_string: preedit string
+ * @attrs: an array of #NimfPreeditAttr
+ * @cursor_pos: cursor position
+ *
+ * Emits a #NimfIM::preedit-changed signal.
+ */
 void
-nimf_service_ic_emit_preedit_changed (NimfServiceIC    *im,
+nimf_service_ic_emit_preedit_changed (NimfServiceIC    *ic,
                                       const gchar      *preedit_string,
                                       NimfPreeditAttr **attrs,
                                       gint              cursor_pos)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return;
 
-  g_free (im->priv->preedit_string);
-  nimf_preedit_attr_freev (im->priv->preedit_attrs);
+  g_free (ic->priv->preedit_string);
+  nimf_preedit_attr_freev (ic->priv->preedit_attrs);
 
-  im->priv->preedit_string     = g_strdup (preedit_string);
-  im->priv->preedit_attrs      = nimf_preedit_attrs_copy (attrs);
-  im->priv->preedit_cursor_pos = cursor_pos;
+  ic->priv->preedit_string     = g_strdup (preedit_string);
+  ic->priv->preedit_attrs      = nimf_preedit_attrs_copy (attrs);
+  ic->priv->preedit_cursor_pos = cursor_pos;
 
-  NimfServiceICClass *class  = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class  = NIMF_SERVICE_IC_GET_CLASS (ic);
   NimfServer         *server = nimf_server_get_default ();
 
-  if (class->emit_preedit_changed && im->priv->use_preedit)
-    class->emit_preedit_changed (im, preedit_string, attrs, cursor_pos);
+  if (class->emit_preedit_changed && ic->priv->use_preedit)
+    class->emit_preedit_changed (ic, preedit_string, attrs, cursor_pos);
 
-  if (!im->priv->use_preedit &&
+  if (!ic->priv->use_preedit &&
       !nimf_candidatable_is_visible (server->priv->candidatable) &&
       strlen (preedit_string))
   {
@@ -96,83 +111,119 @@ nimf_service_ic_emit_preedit_changed (NimfServiceIC    *im,
   }
 }
 
+/**
+ * nimf_service_ic_emit_preedit_end:
+ * @ic: a #NimfServiceIC
+ *
+ * Emits a #NimfIM::preedit-end signal.
+ */
 void
-nimf_service_ic_emit_preedit_end (NimfServiceIC *im)
+nimf_service_ic_emit_preedit_end (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return;
 
-  im->priv->preedit_state = NIMF_PREEDIT_STATE_END;
+  ic->priv->preedit_state = NIMF_PREEDIT_STATE_END;
 
-  NimfServiceICClass *class  = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class  = NIMF_SERVICE_IC_GET_CLASS (ic);
   NimfServer         *server = nimf_server_get_default ();
 
-  if (class->emit_preedit_end && im->priv->use_preedit)
-    class->emit_preedit_end (im);
+  if (class->emit_preedit_end && ic->priv->use_preedit)
+    class->emit_preedit_end (ic);
 
-  if (!im->priv->use_preedit)
+  if (!ic->priv->use_preedit)
     nimf_preeditable_hide (server->priv->preeditable);
 }
 
+/**
+ * nimf_service_ic_emit_commit:
+ * @ic: a #NimfServiceIC
+ * @text: text to commit
+ *
+ * Emits a #NimfIM::commit signal.
+ */
 void
-nimf_service_ic_emit_commit (NimfServiceIC *im,
+nimf_service_ic_emit_commit (NimfServiceIC *ic,
                              const gchar   *text)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return;
 
-  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (ic);
 
   if (class->emit_commit)
-    class->emit_commit (im, text);
+    class->emit_commit (ic, text);
 }
 
+/**
+ * nimf_service_ic_emit_retrieve_surrounding:
+ * @ic: a #NimfServiceIC
+ *
+ * Emits a #NimfIM::retrieve-surrounding signal.
+ */
 gboolean
-nimf_service_ic_emit_retrieve_surrounding (NimfServiceIC *im)
+nimf_service_ic_emit_retrieve_surrounding (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return FALSE;
 
-  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (ic);
 
   if (class->emit_retrieve_surrounding)
-    return class->emit_retrieve_surrounding (im);
+    return class->emit_retrieve_surrounding (ic);
   else
     return FALSE;
 }
 
+/**
+ * nimf_service_ic_emit_delete_surrounding:
+ * @ic: a #NimfServiceIC
+ * @offset:  the character offset from the cursor position of the text to be
+ *           deleted. A negative value indicates a position before the cursor.
+ * @n_chars: the number of characters to be deleted
+ *
+ * Emits a #NimfIM::delete-surrounding signal.
+ *
+ * Returns: %TRUE if the signal was handled.
+ */
 gboolean
-nimf_service_ic_emit_delete_surrounding (NimfServiceIC *im,
+nimf_service_ic_emit_delete_surrounding (NimfServiceIC *ic,
                                          gint           offset,
                                          gint           n_chars)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return FALSE;
 
-  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (ic);
 
   if (class->emit_delete_surrounding)
-    return class->emit_delete_surrounding (im, offset, n_chars);
+    return class->emit_delete_surrounding (ic, offset, n_chars);
   else
     return FALSE;
 }
 
+/**
+ * nimf_service_ic_engine_changed:
+ * @ic: a #NimfServiceIC
+ * @engine_id: engine id
+ * @name: name
+ */
 void
-nimf_service_ic_engine_changed (NimfServiceIC *im,
+nimf_service_ic_engine_changed (NimfServiceIC *ic,
                                 const gchar   *engine_id,
                                 const gchar   *name)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return;
 
   NimfServer *server = nimf_server_get_default ();
@@ -180,53 +231,69 @@ nimf_service_ic_engine_changed (NimfServiceIC *im,
   g_signal_emit_by_name (server, "engine-changed", engine_id, name);
 }
 
+/**
+ * nimf_service_ic_emit_beep:
+ * @ic: a #NimfServiceIC
+ *
+ * Emits a #NimfIM::beep signal.
+ */
 void
-nimf_service_ic_emit_beep (NimfServiceIC *im)
+nimf_service_ic_emit_beep (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (!im))
+  if (G_UNLIKELY (!ic))
     return;
 
-  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (ic);
 
   if (class->emit_beep)
-    class->emit_beep (im);
+    class->emit_beep (ic);
 }
 
-void nimf_service_ic_focus_in (NimfServiceIC *im)
+/**
+ * nimf_service_ic_focus_in:
+ * @ic: a #NimfServiceIC
+ */
+void
+nimf_service_ic_focus_in (NimfServiceIC *ic)
 {
-  g_return_if_fail (im != NULL);
+  g_return_if_fail (ic != NULL);
 
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (im->priv->engine == NULL))
+  if (G_UNLIKELY (ic->priv->engine == NULL))
     return;
 
   NimfServer *server = nimf_server_get_default ();
 
-  nimf_engine_focus_in (im->priv->engine, im);
-  server->priv->last_focused_im = im;
-  server->priv->last_focused_service = nimf_service_ic_get_service_id (im);
-  nimf_service_ic_engine_changed (im, nimf_engine_get_id (im->priv->engine),
-                                  nimf_engine_get_icon_name (im->priv->engine));
+  nimf_engine_focus_in (ic->priv->engine, ic);
+  server->priv->last_focused_im = ic;
+  server->priv->last_focused_service = nimf_service_ic_get_service_id (ic);
+  nimf_service_ic_engine_changed (ic, nimf_engine_get_id (ic->priv->engine),
+                                  nimf_engine_get_icon_name (ic->priv->engine));
 }
 
-void nimf_service_ic_focus_out (NimfServiceIC *im)
+/**
+ * nimf_service_ic_focus_out:
+ * @ic: a #NimfServiceIC
+ */
+void
+nimf_service_ic_focus_out (NimfServiceIC *ic)
 {
-  g_return_if_fail (im != NULL);
+  g_return_if_fail (ic != NULL);
 
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  if (G_UNLIKELY (im->priv->engine == NULL))
+  if (G_UNLIKELY (ic->priv->engine == NULL))
     return;
 
   NimfServer *server = nimf_server_get_default ();
 
-  nimf_engine_focus_out (im->priv->engine, im);
+  nimf_engine_focus_out (ic->priv->engine, ic);
 
-  if (server->priv->last_focused_im == im)
-    nimf_service_ic_engine_changed (im, NULL, "nimf-focus-out");
+  if (server->priv->last_focused_im == ic)
+    nimf_service_ic_engine_changed (ic, NULL, "nimf-focus-out");
 
   nimf_preeditable_hide (server->priv->preeditable);
 }
@@ -240,7 +307,7 @@ on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
 }
 
 static GList *
-nimf_service_ic_create_engines (NimfServiceIC *im)
+nimf_service_ic_create_engines (NimfServiceIC *ic)
 {
   GList *engines = NULL;
   GHashTableIter iter;
@@ -260,16 +327,16 @@ nimf_service_ic_create_engines (NimfServiceIC *im)
 }
 
 static NimfEngine *
-nimf_service_ic_get_instance (NimfServiceIC *im, const gchar *engine_id)
+nimf_service_ic_get_instance (NimfServiceIC *ic, const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GList *list;
 
-  if (im->priv->engines == NULL)
-    im->priv->engines = nimf_service_ic_create_engines (im);
+  if (ic->priv->engines == NULL)
+    ic->priv->engines = nimf_service_ic_create_engines (ic);
 
-  list = g_list_find_custom (g_list_first (im->priv->engines), engine_id,
+  list = g_list_find_custom (g_list_first (ic->priv->engines), engine_id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -278,26 +345,26 @@ nimf_service_ic_get_instance (NimfServiceIC *im, const gchar *engine_id)
 }
 
 static NimfEngine *
-nimf_service_ic_get_next_instance (NimfServiceIC *im, NimfEngine *engine)
+nimf_service_ic_get_next_instance (NimfServiceIC *ic, NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GList *list;
 
-  if (im->priv->engines == NULL)
-    im->priv->engines = nimf_service_ic_create_engines (im);
+  if (ic->priv->engines == NULL)
+    ic->priv->engines = nimf_service_ic_create_engines (ic);
 
-  im->priv->engines = g_list_first (im->priv->engines);
-  im->priv->engines = g_list_find  (im->priv->engines, engine);
+  ic->priv->engines = g_list_first (ic->priv->engines);
+  ic->priv->engines = g_list_find  (ic->priv->engines, engine);
 
-  list = g_list_next (im->priv->engines);
+  list = g_list_next (ic->priv->engines);
 
   if (list == NULL)
-    list = g_list_first (im->priv->engines);
+    list = g_list_first (ic->priv->engines);
 
   if (list)
   {
-    im->priv->engines = list;
+    ic->priv->engines = list;
     return list->data;
   }
 
@@ -306,14 +373,22 @@ nimf_service_ic_get_next_instance (NimfServiceIC *im, NimfEngine *engine)
   return engine;
 }
 
-gboolean nimf_service_ic_filter_event (NimfServiceIC *im,
-                                       NimfEvent     *event)
+/**
+ * nimf_service_ic_filter_event:
+ * @ic: a #NimfServiceIC
+ * @event: a #NimfEvent
+ *
+ * Returns: TRUE if the event is consumed.
+ */
+gboolean
+nimf_service_ic_filter_event (NimfServiceIC *ic,
+                              NimfEvent     *event)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_val_if_fail (im != NULL, FALSE);
+  g_return_val_if_fail (ic != NULL, FALSE);
 
-  if (G_UNLIKELY (im->priv->engine == NULL))
+  if (G_UNLIKELY (ic->priv->engine == NULL))
     return FALSE;
 
   GHashTableIter iter;
@@ -329,25 +404,25 @@ gboolean nimf_service_ic_filter_event (NimfServiceIC *im,
     {
       if (event->key.type == NIMF_EVENT_KEY_PRESS)
       {
-        nimf_service_ic_reset (im);
+        nimf_service_ic_reset (ic);
 
-        if (g_strcmp0 (nimf_engine_get_id (im->priv->engine), engine_id) != 0)
+        if (g_strcmp0 (nimf_engine_get_id (ic->priv->engine), engine_id) != 0)
         {
           if (server->priv->use_singleton)
-            im->priv->engine = nimf_server_get_engine_by_id (server, engine_id);
+            ic->priv->engine = nimf_server_get_engine_by_id (server, engine_id);
           else
-            im->priv->engine = nimf_service_ic_get_instance (im, engine_id);
+            ic->priv->engine = nimf_service_ic_get_instance (ic, engine_id);
         }
         else
         {
           if (server->priv->use_singleton)
-            im->priv->engine = nimf_server_get_engine_by_id (server, "nimf-system-keyboard");
+            ic->priv->engine = nimf_server_get_engine_by_id (server, "nimf-system-keyboard");
           else
-            im->priv->engine = nimf_service_ic_get_instance (im, "nimf-system-keyboard");
+            ic->priv->engine = nimf_service_ic_get_instance (ic, "nimf-system-keyboard");
         }
 
-        nimf_service_ic_engine_changed (im, nimf_engine_get_id (im->priv->engine),
-                                        nimf_engine_get_icon_name (im->priv->engine));
+        nimf_service_ic_engine_changed (ic, nimf_engine_get_id (ic->priv->engine),
+                                        nimf_engine_get_icon_name (ic->priv->engine));
       }
 
       if (event->key.keyval == NIMF_KEY_Escape)
@@ -361,125 +436,166 @@ gboolean nimf_service_ic_filter_event (NimfServiceIC *im,
   {
     if (event->key.type == NIMF_EVENT_KEY_PRESS)
     {
-      nimf_service_ic_reset (im);
+      nimf_service_ic_reset (ic);
 
       if (server->priv->use_singleton)
-        im->priv->engine = nimf_server_get_next_instance (server, im->priv->engine);
+        ic->priv->engine = nimf_server_get_next_instance (server, ic->priv->engine);
       else
-        im->priv->engine = nimf_service_ic_get_next_instance (im, im->priv->engine);
+        ic->priv->engine = nimf_service_ic_get_next_instance (ic, ic->priv->engine);
 
-      nimf_service_ic_engine_changed (im, nimf_engine_get_id (im->priv->engine),
-                                      nimf_engine_get_icon_name (im->priv->engine));
+      nimf_service_ic_engine_changed (ic, nimf_engine_get_id (ic->priv->engine),
+                                      nimf_engine_get_icon_name (ic->priv->engine));
     }
 
     return TRUE;
   }
 
-  return nimf_engine_filter_event (im->priv->engine, im, event);
+  return nimf_engine_filter_event (ic->priv->engine, ic, event);
 }
 
+/**
+ * nimf_service_ic_set_surrounding:
+ * @ic: a #NimfServiceIC
+ * @text: text
+ * @len: length
+ * @cursor_index: cursor index
+ */
 void
-nimf_service_ic_set_surrounding (NimfServiceIC *im,
+nimf_service_ic_set_surrounding (NimfServiceIC *ic,
                                  const char    *text,
                                  gint           len,
                                  gint           cursor_index)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (im != NULL);
+  g_return_if_fail (ic != NULL);
 
-  if (G_UNLIKELY (im->priv->engine == NULL))
+  if (G_UNLIKELY (ic->priv->engine == NULL))
     return;
 
-  nimf_engine_set_surrounding (im->priv->engine, text, len, cursor_index);
+  nimf_engine_set_surrounding (ic->priv->engine, text, len, cursor_index);
 }
 
+/**
+ * nimf_service_ic_set_use_preedit:
+ * @ic: a #NimfServiceIC
+ * @use_preedit: whether the input method should use an on-the-spot input style
+ *
+ * If @use_preedit is %FALSE (default is %TRUE), then the input method may use
+ * some other input styles, such as over-the-spot, off-the-spot or root-window.
+ */
 void
-nimf_service_ic_set_use_preedit (NimfServiceIC *im,
+nimf_service_ic_set_use_preedit (NimfServiceIC *ic,
                                  gboolean       use_preedit)
 {
   g_debug (G_STRLOC ": %s: %d", G_STRFUNC, use_preedit);
 
-  g_return_if_fail (im != NULL);
+  g_return_if_fail (ic != NULL);
 
-  if (im->priv->use_preedit == TRUE && use_preedit == FALSE)
+  if (ic->priv->use_preedit == TRUE && use_preedit == FALSE)
   {
-    im->priv->use_preedit = FALSE;
+    ic->priv->use_preedit = FALSE;
 
-    if (im->priv->preedit_state == NIMF_PREEDIT_STATE_START)
+    if (ic->priv->preedit_state == NIMF_PREEDIT_STATE_START)
     {
-      nimf_service_ic_emit_preedit_changed (im, im->priv->preedit_string,
-                                                im->priv->preedit_attrs,
-                                                im->priv->preedit_cursor_pos);
-      nimf_service_ic_emit_preedit_end (im);
+      nimf_service_ic_emit_preedit_changed (ic, ic->priv->preedit_string,
+                                                ic->priv->preedit_attrs,
+                                                ic->priv->preedit_cursor_pos);
+      nimf_service_ic_emit_preedit_end (ic);
     }
   }
-  else if (im->priv->use_preedit == FALSE && use_preedit == TRUE)
+  else if (ic->priv->use_preedit == FALSE && use_preedit == TRUE)
   {
-    im->priv->use_preedit = TRUE;
+    ic->priv->use_preedit = TRUE;
 
-    if (im->priv->preedit_string[0] != 0)
+    if (ic->priv->preedit_string[0] != 0)
     {
-      nimf_service_ic_emit_preedit_start   (im);
-      nimf_service_ic_emit_preedit_changed (im, im->priv->preedit_string,
-                                                im->priv->preedit_attrs,
-                                                im->priv->preedit_cursor_pos);
+      nimf_service_ic_emit_preedit_start   (ic);
+      nimf_service_ic_emit_preedit_changed (ic, ic->priv->preedit_string,
+                                                ic->priv->preedit_attrs,
+                                                ic->priv->preedit_cursor_pos);
     }
   }
 }
 
+/**
+ * nimf_service_ic_get_use_preedit:
+ * @ic: a #NimfServiceIC
+ *
+ * Returns: TRUE if an on-the-spot input style is used
+ */
 gboolean
-nimf_service_ic_get_use_preedit (NimfServiceIC *im)
+nimf_service_ic_get_use_preedit (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return im->priv->use_preedit;
+  return ic->priv->use_preedit;
 }
 
+/**
+ * nimf_service_ic_set_cursor_location:
+ * @ic: a #NimfServiceIC
+ * @area: a #NimfRectangle
+ *
+ * Notifies the service @ic that a change in cursor position has been made. The
+ * location is the position of a window position in root window coordinates.
+ */
 void
-nimf_service_ic_set_cursor_location (NimfServiceIC       *im,
+nimf_service_ic_set_cursor_location (NimfServiceIC       *ic,
                                      const NimfRectangle *area)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (im != NULL);
+  g_return_if_fail (ic != NULL);
 
-  if (G_UNLIKELY (im->priv->engine == NULL))
+  if (G_UNLIKELY (ic->priv->engine == NULL))
     return;
 
   NimfServer *server = nimf_server_get_default ();
-  *im->priv->cursor_area = *area;
+  *ic->priv->cursor_area = *area;
 
-  if (!im->priv->use_preedit)
+  if (!ic->priv->use_preedit)
     nimf_preeditable_set_cursor_location (server->priv->preeditable, area);
 }
 
 /**
  * nimf_service_ic_get_cursor_location:
- * @im: a #NimfServiceIC
+ * @ic: a #NimfServiceIC
  *
  * Returns: (transfer none): a #NimfRectangle
  */
 const NimfRectangle *
-nimf_service_ic_get_cursor_location (NimfServiceIC  *im)
+nimf_service_ic_get_cursor_location (NimfServiceIC  *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return im->priv->cursor_area;
+  return ic->priv->cursor_area;
 }
 
-void nimf_service_ic_reset (NimfServiceIC *im)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  g_return_if_fail (im != NULL);
-
-  if (G_LIKELY (im->priv->engine))
-    nimf_engine_reset (im->priv->engine, im);
-}
-
+/**
+ * nimf_service_ic_reset:
+ * @ic: a #NimfServiceIC
+ */
 void
-nimf_service_ic_change_engine_by_id (NimfServiceIC *im,
+nimf_service_ic_reset (NimfServiceIC *ic)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_if_fail (ic != NULL);
+
+  if (G_LIKELY (ic->priv->engine))
+    nimf_engine_reset (ic->priv->engine, ic);
+}
+
+/**
+ * nimf_service_ic_change_engine_by_id:
+ * @ic: a #NimfServiceIC
+ * @engine_id: engine id
+ *
+ * Changes the engine by engine id.
+ */
+void
+nimf_service_ic_change_engine_by_id (NimfServiceIC *ic,
                                      const gchar   *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -490,17 +606,25 @@ nimf_service_ic_change_engine_by_id (NimfServiceIC *im,
   if (server->priv->use_singleton)
     engine = nimf_server_get_engine_by_id (server, engine_id);
   else
-    engine = nimf_service_ic_get_instance (im, engine_id);
+    engine = nimf_service_ic_get_instance (ic, engine_id);
 
   g_return_if_fail (engine != NULL);
 
-  im->priv->engine = engine;
-  nimf_service_ic_engine_changed (im, engine_id,
-                                  nimf_engine_get_icon_name (im->priv->engine));
+  ic->priv->engine = engine;
+  nimf_service_ic_engine_changed (ic, engine_id,
+                                  nimf_engine_get_icon_name (ic->priv->engine));
 }
 
+/**
+ * nimf_service_ic_change_engine:
+ * @ic: a #NimfServiceIC
+ * @engine_id: engine id
+ * @method_id: method id
+ *
+ * Changes the engine by engine id and method id.
+ */
 void
-nimf_service_ic_change_engine (NimfServiceIC *im,
+nimf_service_ic_change_engine (NimfServiceIC *ic,
                                const gchar   *engine_id,
                                const gchar   *method_id)
 {
@@ -512,32 +636,32 @@ nimf_service_ic_change_engine (NimfServiceIC *im,
   if (server->priv->use_singleton)
     engine = nimf_server_get_engine_by_id (server, engine_id);
   else
-    engine = nimf_service_ic_get_instance (im, engine_id);
+    engine = nimf_service_ic_get_instance (ic, engine_id);
 
   g_return_if_fail (engine != NULL);
 
-  im->priv->engine = engine;
+  ic->priv->engine = engine;
   nimf_engine_set_method (engine, method_id);
-  nimf_service_ic_engine_changed (im, engine_id,
-                                  nimf_engine_get_icon_name (im->priv->engine));
+  nimf_service_ic_engine_changed (ic, engine_id,
+                                  nimf_engine_get_icon_name (ic->priv->engine));
 }
 
 /**
  * nimf_service_ic_get_service_id:
- * @im: a #NimfServiceIC
+ * @ic: a #NimfServiceIC
  *
  * Returns: (transfer none): a service id
  */
 const gchar *
-nimf_service_ic_get_service_id (NimfServiceIC *im)
+nimf_service_ic_get_service_id (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (im);
+  NimfServiceICClass *class = NIMF_SERVICE_IC_GET_CLASS (ic);
 
   if (class->get_service_id)
   {
-    return class->get_service_id (im);
+    return class->get_service_id (ic);
   }
   else
   {
@@ -549,22 +673,22 @@ nimf_service_ic_get_service_id (NimfServiceIC *im)
 
 /**
  * nimf_service_ic_get_engine:
- * @im: a #NimfServiceIC
+ * @ic: a #NimfServiceIC
  *
  * Returns the associated #NimfEngine instance.
  *
  * Returns: (transfer none): the engine instance
  */
 NimfEngine *
-nimf_service_ic_get_engine (NimfServiceIC *im)
+nimf_service_ic_get_engine (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return im->priv->engine;
+  return ic->priv->engine;
 }
 
 static NimfEngine *
-nimf_service_ic_get_default_engine (NimfServiceIC *im)
+nimf_service_ic_get_default_engine (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -574,14 +698,14 @@ nimf_service_ic_get_default_engine (NimfServiceIC *im)
 
   settings  = g_settings_new ("org.nimf.engines");
   engine_id = g_settings_get_string (settings, "default-engine");
-  engine    = nimf_service_ic_get_instance (im, engine_id);
+  engine    = nimf_service_ic_get_instance (ic, engine_id);
 
   if (G_UNLIKELY (engine == NULL))
   {
     g_settings_reset (settings, "default-engine");
     g_free (engine_id);
     engine_id = g_settings_get_string (settings, "default-engine");
-    engine = nimf_service_ic_get_instance (im, engine_id);
+    engine = nimf_service_ic_get_instance (ic, engine_id);
   }
 
   g_free (engine_id);
@@ -591,12 +715,12 @@ nimf_service_ic_get_default_engine (NimfServiceIC *im)
 }
 
 static void
-nimf_service_ic_init (NimfServiceIC *im)
+nimf_service_ic_init (NimfServiceIC *ic)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  im->priv = nimf_service_ic_get_instance_private (im);
-  im->priv->cursor_area = g_slice_new0 (NimfRectangle);
+  ic->priv = nimf_service_ic_get_instance_private (ic);
+  ic->priv->cursor_area = g_slice_new0 (NimfRectangle);
 }
 
 static void
@@ -604,26 +728,26 @@ nimf_service_ic_constructed (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServiceIC *im     = NIMF_SERVICE_IC (object);
+  NimfServiceIC *ic     = NIMF_SERVICE_IC (object);
   NimfServer    *server = nimf_server_get_default ();
 
-  im->priv->use_preedit   = TRUE;
-  im->priv->preedit_state = NIMF_PREEDIT_STATE_END;
+  ic->priv->use_preedit   = TRUE;
+  ic->priv->preedit_state = NIMF_PREEDIT_STATE_END;
 
   if (server->priv->use_singleton)
   {
-    im->priv->engine = nimf_server_get_default_engine (server);
+    ic->priv->engine = nimf_server_get_default_engine (server);
   }
   else
   {
-    im->priv->engines = nimf_service_ic_create_engines (im);
-    im->priv->engine  = nimf_service_ic_get_default_engine (im);
+    ic->priv->engines = nimf_service_ic_create_engines (ic);
+    ic->priv->engine  = nimf_service_ic_get_default_engine (ic);
   }
 
-  im->priv->preedit_string     = g_strdup ("");
-  im->priv->preedit_attrs      = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
-  im->priv->preedit_attrs[0]   = NULL;
-  im->priv->preedit_cursor_pos = 0;
+  ic->priv->preedit_string     = g_strdup ("");
+  ic->priv->preedit_attrs      = g_malloc0_n (1, sizeof (NimfPreeditAttr *));
+  ic->priv->preedit_attrs[0]   = NULL;
+  ic->priv->preedit_cursor_pos = 0;
 }
 
 static void
@@ -631,14 +755,14 @@ nimf_service_ic_finalize (GObject *object)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfServiceIC *im = NIMF_SERVICE_IC (object);
+  NimfServiceIC *ic = NIMF_SERVICE_IC (object);
 
-  if (im->priv->engines)
-    g_list_free_full (im->priv->engines, g_object_unref);
+  if (ic->priv->engines)
+    g_list_free_full (ic->priv->engines, g_object_unref);
 
-  g_free                  (im->priv->preedit_string);
-  nimf_preedit_attr_freev (im->priv->preedit_attrs);
-  g_slice_free            (NimfRectangle, im->priv->cursor_area);
+  g_free                  (ic->priv->preedit_string);
+  nimf_preedit_attr_freev (ic->priv->preedit_attrs);
+  g_slice_free            (NimfRectangle, ic->priv->cursor_area);
 
   G_OBJECT_CLASS (nimf_service_ic_parent_class)->finalize (object);
 }
