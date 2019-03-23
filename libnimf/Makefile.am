@@ -2,7 +2,7 @@ lib_LTLIBRARIES = libnimf.la
 
 BUILT_SOURCES = \
 	nimf-enum-types.c \
-	nimf-enum-types.h \
+	nimf-enum-types-private.h \
 	nimf-marshalers.c \
 	nimf-marshalers-private.h \
 	nimf-message-enum-types-private.h \
@@ -54,7 +54,6 @@ nimfinclude_HEADERS = \
 	nimf.h \
 	nimf-candidatable.h \
 	nimf-engine.h \
-	nimf-enum-types.h \
 	nimf-events.h \
 	nimf-im.h \
 	nimf-key-syms.h \
@@ -76,13 +75,13 @@ nimf-marshalers.c: nimf-marshalers.list
 	                            --body nimf-marshalers.list \
 	                            > nimf-marshalers.c
 
-nimf-enum-types.h: nimf-key-syms.h \
-	                 nimf-types.h \
-	                 nimf-enum-types.h.template
+nimf-enum-types-private.h: nimf-key-syms.h \
+	                         nimf-types.h \
+	                         nimf-enum-types-private.h.template
 	$(AM_V_GEN) glib-mkenums --identifier-prefix Nimf \
-	                         --template nimf-enum-types.h.template \
+	                         --template nimf-enum-types-private.h.template \
 	                           nimf-key-syms.h nimf-types.h \
-	                         > nimf-enum-types.h
+	                         > nimf-enum-types-private.h
 
 nimf-enum-types.c: nimf-key-syms.h \
 	                 nimf-types.h \

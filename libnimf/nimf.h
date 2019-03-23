@@ -26,7 +26,6 @@
 
 #include "nimf-candidatable.h"
 #include "nimf-engine.h"
-#include "nimf-enum-types.h"
 #include "nimf-events.h"
 #include "nimf-im.h"
 #include "nimf-key-syms.h"

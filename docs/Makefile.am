@@ -20,6 +20,7 @@ CFILE_GLOB = \
 	$(top_srcdir)/bin/nimf-settings/nimf-settings.c
 
 IGNORE_HFILES = \
+	nimf-enum-types-private.h \
 	nimf-marshalers-private.h \
 	nimf-message-enum-types-private.h \
 	nimf-message-private.h \

@@ -24,7 +24,7 @@ stamp-h1
 input-method-unstable-v1-client-protocol.h
 input-method-unstable-v1-protocol.c
 nimf-enum-types.c
-nimf-enum-types.h
+nimf-enum-types-private.h
 nimf-marshalers.c
 nimf-marshalers-private.h
 nimf-message-enum-types.c

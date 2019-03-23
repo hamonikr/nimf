@@ -25,6 +25,7 @@
 #include <gdk/gdkx.h>
 #include "config.h"
 #include "nimf.h"
+#include "nimf-enum-types-private.h"
 
 #define NIMF_TYPE_SETTINGS             (nimf_settings_get_type ())
 #define NIMF_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SETTINGS, NimfSettings))

@@ -20,7 +20,7 @@
  */
 
 #include "nimf-utils.h"
-#include "nimf-enum-types.h"
+#include "nimf-enum-types-private.h"
 
 /**
  * nimf_keyval_to_keysym_name:

@@ -20,7 +20,7 @@
  */
 
 #include "nimf-types.h"
-#include "nimf-enum-types.h"
+#include "nimf-enum-types-private.h"
 
 /**
  * nimf_key_new:
