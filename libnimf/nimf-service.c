@@ -69,7 +69,7 @@ const gchar
  *
  * Starts @service.
  *
- * returns: %TRUE if a service is started.
+ * Returns: %TRUE if a service is started.
  */
 gboolean
 nimf_service_start (NimfService *service)

@@ -23,6 +23,12 @@
 #include "nimf-enum-types-private.h"
 
 /**
+ * SECTION:nimf-utils
+ * @title: Utility Functions
+ * @section_id: nimf-utils
+ */
+
+/**
  * nimf_keyval_to_keysym_name:
  * @keyval: a keyval
  *

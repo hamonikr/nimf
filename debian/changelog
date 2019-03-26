@@ -1,3 +1,9 @@
+nimf (2019.03.27) stable; urgency=medium
+
+  * Added nimf reference manual (closes #266)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 27 Mar 2019 00:34:01 +0900
+
 nimf (2019.03.17) stable; urgency=medium
 
   * Fixed how to display the preeditable

@@ -33,11 +33,11 @@ G_BEGIN_DECLS
 #define NIMF_SERVICE_IC(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SERVICE_IC, NimfServiceIC))
 #define NIMF_SERVICE_IC_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_SERVICE_IC, NimfServiceICClass))
 #define NIMF_IS_SERVICE_IC(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SERVICE_IC))
-#define NIMF_IS_SERVICE_IC_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_SERVICE_IC))
 #define NIMF_SERVICE_IC_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVICE_IC, NimfServiceICClass))
 
+#ifndef __GTK_DOC_IGNORE__
 typedef struct _NimfEngine NimfEngine;
-
+#endif
 typedef struct _NimfServiceIC        NimfServiceIC;
 typedef struct _NimfServiceICClass   NimfServiceICClass;
 typedef struct _NimfServiceICPrivate NimfServiceICPrivate;

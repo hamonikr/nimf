@@ -31,8 +31,9 @@ G_BEGIN_DECLS
 
 G_DECLARE_INTERFACE (NimfCandidatable, nimf_candidatable, NIMF, CANDIDATABLE, GObject)
 
+#ifndef __GTK_DOC_IGNORE__
 typedef struct _NimfServiceIC NimfServiceIC;
-
+#endif
 typedef struct _NimfCandidatable          NimfCandidatable; /* dummy typedef */
 typedef struct _NimfCandidatableInterface NimfCandidatableInterface;
 

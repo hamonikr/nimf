@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2019.03.17
+Version:  2019.03.27
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -55,7 +55,7 @@ This package contains development files.
 %setup -q
 
 %build
-./autogen.sh --prefix=/usr --libdir=%{_libdir} --with-imsettings-data
+./autogen.sh --prefix=/usr --libdir=%{_libdir} --with-imsettings-data --enable-gtk-doc
 make %{?_smp_mflags}
 
 %install
@@ -107,10 +107,11 @@ fi
 %{_sysconfdir}/xdg/autostart/*
 
 %files devel
+%{_datadir}/gtk-doc/*
 %{_includedir}/*
 %{_libdir}/libnimf.so
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Sun Mar 17 2019 Hodong Kim <cogniti@gmail.com> - 2019.03.17-1
+* Wed Mar 27 2019 Hodong Kim <cogniti@gmail.com> - 2019.03.27-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog

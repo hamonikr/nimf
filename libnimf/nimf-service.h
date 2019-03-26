@@ -34,7 +34,6 @@ G_BEGIN_DECLS
 #define NIMF_SERVICE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SERVICE, NimfService))
 #define NIMF_SERVICE_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_SERVICE, NimfServiceClass))
 #define NIMF_IS_SERVICE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SERVICE))
-#define NIMF_IS_SERVICE_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_SERVICE))
 #define NIMF_SERVICE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVICE, NimfServiceClass))
 
 typedef struct _NimfService       NimfService;

@@ -22,6 +22,12 @@
 #include "nimf-events.h"
 
 /**
+ * SECTION:nimf-events
+ * @title: Events
+ * @section_id: nimf-events
+ */
+
+/**
  * nimf_event_keycode_to_qwerty_keyval:
  * @event: a #NimfEvent
  *
@@ -127,8 +133,7 @@ nimf_event_matches (NimfEvent *event, const NimfKey **keys)
  *
  * Creates a new event of the given type. All fields are set to 0.
  *
- * Returns: a newly-allocated #NimfEvent. The returned #NimfEvent should be
- *   freed with nimf_event_free().
+ * Returns: a new #NimfEvent, which should be freed with nimf_event_free().
  */
 NimfEvent *
 nimf_event_new (NimfEventType type)

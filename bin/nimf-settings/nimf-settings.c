@@ -1154,6 +1154,12 @@ nimf_settings_class_init (NimfSettingsClass *klass)
 }
 
 /**
+ * SECTION:nimf-settings
+ * @title: nimf-settings
+ * @section_id: nimf-settings
+ */
+
+/**
  * PROGRAM:nimf-settings
  * @short_description: Tools for setting nimf input method
  * @synopsis: nimf-settings [*OPTIONS*...]

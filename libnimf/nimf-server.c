@@ -343,7 +343,7 @@ nimf_server_change_engine (NimfServer  *server,
  *
  * The array is %NULL-terminated.
  *
- * Returns: (transfer full): a newly allocated %NULL-terminated engine id array
+ * Returns: (transfer full): a new %NULL-terminated engine id array
  */
 gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 {

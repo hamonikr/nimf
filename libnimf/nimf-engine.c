@@ -366,7 +366,7 @@ nimf_engine_finalize (GObject *object)
 }
 
 /**
- * nimf_engine_get_icon_id:
+ * nimf_engine_get_id:
  * @engine: #NimfEngine
  *
  * Returns: (transfer none): engine id

@@ -31,7 +31,7 @@ pkgver() {
 
 build() {
 	cd "$srcdir/nimf-master"
-	./autogen.sh --prefix=/usr
+	./autogen.sh --prefix=/usr --enable-gtk-doc
 	make -j 4
 }
 

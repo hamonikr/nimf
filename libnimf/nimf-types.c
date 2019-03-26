@@ -23,10 +23,17 @@
 #include "nimf-enum-types-private.h"
 
 /**
+ * SECTION:nimf-types
+ * @title: Types
+ * @section_id: nimf-types
+ */
+
+/**
  * nimf_key_new:
  *
- * Return: a newly-allocated #NimfKey; The returned #NimfKey should be freed
- * with nimf_key_free().
+ * Creates a new #NimfKey. All fields are set to 0.
+ *
+ * Return: a new #NimfKey, which should be freed with nimf_key_free().
  */
 NimfKey *
 nimf_key_new ()
@@ -40,8 +47,7 @@ nimf_key_new ()
  * nimf_key_new_from_nicks:
  * @nicks: an array of gchar
  *
- * Return: a newly-allocated #NimfKey; The returned #NimfKey should be freed
- * with nimf_key_free().
+ * Return: a new #NimfKey, which should be freed with nimf_key_free().
  */
 NimfKey *
 nimf_key_new_from_nicks (const gchar **nicks)
@@ -87,8 +93,10 @@ nimf_key_new_from_nicks (const gchar **nicks)
  * nimf_key_newv:
  * @keys: an array of gchar
  *
- * Returns: a newly-allocated array of #NimfKey; The returned an array of
- * #NimfKey should be freed with nimf_key_freev().
+ * Creates a new array of #NimfKey.
+ *
+ * Returns: a new array of #NimfKey, which should be freed with
+ *   nimf_key_freev().
  */
 NimfKey **
 nimf_key_newv (const gchar **keys)
@@ -154,8 +162,8 @@ nimf_key_free (NimfKey *key)
  * @end_index: end index in characters; The character at this index is not
  *   included.
  *
- * Returns: a newly-allocated #NimfPreeditAttr; The returned #NimfPreeditAttr
- * should be freed with nimf_preedit_attr_free().
+ * Returns: a new #NimfPreeditAttr, which should be freed with
+ *   nimf_preedit_attr_free().
  */
 NimfPreeditAttr *
 nimf_preedit_attr_new (NimfPreeditAttrType type,
@@ -178,8 +186,8 @@ nimf_preedit_attr_new (NimfPreeditAttrType type,
  * nimf_preedit_attrs_copy:
  * @attrs: an array of #NimfPreeditAttr
  *
- * Returns: a newly allocated array of #NimfPreeditAttr, which should be freed
- *   with nimf_preedit_attr_freev().
+ * Returns: a new array of #NimfPreeditAttr, which should be freed with
+ *   nimf_preedit_attr_freev().
  */
 NimfPreeditAttr **
 nimf_preedit_attrs_copy (NimfPreeditAttr **attrs)
@@ -221,7 +229,7 @@ nimf_preedit_attr_free (NimfPreeditAttr *attr)
  * nimf_preedit_attr_freev:
  * @attrs: an array of #NimfPreeditAttr
  *
- * Frees an array of @attr
+ * Frees an array of @attrs
  */
 void
 nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
@@ -241,8 +249,8 @@ nimf_preedit_attr_freev (NimfPreeditAttr **attrs)
 /**
  * nimf_method_info_new:
  *
- * returns: a newly-allocated a #NimfMethodInfo; The returned #NimfMethodInfo
- * should be freed with nimf_method_info_free().
+ * Returns: a new #NimfMethodInfo, which should be freed with
+ *   nimf_method_info_free().
  */
 NimfMethodInfo *
 nimf_method_info_new ()
@@ -271,7 +279,7 @@ nimf_method_info_free (NimfMethodInfo *info)
  * nimf_method_info_freev:
  * @infos: an array of #NimfMethodInfo
  *
- * Frees an array of @info.
+ * Frees an array of @infos.
  */
 void
 nimf_method_info_freev (NimfMethodInfo **infos)

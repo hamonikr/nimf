@@ -33,12 +33,12 @@ G_BEGIN_DECLS
 #define NIMF_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_ENGINE, NimfEngine))
 #define NIMF_ENGINE_CLASS(class)    (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_ENGINE, NimfEngineClass))
 #define NIMF_IS_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_ENGINE))
-#define NIMF_IS_ENGINE_CLASS(class) (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_ENGINE))
 #define NIMF_ENGINE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
 
+#ifndef __GTK_DOC_IGNORE__
 typedef struct _NimfServiceIC    NimfServiceIC;
 typedef struct _NimfCandidatable NimfCandidatable;
-
+#endif
 typedef struct _NimfEngine        NimfEngine;
 typedef struct _NimfEngineClass   NimfEngineClass;
 typedef struct _NimfEnginePrivate NimfEnginePrivate;

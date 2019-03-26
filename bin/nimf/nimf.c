@@ -379,6 +379,12 @@ nimf_log_default_handler (const gchar    *log_domain,
 }
 
 /**
+ * SECTION:nimf
+ * @title: nimf
+ * @section_id: nimf
+ */
+
+/**
  * PROGRAM:nimf
  * @short_description: Nimf input method daemon
  * @synopsis: nimf [*OPTIONS*...]

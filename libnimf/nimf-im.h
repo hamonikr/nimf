@@ -36,7 +36,6 @@ G_BEGIN_DECLS
 #define NIMF_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_IM, NimfIM))
 #define NIMF_IM_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), NIMF_TYPE_IM, NimfIMClass))
 #define NIMF_IS_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_IM))
-#define NIMF_IS_IM_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_IM))
 #define NIMF_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_IM, NimfIMClass))
 
 typedef struct _NimfIM        NimfIM;

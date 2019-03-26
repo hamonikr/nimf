@@ -31,6 +31,12 @@
 G_BEGIN_DECLS
 
 /**
+ * SECTION:nimf-key-syms
+ * @title: Key symbols
+ * @section_id: nimf-key-syms
+ */
+
+/**
  * NimfKeySym:
  * @NIMF_KEY_space: space
  * @NIMF_KEY_exclam: exclam
