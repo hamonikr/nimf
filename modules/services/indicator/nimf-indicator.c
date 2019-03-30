@@ -121,7 +121,7 @@ on_menu_about (GtkMenuItem *menuitem,
       "program-name",       _("Nimf"),
       "translator-credits", _("Hodong Kim, Max Neupert"),
       "version",            VERSION,
-      "website",            "https://gitlab.com/nimf-i18n/nimf",
+      "website",            "https://nimf-i18n.gitlab.io",
       "website-label",      _("Website"),
       NULL);
 

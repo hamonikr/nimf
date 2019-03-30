@@ -1,3 +1,10 @@
+nimf (2019.03.31) stable; urgency=medium
+
+  * Fixed website address
+  * Fixed the duplicate about dialog
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 31 Mar 2019 01:46:52 +0900
+
 nimf (2019.03.27) stable; urgency=medium
 
   * Added nimf reference manual (closes #266)
