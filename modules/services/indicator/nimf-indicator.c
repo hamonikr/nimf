@@ -51,6 +51,7 @@ struct _NimfIndicator
   AppIndicator *appindicator;
   gchar        *engine_id;
   guint         watcher_id;
+  GtkWidget    *about;
 };
 
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
@@ -92,38 +93,47 @@ on_menu_about (GtkMenuItem *menuitem,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GtkWidget *about_dialog;
-  GtkWidget *parent;
+  NimfIndicator *indicator = NIMF_INDICATOR (user_data);
 
-  gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
-  gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
-  gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"),
-                          _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
+  if (!indicator->about)
+  {
+    GtkWidget *parent;
 
-  parent = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  about_dialog = gtk_about_dialog_new ();
-  gtk_window_set_transient_for (GTK_WINDOW (about_dialog),
-                                GTK_WINDOW (parent));
-  gtk_window_set_destroy_with_parent (GTK_WINDOW (about_dialog), TRUE);
-  gtk_window_set_icon_name (GTK_WINDOW (about_dialog), "nimf-logo");
-  g_object_set (about_dialog,
-    "artists",            artists,
-    "authors",            authors,
-    "comments",           _("Nimf is an input method framework"),
-    "copyright",          _("Copyright (c) 2015-2019 Hodong Kim"),
-    "documenters",        documenters,
-    "license-type",       GTK_LICENSE_LGPL_3_0,
-    "logo-icon-name",     "nimf-logo",
-    "program-name",       _("Nimf"),
-    "translator-credits", _("Hodong Kim, Max Neupert"),
-    "version",            VERSION,
-    "website",            "https://gitlab.com/nimf-i18n/nimf",
-    "website-label",      _("Website"),
-    NULL);
+    gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
+    gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
+    gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"),
+                            _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
 
-  gtk_dialog_run (GTK_DIALOG (about_dialog));
+    parent = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    indicator->about  = gtk_about_dialog_new ();
+    gtk_window_set_transient_for (GTK_WINDOW (indicator->about),
+                                  GTK_WINDOW (parent));
+    gtk_window_set_destroy_with_parent (GTK_WINDOW (indicator->about), TRUE);
+    gtk_window_set_icon_name (GTK_WINDOW (indicator->about), "nimf-logo");
+    g_object_set (indicator->about,
+      "artists",            artists,
+      "authors",            authors,
+      "comments",           _("Nimf is an input method framework"),
+      "copyright",          _("Copyright (c) 2015-2019 Hodong Kim"),
+      "documenters",        documenters,
+      "license-type",       GTK_LICENSE_LGPL_3_0,
+      "logo-icon-name",     "nimf-logo",
+      "program-name",       _("Nimf"),
+      "translator-credits", _("Hodong Kim, Max Neupert"),
+      "version",            VERSION,
+      "website",            "https://gitlab.com/nimf-i18n/nimf",
+      "website-label",      _("Website"),
+      NULL);
 
-  gtk_widget_destroy (parent);
+    gtk_dialog_run (GTK_DIALOG (indicator->about));
+
+    gtk_widget_destroy (parent);
+    indicator->about = NULL;
+  }
+  else
+  {
+    gtk_window_present (GTK_WINDOW (indicator->about));
+  }
 }
 
 static void on_engine_changed (NimfServer    *server,
@@ -287,7 +297,7 @@ on_name_appeared (GDBusConnection *connection,
   g_signal_connect (settings_menu, "activate",
                     G_CALLBACK (on_menu_settings), NULL);
   g_signal_connect (about_menu, "activate",
-                    G_CALLBACK (on_menu_about), NULL);
+                    G_CALLBACK (on_menu_about), indicator);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), settings_menu);
