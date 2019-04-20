@@ -33,8 +33,8 @@ Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: im-config, nimf-anthy | nimf-libhangul | nimf-m17n | nimf-rime
-Suggests: fonts-noto-cjk
+Recommends: im-config
+Suggests: fonts-noto-cjk | nimf-anthy | nimf-libhangul | nimf-m17n | nimf-rime
 Description: Input Method Framework
  Nimf is a lightweight, fast and extensible input method framework.
  .

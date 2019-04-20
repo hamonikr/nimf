@@ -1,3 +1,9 @@
+nimf (2019.04.21) stable; urgency=medium
+
+  * Fixed debian/control
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 21 Apr 2019 00:34:57 +0900
+
 nimf (2019.04.20) stable; urgency=medium
 
   * Updated descriptions
