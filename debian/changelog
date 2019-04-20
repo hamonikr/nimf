@@ -1,3 +1,10 @@
+nimf (2019.04.20) stable; urgency=medium
+
+  * Updated descriptions
+  * Fixed reference address
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 20 Apr 2019 14:25:27 +0900
+
 nimf (2019.03.31) stable; urgency=medium
 
   * Fixed website address

@@ -36,30 +36,9 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: im-config, nimf-anthy | nimf-libhangul | nimf-m17n | nimf-rime
 Suggests: fonts-noto-cjk
 Description: Input Method Framework
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
- This package provides:
-  * Input Method Server:
-     * nimf
-  * Language Engine:
-     * System keyboard
-     * Chinese: nimf-rime
-     * Japanese: nimf-anthy
-     * Korean: nimf-libhangul
-     * Other languages: nimf-m17n
-  * Service Modules:
-     * Indicator (based on appindicator)
-     * Wayland
-     * NIM (Nimf Input Method)
-     * XIM (based on IMdkit)
-     * Preedit window
-     * Candidate
-  * Client Modules:
-     * GTK+2, GTK+3, Qt4, Qt5
-  * Settings tool to configure the Nimf:
-     * nimf-settings
+ This package contains the essentials for Nimf.
 
 Package: libnimf1
 Section: libs
@@ -67,9 +46,7 @@ Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Input Method Framework (shared library)
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
  This package contains the shared library.
 
@@ -80,9 +57,7 @@ Depends: ${misc:Depends},
          libnimf1 (= ${binary:Version}),
          libglib2.0-dev
 Description: Input Method Framework (development file)
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
  This package contains development files.
 
@@ -91,9 +66,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, nimf, anthy
 Suggests: fonts-noto-cjk
 Description: Japanese input module for Nimf, based on anthy
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
  This package provides a Japanese input module based on anthy.
 
@@ -102,9 +75,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
 Suggests: fonts-noto-cjk
 Description: Korean input module for Nimf, based on libhangul
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
  This package provides a Korean input module based on libhangul.
 
@@ -113,9 +84,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
 Suggests: fonts-noto-cjk, m17n-lib-mimx
 Description: Multilingual input module for Nimf, based on m17n
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
  This package provides a multilingual input module based on m17n.
 
@@ -125,8 +94,6 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
 Recommends: librime-data
 Suggests: fonts-noto-cjk
 Description: Chinese input module for Nimf, based on rime
- Nimf is an input method framework which has a module-based client-server
- architecture in which an application acts as a client and communicates
- synchronously with the Nimf server via a Unix socket.
+ Nimf is a lightweight, fast and extensible input method framework.
  .
  This package provides a Chinese input module based on rime.

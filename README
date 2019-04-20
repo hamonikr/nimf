@@ -1,6 +1,4 @@
-Nimf is an input method framework which has a module-based client-server
-architecture in which an application acts as a client and communicates
-synchronously with the Nimf server via a Unix socket.
+Nimf is a lightweight, fast and extensible input method framework.
 
 Nimf provides:
   * Input Method Server:
@@ -23,10 +21,11 @@ Nimf provides:
   * Settings tool to configure the Nimf:
     * nimf-settings
   * Development files:
-    * C library and headers
+    * C library, headers and documents
 
 Project Homepage:
   * https://gitlab.com/nimf-i18n/nimf
+  * https://nimf-i18n.gitlab.io
 
 
 License

@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2019.03.31
+Version:  2019.04.20
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -37,9 +37,7 @@ Requires(postun): %{_sbindir}/alternatives
 %define _xinputconf %{_sysconfdir}/X11/xinit/xinput.d/nimf.conf
 
 %description
-Nimf is an input method framework which has a module-based client-server
-architecture in which an application acts as a client and communicates
-synchronously with the Nimf server via a unix socket.
+Nimf is a lightweight, fast and extensible input method framework.
 
 %package devel
 Summary:  Development files for nimf
@@ -113,5 +111,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Sun Mar 31 2019 Hodong Kim <cogniti@gmail.com> - 2019.03.31-1
+* Sat Apr 20 2019 Hodong Kim <cogniti@gmail.com> - 2019.04.20-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog
