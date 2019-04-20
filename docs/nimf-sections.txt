@@ -1,6 +1,5 @@
 <SECTION>
 <FILE>nimf</FILE>
-
 </SECTION>
 
 <SECTION>
@@ -185,6 +184,10 @@ NimfServiceIC
 NimfServiceICClass
 NimfServiceICPrivate
 nimf_service_ic_get_type
+</SECTION>
+
+<SECTION>
+<FILE>nimf-settings</FILE>
 </SECTION>
 
 <SECTION>
