@@ -307,7 +307,7 @@ on_comparing_engine_with_id (NimfEngine *engine, const gchar *id)
 }
 
 static GList *
-nimf_service_ic_create_engines (NimfServiceIC *ic)
+nimf_service_ic_load_engines (NimfServiceIC *ic)
 {
   GList *engines = NULL;
   GHashTableIter iter;
@@ -334,7 +334,7 @@ nimf_service_ic_get_instance (NimfServiceIC *ic, const gchar *engine_id)
   GList *list;
 
   if (ic->priv->engines == NULL)
-    ic->priv->engines = nimf_service_ic_create_engines (ic);
+    ic->priv->engines = nimf_service_ic_load_engines (ic);
 
   list = g_list_find_custom (g_list_first (ic->priv->engines), engine_id,
                              (GCompareFunc) on_comparing_engine_with_id);
@@ -352,7 +352,7 @@ nimf_service_ic_get_next_instance (NimfServiceIC *ic, NimfEngine *engine)
   GList *list;
 
   if (ic->priv->engines == NULL)
-    ic->priv->engines = nimf_service_ic_create_engines (ic);
+    ic->priv->engines = nimf_service_ic_load_engines (ic);
 
   ic->priv->engines = g_list_first (ic->priv->engines);
   ic->priv->engines = g_list_find  (ic->priv->engines, engine);
@@ -740,7 +740,7 @@ nimf_service_ic_constructed (GObject *object)
   }
   else
   {
-    ic->priv->engines = nimf_service_ic_create_engines (ic);
+    ic->priv->engines = nimf_service_ic_load_engines (ic);
     ic->priv->engine  = nimf_service_ic_get_default_engine (ic);
   }
 
