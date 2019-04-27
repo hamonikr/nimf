@@ -255,7 +255,7 @@ nimf_server_load_engines (NimfServer *server)
 
         g_hash_table_insert (server->priv->modules, g_strdup (path), module);
         engine = g_object_new (module->type, NULL);
-        server->priv->instances = g_list_prepend (server->priv->instances, engine);
+        server->priv->engines = g_list_prepend (server->priv->engines, engine);
         g_type_module_unuse (G_TYPE_MODULE (module));
 
         if (g_settings_schema_has_key (schema, "trigger-keys"))

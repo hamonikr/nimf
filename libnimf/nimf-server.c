@@ -54,7 +54,7 @@ nimf_server_get_engine_by_id (NimfServer  *server,
 
   GList *list;
 
-  list = g_list_find_custom (g_list_first (server->priv->instances), engine_id,
+  list = g_list_find_custom (g_list_first (server->priv->engines), engine_id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -69,17 +69,17 @@ nimf_server_get_next_instance (NimfServer *server, NimfEngine *engine)
 
   GList *list;
 
-  server->priv->instances = g_list_first (server->priv->instances);
-  server->priv->instances = g_list_find  (server->priv->instances, engine);
+  server->priv->engines = g_list_first (server->priv->engines);
+  server->priv->engines = g_list_find  (server->priv->engines, engine);
 
-  list = g_list_next (server->priv->instances);
+  list = g_list_next (server->priv->engines);
 
   if (list == NULL)
-    list = g_list_first (server->priv->instances);
+    list = g_list_first (server->priv->engines);
 
   if (list)
   {
-    server->priv->instances = list;
+    server->priv->engines = list;
     return list->data;
   }
 
@@ -224,10 +224,10 @@ nimf_server_finalize (GObject *object)
   g_hash_table_unref (server->priv->modules);
   g_hash_table_unref (server->priv->services);
 
-  if (server->priv->instances)
+  if (server->priv->engines)
   {
-    g_list_free_full (server->priv->instances, g_object_unref);
-    server->priv->instances = NULL;
+    g_list_free_full (server->priv->engines, g_object_unref);
+    server->priv->engines = NULL;
   }
 
   g_object_unref     (server->priv->settings);
@@ -356,7 +356,7 @@ gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 
   engine_ids = g_malloc0_n (1, sizeof (gchar *));
 
-  for (list = g_list_first (server->priv->instances), i = 0;
+  for (list = g_list_first (server->priv->engines), i = 0;
        list != NULL;
        list = list->next, i++)
   {

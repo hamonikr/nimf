@@ -31,7 +31,7 @@ struct _NimfServerPrivate
 {
   GHashTable    *modules;
   GHashTable    *services;
-  GList         *instances;
+  GList         *engines;
   NimfServiceIC *last_focused_im;
   const gchar   *last_focused_service;
   GSettings     *settings;
