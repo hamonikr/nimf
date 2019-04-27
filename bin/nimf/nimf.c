@@ -300,7 +300,7 @@ nimf_server_start (NimfServer *server)
   nimf_service_start (NIMF_SERVICE (server->priv->candidatable));
   nimf_service_start (NIMF_SERVICE (server->priv->preeditable));
 
-  nimf_server_load_engines  (server);
+  nimf_server_load_engines (server);
 
   GHashTableIter iter;
   gpointer       service;
