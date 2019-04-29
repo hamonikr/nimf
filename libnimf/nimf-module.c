@@ -45,6 +45,8 @@ nimf_module_load (GTypeModule *gmodule)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfModule *module = NIMF_MODULE (gmodule);
+  void  (* module_register_type) (GTypeModule *module);
+  GType (* module_get_type)      (void);
 
   module->library = g_module_open (module->path, G_MODULE_BIND_LAZY |
                                                  G_MODULE_BIND_LOCAL);
@@ -56,9 +58,9 @@ nimf_module_load (GTypeModule *gmodule)
   }
 
   if (!g_module_symbol (module->library, "module_register_type",
-                        (gpointer *) &module->register_type) ||
+                        (gpointer *) &module_register_type) ||
       !g_module_symbol (module->library, "module_get_type",
-                        (gpointer *) &module->get_type))
+                        (gpointer *) &module_get_type))
   {
     g_warning (G_STRLOC ": %s", g_module_error ());
     g_module_close (module->library);
@@ -66,8 +68,8 @@ nimf_module_load (GTypeModule *gmodule)
     return FALSE;
   }
 
-  module->register_type (gmodule);
-  module->type = module->get_type ();
+  module_register_type (gmodule);
+  module->type = module_get_type ();
 
   return TRUE;
 }
@@ -77,11 +79,7 @@ nimf_module_unload (GTypeModule *gmodule)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfModule *module = NIMF_MODULE (gmodule);
-
-  g_module_close (module->library);
-  module->library = NULL;
-  module->register_type = NULL;
+  g_module_close (NIMF_MODULE (gmodule)->library);
 }
 
 static void
@@ -91,11 +89,11 @@ nimf_module_init (NimfModule *module)
 }
 
 static void
-nimf_module_class_init (NimfModuleClass *klass)
+nimf_module_class_init (NimfModuleClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (klass);
+  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
 
   module_class->load   = nimf_module_load;
   module_class->unload = nimf_module_unload;

@@ -26,6 +26,7 @@
 #include "nimf-service.h"
 #include <glib/gstdio.h>
 #include "nimf-marshalers-private.h"
+#include "nimf-module-private.h"
 
 enum {
   ENGINE_CHANGED,
@@ -63,7 +64,7 @@ nimf_server_get_engine_by_id (NimfServer  *server,
 }
 
 NimfEngine *
-nimf_server_get_next_instance (NimfServer *server, NimfEngine *engine)
+nimf_server_get_next_engine (NimfServer *server, NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -243,9 +244,7 @@ nimf_server_class_init (NimfServerClass *class)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-  object_class->finalize = nimf_server_finalize;
+  G_OBJECT_CLASS (class)->finalize = nimf_server_finalize;
 
   /**
    * NimfServer::engine-changed:
@@ -384,4 +383,203 @@ nimf_server_set_last_focused_im (NimfServer    *server,
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   server->priv->last_focused_im = im;
+}
+
+static void
+nimf_server_load_service (NimfServer  *server,
+                          const gchar *path)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfModule  *module;
+  NimfService *service;
+
+  module = nimf_module_new (path);
+
+  if (!g_type_module_use (G_TYPE_MODULE (module)))
+  {
+    g_warning (G_STRLOC ":" "Failed to load module: %s", path);
+    g_object_unref (module);
+    return;
+  }
+
+  service = g_object_new (module->type, NULL);
+  g_hash_table_insert (server->priv->services,
+                       g_strdup (nimf_service_get_id (service)), service);
+
+  g_type_module_unuse (G_TYPE_MODULE (module));
+}
+
+static void
+nimf_server_load_services (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GDir        *dir;
+  GError      *error = NULL;
+  const gchar *filename;
+  gchar       *path;
+
+  dir = g_dir_open (NIMF_SERVICE_MODULE_DIR, 0, &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  while ((filename = g_dir_read_name (dir)))
+  {
+    path = g_build_path (G_DIR_SEPARATOR_S, NIMF_SERVICE_MODULE_DIR, filename, NULL);
+    nimf_server_load_service (server, path);
+    g_free (path);
+  }
+
+  g_dir_close (dir);
+}
+
+static void
+on_changed_trigger_keys (GSettings  *settings,
+                         gchar      *key,
+                         NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GHashTableIter iter;
+  gpointer       engine_id;
+  gpointer       gsettings;
+
+  g_hash_table_remove_all (server->priv->trigger_keys);
+
+  g_hash_table_iter_init (&iter, server->priv->trigger_gsettings);
+
+  while (g_hash_table_iter_next (&iter, &engine_id, &gsettings))
+  {
+    NimfKey **trigger_keys;
+    gchar   **strv;
+
+    strv = g_settings_get_strv (gsettings, "trigger-keys");
+    trigger_keys = nimf_key_newv ((const gchar **) strv);
+    g_hash_table_insert (server->priv->trigger_keys,
+                         trigger_keys, g_strdup (engine_id));
+    g_strfreev (strv);
+  }
+}
+
+static void
+nimf_server_load_engines (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GSettingsSchemaSource  *source; /* do not free */
+  gchar                 **schema_ids;
+  gint                    i;
+
+  source = g_settings_schema_source_get_default ();
+  g_settings_schema_source_list_schemas (source, TRUE, &schema_ids, NULL);
+
+  for (i = 0; schema_ids[i] != NULL; i++)
+  {
+    if (g_str_has_prefix (schema_ids[i], "org.nimf.engines."))
+    {
+      GSettingsSchema *schema;
+      GSettings       *settings;
+      const gchar     *engine_id;
+      gboolean         active = TRUE;
+
+      engine_id = schema_ids[i] + strlen ("org.nimf.engines.");
+      schema = g_settings_schema_source_lookup (source, schema_ids[i], TRUE);
+      settings = g_settings_new (schema_ids[i]);
+
+      if (g_settings_schema_has_key (schema, "active"))
+        active = g_settings_get_boolean (settings, "active");
+
+      if (active)
+      {
+        NimfModule *module;
+        NimfEngine *engine;
+        gchar      *path;
+
+        path = g_module_build_path (NIMF_MODULE_DIR, engine_id);
+        module = nimf_module_new (path);
+
+        if (!g_type_module_use (G_TYPE_MODULE (module)))
+        {
+          g_warning (G_STRLOC ": Failed to load module: %s", path);
+
+          g_object_unref (module);
+          g_free (path);
+          g_object_unref (settings);
+          g_settings_schema_unref (schema);
+
+          continue;
+        }
+
+        g_hash_table_insert (server->priv->modules, g_strdup (path), module);
+        engine = g_object_new (module->type, NULL);
+        server->priv->engines = g_list_prepend (server->priv->engines, engine);
+        g_type_module_unuse (G_TYPE_MODULE (module));
+
+        if (g_settings_schema_has_key (schema, "trigger-keys"))
+        {
+          NimfKey **trigger_keys;
+          gchar   **strv;
+
+          strv = g_settings_get_strv (settings, "trigger-keys");
+          trigger_keys = nimf_key_newv ((const gchar **) strv);
+          g_hash_table_insert (server->priv->trigger_keys,
+                               trigger_keys, g_strdup (engine_id));
+          g_hash_table_insert (server->priv->trigger_gsettings,
+                               g_strdup (engine_id), settings);
+          g_signal_connect (settings, "changed::trigger-keys",
+                            G_CALLBACK (on_changed_trigger_keys), server);
+          g_strfreev (strv);
+        }
+
+        g_free (path);
+      }
+
+      g_settings_schema_unref (schema);
+    }
+  }
+
+  g_strfreev (schema_ids);
+}
+
+gboolean
+nimf_server_start (NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_val_if_fail (NIMF_IS_SERVER (server), FALSE);
+
+  nimf_server_load_services (server);
+
+  server->priv->candidatable = g_hash_table_lookup (server->priv->services,
+                                                    "nimf-candidate");
+  server->priv->preeditable  = g_hash_table_lookup (server->priv->services,
+                                                    "nimf-preedit-window");
+  nimf_service_start (NIMF_SERVICE (server->priv->candidatable));
+  nimf_service_start (NIMF_SERVICE (server->priv->preeditable));
+
+  nimf_server_load_engines (server);
+
+  GHashTableIter iter;
+  gpointer       service;
+
+  g_hash_table_iter_init (&iter, server->priv->services);
+
+  while (g_hash_table_iter_next (&iter, NULL, &service))
+  {
+    if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-candidate"))
+      continue;
+    else if (!g_strcmp0 (nimf_service_get_id (NIMF_SERVICE (service)), "nimf-preedit-window"))
+      continue;
+
+    if (!nimf_service_start (NIMF_SERVICE (service)))
+      g_hash_table_iter_remove (&iter);
+  }
+
+  return TRUE;
 }

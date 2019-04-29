@@ -46,12 +46,9 @@ struct _NimfModule
 {
   GTypeModule parent_instance;
 
-  char     *path;
-  GModule  *library;
-  GType     type;
-
-  void  (* register_type) (GTypeModule *module);
-  GType (* get_type)      (void);
+  gchar   *path;
+  GModule *library;
+  GType    type;
 };
 
 struct _NimfModuleClass

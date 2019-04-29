@@ -327,7 +327,7 @@ nimf_service_ic_load_engines (NimfServiceIC *ic)
 }
 
 static NimfEngine *
-nimf_service_ic_get_instance (NimfServiceIC *ic, const gchar *engine_id)
+nimf_service_ic_get_engine_with_id (NimfServiceIC *ic, const gchar *engine_id)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -345,7 +345,7 @@ nimf_service_ic_get_instance (NimfServiceIC *ic, const gchar *engine_id)
 }
 
 static NimfEngine *
-nimf_service_ic_get_next_instance (NimfServiceIC *ic, NimfEngine *engine)
+nimf_service_ic_get_next_engine (NimfServiceIC *ic, NimfEngine *engine)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -411,14 +411,14 @@ nimf_service_ic_filter_event (NimfServiceIC *ic,
           if (server->priv->use_singleton)
             ic->priv->engine = nimf_server_get_engine_by_id (server, engine_id);
           else
-            ic->priv->engine = nimf_service_ic_get_instance (ic, engine_id);
+            ic->priv->engine = nimf_service_ic_get_engine_with_id (ic, engine_id);
         }
         else
         {
           if (server->priv->use_singleton)
             ic->priv->engine = nimf_server_get_engine_by_id (server, "nimf-system-keyboard");
           else
-            ic->priv->engine = nimf_service_ic_get_instance (ic, "nimf-system-keyboard");
+            ic->priv->engine = nimf_service_ic_get_engine_with_id (ic, "nimf-system-keyboard");
         }
 
         nimf_service_ic_engine_changed (ic, nimf_engine_get_id (ic->priv->engine),
@@ -439,9 +439,9 @@ nimf_service_ic_filter_event (NimfServiceIC *ic,
       nimf_service_ic_reset (ic);
 
       if (server->priv->use_singleton)
-        ic->priv->engine = nimf_server_get_next_instance (server, ic->priv->engine);
+        ic->priv->engine = nimf_server_get_next_engine (server, ic->priv->engine);
       else
-        ic->priv->engine = nimf_service_ic_get_next_instance (ic, ic->priv->engine);
+        ic->priv->engine = nimf_service_ic_get_next_engine (ic, ic->priv->engine);
 
       nimf_service_ic_engine_changed (ic, nimf_engine_get_id (ic->priv->engine),
                                       nimf_engine_get_icon_name (ic->priv->engine));
@@ -606,7 +606,7 @@ nimf_service_ic_change_engine_by_id (NimfServiceIC *ic,
   if (server->priv->use_singleton)
     engine = nimf_server_get_engine_by_id (server, engine_id);
   else
-    engine = nimf_service_ic_get_instance (ic, engine_id);
+    engine = nimf_service_ic_get_engine_with_id (ic, engine_id);
 
   g_return_if_fail (engine != NULL);
 
@@ -636,7 +636,7 @@ nimf_service_ic_change_engine (NimfServiceIC *ic,
   if (server->priv->use_singleton)
     engine = nimf_server_get_engine_by_id (server, engine_id);
   else
-    engine = nimf_service_ic_get_instance (ic, engine_id);
+    engine = nimf_service_ic_get_engine_with_id (ic, engine_id);
 
   g_return_if_fail (engine != NULL);
 
@@ -698,14 +698,14 @@ nimf_service_ic_get_default_engine (NimfServiceIC *ic)
 
   settings  = g_settings_new ("org.nimf.engines");
   engine_id = g_settings_get_string (settings, "default-engine");
-  engine    = nimf_service_ic_get_instance (ic, engine_id);
+  engine    = nimf_service_ic_get_engine_with_id (ic, engine_id);
 
   if (G_UNLIKELY (engine == NULL))
   {
     g_settings_reset (settings, "default-engine");
     g_free (engine_id);
     engine_id = g_settings_get_string (settings, "default-engine");
-    engine = nimf_service_ic_get_instance (ic, engine_id);
+    engine = nimf_service_ic_get_engine_with_id (ic, engine_id);
   }
 
   g_free (engine_id);
