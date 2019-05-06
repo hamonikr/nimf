@@ -169,6 +169,47 @@ on_comparison (const char *a,
   return g_strcmp0 (a, b);
 }
 
+static gint
+on_comparison_with_schema_id (const char *a,
+                              const char *b)
+{
+  if (g_str_has_prefix (a, "org.nimf.engines.") &&
+      g_str_has_prefix (b, "org.nimf.engines."))
+  {
+    GSettingsSchemaSource *source;
+    GSettingsSchemaKey    *key_a,     *key_b;
+    GSettingsSchema       *schema_a,  *schema_b;
+    GVariant              *variant_a, *variant_b;
+    gchar                 *value_a,   *value_b;
+    gint                   retval;
+
+    source = g_settings_schema_source_get_default ();
+    schema_a = g_settings_schema_source_lookup (source, a, FALSE);
+    schema_b = g_settings_schema_source_lookup (source, b, FALSE);
+    key_a = g_settings_schema_get_key (schema_a, "hidden-schema-name");
+    key_b = g_settings_schema_get_key (schema_b, "hidden-schema-name");
+    variant_a = g_settings_schema_key_get_default_value (key_a);
+    variant_b = g_settings_schema_key_get_default_value (key_b);
+    value_a = g_strdup (g_variant_get_string (variant_a, NULL));
+    value_b = g_strdup (g_variant_get_string (variant_b, NULL));
+
+    retval = g_utf8_collate (value_a, value_b);
+
+    g_free (value_a);
+    g_free (value_b);
+    g_variant_unref (variant_a);
+    g_variant_unref (variant_b);
+    g_settings_schema_key_unref (key_a);
+    g_settings_schema_key_unref (key_b);
+    g_settings_schema_unref (schema_a);
+    g_settings_schema_unref (schema_b);
+
+    return retval;
+  }
+
+  return g_strcmp0 (a, b);
+}
+
 static void
 on_combo_box_changed (GtkComboBox        *widget,
                      NimfSettingsPageKey *page_key)
@@ -1011,7 +1052,7 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
         g_strcmp0 (non_relocatable[i], "org.nimf.settings"))
       schema_list = g_list_prepend (schema_list, non_relocatable[i]);
 
-  for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison);
+  for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison_with_schema_id);
        schema_list != NULL;
        schema_list = schema_list->next)
   {
