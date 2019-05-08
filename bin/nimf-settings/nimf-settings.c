@@ -338,7 +338,7 @@ on_gsettings_changed_active (GSettings *settings,
     if (g_str_has_prefix (non_relocatable[i], "org.nimf.engines."))
       schema_list = g_list_prepend (schema_list, non_relocatable[i]);
 
-  for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison);
+  for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison_with_schema_id);
        schema_list != NULL;
        schema_list = schema_list->next)
   {
@@ -408,7 +408,7 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
       if (g_str_has_prefix (non_relocatable[i], "org.nimf.engines."))
         schema_list = g_list_prepend (schema_list, non_relocatable[i]);
 
-    for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison);
+    for (schema_list = g_list_sort (schema_list, (GCompareFunc) on_comparison_with_schema_id);
          schema_list != NULL;
          schema_list = schema_list->next)
     {
