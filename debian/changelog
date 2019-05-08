@@ -1,3 +1,10 @@
+nimf (2019.05.08) stable; urgency=medium
+
+  * nimf-settings: Fixed invalid type
+  * nimf-settings: Sort by language
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 08 May 2019 21:05:24 +0900
+
 nimf (2019.04.21) stable; urgency=medium
 
   * Fixed debian/control

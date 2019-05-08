@@ -317,7 +317,7 @@ on_gsettings_changed_active (GSettings *settings,
                              gchar     *key,
                              GtkWidget *widget)
 {
-  GtkListStore          *store;
+  GtkTreeStore          *store;
   GSettingsSchemaSource *schema_source;
   GList                 *schema_list = NULL;
   gchar                **non_relocatable;
@@ -326,8 +326,8 @@ on_gsettings_changed_active (GSettings *settings,
   gint                   i;
 
   id1 = gtk_combo_box_get_active_id (GTK_COMBO_BOX (widget));
-  store = (GtkListStore *) gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
-  gtk_list_store_clear (store);
+  store = (GtkTreeStore *) gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
+  gtk_tree_store_clear (store);
 
   gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
   schema_source = g_settings_schema_source_get_default ();
@@ -356,8 +356,8 @@ on_gsettings_changed_active (GSettings *settings,
     if (g_settings_schema_has_key (schema, "active") == FALSE ||
         g_settings_get_boolean (gsettings, "active"))
     {
-      gtk_list_store_append (store, &iter);
-      gtk_list_store_set (store, &iter, 0, name, 1, id2, -1);
+      gtk_tree_store_append (store, &iter, NULL);
+      gtk_tree_store_set (store, &iter, 0, name, 1, id2, -1);
     }
 
     g_settings_schema_unref (schema);
