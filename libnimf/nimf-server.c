@@ -27,6 +27,7 @@
 #include <glib/gstdio.h>
 #include "nimf-marshalers-private.h"
 #include "nimf-module-private.h"
+#include <string.h>
 
 enum {
   ENGINE_CHANGED,
