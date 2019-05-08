@@ -336,6 +336,41 @@ nimf_server_change_engine (NimfServer  *server,
   }
 }
 
+static gint
+on_comparison (gconstpointer engine_id_a,
+               gconstpointer engine_id_b)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GSettings *settings_a;
+  GSettings *settings_b;
+  gchar     *schema_id_a;
+  gchar     *schema_id_b;
+  gchar     *schema_name_a;
+  gchar     *schema_name_b;
+  gint       retval;
+
+  schema_id_a = g_strdup_printf ("org.nimf.engines.%s", *(gchar **) engine_id_a);
+  schema_id_b = g_strdup_printf ("org.nimf.engines.%s", *(gchar **) engine_id_b);
+
+  settings_a = g_settings_new (schema_id_a);
+  settings_b = g_settings_new (schema_id_b);
+
+  schema_name_a = g_settings_get_string (settings_a, "hidden-schema-name");
+  schema_name_b = g_settings_get_string (settings_b, "hidden-schema-name");
+
+  retval = g_utf8_collate (schema_name_a, schema_name_b);
+
+  g_free (schema_name_a);
+  g_free (schema_name_b);
+  g_free (schema_id_a);
+  g_free (schema_id_b);
+  g_object_unref (settings_a);
+  g_object_unref (settings_b);
+
+  return retval;
+}
+
 /**
  * nimf_server_get_loaded_engine_ids:
  * @server: a #NimfServer
@@ -348,24 +383,23 @@ gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  gchar **engine_ids;
-  gint    i;
-  GList  *list;
-  const gchar *id;
+  GList       *list;
+  const gchar *engine_id;
 
-  engine_ids = g_malloc0_n (1, sizeof (gchar *));
+  GPtrArray *array = g_ptr_array_new ();
 
-  for (list = g_list_first (server->priv->engines), i = 0;
+  for (list = g_list_first (server->priv->engines);
        list != NULL;
-       list = list->next, i++)
+       list = list->next)
   {
-    id = nimf_engine_get_id (list->data);
-    engine_ids[i] = g_strdup (id);
-    engine_ids = g_realloc_n (engine_ids, sizeof (gchar *), i + 2);
-    engine_ids[i + 1] = NULL;
+    engine_id = nimf_engine_get_id (list->data);
+    g_ptr_array_add (array, g_strdup (engine_id));
   }
 
-  return engine_ids;
+  g_ptr_array_sort (array, on_comparison);
+  g_ptr_array_add (array, NULL);
+
+  return (gchar **) g_ptr_array_free (array, FALSE);
 }
 
 NimfServiceIC *
