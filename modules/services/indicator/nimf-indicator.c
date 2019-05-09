@@ -52,6 +52,7 @@ struct _NimfIndicator
   gchar        *engine_id;
   guint         watcher_id;
   GtkWidget    *about;
+  XklEngine    *xklengine;
 };
 
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
@@ -307,6 +308,7 @@ on_name_appeared (GDBusConnection *connection,
 
   g_strfreev (engine_ids);
   g_bus_unwatch_name (indicator->watcher_id);
+  indicator->watcher_id = 0;
 
   indicator->appindicator = app_indicator_new ("nimf-indicator",
                                                "nimf-focus-out",
@@ -325,21 +327,20 @@ on_name_appeared (GDBusConnection *connection,
   /* activate xkb options */
   XklConfigRec *rec;
   GSettings    *settings;
-  XklEngine    *engine;
 
-  engine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY
-                                      (gdk_display_get_default ()));
+  if (!indicator->xklengine)
+    indicator->xklengine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
+
   rec = xkl_config_rec_new ();
   settings = g_settings_new ("org.nimf.settings");
 
-  xkl_config_rec_get_from_server (rec, engine);
+  xkl_config_rec_get_from_server (rec, indicator->xklengine);
   g_strfreev (rec->options);
   rec->options = g_settings_get_strv (settings, "xkb-options");
-  xkl_config_rec_activate (rec, engine);
+  xkl_config_rec_activate (rec, indicator->xklengine);
 
   g_object_unref (settings);
   g_object_unref (rec);
-  g_object_unref (engine);
 }
 
 static gboolean nimf_indicator_start (NimfService *service)
@@ -376,6 +377,12 @@ static void nimf_indicator_stop (NimfService *service)
   if (!indicator->active)
     return;
 
+  if (indicator->watcher_id)
+  {
+    g_bus_unwatch_name (indicator->watcher_id);
+    indicator->watcher_id = 0;
+  }
+
   if (indicator->appindicator)
     g_object_unref (indicator->appindicator);
 
@@ -399,6 +406,9 @@ nimf_indicator_finalize (GObject *object)
 
   if (indicator->active)
     nimf_indicator_stop (NIMF_SERVICE (indicator));
+
+  if (indicator->xklengine)
+    g_object_unref (indicator->xklengine);
 
   g_free (indicator->engine_id);
   g_free (indicator->id);

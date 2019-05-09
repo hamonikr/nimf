@@ -1,3 +1,11 @@
+nimf (2019.05.09) stable; urgency=medium
+
+  * nimf-indicator: Fixed possible faults
+  * nimf-settings: Sort by language
+  * nimf-server: Sort by language
+
+ -- Hodong Kim <cogniti@gmail.com>  Thu, 09 May 2019 20:34:37 +0900
+
 nimf (2019.05.08) stable; urgency=medium
 
   * nimf-settings: Fixed invalid type
