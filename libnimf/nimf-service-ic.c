@@ -336,7 +336,7 @@ nimf_service_ic_get_engine_with_id (NimfServiceIC *ic, const gchar *engine_id)
   if (ic->priv->engines == NULL)
     ic->priv->engines = nimf_service_ic_load_engines (ic);
 
-  list = g_list_find_custom (g_list_first (ic->priv->engines), engine_id,
+  list = g_list_find_custom (ic->priv->engines, engine_id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -354,23 +354,18 @@ nimf_service_ic_get_next_engine (NimfServiceIC *ic, NimfEngine *engine)
   if (ic->priv->engines == NULL)
     ic->priv->engines = nimf_service_ic_load_engines (ic);
 
-  ic->priv->engines = g_list_first (ic->priv->engines);
-  ic->priv->engines = g_list_find  (ic->priv->engines, engine);
-
-  list = g_list_next (ic->priv->engines);
+  list = g_list_find (ic->priv->engines, engine);
 
   if (list == NULL)
-    list = g_list_first (ic->priv->engines);
+    list = g_list_find_custom (ic->priv->engines, nimf_engine_get_id (engine),
+                               (GCompareFunc) on_comparing_engine_with_id);
 
-  if (list)
-  {
-    ic->priv->engines = list;
-    return list->data;
-  }
+  list = g_list_next (list);
 
-  g_assert (list != NULL);
+  if (list == NULL)
+    list = ic->priv->engines;
 
-  return engine;
+  return list->data;
 }
 
 /**

@@ -1,3 +1,9 @@
+nimf (2019.05.10) stable; urgency=medium
+
+  * Fixed possible faults
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 10 May 2019 18:27:45 +0900
+
 nimf (2019.05.09) stable; urgency=medium
 
   * nimf-indicator: Fixed possible faults

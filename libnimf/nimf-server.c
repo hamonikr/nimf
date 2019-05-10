@@ -56,7 +56,7 @@ nimf_server_get_engine_by_id (NimfServer  *server,
 
   GList *list;
 
-  list = g_list_find_custom (g_list_first (server->priv->engines), engine_id,
+  list = g_list_find_custom (server->priv->engines, engine_id,
                              (GCompareFunc) on_comparing_engine_with_id);
   if (list)
     return list->data;
@@ -71,23 +71,18 @@ nimf_server_get_next_engine (NimfServer *server, NimfEngine *engine)
 
   GList *list;
 
-  server->priv->engines = g_list_first (server->priv->engines);
-  server->priv->engines = g_list_find  (server->priv->engines, engine);
-
-  list = g_list_next (server->priv->engines);
+  list = g_list_find (server->priv->engines, engine);
 
   if (list == NULL)
-    list = g_list_first (server->priv->engines);
+    list = g_list_find_custom (server->priv->engines, nimf_engine_get_id (engine),
+                               (GCompareFunc) on_comparing_engine_with_id);
 
-  if (list)
-  {
-    server->priv->engines = list;
-    return list->data;
-  }
+  list = g_list_next (list);
 
-  g_assert (list != NULL);
+  if (list == NULL)
+    list = server->priv->engines;
 
-  return engine;
+  return list->data;
 }
 
 NimfEngine *
@@ -389,9 +384,7 @@ gchar **nimf_server_get_loaded_engine_ids (NimfServer *server)
 
   GPtrArray *array = g_ptr_array_new ();
 
-  for (list = g_list_first (server->priv->engines);
-       list != NULL;
-       list = list->next)
+  for (list = server->priv->engines; list != NULL; list = list->next)
   {
     engine_id = nimf_engine_get_id (list->data);
     g_ptr_array_add (array, g_strdup (engine_id));
