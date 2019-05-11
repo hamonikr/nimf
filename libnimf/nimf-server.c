@@ -520,8 +520,8 @@ nimf_server_load_engines (NimfServer *server)
       schema = g_settings_schema_source_lookup (source, schema_ids[i], TRUE);
       settings = g_settings_new (schema_ids[i]);
 
-      if (g_settings_schema_has_key (schema, "active"))
-        active = g_settings_get_boolean (settings, "active");
+      if (g_settings_schema_has_key (schema, "active-engine"))
+        active = g_settings_get_boolean (settings, "active-engine");
 
       if (active)
       {

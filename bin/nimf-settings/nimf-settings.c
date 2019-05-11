@@ -313,9 +313,9 @@ nimf_settings_page_key_build_boolean (NimfSettingsPageKey *page_key)
 }
 
 static void
-on_gsettings_changed_active (GSettings *settings,
-                             gchar     *key,
-                             GtkWidget *widget)
+on_changed_active_engine (GSettings *settings,
+                          gchar     *key,
+                          GtkWidget *widget)
 {
   GtkTreeStore          *store;
   GSettingsSchemaSource *schema_source;
@@ -353,8 +353,8 @@ on_gsettings_changed_active (GSettings *settings,
     name = g_settings_get_string (gsettings, "hidden-schema-name");
     id2 = schema_list->data + strlen ("org.nimf.engines.");
 
-    if (g_settings_schema_has_key (schema, "active") == FALSE ||
-        g_settings_get_boolean (gsettings, "active"))
+    if (g_settings_schema_has_key (schema, "active-engine") == FALSE ||
+        g_settings_get_boolean (gsettings, "active-engine"))
     {
       gtk_tree_store_append (store, &iter, NULL);
       gtk_tree_store_set (store, &iter, 0, name, 1, id2, -1);
@@ -423,16 +423,16 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
       name = g_settings_get_string (gsettings, "hidden-schema-name");
       id2 = schema_list->data + strlen ("org.nimf.engines.");
 
-      if (g_settings_schema_has_key (schema, "active") == FALSE ||
-          g_settings_get_boolean (gsettings, "active"))
+      if (g_settings_schema_has_key (schema, "active-engine") == FALSE ||
+          g_settings_get_boolean (gsettings, "active-engine"))
       {
         gtk_tree_store_append (store, &iter, NULL);
         gtk_tree_store_set (store, &iter, 0, name, 1, id2, -1);
       }
 
-      if (g_settings_schema_has_key (schema, "active"))
-        g_signal_connect (gsettings, "changed::active",
-                          G_CALLBACK (on_gsettings_changed_active), combo);
+      if (g_settings_schema_has_key (schema, "active-engine"))
+        g_signal_connect (gsettings, "changed::active-engine",
+                          G_CALLBACK (on_changed_active_engine), combo);
 
       g_settings_schema_unref (schema);
       g_free (name);

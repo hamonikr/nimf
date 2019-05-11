@@ -7,7 +7,7 @@
       <summary>schema name for nimf-settings</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
-    <key type="b" name="active">
+    <key type="b" name="active-engine">
       <default>true</default>
       <summary>Active engine</summary>
       <description>The engine will be loaded on startup if available. Restart required</description>
