@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.05.10)
+AC_INIT(nimf, 2019.05.15)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -281,6 +281,7 @@ AC_OUTPUT([
   modules/engines/nimf-anthy/Makefile
   modules/engines/nimf-libhangul/Makefile
   modules/engines/nimf-m17n/Makefile
+  modules/engines/nimf-m17n/icons/Makefile
   modules/engines/nimf-rime/Makefile
   modules/engines/nimf-system-keyboard/Makefile
   modules/services/Makefile

@@ -46,9 +46,21 @@ data/icons/32x32/
 data/icons/48x48/
 data/icons/96x96/
 data/icons/256x256/
+modules/engines/nimf-m17n/icons/16x16/
+modules/engines/nimf-m17n/icons/22x22/
+modules/engines/nimf-m17n/icons/24x24/
+modules/engines/nimf-m17n/icons/32x32/
+modules/engines/nimf-m17n/icons/48x48/
+modules/engines/nimf-m17n/icons/96x96/
+modules/engines/nimf-m17n/icons/256x256/
 po/.intltool-merge-cache
 # gnome-builder
 .buildconfig
 tags
 # docs
 gtk-doc.make
+# tests
+test-*.log
+test-*.trs
+test-suite.log
+test-nimf-m17n

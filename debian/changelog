@@ -1,3 +1,12 @@
+nimf (2019.05.15) stable; urgency=medium
+
+  * Redesign nimf-m17n
+  * nimf-settings: Fixed potential bugs
+  * "Renamed "active" to "active-engine"
+  * Fixed possible faults
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 15 May 2019 00:59:16 +0900
+
 nimf (2019.05.10) stable; urgency=medium
 
   * Fixed possible faults

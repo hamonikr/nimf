@@ -1,9 +1,1366 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.nimf.engines.nimf-m17n"
-          path="/org/nimf/engines/nimf-m17n/" gettext-domain="nimf">
+  <schema id="org.nimf.engines.nimf-m17n-am"
+          path="/org/nimf/engines/nimf-m17n-am/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Other languages (m17n)'</default>
+      <default l10n="messages">'Amharic (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Amharic (m17n) / System</summary>
+      <description>Trigger keys for switching Amharic (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'am:sera'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ar"
+          path="/org/nimf/engines/nimf-m17n-ar/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Arabic (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Arabic (m17n) / System</summary>
+      <description>Trigger keys for switching Arabic (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ar:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-as"
+          path="/org/nimf/engines/nimf-m17n-as/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Assamese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Assamese (m17n) / System</summary>
+      <description>Trigger keys for switching Assamese (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'as:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ath"
+          path="/org/nimf/engines/nimf-m17n-ath/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Athabaskan languages (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Athabaskan languages (m17n) / System</summary>
+      <description>Trigger keys for switching Athabaskan languages (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ath:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-be"
+          path="/org/nimf/engines/nimf-m17n-be/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Belarusian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Belarusian (m17n) / System</summary>
+      <description>Trigger keys for switching Belarusian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'be:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-bla"
+          path="/org/nimf/engines/nimf-m17n-bla/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Siksika (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Siksika (m17n) / System</summary>
+      <description>Trigger keys for switching Siksika (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'bla:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-bn"
+          path="/org/nimf/engines/nimf-m17n-bn/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Bengali (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Bengali (m17n) / System</summary>
+      <description>Trigger keys for switching Bengali (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'bn:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-bo"
+          path="/org/nimf/engines/nimf-m17n-bo/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Tibetan (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Tibetan (m17n) / System</summary>
+      <description>Trigger keys for switching Tibetan (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'bo:tcrc'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-cmc"
+          path="/org/nimf/engines/nimf-m17n-cmc/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Chamic Languages (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Chamic Languages (m17n) / System</summary>
+      <description>Trigger keys for switching Chamic Languages (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'cmc:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-cr"
+          path="/org/nimf/engines/nimf-m17n-cr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Cree (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Cree (m17n) / System</summary>
+      <description>Trigger keys for switching Cree (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'cr:western'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-cs"
+          path="/org/nimf/engines/nimf-m17n-cs/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Czech (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Czech (m17n) / System</summary>
+      <description>Trigger keys for switching Czech (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'cs:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-da"
+          path="/org/nimf/engines/nimf-m17n-da/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Danish (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Danish (m17n) / System</summary>
+      <description>Trigger keys for switching Danish (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'da:post'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-dv"
+          path="/org/nimf/engines/nimf-m17n-dv/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Divehi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Divehi (m17n) / System</summary>
+      <description>Trigger keys for switching Divehi (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'dv:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-el"
+          path="/org/nimf/engines/nimf-m17n-el/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Greek (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Greek (m17n) / System</summary>
+      <description>Trigger keys for switching Greek (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'el:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-en"
+          path="/org/nimf/engines/nimf-m17n-en/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'English (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching English (m17n) / System</summary>
+      <description>Trigger keys for switching English (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'en:ispell'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-eo"
+          path="/org/nimf/engines/nimf-m17n-eo/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Esperanto (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Esperanto (m17n) / System</summary>
+      <description>Trigger keys for switching Esperanto (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'eo:vi-sistemo'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-fa"
+          path="/org/nimf/engines/nimf-m17n-fa/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Persian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Persian (m17n) / System</summary>
+      <description>Trigger keys for switching Persian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'fa:isiri'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-fr"
+          path="/org/nimf/engines/nimf-m17n-fr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'French (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching French (m17n) / System</summary>
+      <description>Trigger keys for switching French (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'fr:azerty'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-grc"
+          path="/org/nimf/engines/nimf-m17n-grc/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Ancient Greek (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Ancient Greek (m17n) / System</summary>
+      <description>Trigger keys for switching Ancient Greek (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'grc:mizuochi'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-gu"
+          path="/org/nimf/engines/nimf-m17n-gu/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Gujarati (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Gujarati (m17n) / System</summary>
+      <description>Trigger keys for switching Gujarati (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'gu:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-he"
+          path="/org/nimf/engines/nimf-m17n-he/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Hebrew (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Hebrew (m17n) / System</summary>
+      <description>Trigger keys for switching Hebrew (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'he:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-hi"
+          path="/org/nimf/engines/nimf-m17n-hi/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Hindi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Hindi (m17n) / System</summary>
+      <description>Trigger keys for switching Hindi (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'hi:remington'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-hr"
+          path="/org/nimf/engines/nimf-m17n-hr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Croatian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Croatian (m17n) / System</summary>
+      <description>Trigger keys for switching Croatian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'hr:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-hu"
+          path="/org/nimf/engines/nimf-m17n-hu/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Hungarian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Hungarian (m17n) / System</summary>
+      <description>Trigger keys for switching Hungarian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'hu:rovas-post'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-hy"
+          path="/org/nimf/engines/nimf-m17n-hy/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Armenian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Armenian (m17n) / System</summary>
+      <description>Trigger keys for switching Armenian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'hy:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ii"
+          path="/org/nimf/engines/nimf-m17n-ii/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sichuan Yi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Sichuan Yi (m17n) / System</summary>
+      <description>Trigger keys for switching Sichuan Yi (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ii:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-iu"
+          path="/org/nimf/engines/nimf-m17n-iu/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Inuktitut (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Inuktitut (m17n) / System</summary>
+      <description>Trigger keys for switching Inuktitut (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'iu:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ka"
+          path="/org/nimf/engines/nimf-m17n-ka/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Georgian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Georgian (m17n) / System</summary>
+      <description>Trigger keys for switching Georgian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ka:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-kk"
+          path="/org/nimf/engines/nimf-m17n-kk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Kazakh (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Kazakh (m17n) / System</summary>
+      <description>Trigger keys for switching Kazakh (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'kk:arabic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-km"
+          path="/org/nimf/engines/nimf-m17n-km/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Khmer (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Khmer (m17n) / System</summary>
+      <description>Trigger keys for switching Khmer (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'km:yannis'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-kn"
+          path="/org/nimf/engines/nimf-m17n-kn/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Kannada (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Kannada (m17n) / System</summary>
+      <description>Trigger keys for switching Kannada (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'kn:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ks"
+          path="/org/nimf/engines/nimf-m17n-ks/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Kashmiri (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Kashmiri (m17n) / System</summary>
+      <description>Trigger keys for switching Kashmiri (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ks:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-lo"
+          path="/org/nimf/engines/nimf-m17n-lo/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Lao (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Lao (m17n) / System</summary>
+      <description>Trigger keys for switching Lao (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'lo:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-mai"
+          path="/org/nimf/engines/nimf-m17n-mai/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Maithili (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Maithili (m17n) / System</summary>
+      <description>Trigger keys for switching Maithili (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'mai:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ml"
+          path="/org/nimf/engines/nimf-m17n-ml/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Malayalam (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Malayalam (m17n) / System</summary>
+      <description>Trigger keys for switching Malayalam (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ml:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-mr"
+          path="/org/nimf/engines/nimf-m17n-mr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Marathi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Marathi (m17n) / System</summary>
+      <description>Trigger keys for switching Marathi (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'mr:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-my"
+          path="/org/nimf/engines/nimf-m17n-my/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Burmese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Burmese (m17n) / System</summary>
+      <description>Trigger keys for switching Burmese (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'my:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ne"
+          path="/org/nimf/engines/nimf-m17n-ne/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Nepali (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Nepali (m17n) / System</summary>
+      <description>Trigger keys for switching Nepali (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ne:rom'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-nsk"
+          path="/org/nimf/engines/nimf-m17n-nsk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Naskapi language (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Naskapi language (m17n) / System</summary>
+      <description>Trigger keys for switching Naskapi language (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'nsk:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-oj"
+          path="/org/nimf/engines/nimf-m17n-oj/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Ojibwa (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Ojibwa (m17n) / System</summary>
+      <description>Trigger keys for switching Ojibwa (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'oj:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-or"
+          path="/org/nimf/engines/nimf-m17n-or/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Oriya (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Oriya (m17n) / System</summary>
+      <description>Trigger keys for switching Oriya (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'or:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-pa"
+          path="/org/nimf/engines/nimf-m17n-pa/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Punjabi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Punjabi (m17n) / System</summary>
+      <description>Trigger keys for switching Punjabi (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'pa:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ps"
+          path="/org/nimf/engines/nimf-m17n-ps/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Pushto (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Pushto (m17n) / System</summary>
+      <description>Trigger keys for switching Pushto (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ps:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ru"
+          path="/org/nimf/engines/nimf-m17n-ru/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Russian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Russian (m17n) / System</summary>
+      <description>Trigger keys for switching Russian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ru:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sa"
+          path="/org/nimf/engines/nimf-m17n-sa/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sanskrit (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Sanskrit (m17n) / System</summary>
+      <description>Trigger keys for switching Sanskrit (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sa:IAST'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sd"
+          path="/org/nimf/engines/nimf-m17n-sd/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sindhi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Sindhi (m17n) / System</summary>
+      <description>Trigger keys for switching Sindhi (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sd:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-si"
+          path="/org/nimf/engines/nimf-m17n-si/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sinhalese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Sinhalese (m17n) / System</summary>
+      <description>Trigger keys for switching Sinhalese (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'si:samanala'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sk"
+          path="/org/nimf/engines/nimf-m17n-sk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Slovak (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Slovak (m17n) / System</summary>
+      <description>Trigger keys for switching Slovak (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sk:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sr"
+          path="/org/nimf/engines/nimf-m17n-sr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Serbian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Serbian (m17n) / System</summary>
+      <description>Trigger keys for switching Serbian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sr:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sv"
+          path="/org/nimf/engines/nimf-m17n-sv/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Swedish (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Swedish (m17n) / System</summary>
+      <description>Trigger keys for switching Swedish (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sv:post'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-t"
+          path="/org/nimf/engines/nimf-m17n-t/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Etc (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Etc (m17n) / System</summary>
+      <description>Trigger keys for switching Etc (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'t:math-latex'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ta"
+          path="/org/nimf/engines/nimf-m17n-ta/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Tamil (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Tamil (m17n) / System</summary>
+      <description>Trigger keys for switching Tamil (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ta:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-tai"
+          path="/org/nimf/engines/nimf-m17n-tai/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Tai Viet (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Tai Viet (m17n) / System</summary>
+      <description>Trigger keys for switching Tai Viet (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'tai:sonla-kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-te"
+          path="/org/nimf/engines/nimf-m17n-te/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Telugu (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Telugu (m17n) / System</summary>
+      <description>Trigger keys for switching Telugu (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'te:apple'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-th"
+          path="/org/nimf/engines/nimf-m17n-th/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Thai (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Thai (m17n) / System</summary>
+      <description>Trigger keys for switching Thai (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'th:tis820'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ug"
+          path="/org/nimf/engines/nimf-m17n-ug/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Uighur (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Uighur (m17n) / System</summary>
+      <description>Trigger keys for switching Uighur (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ug:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-uk"
+          path="/org/nimf/engines/nimf-m17n-uk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Ukrainian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Ukrainian (m17n) / System</summary>
+      <description>Trigger keys for switching Ukrainian (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'uk:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ur"
+          path="/org/nimf/engines/nimf-m17n-ur/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Urdu (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Urdu (m17n) / System</summary>
+      <description>Trigger keys for switching Urdu (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ur:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-uz"
+          path="/org/nimf/engines/nimf-m17n-uz/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Uzbek (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Uzbek (m17n) / System</summary>
+      <description>Trigger keys for switching Uzbek (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'uz:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-vi"
+          path="/org/nimf/engines/nimf-m17n-vi/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Vietnamese (m17n)'</default>
       <summary>schema name for nimf-settings</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
@@ -13,12 +1370,35 @@
       <description>The engine will be loaded on startup if available. Restart required</description>
     </key>
     <key type="as" name="trigger-keys">
-      <default>['&lt;Control&gt; &lt;Mod1&gt; m']</default>
-      <summary>Trigger keys for switching m17n / System</summary>
-      <description>Trigger keys for switching m17n / System</description>
+      <default>['&lt;Control&gt; &lt;Mod1&gt; v']</default>
+      <summary>Trigger keys for switching Vietnamese (m17n) / System</summary>
+      <description>Trigger keys for switching Vietnamese (m17n) / System</description>
     </key>
     <key type="s" name="get-method-infos">
       <default>'vi:telex'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-yi"
+          path="/org/nimf/engines/nimf-m17n-yi/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Yiddish (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>The engine will be loaded on startup if available. Restart required</description>
+    </key>
+    <key type="as" name="trigger-keys">
+      <default>['']</default>
+      <summary>Trigger keys for switching Yiddish (m17n) / System</summary>
+      <description>Trigger keys for switching Yiddish (m17n) / System</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'yi:yivo'</default>
       <summary>Input method</summary>
       <description>Input method</description>
     </key>

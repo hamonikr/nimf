@@ -19,45 +19,11 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <nimf.h>
-#include <m17n.h>
+#include "nimf-m17n.h"
+#include "nimf.h"
 #include <glib/gi18n.h>
 
-#define NIMF_TYPE_M17N              (nimf_m17n_get_type ())
-#define NIMF_M17N(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), NIMF_TYPE_M17N, NimfM17n))
-#define NIMF_M17N_CLASS(class)      (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_M17N, NimfM17nClass))
-#define NIMF_IS_M17N(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), NIMF_TYPE_M17N))
-#define NIMF_IS_M17N_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_M17N))
-#define NIMF_M17N_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), NIMF_TYPE_M17N, NimfM17nClass))
-
-typedef struct _NimfM17n      NimfM17n;
-typedef struct _NimfM17nClass NimfM17nClass;
-
-struct _NimfM17n
-{
-  NimfEngine parent_instance;
-
-  NimfCandidatable  *candidatable;
-  gchar             *id;
-  GSettings         *settings;
-  gchar             *method;
-  MInputMethod      *im;
-  MInputContext     *ic;
-  MConverter        *converter;
-  gchar             *preedit;
-  NimfPreeditState   preedit_state;
-  NimfPreeditAttr  **preedit_attrs;
-  gint               current_page;
-  gint               n_pages;
-};
-
-struct _NimfM17nClass
-{
-  /*< private >*/
-  NimfEngineClass parent_class;
-};
-
-G_DEFINE_DYNAMIC_TYPE (NimfM17n, nimf_m17n, NIMF_TYPE_ENGINE);
+G_DEFINE_ABSTRACT_TYPE (NimfM17n, nimf_m17n, NIMF_TYPE_ENGINE);
 
 static NimfServiceIC *nimf_service_im_target = NULL;
 
@@ -500,7 +466,7 @@ on_delete_surrounding_text (MInputContext *context,
                                          nimf_service_im_target, 0, len);
 }
 
-static void
+void
 nimf_m17n_open_im (NimfM17n *m17n)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -562,7 +528,7 @@ nimf_m17n_close_im (NimfM17n *m17n)
   g_free (m17n->preedit);
 }
 
-static void
+void
 on_changed_method (GSettings *settings,
                    gchar     *key,
                    NimfM17n  *m17n)
@@ -583,16 +549,6 @@ static void
 nimf_m17n_init (NimfM17n *m17n)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  m17n->id       = g_strdup ("nimf-m17n");
-  m17n->settings = g_settings_new ("org.nimf.engines.nimf-m17n");
-  m17n->method   = g_settings_get_string (m17n->settings, "get-method-infos");
-  m17n->preedit_attrs = g_malloc_n (2, sizeof (NimfPreeditAttr *));
-
-  nimf_m17n_open_im (m17n);
-
-  g_signal_connect (m17n->settings, "changed::get-method-infos",
-                    G_CALLBACK (on_changed_method), m17n);
 }
 
 static void
@@ -670,174 +626,4 @@ nimf_m17n_class_init (NimfM17nClass *class)
 
   object_class->constructed = nimf_m17n_constructed;
   object_class->finalize    = nimf_m17n_finalize;
-}
-
-static void
-nimf_m17n_class_finalize (NimfM17nClass *class)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-}
-
-typedef struct {
-  const gchar *code;
-  const gchar *name;
-} Country;
-
-
-static const Country country[] = {
-  {"am",  N_("Amharic")},
-  {"ar",  N_("Arabic")},
-  {"as",  N_("Assamese")},
-  {"ath", N_("Athabaskan languages")},
-  {"be",  N_("Belarusian")},
-  {"bla", N_("Siksika")},
-  {"bn",  N_("Bengali")},
-  {"bo",  N_("Tibetan")},
-  {"cmc", N_("Chamic Languages")},
-  {"cr",  N_("Cree")},
-  {"cs",  N_("Czech")},
-  {"da",  N_("Danish")},
-  {"dv",  N_("Divehi")},
-  {"el",  N_("Greek")},
-  {"en",  N_("English")},
-  {"eo",  N_("Esperanto")},
-  {"fa",  N_("Persian")},
-  {"fr",  N_("French")},
-  {"grc", N_("Ancient Greek")},
-  {"gu",  N_("Gujarati")},
-  {"he",  N_("Hebrew")},
-  {"hi",  N_("Hindi")},
-  {"hr",  N_("Croatian")},
-  {"hu",  N_("Hungarian")},
-  {"hy",  N_("Armenian")},
-  {"ii",  N_("Sichuan Yi")},
-  {"iu",  N_("Inuktitut")},
-  {"ja",  N_("Japanese")},
-  {"ka",  N_("Georgian")},
-  {"kk",  N_("Kazakh")},
-  {"km",  N_("Khmer")},
-  {"kn",  N_("Kannada")},
-  {"ko",  N_("Korean")},
-  {"ks",  N_("Kashmiri")},
-  {"lo",  N_("Lao")},
-  {"mai", N_("Maithili")},
-  {"ml",  N_("Malayalam")},
-  {"mr",  N_("Marathi")},
-  {"my",  N_("Burmese")},
-  {"ne",  N_("Nepali")},
-  {"nsk", N_("Naskapi language")},
-  {"oj",  N_("Ojibwa")},
-  {"or",  N_("Oriya")},
-  {"pa",  N_("Punjabi")},
-  {"ps",  N_("Pushto")},
-  {"ru",  N_("Russian")},
-  {"sa",  N_("Sanskrit")},
-  {"sd",  N_("Sindhi")},
-  {"si",  N_("Sinhalese")},
-  {"sk",  N_("Slovak")},
-  {"sr",  N_("Serbian")},
-  {"sv",  N_("Swedish")},
-  {"tai", N_("Tai Viet")},
-  {"ta",  N_("Tamil")},
-  {"te",  N_("Telugu")},
-  {"th",  N_("Thai")},
-  {"t",   N_("Etc")},
-  {"ua",  N_("Ukrainian")},
-  {"ug",  N_("Uighur")},
-  {"uk",  N_("Ukrainian")},
-  {"ur",  N_("Urdu")},
-  {"uz",  N_("Uzbek")},
-  {"vi",  N_("Vietnamese")},
-  {"yi",  N_("Yiddish")},
-  {"zh",  N_("Chinese")}
-};
-
-gint
-on_sort (gconstpointer a,
-         gconstpointer b)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  gint retval;
-
-  const NimfMethodInfo *info1 = *(NimfMethodInfo **) a;
-  const NimfMethodInfo *info2 = *(NimfMethodInfo **) b;
-
-  retval = g_strcmp0 (info1->group, info2->group);
-
-  if (retval == 0)
-    retval = g_strcmp0 (info1->method_id, info2->method_id);
-
-  return retval;
-}
-
-NimfMethodInfo **
-nimf_m17n_get_method_infos ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  NimfMethodInfo *info;
-  GHashTable *table;
-  MPlist *imlist, *pl;
-  gint i;
-  M17N_INIT();
-  table = g_hash_table_new (g_str_hash, g_str_equal);
-
-  for (i = 0; i < G_N_ELEMENTS (country); i++)
-    g_hash_table_insert (table, (gpointer) country[i].code,
-                                (gpointer) gettext (country[i].name));
-
-  GPtrArray *array = g_ptr_array_new ();
-  imlist = minput_list (Mnil);
-
-  for (pl = imlist; mplist_key (pl) != Mnil; pl = mplist_next (pl))
-  {
-    MPlist *p = mplist_value (pl);
-    MSymbol lang, name, sane;
-
-    lang = mplist_value (p);
-    p = mplist_next (p);
-    name = mplist_value (p);
-    p = mplist_next (p);
-    sane = mplist_value (p);
-
-    if (sane == Mt)
-    {
-      const gchar *code = msymbol_name (lang);
-      const gchar *group = g_hash_table_lookup (table, code);
-
-      if (!group)
-        group = code;
-
-      info = nimf_method_info_new ();
-      info->method_id = g_strdup_printf ("%s:%s", code, msymbol_name (name));
-      info->label     = g_strdup_printf ("%s (%s)", group, msymbol_name (name));
-      info->group     = g_strdup (group);
-
-      g_ptr_array_add (array, info);
-    }
-  }
-
-  g_ptr_array_sort (array, on_sort);
-  g_ptr_array_add (array, NULL);
-
-  m17n_object_unref (imlist);
-  g_hash_table_destroy (table);
-  M17N_FINI();
-
-  return (NimfMethodInfo **) g_ptr_array_free (array, FALSE);
-}
-
-void module_register_type (GTypeModule *type_module)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  nimf_m17n_register_type (type_module);
-}
-
-GType module_get_type ()
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  return nimf_m17n_get_type ();
 }
