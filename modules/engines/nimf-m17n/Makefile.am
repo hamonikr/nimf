@@ -84,305 +84,365 @@ libnimf_m17n_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
 libnimf_m17n_la_LDFLAGS = -avoid-version $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
 
-libnimf_m17n_am_la_SOURCES = nimf-m17n-am.c nimf-m17n.h
-libnimf_m17n_am_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_am_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_am_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_am_la_SOURCES      = nimf-m17n-am.c nimf-m17n.h
+libnimf_m17n_am_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_am_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_am_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_am_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ar_la_SOURCES = nimf-m17n-ar.c nimf-m17n.h
-libnimf_m17n_ar_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ar_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ar_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ar_la_SOURCES      = nimf-m17n-ar.c nimf-m17n.h
+libnimf_m17n_ar_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ar_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ar_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ar_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_as_la_SOURCES = nimf-m17n-as.c nimf-m17n.h
-libnimf_m17n_as_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_as_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_as_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_as_la_SOURCES      = nimf-m17n-as.c nimf-m17n.h
+libnimf_m17n_as_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_as_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_as_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_as_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ath_la_SOURCES = nimf-m17n-ath.c nimf-m17n.h
-libnimf_m17n_ath_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ath_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ath_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ath_la_SOURCES      = nimf-m17n-ath.c nimf-m17n.h
+libnimf_m17n_ath_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ath_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ath_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ath_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_be_la_SOURCES = nimf-m17n-be.c nimf-m17n.h
-libnimf_m17n_be_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_be_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_be_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_be_la_SOURCES      = nimf-m17n-be.c nimf-m17n.h
+libnimf_m17n_be_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_be_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_be_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_be_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_bla_la_SOURCES = nimf-m17n-bla.c nimf-m17n.h
-libnimf_m17n_bla_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_bla_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_bla_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_bla_la_SOURCES      = nimf-m17n-bla.c nimf-m17n.h
+libnimf_m17n_bla_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_bla_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_bla_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_bla_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_bn_la_SOURCES = nimf-m17n-bn.c nimf-m17n.h
-libnimf_m17n_bn_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_bn_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_bn_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_bn_la_SOURCES      = nimf-m17n-bn.c nimf-m17n.h
+libnimf_m17n_bn_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_bn_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_bn_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_bn_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_bo_la_SOURCES = nimf-m17n-bo.c nimf-m17n.h
-libnimf_m17n_bo_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_bo_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_bo_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_bo_la_SOURCES      = nimf-m17n-bo.c nimf-m17n.h
+libnimf_m17n_bo_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_bo_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_bo_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_bo_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_cmc_la_SOURCES = nimf-m17n-cmc.c nimf-m17n.h
-libnimf_m17n_cmc_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_cmc_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_cmc_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_cmc_la_SOURCES      = nimf-m17n-cmc.c nimf-m17n.h
+libnimf_m17n_cmc_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_cmc_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_cmc_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_cmc_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_cr_la_SOURCES = nimf-m17n-cr.c nimf-m17n.h
-libnimf_m17n_cr_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_cr_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_cr_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_cr_la_SOURCES      = nimf-m17n-cr.c nimf-m17n.h
+libnimf_m17n_cr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_cr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_cr_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_cr_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_cs_la_SOURCES = nimf-m17n-cs.c nimf-m17n.h
-libnimf_m17n_cs_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_cs_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_cs_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_cs_la_SOURCES      = nimf-m17n-cs.c nimf-m17n.h
+libnimf_m17n_cs_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_cs_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_cs_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_cs_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_da_la_SOURCES = nimf-m17n-da.c nimf-m17n.h
-libnimf_m17n_da_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_da_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_da_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_da_la_SOURCES      = nimf-m17n-da.c nimf-m17n.h
+libnimf_m17n_da_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_da_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_da_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_da_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_dv_la_SOURCES = nimf-m17n-dv.c nimf-m17n.h
-libnimf_m17n_dv_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_dv_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_dv_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_dv_la_SOURCES      = nimf-m17n-dv.c nimf-m17n.h
+libnimf_m17n_dv_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_dv_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_dv_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_dv_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_el_la_SOURCES = nimf-m17n-el.c nimf-m17n.h
-libnimf_m17n_el_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_el_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_el_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_el_la_SOURCES      = nimf-m17n-el.c nimf-m17n.h
+libnimf_m17n_el_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_el_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_el_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_el_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_eo_la_SOURCES = nimf-m17n-eo.c nimf-m17n.h
-libnimf_m17n_eo_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_eo_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_eo_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_eo_la_SOURCES      = nimf-m17n-eo.c nimf-m17n.h
+libnimf_m17n_eo_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_eo_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_eo_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_eo_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_fa_la_SOURCES = nimf-m17n-fa.c nimf-m17n.h
-libnimf_m17n_fa_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_fa_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_fa_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_fa_la_SOURCES      = nimf-m17n-fa.c nimf-m17n.h
+libnimf_m17n_fa_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_fa_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_fa_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_fa_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_fr_la_SOURCES = nimf-m17n-fr.c nimf-m17n.h
-libnimf_m17n_fr_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_fr_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_fr_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_fr_la_SOURCES      = nimf-m17n-fr.c nimf-m17n.h
+libnimf_m17n_fr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_fr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_fr_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_fr_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_grc_la_SOURCES = nimf-m17n-grc.c nimf-m17n.h
-libnimf_m17n_grc_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_grc_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_grc_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_grc_la_SOURCES      = nimf-m17n-grc.c nimf-m17n.h
+libnimf_m17n_grc_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_grc_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_grc_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_grc_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_gu_la_SOURCES = nimf-m17n-gu.c nimf-m17n.h
-libnimf_m17n_gu_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_gu_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_gu_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_gu_la_SOURCES      = nimf-m17n-gu.c nimf-m17n.h
+libnimf_m17n_gu_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_gu_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_gu_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_gu_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_he_la_SOURCES = nimf-m17n-he.c nimf-m17n.h
-libnimf_m17n_he_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_he_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_he_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_he_la_SOURCES      = nimf-m17n-he.c nimf-m17n.h
+libnimf_m17n_he_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_he_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_he_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_he_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_hi_la_SOURCES = nimf-m17n-hi.c nimf-m17n.h
-libnimf_m17n_hi_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_hi_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_hi_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_hi_la_SOURCES      = nimf-m17n-hi.c nimf-m17n.h
+libnimf_m17n_hi_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_hi_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_hi_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_hi_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_hr_la_SOURCES = nimf-m17n-hr.c nimf-m17n.h
-libnimf_m17n_hr_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_hr_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_hr_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_hr_la_SOURCES      = nimf-m17n-hr.c nimf-m17n.h
+libnimf_m17n_hr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_hr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_hr_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_hr_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_hu_la_SOURCES = nimf-m17n-hu.c nimf-m17n.h
-libnimf_m17n_hu_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_hu_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_hu_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_hu_la_SOURCES      = nimf-m17n-hu.c nimf-m17n.h
+libnimf_m17n_hu_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_hu_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_hu_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_hu_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_hy_la_SOURCES = nimf-m17n-hy.c nimf-m17n.h
-libnimf_m17n_hy_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_hy_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_hy_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_hy_la_SOURCES      = nimf-m17n-hy.c nimf-m17n.h
+libnimf_m17n_hy_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_hy_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_hy_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_hy_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ii_la_SOURCES = nimf-m17n-ii.c nimf-m17n.h
-libnimf_m17n_ii_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ii_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ii_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ii_la_SOURCES      = nimf-m17n-ii.c nimf-m17n.h
+libnimf_m17n_ii_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ii_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ii_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ii_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_iu_la_SOURCES = nimf-m17n-iu.c nimf-m17n.h
-libnimf_m17n_iu_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_iu_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_iu_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_iu_la_SOURCES      = nimf-m17n-iu.c nimf-m17n.h
+libnimf_m17n_iu_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_iu_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_iu_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_iu_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ka_la_SOURCES = nimf-m17n-ka.c nimf-m17n.h
-libnimf_m17n_ka_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ka_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ka_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ka_la_SOURCES      = nimf-m17n-ka.c nimf-m17n.h
+libnimf_m17n_ka_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ka_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ka_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ka_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_kk_la_SOURCES = nimf-m17n-kk.c nimf-m17n.h
-libnimf_m17n_kk_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_kk_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_kk_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_kk_la_SOURCES      = nimf-m17n-kk.c nimf-m17n.h
+libnimf_m17n_kk_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_kk_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_kk_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_kk_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_km_la_SOURCES = nimf-m17n-km.c nimf-m17n.h
-libnimf_m17n_km_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_km_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_km_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_km_la_SOURCES      = nimf-m17n-km.c nimf-m17n.h
+libnimf_m17n_km_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_km_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_km_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_km_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_kn_la_SOURCES = nimf-m17n-kn.c nimf-m17n.h
-libnimf_m17n_kn_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_kn_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_kn_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_kn_la_SOURCES      = nimf-m17n-kn.c nimf-m17n.h
+libnimf_m17n_kn_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_kn_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_kn_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_kn_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ks_la_SOURCES = nimf-m17n-ks.c nimf-m17n.h
-libnimf_m17n_ks_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ks_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ks_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ks_la_SOURCES      = nimf-m17n-ks.c nimf-m17n.h
+libnimf_m17n_ks_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ks_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ks_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ks_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_lo_la_SOURCES = nimf-m17n-lo.c nimf-m17n.h
-libnimf_m17n_lo_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_lo_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_lo_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_lo_la_SOURCES      = nimf-m17n-lo.c nimf-m17n.h
+libnimf_m17n_lo_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_lo_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_lo_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_lo_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_mai_la_SOURCES = nimf-m17n-mai.c nimf-m17n.h
-libnimf_m17n_mai_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_mai_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_mai_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_mai_la_SOURCES      = nimf-m17n-mai.c nimf-m17n.h
+libnimf_m17n_mai_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_mai_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_mai_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_mai_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ml_la_SOURCES = nimf-m17n-ml.c nimf-m17n.h
-libnimf_m17n_ml_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ml_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ml_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ml_la_SOURCES      = nimf-m17n-ml.c nimf-m17n.h
+libnimf_m17n_ml_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ml_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ml_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ml_la_DEPENDENCIES      = libnimf-m17n.la
 
-libnimf_m17n_mr_la_SOURCES = nimf-m17n-mr.c nimf-m17n.h
-libnimf_m17n_mr_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_mr_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_mr_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_mr_la_SOURCES      = nimf-m17n-mr.c nimf-m17n.h
+libnimf_m17n_mr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_mr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_mr_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_mr_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_my_la_SOURCES = nimf-m17n-my.c nimf-m17n.h
-libnimf_m17n_my_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_my_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_my_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_my_la_SOURCES      = nimf-m17n-my.c nimf-m17n.h
+libnimf_m17n_my_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_my_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_my_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_my_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ne_la_SOURCES = nimf-m17n-ne.c nimf-m17n.h
-libnimf_m17n_ne_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ne_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ne_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ne_la_SOURCES      = nimf-m17n-ne.c nimf-m17n.h
+libnimf_m17n_ne_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ne_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ne_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ne_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_nsk_la_SOURCES = nimf-m17n-nsk.c nimf-m17n.h
-libnimf_m17n_nsk_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_nsk_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_nsk_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_nsk_la_SOURCES      = nimf-m17n-nsk.c nimf-m17n.h
+libnimf_m17n_nsk_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_nsk_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_nsk_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_nsk_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_oj_la_SOURCES = nimf-m17n-oj.c nimf-m17n.h
-libnimf_m17n_oj_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_oj_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_oj_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_oj_la_SOURCES      = nimf-m17n-oj.c nimf-m17n.h
+libnimf_m17n_oj_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_oj_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_oj_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_oj_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_or_la_SOURCES = nimf-m17n-or.c nimf-m17n.h
-libnimf_m17n_or_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_or_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_or_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_or_la_SOURCES      = nimf-m17n-or.c nimf-m17n.h
+libnimf_m17n_or_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_or_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_or_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_or_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_pa_la_SOURCES = nimf-m17n-pa.c nimf-m17n.h
-libnimf_m17n_pa_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_pa_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_pa_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_pa_la_SOURCES      = nimf-m17n-pa.c nimf-m17n.h
+libnimf_m17n_pa_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_pa_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_pa_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_pa_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ps_la_SOURCES = nimf-m17n-ps.c nimf-m17n.h
-libnimf_m17n_ps_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ps_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ps_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ps_la_SOURCES      = nimf-m17n-ps.c nimf-m17n.h
+libnimf_m17n_ps_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ps_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ps_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ps_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ru_la_SOURCES = nimf-m17n-ru.c nimf-m17n.h
-libnimf_m17n_ru_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ru_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ru_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ru_la_SOURCES      = nimf-m17n-ru.c nimf-m17n.h
+libnimf_m17n_ru_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ru_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ru_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ru_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_sa_la_SOURCES = nimf-m17n-sa.c nimf-m17n.h
-libnimf_m17n_sa_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_sa_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_sa_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_sa_la_SOURCES      = nimf-m17n-sa.c nimf-m17n.h
+libnimf_m17n_sa_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_sa_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_sa_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_sa_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_sd_la_SOURCES = nimf-m17n-sd.c nimf-m17n.h
-libnimf_m17n_sd_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_sd_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_sd_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_sd_la_SOURCES      = nimf-m17n-sd.c nimf-m17n.h
+libnimf_m17n_sd_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_sd_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_sd_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_sd_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_si_la_SOURCES = nimf-m17n-si.c nimf-m17n.h
-libnimf_m17n_si_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_si_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_si_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_si_la_SOURCES      = nimf-m17n-si.c nimf-m17n.h
+libnimf_m17n_si_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_si_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_si_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_si_la_DEPENDENCIES      = libnimf-m17n.la
 
-libnimf_m17n_sk_la_SOURCES = nimf-m17n-sk.c nimf-m17n.h
-libnimf_m17n_sk_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_sk_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_sk_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_sk_la_SOURCES      = nimf-m17n-sk.c nimf-m17n.h
+libnimf_m17n_sk_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_sk_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_sk_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_sk_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_sr_la_SOURCES = nimf-m17n-sr.c nimf-m17n.h
-libnimf_m17n_sr_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_sr_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_sr_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_sr_la_SOURCES      = nimf-m17n-sr.c nimf-m17n.h
+libnimf_m17n_sr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_sr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_sr_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_sr_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_sv_la_SOURCES = nimf-m17n-sv.c nimf-m17n.h
-libnimf_m17n_sv_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_sv_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_sv_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_sv_la_SOURCES      = nimf-m17n-sv.c nimf-m17n.h
+libnimf_m17n_sv_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_sv_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_sv_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_sv_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_t_la_SOURCES = nimf-m17n-t.c nimf-m17n.h
-libnimf_m17n_t_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_t_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_t_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_t_la_SOURCES      = nimf-m17n-t.c nimf-m17n.h
+libnimf_m17n_t_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_t_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_t_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_t_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ta_la_SOURCES = nimf-m17n-ta.c nimf-m17n.h
-libnimf_m17n_ta_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ta_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ta_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ta_la_SOURCES      = nimf-m17n-ta.c nimf-m17n.h
+libnimf_m17n_ta_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ta_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ta_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ta_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_tai_la_SOURCES = nimf-m17n-tai.c nimf-m17n.h
-libnimf_m17n_tai_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_tai_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_tai_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_tai_la_SOURCES      = nimf-m17n-tai.c nimf-m17n.h
+libnimf_m17n_tai_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_tai_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_tai_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_tai_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_te_la_SOURCES = nimf-m17n-te.c nimf-m17n.h
-libnimf_m17n_te_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_te_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_te_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_te_la_SOURCES      = nimf-m17n-te.c nimf-m17n.h
+libnimf_m17n_te_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_te_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_te_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_te_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_th_la_SOURCES = nimf-m17n-th.c nimf-m17n.h
-libnimf_m17n_th_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_th_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_th_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_th_la_SOURCES      = nimf-m17n-th.c nimf-m17n.h
+libnimf_m17n_th_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_th_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_th_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_th_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ug_la_SOURCES = nimf-m17n-ug.c nimf-m17n.h
-libnimf_m17n_ug_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ug_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ug_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ug_la_SOURCES      = nimf-m17n-ug.c nimf-m17n.h
+libnimf_m17n_ug_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ug_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ug_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ug_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_uk_la_SOURCES = nimf-m17n-uk.c nimf-m17n.h
-libnimf_m17n_uk_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_uk_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_uk_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_uk_la_SOURCES      = nimf-m17n-uk.c nimf-m17n.h
+libnimf_m17n_uk_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_uk_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_uk_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_uk_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ur_la_SOURCES = nimf-m17n-ur.c nimf-m17n.h
-libnimf_m17n_ur_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ur_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ur_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_ur_la_SOURCES      = nimf-m17n-ur.c nimf-m17n.h
+libnimf_m17n_ur_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ur_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ur_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ur_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_uz_la_SOURCES = nimf-m17n-uz.c nimf-m17n.h
-libnimf_m17n_uz_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_uz_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_uz_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_uz_la_SOURCES      = nimf-m17n-uz.c nimf-m17n.h
+libnimf_m17n_uz_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_uz_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_uz_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_uz_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_vi_la_SOURCES = nimf-m17n-vi.c nimf-m17n.h
-libnimf_m17n_vi_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_vi_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_vi_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_vi_la_SOURCES      = nimf-m17n-vi.c nimf-m17n.h
+libnimf_m17n_vi_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_vi_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_vi_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_vi_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_yi_la_SOURCES = nimf-m17n-yi.c nimf-m17n.h
-libnimf_m17n_yi_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_yi_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_yi_la_LIBADD  = $(NIMF_M17N_ADD)
+libnimf_m17n_yi_la_SOURCES      = nimf-m17n-yi.c nimf-m17n.h
+libnimf_m17n_yi_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_yi_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_yi_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_yi_la_DEPENDENCIES = libnimf-m17n.la
 
 check_PROGRAMS = test-nimf-m17n
 TESTS = $(check_PROGRAMS)
