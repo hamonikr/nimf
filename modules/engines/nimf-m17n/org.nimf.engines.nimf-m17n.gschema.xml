@@ -322,29 +322,6 @@
       <description>Input method</description>
     </key>
   </schema>
-  <schema id="org.nimf.engines.nimf-m17n-en"
-          path="/org/nimf/engines/nimf-m17n-en/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'English (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>The engine will be loaded on startup if available. Restart required</description>
-    </key>
-    <key type="as" name="trigger-keys">
-      <default>['']</default>
-      <summary>Trigger keys for switching English (m17n) / System</summary>
-      <description>Trigger keys for switching English (m17n) / System</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'en:ispell'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
   <schema id="org.nimf.engines.nimf-m17n-eo"
           path="/org/nimf/engines/nimf-m17n-eo/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">

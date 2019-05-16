@@ -155,9 +155,10 @@ test_nimf_m17n_available_languages ()
   {
     g_print ("Check if %s is exists.\n", (const gchar *) key);
 
-    if (!g_strcmp0 (key, "ja") ||
-        !g_strcmp0 (key, "zh") ||
-        !g_strcmp0 (key, "ko"))
+    if (!g_strcmp0 (key, "en") ||
+        !g_strcmp0 (key, "ja") ||
+        !g_strcmp0 (key, "ko") ||
+        !g_strcmp0 (key, "zh"))
       continue;
 
     g_assert_nonnull (g_hash_table_lookup (c_table, key));

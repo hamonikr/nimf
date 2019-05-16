@@ -17,7 +17,6 @@ module_LTLIBRARIES = \
 	libnimf-m17n-da.la \
 	libnimf-m17n-dv.la \
 	libnimf-m17n-el.la \
-	libnimf-m17n-en.la \
 	libnimf-m17n-eo.la \
 	libnimf-m17n-fa.la \
 	libnimf-m17n-fr.la \
@@ -154,11 +153,6 @@ libnimf_m17n_el_la_SOURCES = nimf-m17n-el.c nimf-m17n.h
 libnimf_m17n_el_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
 libnimf_m17n_el_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_el_la_LIBADD  = $(NIMF_M17N_ADD)
-
-libnimf_m17n_en_la_SOURCES = nimf-m17n-en.c nimf-m17n.h
-libnimf_m17n_en_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_en_la_LDFLAGS = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_en_la_LIBADD  = $(NIMF_M17N_ADD)
 
 libnimf_m17n_eo_la_SOURCES = nimf-m17n-eo.c nimf-m17n.h
 libnimf_m17n_eo_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
@@ -430,8 +424,6 @@ install-data-hook:
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-dv.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-el.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-el.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-en.so
-	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-en.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-eo.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-eo.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-fa.so
@@ -541,7 +533,6 @@ uninstall-hook:
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-da.so
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-dv.so
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-el.so
-	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-en.so
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-eo.so
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-fa.so
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-fr.so

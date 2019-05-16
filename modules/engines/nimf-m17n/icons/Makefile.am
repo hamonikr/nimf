@@ -16,7 +16,6 @@ status_scalable_icon_DATA = \
 	scalable/nimf-m17n-da.svg \
 	scalable/nimf-m17n-dv.svg \
 	scalable/nimf-m17n-el.svg \
-	scalable/nimf-m17n-en.svg \
 	scalable/nimf-m17n-eo.svg \
 	scalable/nimf-m17n-fa.svg \
 	scalable/nimf-m17n-fr.svg \
