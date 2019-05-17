@@ -16,6 +16,7 @@ BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
 BuildRequires: qt4-devel
 BuildRequires: qt5-qtbase-devel
+BuildRequires: qt5-qtbase-private-devel
 BuildRequires: libappindicator-gtk3-devel
 BuildRequires: librsvg2-tools
 BuildRequires: google-noto-cjk-fonts
