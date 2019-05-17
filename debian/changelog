@@ -1,3 +1,10 @@
+nimf (2019.05.17) stable; urgency=medium
+
+  * Added dependencies on m17n (>= 1.8.0)
+  * Removed nimf-m17n-en
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 17 May 2019 23:46:58 +0900
+
 nimf (2019.05.15) stable; urgency=medium
 
   * Redesign nimf-m17n

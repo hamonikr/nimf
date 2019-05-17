@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.05.15)
+AC_INIT(nimf, 2019.05.17)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -63,7 +63,7 @@ dnl nimf-libhangul  nimf-m17n  nimf-rime  nimf-system-keyboard
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_M17N_DEPS,      [m17n-shell          $LIBNIMF_REQUIRES])
+PKG_CHECK_MODULES(NIMF_M17N_DEPS,      [m17n-shell >= 1.8.0 m17n-db >= 1.8.0 $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_RIME_DEPS,      [rime >= 1.2.9       $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,
                                        [xkbcommon >= 0.5.0  $LIBNIMF_REQUIRES])
