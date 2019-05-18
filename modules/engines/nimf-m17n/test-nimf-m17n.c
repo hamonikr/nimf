@@ -23,9 +23,9 @@
 #include <m17n.h>
 #include "nimf-m17n.h"
 
-gint
-on_sort (gconstpointer a,
-         gconstpointer b)
+static gint
+on_sort_by_group (gconstpointer a,
+                  gconstpointer b)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -35,8 +35,20 @@ on_sort (gconstpointer a,
   return g_strcmp0 (info1->group, info2->group);
 }
 
+static gint
+on_sort_by_method_id (gconstpointer a,
+                      gconstpointer b)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  const NimfMethodInfo *info1 = *(NimfMethodInfo **) a;
+  const NimfMethodInfo *info2 = *(NimfMethodInfo **) b;
+
+  return g_strcmp0 (info1->method_id, info2->method_id);
+}
+
 /* This method is very slow */
-NimfMethodInfo **
+static NimfMethodInfo **
 nimf_m17n_get_method_infos (const gchar *lang_code)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -74,7 +86,7 @@ nimf_m17n_get_method_infos (const gchar *lang_code)
     }
   }
 
-  g_ptr_array_sort (array, on_sort);
+  g_ptr_array_sort (array, on_sort_by_group);
   g_ptr_array_add (array, NULL);
 
   m17n_object_unref (imlist);
@@ -83,7 +95,7 @@ nimf_m17n_get_method_infos (const gchar *lang_code)
   return (NimfMethodInfo **) g_ptr_array_free (array, FALSE);
 }
 
-void
+static void
 test_nimf_m17n_available_languages ()
 {
   NimfMethodInfo **infos;
@@ -171,7 +183,7 @@ test_nimf_m17n_available_languages ()
   nimf_method_info_freev (infos);
 }
 
-void
+static void
 test_nimf_m17n_available_method_infos ()
 {
   GDir *dir;
@@ -191,6 +203,8 @@ test_nimf_m17n_available_method_infos ()
       gchar           *path;
       gchar           *symname;
       gint             i;
+      GPtrArray       *array1;
+      GPtrArray       *array2;
 
       code = g_strndup (strlen ("libnimf-m17n-") + filename,
                         strlen (filename) - 3 - strlen ("libnimf-m17n-"));
@@ -204,6 +218,8 @@ test_nimf_m17n_available_method_infos ()
 
       infos1 = nimf_m17n_get_method_infos (code);
       infos2 = get_method_infos ();
+      array1 = g_ptr_array_new ();
+      array2 = g_ptr_array_new ();
 
       for (i = 0; ; i++)
       {
@@ -213,8 +229,26 @@ test_nimf_m17n_available_method_infos ()
           break;
         }
 
-        g_print ("Check %s\n", infos1[i]->method_id);
         g_assert_nonnull (infos2[i]);
+
+        g_ptr_array_add (array1, infos1[i]);
+        g_ptr_array_add (array2, infos2[i]);
+      }
+
+      g_ptr_array_sort (array1, on_sort_by_method_id);
+      g_ptr_array_sort (array2, on_sort_by_method_id);
+      g_ptr_array_add  (array1, NULL);
+      g_ptr_array_add  (array2, NULL);
+
+      g_free (infos1);
+      g_free (infos2);
+
+      infos1 = (NimfMethodInfo **) g_ptr_array_free (array1, FALSE);
+      infos2 = (NimfMethodInfo **) g_ptr_array_free (array2, FALSE);
+
+      for (i = 0; infos1[i]; i++)
+      {
+        g_print ("Check %s\n", infos1[i]->method_id);
         g_assert_cmpstr (infos1[i]->method_id, ==, infos2[i]->method_id);
         g_assert_cmpstr (infos1[i]->label,     ==, infos2[i]->label);
         g_assert_cmpstr (infos1[i]->group,     ==, infos2[i]->group);
