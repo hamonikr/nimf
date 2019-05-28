@@ -46,9 +46,13 @@ nimf_service_finalize (GObject *object)
 /**
  * nimf_service_get_id:
  * @service: a #NimfService
+ *
+ * Gets the ID of a @service.
+ *
+ * Returns: the ID of a service
  */
-const gchar
-*nimf_service_get_id (NimfService *service)
+const gchar *
+nimf_service_get_id (NimfService *service)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
