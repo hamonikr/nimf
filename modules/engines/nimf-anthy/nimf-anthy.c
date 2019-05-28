@@ -1586,6 +1586,7 @@ nimf_anthy_finalize (GObject *object)
 
   if (--nimf_anthy_ref_count == 0)
   {
+    nimf_anthy_romaji = NULL;
     anthy_release_context (anthy->context);
     anthy_quit ();
   }

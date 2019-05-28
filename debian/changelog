@@ -1,3 +1,10 @@
+nimf (2019.05.29) stable; urgency=medium
+
+  * nimf-anthy: Fixed a potential bug
+  * nimf-settings: Changed the XKB Options UI position
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 29 May 2019 08:47:12 +0900
+
 nimf (2019.05.17) stable; urgency=medium
 
   * Added dependencies on m17n (>= 1.8.0)
