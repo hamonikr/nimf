@@ -57,6 +57,11 @@ struct _NimfServerClass
   void (* engine_status_changed) (NimfServer  *server,
                                   const gchar *engine_id,
                                   const gchar *icon_name);
+  /*< private >*/
+  void (* load_engine)           (NimfServer  *server,
+                                  const gchar *engine_id);
+  void (* unload_engine)         (NimfServer  *server,
+                                  const gchar *engine_id);
 };
 
 GType            nimf_server_get_type              (void) G_GNUC_CONST;

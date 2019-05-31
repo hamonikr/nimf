@@ -310,6 +310,60 @@ on_combo_box_changed (GtkComboBox        *widget,
   g_free (id2);
 }
 
+gboolean
+on_finding (gconstpointer a,
+            gconstpointer b)
+{
+  return !g_strcmp0 (a, b);
+}
+
+static gboolean
+on_active_engine_state_set (GtkSwitch           *widget,
+                            gboolean             state,
+                            NimfSettingsPageKey *page_key)
+{
+  if (state != g_settings_get_boolean (page_key->gsettings, page_key->key))
+  {
+    const gchar *engine_id;
+    GPtrArray   *engine_ids;
+    GSettings   *settings;
+    gchar      **strv;
+    gint         i;
+
+    engine_ids = g_ptr_array_new ();
+    settings   = g_settings_new ("org.nimf");
+    engine_id  = gtk_widget_get_name (GTK_WIDGET (widget));
+    strv       = g_settings_get_strv (settings, "hidden-active-engines");
+
+    for (i = 0; strv[i]; i++)
+      g_ptr_array_add (engine_ids, strv[i]);
+
+    if (state)
+    {
+      if (!g_ptr_array_find_with_equal_func (engine_ids, engine_id, (GEqualFunc) on_finding, NULL))
+        g_ptr_array_add (engine_ids, g_strdup (engine_id));
+    }
+    else
+    {
+      guint index;
+      if (g_ptr_array_find_with_equal_func (engine_ids, engine_id, (GEqualFunc) on_finding, &index))
+        g_ptr_array_remove_index_fast (engine_ids, index);
+    }
+
+    g_free (strv);
+    g_ptr_array_add (engine_ids, NULL);
+    strv = (gchar **) g_ptr_array_free (engine_ids, FALSE);
+
+    g_settings_set_strv (settings, "hidden-active-engines", (const gchar *const *) strv);
+    g_settings_set_boolean (page_key->gsettings, page_key->key, state);
+
+    g_strfreev (strv);
+    g_object_unref (settings);
+  }
+
+  return FALSE;
+}
+
 static void
 on_notify_active (GtkSwitch           *widget,
                   GParamSpec          *pspec,
@@ -392,6 +446,9 @@ nimf_settings_page_key_build_boolean (NimfSettingsPageKey *page_key,
 
   g_signal_connect (gswitch, "notify::active",
                     G_CALLBACK (on_notify_active), page_key);
+  if (!g_strcmp0 (page_key->key, "active-engine"))
+    g_signal_connect (gswitch, "state-set",
+                      G_CALLBACK (on_active_engine_state_set), page_key);
   g_signal_connect (page_key->gsettings, detailed_signal,
                     G_CALLBACK (on_gsettings_changed), gswitch);
 

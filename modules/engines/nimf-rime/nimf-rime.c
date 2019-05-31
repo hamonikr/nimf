@@ -3,7 +3,7 @@
  * nimf-rime.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2018 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -396,8 +396,14 @@ nimf_rime_init (NimfRime *rime)
   if (nimf_rime_ref_count == 0)
   {
     gchar *user_data_dir;
+    static gboolean logging = FALSE;
 
-    RimeSetupLogging ("nimf-rime");
+    if (logging == FALSE)
+    {
+      RimeSetupLogging ("nimf-rime");
+      logging = TRUE;
+    }
+
     user_data_dir = g_strconcat (g_getenv ("HOME"), "/.config/nimf/rime", NULL);
 
     if (!g_file_test (user_data_dir, G_FILE_TEST_IS_DIR))

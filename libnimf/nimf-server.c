@@ -32,11 +32,13 @@
 enum {
   ENGINE_CHANGED,
   ENGINE_STATUS_CHANGED,
+  LOAD_ENGINE,
+  UNLOAD_ENGINE,
   LAST_SIGNAL
 };
 
 static guint nimf_server_signals[LAST_SIGNAL] = { 0 };
-static NimfServer *nimf_server = NULL;
+static NimfServer *_nimf_server_ = NULL;
 
 G_DEFINE_TYPE_WITH_PRIVATE (NimfServer, nimf_server, G_TYPE_OBJECT);
 
@@ -127,7 +129,7 @@ nimf_server_get_default ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return nimf_server;
+  return _nimf_server_;
 }
 
 /**
@@ -179,25 +181,20 @@ nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  nimf_server = server;
+  _nimf_server_ = server;
   server->priv = nimf_server_get_instance_private (server);
-
+  server->priv->ics = g_ptr_array_new ();
   server->priv->settings = g_settings_new ("org.nimf");
   server->priv->use_singleton = g_settings_get_boolean (server->priv->settings,
                                                         "use-singleton");
-  server->priv->trigger_gsettings = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                           g_free, g_object_unref);
-  server->priv->trigger_keys = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                      (GDestroyNotify) nimf_key_freev,
-                                                      g_free);
+  server->priv->trigger_settings = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                          g_free, g_object_unref);
+  server->priv->trigger_keys =
+    g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) nimf_key_freev);
+
   gchar **hotkeys = g_settings_get_strv (server->priv->settings, "hotkeys");
   server->priv->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
   g_strfreev (hotkeys);
-
-  g_signal_connect (server->priv->settings, "changed::hotkeys",
-                    G_CALLBACK (on_changed_hotkeys), server);
-  g_signal_connect (server->priv->settings, "changed::use-singleton",
-                    G_CALLBACK (on_use_singleton), server);
 
   server->priv->modules  = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                   g_free, NULL);
@@ -214,6 +211,8 @@ nimf_server_finalize (GObject *object)
   GHashTableIter  iter;
   gpointer        service;
 
+  g_ptr_array_free (server->priv->ics, FALSE);
+
   g_hash_table_iter_init (&iter, server->priv->services);
   while (g_hash_table_iter_next (&iter, NULL, &service))
     nimf_service_stop (NIMF_SERVICE (service));
@@ -228,7 +227,7 @@ nimf_server_finalize (GObject *object)
   }
 
   g_object_unref     (server->priv->settings);
-  g_hash_table_unref (server->priv->trigger_gsettings);
+  g_hash_table_unref (server->priv->trigger_settings);
   g_hash_table_unref (server->priv->trigger_keys);
   nimf_key_freev     (server->priv->hotkeys);
 
@@ -279,6 +278,26 @@ nimf_server_class_init (NimfServerClass *class)
                   nimf_cclosure_marshal_VOID__STRING_STRING,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
+                  G_TYPE_STRING);
+
+  nimf_server_signals[LOAD_ENGINE] =
+    g_signal_new (g_intern_static_string ("load-engine"),
+                  G_TYPE_FROM_CLASS (class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (NimfServerClass, load_engine),
+                  NULL, NULL,
+                  nimf_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
+
+  nimf_server_signals[UNLOAD_ENGINE] =
+    g_signal_new (g_intern_static_string ("unload-engine"),
+                  G_TYPE_FROM_CLASS (class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (NimfServerClass, unload_engine),
+                  NULL, NULL,
+                  nimf_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
                   G_TYPE_STRING);
 }
 
@@ -474,25 +493,20 @@ on_changed_trigger_keys (GSettings  *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  GHashTableIter iter;
-  gpointer       engine_id;
-  gpointer       gsettings;
+  const gchar *engine_id;
+  gchar       *schema_id;
+  NimfKey    **trigger_keys;
+  gchar      **keys;
 
-  g_hash_table_remove_all (server->priv->trigger_keys);
+  g_object_get (settings, "schema-id", &schema_id, NULL);
+  engine_id = schema_id + strlen ("org.nimf.engines.");
+  keys = g_settings_get_strv (settings, "trigger-keys");
+  trigger_keys = nimf_key_newv ((const gchar **) keys);
+  g_hash_table_insert (server->priv->trigger_keys,
+                       g_strdup (engine_id), trigger_keys);
 
-  g_hash_table_iter_init (&iter, server->priv->trigger_gsettings);
-
-  while (g_hash_table_iter_next (&iter, &engine_id, &gsettings))
-  {
-    NimfKey **trigger_keys;
-    gchar   **strv;
-
-    strv = g_settings_get_strv (gsettings, "trigger-keys");
-    trigger_keys = nimf_key_newv ((const gchar **) strv);
-    g_hash_table_insert (server->priv->trigger_keys,
-                         trigger_keys, g_strdup (engine_id));
-    g_strfreev (strv);
-  }
+  g_strfreev (keys);
+  g_free (schema_id);
 }
 
 static void
@@ -502,8 +516,11 @@ nimf_server_load_engines (NimfServer *server)
 
   GSettingsSchemaSource  *source; /* do not free */
   gchar                 **schema_ids;
+  GPtrArray              *engine_ids;
+  gchar                 **active_engines;
   gint                    i;
 
+  engine_ids = g_ptr_array_new ();
   source = g_settings_schema_source_get_default ();
   g_settings_schema_source_list_schemas (source, TRUE, &schema_ids, NULL);
 
@@ -544,25 +561,26 @@ nimf_server_load_engines (NimfServer *server)
           continue;
         }
 
-        g_hash_table_insert (server->priv->modules, g_strdup (path), module);
+        g_hash_table_insert (server->priv->modules, g_strdup (engine_id), module);
         engine = g_object_new (module->type, NULL);
-        server->priv->engines = g_list_prepend (server->priv->engines, engine);
         g_type_module_unuse (G_TYPE_MODULE (module));
+        server->priv->engines = g_list_prepend (server->priv->engines, engine);
+        g_ptr_array_add (engine_ids, g_strdup (engine_id));
 
         if (g_settings_schema_has_key (schema, "trigger-keys"))
         {
           NimfKey **trigger_keys;
-          gchar   **strv;
+          gchar   **keys;
 
-          strv = g_settings_get_strv (settings, "trigger-keys");
-          trigger_keys = nimf_key_newv ((const gchar **) strv);
+          keys = g_settings_get_strv (settings, "trigger-keys");
+          trigger_keys = nimf_key_newv ((const gchar **) keys);
           g_hash_table_insert (server->priv->trigger_keys,
-                               trigger_keys, g_strdup (engine_id));
-          g_hash_table_insert (server->priv->trigger_gsettings,
+                               g_strdup (engine_id), trigger_keys);
+          g_hash_table_insert (server->priv->trigger_settings,
                                g_strdup (engine_id), settings);
           g_signal_connect (settings, "changed::trigger-keys",
                             G_CALLBACK (on_changed_trigger_keys), server);
-          g_strfreev (strv);
+          g_strfreev (keys);
         }
 
         g_free (path);
@@ -573,6 +591,140 @@ nimf_server_load_engines (NimfServer *server)
   }
 
   g_strfreev (schema_ids);
+  g_ptr_array_add (engine_ids, NULL);
+  active_engines = (gchar **) g_ptr_array_free (engine_ids, FALSE);
+  g_settings_set_strv (server->priv->settings, "hidden-active-engines",
+                       (const gchar *const *) active_engines);
+  g_strfreev (active_engines);
+}
+
+extern void
+nimf_service_ic_load_engine (NimfServiceIC *ic,
+                             const gchar   *engine_id,
+                             NimfServer    *server);
+extern void
+nimf_service_ic_unload_engine (NimfServiceIC *ic,
+                               const gchar   *engine_id,
+                               NimfEngine    *signleton_engine_to_be_deleted,
+                               NimfServer    *server);
+
+static void
+on_changed_active_engines (GSettings  *settings,
+                           gchar      *key,
+                           NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GSettingsSchemaSource *source;
+  gchar **engine_ids;
+  gint    i;
+
+  source = g_settings_schema_source_get_default ();
+  engine_ids = g_settings_get_strv (settings, key);
+
+  for (i = 0; engine_ids[i]; i++)
+  {
+    if (!nimf_server_get_engine_by_id (server, engine_ids[i]))
+    {
+      GSettingsSchema *schema;
+      gchar      *schema_id;
+      NimfEngine *engine;
+      NimfServer *server = nimf_server_get_default ();
+      NimfModule *module = g_hash_table_lookup (server->priv->modules, engine_ids[i]);
+      gint        index;
+
+      if (!module)
+      {
+        gchar *path;
+
+        path = g_module_build_path (NIMF_MODULE_DIR, engine_ids[i]);
+        module = nimf_module_new (path);
+
+        if (!g_type_module_use (G_TYPE_MODULE (module)))
+        {
+          g_warning (G_STRLOC ": Failed to load module: %s", path);
+
+          g_object_unref (module);
+          g_free (path);
+
+          return;
+        }
+
+        g_free (path);
+        g_hash_table_insert (server->priv->modules, g_strdup (engine_ids[i]), module);
+      }
+
+      g_type_module_use (G_TYPE_MODULE (module));
+      engine = g_object_new (module->type, NULL);
+      g_type_module_unuse (G_TYPE_MODULE (module));
+
+      server->priv->engines = g_list_prepend (server->priv->engines, engine);
+
+      for (index = 0; index < server->priv->ics->len; index++)
+      {
+        NimfServiceIC *ic = g_ptr_array_index (server->priv->ics, index);
+        nimf_service_ic_load_engine (ic, engine_ids[i], server);
+      }
+
+      schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
+      schema = g_settings_schema_source_lookup (source, schema_id, TRUE);
+
+      if (g_settings_schema_has_key (schema, "trigger-keys"))
+      {
+        GSettings  *engine_settings;
+        NimfKey   **trigger_keys;
+        gchar     **keys;
+
+        engine_settings = g_settings_new (schema_id);
+        keys = g_settings_get_strv (engine_settings, "trigger-keys");
+        trigger_keys = nimf_key_newv ((const gchar **) keys);
+        g_hash_table_insert (server->priv->trigger_keys,
+                             g_strdup (engine_ids[i]), trigger_keys);
+        g_hash_table_insert (server->priv->trigger_settings,
+                             g_strdup (engine_ids[i]), engine_settings);
+        g_signal_connect (engine_settings, "changed::trigger-keys",
+                          G_CALLBACK (on_changed_trigger_keys), server);
+        g_strfreev (keys);
+      }
+
+      g_signal_emit_by_name (server, "load-engine", engine_ids[i]);
+
+      g_free (schema_id);
+      g_settings_schema_unref (schema);
+    }
+  }
+
+  GList *l = server->priv->engines;
+
+  while (l != NULL)
+  {
+    const gchar *engine_id = nimf_engine_get_id (l->data);
+    GList       *next      = l->next;
+
+    if (g_strcmp0 (engine_id, "nimf-system-keyboard") &&
+        !g_strv_contains ((const gchar * const *) engine_ids, engine_id))
+    {
+      NimfEngine *engine = l->data;
+      gint        index;
+
+      g_hash_table_remove (server->priv->trigger_keys,     engine_id);
+      g_hash_table_remove (server->priv->trigger_settings, engine_id);
+      server->priv->engines = g_list_delete_link (server->priv->engines, l);
+
+      for (index = 0; index < server->priv->ics->len; index++)
+      {
+        NimfServiceIC *ic = g_ptr_array_index (server->priv->ics, index);
+        nimf_service_ic_unload_engine (ic, engine_id, engine, server);
+      }
+
+      g_signal_emit_by_name (server, "unload-engine", engine_id);
+      g_object_unref (engine);
+    }
+
+    l = next;
+  }
+
+  g_strfreev (engine_ids);
 }
 
 gboolean
@@ -609,5 +761,11 @@ nimf_server_start (NimfServer *server)
       g_hash_table_iter_remove (&iter);
   }
 
+  g_signal_connect (server->priv->settings, "changed::hotkeys",
+                    G_CALLBACK (on_changed_hotkeys), server);
+  g_signal_connect (server->priv->settings, "changed::use-singleton",
+                    G_CALLBACK (on_use_singleton), server);
+  g_signal_connect (server->priv->settings, "changed::hidden-active-engines",
+                    G_CALLBACK (on_changed_active_engines), server);
   return TRUE;
 }

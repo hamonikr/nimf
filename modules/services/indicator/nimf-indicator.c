@@ -51,8 +51,8 @@ struct _NimfIndicator
   AppIndicator *appindicator;
   gchar        *engine_id;
   guint         watcher_id;
-  GtkWidget    *about;
   XklEngine    *xklengine;
+  GMenu        *menu;
 };
 
 GType nimf_indicator_get_type (void) G_GNUC_CONST;
@@ -60,15 +60,16 @@ GType nimf_indicator_get_type (void) G_GNUC_CONST;
 G_DEFINE_DYNAMIC_TYPE (NimfIndicator, nimf_indicator, NIMF_TYPE_SERVICE);
 
 static void
-on_menu_engine (GtkMenuItem *menuitem,
-                gpointer     server)
+on_menu_engine (GSimpleAction *action,
+                GVariant      *parameter,
+                gpointer       server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   const gchar *engine_method;
   gchar **strv;
 
-  engine_method = gtk_widget_get_name (GTK_WIDGET (menuitem));
+  engine_method = g_variant_get_string (parameter, NULL);
   strv = g_strsplit (engine_method, ",", -1);
 
   if (g_strv_length (strv) == 1)
@@ -80,8 +81,9 @@ on_menu_engine (GtkMenuItem *menuitem,
 }
 
 static void
-on_menu_settings (GtkMenuItem *menuitem,
-                  gpointer     user_data)
+on_menu_settings (GSimpleAction *action,
+                  GVariant      *parameter,
+                  gpointer       user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
@@ -89,14 +91,15 @@ on_menu_settings (GtkMenuItem *menuitem,
 }
 
 static void
-on_menu_about (GtkMenuItem *menuitem,
-               gpointer     user_data)
+on_menu_about (GSimpleAction *action,
+               GVariant      *parameter,
+               gpointer       user_data)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfIndicator *indicator = NIMF_INDICATOR (user_data);
+  static GtkWidget *about = NULL;
 
-  if (!indicator->about)
+  if (!about)
   {
     GtkWidget *parent;
 
@@ -106,12 +109,11 @@ on_menu_about (GtkMenuItem *menuitem,
                             _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
 
     parent = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    indicator->about  = gtk_about_dialog_new ();
-    gtk_window_set_transient_for (GTK_WINDOW (indicator->about),
-                                  GTK_WINDOW (parent));
-    gtk_window_set_destroy_with_parent (GTK_WINDOW (indicator->about), TRUE);
-    gtk_window_set_icon_name (GTK_WINDOW (indicator->about), "nimf-logo");
-    g_object_set (indicator->about,
+    about  = gtk_about_dialog_new ();
+    gtk_window_set_transient_for (GTK_WINDOW (about), GTK_WINDOW (parent));
+    gtk_window_set_destroy_with_parent (GTK_WINDOW (about), TRUE);
+    gtk_window_set_icon_name (GTK_WINDOW (about), "nimf-logo");
+    g_object_set (about,
       "artists",            artists,
       "authors",            authors,
       "comments",           _("Nimf is an input method framework"),
@@ -126,16 +128,22 @@ on_menu_about (GtkMenuItem *menuitem,
       "website-label",      _("Website"),
       NULL);
 
-    gtk_dialog_run (GTK_DIALOG (indicator->about));
+    gtk_dialog_run (GTK_DIALOG (about));
 
     gtk_widget_destroy (parent);
-    indicator->about = NULL;
+    about = NULL;
   }
   else
   {
-    gtk_window_present (GTK_WINDOW (indicator->about));
+    gtk_window_present (GTK_WINDOW (about));
   }
 }
+
+const GActionEntry entries[] = {
+  { "engine",   on_menu_engine,   "s",  NULL, NULL },
+  { "settings", on_menu_settings, NULL, NULL, NULL },
+  { "about",    on_menu_about,    NULL, NULL, NULL }
+};
 
 static void on_engine_changed (NimfServer    *server,
                                const gchar   *engine_id,
@@ -178,36 +186,21 @@ static gboolean nimf_indicator_is_active (NimfService *service)
   return NIMF_INDICATOR (service)->active;
 }
 
-static void
-on_name_appeared (GDBusConnection *connection,
-                  const gchar     *name,
-                  const gchar     *name_owner,
-                  gpointer         user_data)
+static GMenu *
+nimf_indicator_build_section1 (NimfIndicator *indicator,
+                               NimfServer    *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfIndicator *indicator = user_data;
+  gchar **engine_ids;
+  guint   i;
 
-  if (!gtk_init_check (NULL, NULL))
-    return;
-
-  /* menu */
-  GtkWidget *menu;
-
-  menu = gtk_menu_new ();
-
-  GtkWidget  *separator;
-  GtkWidget  *settings_menu;
-  GtkWidget  *about_menu;
-  gchar     **engine_ids;
-  guint       i;
-  NimfServer *server = nimf_server_get_default ();
-
+  GMenu *section1 = g_menu_new ();
   engine_ids = nimf_server_get_loaded_engine_ids (server);
 
-  for (i = 0; engine_ids != NULL && engine_ids[i] != NULL; i++)
+  for (i = 0; engine_ids && engine_ids[i]; i++)
   {
-    GtkWidget *engine_menu;
+    GMenuItem *engine_menu;
     GSettings *settings;
     gchar     *schema_id;
     gchar     *schema_name;
@@ -232,56 +225,67 @@ on_name_appeared (GDBusConnection *connection,
 
     if (g_module_symbol (module, symbol_name, (gpointer *) &get_method_infos))
     {
-      GtkWidget *submenu1 = gtk_menu_new ();
-      engine_menu = gtk_menu_item_new_with_label (schema_name);
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (engine_menu), submenu1);
+      GMenu           *submenu1;
+      NimfMethodInfo **infos;
+      const char      *prev_group = NULL;
+      gboolean         gnome;
+      gint             j;
 
-      NimfMethodInfo **infos = get_method_infos ();
-      const char *prev_group = NULL;
-      GtkWidget  *submenu2   = NULL;
-      gchar      *engine_method;
-      gboolean    gnome;
-      gint        j;
-
+      infos = get_method_infos ();
+      submenu1 = g_menu_new ();
+      engine_menu = g_menu_item_new (schema_name, "indicator.engine");
+      g_menu_item_set_submenu (engine_menu, G_MENU_MODEL (submenu1));
       gnome = g_str_has_suffix (g_getenv ("XDG_CURRENT_DESKTOP"), "GNOME");
 
       for (j = 0; infos[j]; j++)
       {
+        GMenu     *submenu2 = NULL;
+        GMenuItem *menu_item;
+        gchar     *engine_method;
+
         if (!gnome && infos[j]->group && g_strcmp0 (infos[j]->group, prev_group))
         {
-          submenu2 = gtk_menu_new ();
-          GtkWidget *lang_menu = gtk_menu_item_new_with_label (infos[j]->group);
-          gtk_menu_item_set_submenu (GTK_MENU_ITEM (lang_menu), submenu2);
-          gtk_menu_shell_append (GTK_MENU_SHELL (submenu1), lang_menu);
+          GMenuItem *lang_menu;
+
+          submenu2 = g_menu_new ();
+          lang_menu = g_menu_item_new (infos[j]->group, NULL);
+          g_menu_item_set_submenu (lang_menu, G_MENU_MODEL (submenu2));
+          g_menu_append_item (submenu1, lang_menu);
+
+          g_object_unref (lang_menu);
         }
 
-        GtkWidget *menu_item = gtk_menu_item_new_with_label (infos[j]->label);
+        menu_item = g_menu_item_new (infos[j]->label, "indicator.engine");
         engine_method = g_strjoin (",", engine_ids[i], infos[j]->method_id, NULL);
-        gtk_widget_set_name (menu_item, engine_method);
-        g_free (engine_method);
-        g_signal_connect (menu_item, "activate",
-                          G_CALLBACK (on_menu_engine), server);
+        g_menu_item_set_attribute (menu_item, G_MENU_ATTRIBUTE_TARGET, "s", engine_method);
 
         if (!gnome && infos[j]->group)
-          gtk_menu_shell_append (GTK_MENU_SHELL (submenu2), menu_item);
+          g_menu_append_item (submenu2, menu_item);
         else
-          gtk_menu_shell_append (GTK_MENU_SHELL (submenu1), menu_item);
+          g_menu_append_item (submenu1, menu_item);
 
         prev_group = infos[j]->group;
+
+        g_object_unref (menu_item);
+
+        if (submenu2)
+          g_object_unref (submenu2);
+
+        g_free (engine_method);
       }
 
       nimf_method_info_freev (infos);
+      g_object_unref (submenu1);
     }
     else
     {
-      engine_menu = gtk_menu_item_new_with_label (schema_name);
-      gtk_widget_set_name (engine_menu, engine_ids[i]);
-      g_signal_connect (engine_menu, "activate",
-                        G_CALLBACK (on_menu_engine), server);
+      engine_menu = g_menu_item_new (schema_name, "indicator.engine");
+      g_menu_item_set_attribute (engine_menu, G_MENU_ATTRIBUTE_TARGET, "s", engine_ids[i]);
     }
 
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), engine_menu);
+    g_menu_append_item (section1, engine_menu);
 
+    g_object_unref (engine_menu);
     g_free (symbol_name);
     g_module_close (module);
     g_free (path);
@@ -290,23 +294,115 @@ on_name_appeared (GDBusConnection *connection,
     g_object_unref (settings);
   }
 
-  separator     = gtk_separator_menu_item_new ();
-  settings_menu = gtk_menu_item_new_with_label (_("Settings"));
-  about_menu    = gtk_menu_item_new_with_label (_("About"));
-
-
-  g_signal_connect (settings_menu, "activate",
-                    G_CALLBACK (on_menu_settings), NULL);
-  g_signal_connect (about_menu, "activate",
-                    G_CALLBACK (on_menu_about), indicator);
-
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), settings_menu);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), about_menu);
-
-  gtk_widget_show_all (menu);
-
   g_strfreev (engine_ids);
+
+  return section1;
+}
+
+static GtkMenu*
+nimf_indicator_build_menu (NimfIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (!gtk_init_check (NULL, NULL))
+    return NULL;
+
+  /* menu */
+  GtkWidget          *gtk_menu;
+  GMenu              *section1;
+  GMenu              *section2;
+  GMenuItem          *settings_menu;
+  GMenuItem          *about_menu;
+  GIcon              *settings_icon;
+  GIcon              *about_icon;
+  GSimpleActionGroup *actions;
+
+  indicator->menu = g_menu_new ();
+  gtk_menu = gtk_menu_new_from_model (G_MENU_MODEL (indicator->menu));
+  actions  = g_simple_action_group_new ();
+
+  NimfServer *server = nimf_server_get_default ();
+  g_action_map_add_action_entries (G_ACTION_MAP (actions), entries, G_N_ELEMENTS (entries), server);
+  gtk_widget_insert_action_group (gtk_menu, "indicator", G_ACTION_GROUP (actions));
+
+  section1 = nimf_indicator_build_section1 (indicator, server);
+  section2 = g_menu_new ();
+  settings_menu = g_menu_item_new (_("Settings"), "indicator.settings");
+  about_menu    = g_menu_item_new (_("About"),    "indicator.about");
+
+  settings_icon = g_icon_new_for_string ("preferences-system", NULL);
+  about_icon    = g_icon_new_for_string ("help-about", NULL);
+
+  g_menu_item_set_icon (settings_menu, settings_icon);
+  g_menu_item_set_icon (about_menu, about_icon);
+
+  g_menu_append_item (section2, settings_menu);
+  g_menu_append_item (section2, about_menu);
+
+  g_menu_append_section (indicator->menu, NULL, G_MENU_MODEL (section1));
+  g_menu_append_section (indicator->menu, NULL, G_MENU_MODEL (section2));
+
+  g_object_unref (section1);
+  g_object_unref (section2);
+  g_object_unref (settings_icon);
+  g_object_unref (about_icon);
+  g_object_unref (settings_menu);
+  g_object_unref (about_menu);
+  g_object_unref (actions);
+
+  gtk_widget_show_all (gtk_menu);
+
+  return GTK_MENU (gtk_menu);
+}
+
+static void
+nimf_indicator_update_menu (NimfIndicator *indicator,
+                            NimfServer    *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GMenu *section1;
+
+  section1 = nimf_indicator_build_section1 (indicator, server);
+  g_menu_remove (indicator->menu, 0);
+  g_menu_prepend_section (indicator->menu, NULL, G_MENU_MODEL (section1));
+
+  g_object_unref (section1);
+}
+
+static void
+on_load_engine (NimfServer    *server,
+                const gchar   *engine_id,
+                NimfIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_indicator_update_menu (indicator, server);
+}
+
+static void
+on_unload_engine (NimfServer    *server,
+                  const gchar   *engine_id,
+                  NimfIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_indicator_update_menu (indicator, server);
+}
+
+static void
+on_name_appeared (GDBusConnection *connection,
+                  const gchar     *name,
+                  const gchar     *name_owner,
+                  gpointer         user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfIndicator *indicator = user_data;
+
+  GtkMenu    *gtk_menu = nimf_indicator_build_menu (indicator);
+  NimfServer *server   = nimf_server_get_default ();
+
   g_bus_unwatch_name (indicator->watcher_id);
   indicator->watcher_id = 0;
 
@@ -317,12 +413,16 @@ on_name_appeared (GDBusConnection *connection,
                             APP_INDICATOR_STATUS_ACTIVE);
   app_indicator_set_icon_full (indicator->appindicator,
                                "nimf-focus-out", "Nimf");
-  app_indicator_set_menu (indicator->appindicator, GTK_MENU (menu));
+  app_indicator_set_menu (indicator->appindicator, gtk_menu);
 
   g_signal_connect (server, "engine-changed",
                     G_CALLBACK (on_engine_changed), indicator);
   g_signal_connect (server, "engine-status-changed",
                     G_CALLBACK (on_engine_status_changed), indicator);
+  g_signal_connect (server, "load-engine",
+                    G_CALLBACK (on_load_engine), indicator);
+  g_signal_connect (server, "unload-engine",
+                    G_CALLBACK (on_unload_engine), indicator);
 
   /* activate xkb options */
   XklConfigRec *rec;
@@ -384,7 +484,13 @@ static void nimf_indicator_stop (NimfService *service)
   }
 
   if (indicator->appindicator)
+  {
+    g_signal_handlers_disconnect_by_data (nimf_server_get_default (), indicator);
     g_object_unref (indicator->appindicator);
+  }
+
+  if (indicator->menu)
+    g_object_unref (indicator->menu);
 
   indicator->active = FALSE;
 }

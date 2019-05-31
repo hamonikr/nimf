@@ -10,7 +10,7 @@
     <key type="b" name="active-engine">
       <default>true</default>
       <summary>Active engine</summary>
-      <description>The engine will be loaded on startup if available. Restart required</description>
+      <description>Active engine</description>
     </key>
     <key type="as" name="trigger-keys">
       <default>['&lt;Control&gt; &lt;Mod1&gt; r']</default>

@@ -36,9 +36,10 @@ struct _NimfServerPrivate
   const gchar   *last_focused_service;
   GSettings     *settings;
   NimfKey      **hotkeys;
-  GHashTable    *trigger_gsettings;
+  GHashTable    *trigger_settings;
   GHashTable    *trigger_keys;
   gboolean       use_singleton;
+  GPtrArray     *ics;
   /* facilities */
   NimfCandidatable *candidatable;
   NimfPreeditable  *preeditable;
