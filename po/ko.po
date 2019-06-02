@@ -1,15 +1,15 @@
-# Korean translation for Nimf
-# Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
-# This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2019.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-15 22:33+0900\n"
-"PO-Revision-Date: 2019-03-15 22:40+0900\n"
+"POT-Creation-Date: 2019-05-31 23:47+0900\n"
+"PO-Revision-Date: 2019-06-01 23:26+0900\n"
 "Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
@@ -18,68 +18,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf/nimf.c:395
+#: ../bin/nimf/nimf.c:216
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../bin/nimf/nimf.c:396
+#: ../bin/nimf/nimf.c:217
 msgid "Version"
 msgstr "버전"
 
-#: ../bin/nimf-settings/nimf-settings.c:531
+#: ../bin/nimf-settings/nimf-settings.c:658
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "버그를 제보해 주세요. (keyval: %d)"
 
-#: ../bin/nimf-settings/nimf-settings.c:592
+#: ../bin/nimf-settings/nimf-settings.c:719
 msgid "Press key combination"
 msgstr "키 조합을 누르세요"
 
-#: ../bin/nimf-settings/nimf-settings.c:595
+#: ../bin/nimf-settings/nimf-settings.c:722
 msgid "_OK"
 msgstr "예 (_O)"
 
-#: ../bin/nimf-settings/nimf-settings.c:596
+#: ../bin/nimf-settings/nimf-settings.c:723
 msgid "_Cancel"
 msgstr "취소 (_C)"
 
-#: ../bin/nimf-settings/nimf-settings.c:608
+#: ../bin/nimf-settings/nimf-settings.c:735
 msgid "Click here and then press key combination"
 msgstr "여기를 클릭한 후 키 조합을 누르세요"
 
-#: ../bin/nimf-settings/nimf-settings.c:971
+#: ../bin/nimf-settings/nimf-settings.c:1098
 msgid "Default"
 msgstr "기본값"
 
-#: ../bin/nimf-settings/nimf-settings.c:994
+#: ../bin/nimf-settings/nimf-settings.c:1145
+msgid "    XKB Options"
+msgstr "    XKB 옵션"
+
+#: ../bin/nimf-settings/nimf-settings.c:1161
 #: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
 #: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "님프 설정"
 
-#: ../bin/nimf-settings/nimf-settings.c:1063
-msgid "XKB Options"
-msgstr "XKB 옵션"
-
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:553
-#: ../modules/services/indicator/nimf-indicator.c:117
+#: ../modules/services/indicator/nimf-indicator.c:124
 msgid "Nimf"
 msgstr "님프"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1667
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1674
 msgid "Romaji"
 msgstr "로마지"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1668
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1675
 msgid "English Keyboard (pc104)"
 msgstr "영문 키보드 (pc104)"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1696
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1703
 msgid "Common practice"
 msgstr "일반적인 관행"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1697
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1704
 msgid "Explicitly type nn"
 msgstr "명시적으로 nn을 누릅니다"
 
@@ -119,298 +119,41 @@ msgstr "로마자"
 msgid "Ahnmatae"
 msgstr "안마태"
 
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:689
-msgid "Amharic"
-msgstr "암하라어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:690
-msgid "Arabic"
-msgstr "아랍어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:691
-msgid "Assamese"
-msgstr "아삼어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:692
-msgid "Athabaskan languages"
-msgstr "아타바스카어족"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:693
-msgid "Belarusian"
-msgstr "벨라루스어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:694
-msgid "Siksika"
-msgstr "식시카어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:695
-msgid "Bengali"
-msgstr "벵골어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:696
-msgid "Tibetan"
-msgstr "티베트어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:697
-msgid "Chamic Languages"
-msgstr "참어족"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:698
-msgid "Cree"
-msgstr "크리어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:699
-msgid "Czech"
-msgstr "체코어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:700
-msgid "Danish"
-msgstr "덴마크어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:701
-msgid "Divehi"
-msgstr "디베히어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:702
-msgid "Greek"
-msgstr "그리스어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:703
-msgid "English"
-msgstr "영어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:704
-msgid "Esperanto"
-msgstr "에스페란토어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:705
-msgid "Persian"
-msgstr "페르시아어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:706
-msgid "French"
-msgstr "프랑스어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:707
-msgid "Ancient Greek"
-msgstr "고대 그리스어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:708
-msgid "Gujarati"
-msgstr "구자라트어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:709
-msgid "Hebrew"
-msgstr "히브리어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:710
-msgid "Hindi"
-msgstr "힌디어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:711
-msgid "Croatian"
-msgstr "크로아티아어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:712
-msgid "Hungarian"
-msgstr "헝가리어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:713
-msgid "Armenian"
-msgstr "아르메니아어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:714
-msgid "Sichuan Yi"
-msgstr "사천이"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:715
-msgid "Inuktitut"
-msgstr "이누이트어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:716
-msgid "Japanese"
-msgstr "일본어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:717
-msgid "Georgian"
-msgstr "그루지야어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:718
-msgid "Kazakh"
-msgstr "카자흐어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:719
-msgid "Khmer"
-msgstr "크메르어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:720
-msgid "Kannada"
-msgstr "칸나다어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:721
-msgid "Korean"
-msgstr "한국어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:722
-msgid "Kashmiri"
-msgstr "카슈미르어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:723
-msgid "Lao"
-msgstr "라오어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:724
-msgid "Maithili"
-msgstr "마이틸리"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:725
-msgid "Malayalam"
-msgstr "말라얄람어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:726
-msgid "Marathi"
-msgstr "마라타어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:727
-msgid "Burmese"
-msgstr "버마어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:728
-msgid "Nepali"
-msgstr "네팔어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:729
-msgid "Naskapi language"
-msgstr "나스카피어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:730
-msgid "Ojibwa"
-msgstr "오지브와어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:731
-msgid "Oriya"
-msgstr "오리야어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:732
-msgid "Punjabi"
-msgstr "펀자브어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:733
-msgid "Pushto"
-msgstr "파슈토어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:734
-msgid "Russian"
-msgstr "러시아어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:735
-msgid "Sanskrit"
-msgstr "산스크리트어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:736
-msgid "Sindhi"
-msgstr "신드어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:737
-msgid "Sinhalese"
-msgstr "신할라어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:738
-msgid "Slovak"
-msgstr "슬로바키아어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:739
-msgid "Serbian"
-msgstr "세르비아어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:740
-msgid "Swedish"
-msgstr "스웨덴어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:741
-msgid "Tai Viet"
-msgstr "타이 베트"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:742
-msgid "Tamil"
-msgstr "타밀어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:743
-msgid "Telugu"
-msgstr "텔루구어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:744
-msgid "Thai"
-msgstr "타이어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:745
-msgid "Etc"
-msgstr "기타"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:746
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:748
-msgid "Ukrainian"
-msgstr "우크라이나어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:747
-msgid "Uighur"
-msgstr "위구르어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:749
-msgid "Urdu"
-msgstr "우르두어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:750
-msgid "Uzbek"
-msgstr "우즈베크어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:751
-msgid "Vietnamese"
-msgstr "베트남어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:752
-msgid "Yiddish"
-msgstr "이디시어"
-
-#: ../modules/engines/nimf-m17n/nimf-m17n.c:753
-msgid "Chinese"
-msgstr "중국어"
-
-#: ../modules/engines/nimf-rime/nimf-rime.c:410
+#: ../modules/engines/nimf-rime/nimf-rime.c:416
 msgid "Rime"
 msgstr "라임"
 
-#: ../modules/services/indicator/nimf-indicator.c:98
-#: ../modules/services/indicator/nimf-indicator.c:99
-#: ../modules/services/indicator/nimf-indicator.c:100
+#: ../modules/services/indicator/nimf-indicator.c:106
+#: ../modules/services/indicator/nimf-indicator.c:107
+#: ../modules/services/indicator/nimf-indicator.c:108
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:101
+#: ../modules/services/indicator/nimf-indicator.c:109
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr "김범식 <k.bumsik@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:112
+#: ../modules/services/indicator/nimf-indicator.c:119
 msgid "Nimf is an input method framework"
 msgstr "님프는 입력 방법 프레임워크입니다"
 
-#: ../modules/services/indicator/nimf-indicator.c:113
+#: ../modules/services/indicator/nimf-indicator.c:120
 msgid "Copyright (c) 2015-2019 Hodong Kim"
 msgstr "저작권 (c) 2015-2019 김호동"
 
-#: ../modules/services/indicator/nimf-indicator.c:118
+#: ../modules/services/indicator/nimf-indicator.c:125
 msgid "Hodong Kim, Max Neupert"
 msgstr "김호동, Max Neupert"
 
-#: ../modules/services/indicator/nimf-indicator.c:121
+#: ../modules/services/indicator/nimf-indicator.c:128
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:283
+#: ../modules/services/indicator/nimf-indicator.c:330
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:284
+#: ../modules/services/indicator/nimf-indicator.c:331
 msgid "About"
 msgstr "정보"
 
@@ -447,36 +190,44 @@ msgid "This key is intended for nimf-settings."
 msgstr "이 키는 nimf-settings 를 위해 고안되었습니다."
 
 #: ../libnimf/org.nimf.gschema.xml.h:4
-msgid "Hotkeys for switching input method engine"
-msgstr "입력 엔진을 전환하기 위한 핫키"
+msgid "Hotkeys for rotating input method engines"
+msgstr "입력 엔진을 회전시키기 위한 핫키"
 
 #: ../libnimf/org.nimf.gschema.xml.h:5
+msgid "active engines"
+msgstr "활성된 엔진"
+
+#: ../libnimf/org.nimf.gschema.xml.h:6
+msgid "DO NOT EDIT MANUALLY"
+msgstr "수작업으로 편집하지 마세요"
+
+#: ../libnimf/org.nimf.gschema.xml.h:7
 msgid "Use singleton mode"
 msgstr "싱글톤 모드를 사용합니다"
 
-#: ../libnimf/org.nimf.gschema.xml.h:6
+#: ../libnimf/org.nimf.gschema.xml.h:8
 msgid ""
 "Create one instance per language engine. Singleton mode reduces memory usage."
 msgstr "언어 엔진 당 하나의 인스턴스를 만듭니다. 싱글톤 모드는 메모리 "
 "사용량을 감소시킵니다."
 
-#: ../libnimf/org.nimf.gschema.xml.h:7
+#: ../libnimf/org.nimf.gschema.xml.h:9
 msgid "'Services'"
 msgstr "'서비스'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:8
+#: ../libnimf/org.nimf.gschema.xml.h:10
 msgid "'Clients'"
 msgstr "'클라이언트'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:9
-msgid "'Engines'"
-msgstr "'엔진'"
+#: ../libnimf/org.nimf.gschema.xml.h:11
+msgid "'Language engines'"
+msgstr "'언어 엔진'"
 
-#: ../libnimf/org.nimf.gschema.xml.h:10
+#: ../libnimf/org.nimf.gschema.xml.h:12
 msgid "Default language engine"
 msgstr "기본 언어 엔진"
 
-#: ../libnimf/org.nimf.gschema.xml.h:11
+#: ../libnimf/org.nimf.gschema.xml.h:13
 msgid "Default language engine on startup"
 msgstr "시작할 때의 기본 언어 엔진"
 
@@ -485,12 +236,12 @@ msgid "'GTK+'"
 msgstr ""
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:4
-msgid "hooking gdk key events"
-msgstr "gdk key events 후킹하기"
+msgid "Hooking GDK key events"
+msgstr "GDK 키 이벤트 후킹하기"
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:5
 msgid ""
-"filter all key events before delivering them normally, which avoids bugs of "
+"Filter all key events before delivering them normally, which avoids bugs of "
 "many applications"
 msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니다."
 " 이것은 여러 응용 프로그램의 버그를 회피합니다."
@@ -521,108 +272,572 @@ msgid "Active engine"
 msgstr "엔진 활성화"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:5
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:5
-msgid "The engine will be loaded on startup if available. Restart required"
-msgstr "만약 가능하다면 이 엔진은 시작할 때 로드될 것입니다. 재시작이 필요합니다."
-
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:6
 msgid "Trigger keys for switching Japanese / System"
 msgstr "일본어 / 시스템 전환을 위한 작동 키"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:7
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:6
 msgid "Hotkey for Hiragana"
 msgstr "히라가나 단축키"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:8
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:7
 msgid "Hotkeys for converting to Hiragana"
 msgstr "히라가나로 변환하기 위한 단축키"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:9
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:8
 msgid "Hotkey for Katakana"
 msgstr "가타카나 단축키"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:10
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:9
 msgid "Hotkeys for converting to Katakana"
 msgstr "가타카나로 변환하기 위한 단축키"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:11
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:7
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:10
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:6
 msgid "Input method"
 msgstr "입력 방법"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:12
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:11
 msgid "n input mode"
 msgstr "n 입력 모드"
 
-#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:13
-msgid "Choose how you type hiragana letter n."
+#: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:12
+msgid "Choose how you type Hiragana letter n."
 msgstr "히라가나 문자 n을 입력하는 방법을 선택하세요."
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:1
 msgid "'Korean (libhangul)'"
 msgstr "'한국어 (libhangul)'"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:6
 msgid "Trigger keys for switching Korean / System"
 msgstr "한국어 / 시스템 전환을 위한 작동 키"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:7
 msgid "Binding to change Korean / System"
 msgstr "한국어 / 시스템 전환하기 위한 바인딩"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:8
 msgid "Hotkey for Hanja"
 msgstr "한자를 위한 핫키"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:10
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:9
 msgid "Binding to Hanja key"
 msgstr "한자키에 대한 바인딩"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:10
 msgid "Use a rule composing double consonants"
 msgstr "겹자음 조합 규칙을 사용합니다"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
-msgid "compose a double consonant on pressing same consonant twice"
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
+msgid "Compose a double consonant on pressing same consonant twice"
 msgstr "같은 자음을 두 번 누를 때 겹자음을 조합합니다"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
 msgid "Auto-reordering in Dubeolsik"
 msgstr "두벌식에서 자동 재정렬"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:14
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
 msgid "Ignore reset() in commit callback"
 msgstr "commit 콜백에서 reset()을 무시합니다"
 
-#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:15
+#: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:14
 msgid "Ignore reset() called by commit callback in application"
 msgstr "응용 어플리케이션에서 commit 콜백에 의해 호출되는 reset()을 무시합니다"
 
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:1
-msgid "'Other languages (m17n)'"
-msgstr "'다른 언어들 (m17n)'"
+msgid "'Amharic (m17n)'"
+msgstr "'암하라어 (m17n)'"
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:6
-msgid "Trigger keys for switching m17n / System"
-msgstr "m17n / 시스템 전환을 위한 작동 키"
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:5
+msgid "Trigger keys for switching Amharic (m17n) / System"
+msgstr "암하라어 / 시스템 전환을 위한 작동 키"
 
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:7
+msgid "'Arabic (m17n)'"
+msgstr "'아랍어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:8
+msgid "Trigger keys for switching Arabic (m17n) / System"
+msgstr "아랍어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:9
+msgid "'Assamese (m17n)'"
+msgstr "'아삼어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:10
+msgid "Trigger keys for switching Assamese (m17n) / System"
+msgstr "아삼어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:11
+msgid "'Athabaskan languages (m17n)'"
+msgstr "'아타바스카어족 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:12
+msgid "Trigger keys for switching Athabaskan languages (m17n) / System"
+msgstr "아타바스카어족 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:13
+msgid "'Belarusian (m17n)'"
+msgstr "'벨라루스어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:14
+msgid "Trigger keys for switching Belarusian (m17n) / System"
+msgstr "벨라루스어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:15
+msgid "'Siksika (m17n)'"
+msgstr "'식시카어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:16
+msgid "Trigger keys for switching Siksika (m17n) / System"
+msgstr "식시카어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:17
+msgid "'Bengali (m17n)'"
+msgstr "'벵골어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:18
+msgid "Trigger keys for switching Bengali (m17n) / System"
+msgstr "벵골어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:19
+msgid "'Tibetan (m17n)'"
+msgstr "'티베트어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:20
+msgid "Trigger keys for switching Tibetan (m17n) / System"
+msgstr "티베트어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:21
+msgid "'Chamic Languages (m17n)'"
+msgstr "'참어족 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:22
+msgid "Trigger keys for switching Chamic Languages (m17n) / System"
+msgstr "참어족 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:23
+msgid "'Cree (m17n)'"
+msgstr "'크리어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:24
+msgid "Trigger keys for switching Cree (m17n) / System"
+msgstr "크리어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:25
+msgid "'Czech (m17n)'"
+msgstr "'체코어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:26
+msgid "Trigger keys for switching Czech (m17n) / System"
+msgstr "체코어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:27
+msgid "'Danish (m17n)'"
+msgstr "'덴마크어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:28
+msgid "Trigger keys for switching Danish (m17n) / System"
+msgstr "덴마크어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:29
+msgid "'Divehi (m17n)'"
+msgstr "'디베히어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:30
+msgid "Trigger keys for switching Divehi (m17n) / System"
+msgstr "디베히어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:31
+msgid "'Greek (m17n)'"
+msgstr "'그리스어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:32
+msgid "Trigger keys for switching Greek (m17n) / System"
+msgstr "그리스어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:33
+msgid "'Esperanto (m17n)'"
+msgstr "'에스페란토어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:34
+msgid "Trigger keys for switching Esperanto (m17n) / System"
+msgstr "에스페란토어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:35
+msgid "'Persian (m17n)'"
+msgstr "'페르시아어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:36
+msgid "Trigger keys for switching Persian (m17n) / System"
+msgstr "페르시아어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:37
+msgid "'French (m17n)'"
+msgstr "'프랑스어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:38
+msgid "Trigger keys for switching French (m17n) / System"
+msgstr "프랑스어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:39
+msgid "'Ancient Greek (m17n)'"
+msgstr "'고대 그리스어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:40
+msgid "Trigger keys for switching Ancient Greek (m17n) / System"
+msgstr "고대 그리스어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:41
+msgid "'Gujarati (m17n)'"
+msgstr "'구자라트어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:42
+msgid "Trigger keys for switching Gujarati (m17n) / System"
+msgstr "구자라트어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:43
+msgid "'Hebrew (m17n)'"
+msgstr "'히브리어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:44
+msgid "Trigger keys for switching Hebrew (m17n) / System"
+msgstr "히브리어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:45
+msgid "'Hindi (m17n)'"
+msgstr "'힌디어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:46
+msgid "Trigger keys for switching Hindi (m17n) / System"
+msgstr "힌디어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:47
+msgid "'Croatian (m17n)'"
+msgstr "'크로아티아어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:48
+msgid "Trigger keys for switching Croatian (m17n) / System"
+msgstr "크로아티아어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:49
+msgid "'Hungarian (m17n)'"
+msgstr "'헝가리어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:50
+msgid "Trigger keys for switching Hungarian (m17n) / System"
+msgstr "헝가리어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:51
+msgid "'Armenian (m17n)'"
+msgstr "'아르메니아어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:52
+msgid "Trigger keys for switching Armenian (m17n) / System"
+msgstr "아르메니아어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:53
+msgid "'Sichuan Yi (m17n)'"
+msgstr "'사천이 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:54
+msgid "Trigger keys for switching Sichuan Yi (m17n) / System"
+msgstr "사천이 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:55
+msgid "'Inuktitut (m17n)'"
+msgstr "'이누이트어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:56
+msgid "Trigger keys for switching Inuktitut (m17n) / System"
+msgstr "이누이트어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:57
+msgid "'Georgian (m17n)'"
+msgstr "'그루지야어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:58
+msgid "Trigger keys for switching Georgian (m17n) / System"
+msgstr "그루지야어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:59
+msgid "'Kazakh (m17n)'"
+msgstr "'카자흐어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:60
+msgid "Trigger keys for switching Kazakh (m17n) / System"
+msgstr "카자흐어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:61
+msgid "'Khmer (m17n)'"
+msgstr "'크메르어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:62
+msgid "Trigger keys for switching Khmer (m17n) / System"
+msgstr "크메르어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:63
+msgid "'Kannada (m17n)'"
+msgstr "'칸나다어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:64
+msgid "Trigger keys for switching Kannada (m17n) / System"
+msgstr "칸나다어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:65
+msgid "'Kashmiri (m17n)'"
+msgstr "'카슈미르어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:66
+msgid "Trigger keys for switching Kashmiri (m17n) / System"
+msgstr "카슈미르어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:67
+msgid "'Lao (m17n)'"
+msgstr "'라오어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:68
+msgid "Trigger keys for switching Lao (m17n) / System"
+msgstr "라오어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:69
+msgid "'Maithili (m17n)'"
+msgstr "'마이틸리 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:70
+msgid "Trigger keys for switching Maithili (m17n) / System"
+msgstr "마이틸리 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:71
+msgid "'Malayalam (m17n)'"
+msgstr "'말라얄람어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:72
+msgid "Trigger keys for switching Malayalam (m17n) / System"
+msgstr "말라얄람어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:73
+msgid "'Marathi (m17n)'"
+msgstr "'마라타어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:74
+msgid "Trigger keys for switching Marathi (m17n) / System"
+msgstr "마라타어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:75
+msgid "'Burmese (m17n)'"
+msgstr "'버마어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:76
+msgid "Trigger keys for switching Burmese (m17n) / System"
+msgstr "버마어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:77
+msgid "'Nepali (m17n)'"
+msgstr "'네팔어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:78
+msgid "Trigger keys for switching Nepali (m17n) / System"
+msgstr "네팔어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:79
+msgid "'Naskapi language (m17n)'"
+msgstr "'나스카피어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:80
+msgid "Trigger keys for switching Naskapi language (m17n) / System"
+msgstr "나스카피어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:81
+msgid "'Ojibwa (m17n)'"
+msgstr "'오지브와어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:82
+msgid "Trigger keys for switching Ojibwa (m17n) / System"
+msgstr "오지브와어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:83
+msgid "'Oriya (m17n)'"
+msgstr "'오리야어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:84
+msgid "Trigger keys for switching Oriya (m17n) / System"
+msgstr "오리야어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:85
+msgid "'Punjabi (m17n)'"
+msgstr "'펀자브어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:86
+msgid "Trigger keys for switching Punjabi (m17n) / System"
+msgstr "펀자브어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:87
+msgid "'Pushto (m17n)'"
+msgstr "'파슈토어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:88
+msgid "Trigger keys for switching Pushto (m17n) / System"
+msgstr "파슈토어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:89
+msgid "'Russian (m17n)'"
+msgstr "'러시아어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:90
+msgid "Trigger keys for switching Russian (m17n) / System"
+msgstr "러시아어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:91
+msgid "'Sanskrit (m17n)'"
+msgstr "'산스크리트어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:92
+msgid "Trigger keys for switching Sanskrit (m17n) / System"
+msgstr "산스크리트어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:93
+msgid "'Sindhi (m17n)'"
+msgstr "'신드어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:94
+msgid "Trigger keys for switching Sindhi (m17n) / System"
+msgstr "신드어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:95
+msgid "'Sinhalese (m17n)'"
+msgstr "'신할라어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:96
+msgid "Trigger keys for switching Sinhalese (m17n) / System"
+msgstr "신할라어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:97
+msgid "'Slovak (m17n)'"
+msgstr "'슬로바키아어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:98
+msgid "Trigger keys for switching Slovak (m17n) / System"
+msgstr "슬로바키아어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:99
+msgid "'Serbian (m17n)'"
+msgstr "'세르비아어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:100
+msgid "Trigger keys for switching Serbian (m17n) / System"
+msgstr "세르비아어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:101
+msgid "'Swedish (m17n)'"
+msgstr "'스웨덴어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:102
+msgid "Trigger keys for switching Swedish (m17n) / System"
+msgstr "스웨덴어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:103
+msgid "'Etc (m17n)'"
+msgstr "'기타 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:104
+msgid "Trigger keys for switching Etc (m17n) / System"
+msgstr "기타 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:105
+msgid "'Tamil (m17n)'"
+msgstr "'타밀어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:106
+msgid "Trigger keys for switching Tamil (m17n) / System"
+msgstr "타밀어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:107
+msgid "'Tai Viet (m17n)'"
+msgstr "'타이 베트 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:108
+msgid "Trigger keys for switching Tai Viet (m17n) / System"
+msgstr "타이 베트 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:109
+msgid "'Telugu (m17n)'"
+msgstr "'텔루구어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:110
+msgid "Trigger keys for switching Telugu (m17n) / System"
+msgstr "텔루구어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:111
+msgid "'Thai (m17n)'"
+msgstr "'타이어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:112
+msgid "Trigger keys for switching Thai (m17n) / System"
+msgstr "타이어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:113
+msgid "'Uighur (m17n)'"
+msgstr "'위구르어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:114
+msgid "Trigger keys for switching Uighur (m17n) / System"
+msgstr "위구르어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:115
+msgid "'Ukrainian (m17n)'"
+msgstr "'우크라이나어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:116
+msgid "Trigger keys for switching Ukrainian (m17n) / System"
+msgstr "우크라이나어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:117
+msgid "'Urdu (m17n)'"
+msgstr "'우르두어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:118
+msgid "Trigger keys for switching Urdu (m17n) / System"
+msgstr "우르두어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:119
+msgid "'Uzbek (m17n)'"
+msgstr "'우즈베크어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:120
+msgid "Trigger keys for switching Uzbek (m17n) / System"
+msgstr "우즈베크어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:121
+msgid "'Vietnamese (m17n)'"
+msgstr "'베트남어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:122
+msgid "Trigger keys for switching Vietnamese (m17n) / System"
+msgstr "베트남어 / 시스템 전환을 위한 작동 키"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:123
+msgid "'Yiddish (m17n)'"
+msgstr "'이디시어 (m17n)'"
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:124
+msgid "Trigger keys for switching Yiddish (m17n) / System"
+msgstr "이디시어 / 시스템 전환을 위한 작동 키"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"
 msgstr "'중국어 (rime)'"
 
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:5
 msgid "Trigger keys for switching Chinese / System"
 msgstr "중국어 / 시스템 전환을 위한 작동 키"
 
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:6
 msgid "Simplified Chinese"
 msgstr "중국어 간체"
 
-#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:8
+#: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:7
 msgid ""
 "If Simplified Chinese is set, Simplified Chinese is used. Otherwise "
 "Traditional Chinese is used."

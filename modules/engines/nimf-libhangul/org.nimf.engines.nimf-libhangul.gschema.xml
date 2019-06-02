@@ -30,7 +30,7 @@
     <key type="b" name="double-consonant-rule">
       <default>false</default>
       <summary>Use a rule composing double consonants</summary>
-      <description>compose a double consonant on pressing same consonant twice</description>
+      <description>Compose a double consonant on pressing same consonant twice</description>
     </key>
     <key type="b" name="auto-reordering">
       <default>false</default>

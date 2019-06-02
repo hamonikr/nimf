@@ -9,8 +9,8 @@
     </key>
     <key type="b" name="hook-gdk-event-key">
       <default>false</default>
-      <summary>hooking gdk key events</summary>
-      <description>filter all key events before delivering them normally, which avoids bugs of many applications</description>
+      <summary>Hooking GDK key events</summary>
+      <description>Filter all key events before delivering them normally, which avoids bugs of many applications</description>
     </key>
     <key type="b" name="reset-on-gdk-button-press-event">
       <default>false</default>

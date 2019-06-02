@@ -39,7 +39,7 @@
       </choices>
       <default>'common'</default>
       <summary>n input mode</summary>
-      <description>Choose how you type hiragana letter n.</description>
+      <description>Choose how you type Hiragana letter n.</description>
     </key>
   </schema>
 </schemalist>
