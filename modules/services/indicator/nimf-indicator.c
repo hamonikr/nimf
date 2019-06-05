@@ -50,6 +50,7 @@ struct _NimfIndicator
   AppIndicator *appindicator;
   gchar        *engine_id;
   guint         watcher_id;
+  guint         source_id;
   GMenu        *menu;
 };
 
@@ -389,21 +390,12 @@ on_unload_engine (NimfServer    *server,
 }
 
 static void
-on_name_appeared (GDBusConnection *connection,
-                  const gchar     *name,
-                  const gchar     *name_owner,
-                  gpointer         user_data)
+nimf_indicator_create_appindicator (NimfIndicator *indicator)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfIndicator *indicator = user_data;
-
   GtkMenu    *gtk_menu = nimf_indicator_build_menu (indicator);
   NimfServer *server   = nimf_server_get_default ();
-
-  g_bus_unwatch_name (indicator->watcher_id);
-  indicator->watcher_id = 0;
-
   indicator->appindicator = app_indicator_new ("nimf-indicator",
                                                "nimf-focus-out",
                                                APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
@@ -421,6 +413,46 @@ on_name_appeared (GDBusConnection *connection,
                     G_CALLBACK (on_load_engine), indicator);
   g_signal_connect (server, "unload-engine",
                     G_CALLBACK (on_unload_engine), indicator);
+}
+
+static void
+on_name_appeared (GDBusConnection *connection,
+                  const gchar     *name,
+                  const gchar     *name_owner,
+                  gpointer         user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfIndicator *indicator = user_data;
+
+  if (indicator->source_id)
+  {
+    g_source_remove (indicator->source_id);
+    indicator->source_id = 0;
+  }
+
+  g_bus_unwatch_name (indicator->watcher_id);
+  indicator->watcher_id = 0;
+
+  nimf_indicator_create_appindicator (indicator);
+}
+
+static gboolean
+on_timeout (NimfIndicator *indicator)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (indicator->watcher_id)
+  {
+    g_bus_unwatch_name (indicator->watcher_id);
+    indicator->watcher_id = 0;
+  }
+
+  indicator->source_id = 0;
+
+  nimf_indicator_create_appindicator (indicator);
+
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean nimf_indicator_start (NimfService *service)
@@ -445,6 +477,8 @@ static gboolean nimf_indicator_start (NimfService *service)
                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
                                             on_name_appeared, NULL,
                                             indicator, NULL);
+  indicator->source_id = g_timeout_add_seconds (3, G_SOURCE_FUNC (on_timeout), indicator);
+
   return indicator->active = TRUE;
 }
 
@@ -461,6 +495,12 @@ static void nimf_indicator_stop (NimfService *service)
   {
     g_bus_unwatch_name (indicator->watcher_id);
     indicator->watcher_id = 0;
+  }
+
+  if (indicator->source_id)
+  {
+    g_source_remove (indicator->source_id);
+    indicator->source_id = 0;
   }
 
   if (indicator->appindicator)
