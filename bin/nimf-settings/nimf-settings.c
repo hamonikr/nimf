@@ -1021,22 +1021,13 @@ on_toggled (GtkToggleButton *toggle_button,
 
   g_slist_foreach (xkb->toggle_buttons, (GFunc) build_xkb_options, xkb);
 
-  XklConfigRec *rec;
-  GSettings    *settings;
+  GSettings *settings;
 
-  rec = xkl_config_rec_new ();
-  xkl_config_rec_get_from_server (rec, xkb->engine);
-  g_strfreev (rec->options);
-  rec->options = g_strdupv (xkb->options);
-  xkl_config_rec_activate (rec, xkb->engine);
-
-  settings = g_settings_new ("org.nimf.settings");
+  settings = g_settings_new ("org.gnome.desktop.input-sources");
   g_settings_set_strv (settings, "xkb-options",
                        (const gchar *const *) xkb->options);
 
   g_object_unref (settings);
-  g_object_unref (rec);
-
 }
 
 static void
@@ -1110,12 +1101,11 @@ nimf_settings_build_xkb_options_ui (NimfSettings *nsettings,
                                     GtkWidget    *stack)
 {
   XklConfigRegistry *config_registry;
-  XklConfigRec      *rec;
   GSettings         *settings;
   GtkWidget         *scrolled_w;
 
   scrolled_w = gtk_scrolled_window_new (NULL, NULL);
-  settings = g_settings_new ("org.nimf.settings");
+  settings = g_settings_new ("org.gnome.desktop.input-sources");
   nsettings->xkb->options = g_settings_get_strv (settings, "xkb-options");
   nsettings->xkb->options_len = g_strv_length (nsettings->xkb->options);
   nsettings->xkb->options_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -1131,14 +1121,8 @@ nimf_settings_build_xkb_options_ui (NimfSettings *nsettings,
   xkl_config_registry_foreach_option_group (config_registry,
                                             (ConfigItemProcessFunc) build_option_group,
                                             nsettings->xkb);
-  rec = xkl_config_rec_new ();
-  xkl_config_rec_get_from_server (rec, nsettings->xkb->engine);
-  g_strfreev (rec->options);
-  rec->options = g_strdupv (nsettings->xkb->options);
-  xkl_config_rec_activate (rec, nsettings->xkb->engine);
 
   g_object_unref (settings);
-  g_object_unref (rec);
   g_object_unref (config_registry);
 
   gtk_container_add (GTK_CONTAINER (scrolled_w), nsettings->xkb->options_box);
@@ -1188,7 +1172,9 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
     /* The `done 'variable is used to reduce calls to g_strcmp0. */
     if (!done && !g_strcmp0 (schema_list->data, "org.nimf.engines"))
     {
-      nimf_settings_build_xkb_options_ui (nsettings, stack);
+      if (g_strcmp0 (g_getenv ("XDG_SESSION_DESKTOP"), "gnome") == 0)
+        nimf_settings_build_xkb_options_ui (nsettings, stack);
+
       done = TRUE;
     }
 

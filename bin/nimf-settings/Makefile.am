@@ -10,9 +10,6 @@ autostart_DATA = nimf-settings-autostart.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-gsettings_SCHEMAS = org.nimf.settings.gschema.xml
-@GSETTINGS_RULES@
-
 AM_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
