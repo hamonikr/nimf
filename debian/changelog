@@ -1,3 +1,10 @@
+nimf (2019.06.05) stable; urgency=medium
+
+  * nimf-rime: Fixed preedit state
+  * Fixed how to apply xkb options (closes #269)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 05 Jun 2019 10:49:15 +0900
+
 nimf (2019.06.03) stable; urgency=medium
 
   * Updated translations

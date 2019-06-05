@@ -70,18 +70,21 @@ static void nimf_rime_update_preedit (NimfEngine    *engine,
 
   NimfRime *rime = NIMF_RIME (engine);
 
-  if (rime->preedit_state == NIMF_PREEDIT_STATE_END && rime->preedit->len > 0)
+  if (rime->preedit_state == NIMF_PREEDIT_STATE_END && new_preedit[0] != 0)
   {
     rime->preedit_state = NIMF_PREEDIT_STATE_START;
     nimf_engine_emit_preedit_start (engine, target);
   }
 
-  g_string_assign (rime->preedit, new_preedit);
-  rime->cursor_pos = cursor_pos;
-  rime->preedit_attrs[0]->start_index = 0;
-  rime->preedit_attrs[0]->end_index = g_utf8_strlen (rime->preedit->str, -1);
-  nimf_engine_emit_preedit_changed (engine, target, rime->preedit->str,
-                                    rime->preedit_attrs, cursor_pos);
+  if (rime->preedit->len > 0 || new_preedit[0] != 0)
+  {
+    g_string_assign (rime->preedit, new_preedit);
+    rime->cursor_pos = cursor_pos;
+    rime->preedit_attrs[0]->start_index = 0;
+    rime->preedit_attrs[0]->end_index = g_utf8_strlen (rime->preedit->str, -1);
+    nimf_engine_emit_preedit_changed (engine, target, rime->preedit->str,
+                                      rime->preedit_attrs, cursor_pos);
+  }
 
   if (rime->preedit_state == NIMF_PREEDIT_STATE_START && rime->preedit->len == 0)
   {
