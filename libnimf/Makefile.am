@@ -33,6 +33,7 @@ libnimf_la_SOURCES = \
 	nimf-service.h \
 	nimf-service-ic.c \
 	nimf-service-ic.h \
+	nimf-service-ic-private.h \
 	nimf-types.c \
 	nimf-types.h \
 	nimf-utils.c \

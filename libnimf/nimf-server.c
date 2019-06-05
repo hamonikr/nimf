@@ -28,6 +28,7 @@
 #include "nimf-marshalers-private.h"
 #include "nimf-module-private.h"
 #include <string.h>
+#include "nimf-service-ic-private.h"
 
 enum {
   ENGINE_CHANGED,
@@ -598,16 +599,6 @@ nimf_server_load_engines (NimfServer *server)
   g_strfreev (active_engines);
 }
 
-extern void
-nimf_service_ic_load_engine (NimfServiceIC *ic,
-                             const gchar   *engine_id,
-                             NimfServer    *server);
-extern void
-nimf_service_ic_unload_engine (NimfServiceIC *ic,
-                               const gchar   *engine_id,
-                               NimfEngine    *signleton_engine_to_be_deleted,
-                               NimfServer    *server);
-
 static void
 on_changed_active_engines (GSettings  *settings,
                            gchar      *key,
@@ -687,7 +678,7 @@ on_changed_active_engines (GSettings  *settings,
         g_strfreev (keys);
       }
 
-      g_signal_emit_by_name (server, "load-engine", engine_ids[i]);
+      g_signal_emit (server, nimf_server_signals[LOAD_ENGINE], 0, engine_ids[i]);
 
       g_free (schema_id);
       g_settings_schema_unref (schema);
@@ -717,7 +708,7 @@ on_changed_active_engines (GSettings  *settings,
         nimf_service_ic_unload_engine (ic, engine_id, engine, server);
       }
 
-      g_signal_emit_by_name (server, "unload-engine", engine_id);
+      g_signal_emit (server, nimf_server_signals[UNLOAD_ENGINE], 0, engine_id);
       g_object_unref (engine);
     }
 

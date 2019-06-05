@@ -151,12 +151,12 @@ on_incoming_message (GSocket      *socket,
   {
     /* signals */
     case NIMF_MESSAGE_PREEDIT_START:
-      g_signal_emit_by_name (im, "preedit-start");
+      g_signal_emit (im, im_signals[PREEDIT_START], 0);
       nimf_send_message (socket, im->priv->id, NIMF_MESSAGE_PREEDIT_START_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_PREEDIT_END:
-      g_signal_emit_by_name (im, "preedit-end");
+      g_signal_emit (im, im_signals[PREEDIT_END], 0);
       nimf_send_message (socket, im->priv->id, NIMF_MESSAGE_PREEDIT_END_REPLY,
                          NULL, 0, NULL);
       break;
@@ -184,27 +184,27 @@ on_incoming_message (GSocket      *socket,
 
         im->priv->cursor_pos = *(gint *) (message->data +
                                           message->header->data_len - sizeof (gint));
-        g_signal_emit_by_name (im, "preedit-changed");
+        g_signal_emit (im, im_signals[PREEDIT_CHANGED], 0);
         nimf_send_message (socket, im->priv->id,
                            NIMF_MESSAGE_PREEDIT_CHANGED_REPLY, NULL, 0, NULL);
       }
       break;
     case NIMF_MESSAGE_COMMIT:
       nimf_message_ref (message);
-      g_signal_emit_by_name (im, "commit", (const gchar *) message->data);
+      g_signal_emit (im, im_signals[COMMIT], 0, (const gchar *) message->data);
       nimf_message_unref (message);
       nimf_send_message (socket, im->priv->id, NIMF_MESSAGE_COMMIT_REPLY,
                          NULL, 0, NULL);
       break;
     case NIMF_MESSAGE_RETRIEVE_SURROUNDING:
-      g_signal_emit_by_name (im, "retrieve-surrounding", &retval);
+      g_signal_emit (im, im_signals[RETRIEVE_SURROUNDING], 0, &retval);
       nimf_send_message (socket, im->priv->id,
                          NIMF_MESSAGE_RETRIEVE_SURROUNDING_REPLY,
                          &retval, sizeof (gboolean), NULL);
       break;
     case NIMF_MESSAGE_DELETE_SURROUNDING:
       nimf_message_ref (message);
-      g_signal_emit_by_name (im, "delete-surrounding",
+      g_signal_emit (im, im_signals[DELETE_SURROUNDING], 0,
                              ((gint *) message->data)[0],
                              ((gint *) message->data)[1], &retval);
       nimf_message_unref (message);
@@ -213,7 +213,7 @@ on_incoming_message (GSocket      *socket,
                          &retval, sizeof (gboolean), NULL);
       break;
     case NIMF_MESSAGE_BEEP:
-      g_signal_emit_by_name (im, "beep");
+      g_signal_emit (im, im_signals[BEEP], 0);
       nimf_send_message (socket, im->priv->id, NIMF_MESSAGE_BEEP_REPLY,
                          NULL, 0, NULL);
       break;
