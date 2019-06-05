@@ -56,3 +56,38 @@ nimf_get_socket_path ()
 
   return g_strconcat (g_get_user_runtime_dir (), "/nimf/socket", NULL);
 }
+
+/* private */
+gboolean
+gnome_is_running ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  const gchar *desktop;
+  gboolean retval = FALSE;
+
+  if ((desktop = g_getenv ("XDG_SESSION_DESKTOP")))
+  {
+    gchar *s1;
+
+    if ((s1 = g_ascii_strdown (desktop, -1)))
+      retval = !!g_strrstr (s1, "gnome");
+
+    g_free (s1);
+  }
+
+  if (retval)
+    return TRUE;
+
+  if ((desktop = g_getenv ("XDG_CURRENT_DESKTOP")))
+  {
+    gchar *s2;
+
+    if ((s2 = g_ascii_strdown (desktop, -1)))
+      retval = !!g_strrstr (s2, "gnome");
+
+    g_free (s2);
+  }
+
+  return retval;
+}

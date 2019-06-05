@@ -37,6 +37,7 @@ libnimf_la_SOURCES = \
 	nimf-types.h \
 	nimf-utils.c \
 	nimf-utils.h \
+	nimf-utils-private.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 

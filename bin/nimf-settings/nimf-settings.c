@@ -26,6 +26,7 @@
 #include "config.h"
 #include "nimf.h"
 #include "nimf-enum-types-private.h"
+#include "nimf-utils-private.h"
 
 #define NIMF_TYPE_SETTINGS             (nimf_settings_get_type ())
 #define NIMF_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SETTINGS, NimfSettings))
@@ -1021,7 +1022,7 @@ on_toggled (GtkToggleButton *toggle_button,
 
   g_slist_foreach (xkb->toggle_buttons, (GFunc) build_xkb_options, xkb);
 
-  if (g_strrstr (g_getenv ("XDG_SESSION_DESKTOP"), "gnome"))
+  if (gnome_is_running ())
   {
     GSettings *settings;
 
@@ -1125,7 +1126,7 @@ nimf_settings_build_xkb_options_ui (NimfSettings *nsettings,
   GSettings         *settings;
   GtkWidget         *scrolled_w;
 
-  if (g_strrstr (g_getenv ("XDG_SESSION_DESKTOP"), "gnome"))
+  if (gnome_is_running ())
     settings = g_settings_new ("org.gnome.desktop.input-sources");
   else if (g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11") == 0)
     settings = g_settings_new ("org.nimf.settings");
