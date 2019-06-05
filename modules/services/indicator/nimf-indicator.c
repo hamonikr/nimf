@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include "nimf.h"
 #include <libappindicator/app-indicator.h>
+#include <libxklavier/xklavier.h>
 #include <gdk/gdkx.h>
 
 #define NIMF_TYPE_INDICATOR             (nimf_indicator_get_type ())
@@ -51,6 +52,7 @@ struct _NimfIndicator
   gchar        *engine_id;
   guint         watcher_id;
   guint         source_id;
+  XklEngine    *xklengine;
   GMenu        *menu;
 };
 
@@ -234,7 +236,7 @@ nimf_indicator_build_section1 (NimfIndicator *indicator,
       submenu1 = g_menu_new ();
       engine_menu = g_menu_item_new (schema_name, "indicator.engine");
       g_menu_item_set_submenu (engine_menu, G_MENU_MODEL (submenu1));
-      gnome = g_str_has_suffix (g_getenv ("XDG_CURRENT_DESKTOP"), "GNOME");
+      gnome = !!g_strrstr (g_getenv ("XDG_SESSION_DESKTOP"), "gnome");
 
       for (j = 0; infos[j]; j++)
       {
@@ -413,6 +415,28 @@ nimf_indicator_create_appindicator (NimfIndicator *indicator)
                     G_CALLBACK (on_load_engine), indicator);
   g_signal_connect (server, "unload-engine",
                     G_CALLBACK (on_unload_engine), indicator);
+
+  /* activate xkb options when gnome == FALSE && x11 == TRUE */
+  if (!g_strrstr (g_getenv ("XDG_SESSION_DESKTOP"), "gnome") &&
+      !g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11"))
+  {
+    XklConfigRec *rec;
+    GSettings    *settings;
+
+    if (!indicator->xklengine)
+      indicator->xklengine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
+
+    rec = xkl_config_rec_new ();
+    settings = g_settings_new ("org.nimf.settings");
+
+    xkl_config_rec_get_from_server (rec, indicator->xklengine);
+    g_strfreev (rec->options);
+    rec->options = g_settings_get_strv (settings, "xkb-options");
+    xkl_config_rec_activate (rec, indicator->xklengine);
+
+    g_object_unref (settings);
+    g_object_unref (rec);
+  }
 }
 
 static void
@@ -532,6 +556,9 @@ nimf_indicator_finalize (GObject *object)
 
   if (indicator->active)
     nimf_indicator_stop (NIMF_SERVICE (indicator));
+
+  if (indicator->xklengine)
+    g_object_unref (indicator->xklengine);
 
   g_free (indicator->engine_id);
   g_free (indicator->id);

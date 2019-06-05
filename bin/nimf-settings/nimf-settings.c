@@ -1021,13 +1021,34 @@ on_toggled (GtkToggleButton *toggle_button,
 
   g_slist_foreach (xkb->toggle_buttons, (GFunc) build_xkb_options, xkb);
 
-  GSettings *settings;
+  if (g_strrstr (g_getenv ("XDG_SESSION_DESKTOP"), "gnome"))
+  {
+    GSettings *settings;
 
-  settings = g_settings_new ("org.gnome.desktop.input-sources");
-  g_settings_set_strv (settings, "xkb-options",
-                       (const gchar *const *) xkb->options);
+    settings = g_settings_new ("org.gnome.desktop.input-sources");
+    g_settings_set_strv (settings, "xkb-options",
+                         (const gchar *const *) xkb->options);
 
-  g_object_unref (settings);
+    g_object_unref (settings);
+  }
+  else if (g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11") == 0)
+  {
+    XklConfigRec *rec;
+    GSettings    *settings;
+
+    rec = xkl_config_rec_new ();
+    xkl_config_rec_get_from_server (rec, xkb->engine);
+    g_strfreev (rec->options);
+    rec->options = g_strdupv (xkb->options);
+    xkl_config_rec_activate (rec, xkb->engine);
+
+    settings = g_settings_new ("org.nimf.settings");
+    g_settings_set_strv (settings, "xkb-options",
+                         (const gchar *const *) xkb->options);
+
+    g_object_unref (settings);
+    g_object_unref (rec);
+  }
 }
 
 static void
@@ -1104,8 +1125,13 @@ nimf_settings_build_xkb_options_ui (NimfSettings *nsettings,
   GSettings         *settings;
   GtkWidget         *scrolled_w;
 
-  scrolled_w = gtk_scrolled_window_new (NULL, NULL);
-  settings = g_settings_new ("org.gnome.desktop.input-sources");
+  if (g_strrstr (g_getenv ("XDG_SESSION_DESKTOP"), "gnome"))
+    settings = g_settings_new ("org.gnome.desktop.input-sources");
+  else if (g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11") == 0)
+    settings = g_settings_new ("org.nimf.settings");
+  else
+    return;
+
   nsettings->xkb->options = g_settings_get_strv (settings, "xkb-options");
   nsettings->xkb->options_len = g_strv_length (nsettings->xkb->options);
   nsettings->xkb->options_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -1125,6 +1151,7 @@ nimf_settings_build_xkb_options_ui (NimfSettings *nsettings,
   g_object_unref (settings);
   g_object_unref (config_registry);
 
+  scrolled_w = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (scrolled_w), nsettings->xkb->options_box);
   gtk_stack_add_titled (GTK_STACK (stack), scrolled_w, "xkb-options", _("    XKB Options"));
 }
@@ -1172,9 +1199,7 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
     /* The `done 'variable is used to reduce calls to g_strcmp0. */
     if (!done && !g_strcmp0 (schema_list->data, "org.nimf.engines"))
     {
-      if (g_strcmp0 (g_getenv ("XDG_SESSION_DESKTOP"), "gnome") == 0)
-        nimf_settings_build_xkb_options_ui (nsettings, stack);
-
+      nimf_settings_build_xkb_options_ui (nsettings, stack);
       done = TRUE;
     }
 

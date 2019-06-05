@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.06.05)
+AC_INIT(nimf, 2019.06.06)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -210,8 +210,8 @@ dnl nimf-indicator
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                  [glib-2.0 x11 gtk+-3.0 appindicator3-0.1 gdk-3.0 gdk-x11-3.0
-                   gmodule-2.0])
+                  [glib-2.0 x11 gtk+-3.0 appindicator3-0.1 libxklavier gdk-3.0
+                   gdk-x11-3.0 gmodule-2.0])
 
 dnl ***************************************************************************
 dnl nimf-preedit-window  nimf-candidate

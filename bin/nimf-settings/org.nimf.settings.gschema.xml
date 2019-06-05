@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.settings"
+          path="/org/nimf/settings/" gettext-domain="nimf">
+    <key type="as" name="xkb-options">
+      <default>['']</default>
+      <summary>xkb options</summary>
+      <description>xkb options</description>
+    </key>
+  </schema>
+</schemalist>

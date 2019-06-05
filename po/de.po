@@ -158,6 +158,10 @@ msgstr "Einstellungen"
 msgid "About"
 msgstr "Über"
 
+#: ../bin/nimf-settings/org.nimf.settings.gschema.xml.h:1
+msgid "xkb options"
+msgstr ""
+
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"
 msgstr ""

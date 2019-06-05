@@ -33,7 +33,7 @@ Homepage: https://gitlab.com/nimf-i18n/nimf
 Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnimf1 (= ${binary:Version})
 Recommends: im-config
 Suggests: fonts-noto-cjk | nimf-anthy | nimf-libhangul | nimf-m17n | nimf-rime
 Description: Input Method Framework
@@ -64,7 +64,7 @@ Description: Input Method Framework (development file)
 
 Package: nimf-anthy
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, nimf, anthy
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf (= ${binary:Version}), anthy
 Suggests: fonts-noto-cjk
 Description: Japanese input module for Nimf, based on anthy
  Nimf is a lightweight, fast and extensible input method framework.
@@ -73,7 +73,7 @@ Description: Japanese input module for Nimf, based on anthy
 
 Package: nimf-libhangul
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf (= ${binary:Version})
 Suggests: fonts-noto-cjk
 Description: Korean input module for Nimf, based on libhangul
  Nimf is a lightweight, fast and extensible input method framework.
@@ -83,7 +83,7 @@ Description: Korean input module for Nimf, based on libhangul
 Package: nimf-m17n
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
-         libm17n-0 (>= 1.8.0), m17n-db (>= 1.8.0), nimf
+         libm17n-0 (>= 1.8.0), m17n-db (>= 1.8.0), nimf (= ${binary:Version})
 Suggests: fonts-noto-cjk
 Description: Multilingual input module for Nimf, based on m17n
  Nimf is a lightweight, fast and extensible input method framework.
@@ -92,7 +92,7 @@ Description: Multilingual input module for Nimf, based on m17n
 
 Package: nimf-rime
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, nimf
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf (= ${binary:Version})
 Recommends: librime-data
 Suggests: fonts-noto-cjk
 Description: Chinese input module for Nimf, based on rime

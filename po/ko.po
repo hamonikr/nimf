@@ -157,6 +157,10 @@ msgstr "설정"
 msgid "About"
 msgstr "정보"
 
+#: ../bin/nimf-settings/org.nimf.settings.gschema.xml.h:1
+msgid "xkb options"
+msgstr "xkb 옵션"
+
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"
 msgstr "'님프'"
