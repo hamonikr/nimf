@@ -188,14 +188,14 @@ nimf_log_default_handler (const gchar    *log_domain,
  * PROGRAM:nimf
  * @short_description: Nimf input method daemon
  * @synopsis: nimf [*OPTIONS*...]
- * @see_also: nimf(1)
- * @-h, --help: Print the help message
- * @--debug: Log debugging message
- * @--version: Print the version number
+ * @see_also: nimf-settings(1)
+ * @-h, --help: Show help messages
+ * @--debug: Log debugging messages
+ * @--version: Show version
  *
  * nimf is an input method daemon.
  *
- * Returns: Zero on success, non-zero on failure
+ * Returns: 0 on success, non-zero on failure
  */
 int
 main (int argc, char **argv)

@@ -1313,16 +1313,16 @@ nimf_settings_class_init (NimfSettingsClass *klass)
  * PROGRAM:nimf-settings
  * @short_description: Tool for setting up Nimf
  * @synopsis: nimf-settings [*OPTIONS*...]
- * @see_also: nimf-settings(1)
- * @-h, --help: Show help options
- * @--help-all: Show all help options
+ * @see_also: nimf(1)
+ * @-h, --help: Show help messages
+ * @--help-all: Show all options
  * @--help-gapplication: Show GApplication options
  * @--gapplication-service: Enter GApplication service mode. Currently this
  *                          option is used to trigger the nimf indicator.
  *
- * nimf-settings is a tool for setting up Nimf.
+ * nimf-settings is a GUI tool for configuring nimf.
  *
- * Returns: Zero on success, non-zero on failure
+ * Returns: 0 on success, non-zero on failure
  */
 int main (int argc, char **argv)
 {
