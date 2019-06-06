@@ -33,8 +33,8 @@
 enum {
   ENGINE_CHANGED,
   ENGINE_STATUS_CHANGED,
-  LOAD_ENGINE,
-  UNLOAD_ENGINE,
+  ENGINE_LOADED,
+  ENGINE_UNLOADED,
   LAST_SIGNAL
 };
 
@@ -280,22 +280,35 @@ nimf_server_class_init (NimfServerClass *class)
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_STRING);
-
-  nimf_server_signals[LOAD_ENGINE] =
-    g_signal_new (g_intern_static_string ("load-engine"),
+  /**
+   * NimfServer::engine-loaded:
+   * @server: a #NimfServer
+   * @engine_id: engine id
+   *
+   * The #NimfServer::engine-loaded signal is emitted when the engine is loaded.
+   */
+  nimf_server_signals[ENGINE_LOADED] =
+    g_signal_new (g_intern_static_string ("engine-loaded"),
                   G_TYPE_FROM_CLASS (class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (NimfServerClass, load_engine),
+                  G_STRUCT_OFFSET (NimfServerClass, engine_loaded),
                   NULL, NULL,
                   nimf_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
-
-  nimf_server_signals[UNLOAD_ENGINE] =
-    g_signal_new (g_intern_static_string ("unload-engine"),
+  /**
+   * NimfServer::engine-unloaded:
+   * @server: a #NimfServer
+   * @engine_id: engine id
+   *
+   * The #NimfServer::engine-unloaded signal is emitted when the engine is
+   * unloaded.
+   */
+  nimf_server_signals[ENGINE_UNLOADED] =
+    g_signal_new (g_intern_static_string ("engine-unloaded"),
                   G_TYPE_FROM_CLASS (class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (NimfServerClass, unload_engine),
+                  G_STRUCT_OFFSET (NimfServerClass, engine_unloaded),
                   NULL, NULL,
                   nimf_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -306,6 +319,8 @@ nimf_server_class_init (NimfServerClass *class)
  * nimf_server_change_engine_by_id:
  * @server: a #NimfServer
  * @engine_id: engine id
+ *
+ * Changes the last focused engine to the engine with the given ID.
  */
 void
 nimf_server_change_engine_by_id (NimfServer  *server,
@@ -678,7 +693,7 @@ on_changed_active_engines (GSettings  *settings,
         g_strfreev (keys);
       }
 
-      g_signal_emit (server, nimf_server_signals[LOAD_ENGINE], 0, engine_ids[i]);
+      g_signal_emit (server, nimf_server_signals[ENGINE_LOADED], 0, engine_ids[i]);
 
       g_free (schema_id);
       g_settings_schema_unref (schema);
@@ -708,7 +723,7 @@ on_changed_active_engines (GSettings  *settings,
         nimf_service_ic_unload_engine (ic, engine_id, engine, server);
       }
 
-      g_signal_emit (server, nimf_server_signals[UNLOAD_ENGINE], 0, engine_id);
+      g_signal_emit (server, nimf_server_signals[ENGINE_UNLOADED], 0, engine_id);
       g_object_unref (engine);
     }
 

@@ -358,38 +358,18 @@ nimf_indicator_build_menu (NimfIndicator *indicator)
 }
 
 static void
-nimf_indicator_update_menu (NimfIndicator *indicator,
-                            NimfServer    *server)
+nimf_indicator_update_menu (NimfIndicator *indicator)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   GMenu *section1;
 
-  section1 = nimf_indicator_build_section1 (indicator, server);
+  section1 = nimf_indicator_build_section1 (indicator,
+                                            nimf_server_get_default ());
   g_menu_remove (indicator->menu, 0);
   g_menu_prepend_section (indicator->menu, NULL, G_MENU_MODEL (section1));
 
   g_object_unref (section1);
-}
-
-static void
-on_load_engine (NimfServer    *server,
-                const gchar   *engine_id,
-                NimfIndicator *indicator)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  nimf_indicator_update_menu (indicator, server);
-}
-
-static void
-on_unload_engine (NimfServer    *server,
-                  const gchar   *engine_id,
-                  NimfIndicator *indicator)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  nimf_indicator_update_menu (indicator, server);
 }
 
 static void
@@ -412,12 +392,13 @@ nimf_indicator_create_appindicator (NimfIndicator *indicator)
                     G_CALLBACK (on_engine_changed), indicator);
   g_signal_connect (server, "engine-status-changed",
                     G_CALLBACK (on_engine_status_changed), indicator);
-  g_signal_connect (server, "load-engine",
-                    G_CALLBACK (on_load_engine), indicator);
-  g_signal_connect (server, "unload-engine",
-                    G_CALLBACK (on_unload_engine), indicator);
+  g_signal_connect_swapped (server, "engine-loaded",
+                            G_CALLBACK (nimf_indicator_update_menu), indicator);
+  g_signal_connect_swapped (server, "engine-unloaded",
+                            G_CALLBACK (nimf_indicator_update_menu), indicator);
 
-  /* activate xkb options when gnome == FALSE && x11 == TRUE */
+  /* activate xkb options
+   * when GNOME is not running and XDG_SESSION_TYPE is x11 */
   if (!gnome_is_running () &&
       !g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11"))
   {

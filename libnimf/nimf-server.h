@@ -57,10 +57,9 @@ struct _NimfServerClass
   void (* engine_status_changed) (NimfServer  *server,
                                   const gchar *engine_id,
                                   const gchar *icon_name);
-  /*< private >*/
-  void (* load_engine)           (NimfServer  *server,
+  void (* engine_loaded)         (NimfServer  *server,
                                   const gchar *engine_id);
-  void (* unload_engine)         (NimfServer  *server,
+  void (* engine_unloaded)       (NimfServer  *server,
                                   const gchar *engine_id);
 };
 
