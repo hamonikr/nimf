@@ -483,7 +483,7 @@ static gboolean nimf_indicator_start (NimfService *service)
                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
                                             on_name_appeared, NULL,
                                             indicator, NULL);
-  indicator->source_id = g_timeout_add_seconds (3, G_SOURCE_FUNC (on_timeout), indicator);
+  indicator->source_id = g_timeout_add_seconds (3, (GSourceFunc) on_timeout, indicator);
 
   return indicator->active = TRUE;
 }

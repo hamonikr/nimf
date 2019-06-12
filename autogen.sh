@@ -29,7 +29,7 @@ fi
 
 GTKDOCIZE=`which gtkdocize`
 if test -z $GTKDOCIZE; then
-    echo "gtkdocize not found, please install gtk-doc-tools package"
+    echo "gtkdocize not found, please install gtk-doc-tools or gtk-doc package"
     exit 1
 else
     gtkdocize || exit $?

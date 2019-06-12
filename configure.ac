@@ -59,14 +59,39 @@ AC_SUBST(LIBNIMF_REQUIRES)
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
-dnl nimf-libhangul  nimf-m17n  nimf-rime  nimf-system-keyboard
+dnl nimf-libhangul  nimf-system-keyboard
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_M17N_DEPS,      [m17n-shell >= 1.8.0 m17n-db >= 1.8.0 $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_RIME_DEPS,      [rime >= 1.2.9       $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,
                                        [xkbcommon >= 0.5.0  $LIBNIMF_REQUIRES])
+
+dnl ***************************************************************************
+dnl nimf-m17n
+dnl ***************************************************************************
+
+AC_ARG_ENABLE([nimf-m17n],
+  AS_HELP_STRING([--disable-nimf-m17n], [Disable nimf-m17n]))
+
+AS_IF([test "x$enable_nimf_m17n" != "xno"],
+      [PKG_CHECK_MODULES(NIMF_M17N_DEPS, [m17n-shell >= 1.8.0 m17n-db >= 1.8.0
+                                          $LIBNIMF_REQUIRES])])
+
+AM_CONDITIONAL([ENABLE_NIMF_M17N],
+               [test "x$enable_nimf_m17n" != "xno"])
+
+dnl ***************************************************************************
+dnl nimf-rime
+dnl ***************************************************************************
+
+AC_ARG_ENABLE([nimf-rime],
+  AS_HELP_STRING([--disable-nimf-rime], [Disable nimf-rime]))
+
+AS_IF([test "x$enable_nimf_rime" != "xno"],
+      [PKG_CHECK_MODULES(NIMF_RIME_DEPS, [rime >= 1.2.9 $LIBNIMF_REQUIRES])])
+
+AM_CONDITIONAL([ENABLE_NIMF_RIME],
+               [test "x$enable_nimf_rime" != "xno"])
 
 dnl ***************************************************************************
 dnl nimf-anthy

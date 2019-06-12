@@ -1,3 +1,11 @@
-SUBDIRS = nimf-anthy nimf-libhangul nimf-m17n nimf-rime nimf-system-keyboard
+SUBDIRS = nimf-anthy nimf-libhangul nimf-system-keyboard
+
+if ENABLE_NIMF_M17N
+  SUBDIRS += nimf-m17n
+endif
+
+if ENABLE_NIMF_RIME
+  SUBDIRS += nimf-rime
+endif
 
 DISTCLEANFILES = Makefile.in
