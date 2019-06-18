@@ -14,8 +14,6 @@ libqt4im_nimf_la_CXXFLAGS = \
 	$(EXTRA_CFLAGS) \
 	$(LIBNIMF_DEPS_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(IM_NIMF_QT4_DEPS_CFLAGS) \
 	-DQT_NO_KEYWORDS

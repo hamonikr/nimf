@@ -16,8 +16,6 @@ gsettings_SCHEMAS = org.nimf.settings.gschema.xml
 AM_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DNIMF_COMPILATION \
 	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	-DG_LOG_DOMAIN=\"nimf\"

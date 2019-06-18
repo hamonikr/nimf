@@ -8,8 +8,6 @@ libnimf_indicator_la_SOURCES = \
 libnimf_indicator_la_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	$(NIMF_INDICATOR_DEPS_CFLAGS)

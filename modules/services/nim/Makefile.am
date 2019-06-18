@@ -13,8 +13,6 @@ libnimf_nim_la_SOURCES = \
 libnimf_nim_la_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_NIM_DEPS_CFLAGS)
 

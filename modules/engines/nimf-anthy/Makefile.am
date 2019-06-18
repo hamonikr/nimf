@@ -8,8 +8,6 @@ libnimf_anthy_la_SOURCES = nimf-anthy.c
 libnimf_anthy_la_CFLAGS  = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_ANTHY_DEPS_CFLAGS)
 

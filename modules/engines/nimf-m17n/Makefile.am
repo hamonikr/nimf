@@ -70,8 +70,6 @@ gsettings_SCHEMAS = org.nimf.engines.nimf-m17n.gschema.xml
 NIMF_M17N_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	$(NIMF_M17N_DEPS_CFLAGS)
 

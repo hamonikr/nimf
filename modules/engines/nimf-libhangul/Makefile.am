@@ -11,8 +11,6 @@ libnimf_libhangul_la_SOURCES = nimf-libhangul.c
 libnimf_libhangul_la_CFLAGS  = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	-DMSSYMBOL_PATH=\"$(mssymboldir)/$(mssymbol_DATA)\" \
 	$(NIMF_LIBHANGUL_DEPS_CFLAGS)

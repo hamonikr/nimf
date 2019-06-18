@@ -5,8 +5,6 @@ man_MANS = nimf.1
 AM_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DNIMF_COMPILATION \
 	-DG_LOG_DOMAIN=\"nimf\"
 

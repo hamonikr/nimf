@@ -11,8 +11,6 @@ libqt5im_nimf_la_CXXFLAGS = \
 	$(EXTRA_CFLAGS) \
 	$(LIBNIMF_DEPS_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
-	-I$(top_srcdir)/libnimf/client \
-	-I$(top_srcdir)/libnimf/server \
 	-DG_LOG_DOMAIN=\"nimf\" \
 	-DNIMF_COMPILATION \
 	$(IM_NIMF_QT5_DEPS_CFLAGS) \
