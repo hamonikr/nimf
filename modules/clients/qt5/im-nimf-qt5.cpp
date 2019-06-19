@@ -752,7 +752,7 @@ public:
 #endif
 
 #ifdef USE_DLFCN
-    libnimf    = dlopen ("libnimf.so.0",        RTLD_LAZY);
+    libnimf    = dlopen ("libnimf.so.1",        RTLD_LAZY);
     libglib    = dlopen ("libglib-2.0.so.0",    RTLD_LAZY);
     libgobject = dlopen ("libgobject-2.0.so.0", RTLD_LAZY);
     libgio     = dlopen ("libgio-2.0.so.0",     RTLD_LAZY);
