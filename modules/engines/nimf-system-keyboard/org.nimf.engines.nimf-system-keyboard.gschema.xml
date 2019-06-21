@@ -7,10 +7,10 @@
       <summary>schema name for nimf-settings</summary>
       <description>This key is intended for nimf-settings.</description>
     </key>
-    <key type="as" name="trigger-keys">
-      <default>['']</default>
-      <summary>Trigger keys for switching to System Keyboard</summary>
-      <description>Trigger keys for switching to System Keyboard</description>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to system keyboard</summary>
+      <description>Shortcuts to switch to system keyboard</description>
     </key>
   </schema>
 </schemalist>

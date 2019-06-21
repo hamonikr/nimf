@@ -391,37 +391,39 @@ nimf_service_ic_filter_event (NimfServiceIC *ic,
     return FALSE;
 
   GHashTableIter iter;
-  gpointer       trigger_keys;
+  NimfShortcut  *shortcut;
   gpointer       engine_id;
+  const gchar   *engine_id0 = nimf_engine_get_id (ic->priv->engine);
   NimfServer    *server = nimf_server_get_default ();
 
-  g_hash_table_iter_init (&iter, server->priv->trigger_keys);
+  g_hash_table_iter_init (&iter, server->priv->shortcuts);
 
-  while (g_hash_table_iter_next (&iter, &engine_id, &trigger_keys))
+  while (g_hash_table_iter_next (&iter, &engine_id, (gpointer) &shortcut))
   {
-    if (nimf_event_matches (event, trigger_keys))
+    if ((shortcut->to_lang &&
+         nimf_event_matches (event, (const NimfKey **) shortcut->to_lang) &&
+         g_strcmp0 (engine_id0, engine_id)))
     {
       if (event->key.type == NIMF_EVENT_KEY_PRESS)
       {
         nimf_service_ic_reset (ic);
+        nimf_service_ic_change_engine_by_id (ic, engine_id);
+      }
 
-        if (g_strcmp0 (nimf_engine_get_id (ic->priv->engine), engine_id) != 0)
-        {
-          if (server->priv->use_singleton)
-            ic->priv->engine = nimf_server_get_engine_by_id (server, engine_id);
-          else
-            ic->priv->engine = nimf_service_ic_get_engine_by_id (ic, engine_id);
-        }
-        else
-        {
-          if (server->priv->use_singleton)
-            ic->priv->engine = nimf_server_get_engine_by_id (server, "nimf-system-keyboard");
-          else
-            ic->priv->engine = nimf_service_ic_get_engine_by_id (ic, "nimf-system-keyboard");
-        }
+      if (event->key.keyval == NIMF_KEY_Escape)
+        return FALSE;
 
-        nimf_service_ic_engine_changed (ic, nimf_engine_get_id (ic->priv->engine),
-                                        nimf_engine_get_icon_name (ic->priv->engine));
+      return TRUE;
+    }
+
+    if ((shortcut->to_sys &&
+         nimf_event_matches (event, (const NimfKey **) shortcut->to_sys) &&
+         !g_strcmp0 (engine_id0, engine_id)))
+    {
+      if (event->key.type == NIMF_EVENT_KEY_PRESS)
+      {
+        nimf_service_ic_reset (ic);
+        nimf_service_ic_change_engine_by_id (ic, "nimf-system-keyboard");
       }
 
       if (event->key.keyval == NIMF_KEY_Escape)

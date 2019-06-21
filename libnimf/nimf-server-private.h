@@ -36,14 +36,19 @@ struct _NimfServerPrivate
   const gchar   *last_focused_service;
   GSettings     *settings;
   NimfKey      **hotkeys;
-  GHashTable    *trigger_settings;
-  GHashTable    *trigger_keys;
+  GHashTable    *shortcuts;
   gboolean       use_singleton;
   GPtrArray     *ics;
   /* facilities */
   NimfCandidatable *candidatable;
   NimfPreeditable  *preeditable;
 };
+
+typedef struct {
+  GSettings  *settings;
+  NimfKey   **to_lang;
+  NimfKey   **to_sys;
+} NimfShortcut;
 
 G_END_DECLS
 

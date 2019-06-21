@@ -745,8 +745,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   g_signal_connect (hangul->settings, "changed::get-method-infos",
                     G_CALLBACK (on_changed_method), hangul);
-  g_signal_connect (hangul->settings, "changed::trigger-keys",
-                    G_CALLBACK (on_changed_keys), hangul);
   g_signal_connect (hangul->settings, "changed::hanja-keys",
                     G_CALLBACK (on_changed_keys), hangul);
   g_signal_connect (hangul->settings, "changed::double-consonant-rule",

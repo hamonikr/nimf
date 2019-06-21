@@ -64,6 +64,15 @@ Compiling and installing
 
   * Compiling and installing in the usual way
 
+    There are configuration options. Use it for your situation.
+
+      --disable-hardening     Disable hardening
+      --disable-nimf-anthy    Disable nimf-anthy
+      --disable-nimf-m17n     Disable nimf-m17n
+      --disable-nimf-rime     Disable nimf-rime
+      --with-im-config-data   Install im-config data
+      --with-imsettings-data  Install imsettings data
+
     If you are using im-config
 
       ./autogen.sh --with-im-config-data

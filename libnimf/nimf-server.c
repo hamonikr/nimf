@@ -178,6 +178,108 @@ on_use_singleton (GSettings  *settings,
 }
 
 static void
+on_changed_shortcuts (GSettings  *settings,
+                      gchar      *key,
+                      NimfServer *server)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfShortcut *shortcut;
+  const gchar  *engine_id;
+  gchar        *schema_id;
+
+  g_object_get (settings, "schema-id", &schema_id, NULL);
+  engine_id = schema_id + strlen ("org.nimf.engines.");
+  shortcut  = g_hash_table_lookup (server->priv->shortcuts, engine_id);
+
+  if (g_strcmp0 (key, "shortcuts-to-lang") == 0)
+  {
+    gchar **keys;
+
+    keys = g_settings_get_strv (settings, key);
+    shortcut->to_lang = nimf_key_newv ((const gchar **) keys);
+
+    g_strfreev (keys);
+  }
+  else if (g_strcmp0 (key, "shortcuts-to-sys") == 0)
+  {
+    gchar **keys;
+
+    keys = g_settings_get_strv (settings, key);
+    shortcut->to_sys = nimf_key_newv ((const gchar **) keys);
+
+    g_strfreev (keys);
+  }
+
+  g_free (schema_id);
+}
+
+static NimfShortcut *
+nimf_server_shortcut_new (NimfServer *server,
+                          GSettings  *settings)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GSettingsSchemaSource *source;
+  GSettingsSchema       *schema;
+  NimfShortcut          *shortcut;
+  gchar                 *schema_id;
+
+  g_object_get (settings, "schema-id", &schema_id, NULL);
+  source   = g_settings_schema_source_get_default ();
+  schema   = g_settings_schema_source_lookup (source, schema_id, TRUE);
+  shortcut = g_slice_new0 (NimfShortcut);
+
+  if (g_settings_schema_has_key (schema, "shortcuts-to-lang"))
+  {
+    gchar **to_lang;
+
+    to_lang = g_settings_get_strv (settings, "shortcuts-to-lang");
+    shortcut->to_lang = nimf_key_newv ((const gchar **) to_lang);
+    g_signal_connect (settings, "changed::shortcuts-to-lang",
+                      G_CALLBACK (on_changed_shortcuts), server);
+
+    g_strfreev (to_lang);
+  }
+
+  if (g_settings_schema_has_key (schema, "shortcuts-to-sys"))
+  {
+    gchar **to_sys;
+
+    to_sys = g_settings_get_strv (settings, "shortcuts-to-sys");
+    shortcut->to_sys  = nimf_key_newv ((const gchar **) to_sys);
+    g_signal_connect (settings, "changed::shortcuts-to-sys",
+                      G_CALLBACK (on_changed_shortcuts), server);
+
+    g_strfreev (to_sys);
+  }
+
+  shortcut->settings = settings;
+
+  g_free (schema_id);
+  g_settings_schema_unref (schema);
+
+  return shortcut;
+}
+
+static void
+nimf_server_shortcut_free (NimfShortcut *shortcut)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (shortcut->settings)
+    g_object_unref (shortcut->settings);
+
+  if (shortcut->to_lang)
+    nimf_key_freev (shortcut->to_lang);
+
+  if (shortcut->to_sys)
+    nimf_key_freev (shortcut->to_sys);
+
+  g_slice_free (NimfShortcut, shortcut);
+}
+
+static void
 nimf_server_init (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -188,11 +290,9 @@ nimf_server_init (NimfServer *server)
   server->priv->settings = g_settings_new ("org.nimf");
   server->priv->use_singleton = g_settings_get_boolean (server->priv->settings,
                                                         "use-singleton");
-  server->priv->trigger_settings = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                          g_free, g_object_unref);
-  server->priv->trigger_keys =
-    g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) nimf_key_freev);
-
+  server->priv->shortcuts =
+    g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+                           (GDestroyNotify) nimf_server_shortcut_free);
   gchar **hotkeys = g_settings_get_strv (server->priv->settings, "hotkeys");
   server->priv->hotkeys = nimf_key_newv ((const gchar **) hotkeys);
   g_strfreev (hotkeys);
@@ -228,8 +328,7 @@ nimf_server_finalize (GObject *object)
   }
 
   g_object_unref     (server->priv->settings);
-  g_hash_table_unref (server->priv->trigger_settings);
-  g_hash_table_unref (server->priv->trigger_keys);
+  g_hash_table_unref (server->priv->shortcuts);
   nimf_key_freev     (server->priv->hotkeys);
 
   G_OBJECT_CLASS (nimf_server_parent_class)->finalize (object);
@@ -503,29 +602,6 @@ nimf_server_load_services (NimfServer *server)
 }
 
 static void
-on_changed_trigger_keys (GSettings  *settings,
-                         gchar      *key,
-                         NimfServer *server)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  const gchar *engine_id;
-  gchar       *schema_id;
-  NimfKey    **trigger_keys;
-  gchar      **keys;
-
-  g_object_get (settings, "schema-id", &schema_id, NULL);
-  engine_id = schema_id + strlen ("org.nimf.engines.");
-  keys = g_settings_get_strv (settings, "trigger-keys");
-  trigger_keys = nimf_key_newv ((const gchar **) keys);
-  g_hash_table_insert (server->priv->trigger_keys,
-                       g_strdup (engine_id), trigger_keys);
-
-  g_strfreev (keys);
-  g_free (schema_id);
-}
-
-static void
 nimf_server_load_engines (NimfServer *server)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
@@ -583,21 +659,9 @@ nimf_server_load_engines (NimfServer *server)
         server->priv->engines = g_list_prepend (server->priv->engines, engine);
         g_ptr_array_add (engine_ids, g_strdup (engine_id));
 
-        if (g_settings_schema_has_key (schema, "trigger-keys"))
-        {
-          NimfKey **trigger_keys;
-          gchar   **keys;
-
-          keys = g_settings_get_strv (settings, "trigger-keys");
-          trigger_keys = nimf_key_newv ((const gchar **) keys);
-          g_hash_table_insert (server->priv->trigger_keys,
-                               g_strdup (engine_id), trigger_keys);
-          g_hash_table_insert (server->priv->trigger_settings,
-                               g_strdup (engine_id), settings);
-          g_signal_connect (settings, "changed::trigger-keys",
-                            G_CALLBACK (on_changed_trigger_keys), server);
-          g_strfreev (keys);
-        }
+        if (g_settings_schema_has_key (schema, "shortcuts-to-lang"))
+          g_hash_table_insert (server->priv->shortcuts, g_strdup (engine_id),
+                               nimf_server_shortcut_new (server, settings));
 
         g_free (path);
       }
@@ -675,23 +739,9 @@ on_changed_active_engines (GSettings  *settings,
       schema_id = g_strdup_printf ("org.nimf.engines.%s", engine_ids[i]);
       schema = g_settings_schema_source_lookup (source, schema_id, TRUE);
 
-      if (g_settings_schema_has_key (schema, "trigger-keys"))
-      {
-        GSettings  *engine_settings;
-        NimfKey   **trigger_keys;
-        gchar     **keys;
-
-        engine_settings = g_settings_new (schema_id);
-        keys = g_settings_get_strv (engine_settings, "trigger-keys");
-        trigger_keys = nimf_key_newv ((const gchar **) keys);
-        g_hash_table_insert (server->priv->trigger_keys,
-                             g_strdup (engine_ids[i]), trigger_keys);
-        g_hash_table_insert (server->priv->trigger_settings,
-                             g_strdup (engine_ids[i]), engine_settings);
-        g_signal_connect (engine_settings, "changed::trigger-keys",
-                          G_CALLBACK (on_changed_trigger_keys), server);
-        g_strfreev (keys);
-      }
+      if (g_settings_schema_has_key (schema, "shortcuts-to-lang"))
+        g_hash_table_insert (server->priv->shortcuts, g_strdup (engine_ids[i]),
+                             nimf_server_shortcut_new (server, g_settings_new (schema_id)));
 
       g_signal_emit (server, nimf_server_signals[ENGINE_LOADED], 0, engine_ids[i]);
 
@@ -713,8 +763,7 @@ on_changed_active_engines (GSettings  *settings,
       NimfEngine *engine = l->data;
       gint        index;
 
-      g_hash_table_remove (server->priv->trigger_keys,     engine_id);
-      g_hash_table_remove (server->priv->trigger_settings, engine_id);
+      g_hash_table_remove (server->priv->shortcuts, engine_id);
       server->priv->engines = g_list_delete_link (server->priv->engines, l);
 
       for (index = 0; index < server->priv->ics->len; index++)

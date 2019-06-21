@@ -12,10 +12,15 @@
       <summary>Active engine</summary>
       <description>Active engine</description>
     </key>
-    <key type="as" name="trigger-keys">
+    <key type="as" name="shortcuts-to-lang">
       <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
-      <summary>Trigger keys for switching Japanese / System</summary>
-      <description>Trigger keys for switching Japanese / System</description>
+      <summary>Shortcuts to switch to Japanese</summary>
+      <description>Shortcuts to switch to Japanese (anthy)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
+      <summary>Shortcuts from Japanese to system keyboard</summary>
+      <description>Shortcuts from Japanese to system keyboard</description>
     </key>
     <key type="as" name="hiragana-keys">
       <default>['F6']</default>

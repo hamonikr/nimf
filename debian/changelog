@@ -1,3 +1,10 @@
+nimf (2019.06.21) stable; urgency=medium
+
+  * Redesigned shortcuts (closes #272)
+  * im-nimf-qt5: Fixed lt major version
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 21 Jun 2019 10:05:24 +0900
+
 nimf (2019.06.07) stable; urgency=medium
 
   * Updated some docs
