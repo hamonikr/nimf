@@ -72,8 +72,8 @@ static int nimf_xim_set_ic_values (NimfXim          *xim,
   {
     if (!g_strcmp0 (XNInputStyle, data->ic_attr[i].name))
     {
-      xic->input_style = (*(CARD32*) data->ic_attr[i].value) & XIMPreeditCallbacks;
-      nimf_service_ic_set_use_preedit (ic, !!xic->input_style);
+      xic->input_style = *(CARD32*) data->ic_attr[i].value;
+      nimf_service_ic_set_use_preedit (ic, !!(xic->input_style & XIMPreeditCallbacks));
     }
     else if (!g_strcmp0 (XNClientWindow, data->ic_attr[i].name))
     {
@@ -277,16 +277,19 @@ static int nimf_xim_set_ic_focus (NimfXim             *xim,
                                   IMChangeFocusStruct *data)
 {
   NimfServiceIC *ic;
-  ic = g_hash_table_lookup (xim->ics, GUINT_TO_POINTER (data->icid));
+  NimfXimIC     *xic;
+
+  ic  = g_hash_table_lookup (xim->ics, GUINT_TO_POINTER (data->icid));
+  xic = NIMF_XIM_IC (ic);
 
   g_debug (G_STRLOC ": %s, icid = %d, connection id = %d",
-           G_STRFUNC, data->icid, NIMF_XIM_IC (ic)->icid);
+           G_STRFUNC, data->icid, xic->icid);
 
   nimf_service_ic_focus_in (ic);
-  xim->last_focused_icid = NIMF_XIM_IC (ic)->icid;
+  xim->last_focused_icid = xic->icid;
 
-  if (!nimf_service_ic_get_use_preedit (ic))
-    nimf_xim_ic_set_cursor_location (NIMF_XIM_IC (ic), -1, -1);
+  if (xic->input_style & XIMPreeditNothing)
+    nimf_xim_ic_set_cursor_location (xic, -1, -1);
 
   return 1;
 }
@@ -605,15 +608,15 @@ static gboolean nimf_xim_start (NimfService *service)
  */
 
   XIMStyle im_styles [] = {
-    /* over-the-spot */
-    XIMPreeditPosition  | XIMStatusNothing,
-    XIMPreeditPosition  | XIMStatusNone,
-    /* on-root-window */
-    XIMPreeditNothing   | XIMStatusNothing,
-    XIMPreeditNothing   | XIMStatusNone,
     /* on-the-spot */
     XIMPreeditCallbacks | XIMStatusNothing,
     XIMPreeditCallbacks | XIMStatusNone,
+    /* over-the-spot */
+    XIMPreeditPosition  | XIMStatusNothing,
+    XIMPreeditPosition  | XIMStatusNone,
+    /* root-window */
+    XIMPreeditNothing   | XIMStatusNothing,
+    XIMPreeditNothing   | XIMStatusNone,
     0
   };
 

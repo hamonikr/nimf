@@ -1,3 +1,10 @@
+nimf (2019.06.22) stable; urgency=medium
+
+  * Fixed preedit window location
+  * Fixed nimf-xim not starting in the Xwayland environment (#272)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 22 Jun 2019 19:10:34 +0900
+
 nimf (2019.06.21) stable; urgency=medium
 
   * Redesigned shortcuts (closes #272)
