@@ -560,34 +560,6 @@
       <description>Input method</description>
     </key>
   </schema>
-  <schema id="org.nimf.engines.nimf-m17n-hi"
-          path="/org/nimf/engines/nimf-m17n-hi/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Hindi (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>Active engine</description>
-    </key>
-    <key type="as" name="shortcuts-to-lang">
-      <default>[]</default>
-      <summary>Shortcuts to switch to Hindi</summary>
-      <description>Shortcuts to switch to Hindi (m17n)</description>
-    </key>
-    <key type="as" name="shortcuts-to-sys">
-      <default>[]</default>
-      <summary>Shortcuts from Hindi to system keyboard</summary>
-      <description>Shortcuts from Hindi to system keyboard</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'hi:remington'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
   <schema id="org.nimf.engines.nimf-m17n-hr"
           path="/org/nimf/engines/nimf-m17n-hr/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">
@@ -612,34 +584,6 @@
     </key>
     <key type="s" name="get-method-infos">
       <default>'hr:kbd'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
-  <schema id="org.nimf.engines.nimf-m17n-hu"
-          path="/org/nimf/engines/nimf-m17n-hu/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Hungarian (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>Active engine</description>
-    </key>
-    <key type="as" name="shortcuts-to-lang">
-      <default>[]</default>
-      <summary>Shortcuts to switch to Hungarian</summary>
-      <description>Shortcuts to switch to Hungarian (m17n)</description>
-    </key>
-    <key type="as" name="shortcuts-to-sys">
-      <default>[]</default>
-      <summary>Shortcuts from Hungarian to system keyboard</summary>
-      <description>Shortcuts from Hungarian to system keyboard</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'hu:rovas-post'</default>
       <summary>Input method</summary>
       <description>Input method</description>
     </key>
@@ -812,34 +756,6 @@
       <description>Input method</description>
     </key>
   </schema>
-  <schema id="org.nimf.engines.nimf-m17n-kn"
-          path="/org/nimf/engines/nimf-m17n-kn/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Kannada (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>Active engine</description>
-    </key>
-    <key type="as" name="shortcuts-to-lang">
-      <default>[]</default>
-      <summary>Shortcuts to switch to Kannada</summary>
-      <description>Shortcuts to switch to Kannada (m17n)</description>
-    </key>
-    <key type="as" name="shortcuts-to-sys">
-      <default>[]</default>
-      <summary>Shortcuts from Kannada to system keyboard</summary>
-      <description>Shortcuts from Kannada to system keyboard</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'kn:inscript'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
   <schema id="org.nimf.engines.nimf-m17n-ks"
           path="/org/nimf/engines/nimf-m17n-ks/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">
@@ -924,62 +840,6 @@
       <description>Input method</description>
     </key>
   </schema>
-  <schema id="org.nimf.engines.nimf-m17n-ml"
-          path="/org/nimf/engines/nimf-m17n-ml/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Malayalam (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>Active engine</description>
-    </key>
-    <key type="as" name="shortcuts-to-lang">
-      <default>[]</default>
-      <summary>Shortcuts to switch to Malayalam</summary>
-      <description>Shortcuts to switch to Malayalam (m17n)</description>
-    </key>
-    <key type="as" name="shortcuts-to-sys">
-      <default>[]</default>
-      <summary>Shortcuts from Malayalam to system keyboard</summary>
-      <description>Shortcuts from Malayalam to system keyboard</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'ml:inscript'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
-  <schema id="org.nimf.engines.nimf-m17n-mr"
-          path="/org/nimf/engines/nimf-m17n-mr/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Marathi (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>Active engine</description>
-    </key>
-    <key type="as" name="shortcuts-to-lang">
-      <default>[]</default>
-      <summary>Shortcuts to switch to Marathi</summary>
-      <description>Shortcuts to switch to Marathi (m17n)</description>
-    </key>
-    <key type="as" name="shortcuts-to-sys">
-      <default>[]</default>
-      <summary>Shortcuts from Marathi to system keyboard</summary>
-      <description>Shortcuts from Marathi to system keyboard</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'mr:phonetic'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
   <schema id="org.nimf.engines.nimf-m17n-my"
           path="/org/nimf/engines/nimf-m17n-my/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">
@@ -1004,34 +864,6 @@
     </key>
     <key type="s" name="get-method-infos">
       <default>'my:kbd'</default>
-      <summary>Input method</summary>
-      <description>Input method</description>
-    </key>
-  </schema>
-  <schema id="org.nimf.engines.nimf-m17n-ne"
-          path="/org/nimf/engines/nimf-m17n-ne/" gettext-domain="nimf">
-    <key type="s" name="hidden-schema-name">
-      <default l10n="messages">'Nepali (m17n)'</default>
-      <summary>schema name for nimf-settings</summary>
-      <description>This key is intended for nimf-settings.</description>
-    </key>
-    <key type="b" name="active-engine">
-      <default>false</default>
-      <summary>Active engine</summary>
-      <description>Active engine</description>
-    </key>
-    <key type="as" name="shortcuts-to-lang">
-      <default>[]</default>
-      <summary>Shortcuts to switch to Nepali</summary>
-      <description>Shortcuts to switch to Nepali (m17n)</description>
-    </key>
-    <key type="as" name="shortcuts-to-sys">
-      <default>[]</default>
-      <summary>Shortcuts from Nepali to system keyboard</summary>
-      <description>Shortcuts from Nepali to system keyboard</description>
-    </key>
-    <key type="s" name="get-method-infos">
-      <default>'ne:rom'</default>
       <summary>Input method</summary>
       <description>Input method</description>
     </key>

@@ -36,6 +36,12 @@ G_BEGIN_DECLS
 #define NIMF_IS_M17N_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_M17N))
 #define NIMF_M17N_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), NIMF_TYPE_M17N, NimfM17nClass))
 
+#define M17N_CHECK_VERSION(major,minor,micro) \
+    (M17NLIB_MAJOR_VERSION > (major) || \
+     (M17NLIB_MAJOR_VERSION == (major) && M17NLIB_MINOR_VERSION > (minor)) || \
+     (M17NLIB_MAJOR_VERSION == (major) && M17NLIB_MINOR_VERSION == (minor) && \
+      M17NLIB_PATCH_LEVEL >= (micro)))
+
 typedef struct _NimfM17n      NimfM17n;
 typedef struct _NimfM17nClass NimfM17nClass;
 

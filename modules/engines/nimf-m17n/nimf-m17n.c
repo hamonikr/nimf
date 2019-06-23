@@ -486,6 +486,10 @@ nimf_m17n_open_im (NimfM17n *m17n)
 
   if (g_strv_length (strv) > 1)
   {
+#if !M17N_CHECK_VERSION(1, 8, 0)
+    if (!g_strcmp0 (strv[0], "uk"))
+      strv[0][1] = 'a';
+#endif
     m17n->im = minput_open_im (msymbol (strv[0]), msymbol (strv[1]), NULL);
 
     if (m17n->im)

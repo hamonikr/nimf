@@ -1,3 +1,9 @@
+nimf (2019.06.23) stable; urgency=medium
+
+  * Fixed backward compatibility for m17n-db (#273)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 23 Jun 2019 21:42:16 +0900
+
 nimf (2019.06.22) stable; urgency=medium
 
   * Fixed preedit window location

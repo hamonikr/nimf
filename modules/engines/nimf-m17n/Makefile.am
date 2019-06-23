@@ -23,23 +23,17 @@ module_LTLIBRARIES = \
 	libnimf-m17n-grc.la \
 	libnimf-m17n-gu.la \
 	libnimf-m17n-he.la \
-	libnimf-m17n-hi.la \
 	libnimf-m17n-hr.la \
-	libnimf-m17n-hu.la \
 	libnimf-m17n-hy.la \
 	libnimf-m17n-ii.la \
 	libnimf-m17n-iu.la \
 	libnimf-m17n-ka.la \
 	libnimf-m17n-kk.la \
 	libnimf-m17n-km.la \
-	libnimf-m17n-kn.la \
 	libnimf-m17n-ks.la \
 	libnimf-m17n-lo.la \
 	libnimf-m17n-mai.la \
-	libnimf-m17n-ml.la \
-	libnimf-m17n-mr.la \
 	libnimf-m17n-my.la \
-	libnimf-m17n-ne.la \
 	libnimf-m17n-nsk.la \
 	libnimf-m17n-oj.la \
 	libnimf-m17n-or.la \
@@ -64,9 +58,6 @@ module_LTLIBRARIES = \
 	libnimf-m17n-vi.la \
 	libnimf-m17n-yi.la
 
-gsettings_SCHEMAS = org.nimf.engines.nimf-m17n.gschema.xml
-@GSETTINGS_RULES@
-
 NIMF_M17N_CFLAGS = \
 	$(EXTRA_CFLAGS) \
 	-I$(top_srcdir)/libnimf \
@@ -76,6 +67,66 @@ NIMF_M17N_CFLAGS = \
 NIMF_M17N_ADD = \
 	$(top_builddir)/libnimf/libnimf.la \
 	$(top_builddir)/modules/engines/nimf-m17n/libnimf-m17n.la
+
+gsettings_SCHEMAS = org.nimf.engines.nimf-m17n.gschema.xml
+
+if M17N_1_8_0_AVAILABLE
+
+module_LTLIBRARIES += \
+	libnimf-m17n-hi.la \
+	libnimf-m17n-hu.la \
+	libnimf-m17n-kn.la \
+	libnimf-m17n-ml.la \
+	libnimf-m17n-mr.la \
+	libnimf-m17n-ne.la
+
+gsettings_SCHEMAS  += \
+	org.nimf.engines.nimf-m17n-hi.gschema.xml \
+	org.nimf.engines.nimf-m17n-hu.gschema.xml \
+	org.nimf.engines.nimf-m17n-kn.gschema.xml \
+	org.nimf.engines.nimf-m17n-ml.gschema.xml \
+	org.nimf.engines.nimf-m17n-mr.gschema.xml \
+	org.nimf.engines.nimf-m17n-ne.gschema.xml
+
+libnimf_m17n_hi_la_SOURCES      = nimf-m17n-hi.c nimf-m17n.h
+libnimf_m17n_hi_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_hi_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_hi_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_hi_la_DEPENDENCIES = libnimf-m17n.la
+
+libnimf_m17n_hu_la_SOURCES      = nimf-m17n-hu.c nimf-m17n.h
+libnimf_m17n_hu_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_hu_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_hu_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_hu_la_DEPENDENCIES = libnimf-m17n.la
+
+libnimf_m17n_kn_la_SOURCES      = nimf-m17n-kn.c nimf-m17n.h
+libnimf_m17n_kn_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_kn_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_kn_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_kn_la_DEPENDENCIES = libnimf-m17n.la
+
+libnimf_m17n_ml_la_SOURCES      = nimf-m17n-ml.c nimf-m17n.h
+libnimf_m17n_ml_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ml_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ml_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ml_la_DEPENDENCIES      = libnimf-m17n.la
+
+libnimf_m17n_mr_la_SOURCES      = nimf-m17n-mr.c nimf-m17n.h
+libnimf_m17n_mr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_mr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_mr_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_mr_la_DEPENDENCIES = libnimf-m17n.la
+
+libnimf_m17n_ne_la_SOURCES      = nimf-m17n-ne.c nimf-m17n.h
+libnimf_m17n_ne_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
+libnimf_m17n_ne_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
+libnimf_m17n_ne_la_LIBADD       = $(NIMF_M17N_ADD)
+libnimf_m17n_ne_la_DEPENDENCIES = libnimf-m17n.la
+
+endif
+
+@GSETTINGS_RULES@
 
 libnimf_m17n_la_SOURCES = nimf-m17n.c nimf-m17n.h
 libnimf_m17n_la_CFLAGS  = $(NIMF_M17N_CFLAGS)
@@ -202,23 +253,11 @@ libnimf_m17n_he_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_he_la_LIBADD       = $(NIMF_M17N_ADD)
 libnimf_m17n_he_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_hi_la_SOURCES      = nimf-m17n-hi.c nimf-m17n.h
-libnimf_m17n_hi_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_hi_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_hi_la_LIBADD       = $(NIMF_M17N_ADD)
-libnimf_m17n_hi_la_DEPENDENCIES = libnimf-m17n.la
-
 libnimf_m17n_hr_la_SOURCES      = nimf-m17n-hr.c nimf-m17n.h
 libnimf_m17n_hr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
 libnimf_m17n_hr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_hr_la_LIBADD       = $(NIMF_M17N_ADD)
 libnimf_m17n_hr_la_DEPENDENCIES = libnimf-m17n.la
-
-libnimf_m17n_hu_la_SOURCES      = nimf-m17n-hu.c nimf-m17n.h
-libnimf_m17n_hu_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_hu_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_hu_la_LIBADD       = $(NIMF_M17N_ADD)
-libnimf_m17n_hu_la_DEPENDENCIES = libnimf-m17n.la
 
 libnimf_m17n_hy_la_SOURCES      = nimf-m17n-hy.c nimf-m17n.h
 libnimf_m17n_hy_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
@@ -256,12 +295,6 @@ libnimf_m17n_km_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_km_la_LIBADD       = $(NIMF_M17N_ADD)
 libnimf_m17n_km_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_kn_la_SOURCES      = nimf-m17n-kn.c nimf-m17n.h
-libnimf_m17n_kn_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_kn_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_kn_la_LIBADD       = $(NIMF_M17N_ADD)
-libnimf_m17n_kn_la_DEPENDENCIES = libnimf-m17n.la
-
 libnimf_m17n_ks_la_SOURCES      = nimf-m17n-ks.c nimf-m17n.h
 libnimf_m17n_ks_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
 libnimf_m17n_ks_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
@@ -280,29 +313,11 @@ libnimf_m17n_mai_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_mai_la_LIBADD       = $(NIMF_M17N_ADD)
 libnimf_m17n_mai_la_DEPENDENCIES = libnimf-m17n.la
 
-libnimf_m17n_ml_la_SOURCES      = nimf-m17n-ml.c nimf-m17n.h
-libnimf_m17n_ml_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ml_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ml_la_LIBADD       = $(NIMF_M17N_ADD)
-libnimf_m17n_ml_la_DEPENDENCIES      = libnimf-m17n.la
-
-libnimf_m17n_mr_la_SOURCES      = nimf-m17n-mr.c nimf-m17n.h
-libnimf_m17n_mr_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_mr_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_mr_la_LIBADD       = $(NIMF_M17N_ADD)
-libnimf_m17n_mr_la_DEPENDENCIES = libnimf-m17n.la
-
 libnimf_m17n_my_la_SOURCES      = nimf-m17n-my.c nimf-m17n.h
 libnimf_m17n_my_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
 libnimf_m17n_my_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
 libnimf_m17n_my_la_LIBADD       = $(NIMF_M17N_ADD)
 libnimf_m17n_my_la_DEPENDENCIES = libnimf-m17n.la
-
-libnimf_m17n_ne_la_SOURCES      = nimf-m17n-ne.c nimf-m17n.h
-libnimf_m17n_ne_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
-libnimf_m17n_ne_la_LDFLAGS      = -avoid-version -module $(NIMF_M17N_DEPS_LIBS)
-libnimf_m17n_ne_la_LIBADD       = $(NIMF_M17N_ADD)
-libnimf_m17n_ne_la_DEPENDENCIES = libnimf-m17n.la
 
 libnimf_m17n_nsk_la_SOURCES      = nimf-m17n-nsk.c nimf-m17n.h
 libnimf_m17n_nsk_la_CFLAGS       = $(NIMF_M17N_CFLAGS)
@@ -494,11 +509,11 @@ install-data-hook:
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-gu.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-he.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-he.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-hi.so
+	-chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-hi.so -f
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-hi.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-hr.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-hr.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-hu.so
+	-chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-hu.so -f
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-hu.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-hy.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-hy.la
@@ -512,7 +527,7 @@ install-data-hook:
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-kk.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-km.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-km.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-kn.so
+	-chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-kn.so -f
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-kn.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-ks.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-ks.la
@@ -520,13 +535,13 @@ install-data-hook:
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-lo.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-mai.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-mai.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-ml.so
+	-chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-ml.so -f
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-ml.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-mr.so
+	-chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-mr.so -f
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-mr.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-my.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-my.la
-	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-ne.so
+	-chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-ne.so -f
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-ne.la
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-m17n-nsk.so
 	rm    -f $(DESTDIR)$(moduledir)/libnimf-m17n-nsk.la

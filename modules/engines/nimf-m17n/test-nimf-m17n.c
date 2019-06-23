@@ -116,6 +116,10 @@ test_nimf_m17n_available_languages ()
     gchar **strv;
 
     strv = g_strsplit (infos[i]->method_id, ":", 2);
+
+    if (!M17N_CHECK_VERSION (1, 8, 0) && !g_strcmp0 (strv[0], "ua"))
+      strv[0][1] = 'k';
+
     g_hash_table_add (code_table, g_strdup (strv[0]));
 
     g_strfreev (strv);
@@ -130,6 +134,10 @@ test_nimf_m17n_available_languages ()
         g_str_has_suffix (filename, ".c"))
     {
       gchar *code;
+
+      if (!M17N_CHECK_VERSION (1, 8, 0) &&
+          !g_strcmp0 (filename, "nimf-m17n-hu.c"))
+        continue;
 
       g_print ("Check if %s available.\n", filename);
       code = g_strndup (strlen ("nimf-m17n-") + filename,
@@ -148,6 +156,10 @@ test_nimf_m17n_available_languages ()
         g_str_has_suffix (filename, ".svg"))
     {
       gchar *code;
+
+      if (!M17N_CHECK_VERSION (1, 8, 0) &&
+          !g_strcmp0 (filename, "nimf-m17n-hu.svg"))
+        continue;
 
       g_print ("Check if %s is available.\n", filename);
       code = g_strndup (strlen ("nimf-m17n-") + filename,
@@ -216,7 +228,11 @@ test_nimf_m17n_available_method_infos ()
       symname = g_strdup_printf ("nimf_m17n_%s_get_method_infos", code);
       g_module_symbol (module, symname, (gpointer *) &get_method_infos);
 
+      if (!M17N_CHECK_VERSION (1, 8, 0) && !g_strcmp0 (code, "uk"))
+        code[1] = 'a';
+
       infos1 = nimf_m17n_get_method_infos (code);
+
       infos2 = get_method_infos ();
       array1 = g_ptr_array_new ();
       array2 = g_ptr_array_new ();
@@ -249,6 +265,10 @@ test_nimf_m17n_available_method_infos ()
       for (i = 0; infos1[i]; i++)
       {
         g_print ("Check %s\n", infos1[i]->method_id);
+
+        if (!M17N_CHECK_VERSION (1, 8, 0) && !g_strcmp0 (code, "ua"))
+          infos1[i]->method_id[1] = 'k';
+
         g_assert_cmpstr (infos1[i]->method_id, ==, infos2[i]->method_id);
         g_assert_cmpstr (infos1[i]->label,     ==, infos2[i]->label);
         g_assert_cmpstr (infos1[i]->group,     ==, infos2[i]->group);

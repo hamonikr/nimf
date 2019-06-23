@@ -18,5 +18,11 @@ modules/services/indicator/nimf-indicator.c
 [type: gettext/gsettings]modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml
+[type: gettext/gsettings]modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.06.22)
+AC_INIT(nimf, 2019.06.23)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -59,13 +59,20 @@ AC_SUBST(LIBNIMF_REQUIRES)
 PKG_CHECK_MODULES(LIBNIMF_DEPS, [$LIBNIMF_REQUIRES])
 
 dnl ***************************************************************************
-dnl nimf-libhangul  nimf-m17n  nimf-system-keyboard
+dnl nimf-libhangul  nimf-system-keyboard
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
-PKG_CHECK_MODULES(NIMF_M17N_DEPS,      [m17n-shell m17n-db  $LIBNIMF_REQUIRES])
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,
                                        [xkbcommon >= 0.5.0  $LIBNIMF_REQUIRES])
+
+dnl ***************************************************************************
+dnl nimf-m17n
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(NIMF_M17N_DEPS, [m17n-shell m17n-db  $LIBNIMF_REQUIRES])
+PKG_CHECK_EXISTS([m17n-db >= 1.8.0], [m17n_1_8_0_available="yes"])
+AM_CONDITIONAL([M17N_1_8_0_AVAILABLE], [test "x$m17n_1_8_0_available" = "xyes"])
 
 dnl ***************************************************************************
 dnl nimf-rime
