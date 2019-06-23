@@ -27,12 +27,12 @@ BuildRequires: librime-devel >= 1.2.9
 BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 BuildRequires: libxklavier-devel
-BuildRequires: m17n-lib-devel >= 1.8.0
-BuildRequires: m17n-db-devel >= 1.8.0
+BuildRequires: m17n-lib-devel
+BuildRequires: m17n-db-devel
 BuildRequires: gtk-doc
 
 Requires:         im-chooser
-Requires:         anthy, m17n-lib >= 1.8.0, m17n-db >= 1.8.0, m17n-db-extras >= 1.8.0
+Requires:         anthy, m17n-lib, m17n-db, m17n-db-extras
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
 

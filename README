@@ -68,7 +68,6 @@ Compiling and installing
 
       --disable-hardening     Disable hardening
       --disable-nimf-anthy    Disable nimf-anthy
-      --disable-nimf-m17n     Disable nimf-m17n
       --disable-nimf-rime     Disable nimf-rime
       --with-im-config-data   Install im-config data
       --with-imsettings-data  Install imsettings data

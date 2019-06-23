@@ -24,8 +24,8 @@ Build-Depends: debhelper (>= 9),
                libwayland-dev,
                wayland-protocols,
                libxklavier-dev,
-               libm17n-dev (>= 1.8.0),
-               m17n-db (>= 1.8.0),
+               libm17n-dev,
+               m17n-db,
                gtk-doc-tools
 Standards-Version: 3.9.8
 Homepage: https://gitlab.com/nimf-i18n/nimf
@@ -83,7 +83,7 @@ Description: Korean input module for Nimf, based on libhangul
 Package: nimf-m17n
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
-         libm17n-0 (>= 1.8.0), m17n-db (>= 1.8.0), nimf (= ${binary:Version})
+         m17n-db, nimf (= ${binary:Version})
 Suggests: fonts-noto-cjk
 Description: Multilingual input module for Nimf, based on m17n
  Nimf is a lightweight, fast and extensible input method framework.
