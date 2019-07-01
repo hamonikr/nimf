@@ -27,6 +27,15 @@
 #include "nimf.h"
 #include "nimf-enum-types-private.h"
 #include "nimf-utils-private.h"
+#include <glib.h>
+#include <glib/gstdio.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#define EXPORT_ENVIRONMENT "export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)"
+#define INPUT_CONF         "50-input.conf"
 
 #define NIMF_TYPE_SETTINGS             (nimf_settings_get_type ())
 #define NIMF_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SETTINGS, NimfSettings))
@@ -889,6 +898,123 @@ nimf_settings_page_build_title (NimfSettingsPage *page, const gchar *schema_id)
   return g_string_free (title, FALSE);
 }
 
+static gboolean
+xprofile_contains_generator (GFile *file)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GFileInputStream *fis;
+  GDataInputStream *dis;
+  gboolean          found = FALSE;
+
+  if (!(fis = g_file_read (file, NULL, NULL)))
+    return FALSE;
+
+  dis  = g_data_input_stream_new (G_INPUT_STREAM (fis));
+
+  do {
+    char *line;
+
+    line = g_data_input_stream_read_line (dis, NULL, NULL, NULL);
+
+    if (!line)
+      break;
+
+    g_strstrip (line);
+    found = !g_strcmp0 (line, EXPORT_ENVIRONMENT);
+
+    g_free (line);
+  } while (found == FALSE);
+
+  g_input_stream_close (G_INPUT_STREAM (dis), NULL, NULL);
+  g_input_stream_close (G_INPUT_STREAM (fis), NULL, NULL);
+  g_object_unref (dis);
+  g_object_unref (fis);
+
+  return found;
+}
+
+static void
+on_setup_environment (GSettings  *settings,
+                      gchar      *key,
+                      gpointer    user_data)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (g_settings_get_boolean (settings, key))
+  {
+    GFile   *file;
+    gchar   *filename;
+    gchar   *xprofile;
+    gboolean success = TRUE;
+
+    filename = g_build_filename (G_DIR_SEPARATOR_S, g_get_user_config_dir (),
+                                 "environment.d", INPUT_CONF, NULL);
+    if (g_access (filename, F_OK))
+    {
+      gchar *path;
+
+      path = g_build_filename (G_DIR_SEPARATOR_S, g_get_user_config_dir (),
+                               "environment.d", NULL);
+      g_unlink (filename);
+      success = !g_mkdir_with_parents (path, 0700) &&
+                !symlink ("/etc/input.d/nimf.conf", filename);
+
+      g_free (path);
+    }
+
+    g_free (filename);
+
+    if (!success)
+    {
+      g_settings_set_boolean (settings, key, FALSE);
+      return;
+    }
+
+    xprofile = g_build_filename (G_DIR_SEPARATOR_S, g_get_home_dir (),
+                                 ".xprofile", NULL);
+    file  = g_file_new_for_path (xprofile);
+
+    if (xprofile_contains_generator (file) == FALSE)
+    {
+      GFileOutputStream *fos;
+      gboolean           success = FALSE;
+
+      fos = g_file_append_to (file, G_FILE_CREATE_NONE, NULL, NULL);
+
+      if (fos)
+      {
+        gsize count = strlen (EXPORT_ENVIRONMENT) + 1;
+
+        if (g_output_stream_write (G_OUTPUT_STREAM (fos),
+                                   EXPORT_ENVIRONMENT"\n", count,
+                                   NULL, NULL) == count)
+          success = TRUE;
+
+        g_output_stream_close (G_OUTPUT_STREAM (fos), NULL, NULL);
+        g_object_unref (fos);
+      }
+
+      if (success == FALSE)
+        g_settings_set_boolean (settings, key, FALSE);
+    }
+
+    g_object_unref (file);
+    g_free (xprofile);
+  }
+  else
+  {
+    gchar *filename;
+
+    filename = g_build_filename (G_DIR_SEPARATOR_S, g_get_user_config_dir (),
+                                 "environment.d", INPUT_CONF, NULL);
+    if (!g_access (filename, F_OK))
+      g_unlink (filename);
+
+    g_free (filename);
+  }
+}
+
 static NimfSettingsPage *
 nimf_settings_page_new (NimfSettings *nsettings,
                         const gchar  *schema_id)
@@ -975,6 +1101,25 @@ nimf_settings_page_new (NimfSettings *nsettings,
                G_STRFUNC, (gchar *) type);
 
     g_settings_schema_key_unref (schema_key);
+  }
+
+  if (!g_strcmp0 (schema_id, "org.nimf"))
+  {
+    GFile *file;
+    gchar *filename;
+
+    file = g_file_new_build_filename (G_DIR_SEPARATOR_S, g_get_home_dir (),
+                                      ".xprofile", NULL);
+    filename = g_build_filename (G_DIR_SEPARATOR_S, g_get_user_config_dir (),
+                                 "environment.d", INPUT_CONF, NULL);
+    g_settings_set_boolean (page->gsettings, "setup-environment-variables",
+                            !g_access (filename, F_OK) &&
+                            xprofile_contains_generator (file));
+    g_signal_connect (page->gsettings, "changed::setup-environment-variables",
+                      G_CALLBACK (on_setup_environment), NULL);
+
+    g_object_unref (file);
+    g_free (filename);
   }
 
   g_strfreev (keys);

@@ -156,17 +156,8 @@ Configure
 
   * How to enable Nimf on systems using systemd v233 or later
 
-    Create a file and write the following lines to ~/.config/environment.d/50-nimf.conf
-
-      GTK_IM_MODULE=nimf
-      QT4_IM_MODULE=nimf
-      QT_IM_MODULE=nimf
-      XMODIFIERS=@im=nimf
-
-    Then append the following line to ~/.xprofile
-
-      export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)
-
+    Run nimf-settings.
+    Turn on the "Setup environment variables" option in the Nimf menu.
 
 Debugging
 ---------

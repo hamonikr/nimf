@@ -8,4 +8,8 @@ if WITH_IMSETTINGS_DATA
   SUBDIRS += imsettings
 endif
 
+configdir = /etc/input.d
+
+config_DATA = nimf.conf
+
 DISTCLEANFILES = Makefile.in

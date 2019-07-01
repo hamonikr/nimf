@@ -25,6 +25,18 @@
       <description>Create one instance per language engine.
                    Singleton mode reduces memory usage.</description>
     </key>
+    <key type="b" name="setup-environment-variables">
+      <default>true</default>
+      <summary>Setup environment variables</summary>
+      <description>Turning on this option will create a
+$HOME/.config/environment.d/50-input.conf link file if it does not exist, and will add
+"export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)"
+to the .xprofile once, while turning off this option will delete the link file.
+Turn off this option to use other input methods such as ibus, fcitx, etc.
+When this option is turned on or off, file operations are performed immediately.
+But the effect will appear after you login again.
+     </description>
+    </key>
   </schema>
   <schema id="org.nimf.services" path="/org/nimf/services/" gettext-domain="nimf">
     <key type="s" name="hidden-schema-name">

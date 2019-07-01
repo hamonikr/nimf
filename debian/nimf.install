@@ -1,3 +1,4 @@
+etc/input.d/nimf.conf
 etc/xdg/autostart
 usr/bin
 usr/lib/*/gtk-2.0
