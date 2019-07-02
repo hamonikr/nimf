@@ -99,7 +99,7 @@ static GtkWidget *default_engine_combo = NULL;
 
 G_DEFINE_TYPE (NimfSettings, nimf_settings, G_TYPE_OBJECT);
 
-gboolean
+static gboolean
 on_foreach (GtkTreeModel *model,
             GtkTreePath  *path,
             GtkTreeIter  *iter,
@@ -320,7 +320,7 @@ on_combo_box_changed (GtkComboBox        *widget,
   g_free (id2);
 }
 
-gboolean
+static gboolean
 on_finding (gconstpointer a,
             gconstpointer b)
 {
@@ -387,27 +387,6 @@ on_notify_active (GtkSwitch           *widget,
 
   if (active1 != active2)
     g_settings_set_boolean (page_key->gsettings, page_key->key, active1);
-}
-
-void
-on_cursor_changed (GtkTreeView *tree_view,
-                   GtkStack    *stack)
-{
-  GtkTreeSelection *selection; /* do not free */
-  GtkTreeModel     *model;
-  gchar            *text = NULL;
-  GtkTreeIter       iter;
-
-  selection = gtk_tree_view_get_selection (tree_view);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter))
-    gtk_tree_model_get (model, &iter, SCHEMA_COLUMN, &text, -1);
-
-  if (text)
-  {
-    gtk_stack_set_visible_child_name (stack, text);
-    g_free (text);
-  }
 }
 
 static NimfSettingsPageKey *
@@ -1129,7 +1108,8 @@ nimf_settings_page_new (NimfSettings *nsettings,
   return page;
 }
 
-void on_destroy (GtkWidget *widget, GApplication *app)
+static void
+on_destroy (GtkWidget *widget, GApplication *app)
 {
   g_application_release (app);
 }
@@ -1387,7 +1367,7 @@ on_activate (GApplication *app, NimfSettings *nsettings)
   gtk_widget_show_all (nimf_settings_window);
 }
 
-int
+static int
 nimf_settings_run (NimfSettings  *nsettings,
                    int            argc,
                    char         **argv)
@@ -1395,7 +1375,7 @@ nimf_settings_run (NimfSettings  *nsettings,
   return g_application_run (G_APPLICATION (nsettings->app), argc, argv);
 }
 
-NimfSettings *
+static NimfSettings *
 nimf_settings_new ()
 {
   return g_object_new (NIMF_TYPE_SETTINGS, NULL);
