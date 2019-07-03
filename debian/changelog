@@ -1,3 +1,10 @@
+nimf (2019.07.03) stable; urgency=medium
+
+  * Improved nimf-settings
+  * Added an option: Setup environment variables (#87)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 03 Jul 2019 19:05:33 +0900
+
 nimf (2019.06.23) stable; urgency=medium
 
   * Fixed backward compatibility for m17n-db (#273)

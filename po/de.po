@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 21:37+0900\n"
-"PO-Revision-Date: 2019-06-20 21:43+0900\n"
+"POT-Creation-Date: 2019-07-03 17:54+0900\n"
+"PO-Revision-Date: 2019-07-03 17:55+0900\n"
 "Last-Translator: Max Neupert <abonnements@revolwear.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -27,36 +27,36 @@ msgstr "Debug Nachrichten protokollieren"
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf-settings/nimf-settings.c:659
+#: ../bin/nimf-settings/nimf-settings.c:557
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
 
-#: ../bin/nimf-settings/nimf-settings.c:720
+#: ../bin/nimf-settings/nimf-settings.c:618
 msgid "Press key combination"
 msgstr "Tastenkombination drücken"
 
-#: ../bin/nimf-settings/nimf-settings.c:723
+#: ../bin/nimf-settings/nimf-settings.c:621
 msgid "_OK"
 msgstr "Bestätigen (_O)"
 
-#: ../bin/nimf-settings/nimf-settings.c:724
+#: ../bin/nimf-settings/nimf-settings.c:622
 msgid "_Cancel"
 msgstr "Abbrechen (_C)"
 
-#: ../bin/nimf-settings/nimf-settings.c:736
+#: ../bin/nimf-settings/nimf-settings.c:634
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings/nimf-settings.c:1111
+#: ../bin/nimf-settings/nimf-settings.c:1132
 msgid "Default"
 msgstr ""
 
-#: ../bin/nimf-settings/nimf-settings.c:1157
-msgid "    XKB Options"
+#: ../bin/nimf-settings/nimf-settings.c:1227
+msgid "XKB Options"
 msgstr ""
 
-#: ../bin/nimf-settings/nimf-settings.c:1173
+#: ../bin/nimf-settings/nimf-settings.c:1256
 #: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
 #: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
@@ -173,6 +173,12 @@ msgstr ""
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:2
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:2
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:2
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:2
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:2
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:2
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:2
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
 msgid "schema name for nimf-settings"
@@ -185,6 +191,12 @@ msgstr "nimf-settings Schema name"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:3
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:3
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:3
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:3
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:3
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:3
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:3
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
@@ -212,22 +224,37 @@ msgid ""
 msgstr ""
 
 #: ../libnimf/org.nimf.gschema.xml.h:9
-msgid "'Services'"
+msgid "Setup environment variables"
 msgstr ""
 
 #: ../libnimf/org.nimf.gschema.xml.h:10
-msgid "'Clients'"
+msgid ""
+"Turning on this option will create a $HOME/.config/environment.d/50-input."
+"conf link file, and will add \"export $(/usr/lib/systemd/user-environment-"
+"generators/30-systemd-environment-d-generator)\" to the .xprofile once, "
+"while turning off this option will delete the link file. Turn off this "
+"option to use other input methods such as ibus, fcitx, etc. When this option "
+"is turned on or off, file operations are performed immediately. But the "
+"effect will appear after you login again."
 msgstr ""
 
 #: ../libnimf/org.nimf.gschema.xml.h:11
-msgid "'Language engines'"
+msgid "'Services'"
 msgstr ""
 
 #: ../libnimf/org.nimf.gschema.xml.h:12
+msgid "'Clients'"
+msgstr ""
+
+#: ../libnimf/org.nimf.gschema.xml.h:13
+msgid "'Language engines'"
+msgstr ""
+
+#: ../libnimf/org.nimf.gschema.xml.h:14
 msgid "Default language engine"
 msgstr "Voreingestellte Sprach-Engine"
 
-#: ../libnimf/org.nimf.gschema.xml.h:13
+#: ../libnimf/org.nimf.gschema.xml.h:15
 msgid "Default language engine on startup"
 msgstr "Voreingestellte Sprach-Engine beim Start"
 
@@ -268,6 +295,12 @@ msgstr "'Japanisch (Anthy)'"
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:4
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:4
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:4
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:4
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:4
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:4
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:4
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:4
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:4
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:4
 msgid "Active engine"
 msgstr "Aktive Engine"
@@ -303,6 +336,12 @@ msgstr ""
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:12
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:5
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:8
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:8
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:8
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:8
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:8
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:8
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:8
 msgid "Input method"
 msgstr ""
 
@@ -681,643 +720,643 @@ msgid "Shortcuts from Hebrew to system keyboard"
 msgstr ""
 
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:85
-msgid "'Hindi (m17n)'"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:86
-msgid "Shortcuts to switch to Hindi"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:87
-msgid "Shortcuts to switch to Hindi (m17n)"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:88
-msgid "Shortcuts from Hindi to system keyboard"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:89
 msgid "'Croatian (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:90
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:86
 msgid "Shortcuts to switch to Croatian"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:91
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:87
 msgid "Shortcuts to switch to Croatian (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:92
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:88
 msgid "Shortcuts from Croatian to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:93
-msgid "'Hungarian (m17n)'"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:94
-msgid "Shortcuts to switch to Hungarian"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:95
-msgid "Shortcuts to switch to Hungarian (m17n)"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:96
-msgid "Shortcuts from Hungarian to system keyboard"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:97
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:89
 msgid "'Armenian (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:98
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:90
 msgid "Shortcuts to switch to Armenian"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:99
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:91
 msgid "Shortcuts to switch to Armenian (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:100
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:92
 msgid "Shortcuts from Armenian to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:101
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:93
 msgid "'Sichuan Yi (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:102
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:94
 msgid "Shortcuts to switch to Sichuan Yi"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:103
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:95
 msgid "Shortcuts to switch to Sichuan Yi (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:104
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:96
 msgid "Shortcuts from Sichuan Yi to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:105
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:97
 msgid "'Inuktitut (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:106
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:98
 msgid "Shortcuts to switch to Inuktitut"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:107
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:99
 msgid "Shortcuts to switch to Inuktitut (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:108
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:100
 msgid "Shortcuts from Inuktitut to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:109
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:101
 msgid "'Georgian (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:110
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:102
 msgid "Shortcuts to switch to Georgian"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:111
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:103
 msgid "Shortcuts to switch to Georgian (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:112
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:104
 msgid "Shortcuts from Georgian to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:113
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:105
 msgid "'Kazakh (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:114
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:106
 msgid "Shortcuts to switch to Kazakh"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:115
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:107
 msgid "Shortcuts to switch to Kazakh (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:116
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:108
 msgid "Shortcuts from Kazakh to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:117
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:109
 msgid "'Khmer (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:118
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:110
 msgid "Shortcuts to switch to Khmer"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:119
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:111
 msgid "Shortcuts to switch to Khmer (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:120
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:112
 msgid "Shortcuts from Khmer to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:121
-msgid "'Kannada (m17n)'"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:122
-msgid "Shortcuts to switch to Kannada"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:123
-msgid "Shortcuts to switch to Kannada (m17n)"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:124
-msgid "Shortcuts from Kannada to system keyboard"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:125
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:113
 msgid "'Kashmiri (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:126
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:114
 msgid "Shortcuts to switch to Kashmiri"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:127
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:115
 msgid "Shortcuts to switch to Kashmiri (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:128
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:116
 msgid "Shortcuts from Kashmiri to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:129
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:117
 msgid "'Lao (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:130
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:118
 msgid "Shortcuts to switch to Lao"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:131
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:119
 msgid "Shortcuts to switch to Lao (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:132
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:120
 msgid "Shortcuts from Lao to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:133
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:121
 msgid "'Maithili (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:134
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:122
 msgid "Shortcuts to switch to Maithili"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:135
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:123
 msgid "Shortcuts to switch to Maithili (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:136
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:124
 msgid "Shortcuts from Maithili to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:137
-msgid "'Malayalam (m17n)'"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:138
-msgid "Shortcuts to switch to Malayalam"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:139
-msgid "Shortcuts to switch to Malayalam (m17n)"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:140
-msgid "Shortcuts from Malayalam to system keyboard"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:141
-msgid "'Marathi (m17n)'"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:142
-msgid "Shortcuts to switch to Marathi"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:143
-msgid "Shortcuts to switch to Marathi (m17n)"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:144
-msgid "Shortcuts from Marathi to system keyboard"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:145
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:125
 msgid "'Burmese (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:146
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:126
 msgid "Shortcuts to switch to Burmese"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:147
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:127
 msgid "Shortcuts to switch to Burmese (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:148
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:128
 msgid "Shortcuts from Burmese to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:149
-msgid "'Nepali (m17n)'"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:150
-msgid "Shortcuts to switch to Nepali"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:151
-msgid "Shortcuts to switch to Nepali (m17n)"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:152
-msgid "Shortcuts from Nepali to system keyboard"
-msgstr ""
-
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:153
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:129
 msgid "'Naskapi language (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:154
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:130
 msgid "Shortcuts to switch to Naskapi language"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:155
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:131
 msgid "Shortcuts to switch to Naskapi language (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:156
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:132
 msgid "Shortcuts from Naskapi language to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:157
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:133
 msgid "'Ojibwa (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:158
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:134
 msgid "Shortcuts to switch to Ojibwa"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:159
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:135
 msgid "Shortcuts to switch to Ojibwa (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:160
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:136
 msgid "Shortcuts from Ojibwa to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:161
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:137
 msgid "'Oriya (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:162
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:138
 msgid "Shortcuts to switch to Oriya"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:163
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:139
 msgid "Shortcuts to switch to Oriya (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:164
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:140
 msgid "Shortcuts from Oriya to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:165
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:141
 msgid "'Punjabi (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:166
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:142
 msgid "Shortcuts to switch to Punjabi"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:167
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:143
 msgid "Shortcuts to switch to Punjabi (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:168
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:144
 msgid "Shortcuts from Punjabi to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:169
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:145
 msgid "'Pushto (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:170
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:146
 msgid "Shortcuts to switch to Pushto"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:171
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:147
 msgid "Shortcuts to switch to Pushto (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:172
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:148
 msgid "Shortcuts from Pushto to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:173
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:149
 msgid "'Russian (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:174
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:150
 msgid "Shortcuts to switch to Russian"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:175
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:151
 msgid "Shortcuts to switch to Russian (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:176
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:152
 msgid "Shortcuts from Russian to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:177
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:153
 msgid "'Sanskrit (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:178
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:154
 msgid "Shortcuts to switch to Sanskrit"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:179
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:155
 msgid "Shortcuts to switch to Sanskrit (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:180
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:156
 msgid "Shortcuts from Sanskrit to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:181
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:157
 msgid "'Sindhi (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:182
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:158
 msgid "Shortcuts to switch to Sindhi"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:183
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:159
 msgid "Shortcuts to switch to Sindhi (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:184
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:160
 msgid "Shortcuts from Sindhi to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:185
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:161
 msgid "'Sinhalese (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:186
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:162
 msgid "Shortcuts to switch to Sinhalese"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:187
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:163
 msgid "Shortcuts to switch to Sinhalese (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:188
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:164
 msgid "Shortcuts from Sinhalese to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:189
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:165
 msgid "'Slovak (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:190
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:166
 msgid "Shortcuts to switch to Slovak"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:191
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:167
 msgid "Shortcuts to switch to Slovak (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:192
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:168
 msgid "Shortcuts from Slovak to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:193
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:169
 msgid "'Serbian (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:194
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:170
 msgid "Shortcuts to switch to Serbian"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:195
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:171
 msgid "Shortcuts to switch to Serbian (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:196
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:172
 msgid "Shortcuts from Serbian to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:197
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:173
 msgid "'Swedish (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:198
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:174
 msgid "Shortcuts to switch to Swedish"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:199
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:175
 msgid "Shortcuts to switch to Swedish (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:200
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:176
 msgid "Shortcuts from Swedish to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:201
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:177
 msgid "'Etc (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:202
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:178
 msgid "Shortcuts to switch to Etc"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:203
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:179
 msgid "Shortcuts to switch to Etc (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:204
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:180
 msgid "Shortcuts from Etc to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:205
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:181
 msgid "'Tamil (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:206
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:182
 msgid "Shortcuts to switch to Tamil"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:207
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:183
 msgid "Shortcuts to switch to Tamil (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:208
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:184
 msgid "Shortcuts from Tamil to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:209
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:185
 msgid "'Tai Viet (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:210
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:186
 msgid "Shortcuts to switch to Tai Viet"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:211
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:187
 msgid "Shortcuts to switch to Tai Viet (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:212
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:188
 msgid "Shortcuts from Tai Viet to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:213
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:189
 msgid "'Telugu (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:214
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:190
 msgid "Shortcuts to switch to Telugu"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:215
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:191
 msgid "Shortcuts to switch to Telugu (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:216
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:192
 msgid "Shortcuts from Telugu to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:217
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:193
 msgid "'Thai (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:218
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:194
 msgid "Shortcuts to switch to Thai"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:219
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:195
 msgid "Shortcuts to switch to Thai (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:220
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:196
 msgid "Shortcuts from Thai to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:221
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:197
 msgid "'Uighur (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:222
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:198
 msgid "Shortcuts to switch to Uighur"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:223
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:199
 msgid "Shortcuts to switch to Uighur (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:224
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:200
 msgid "Shortcuts from Uighur to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:225
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:201
 msgid "'Ukrainian (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:226
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:202
 msgid "Shortcuts to switch to Ukrainian"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:227
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:203
 msgid "Shortcuts to switch to Ukrainian (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:228
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:204
 msgid "Shortcuts from Ukrainian to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:229
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:205
 msgid "'Urdu (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:230
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:206
 msgid "Shortcuts to switch to Urdu"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:231
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:207
 msgid "Shortcuts to switch to Urdu (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:232
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:208
 msgid "Shortcuts from Urdu to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:233
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:209
 msgid "'Uzbek (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:234
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:210
 msgid "Shortcuts to switch to Uzbek"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:235
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:211
 msgid "Shortcuts to switch to Uzbek (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:236
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:212
 msgid "Shortcuts from Uzbek to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:237
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:213
 msgid "'Vietnamese (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:238
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:214
 msgid "Shortcuts to switch to Vietnamese"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:239
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:215
 msgid "Shortcuts to switch to Vietnamese (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:240
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:216
 msgid "Shortcuts from Vietnamese to system keyboard"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:241
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:217
 msgid "'Yiddish (m17n)'"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:242
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:218
 msgid "Shortcuts to switch to Yiddish"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:243
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:219
 msgid "Shortcuts to switch to Yiddish (m17n)"
 msgstr ""
 
-#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:244
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n.gschema.xml.h:220
 msgid "Shortcuts from Yiddish to system keyboard"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:1
+msgid "'Hindi (m17n)'"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:5
+msgid "Shortcuts to switch to Hindi"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:6
+msgid "Shortcuts to switch to Hindi (m17n)"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hi.gschema.xml.h:7
+msgid "Shortcuts from Hindi to system keyboard"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:1
+msgid "'Hungarian (m17n)'"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:5
+msgid "Shortcuts to switch to Hungarian"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:6
+msgid "Shortcuts to switch to Hungarian (m17n)"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-hu.gschema.xml.h:7
+msgid "Shortcuts from Hungarian to system keyboard"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:1
+msgid "'Kannada (m17n)'"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:5
+msgid "Shortcuts to switch to Kannada"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:6
+msgid "Shortcuts to switch to Kannada (m17n)"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-kn.gschema.xml.h:7
+msgid "Shortcuts from Kannada to system keyboard"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:1
+msgid "'Malayalam (m17n)'"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:5
+msgid "Shortcuts to switch to Malayalam"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:6
+msgid "Shortcuts to switch to Malayalam (m17n)"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:7
+msgid "Shortcuts from Malayalam to system keyboard"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:1
+msgid "'Marathi (m17n)'"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:5
+msgid "Shortcuts to switch to Marathi"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:6
+msgid "Shortcuts to switch to Marathi (m17n)"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:7
+msgid "Shortcuts from Marathi to system keyboard"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:1
+msgid "'Nepali (m17n)'"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:5
+msgid "Shortcuts to switch to Nepali"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:6
+msgid "Shortcuts to switch to Nepali (m17n)"
+msgstr ""
+
+#: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:7
+msgid "Shortcuts from Nepali to system keyboard"
 msgstr ""
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1

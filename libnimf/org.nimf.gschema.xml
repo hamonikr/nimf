@@ -29,7 +29,7 @@
       <default>true</default>
       <summary>Setup environment variables</summary>
       <description>Turning on this option will create a
-$HOME/.config/environment.d/50-input.conf link file if it does not exist, and will add
+$HOME/.config/environment.d/50-input.conf link file, and will add
 "export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)"
 to the .xprofile once, while turning off this option will delete the link file.
 Turn off this option to use other input methods such as ibus, fcitx, etc.
