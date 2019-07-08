@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2019.07.03
+Version:  2019.07.08
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -27,12 +27,12 @@ BuildRequires: librime-devel >= 1.2.9
 BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 BuildRequires: libxklavier-devel
-BuildRequires: m17n-lib-devel
-BuildRequires: m17n-db-devel
+BuildRequires: m17n-lib-devel >= 1.7.0
+BuildRequires: m17n-db-devel >= 1.7.0
 BuildRequires: gtk-doc
 
 Requires:         im-chooser
-Requires:         anthy, m17n-lib, m17n-db, m17n-db-extras
+Requires:         anthy, m17n-lib >= 1.7.0, m17n-db >= 1.7.0
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
 
@@ -114,5 +114,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Wed Jul 03 2019 Hodong Kim <cogniti@gmail.com> - 2019.07.03-1
+* Mon Jul 08 2019 Hodong Kim <cogniti@gmail.com> - 2019.07.08-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog

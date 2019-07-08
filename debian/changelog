@@ -1,3 +1,10 @@
+nimf (2019.07.08) stable; urgency=medium
+
+  * Added --disable-nimf-m17n option (#270)
+  * IMdkit: Code cleanup (#106)
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 08 Jul 2019 23:28:52 +0900
+
 nimf (2019.07.03) stable; urgency=medium
 
   * Improved nimf-settings
