@@ -22,7 +22,6 @@ IMdkit_SOURCES = \
 	IMdkit/i18nX.h \
 	IMdkit/IMConn.c \
 	IMdkit/IMMethod.c \
-	IMdkit/IMValues.c \
 	$(NULL)
 
 libnimf_xim_la_SOURCES = \

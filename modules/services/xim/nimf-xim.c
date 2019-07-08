@@ -651,7 +651,6 @@ static gboolean nimf_xim_start (NimfService *service)
                                   &attrs);      /* XSetWindowAttributes *attributes */
 
   xims = IMOpenIM (xim->display,
-                   IMModifiers,        "Xi18n",
                    IMServerWindow,     xim->im_window,
                    IMServerName,       PACKAGE,
                    IMLocale,           "C,en,ja,ko,zh", /* FIXME: Make get_supported_locales() */

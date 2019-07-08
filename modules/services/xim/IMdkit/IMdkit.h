@@ -39,7 +39,6 @@ extern "C" {
 #endif
 
 /* IM Attributes Name */
-#define IMModifiers		"modifiers"
 #define IMServerWindow		"serverWindow"
 #define IMServerName		"serverName"
 #define IMServerTransport	"serverTransport"
@@ -101,8 +100,6 @@ typedef struct
     void*	(*setup) (Display *, XIMArg *);
     Status	(*openIM) (XIMS);
     Status	(*closeIM) (XIMS);
-    char*	(*setIMValues) (XIMS, XIMArg *);
-    char*	(*getIMValues) (XIMS, XIMArg *);
     Status	(*forwardEvent) (XIMS, XPointer);
     Status	(*commitString) (XIMS, XPointer);
     int		(*preeditStart) (XIMS, XPointer);
@@ -129,8 +126,6 @@ typedef struct _XIMS
  */
 extern XIMS IMOpenIM (Display *, ...);
 extern Status IMCloseIM (XIMS);
-extern char *IMSetIMValues (XIMS, ...);
-extern char *IMGetIMValues (XIMS, ...);
 void IMForwardEvent (XIMS, XPointer);
 void IMCommitString (XIMS, XPointer);
 int IMPreeditStart (XIMS, XPointer);

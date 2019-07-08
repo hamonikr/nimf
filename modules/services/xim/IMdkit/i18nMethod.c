@@ -41,8 +41,6 @@ extern Xi18nClient *_Xi18nFindClient (Xi18n, CARD16);
 static void *xi18n_setup (Display *, XIMArg *);
 static Status xi18n_openIM (XIMS);
 static Status xi18n_closeIM (XIMS);
-static char *xi18n_setIMValues (XIMS, XIMArg *);
-static char *xi18n_getIMValues (XIMS, XIMArg *);
 static Status xi18n_forwardEvent (XIMS, XPointer);
 static Status xi18n_commit (XIMS, XPointer);
 static int xi18n_preeditStart (XIMS, XPointer);
@@ -54,14 +52,11 @@ static int xi18n_syncXlib (XIMS, XPointer);
 #endif
 static Atom XIM_Servers = None;
 
-
 IMMethodsRec Xi18n_im_methods =
 {
     xi18n_setup,
     xi18n_openIM,
     xi18n_closeIM,
-    xi18n_setIMValues,
-    xi18n_getIMValues,
     xi18n_forwardEvent,
     xi18n_commit,
     xi18n_preeditStart,
@@ -85,385 +80,162 @@ TransportSW _TransR[] =
     {(char *) NULL,     0, (Bool (*) ()) NULL}
 };
 
-static Bool GetInputStyles (Xi18n i18n_core, XIMStyles **p_style)
-{
-    Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
-    XIMStyles *p;
-    int	i;
-
-    p = &address->input_styles;
-    if ((*p_style = (XIMStyles *) malloc (sizeof (XIMStyles)
-                                          + p->count_styles*sizeof (XIMStyle)))
-        == NULL)
-    {
-        return False;
-    }
-    /*endif*/
-    (*p_style)->count_styles = p->count_styles;
-    (*p_style)->supported_styles = (XIMStyle *) ((XPointer) *p_style + sizeof (XIMStyles));
-    for (i = 0;  i < (int) p->count_styles;  i++)
-        (*p_style)->supported_styles[i] = p->supported_styles[i];
-    /*endfor*/
-    return True;
-}
-
-static Bool GetOnOffKeys (Xi18n i18n_core, long mask, XIMTriggerKeys **p_key)
-{
-    Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
-    XIMTriggerKeys *p;
-    int	i;
-
-    if (mask & I18N_ON_KEYS)
-        p = &address->on_keys;
-    else
-        p = &address->off_keys;
-    /*endif*/
-    if ((*p_key = (XIMTriggerKeys *) malloc (sizeof(XIMTriggerKeys)
-                                             + p->count_keys*sizeof(XIMTriggerKey)))
-        == NULL)
-    {
-        return False;
-    }
-    /*endif*/
-    (*p_key)->count_keys = p->count_keys;
-    (*p_key)->keylist =
-        (XIMTriggerKey *) ((XPointer) *p_key + sizeof(XIMTriggerKeys));
-    for (i = 0;  i < (int) p->count_keys;  i++)
-    {
-        (*p_key)->keylist[i].keysym = p->keylist[i].keysym;
-        (*p_key)->keylist[i].modifier = p->keylist[i].modifier;
-        (*p_key)->keylist[i].modifier_mask = p->keylist[i].modifier_mask;
-    }
-    /*endfor*/
-    return True;
-}
-
-static Bool GetEncodings(Xi18n i18n_core, XIMEncodings **p_encoding)
-{
-    Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
-    XIMEncodings *p;
-    int	i;
-
-    p = &address->encoding_list;
-
-    if ((*p_encoding = (XIMEncodings *) malloc (sizeof (XIMEncodings)
-                                              + p->count_encodings*sizeof(XIMEncoding))) == NULL)
-    {
-        return False;
-    }
-    /*endif*/
-    (*p_encoding)->count_encodings = p->count_encodings;
-    (*p_encoding)->supported_encodings =
-        (XIMEncoding *) ((XPointer)*p_encoding + sizeof (XIMEncodings));
-    for (i = 0;  i < (int) p->count_encodings;  i++)
-    {
-        (*p_encoding)->supported_encodings[i]
-            = (char *) malloc (strlen (p->supported_encodings[i]) + 1);
-        strcpy ((*p_encoding)->supported_encodings[i],
-                p->supported_encodings[i]);
-    }
-    /*endif*/
-    return True;
-}
-
-static char *ParseArgs (Xi18n i18n_core, int mode, XIMArg *args)
+static char *ParseArgs (Xi18n i18n_core, XIMArg *args)
 {
     Xi18nAddressRec *address = (Xi18nAddressRec *) &i18n_core->address;
     XIMArg *p;
 
-    if (mode == I18N_OPEN  ||  mode == I18N_SET)
+    for (p = args;  p->name != NULL;  p++)
     {
-        for (p = args;  p->name != NULL;  p++)
+        if (strcmp (p->name, IMLocale) == 0)
         {
-            if (strcmp (p->name, IMLocale) == 0)
-            {
-                if (address->imvalue_mask & I18N_IM_LOCALE)
-                    return IMLocale;
-                /*endif*/
-                address->im_locale = (char *) malloc (strlen (p->value) + 1);
-                if (!address->im_locale)
-                    return IMLocale;
-                /*endif*/
-                strcpy (address->im_locale, p->value);
-                address->imvalue_mask |= I18N_IM_LOCALE;
-            }
-            else if (strcmp (p->name, IMServerTransport) == 0)
-            {
-                if (address->imvalue_mask & I18N_IM_ADDRESS)
-                    return IMServerTransport;
-                /*endif*/
-                address->im_addr = (char *) malloc (strlen (p->value) + 1);
-                if (!address->im_addr)
-                    return IMServerTransport;
-                /*endif*/
-                strcpy(address->im_addr, p->value);
-                address->imvalue_mask |= I18N_IM_ADDRESS;
-            }
-            else if (strcmp (p->name, IMServerName) == 0)
-            {
-                if (address->imvalue_mask & I18N_IM_NAME)
-                    return IMServerName;
-                /*endif*/
-                address->im_name = (char *) malloc (strlen (p->value) + 1);
-                if (!address->im_name)
-                    return IMServerName;
-                /*endif*/
-                strcpy (address->im_name, p->value);
-                address->imvalue_mask |= I18N_IM_NAME;
-            }
-            else if (strcmp (p->name, IMServerWindow) == 0)
-            {
-                if (address->imvalue_mask & I18N_IMSERVER_WIN)
-                    return IMServerWindow;
-                /*endif*/
-                address->im_window = (Window) p->value;
-                address->imvalue_mask |= I18N_IMSERVER_WIN;
-            }
-            else if (strcmp (p->name, IMInputStyles) == 0)
-            {
-                if (address->imvalue_mask & I18N_INPUT_STYLES)
-                    return IMInputStyles;
-                /*endif*/
-                address->input_styles.count_styles =
-                    ((XIMStyles*)p->value)->count_styles;
-                address->input_styles.supported_styles =
-                    (XIMStyle *) malloc (sizeof (XIMStyle)*address->input_styles.count_styles);
-                if (address->input_styles.supported_styles == (XIMStyle *) NULL)
-                    return IMInputStyles;
-                /*endif*/
-                memmove (address->input_styles.supported_styles,
-                         ((XIMStyles *) p->value)->supported_styles,
-                         sizeof (XIMStyle)*address->input_styles.count_styles);
-                address->imvalue_mask |= I18N_INPUT_STYLES;
-            }
-            else if (strcmp (p->name, IMProtocolHandler) == 0)
-            {
-                address->improto = (IMProtoHandler) p->value;
-                address->imvalue_mask |= I18N_IM_HANDLER;
-            }
-            else if (strcmp (p->name, IMUserData) == 0)
-            {
-                address->user_data = (void *) p->value;
-                address->imvalue_mask |= I18N_IM_USER_DATA;
-            }
-            else if (strcmp (p->name, IMOnKeysList) == 0)
-            {
-                if (address->imvalue_mask & I18N_ON_KEYS)
-                    return IMOnKeysList;
-                /*endif*/
-                address->on_keys.count_keys =
-                    ((XIMTriggerKeys *) p->value)->count_keys;
-                address->on_keys.keylist =
-                    (XIMTriggerKey *) malloc (sizeof (XIMTriggerKey)*address->on_keys.count_keys);
-                if (address->on_keys.keylist == (XIMTriggerKey *) NULL)
-                    return IMOnKeysList;
-                /*endif*/
-                memmove (address->on_keys.keylist,
-                         ((XIMTriggerKeys *) p->value)->keylist,
-                         sizeof (XIMTriggerKey)*address->on_keys.count_keys);
-                address->imvalue_mask |= I18N_ON_KEYS;
-            }
-            else if (strcmp (p->name, IMOffKeysList) == 0)
-            {
-                if (address->imvalue_mask & I18N_OFF_KEYS)
-                    return IMOffKeysList;
-                /*endif*/
-                address->off_keys.count_keys =
-                    ((XIMTriggerKeys *) p->value)->count_keys;
-                address->off_keys.keylist =
-                    (XIMTriggerKey *) malloc (sizeof (XIMTriggerKey)*address->off_keys.count_keys);
-                if (address->off_keys.keylist == (XIMTriggerKey *) NULL)
-                    return IMOffKeysList;
-                /*endif*/
-                memmove (address->off_keys.keylist,
-                         ((XIMTriggerKeys *) p->value)->keylist,
-                         sizeof (XIMTriggerKey)*address->off_keys.count_keys);
-                address->imvalue_mask |= I18N_OFF_KEYS;
-            }
-            else if (strcmp (p->name, IMEncodingList) == 0)
-            {
-                if (address->imvalue_mask & I18N_ENCODINGS)
-                    return IMEncodingList;
-                /*endif*/
-                address->encoding_list.count_encodings =
-                    ((XIMEncodings *) p->value)->count_encodings;
-                address->encoding_list.supported_encodings =
-                    (XIMEncoding *) malloc (sizeof (XIMEncoding)*address->encoding_list.count_encodings);
-                if (address->encoding_list.supported_encodings
-                    == (XIMEncoding *) NULL)
-                {
-                    return IMEncodingList;
-                }
-                /*endif*/
-                memmove (address->encoding_list.supported_encodings,
-                         ((XIMEncodings *) p->value)->supported_encodings,
-                         sizeof (XIMEncoding)*address->encoding_list.count_encodings);
-                address->imvalue_mask |= I18N_ENCODINGS;
-            }
-            else if (strcmp (p->name, IMFilterEventMask) == 0)
-            {
-                if (address->imvalue_mask & I18N_FILTERMASK)
-                    return IMFilterEventMask;
-                /*endif*/
-                address->filterevent_mask = (long) p->value;
-                address->imvalue_mask |= I18N_FILTERMASK;
-            }
-            /*endif*/
-        }
-        /*endfor*/
-        if (mode == I18N_OPEN)
-        {
-            /* check mandatory IM values */
-            if (!(address->imvalue_mask & I18N_IM_LOCALE))
-            {
-                /* locales must be set in IMOpenIM */
+            if (address->imvalue_mask & I18N_IM_LOCALE)
                 return IMLocale;
-            }
             /*endif*/
-            if (!(address->imvalue_mask & I18N_IM_ADDRESS))
-            {
-                /* address must be set in IMOpenIM */
+            address->im_locale = (char *) malloc (strlen (p->value) + 1);
+            if (!address->im_locale)
+                return IMLocale;
+            /*endif*/
+            strcpy (address->im_locale, p->value);
+            address->imvalue_mask |= I18N_IM_LOCALE;
+        }
+        else if (strcmp (p->name, IMServerTransport) == 0)
+        {
+            if (address->imvalue_mask & I18N_IM_ADDRESS)
                 return IMServerTransport;
+            /*endif*/
+            address->im_addr = (char *) malloc (strlen (p->value) + 1);
+            if (!address->im_addr)
+                return IMServerTransport;
+            /*endif*/
+            strcpy(address->im_addr, p->value);
+            address->imvalue_mask |= I18N_IM_ADDRESS;
+        }
+        else if (strcmp (p->name, IMServerName) == 0)
+        {
+            if (address->imvalue_mask & I18N_IM_NAME)
+                return IMServerName;
+            /*endif*/
+            address->im_name = (char *) malloc (strlen (p->value) + 1);
+            if (!address->im_name)
+                return IMServerName;
+            /*endif*/
+            strcpy (address->im_name, p->value);
+            address->imvalue_mask |= I18N_IM_NAME;
+        }
+        else if (strcmp (p->name, IMServerWindow) == 0)
+        {
+            if (address->imvalue_mask & I18N_IMSERVER_WIN)
+                return IMServerWindow;
+            /*endif*/
+            address->im_window = (Window) p->value;
+            address->imvalue_mask |= I18N_IMSERVER_WIN;
+        }
+        else if (strcmp (p->name, IMInputStyles) == 0)
+        {
+            if (address->imvalue_mask & I18N_INPUT_STYLES)
+                return IMInputStyles;
+            /*endif*/
+            address->input_styles.count_styles =
+                ((XIMStyles*)p->value)->count_styles;
+            address->input_styles.supported_styles =
+                (XIMStyle *) malloc (sizeof (XIMStyle)*address->input_styles.count_styles);
+            if (address->input_styles.supported_styles == (XIMStyle *) NULL)
+                return IMInputStyles;
+            /*endif*/
+            memmove (address->input_styles.supported_styles,
+                     ((XIMStyles *) p->value)->supported_styles,
+                     sizeof (XIMStyle)*address->input_styles.count_styles);
+            address->imvalue_mask |= I18N_INPUT_STYLES;
+        }
+        else if (strcmp (p->name, IMProtocolHandler) == 0)
+        {
+            address->improto = (IMProtoHandler) p->value;
+            address->imvalue_mask |= I18N_IM_HANDLER;
+        }
+        else if (strcmp (p->name, IMUserData) == 0)
+        {
+            address->user_data = (void *) p->value;
+            address->imvalue_mask |= I18N_IM_USER_DATA;
+        }
+        else if (strcmp (p->name, IMOnKeysList) == 0)
+        {
+            if (address->imvalue_mask & I18N_ON_KEYS)
+                return IMOnKeysList;
+            /*endif*/
+            address->on_keys.count_keys =
+                ((XIMTriggerKeys *) p->value)->count_keys;
+            address->on_keys.keylist =
+                (XIMTriggerKey *) malloc (sizeof (XIMTriggerKey)*address->on_keys.count_keys);
+            if (address->on_keys.keylist == (XIMTriggerKey *) NULL)
+                return IMOnKeysList;
+            /*endif*/
+            memmove (address->on_keys.keylist,
+                     ((XIMTriggerKeys *) p->value)->keylist,
+                     sizeof (XIMTriggerKey)*address->on_keys.count_keys);
+            address->imvalue_mask |= I18N_ON_KEYS;
+        }
+        else if (strcmp (p->name, IMOffKeysList) == 0)
+        {
+            if (address->imvalue_mask & I18N_OFF_KEYS)
+                return IMOffKeysList;
+            /*endif*/
+            address->off_keys.count_keys =
+                ((XIMTriggerKeys *) p->value)->count_keys;
+            address->off_keys.keylist =
+                (XIMTriggerKey *) malloc (sizeof (XIMTriggerKey)*address->off_keys.count_keys);
+            if (address->off_keys.keylist == (XIMTriggerKey *) NULL)
+                return IMOffKeysList;
+            /*endif*/
+            memmove (address->off_keys.keylist,
+                     ((XIMTriggerKeys *) p->value)->keylist,
+                     sizeof (XIMTriggerKey)*address->off_keys.count_keys);
+            address->imvalue_mask |= I18N_OFF_KEYS;
+        }
+        else if (strcmp (p->name, IMEncodingList) == 0)
+        {
+            if (address->imvalue_mask & I18N_ENCODINGS)
+                return IMEncodingList;
+            /*endif*/
+            address->encoding_list.count_encodings =
+                ((XIMEncodings *) p->value)->count_encodings;
+            address->encoding_list.supported_encodings =
+                (XIMEncoding *) malloc (sizeof (XIMEncoding)*address->encoding_list.count_encodings);
+            if (address->encoding_list.supported_encodings
+                == (XIMEncoding *) NULL)
+            {
+                return IMEncodingList;
             }
             /*endif*/
+            memmove (address->encoding_list.supported_encodings,
+                     ((XIMEncodings *) p->value)->supported_encodings,
+                     sizeof (XIMEncoding)*address->encoding_list.count_encodings);
+            address->imvalue_mask |= I18N_ENCODINGS;
+        }
+        else if (strcmp (p->name, IMFilterEventMask) == 0)
+        {
+            if (address->imvalue_mask & I18N_FILTERMASK)
+                return IMFilterEventMask;
+            /*endif*/
+            address->filterevent_mask = (long) p->value;
+            address->imvalue_mask |= I18N_FILTERMASK;
         }
         /*endif*/
     }
-    else if (mode == I18N_GET)
+
+    /* check mandatory IM values */
+    if (!(address->imvalue_mask & I18N_IM_LOCALE))
     {
-        for (p = args;  p->name != NULL;  p++)
-        {
-            if (strcmp (p->name, IMLocale) == 0)
-            {
-                p->value = (char *) malloc (strlen (address->im_locale) + 1);
-                if (!p->value)
-                    return IMLocale;
-                /*endif*/
-                strcpy (p->value, address->im_locale);
-            }
-            else if (strcmp (p->name, IMServerTransport) == 0)
-            {
-                p->value = (char *) malloc (strlen (address->im_addr) + 1);
-                if (!p->value)
-                    return IMServerTransport;
-                /*endif*/
-                strcpy (p->value, address->im_addr);
-            }
-            else if (strcmp (p->name, IMServerName) == 0)
-            {
-                if (address->imvalue_mask & I18N_IM_NAME)
-                {
-                    p->value = (char *) malloc (strlen (address->im_name) + 1);
-                    if (!p->value)
-                        return IMServerName;
-                    /*endif*/
-                    strcpy (p->value, address->im_name);
-                }
-                else
-                {
-                    return IMServerName;
-                }
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMServerWindow) == 0)
-            {
-                if (address->imvalue_mask & I18N_IMSERVER_WIN)
-                    *((Window *) (p->value)) = address->im_window;
-                else
-                    return IMServerWindow;
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMInputStyles) == 0)
-            {
-                if (GetInputStyles (i18n_core,
-                                    (XIMStyles **) p->value) == False)
-                {
-                    return IMInputStyles;
-                }
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMProtocolHandler) == 0)
-            {
-                if (address->imvalue_mask & I18N_IM_HANDLER)
-                    *((IMProtoHandler *) (p->value)) = address->improto;
-                else
-                    return IMProtocolHandler;
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMUserData) == 0)
-            {
-                if (address->imvalue_mask & I18N_IM_USER_DATA)
-                    p->value = address->user_data;
-                else
-                    return IMUserData;
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMOnKeysList) == 0)
-            {
-                if (address->imvalue_mask & I18N_ON_KEYS)
-                {
-                    if (GetOnOffKeys (i18n_core,
-                                      I18N_ON_KEYS,
-                                      (XIMTriggerKeys **) p->value) == False)
-                    {
-                        return IMOnKeysList;
-                    }
-                    /*endif*/
-                }
-                else
-                {
-                    return IMOnKeysList;
-                }
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMOffKeysList) == 0)
-            {
-                if (address->imvalue_mask & I18N_OFF_KEYS)
-                {
-                    if (GetOnOffKeys (i18n_core,
-                                      I18N_OFF_KEYS,
-                                      (XIMTriggerKeys **) p->value) == False)
-                    {
-                        return IMOffKeysList;
-                    }
-                    /*endif*/
-                }
-                else
-                {
-                    return IMOffKeysList;
-                }
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMEncodingList) == 0)
-            {
-                if (address->imvalue_mask & I18N_ENCODINGS)
-                {
-                    if (GetEncodings (i18n_core,
-                                      (XIMEncodings **) p->value) == False)
-                    {
-                        return IMEncodingList;
-                    }
-                    /*endif*/
-                }
-                else
-                {
-                    return IMEncodingList;
-                }
-                /*endif*/
-            }
-            else if (strcmp (p->name, IMFilterEventMask) == 0)
-            {
-                if (address->imvalue_mask & I18N_FILTERMASK)
-                    *((long *) (p->value)) = address->filterevent_mask;
-                else
-                    return IMFilterEventMask;
-                /*endif*/
-            }
-            /*endif*/
-        }
-        /*endfor*/
+        /* locales must be set in IMOpenIM */
+        return IMLocale;
     }
     /*endif*/
+    if (!(address->imvalue_mask & I18N_IM_ADDRESS))
+    {
+        /* address must be set in IMOpenIM */
+        return IMServerTransport;
+    }
+
     return NULL;
 }
 
@@ -678,7 +450,7 @@ static void *xi18n_setup (Display *dpy, XIMArg *args)
 
     i18n_core->address.dpy = dpy;
 
-    if (ParseArgs (i18n_core, I18N_OPEN, args) != NULL)
+    if (ParseArgs (i18n_core, args) != NULL)
     {
         XFree (i18n_core);
         return NULL;
@@ -785,28 +557,6 @@ static Status xi18n_closeIM(XIMS ims)
     XFree (i18n_core->address.im_addr);
     XFree (i18n_core);
     return True;
-}
-
-static char *xi18n_setIMValues (XIMS ims, XIMArg *args)
-{
-    Xi18n i18n_core = ims->protocol;
-    char *ret;
-
-    if ((ret = ParseArgs (i18n_core, I18N_SET, args)) != NULL)
-        return ret;
-    /*endif*/
-    return NULL;
-}
-
-static char *xi18n_getIMValues (XIMS ims, XIMArg *args)
-{
-    Xi18n i18n_core = ims->protocol;
-    char *ret;
-
-    if ((ret = ParseArgs (i18n_core, I18N_GET, args)) != NULL)
-        return ret;
-    /*endif*/
-    return NULL;
 }
 
 static void EventToWireEvent (XEvent *ev, xEvent *event,
@@ -1140,4 +890,3 @@ static int xi18n_syncXlib (XIMS ims, XPointer xp)
     XFree(reply);
     return True;
 }
-
