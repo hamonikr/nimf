@@ -41,8 +41,9 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #undef NEED_EVENTS
 
 #include "IMdkit.h"
+#include "nimf-xim.h"
 
-Bool WaitXSelectionRequest (Display *dpy, XEvent *ev, XPointer client_data);
+Bool WaitXSelectionRequest (NimfXim *xim, XEvent *ev);
 int  nimf_xim_call_callback (XIMS ims, XPointer);
 
 #endif /* I18N_METHOD_H */

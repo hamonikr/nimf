@@ -471,10 +471,11 @@ static void *xi18n_setup (Display *dpy, XIMArg *args)
     return i18n_core;
 }
 
-static void ReturnSelectionNotify (Xi18n i18n_core, XSelectionRequestEvent *ev)
+static void
+ReturnSelectionNotify (NimfXim *xim, XSelectionRequestEvent *ev)
 {
+    Xi18n i18n_core = xim->xims->protocol;
     XEvent event;
-    Display *dpy = i18n_core->address.dpy;
     char buf[4096];
 
     event.type = SelectionNotify;
@@ -492,7 +493,7 @@ static void ReturnSelectionNotify (Xi18n i18n_core, XSelectionRequestEvent *ev)
         snprintf (buf, 4096, "@transport=%s", i18n_core->address.im_addr);
     }
     /*endif*/
-    XChangeProperty (dpy,
+    XChangeProperty (xim->display,
                      event.xselection.requestor,
                      ev->target,
                      ev->target,
@@ -500,21 +501,20 @@ static void ReturnSelectionNotify (Xi18n i18n_core, XSelectionRequestEvent *ev)
                      PropModeReplace,
                      (unsigned char *) buf,
                      strlen (buf));
-    XSendEvent (dpy, event.xselection.requestor, False, NoEventMask, &event);
-    XFlush (i18n_core->address.dpy);
+    XSendEvent (xim->display, event.xselection.requestor, False, NoEventMask, &event);
+    XFlush (xim->display);
 }
 
-Bool WaitXSelectionRequest (Display *dpy,
-                            XEvent  *ev,
-                            XPointer client_data)
+Bool
+WaitXSelectionRequest (NimfXim *xim,
+                       XEvent  *ev)
 {
-    XIMS ims = (XIMS) client_data;
-    Xi18n i18n_core = ims->protocol;
+    Xi18n i18n_core = xim->xims->protocol;
 
     if (((XSelectionRequestEvent *) ev)->selection
         == i18n_core->address.selection)
     {
-        ReturnSelectionNotify (i18n_core, (XSelectionRequestEvent *) ev);
+        ReturnSelectionNotify (xim, (XSelectionRequestEvent *) ev);
         return True;
     }
     /*endif*/

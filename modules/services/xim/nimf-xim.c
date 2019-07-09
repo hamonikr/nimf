@@ -450,7 +450,7 @@ nimf_xevent_source_dispatch (GSource     *source,
       switch (event.type)
       {
         case SelectionRequest:
-          WaitXSelectionRequest (xim->display, &event, (XPointer) xim->xims);
+          WaitXSelectionRequest (xim, &event);
           break;
         case ClientMessage:
           {
@@ -536,9 +536,6 @@ static gboolean nimf_xim_start (NimfService *service)
     g_warning (G_STRLOC ": %s: Can't open display", G_STRFUNC);
     return FALSE;
   }
-
-  xim->atom_xconnect  = XInternAtom (xim->display, "_XIM_XCONNECT", False);
-  xim->atom_protocol  = XInternAtom (xim->display, "_XIM_PROTOCOL", False);
 
 /*
  * https://www.x.org/releases/X11R7.7/doc/libX11/libX11/libX11.html
@@ -661,6 +658,9 @@ static gboolean nimf_xim_start (NimfService *service)
                    IMUserData,         xim,
                    IMFilterEventMask,  KeyPressMask | KeyReleaseMask,
                    NULL);
+
+  xim->atom_xconnect  = XInternAtom (xim->display, "_XIM_XCONNECT", False);
+  xim->atom_protocol  = XInternAtom (xim->display, "_XIM_PROTOCOL", False);
 
   if (!xims)
   {
