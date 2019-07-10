@@ -26,8 +26,8 @@
 
 G_BEGIN_DECLS
 
-gboolean gnome_is_running (void);
-
+gboolean gnome_is_running       (void);
+gboolean gnome_xkb_is_available (void);
 G_END_DECLS
 
 #endif /* __NIMF_UTILS_PRIVATE_H__ */

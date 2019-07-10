@@ -397,9 +397,8 @@ nimf_indicator_create_appindicator (NimfIndicator *indicator)
   g_signal_connect_swapped (server, "engine-unloaded",
                             G_CALLBACK (nimf_indicator_update_menu), indicator);
 
-  /* activate xkb options
-   * when GNOME is not running and XDG_SESSION_TYPE is x11 */
-  if (!gnome_is_running () &&
+  /* activate xkb options for x11 */
+  if ((!gnome_xkb_is_available () || !gnome_is_running ()) &&
       !g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11"))
   {
     XklConfigRec *rec;

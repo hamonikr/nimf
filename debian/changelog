@@ -1,3 +1,10 @@
+nimf (2019.07.10) stable; urgency=medium
+
+  * Check schema and key for GNOME (#277)
+  * IMdkit: Code cleanup (#106)
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 10 Jul 2019 23:09:46 +0900
+
 nimf (2019.07.08) stable; urgency=medium
 
   * Added --disable-nimf-m17n option (#270)

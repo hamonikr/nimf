@@ -1043,7 +1043,7 @@ on_toggled (GtkToggleButton *toggle_button,
 
   g_slist_foreach (xkb->toggle_buttons, (GFunc) build_xkb_options, xkb);
 
-  if (gnome_is_running ())
+  if (gnome_xkb_is_available () && gnome_is_running ())
   {
     GSettings *settings;
 
@@ -1159,7 +1159,7 @@ nimf_settings_build_xkb_options_ui ()
   XklConfigRegistry *config_registry;
   GSettings         *settings;
 
-  if (gnome_is_running ())
+  if (gnome_xkb_is_available () && gnome_is_running ())
     settings = g_settings_new ("org.gnome.desktop.input-sources");
   else if (g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11") == 0)
     settings = g_settings_new ("org.nimf.settings");
@@ -1320,7 +1320,8 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
     g_settings_schema_unref (schema);
   }
 
-  if (gnome_is_running () || !g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11"))
+  if ((gnome_xkb_is_available () && gnome_is_running ()) ||
+      !g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11"))
     append_xkb_menu_after_nimf_menu (listbox);
 
   sidebar = gtk_scrolled_window_new (NULL, NULL);
