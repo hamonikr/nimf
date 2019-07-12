@@ -456,8 +456,8 @@ nimf_xevent_source_dispatch (GSource     *source,
           {
             XClientMessageEvent cme = *(XClientMessageEvent *) &event;
 
-            if (cme.message_type == xim->atom_xconnect)
-              WaitXConnectMessage (xim->display, &event, (XPointer) xim->xims);
+            if (cme.message_type == xim->_xconnect)
+              ReadXConnectMessage (xim, (XClientMessageEvent *) &event);
             else if (cme.message_type == xim->atom_protocol)
               WaitXIMProtocol (xim->display, &event, (XPointer) xim->xims);
             else
@@ -659,7 +659,7 @@ static gboolean nimf_xim_start (NimfService *service)
                    IMFilterEventMask,  KeyPressMask | KeyReleaseMask,
                    NULL);
 
-  xim->atom_xconnect  = XInternAtom (xim->display, "_XIM_XCONNECT", False);
+  xim->_xconnect  = XInternAtom (xim->display, "_XIM_XCONNECT", False);
   xim->atom_protocol  = XInternAtom (xim->display, "_XIM_PROTOCOL", False);
 
   if (!xims)

@@ -39,8 +39,9 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <limits.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include "nimf-xim.h"
 
-Bool WaitXConnectMessage (Display*, XEvent*, XPointer);
+void ReadXConnectMessage (NimfXim *xim, XClientMessageEvent *ev);
 Bool WaitXIMProtocol     (Display*, XEvent*, XPointer);
 
 #endif /* I18N_X_H */

@@ -55,7 +55,7 @@ struct _NimfXim
 
   Display *display;
   Window   im_window;
-  Atom     atom_xconnect;
+  Atom     _xconnect;
   Atom     atom_protocol;
 };
 

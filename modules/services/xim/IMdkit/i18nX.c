@@ -182,20 +182,18 @@ static unsigned char *ReadXIMMessage (XIMS ims,
     return (unsigned char *) p;
 }
 
-static void ReadXConnectMessage (XIMS ims, XClientMessageEvent *ev)
+void ReadXConnectMessage (NimfXim *xim, XClientMessageEvent *ev)
 {
-    Xi18n i18n_core = ims->protocol;
-    XSpecRec *spec = (XSpecRec *) i18n_core->address.connect_addr;
+    Xi18n i18n_core = xim->xims->protocol;
     XEvent event;
-    Display *dpy = i18n_core->address.dpy;
     Window new_client = ev->data.l[0];
     CARD32 major_version = ev->data.l[1];
     CARD32 minor_version = ev->data.l[2];
     XClient *x_client = NewXClient (i18n_core, new_client);
 
-    if (ev->window != i18n_core->address.im_window)
+    if (ev->window != xim->im_window)
         return; /* incorrect connection request */
-    /*endif*/
+
     if (major_version != 0  ||  minor_version != 0)
     {
         major_version =
@@ -204,21 +202,21 @@ static void ReadXConnectMessage (XIMS ims, XClientMessageEvent *ev)
     }
     /*endif*/
     event.xclient.type = ClientMessage;
-    event.xclient.display = dpy;
+    event.xclient.display = xim->display;
     event.xclient.window = new_client;
-    event.xclient.message_type = spec->connect_request;
+    event.xclient.message_type = xim->_xconnect;
     event.xclient.format = 32;
     event.xclient.data.l[0] = x_client->accept_win;
     event.xclient.data.l[1] = major_version;
     event.xclient.data.l[2] = minor_version;
     event.xclient.data.l[3] = XCM_DATA_LIMIT;
 
-    XSendEvent (dpy,
+    XSendEvent (xim->display,
                 new_client,
                 False,
                 NoEventMask,
                 &event);
-    XFlush (dpy);
+    XFlush (xim->display);
 }
 
 static Bool Xi18nXBegin (XIMS ims)
@@ -429,24 +427,6 @@ Bool _Xi18nCheckXAddress (Xi18n i18n_core,
     i18n_core->methods.wait = Xi18nXWait;
     i18n_core->methods.disconnect = Xi18nXDisconnect;
     return True;
-}
-
-Bool WaitXConnectMessage (Display *dpy,
-                          XEvent  *ev,
-                          XPointer client_data)
-{
-    XIMS ims = (XIMS)client_data;
-    Xi18n i18n_core = ims->protocol;
-    XSpecRec *spec = (XSpecRec *) i18n_core->address.connect_addr;
-
-    if (((XClientMessageEvent *) ev)->message_type
-        == spec->connect_request)
-    {
-        ReadXConnectMessage (ims, (XClientMessageEvent *) ev);
-        return True;
-    }
-    /*endif*/
-    return False;
 }
 
 Bool WaitXIMProtocol (Display *dpy,
