@@ -943,6 +943,12 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
   if (event->key.keyval == NIMF_KEY_space)
   {
+    if (anthy->preedit->len == 0)
+    {
+      nimf_candidatable_hide (anthy->candidatable);
+      return FALSE;
+    }
+
     anthy->current_segment = 0;
     struct anthy_conv_stat conv_stat;
 
@@ -958,20 +964,13 @@ nimf_anthy_filter_event (NimfEngine    *engine,
 
     nimf_anthy_convert_preedit_text (engine, target);
 
-    if (anthy->preedit->len > 0)
-    {
-      if (!nimf_candidatable_is_visible (anthy->candidatable))
-        nimf_candidatable_show (anthy->candidatable, target,
-                                !nimf_service_ic_get_use_preedit (target));
+    if (!nimf_candidatable_is_visible (anthy->candidatable))
+      nimf_candidatable_show (anthy->candidatable, target,
+                              !nimf_service_ic_get_use_preedit (target));
 
-      anthy->current_segment = 0;
-      nimf_anthy_convert_preedit_text (engine, target);
-      nimf_anthy_update_candidate (engine, target);
-    }
-    else
-    {
-      nimf_candidatable_hide (anthy->candidatable);
-    }
+    anthy->current_segment = 0;
+    nimf_anthy_convert_preedit_text (engine, target);
+    nimf_anthy_update_candidate (engine, target);
 
     return TRUE;
   }
