@@ -1,3 +1,11 @@
+nimf (2019.07.16) stable; urgency=medium
+
+  * nimf-anthy: Code cleanup
+  * nimf-anthy: Fixed space
+  * IMdkit: Code cleanup (#106)
+
+ -- Hodong Kim <cogniti@gmail.com>  Tue, 16 Jul 2019 12:25:08 +0900
+
 nimf (2019.07.10) stable; urgency=medium
 
   * Check schema and key for GNOME (#277)
