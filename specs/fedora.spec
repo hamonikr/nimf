@@ -5,7 +5,7 @@ Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
 URL:      https://gitlab.com/nimf-i18n/nimf
-Source0:  %{name}-%{version}.tar.xz
+Source0:  https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2
 
 BuildRequires: gcc-c++
 BuildRequires: libtool
@@ -31,8 +31,16 @@ BuildRequires: m17n-lib-devel >= 1.7.0
 BuildRequires: m17n-db-devel >= 1.7.0
 BuildRequires: gtk-doc
 
-Requires:         im-chooser
-Requires:         anthy, m17n-lib >= 1.7.0, m17n-db >= 1.7.0
+Requires: anthy
+Requires: glib2
+Requires: gtk3
+Requires: im-chooser
+Requires: libappindicator-gtk3
+Requires: libhangul
+Requires: librime
+Requires: libxkbcommon
+Requires: libxklavier
+Requires: m17n-lib >= 1.7.0, m17n-db >= 1.7.0
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
 

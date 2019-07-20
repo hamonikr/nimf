@@ -14,33 +14,28 @@ BuildRequires: pkgconfig
 BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
-BuildRequires: libqt4-devel
-BuildRequires: libqt5-qtbase-devel
-BuildRequires: libQt5Gui-private-headers-devel
-BuildRequires: libappindicator3-devel
-BuildRequires: rsvg-view
-BuildRequires: noto-sans-cjk-fonts
+BuildRequires: qt4-devel
+BuildRequires: qt5-qtbase-devel
+BuildRequires: qt5-qtbase-private-devel
+BuildRequires: libappindicator-gtk3-devel
+BuildRequires: librsvg2-tools
+BuildRequires: google-noto-cjk-fonts
 BuildRequires: libhangul-devel
 BuildRequires: anthy-devel
 BuildRequires: anthy
-BuildRequires: librime-devel >= 1.2.9
 BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 BuildRequires: libxklavier-devel
-BuildRequires: m17n-lib-devel >= 1.7.0
-BuildRequires: m17n-db >= 1.7.0
 BuildRequires: gtk-doc
 
 Requires: anthy
 Requires: glib2
 Requires: gtk3
 Requires: im-chooser
-Requires: libappindicator3
+Requires: libappindicator-gtk3
 Requires: libhangul
-Requires: librime
 Requires: libxkbcommon
 Requires: libxklavier
-Requires: libm17n0 >= 1.7.0, m17n-db >= 1.7.0
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
 
@@ -63,7 +58,8 @@ This package contains development files.
 %setup -q
 
 %build
-./autogen.sh --prefix=/usr --libdir=%{_libdir} --with-imsettings-data --enable-gtk-doc
+./autogen.sh --prefix=/usr --libdir=%{_libdir} --enable-gtk-doc \
+  --with-imsettings-data --disable-nimf-m17n --disable-nimf-rime
 make %{?_smp_mflags}
 
 %install

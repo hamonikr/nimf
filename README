@@ -62,36 +62,7 @@ Downloads
 Compiling and installing
 ------------------------
 
-  * Compiling and installing in the usual way
-
-    There are configuration options. Use it for your situation.
-
-      --disable-hardening     Disable hardening
-      --disable-nimf-anthy    Disable nimf-anthy
-      --disable-nimf-m17n     Disable nimf-m17n
-      --disable-nimf-rime     Disable nimf-rime
-      --with-im-config-data   Install im-config data
-      --with-imsettings-data  Install imsettings data
-
-    If you are using im-config
-
-      ./autogen.sh --with-im-config-data
-
-    If you are using im-chooser
-
-      ./autogen.sh --with-imsettings-data
-
-    Otherwise
-
-      ./autogen.sh
-
-      make
-      sudo make install
-      sudo ldconfig
-      sudo make update-gtk-im-cache
-      sudo make update-gtk-icon-cache
-
-  * Compiling and installing in Debian way
+  * Debian, Ubuntu, Kubuntu
 
     First of all, install devscripts, build-essential, debhelper.
 
@@ -143,8 +114,66 @@ Compiling and installing
       nimf-libhangul_YYYY.mm.dd_amd64.deb nimf-m17n_YYYY.mm.dd_amd64.deb \
       nimf-rime_YYYY.mm.dd_amd64.deb
 
-    As above mentioned, make the package yourself. Otherwise, request your Linux
-    distribution to package Nimf.
+  * CentOS
+
+    Open the terminal and run the following commands step by step.
+
+    wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2
+    tar -jxvf nimf-master.tar.bz2
+
+    NIMF_VERSION=`grep AC_INIT nimf-master/configure.ac | \
+      grep -Po '\d{4}.\d{2}.\d{2}'`
+
+    cp -r nimf-master nimf-$NIMF_VERSION
+    tar -jcvf nimf-master.tar.bz2 nimf-$NIMF_VERSION
+    mkdir -p rpmbuild/SOURCES
+    cp -f nimf-master.tar.bz2 rpmbuild/SOURCES
+    sudo yum install epel-release
+
+    sudo yum install gcc-c++ libtool glib2-devel pkgconfig intltool \
+      gtk3-devel gtk2-devel qt4-devel qt5-qtbase-devel \
+      qt5-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools \
+      google-noto-cjk-fonts libhangul-devel anthy-devel anthy \
+      libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc
+
+    rpmbuild -bb nimf-master/specs/centos.spec
+    ls -R rpmbuild/RPMS/
+
+    sudo yum install \
+      rpmbuild/RPMS/`uname -m`/nimf-YYYY.mm.dd-1.el7.`uname-m`.rpm
+
+  * Other Linux distributions
+
+    There are configuration options. Use it for your situation.
+
+      --disable-hardening     Disable hardening
+      --disable-nimf-anthy    Disable nimf-anthy
+      --disable-nimf-m17n     Disable nimf-m17n
+      --disable-nimf-rime     Disable nimf-rime
+      --with-im-config-data   Install im-config data
+      --with-imsettings-data  Install imsettings data
+
+    If you are using im-config
+
+      ./autogen.sh --with-im-config-data
+
+    If you are using im-chooser
+
+      ./autogen.sh --with-imsettings-data
+
+    Otherwise
+
+      ./autogen.sh
+
+      make
+      sudo make install
+      sudo ldconfig
+      sudo make update-gtk-im-cache
+      sudo make update-gtk-icon-cache
+
+    To uninstall nimf, run the following command.
+
+      sudo make uninstall
 
 
 Configure
@@ -159,10 +188,15 @@ Configure
 
       im-config -n nimf
 
+  * How to enable Nimf on systems using im-chooser
+
+      imsettings-switch nimf
+
   * How to enable Nimf on systems using systemd v233 or later
 
     Run nimf-settings.
     Turn on the "Setup environment variables" option in the Nimf menu.
+
 
 Debugging
 ---------
