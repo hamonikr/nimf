@@ -53,10 +53,13 @@ struct _NimfXim
   XIMS        xims;
   gboolean    active;
 
-  Display *display;
-  Window   im_window;
-  Atom     _xconnect;
-  Atom     atom_protocol;
+  Display     *display;
+  Window       im_window;
+  XIMStyles    im_styles;
+  XIMEncodings im_encodings;
+  CARD32       im_event_mask;
+  Atom         _xconnect;
+  Atom         _protocol;
 };
 
 struct _NimfXimClass

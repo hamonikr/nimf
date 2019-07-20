@@ -89,7 +89,7 @@ nimf_xim_ic_emit_commit (NimfServiceIC *ic,
 
   NimfXimIC *xic = NIMF_XIM_IC (ic);
   XTextProperty property;
-  Xutf8TextListToTextProperty (xic->xim->xims->core.display,
+  Xutf8TextListToTextProperty (xic->xim->display,
                                (char **)&text, 1, XCompoundTextStyle,
                                &property);
 
@@ -110,11 +110,6 @@ static void nimf_xim_ic_emit_preedit_end (NimfServiceIC *ic)
 
   NimfXimIC *xic = NIMF_XIM_IC (ic);
 
-  IMPreeditStateStruct preedit_state_data = {0};
-  preedit_state_data.connect_id = xic->connect_id;
-  preedit_state_data.icid       = xic->icid;
-  IMPreeditEnd (xic->xim->xims, (XPointer) &preedit_state_data);
-
   IMPreeditCBStruct preedit_cb_data = {0};
   preedit_cb_data.major_code = XIM_PREEDIT_DONE;
   preedit_cb_data.connect_id = xic->connect_id;
@@ -127,11 +122,6 @@ static void nimf_xim_ic_emit_preedit_start (NimfServiceIC *ic)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXimIC *xic = NIMF_XIM_IC (ic);
-
-  IMPreeditStateStruct preedit_state_data = {0};
-  preedit_state_data.connect_id = xic->connect_id;
-  preedit_state_data.icid       = xic->icid;
-  IMPreeditStart (xic->xim->xims, (XPointer) &preedit_state_data);
 
   IMPreeditCBStruct preedit_cb_data = {0};
   preedit_cb_data.major_code = XIM_PREEDIT_START;
@@ -191,7 +181,7 @@ nimf_xim_ic_emit_preedit_changed (NimfServiceIC    *ic,
 
   if (len > 0)
   {
-    Xutf8TextListToTextProperty (xic->xim->xims->core.display,
+    Xutf8TextListToTextProperty (xic->xim->display,
                                  (char **) &preedit_string, 1,
                                  XCompoundTextStyle, &text_property);
     text.encoding_is_wchar = 0;

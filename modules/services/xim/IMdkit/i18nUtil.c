@@ -1,10 +1,10 @@
 /******************************************************************
- 
+
          Copyright (C) 1994-1995 Sun Microsystems, Inc.
          Copyright (C) 1993-1994 Hewlett-Packard Company
          Copyright (C) 2014 Peng Huang <shawn.p.huang@gmail.com>
          Copyright (C) 2014 Red Hat, Inc.
- 
+
 Permission to use, copy, modify, distribute, and sell this software
 and its documentation for any purpose is hereby granted without fee,
 provided that the above copyright notice appear in all copies and
@@ -15,7 +15,7 @@ distribution of the software without specific, written prior permission.
 Sun Microsystems, Inc. and Hewlett-Packard make no representations about
 the suitability of this software for any purpose.  It is provided "as is"
 without express or implied warranty.
- 
+
 SUN MICROSYSTEMS INC. AND HEWLETT-PACKARD COMPANY DISCLAIMS ALL
 WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -24,11 +24,11 @@ SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
 RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
 CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
   Author: Hidetoshi Tajima(tajima@Eng.Sun.COM) Sun Microsystems, Inc.
 
     This version tidied and debugged by Steve Underwood May 1999
- 
+
 ******************************************************************/
 
 #include <X11/Xlib.h>
@@ -170,72 +170,6 @@ void _Xi18nSendMessage (XIMS ims,
     XFree (reply);
     XFree (reply_hdr);
     FrameMgrFree (fm);
-}
-
-void _Xi18nSendTriggerKey (XIMS ims, CARD16 connect_id)
-{
-    Xi18n i18n_core = ims->protocol;
-    FrameMgr fm;
-    extern XimFrameRec register_triggerkeys_fr[];
-    XIMTriggerKey *on_keys = i18n_core->address.on_keys.keylist;
-    XIMTriggerKey *off_keys = i18n_core->address.off_keys.keylist;
-    int on_key_num = i18n_core->address.on_keys.count_keys;
-    int off_key_num = i18n_core->address.off_keys.count_keys;
-    unsigned char *reply = NULL;
-    register int i, total_size;
-    CARD16 im_id;
-
-    if (on_key_num == 0  &&  off_key_num == 0)
-        return;
-    /*endif*/
-    
-    fm = FrameMgrInit (register_triggerkeys_fr,
-                       NULL,
-                       _Xi18nNeedSwap (i18n_core, connect_id));
-
-    /* set iteration count for on-keys list */
-    FrameMgrSetIterCount (fm, on_key_num);
-    /* set iteration count for off-keys list */
-    FrameMgrSetIterCount (fm, off_key_num);
-
-    /* get total_size */
-    total_size = FrameMgrGetTotalSize (fm);
-
-    reply = (unsigned char *) malloc (total_size);
-    if (!reply)
-        return;
-    /*endif*/
-    memset (reply, 0, total_size);
-    FrameMgrSetBuffer (fm, reply);
-
-    /* Right now XIM_OPEN_REPLY hasn't been sent to this new client, so
-       the input-method-id is still invalid, and should be set to zero...
-       Reter to $(XC)/lib/X11/imDefLkup.c:_XimRegisterTriggerKeysCallback
-     */
-    im_id = 0;
-    FrameMgrPutToken (fm, im_id);  /* input-method-id */
-    for (i = 0;  i < on_key_num;  i++)
-    {
-        FrameMgrPutToken (fm, on_keys[i].keysym);
-        FrameMgrPutToken (fm, on_keys[i].modifier);
-        FrameMgrPutToken (fm, on_keys[i].modifier_mask);
-    }
-    /*endfor*/
-    for (i = 0;  i < off_key_num;  i++)
-    {
-        FrameMgrPutToken (fm, off_keys[i].keysym);
-        FrameMgrPutToken (fm, off_keys[i].modifier);
-        FrameMgrPutToken (fm, off_keys[i].modifier_mask);
-    }
-    /*endfor*/
-    _Xi18nSendMessage (ims,
-                       connect_id,
-                       XIM_REGISTER_TRIGGERKEYS,
-                       0,
-                       reply,
-                       total_size);
-    FrameMgrFree (fm);
-    XFree(reply);
 }
 
 void _Xi18nSetEventMask (XIMS ims,

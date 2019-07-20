@@ -43,16 +43,6 @@ void IMCommitString (XIMS ims, XPointer call_data)
     (ims->methods->commitString) (ims, call_data);
 }
 
-int IMPreeditStart (XIMS ims, XPointer call_data)
-{
-    return (ims->methods->preeditStart) (ims, call_data);
-}
-
-int IMPreeditEnd (XIMS ims, XPointer call_data)
-{
-    return (ims->methods->preeditEnd) (ims, call_data);
-}
-
 int IMSyncXlib(XIMS ims, XPointer call_data)
 {
     ims->sync = True;

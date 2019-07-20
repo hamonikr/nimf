@@ -1,3 +1,4 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /******************************************************************
 
          Copyright (C) 1994-1995 Sun Microsystems, Inc.
@@ -66,13 +67,6 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #define LOCALES		"LOCALES"
 #define TRANSPORT	"TRANSPORT"
-
-typedef struct
-{
-    char        *transportname;
-    int         namelen;
-    Bool        (*checkAddr) ();
-} TransportSW;
 
 typedef struct _XIMPending
 {
@@ -454,26 +448,11 @@ typedef union _IMProtocol
 
 typedef int (*IMProtoHandler) (XIMS, IMProtocol*, void*);
 
-#define DEFAULT_FILTER_MASK	(KeyPressMask)
-
 /* Xi18nAddressRec structure */
 typedef struct _Xi18nAddressRec
 {
     Display	*dpy;
     CARD8	im_byteOrder;	/* byte order 'B' or 'l' */
-    /* IM Values */
-    long	imvalue_mask;
-    Window	im_window;	/* IMServerWindow */
-    char	*im_name;	/* IMServerName */
-    char	*im_locale;	/* IMLocale */
-    char	*im_addr;	/* IMServerTransport */
-    XIMStyles	input_styles;	/* IMInputStyles */
-    XIMTriggerKeys on_keys;	/* IMOnKeysList */
-    XIMTriggerKeys off_keys;	/* IMOffKeysList */
-    XIMEncodings encoding_list; /* IMEncodingList */
-    IMProtoHandler improto;	/* IMProtocolHandler */
-    void	*user_data;	/* IMUserData */
-    long	filterevent_mask; /* IMFilterEventMask */
     /* XIM_SERVERS target Atoms */
     Atom	selection;
     Atom	Localename;

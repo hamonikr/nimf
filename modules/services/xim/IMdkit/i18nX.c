@@ -1,3 +1,4 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /******************************************************************
 
          Copyright (C) 1994-1995 Sun Microsystems, Inc.
@@ -410,9 +411,7 @@ static Bool Xi18nXDisconnect (XIMS ims, CARD16 connect_id)
     return True;
 }
 
-Bool _Xi18nCheckXAddress (Xi18n i18n_core,
-                          TransportSW *transSW,
-                          char *address)
+Bool _Xi18nCheckXAddress (Xi18n i18n_core)
 {
     XSpecRec *spec;
 
@@ -429,12 +428,11 @@ Bool _Xi18nCheckXAddress (Xi18n i18n_core,
     return True;
 }
 
-Bool WaitXIMProtocol (Display *dpy,
-                      XEvent  *ev,
-                      XPointer client_data)
+Bool WaitXIMProtocol (NimfXim *xim,
+                      XEvent  *ev)
 {
-    extern void _Xi18nMessageHandler (XIMS, CARD16, unsigned char *, Bool *);
-    XIMS ims = (XIMS) client_data;
+    extern void _Xi18nMessageHandler (NimfXim *, CARD16, unsigned char *, Bool *);
+    XIMS ims = xim->xims;
     Xi18n i18n_core = ims->protocol;
     XSpecRec *spec = (XSpecRec *) i18n_core->address.connect_addr;
     Bool delete = True;
@@ -452,7 +450,7 @@ Bool WaitXIMProtocol (Display *dpy,
             return False;
         }
         /*endif*/
-        _Xi18nMessageHandler (ims, connect_id, packet, &delete);
+        _Xi18nMessageHandler (xim, connect_id, packet, &delete);
         if (delete == True)
             XFree (packet);
         /*endif*/

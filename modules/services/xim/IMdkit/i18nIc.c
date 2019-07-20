@@ -1,8 +1,9 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /******************************************************************
- 
+
          Copyright 1994, 1995 by Sun Microsystems, Inc.
          Copyright 1993, 1994 by Hewlett-Packard Company
- 
+
 Permission to use, copy, modify, distribute, and sell this software
 and its documentation for any purpose is hereby granted without fee,
 provided that the above copyright notice appear in all copies and
@@ -13,7 +14,7 @@ distribution of the software without specific, written prior permission.
 Sun Microsystems, Inc. and Hewlett-Packard make no representations about
 the suitability of this software for any purpose.  It is provided "as is"
 without express or implied warranty.
- 
+
 SUN MICROSYSTEMS INC. AND HEWLETT-PACKARD COMPANY DISCLAIMS ALL
 WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -22,11 +23,11 @@ SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
 RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
 CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
   Author: Hidetoshi Tajima(tajima@Eng.Sun.COM) Sun Microsystems, Inc.
 
     This version tidied and debugged by Steve Underwood May 1999
- 
+
 ******************************************************************/
 
 #include <X11/Xlib.h>
@@ -34,8 +35,13 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "Xi18n.h"
 #include "FrameMgr.h"
 #include "XimFunc.h"
+#include "nimf-xim.h"
 
 #define IC_SIZE 64
+
+extern int
+on_incoming_message (NimfXim    *xim,
+                     IMProtocol *data);
 
 /* Set IC values */
 static void SetCardAttribute (XICAttribute *value_ret,
@@ -67,7 +73,7 @@ static void SetCardAttribute (XICAttribute *value_ret,
     {
         INT32 value;
         extern XimFrameRec long_fr[];
-        
+
         fm = FrameMgrInit (long_fr, (char *) p, need_swap);
         /* get data */
         FrameMgrGetToken (fm, value);
@@ -81,7 +87,7 @@ static void SetCardAttribute (XICAttribute *value_ret,
     value_ret->type = ic_attr->type;
     value_ret->value_length = value_length;
     value_ret->value = *value_buf;
- 
+
     *value_buf += value_length;
 }
 
@@ -159,7 +165,7 @@ static void SetRectAttribute (XICAttribute *value_ret,
     extern XimFrameRec xrectangle_fr[];
 
     buf = (XRectangle *) (*value_buf);
- 
+
     fm = FrameMgrInit (xrectangle_fr, (char *) p, need_swap);
     /* get data */
     FrameMgrGetToken (fm, buf->x);
@@ -468,7 +474,7 @@ static XICAttribute *CreateNestedList (CARD16 attr_id,
         valuesp += IMPAD(list[i].value_length);
     }
     /*endfor*/
-    
+
     nest_list = (XICAttribute *) malloc (sizeof (XICAttribute));
     if (nest_list == NULL)
         return NULL;
@@ -620,11 +626,12 @@ static void SwapAttributes (XICAttribute *list,
 }
 
 /* called from CreateICMessageProc and SetICValueMessageProc */
-void _Xi18nChangeIC (XIMS ims,
+void _Xi18nChangeIC (NimfXim *xim,
                      IMProtocol *call_data,
                      unsigned char *p,
                      int create_flag)
 {
+    XIMS ims = xim->xims;
     Xi18n i18n_core = ims->protocol;
     FrameMgr fm;
     FmStatus status;
@@ -647,7 +654,7 @@ void _Xi18nChangeIC (XIMS ims,
     extern XimFrameRec set_ic_values_fr[];
     extern XimFrameRec set_ic_values_reply_fr[];
     CARD16 input_method_ID;
- 
+
     void *value_buf = NULL;
     void *value_buf_ptr;
 
@@ -691,7 +698,7 @@ void _Xi18nChangeIC (XIMS ims,
     {
         void *value;
         int value_length;
-        
+
         FrameMgrGetToken (fm, attrib_list[attrib_num].attribute_id);
         FrameMgrGetToken (fm, value_length);
         FrameMgrSetSize (fm, value_length);
@@ -722,7 +729,7 @@ void _Xi18nChangeIC (XIMS ims,
     for (i = 0;  i < attrib_num;  i++)
     {
         CARD16 number;
-        
+
         if (IsNestedList (i18n_core, attrib_list[i].attribute_id))
         {
             if (attrib_list[i].attribute_id
@@ -785,26 +792,7 @@ void _Xi18nChangeIC (XIMS ims,
     changeic->status_attr = sts_attr;
     changeic->ic_attr = ic_attr;
 
-    if (i18n_core->address.improto)
-    {
-        if (i18n_core->address.user_data)
-        {
-                if (!(i18n_core->address.improto(ims, call_data, i18n_core->address.user_data))) {
-                    XFree (value_buf);
-                    return;
-                }
-                /*endif*/
-        }
-        else
-        {
-                if (!(i18n_core->address.improto(ims, call_data, NULL))) {
-                    XFree (value_buf);
-                    return;
-                }
-                /*endif*/
-        }
-        /*endif*/
-    }
+    on_incoming_message (xim, call_data);
 
     XFree (value_buf);
 
@@ -824,7 +812,7 @@ void _Xi18nChangeIC (XIMS ims,
     /*endif*/
     total_size = FrameMgrGetTotalSize (fm);
     reply = (unsigned char *) malloc (total_size);
-    
+
     if (!reply)
     {
         _Xi18nSendMessage (ims, connect_id, XIM_ERROR, 0, 0, 0);
@@ -858,27 +846,13 @@ void _Xi18nChangeIC (XIMS ims,
     /*endif*/
     if (create_flag == True)
     {
-        int on_key_num = i18n_core->address.on_keys.count_keys;
-        int off_key_num = i18n_core->address.off_keys.count_keys;
-
-        if (on_key_num == 0  &&  off_key_num == 0)
-        {
-            long mask;
-
-            if (i18n_core->address.imvalue_mask & I18N_FILTERMASK)
-                mask = i18n_core->address.filterevent_mask;
-            else
-                mask = DEFAULT_FILTER_MASK;
-            /*endif*/
-            /* static event flow is default */
-            _Xi18nSetEventMask (ims,
-                                connect_id,
-                                input_method_ID,
-                                changeic->icid,
-                                mask,
-                                ~mask);
-        }
-        /*endif*/
+	/* static event flow is default */
+	_Xi18nSetEventMask (ims,
+			    connect_id,
+			    input_method_ID,
+			    changeic->icid,
+			    xim->im_event_mask,
+			    ~xim->im_event_mask);
     }
     /*endif*/
     FrameMgrFree (fm);
@@ -886,8 +860,9 @@ void _Xi18nChangeIC (XIMS ims,
 }
 
 /* called from GetICValueMessageProc */
-void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
+void _Xi18nGetIC (NimfXim *xim, IMProtocol *call_data, unsigned char *p)
 {
+    XIMS ims = xim->xims;
     Xi18n i18n_core = ims->protocol;
     FrameMgr fm;
     FmStatus status;
@@ -938,7 +913,7 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
     while (i < number)
     {
         int read_number;
-        
+
         if (IsNestedList (i18n_core, attrID_list[i]))
         {
             if (attrID_list[i] == i18n_core->address.preeditAttr_id)
@@ -983,28 +958,13 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
     getic->preedit_attr = pre_attr;
     getic->status_attr = sts_attr;
     getic->ic_attr = ic_attr;
-    if (i18n_core->address.improto)
-    {
-        if (i18n_core->address.user_data)
-        {
-            if (!(i18n_core->address.improto (ims,
-                                              call_data,
-                                              i18n_core->address.user_data)))
-                return;
-        }
-        else
-        {
-            if (!(i18n_core->address.improto (ims,
-                                              call_data,
-                                              NULL)))
-                return;
-        }
 
-        /*endif*/
-	if (_Xi18nNeedSwap (i18n_core, connect_id))
-	  SwapAttributes(getic->ic_attr, getic->ic_attr_num);
-    }
+    on_incoming_message (xim, call_data);
+
     /*endif*/
+    if (_Xi18nNeedSwap (i18n_core, connect_id))
+      SwapAttributes(getic->ic_attr, getic->ic_attr_num);
+
     iter_count = getic->ic_attr_num;
 
     preedit_ret = CreateNestedList (i18n_core->address.preeditAttr_id,
@@ -1033,7 +993,7 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
     for (i = 0;  i < (int) getic->ic_attr_num;  i++)
         FrameMgrSetSize (fm, ic_attr[i].value_length);
     /*endfor*/
-    
+
     if (preedit_ret)
         FrameMgrSetSize (fm, preedit_ret->value_length);
     /*endif*/
@@ -1114,7 +1074,7 @@ void _Xi18nGetIC (XIMS ims, IMProtocol *call_data, unsigned char *p)
 	/*endif*/
     }
     /*endfor*/
-    
+
     if (preedit_ret)
     {
         XFree (preedit_ret->value);

@@ -42,6 +42,6 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "nimf-xim.h"
 
 void ReadXConnectMessage (NimfXim *xim, XClientMessageEvent *ev);
-Bool WaitXIMProtocol     (Display*, XEvent*, XPointer);
+Bool WaitXIMProtocol     (NimfXim*, XEvent*);
 
 #endif /* I18N_X_H */

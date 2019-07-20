@@ -1,3 +1,4 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /* $XConsortium: XimProto.h,v 1.2 94/01/20 18:02:24 rws Exp $ */
 /******************************************************************
 
@@ -42,13 +43,6 @@ PERFORMANCE OF THIS SOFTWARE.
 #define XIM_TRANSPORT		"TRANSPORT"
 
 /*
- * categories in XIM_SERVERS
- */
-#define XIM_SERVER_CATEGORY	"@server="
-#define XIM_LOCAL_CATEGORY	"@locale="
-#define XIM_TRANSPORT_CATEGORY	"@transport="
-
-/*
  * Xim implementation revision
  */
 #define PROTOCOLMAJORVERSION		0
@@ -74,9 +68,6 @@ PERFORMANCE OF THIS SOFTWARE.
 #define	XIM_OPEN_REPLY			 31
 #define	XIM_CLOSE			 32
 #define	XIM_CLOSE_REPLY			 33
-#define	XIM_REGISTER_TRIGGERKEYS	 34
-#define	XIM_TRIGGER_NOTIFY		 35
-#define	XIM_TRIGGER_NOTIFY_REPLY	 36
 #define	XIM_SET_EVENT_MASK		 37
 #define	XIM_ENCODING_NEGOTIATION	 38
 #define	XIM_ENCODING_NEGOTIATION_REPLY	 39
