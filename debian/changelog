@@ -1,3 +1,11 @@
+nimf (2019.07.21) stable; urgency=medium
+
+  * nimf-settings: Fixd segmentation fault (#277 #280 #282)
+  * IMdkit: Code cleanup (#106)
+  * Updated installation documentation (#270 #281)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sun, 21 Jul 2019 23:30:08 +0900
+
 nimf (2019.07.16) stable; urgency=medium
 
   * nimf-anthy: Code cleanup

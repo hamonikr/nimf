@@ -1,3 +1,11 @@
+mxa reported:
+  * nimf-settings segmentation fault
+    https://gitlab.com/nimf-i18n/nimf/issues/282
+    https://gitlab.com/nimf-i18n/nimf/issues/280
+    https://gitlab.com/nimf-i18n/nimf/issues/277
+  * Compose key not supported in nimf
+    https://gitlab.com/nimf-i18n/nimf/issues/33
+
 5HARK <blgf6190 at gmail com> reported:
 A problem occurs when statically linking libnimf and then dynamically loading
 client modules.
@@ -12,9 +20,6 @@ https://gitlab.com/nimf-i18n/nimf/issues/57
 
 yueunseon reported: Support multi-user environment
 https://gitlab.com/nimf-i18n/nimf/issues/37
-
-mxa reported: Compose key not supported in nimf
-https://gitlab.com/nimf-i18n/nimf/issues/33
 
 JH (nemonein) reported issues.
 nimf-daemon freezes              https://gitlab.com/nimf-i18n/nimf/issues/22
