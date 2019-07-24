@@ -84,7 +84,7 @@ Compiling and installing
 
     Install all dependent packages and perform the following commands.
 
-      username:~/tmp-build/nimf-master$ debuild
+      username:~/tmp-build/nimf-master$ debuild -b -uc -us
       username:~/tmp-build/nimf-master$ cd ..
       username:~/tmp-build$ ls
       libnimf1_YYYY.mm.dd_amd64.deb
@@ -152,6 +152,15 @@ Compiling and installing
       --disable-nimf-rime     Disable nimf-rime
       --with-im-config-data   Install im-config data
       --with-imsettings-data  Install imsettings data
+
+    Open the terminal and run the following commands step by step.
+
+      username:~$ cd
+      username:~$ mkdir tmp-build
+      username:~$ cd tmp-build
+      username:~/tmp-build$ wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
+      username:~/tmp-build$ tar zxf nimf-master.tar.gz
+      username:~/tmp-build$ cd nimf-master
 
     If you are using im-config
 
