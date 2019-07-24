@@ -143,6 +143,8 @@ G_BEGIN_DECLS
  * @NIMF_KEY_Sys_Req: Sys_Req
  * @NIMF_KEY_Escape: Escape
  * @NIMF_KEY_Multi_key: Multi_key
+ * @NIMF_KEY_Kanji: Kanji
+ * @NIMF_KEY_Kana_Shift: Kana_Shift
  * @NIMF_KEY_Hangul: Hangul
  * @NIMF_KEY_Hangul_Hanja: Hangul_Hanja
  * @NIMF_KEY_Home: Home
@@ -324,6 +326,9 @@ typedef enum
   NIMF_KEY_Escape           = 0xff1b, /*< nick=Escape >*/
 
   NIMF_KEY_Multi_key        = 0xff20, /*< nick=Multi_key >*/
+  NIMF_KEY_Kanji            = 0xff21, /*< nick=Kanji >*/
+
+  NIMF_KEY_Kana_Shift       = 0xff2e, /*< nick=Kana_Shift >*/
 
   NIMF_KEY_Hangul           = 0xff31, /*< nick=Hangul >*/
 

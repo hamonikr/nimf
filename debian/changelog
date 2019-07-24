@@ -1,3 +1,10 @@
+nimf (2019.07.24) stable; urgency=medium
+
+  * Added NIMF_KEY_Kanji, NIMF_KEY_Kana_Shift (#283)
+  * nimf-anthy: Fixed the candidate window
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 24 Jul 2019 16:07:20 +0900
+
 nimf (2019.07.21) stable; urgency=medium
 
   * nimf-settings: Fixd segmentation fault (#277 #280 #282)
