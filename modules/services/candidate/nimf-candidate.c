@@ -556,6 +556,7 @@ nimf_candidate_start (NimfService *service)
   candidate->treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (candidate->treeview), FALSE);
+  gtk_tree_view_set_activate_on_single_click (GTK_TREE_VIEW (candidate->treeview), TRUE);
   gtk_widget_style_get (candidate->treeview, "horizontal-separator",
                         &horizontal_space, NULL);
   candidate->cell_height = fixed_height + horizontal_space / 2;

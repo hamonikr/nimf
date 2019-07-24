@@ -1247,7 +1247,10 @@ nimf_anthy_filter_event (NimfEngine    *engine,
           anthy_get_segment_stat (anthy->context, anthy->current_segment, &segment_stat);
 
           if (i < MIN (anthy->current_page * 10, segment_stat.nr_candidate))
+          {
             on_candidate_clicked (engine, target, NULL, n);
+            nimf_anthy_update_candidate (engine, target);
+          }
         }
         return TRUE;
       case NIMF_KEY_Escape:
