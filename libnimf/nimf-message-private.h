@@ -92,6 +92,7 @@ struct _NimfResult
 {
   gboolean     is_dispatched;
   NimfMessage *reply;
+  gint         ref_count;
 };
 
 NimfMessage  *nimf_message_new              (void);
@@ -114,6 +115,9 @@ guint16       nimf_message_get_body_size    (NimfMessage     *message);
 const gchar  *nimf_message_get_name         (NimfMessage     *message);
 const gchar  *nimf_message_get_name_by_type (NimfMessageType  type);
 
+NimfResult  *nimf_result_new             (void);
+NimfResult  *nimf_result_ref             (NimfResult *result);
+void         nimf_result_unref           (NimfResult *result);
 void         nimf_result_iteration_until (NimfResult      *result,
                                           GMainContext    *main_context,
                                           guint16          icid,

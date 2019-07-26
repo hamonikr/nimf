@@ -153,6 +153,48 @@ const gchar *nimf_message_get_name_by_type (NimfMessageType type)
   return enum_value ? enum_value->value_name : NULL;
 }
 
+NimfResult *
+nimf_result_new ()
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfResult *result;
+
+  result = g_slice_new0 (NimfResult);
+  result->ref_count = 1;
+
+  return result;
+}
+
+NimfResult *
+nimf_result_ref (NimfResult *result)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_return_val_if_fail (result != NULL, NULL);
+
+  g_atomic_int_inc (&result->ref_count);
+
+  return result;
+}
+
+void
+nimf_result_unref (NimfResult *result)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  if (G_UNLIKELY (result == NULL))
+    return;
+
+  if (g_atomic_int_dec_and_test (&result->ref_count))
+  {
+    if (result->reply)
+      g_slice_free (NimfMessage, result->reply);
+
+    g_slice_free (NimfResult, result);
+  }
+}
+
 void
 nimf_result_iteration_until (NimfResult      *result,
                              GMainContext    *main_context,
@@ -160,6 +202,8 @@ nimf_result_iteration_until (NimfResult      *result,
                              NimfMessageType  type)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  nimf_result_ref (result);
 
   do {
     result->is_dispatched = FALSE;
@@ -169,7 +213,7 @@ nimf_result_iteration_until (NimfResult      *result,
                               (result->reply->header->icid != icid))));
 
   if (G_UNLIKELY (result->is_dispatched == TRUE && result->reply == NULL))
-    g_critical (G_STRLOC ": %s:Can't receive %s", G_STRFUNC,
+    g_critical (G_STRLOC ": %s: Can't receive %s", G_STRFUNC,
                 nimf_message_get_name_by_type (type));
 
   /* This prevents not checking reply in the following iteration
@@ -182,6 +226,8 @@ nimf_result_iteration_until (NimfResult      *result,
    *                               recv commit-reply
    */
   result->is_dispatched = FALSE;
+
+  nimf_result_unref (result);
 }
 
 void

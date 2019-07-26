@@ -69,7 +69,7 @@ nimf_connection_init (NimfConnection *connection)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  connection->result = g_slice_new0 (NimfResult);
+  connection->result = nimf_result_new ();
   connection->ics = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
                                            (GDestroyNotify) g_object_unref);
 }
@@ -80,7 +80,6 @@ nimf_connection_finalize (GObject *object)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfConnection *connection = NIMF_CONNECTION (object);
-  nimf_message_unref (connection->result->reply);
 
   if (connection->source)
   {
@@ -91,7 +90,7 @@ nimf_connection_finalize (GObject *object)
   if (connection->socket_connection)
     g_object_unref (connection->socket_connection);
 
-  g_slice_free (NimfResult, connection->result);
+  nimf_result_unref  (connection->result);
   g_hash_table_unref (connection->ics);
 
   G_OBJECT_CLASS (nimf_connection_parent_class)->finalize (object);

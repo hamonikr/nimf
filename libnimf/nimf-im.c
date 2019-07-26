@@ -627,7 +627,7 @@ nimf_im_init (NimfIM *im)
     g_main_context_ref (nimf_im_context);
 
   if (nimf_im_result == NULL)
-    nimf_im_result = g_slice_new0 (NimfResult);
+    nimf_im_result = nimf_result_new ();
 
   if (nimf_im_table == NULL)
     nimf_im_table = g_hash_table_new_full (g_direct_hash, g_direct_equal,
@@ -690,7 +690,7 @@ nimf_im_finalize (GObject *object)
   if (g_hash_table_size (nimf_im_table) == 0)
   {
     g_hash_table_unref (nimf_im_table);
-    g_slice_free       (NimfResult, nimf_im_result);
+    nimf_result_unref  (nimf_im_result);
 
     if (nimf_im_socket)
       g_object_unref (nimf_im_socket);

@@ -1,3 +1,9 @@
+nimf (2019.07.26) stable; urgency=medium
+
+  * Fixed a potential bug (#152)
+
+ -- Hodong Kim <cogniti@gmail.com>  Fri, 26 Jul 2019 23:06:01 +0900
+
 nimf (2019.07.24) stable; urgency=medium
 
   * Added NIMF_KEY_Kanji, NIMF_KEY_Kana_Shift (#283)
