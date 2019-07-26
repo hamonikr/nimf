@@ -99,3 +99,10 @@ Description: Chinese input module for Nimf, based on rime
  Nimf is a lightweight, fast and extensible input method framework.
  .
  This package provides a Chinese input module based on rime.
+
+Package: qtbase-abi-5-11-0-dummy
+Architecture: any
+Depends: qtbase-abi-5-11-3
+Provides: qtbase-abi-5-11-0
+Description: Dummy package for Debian Buster
+ This package provides a dummy qtbase-abi-5-11-0 for Debian Buster.
