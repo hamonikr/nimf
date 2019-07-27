@@ -995,20 +995,23 @@ nimf_settings_page_new (const gchar  *schema_id)
   if (!g_strcmp0 (schema_id, "org.nimf"))
   {
     GFile *file;
-    gchar *filename;
+    gchar *xprofile;
+    gchar *conf;
 
-    file = g_file_new_build_filename (G_DIR_SEPARATOR_S, g_get_home_dir (),
-                                      ".xprofile", NULL);
-    filename = g_build_filename (G_DIR_SEPARATOR_S, g_get_user_config_dir (),
-                                 "environment.d", INPUT_CONF, NULL);
+    xprofile = g_build_filename (G_DIR_SEPARATOR_S, g_get_home_dir (),
+                                 ".xprofile", NULL);
+    file = g_file_new_for_path (xprofile);
+    conf = g_build_filename (G_DIR_SEPARATOR_S, g_get_user_config_dir (),
+                             "environment.d", INPUT_CONF, NULL);
     g_settings_set_boolean (page->gsettings, "setup-environment-variables",
-                            !g_access (filename, F_OK) &&
+                            !g_access (conf, F_OK) &&
                             xprofile_contains_generator (file));
     g_signal_connect (page->gsettings, "changed::setup-environment-variables",
                       G_CALLBACK (on_setup_environment), NULL);
 
     g_object_unref (file);
-    g_free (filename);
+    g_free (xprofile);
+    g_free (conf);
   }
 
   g_strfreev (keys);

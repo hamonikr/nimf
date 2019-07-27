@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2019.07.26
+Version:  2019.07.27
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -10,7 +10,7 @@ Source0:  https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2
 BuildRequires: gcc-c++
 BuildRequires: libtool
 BuildRequires: glib2-devel
-BuildRequires: pkgconfig
+BuildRequires: pkg-config
 BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
@@ -122,5 +122,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Fri Jul 26 2019 Hodong Kim <cogniti@gmail.com> - 2019.07.26-1
+* Sat Jul 27 2019 Hodong Kim <cogniti@gmail.com> - 2019.07.27-1
 - See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog

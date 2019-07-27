@@ -1,3 +1,10 @@
+nimf (2019.07.27) stable; urgency=medium
+
+  * Fixed backward compatibility for OpenSUSE Leap
+  * Fixed freezing (#152)
+
+ -- Hodong Kim <cogniti@gmail.com>  Sat, 27 Jul 2019 18:50:02 +0900
+
 nimf (2019.07.26) stable; urgency=medium
 
   * Fixed a potential bug (#152)
