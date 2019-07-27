@@ -104,6 +104,7 @@ on_incoming_message (GSocket      *socket,
 
   if (condition & (G_IO_HUP | G_IO_ERR))
   {
+    g_debug (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
     /* Because two GSource is created over one socket,
      * when G_IO_HUP | G_IO_ERR, callback can run two times.
      * the following code avoid that callback runs two times. */
@@ -127,8 +128,6 @@ on_incoming_message (GSocket      *socket,
     while (g_hash_table_iter_next (&iter, NULL, &im))
       NIMF_IM (im)->priv->created = FALSE;
 
-    g_critical (G_STRLOC ": %s: G_IO_HUP | G_IO_ERR", G_STRFUNC);
-
     return G_SOURCE_REMOVE;
   }
 
@@ -139,7 +138,7 @@ on_incoming_message (GSocket      *socket,
 
   if (G_UNLIKELY (message == NULL))
   {
-    g_critical (G_STRLOC ": NULL message");
+    g_debug (G_STRLOC ": NULL message");
     return G_SOURCE_CONTINUE;
   }
 
@@ -229,7 +228,8 @@ on_incoming_message (GSocket      *socket,
     case NIMF_MESSAGE_SET_USE_PREEDIT_REPLY:
       break;
     default:
-      g_warning (G_STRLOC ": %s: Unknown message type: %d", G_STRFUNC, message->header->type);
+      g_debug (G_STRLOC ": %s: Unknown message type: %d",
+               G_STRFUNC, message->header->type);
       break;
   }
 
@@ -291,27 +291,27 @@ nimf_im_connect (NimfIM *im)
           }
           else
           {
-            g_critical (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
+            g_debug (G_STRLOC ": %s: %s", G_STRFUNC, error->message);
             g_clear_error (&error);
           }
         }
         else
         {
-          g_critical (G_STRLOC ": %s: Can't authenticate", G_STRFUNC);
+          g_debug (G_STRLOC ": %s: Can't authenticate", G_STRFUNC);
           break;
         }
       }
 
-      g_message ("Trying to execute nimf");
+      g_debug ("Trying to execute nimf");
 
       if (!g_spawn_command_line_sync ("nimf", NULL, NULL, NULL, &error))
       {
-        g_critical ("Couldn't execute 'nimf': %s", error->message);
+        g_debug ("Couldn't execute 'nimf': %s", error->message);
         g_clear_error (&error);
         break;
       }
 
-      g_message ("Waiting for 1 sec");
+      g_debug ("Waiting for 1 sec");
       g_usleep (G_USEC_PER_SEC);
     }
 
@@ -334,7 +334,7 @@ nimf_im_connect (NimfIM *im)
     }
     else
     {
-      g_critical (G_STRLOC ": %s: Couldn't connect to nimf server", G_STRFUNC);
+      g_debug (G_STRLOC ": %s: Couldn't connect to nimf server", G_STRFUNC);
     }
   }
 
@@ -385,8 +385,8 @@ nimf_im_focus_out (NimfIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
-  g_return_if_fail (nimf_im_is_connected ());
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return;
 
   nimf_send_message (nimf_im_socket, im->priv->id, NIMF_MESSAGE_FOCUS_OUT,
                      NULL, 0, NULL);
@@ -408,8 +408,8 @@ nimf_im_set_cursor_location (NimfIM              *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
-  g_return_if_fail (nimf_im_is_connected ());
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return;
 
   nimf_send_message (nimf_im_socket, im->priv->id,
                      NIMF_MESSAGE_SET_CURSOR_LOCATION,
@@ -432,8 +432,8 @@ nimf_im_set_use_preedit (NimfIM   *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
-  g_return_if_fail (nimf_im_is_connected ());
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return;
 
   nimf_send_message (nimf_im_socket, im->priv->id,
                      NIMF_MESSAGE_SET_USE_PREEDIT,
@@ -461,8 +461,8 @@ nimf_im_set_surrounding (NimfIM     *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
-  g_return_if_fail (nimf_im_is_connected ());
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return;
 
   gchar *data = NULL;
   gint   str_len;
@@ -496,8 +496,8 @@ nimf_im_focus_in (NimfIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
-  g_return_if_fail (nimf_im_is_connected ());
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return;
 
   nimf_send_message (nimf_im_socket, im->priv->id,
                      NIMF_MESSAGE_FOCUS_IN, NULL, 0, NULL);
@@ -528,7 +528,8 @@ nimf_im_get_preedit_string (NimfIM            *im,
 {
   g_debug (G_STRLOC ":%s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
+  if (!NIMF_IS_IM (im))
+    return;
 
   if (str)
     *str = g_strdup (im->priv->preedit_string);
@@ -551,8 +552,8 @@ nimf_im_reset (NimfIM *im)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  g_return_if_fail (NIMF_IS_IM (im));
-  g_return_if_fail (nimf_im_is_connected ());
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return;
 
   nimf_send_message (nimf_im_socket, im->priv->id,
                      NIMF_MESSAGE_RESET, NULL, 0, NULL);
@@ -575,8 +576,8 @@ nimf_im_filter_event (NimfIM    *im,
 {
   g_debug (G_STRLOC ":%s", G_STRFUNC);
 
-  g_return_val_if_fail (NIMF_IS_IM (im), FALSE);
-  g_return_val_if_fail (nimf_im_is_connected (), FALSE);
+  if (!NIMF_IS_IM (im) || !nimf_im_is_connected ())
+    return FALSE;
 
   nimf_send_message (nimf_im_socket, im->priv->id, NIMF_MESSAGE_FILTER_EVENT,
                      event, sizeof (NimfEvent), NULL);
