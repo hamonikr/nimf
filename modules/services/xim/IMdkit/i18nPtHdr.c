@@ -1,3 +1,4 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /******************************************************************
 
          Copyright 1994, 1995 by Sun Microsystems, Inc.
@@ -646,11 +647,11 @@ static XIMAttribute *MakeIMAttributeList (NimfXim *xim,
         /*endfor*/
     }
     /*endfor*/
-    attrib_list = (XIMAttribute *) malloc (sizeof (XIMAttribute)*list_num);
+    attrib_list = (XIMAttribute *) malloc (sizeof (XIMAttribute)*(list_num + 1));
     if (!attrib_list)
         return NULL;
     /*endif*/
-    memset (attrib_list, 0, sizeof (XIMAttribute)*list_num);
+    memset (attrib_list, 0, sizeof (XIMAttribute)*(list_num + 1));
     number_ret = list_num;
     list_num = 0;
     for (i = 0;  i < *number;  i++)
@@ -1028,7 +1029,7 @@ static int WireEventToEvent (Xi18n i18n_core,
     /* get & set serial */
     FrameMgrGetToken(fm, c16);
     ev->xany.serial = (unsigned long)c16;
-    ev->xany.serial |= serial << 16;
+    ev->xany.serial |= ((unsigned long) serial) << 16;
     ev->xany.send_event = False;
     ev->xany.display = i18n_core->address.dpy;
 
@@ -1286,7 +1287,7 @@ static void EncodingNegotiatonMessageProc (NimfXim *xim,
     if (byte_length > 0)
     {
         enc_nego->encodinginfo = (XIMStr *) malloc (sizeof (XIMStr)*10);
-        memset (enc_nego->encoding, 0, sizeof (XIMStr)*10);
+        memset (enc_nego->encodinginfo, 0, sizeof (XIMStr)*10);
         i = 0;
         while (FrameMgrIsIterLoopEnd (fm, &status) == False)
         {

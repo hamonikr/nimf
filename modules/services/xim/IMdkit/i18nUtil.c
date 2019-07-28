@@ -1,3 +1,4 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
 /******************************************************************
 
          Copyright (C) 1994-1995 Sun Microsystems, Inc.
@@ -163,7 +164,9 @@ void _Xi18nSendMessage (XIMS ims,
     replyp = reply;
     memmove (reply, reply_hdr, header_size);
     replyp += header_size;
-    memmove (replyp, data, length);
+
+    if (length > 0 && data != NULL)
+        memmove (replyp, data, length);
 
     i18n_core->methods.send (ims, connect_id, reply, reply_length);
 
