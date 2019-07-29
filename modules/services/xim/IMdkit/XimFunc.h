@@ -33,19 +33,19 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define _XimFunc_h
 
 /* i18nAttr.c */
-void _Xi18nInitAttrList (Xi18n i18n_core);
-void _Xi18nInitExtension(Xi18n i18n_core);
+void _Xi18nInitAttrList (NimfXim *xim);
+void _Xi18nInitExtension(NimfXim *xim);
 
 /* i18nClbk.c */
-int _Xi18nGeometryCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nPreeditStartCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nPreeditDrawCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nPreeditCaretCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nPreeditDoneCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nStatusStartCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nStatusDrawCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nStatusDoneCallback (XIMS ims, IMProtocol *call_data);
-int _Xi18nStringConversionCallback (XIMS ims, IMProtocol *call_data);
+int _Xi18nGeometryCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nPreeditStartCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nPreeditDrawCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nPreeditCaretCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nPreeditDoneCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nStatusStartCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nStatusDrawCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nStatusDoneCallback (NimfXim *xim, IMProtocol *call_data);
+int _Xi18nStringConversionCallback (NimfXim *xim, IMProtocol *call_data);
 
 /* i18nIc.c */
 void _Xi18nChangeIC (NimfXim *xim, IMProtocol *call_data, unsigned char *p,
@@ -53,13 +53,13 @@ void _Xi18nChangeIC (NimfXim *xim, IMProtocol *call_data, unsigned char *p,
 void _Xi18nGetIC (NimfXim *xim, IMProtocol *call_data, unsigned char *p);
 
 /* i18nUtil.c */
-int _Xi18nNeedSwap (Xi18n i18n_core, CARD16 connect_id);
-Xi18nClient *_Xi18nNewClient(Xi18n i18n_core);
-Xi18nClient *_Xi18nFindClient (Xi18n i18n_core, CARD16 connect_id);
-void _Xi18nDeleteClient (Xi18n i18n_core, CARD16 connect_id);
-void _Xi18nSendMessage (XIMS ims, CARD16 connect_id, CARD8 major_opcode,
+int _Xi18nNeedSwap (NimfXim *xim, CARD16 connect_id);
+Xi18nClient *_Xi18nNewClient(NimfXim *xim);
+Xi18nClient *_Xi18nFindClient (NimfXim *xim, CARD16 connect_id);
+void _Xi18nDeleteClient (NimfXim *xim, CARD16 connect_id);
+void _Xi18nSendMessage (NimfXim *xim, CARD16 connect_id, CARD8 major_opcode,
                         CARD8 minor_opcode, unsigned char *data, long length);
-void _Xi18nSetEventMask (XIMS ims, CARD16 connect_id, CARD16 im_id,
+void _Xi18nSetEventMask (NimfXim *xim, CARD16 connect_id, CARD16 im_id,
                          CARD16 ic_id, CARD32 forward_mask, CARD32 sync_mask);
 
 #endif

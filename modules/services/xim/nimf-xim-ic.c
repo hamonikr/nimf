@@ -99,7 +99,7 @@ nimf_xim_ic_emit_commit (NimfServiceIC *ic,
   commit_data.icid          = xic->icid;
   commit_data.flag          = XimLookupChars;
   commit_data.commit_string = (gchar *) property.value;
-  IMCommitString (xic->xim->xims, (XPointer) &commit_data);
+  xi18n_commit (xic->xim, (XPointer) &commit_data);
 
   XFree (property.value);
 }
@@ -114,7 +114,7 @@ static void nimf_xim_ic_emit_preedit_end (NimfServiceIC *ic)
   preedit_cb_data.major_code = XIM_PREEDIT_DONE;
   preedit_cb_data.connect_id = xic->connect_id;
   preedit_cb_data.icid       = xic->icid;
-  nimf_xim_call_callback (xic->xim->xims, (XPointer) &preedit_cb_data);
+  nimf_xim_call_callback (xic->xim, (XPointer) &preedit_cb_data);
 }
 
 static void nimf_xim_ic_emit_preedit_start (NimfServiceIC *ic)
@@ -127,7 +127,7 @@ static void nimf_xim_ic_emit_preedit_start (NimfServiceIC *ic)
   preedit_cb_data.major_code = XIM_PREEDIT_START;
   preedit_cb_data.connect_id = xic->connect_id;
   preedit_cb_data.icid       = xic->icid;
-  nimf_xim_call_callback (xic->xim->xims, (XPointer) &preedit_cb_data);
+  nimf_xim_call_callback (xic->xim, (XPointer) &preedit_cb_data);
 }
 
 static void
@@ -187,7 +187,7 @@ nimf_xim_ic_emit_preedit_changed (NimfServiceIC    *ic,
     text.encoding_is_wchar = 0;
     text.length = strlen ((char *) text_property.value);
     text.string.multi_byte = (char *) text_property.value;
-    nimf_xim_call_callback (xic->xim->xims, (XPointer) &preedit_cb_data);
+    nimf_xim_call_callback (xic->xim, (XPointer) &preedit_cb_data);
     XFree (text_property.value);
   }
   else
@@ -195,7 +195,7 @@ nimf_xim_ic_emit_preedit_changed (NimfServiceIC    *ic,
     text.encoding_is_wchar = 0;
     text.length = 0;
     text.string.multi_byte = "";
-    nimf_xim_call_callback (xic->xim->xims, (XPointer) &preedit_cb_data);
+    nimf_xim_call_callback (xic->xim, (XPointer) &preedit_cb_data);
     len = 0;
   }
 

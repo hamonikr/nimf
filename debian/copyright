@@ -75,10 +75,6 @@ Files:     modules/services/xim/IMdkit/i18nAttr.c
            modules/services/xim/IMdkit/i18nMethod.c
            modules/services/xim/IMdkit/i18nMethod.h
            modules/services/xim/IMdkit/i18nPtHdr.c
-           modules/services/xim/IMdkit/IMConn.c
-           modules/services/xim/IMdkit/IMdkit.h
-           modules/services/xim/IMdkit/IMMethod.c
-           modules/services/xim/IMdkit/Xi18nX.h
            modules/services/xim/IMdkit/XimFunc.h
 Copyright: 1993, 1994 Hewlett-Packard Company
            1994, 1995 Sun Microsystems, Inc.

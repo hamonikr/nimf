@@ -136,12 +136,6 @@ PERFORMANCE OF THIS SOFTWARE.
 #define XIM_BadSomething		999
 
 /*
- * byte order
- */
-#define BIGENDIAN	(CARD8) 0x42	/* MSB first */
-#define LITTLEENDIAN	(CARD8) 0x6c	/* LSB first */
-
-/*
  * values for the type of XIMATTR & XICATTR
  */
 #define	XimType_SeparatorOfNestedList	0
@@ -155,7 +149,6 @@ PERFORMANCE OF THIS SOFTWARE.
 #define	XimType_XPoint			12
 #define XimType_XFontSet		13
 #define XimType_XIMOptions		14
-#define XimType_XIMHotKeyTriggers	15
 #define XimType_XIMHotKeyState		16
 #define XimType_XIMStringConversion	17
 #define XimType_XIMValuesList		18
@@ -166,11 +159,6 @@ PERFORMANCE OF THIS SOFTWARE.
  */
 #define	XIM_Encoding_NameCategory	0
 #define	XIM_Encoding_DetailCategory	1
-
-/*
- * value for the index of XIM_ENCODING_NEGOTIATON_REPLY
- */
-#define	XIM_Default_Encoding_IDX	-1
 
 /*
  * value for the flag of XIM_FORWARD_EVENT, XIM_COMMIT

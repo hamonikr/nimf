@@ -40,10 +40,15 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <X11/Xproto.h>
 #undef NEED_EVENTS
 
-#include "IMdkit.h"
 #include "nimf-xim.h"
 
 Bool WaitXSelectionRequest (NimfXim *xim, XEvent *ev);
-int  nimf_xim_call_callback (XIMS ims, XPointer);
+int  nimf_xim_call_callback (NimfXim *, XPointer);
+
+Status xi18n_openIM (NimfXim *, Window);
+Status xi18n_closeIM (NimfXim *);
+Status xi18n_forwardEvent (NimfXim *, XPointer);
+Status xi18n_commit (NimfXim *, XPointer);
+int    xi18n_syncXlib (NimfXim *, XPointer);
 
 #endif /* I18N_METHOD_H */

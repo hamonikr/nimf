@@ -3,9 +3,7 @@ module_LTLIBRARIES = libnimf-xim.la
 
 IMdkit_SOURCES = \
 	IMdkit/FrameMgr.h \
-	IMdkit/IMdkit.h \
 	IMdkit/Xi18n.h \
-	IMdkit/Xi18nX.h \
 	IMdkit/XimFunc.h \
 	IMdkit/XimProto.h \
 	IMdkit/FrameMgr.c \
@@ -20,8 +18,6 @@ IMdkit_SOURCES = \
 	IMdkit/i18nUtil.c \
 	IMdkit/i18nX.c \
 	IMdkit/i18nX.h \
-	IMdkit/IMConn.c \
-	IMdkit/IMMethod.c \
 	$(NULL)
 
 libnimf_xim_la_SOURCES = \

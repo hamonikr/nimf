@@ -33,33 +33,33 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ******************************************************************/
 
 #include <X11/Xlib.h>
-#include "IMdkit.h"
 #include "Xi18n.h"
 #include "FrameMgr.h"
 #include "XimFunc.h"
+#include "nimf-xim.h"
+#include "i18nX.h"
 
-Xi18nClient *_Xi18nFindClient (Xi18n, CARD16);
+Xi18nClient *_Xi18nFindClient (NimfXim *, CARD16);
 void _Xi18nInitOffsetCache (Xi18nOffsetCache *);
 
 int
-_Xi18nNeedSwap (Xi18n i18n_core, CARD16 connect_id)
+_Xi18nNeedSwap (NimfXim *xim, CARD16 connect_id)
 {
-    CARD8 im_byteOrder = i18n_core->address.im_byteOrder;
-    Xi18nClient *client = _Xi18nFindClient (i18n_core, connect_id);
+    Xi18nClient *client = _Xi18nFindClient (xim, connect_id);
 
-    return (client->byte_order != im_byteOrder);
+    return (client->byte_order != xim->byte_order);
 }
 
-Xi18nClient *_Xi18nNewClient(Xi18n i18n_core)
+Xi18nClient *_Xi18nNewClient (NimfXim *xim)
 {
     static CARD16 connect_id = 0;
     int new_connect_id;
     Xi18nClient *client;
 
-    if (i18n_core->address.free_clients)
+    if (xim->address.free_clients)
     {
-        client = i18n_core->address.free_clients;
-        i18n_core->address.free_clients = client->next;
+        client = xim->address.free_clients;
+        xim->address.free_clients = client->next;
 	new_connect_id = client->connect_id;
     }
     else
@@ -75,15 +75,15 @@ Xi18nClient *_Xi18nNewClient(Xi18n i18n_core)
     client->byte_order = '?'; 	/* initial value */
     memset (&client->pending, 0, sizeof (XIMPending *));
     _Xi18nInitOffsetCache (&client->offset_cache);
-    client->next = i18n_core->address.clients;
-    i18n_core->address.clients = client;
+    client->next = xim->address.clients;
+    xim->address.clients = client;
 
     return (Xi18nClient *) client;
 }
 
-Xi18nClient *_Xi18nFindClient (Xi18n i18n_core, CARD16 connect_id)
+Xi18nClient *_Xi18nFindClient (NimfXim *xim, CARD16 connect_id)
 {
-    Xi18nClient *client = i18n_core->address.clients;
+    Xi18nClient *client = xim->address.clients;
 
     while (client)
     {
@@ -96,26 +96,26 @@ Xi18nClient *_Xi18nFindClient (Xi18n i18n_core, CARD16 connect_id)
     return NULL;
 }
 
-void _Xi18nDeleteClient (Xi18n i18n_core, CARD16 connect_id)
+void _Xi18nDeleteClient (NimfXim *xim, CARD16 connect_id)
 {
-    Xi18nClient *target = _Xi18nFindClient (i18n_core, connect_id);
+    Xi18nClient *target = _Xi18nFindClient (xim, connect_id);
     Xi18nClient *ccp;
     Xi18nClient *ccp0;
 
-    for (ccp = i18n_core->address.clients, ccp0 = NULL;
+    for (ccp = xim->address.clients, ccp0 = NULL;
          ccp != NULL;
          ccp0 = ccp, ccp = ccp->next)
     {
         if (ccp == target)
         {
             if (ccp0 == NULL)
-                i18n_core->address.clients = ccp->next;
+                xim->address.clients = ccp->next;
             else
                 ccp0->next = ccp->next;
             /*endif*/
             /* put it back to free list */
-            target->next = i18n_core->address.free_clients;
-            i18n_core->address.free_clients = target;
+            target->next = xim->address.free_clients;
+            xim->address.free_clients = target;
             return;
         }
         /*endif*/
@@ -123,14 +123,13 @@ void _Xi18nDeleteClient (Xi18n i18n_core, CARD16 connect_id)
     /*endfor*/
 }
 
-void _Xi18nSendMessage (XIMS ims,
+void _Xi18nSendMessage (NimfXim *xim,
                         CARD16 connect_id,
                         CARD8 major_opcode,
                         CARD8 minor_opcode,
                         unsigned char *data,
                         long length)
 {
-    Xi18n i18n_core = ims->protocol;
     FrameMgr fm;
     extern XimFrameRec packet_header_fr[];
     unsigned char *reply_hdr = NULL;
@@ -142,13 +141,13 @@ void _Xi18nSendMessage (XIMS ims,
 
     fm = FrameMgrInit (packet_header_fr,
                        NULL,
-                       _Xi18nNeedSwap (i18n_core, connect_id));
+                       _Xi18nNeedSwap (xim, connect_id));
 
     header_size = FrameMgrGetTotalSize (fm);
     reply_hdr = (unsigned char *) malloc (header_size);
     if (reply_hdr == NULL)
     {
-        _Xi18nSendMessage (ims, connect_id, XIM_ERROR, 0, 0, 0);
+        _Xi18nSendMessage (xim, connect_id, XIM_ERROR, 0, 0, 0);
         return;
     }
     /*endif*/
@@ -168,21 +167,20 @@ void _Xi18nSendMessage (XIMS ims,
     if (length > 0 && data != NULL)
         memmove (replyp, data, length);
 
-    i18n_core->methods.send (ims, connect_id, reply, reply_length);
+    Xi18nXSend (xim, connect_id, reply, reply_length);
 
     XFree (reply);
     XFree (reply_hdr);
     FrameMgrFree (fm);
 }
 
-void _Xi18nSetEventMask (XIMS ims,
+void _Xi18nSetEventMask (NimfXim *xim,
                          CARD16 connect_id,
                          CARD16 im_id,
                          CARD16 ic_id,
                          CARD32 forward_mask,
                          CARD32 sync_mask)
 {
-    Xi18n i18n_core = ims->protocol;
     FrameMgr fm;
     extern XimFrameRec set_event_mask_fr[];
     unsigned char *reply = NULL;
@@ -190,7 +188,7 @@ void _Xi18nSetEventMask (XIMS ims,
 
     fm = FrameMgrInit (set_event_mask_fr,
                        NULL,
-                       _Xi18nNeedSwap (i18n_core, connect_id));
+                       _Xi18nNeedSwap (xim, connect_id));
 
     total_size = FrameMgrGetTotalSize (fm);
     reply = (unsigned char *) malloc (total_size);
@@ -205,7 +203,7 @@ void _Xi18nSetEventMask (XIMS ims,
     FrameMgrPutToken (fm, forward_mask);
     FrameMgrPutToken (fm, sync_mask);
 
-    _Xi18nSendMessage (ims,
+    _Xi18nSendMessage (xim,
                        connect_id,
                        XIM_SET_EVENT_MASK,
                        0,

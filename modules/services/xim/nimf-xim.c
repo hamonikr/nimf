@@ -22,7 +22,7 @@
 #include "nimf-xim.h"
 #include "IMdkit/i18nMethod.h"
 #include "IMdkit/i18nX.h"
-#include "IMdkit/IMdkit.h"
+#include "IMdkit/XimFunc.h"
 
 G_DEFINE_DYNAMIC_TYPE (NimfXim, nimf_xim, NIMF_TYPE_SERVICE);
 
@@ -255,11 +255,11 @@ static int nimf_xim_forward_event (NimfXim              *xim,
 
   NimfServiceIC *ic;
   ic = g_hash_table_lookup (xim->ics, GUINT_TO_POINTER (data->icid));
-  retval  = nimf_service_ic_filter_event (ic, event);
+  retval = nimf_service_ic_filter_event (ic, event);
   nimf_event_free (event);
 
   if (G_UNLIKELY (!retval))
-    IMForwardEvent (xim->xims, (XPointer) data);
+    return xi18n_forwardEvent (xim, (XPointer) data);
 
   return 1;
 }
@@ -520,7 +520,6 @@ static gboolean nimf_xim_start (NimfService *service)
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
   NimfXim *xim = NIMF_XIM (service);
-  XIMS     xims;
 
   if (xim->active)
     return TRUE;
@@ -612,9 +611,6 @@ static gboolean nimf_xim_start (NimfService *service)
   xim->im_styles.supported_styles[4] = XIMPreeditNothing   | XIMStatusNothing;
   xim->im_styles.supported_styles[5] = XIMPreeditNothing   | XIMStatusNone;
 
-  xim->im_encodings.count_encodings = 1;
-  xim->im_encodings.supported_encodings = g_malloc (sizeof (XIMEncoding) * xim->im_encodings.count_encodings);
-  xim->im_encodings.supported_encodings[0] = "COMPOUND_TEXT";
   xim->im_event_mask = KeyPressMask | KeyReleaseMask;
 
   XSetWindowAttributes attrs;
@@ -633,12 +629,15 @@ static gboolean nimf_xim_start (NimfService *service)
                                   CWOverrideRedirect | CWEventMask, /* unsigned long valuemask */
                                   &attrs);      /* XSetWindowAttributes *attributes */
 
-  xims = IMOpenIM (xim);
+  if (G_BYTE_ORDER == G_LITTLE_ENDIAN)
+      xim->byte_order = 'l';
+  else
+      xim->byte_order = 'B';
 
-  xim->_xconnect = XInternAtom (xim->display, "_XIM_XCONNECT", False);
-  xim->_protocol = XInternAtom (xim->display, "_XIM_PROTOCOL", False);
+  _Xi18nInitAttrList  (xim);
+  _Xi18nInitExtension (xim);
 
-  if (!xims)
+  if (!xi18n_openIM (xim, xim->im_window))
   {
     XDestroyWindow (xim->display, xim->im_window);
     XCloseDisplay  (xim->display);
@@ -649,7 +648,6 @@ static gboolean nimf_xim_start (NimfService *service)
     return FALSE;
   }
 
-  xim->xims = xims;
   xim->xevent_source = nimf_xevent_source_new (xim);
   g_source_attach (xim->xevent_source, NULL);
   XSetErrorHandler (on_xerror);
@@ -681,13 +679,8 @@ static void nimf_xim_stop (NimfService *service)
   }
 
   g_free (xim->im_styles.supported_styles);
-  g_free (xim->im_encodings.supported_encodings);
 
-  if (xim->xims)
-  {
-    IMCloseIM (xim->xims);
-    xim->xims = NULL;
-  }
+  xi18n_closeIM (xim);
 
   if (xim->display)
   {

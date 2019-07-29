@@ -43,5 +43,13 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 void ReadXConnectMessage (NimfXim *xim, XClientMessageEvent *ev);
 Bool WaitXIMProtocol     (NimfXim*, XEvent*);
-
+Bool Xi18nXWait (NimfXim *xim,
+                 CARD16 connect_id,
+                 CARD8 major_opcode,
+                 CARD8 minor_opcode);
+Bool Xi18nXDisconnect (NimfXim *xim, CARD16 connect_id);
+Bool Xi18nXSend (NimfXim *xim,
+                 CARD16 connect_id,
+                 unsigned char *reply,
+                 long length);
 #endif /* I18N_X_H */

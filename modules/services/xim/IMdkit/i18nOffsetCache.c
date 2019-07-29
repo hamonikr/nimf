@@ -29,7 +29,6 @@
 
 #include <X11/Xlib.h>
 #include <stddef.h>
-#include "IMdkit.h"
 #include "Xi18n.h"
 
 /*

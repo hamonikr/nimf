@@ -26,8 +26,8 @@
 #include <nimf.h>
 #include <glib/gi18n.h>
 #include <X11/XKBlib.h>
-#include "IMdkit/Xi18n.h"
 #include "nimf-xim-ic.h"
+#include "IMdkit/Xi18n.h"
 
 G_BEGIN_DECLS
 
@@ -50,16 +50,17 @@ struct _NimfXim
   GHashTable *ics;
   guint16     next_icid;
   guint16     last_focused_icid;
-  XIMS        xims;
   gboolean    active;
 
   Display     *display;
   Window       im_window;
   XIMStyles    im_styles;
-  XIMEncodings im_encodings;
   CARD32       im_event_mask;
   Atom         _xconnect;
   Atom         _protocol;
+  Bool         sync;
+  Xi18nAddressRec address;
+  CARD8        byte_order;
 };
 
 struct _NimfXimClass

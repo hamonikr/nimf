@@ -1,8 +1,8 @@
 /******************************************************************
- 
+
          Copyright 1994, 1995 by Sun Microsystems, Inc.
          Copyright 1993, 1994 by Hewlett-Packard Company
- 
+
 Permission to use, copy, modify, distribute, and sell this software
 and its documentation for any purpose is hereby granted without fee,
 provided that the above copyright notice appear in all copies and
@@ -13,7 +13,7 @@ distribution of the software without specific, written prior permission.
 Sun Microsystems, Inc. and Hewlett-Packard make no representations about
 the suitability of this software for any purpose.  It is provided "as is"
 without express or implied warranty.
- 
+
 SUN MICROSYSTEMS INC. AND HEWLETT-PACKARD COMPANY DISCLAIMS ALL
 WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -22,20 +22,20 @@ SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
 RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
 CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
   Author: Hidetoshi Tajima(tajima@Eng.Sun.COM) Sun Microsystems, Inc.
 
     This version tidied and debugged by Steve Underwood May 1999
- 
+
 ******************************************************************/
 
 #include <X11/Xlib.h>
 #include <X11/Xresource.h>
-#include "IMdkit.h"
 #include "Xi18n.h"
 #include "XimFunc.h"
+#include "nimf-xim.h"
 
-typedef struct 
+typedef struct
 {
     char *name;
     CARD16 type;
@@ -51,7 +51,6 @@ typedef struct
 IMListOfAttr Default_IMattr[] =
 {
     {XNQueryInputStyle,   XimType_XIMStyles},
-/*    {XNQueryIMValuesList, XimType_XIMValuesList},	*/
     {(char *) NULL, (CARD16) 0}
 };
 
@@ -97,7 +96,7 @@ static void CountAttrList(IMListOfAttr *attr, int *total_count)
     }
 }
 
-static XIMAttr *CreateAttrList (Xi18n i18n_core,
+static XIMAttr *CreateAttrList (NimfXim *xim,
                                 IMListOfAttr *attr,
                                 int *total_count)
 {
@@ -120,11 +119,11 @@ static XIMAttr *CreateAttrList (Xi18n i18n_core,
         p->type = (CARD16) attr->type;
         p->attribute_id = XrmStringToQuark (p->name);
         if (strcmp (p->name, XNPreeditAttributes) == 0)
-            i18n_core->address.preeditAttr_id = p->attribute_id;
+            xim->address.preeditAttr_id = p->attribute_id;
         else if (strcmp (p->name, XNStatusAttributes) == 0)
-            i18n_core->address.statusAttr_id = p->attribute_id;
+            xim->address.statusAttr_id = p->attribute_id;
         else if (strcmp (p->name, XNSeparatorofNestedList) == 0)
-            i18n_core->address.separatorAttr_id = p->attribute_id;
+            xim->address.separatorAttr_id = p->attribute_id;
         /*endif*/
     }
     /*endfor*/
@@ -133,35 +132,35 @@ static XIMAttr *CreateAttrList (Xi18n i18n_core,
     return args;
 }
 
-void _Xi18nInitAttrList (Xi18n i18n_core)
+void _Xi18nInitAttrList (NimfXim *xim)
 {
     XIMAttr *args;
     int	total_count;
 
     /* init IMAttr list */
-    if (i18n_core->address.xim_attr)
-        XFree ((char *)i18n_core->address.xim_attr);
+    if (xim->address.xim_attr)
+        XFree ((char *) xim->address.xim_attr);
     /*endif*/
-    args = CreateAttrList (i18n_core, Default_IMattr, &total_count);
+    args = CreateAttrList (xim, Default_IMattr, &total_count);
 
-    i18n_core->address.im_attr_num = total_count;
-    i18n_core->address.xim_attr = (XIMAttr *)args;
+    xim->address.im_attr_num = total_count;
+    xim->address.xim_attr = (XIMAttr *)args;
 
     /* init ICAttr list */
-    if (i18n_core->address.xic_attr)
-        XFree ((char *) i18n_core->address.xic_attr);
+    if (xim->address.xic_attr)
+        XFree ((char *) xim->address.xic_attr);
     /*endif*/
-    args = CreateAttrList (i18n_core, Default_ICattr, &total_count);
+    args = CreateAttrList (xim, Default_ICattr, &total_count);
 
-    i18n_core->address.ic_attr_num = total_count;
-    i18n_core->address.xic_attr = (XICAttr *) args;
+    xim->address.ic_attr_num = total_count;
+    xim->address.xic_attr = (XICAttr *) args;
 }
 
-void _Xi18nInitExtension(Xi18n i18n_core)
+void _Xi18nInitExtension(NimfXim *xim)
 {
     register int i;
     IMExtList *extensions = (IMExtList *) Default_Extension;
-    XIMExt *ext_list = (XIMExt *) i18n_core->address.extension;
+    XIMExt *ext_list = (XIMExt *) xim->address.extension;
 
     for (i = 0;  extensions->name;  i++, ext_list++, extensions++)
     {
@@ -170,6 +169,6 @@ void _Xi18nInitExtension(Xi18n i18n_core)
         ext_list->name = extensions->name;
         ext_list->length = strlen(ext_list->name);
     }
-    /*endfor*/
-    i18n_core->address.ext_num = i;
+
+    xim->address.ext_num = i;
 }
