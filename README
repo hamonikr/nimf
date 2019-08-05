@@ -136,7 +136,7 @@ Compiling and installing
       google-noto-cjk-fonts libhangul-devel anthy-devel anthy \
       libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc
 
-    rpmbuild -bb nimf-master/specs/centos.spec
+    rpmbuild -bb nimf-master/nimf.spec
     ls -R rpmbuild/RPMS/
 
     sudo yum install \

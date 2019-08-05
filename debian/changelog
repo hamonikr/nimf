@@ -1,3 +1,11 @@
+nimf (2019.08.05) stable; urgency=medium
+
+  * Replaced specs/* with nimf.spec
+  * IMdkit: Code cleanup (#106)
+  * Imported some code from the RHEL code review
+
+ -- Hodong Kim <cogniti@gmail.com>  Mon, 05 Aug 2019 22:19:55 +0900
+
 nimf (2019.07.27) stable; urgency=medium
 
   * Fixed backward compatibility for OpenSUSE Leap
