@@ -259,7 +259,8 @@ dnl nimf-settings
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS,
-                  [gtk+-3.0 gio-2.0 gmodule-2.0 libxklavier gdk-3.0 gdk-x11-3.0])
+                  [gtk+-3.0 glib-2.0 >= 2.54 gio-2.0 gmodule-2.0 libxklavier
+                   gdk-3.0 gdk-x11-3.0])
 
 dnl ***************************************************************************
 dnl im-config data
