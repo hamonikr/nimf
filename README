@@ -243,31 +243,6 @@ Participate
     Then, you may translate nimf.pot into your native language.
 
 
-Support
--------
-
-  * If you have a problem with Nimf, please report a bug.
-
-    https://gitlab.com/nimf-i18n/nimf/issues/new
-
-  * Not Nimf bugs but your application bugs
-
-    Report bugs to your application project. Do not request me to fix your
-    application bugs.
-
-  * Failed to load shared library
-
-    Check /etc/ld.so.conf and /etc/ld.so.conf.d/ for /usr/local/lib path
-
-  * libnimf.so.0: cannot open shared object file: No such file or directory
-
-    sudo ldconfig
-
-  * Nimf does not appear in im-config
-
-    sudo cp nimf/data/im-config/23_nimf.* /usr/share/im-config/data/
-
-
 References
 ----------
 

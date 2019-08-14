@@ -1,3 +1,11 @@
+nimf (2019.08.14) stable; urgency=medium
+
+  * Updated README
+  * Fixed requirements
+  * Use gtk-doc >= 1.26 to avoid automake warnings
+
+ -- Hodong Kim <cogniti@gmail.com>  Wed, 14 Aug 2019 19:55:40 +0900
+
 nimf (2019.08.05) stable; urgency=medium
 
   * Replaced specs/* with nimf.spec
