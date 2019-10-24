@@ -1,0 +1,4 @@
+usr/share/icons/hicolor/*/status/nimf-libhangul.*
+usr/share/glib-2.0/schemas/org.nimf.engines.nimf-libhangul.gschema.xml
+usr/lib/*/nimf/modules/libnimf-libhangul.so
+usr/lib/*/nimf/mssymbol.txt

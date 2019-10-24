@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+_Name=Nimf Settings
+Exec=nimf-settings --gapplication-service
+Icon=nimf-logo
+Terminal=false
+Categories=System;Utility;
+X-GNOME-AutoRestart=false
+X-GNOME-Autostart-Notify=false
+X-GNOME-Autostart-Phase=Application
+X-KDE-autostart-after=panel
+X-KDE-StartupNotify=false

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf" path="/org/nimf/" gettext-domain="nimf">
+    <child schema="org.nimf.services" name="services"/>
+    <child schema="org.nimf.clients" name="clients"/>
+    <child schema="org.nimf.engines" name="engines"/>
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Nimf'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="as" name="hotkeys">
+      <default>['&lt;Control&gt; space']</default>
+      <summary>Hotkeys for rotating input method engines</summary>
+      <description>Hotkeys for rotating input method engines</description>
+    </key>
+    <key type="as" name="hidden-active-engines">
+      <default>['']</default>
+      <summary>active engines</summary>
+      <description>DO NOT EDIT MANUALLY</description>
+    </key>
+    <key type="b" name="use-singleton">
+      <default>true</default>
+      <summary>Use singleton mode</summary>
+      <description>Create one instance per language engine.
+                   Singleton mode reduces memory usage.</description>
+    </key>
+    <key type="b" name="setup-environment-variables">
+      <default>true</default>
+      <summary>Setup environment variables</summary>
+      <description>Turning on this option will create a
+$HOME/.config/environment.d/50-input.conf link file, and will add
+"export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)"
+to the .xprofile once, while turning off this option will delete the link file.
+Turn off this option to use other input methods such as ibus, fcitx, etc.
+When this option is turned on or off, file operations are performed immediately.
+But the effect will appear after you login again.
+     </description>
+    </key>
+  </schema>
+  <schema id="org.nimf.services" path="/org/nimf/services/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Services'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.clients" path="/org/nimf/clients/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Clients'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines" path="/org/nimf/engines/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Language engines'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="s" name="default-engine">
+      <default>'nimf-system-keyboard'</default>
+      <summary>Default language engine</summary>
+      <description>Default language engine on startup</description>
+    </key>
+  </schema>
+</schemalist>

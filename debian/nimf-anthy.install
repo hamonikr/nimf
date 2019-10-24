@@ -1,0 +1,3 @@
+usr/share/icons/hicolor/*/status/nimf-anthy.*
+usr/share/glib-2.0/schemas/org.nimf.engines.nimf-anthy.gschema.xml
+usr/lib/*/nimf/modules/libnimf-anthy.so

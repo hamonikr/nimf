@@ -1,0 +1,108 @@
+Source: nimf
+Section: utils
+Priority: optional
+Maintainer: Hodong Kim <cogniti@gmail.com>
+Build-Depends: debhelper (>= 9),
+               dh-autoreconf,
+               libglib2.0-dev (>= 2.54),
+               pkg-config,
+               intltool (>= 0.50.1),
+               libgtk-3-dev,
+               libgtk-3-bin,
+               libgtk2.0-dev,
+               libqt4-dev,
+               qtbase5-dev,
+               qtbase5-private-dev,
+               libappindicator3-dev,
+               librsvg2-bin,
+               fonts-noto-cjk,
+               libhangul-dev,
+               libanthy-dev,
+               anthy,
+               librime-dev (>= 1.2.9),
+               libxkbcommon-dev (>= 0.5.0),
+               libwayland-dev,
+               wayland-protocols,
+               libxklavier-dev,
+               libm17n-dev (>= 1.7.0),
+               m17n-db (>= 1.7.0),
+               gtk-doc-tools (>= 1.26)
+Standards-Version: 3.9.8
+Homepage: https://gitlab.com/nimf-i18n/nimf
+
+Package: nimf
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnimf1 (= ${binary:Version})
+Recommends: im-config
+Suggests: fonts-noto-cjk | nimf-anthy | nimf-libhangul | nimf-m17n | nimf-rime
+Description: Input Method Framework
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package contains the essentials for Nimf.
+
+Package: libnimf1
+Section: libs
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Input Method Framework (shared library)
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package contains the shared library.
+
+Package: nimf-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends},
+         libnimf1 (= ${binary:Version}),
+         libglib2.0-dev
+Description: Input Method Framework (development file)
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package contains development files.
+
+Package: nimf-anthy
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf (= ${binary:Version}), anthy
+Suggests: fonts-noto-cjk
+Description: Japanese input module for Nimf, based on anthy
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package provides a Japanese input module based on anthy.
+
+Package: nimf-libhangul
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf (= ${binary:Version})
+Suggests: fonts-noto-cjk
+Description: Korean input module for Nimf, based on libhangul
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package provides a Korean input module based on libhangul.
+
+Package: nimf-m17n
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         libm17n-0 (>= 1.7.0), m17n-db (>= 1.7.0), nimf (= ${binary:Version})
+Suggests: fonts-noto-cjk
+Description: Multilingual input module for Nimf, based on m17n
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package provides multilingual input modules based on m17n.
+
+Package: nimf-rime
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nimf (= ${binary:Version})
+Recommends: librime-data
+Suggests: fonts-noto-cjk
+Description: Chinese input module for Nimf, based on rime
+ Nimf is a lightweight, fast and extensible input method framework.
+ .
+ This package provides a Chinese input module based on rime.
+
+Package: qtbase-abi-5-9-5-dummy
+Architecture: any
+Depends: qtbase-abi-5-11-3
+Provides: qtbase-abi-5-9-5
+Description: Dummy package for Debian Buster
+ This package provides a dummy qtbase-abi-5-9-5 for Debian Buster.

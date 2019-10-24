@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<book id="index">
+  <bookinfo>
+    <title>Nimf Reference Manual</title>
+    <releaseinfo>
+      for &package_string;.
+      The latest version of this documentation can be found on-line at
+      <ulink role="online-location" url="https://nimf-i18n.gitlab.io/reference/">https://nimf-i18n.gitlab.io/reference/</ulink>.
+    </releaseinfo>
+  </bookinfo>
+
+  <part id="libnimf-api">
+    <title>libnimf API</title>
+    <xi:include href="xml/nimf-im.xml"/>
+    <xi:include href="xml/nimf-events.xml"/>
+    <xi:include href="xml/nimf-key-syms.xml"/>
+    <xi:include href="xml/nimf-types.xml"/>
+    <xi:include href="xml/nimf-server.xml"/>
+    <xi:include href="xml/nimf-utils.xml"/>
+    <chapter id="interfaces">
+      <title>Interfaces</title>
+      <xi:include href="xml/nimf-candidatable.xml"/>
+      <xi:include href="xml/nimf-preeditable.xml"/>
+    </chapter>
+    <chapter id="abstract-classes">
+      <title>Abstract Classes</title>
+      <xi:include href="xml/nimf-engine.xml"/>
+      <xi:include href="xml/nimf-service.xml"/>
+      <xi:include href="xml/nimf-service-ic.xml"/>
+    </chapter>
+  </part>
+  <part id="executables">
+    <title>Executables</title>
+    <xi:include href="xml/nimf.xml"/>
+    <xi:include href="xml/nimf-settings.xml"/>
+  </part>
+  <chapter id="object-tree">
+    <title>Object Hierarchy</title>
+    <xi:include href="xml/tree_index.sgml"/>
+  </chapter>
+  <index id="api-index-full">
+    <title>API Index</title>
+    <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="deprecated-api-index" role="deprecated">
+    <title>Index of deprecated API</title>
+    <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>
+  </index>
+  <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
+</book>

@@ -1,0 +1,35 @@
+mxa reported:
+  * nimf-settings segmentation fault
+    https://gitlab.com/nimf-i18n/nimf/issues/282
+    https://gitlab.com/nimf-i18n/nimf/issues/280
+    https://gitlab.com/nimf-i18n/nimf/issues/277
+  * Compose key not supported in nimf
+    https://gitlab.com/nimf-i18n/nimf/issues/33
+
+5HARK <blgf6190 at gmail com> reported:
+A problem occurs when statically linking libnimf and then dynamically loading
+client modules.
+https://gitlab.com/nimf-i18n/nimf/issues/16#note_90967748
+
+Determining NIMF_RUNTIME_DIR, NIMF_MODULE_DIR at compile time causes problems
+when distributing static libnimf.a.
+https://gitlab.com/nimf-i18n/nimf/issues/16#note_89891251
+
+Hansol Shin (hshin23) reported segfault.
+https://gitlab.com/nimf-i18n/nimf/issues/57
+
+yueunseon reported: Support multi-user environment
+https://gitlab.com/nimf-i18n/nimf/issues/37
+
+JH (nemonein) reported issues.
+nimf-daemon freezes              https://gitlab.com/nimf-i18n/nimf/issues/22
+Side effect about singleton mode https://gitlab.com/nimf-i18n/nimf/issues/7
+Caps Lock doesn't work correctly https://gitlab.com/nimf-i18n/nimf/issues/2
+
+madhwang reported an issue about the open files limit.
+https://github.com/dasom-im/dasom/issues/64
+
+Youngbin Han <sukso96100 at gmail com> reported a race condition.
+https://github.com/dasom-im/dasom/issues/18
+
+Suhyeok Gwon <gshyuk at gmail com> named Dasom.

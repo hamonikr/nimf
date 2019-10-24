@@ -1,0 +1,6 @@
+# vim:syntax=apparmor
+
+  # Allow connecting to the nimf socket
+  unix (send, receive, connect)
+       type=stream
+       peer=(addr="/{,var/}run/user/[0-9]*/nimf/socket"),
