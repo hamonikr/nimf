@@ -12,7 +12,19 @@
 
 # 라이선스
 * GNU General Public License v3.0 ([한글 해석](https://www.olis.or.kr/license/Detailselect.do?lId=1072&mapCode=010072))
+  
+  Nimf is free software: you can redistribute it and/or modify it
+  under the terms of the GNU Lesser General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
+  Nimf is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with this program;  If not, see <http://www.gnu.org/licenses/>.
 
 # 한글입력기 nimf 설치법
 
@@ -39,7 +51,7 @@ sudo apt install nimf nimf-libhangul
 im-config -n nimf
 ```
 
-# 프로그램 소스가 필요한 경우
+# 프로그램 소스
 ## apt
 apt를 사용할 수 있는 경우에는 아래와 같이 명령해서 프로그램 소스코드를 내려받을 수 있습니다.
 ```
@@ -54,6 +66,18 @@ git clone https://github.com/hamonikr/nimf.git
 
 ## 압축파일로 소스코드 다운로드
 https://github.com/hamonikr/nimf/releases
+
+
+# 프로그램 빌드 (apt)
+
+* HamoniKR (>= 1.4), ubuntu 18.04, linuxmint (>= 19) 에서 테스트 되었습니다.
+
+* 빌드에 필요한 패키지 설치
+```
+$ sudo apt install -y devscripts build-essential debhelper dh-autoreconf libgtk2.0-dev libqt4-dev qtbase5-private-dev libappindicator3-dev librsvg2-bin libhangul-dev libanthy-dev anthy librime-dev libxklavier-dev libm17n-dev m17n-db gtk-doc
+
+$ apt build
+```
 
 # 이슈 발생 시
 사용중 이슈는 깃헙 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
