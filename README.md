@@ -72,12 +72,8 @@ https://github.com/hamonikr/nimf/releases
 
 * HamoniKR (>= 1.4), ubuntu 18.04, linuxmint (>= 19) 에서 테스트 되었습니다.
 
-* 빌드에 필요한 패키지 설치
-```
-$ sudo apt install -y devscripts build-essential debhelper dh-autoreconf libgtk2.0-dev libqt4-dev qtbase5-private-dev libappindicator3-dev librsvg2-bin libhangul-dev libanthy-dev anthy librime-dev libxklavier-dev libm17n-dev m17n-db gtk-doc
+https://github.com/hamonikr/nimf/wiki/build
 
-$ apt build
-```
 
 # 이슈 발생 시
 사용중 이슈는 깃헙 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
