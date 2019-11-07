@@ -68,7 +68,7 @@ git clone https://github.com/hamonikr/nimf.git
 https://github.com/hamonikr/nimf/releases
 
 
-# 프로그램 빌드 (apt)
+# 프로그램 소스코드 deb 빌드
 
 * HamoniKR (>= 1.4), ubuntu 18.04, linuxmint (>= 19) 에서 테스트 되었습니다.
 
