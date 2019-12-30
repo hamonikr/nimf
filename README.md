@@ -11,7 +11,7 @@
 향후 하모니카 팀에서 이 프로젝트에 필요한 기능을 계속 추가하여 좋은 소프트웨어를 사용할 수 있도록 노력하겠습니다.
 
 # 라이선스
-* GNU General Public License v3.0 ([한글 해석](https://www.olis.or.kr/license/Detailselect.do?lId=1072&mapCode=010072))
+* GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
   
   Nimf is free software: you can redistribute it and/or modify it
   under the terms of the GNU Lesser General Public License as published
