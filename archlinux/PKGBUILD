@@ -6,11 +6,11 @@
 # this PKGBUILD file is in the public domain.
 
 pkgname=nimf
-pkgver=master
-pkgrel=1
+pkgver=1.1
+pkgrel=2
 pkgdesc="Nimf is an input method framework."
 arch=('any')
-url="https://gitlab.com/nimf-i18n/nimf"
+url="https://github.com/hamonikr/nimf"
 license=('LGPL3')
 makedepends=('binutils' 'autoconf' 'automake' 'gcc' 'make' 'glib2' 'intltool'
              'gtk3' 'gtk2' 'qt4' 'qt5-base' 'libappindicator-gtk3' 'librsvg'
@@ -21,21 +21,21 @@ depends=('glib2' 'gtk3' 'gtk2' 'qt4' 'qt5-base' 'libappindicator-gtk3'
          'm17n-lib' 'm17n-db')
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts')
-source=("https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2")
-md5sums=('SKIP')
+source=("https://github.com/hamonikr/nimf/archive/${pkgver}.tar.gz")
+md5sums=('d1141369686a3dd2924474f70525a92f')
 
 pkgver() {
-	cd "$srcdir/nimf-master"
+	cd "$srcdir/nimf-$pkgver"
 	grep AC_INIT configure.ac | grep -Po '\d{4}.\d{2}.\d{2}'
 }
 
 build() {
-	cd "$srcdir/nimf-master"
+	cd "$srcdir/nimf-$pkgver"
 	./autogen.sh --prefix=/usr --enable-gtk-doc
 	make -j 4
 }
 
 package() {
-	cd "$srcdir/nimf-master"
+	cd "$srcdir/nimf-$pkgver"
 	make DESTDIR="${pkgdir}/" install
 }
