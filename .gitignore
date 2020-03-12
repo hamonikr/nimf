@@ -64,3 +64,4 @@ test-*.log
 test-*.trs
 test-suite.log
 test-nimf-m17n
+build/*

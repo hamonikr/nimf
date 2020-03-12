@@ -1,0 +1,6 @@
+option('enable_hardening', type : 'feature', value : 'enabled', description : 'Enable Hardening')
+option('with_im_config_data', type: 'boolean', value: true, description : 'Install im-config data')
+option('with_imsettings_data', type : 'boolean', value: true, description : 'Install imsettings data')
+option('with_nimf_anthy', type : 'boolean', value : true, description : 'Enable nimf-anthy')
+option('with_nimf_rime', type : 'boolean', value : true, description : 'Enable nimf-rime')
+option('with_nimf_m17n', type : 'boolean', value : true, description : 'Enable nimf-m17n')
