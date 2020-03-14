@@ -2,7 +2,8 @@ deps =[dependency('glib-2.0'),
     dependency('x11'), 
     dependency('gtk+-3.0'), 
     dependency('appindicator3-0.1'), 
-    dependency('libxklavier gdk-3.0'), 
+    dependency('libxklavier'),
+    dependency('gdk-3.0'), 
     dependency('gdk-x11-3.0'), 
     dependency('gmodule-2.0')]
 
