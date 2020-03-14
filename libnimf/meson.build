@@ -85,9 +85,7 @@ inc = [conf_inc,
 	include_directories('.')]
 
 c_args = ['-DNIMF_COMPILATION',
-	'-DG_LOG_DOMAIN="nimf"',
-	'-DNIMF_MODULE_DIR="@0@/nimf/modules"'.format(libdir),
-	'-DNIMF_SERVICE_MODULE_DIR="@0@/nimf/modules/services"'.format(libdir)]
+	'-DG_LOG_DOMAIN="nimf"']
 
 libnimf = shared_library('nimf', sources,
     dependencies: deps,
@@ -95,6 +93,23 @@ libnimf = shared_library('nimf', sources,
 	# link_args : ['-version-info=1:0:0'],
     include_directories : inc,
 	install : true)
+
+headers = [
+	'nimf.h',
+	'nimf-candidatable.h',
+	'nimf-engine.h',
+	'nimf-events.h',
+	'nimf-im.h',
+	'nimf-key-syms.h',
+	'nimf-preeditable.h',
+	'nimf-server.h',
+	'nimf-service.h',
+	'nimf-service-ic.h',
+	'nimf-types.h',
+	'nimf-utils.h'
+]
+
+install_headers(headers, subdir : 'nimf')
 
 install_data('org.nimf.gschema.xml', 
 	install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')

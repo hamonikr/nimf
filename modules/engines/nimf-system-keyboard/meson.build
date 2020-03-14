@@ -12,7 +12,8 @@ nimf_system_keyboard = shared_library('nimf-system-keyboard',
     include_directories : inc,
     c_args : c_args,
     link_with : libnimf,
-    install: true)
+    install: true,
+    install_dir : module_dir)
 
 install_data('org.nimf.engines.nimf-system-keyboard.gschema.xml',
     install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')

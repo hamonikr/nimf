@@ -8,8 +8,7 @@ deps =[dependency('glib-2.0'),
     dependency('gmodule-2.0')]
 
 sources = ['nimf-indicator.c']
-c_args = ['-DG_LOG_DOMAIN="nimf"', 
-    '-DNIMF_MODULE_DIR="@0@/nimf/modules"'.format(libdir)]
+c_args = ['-DG_LOG_DOMAIN="nimf"']
 inc = [libnimf_inc, conf_inc]
 
 shared_library('nimf-indicator', 
@@ -18,4 +17,5 @@ shared_library('nimf-indicator',
     include_directories : inc,
     c_args : c_args,
     link_with : libnimf,
-    install : true)
+    install : true,
+    install_dir : service_module_dir)

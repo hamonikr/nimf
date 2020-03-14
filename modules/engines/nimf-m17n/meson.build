@@ -23,7 +23,8 @@ nimf_m17n = shared_library('nimf-m17n.c',
     include_directories : inc,
     c_args : c_args,
     link_with : libnimf,
-    install: true)
+    install : true,
+    install_dir : module_dir)
 
 langs = ['am', 'ar', 'as', 'ath', 'be',  'bn', 'bo', 'cmc', 'cr', 'cs', 'da', 'dv', 'el', 'eo', 'fa', 'fr', 'grc', 'gu', 'he', 'hr', 'hy', 'ii', 'iu', 'ka', 'kk', 'km', 'ks', 'lo', 'mai', 'my', 'nsk', 'oj', 'or', 'pa', 'ps', 'ru', 'sa', 'sd', 'si', 'sk', 'sr', 'sv', 't', 'ta', 'tai', 'te', 'th', 'ug', 'uk', 'ur', 'uz', 'vi', 'yi']
 
@@ -37,7 +38,8 @@ foreach lang : langs
         include_directories: inc, 
         c_args: c_args, 
         link_with : link_with,
-        install: true)
+        install : true,
+        install_dir : module_dir)
 endforeach
 
 langs_with_gsettings = ['hi', 'hu', 'kn', 'ml', 'mr', 'ne']

@@ -20,6 +20,13 @@ add_project_arguments('-DGETTEXT_PACKAGE="' + meson.project_name() + '"',
 subdir('po')
 header_conf.set_quoted('NIMF_LOCALE_DIR', get_option('localedir'))
 
+libdir = get_option('libdir')
+prefix = get_option('prefix')
+service_module_dir = '@0@/nimf/modules/services'.format(libdir)
+module_dir = '@0@/nimf/modules'.format(libdir)
+header_conf.set_quoted('NIMF_MODULE_DIR', prefix / module_dir)
+header_conf.set_quoted('NIMF_SERVICE_MODULE_DIR', prefix / service_module_dir)
+
 configure_file(output : 'config.h', configuration : header_conf)
 
 conf_inc = include_directories('.')

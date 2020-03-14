@@ -12,7 +12,8 @@ nimf_rime = shared_library('nimf-rime',
     include_directories : inc,
     c_args : c_args,
     link_with : libnimf,
-    install: true)
+    install: true,
+    install_dir : module_dir)
 
 install_data('org.nimf.engines.nimf-rime.gschema.xml',
     install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')

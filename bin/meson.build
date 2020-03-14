@@ -7,12 +7,12 @@ c_args = ['-DNIMF_COMPILATION']
 
 executable('nimf', 'nimf/nimf.c', 
     dependencies : deps,
-    c_args: c_args,
+    c_args : c_args,
     include_directories : inc,
-    link_with : libnimf)
+    link_with : libnimf,
+    install : true)
 
-settings_c_args = ['-DNIMF_COMPILATION',
-    '-DNIMF_MODULE_DIR="@0@/nimf/modules"'.format(libdir)]
+settings_c_args = ['-DNIMF_COMPILATION']
 
 settings_deps = [dependency('gtk+-3.0'), 
     dependency('gmodule-2.0'), 
@@ -23,7 +23,8 @@ executable('nimf-settings',
     dependencies : settings_deps,
     c_args : settings_c_args,
     include_directories : inc,
-    link_with : libnimf)
+    link_with : libnimf, 
+    install : true)
 
 i18n = import('i18n')
 i18n.merge_file(

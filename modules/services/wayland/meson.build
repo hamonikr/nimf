@@ -37,4 +37,5 @@ shared_library('nimf-wayland',
     dependencies : deps,
     link_with : libnimf,
     c_args : c_args,
-    install : true)
+    install : true,
+    install_dir : service_module_dir)

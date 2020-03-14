@@ -14,7 +14,8 @@ nimf_libhangul = shared_library('nimf-libhangul',
     include_directories : inc,
     c_args : c_args,
     link_with : libnimf,
-    install: true)
+    install : true,
+    install_dir : module_dir)
 
 install_data('org.nimf.engines.nimf-libhangul.gschema.xml', 
     install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')

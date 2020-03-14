@@ -17,4 +17,5 @@ shared_library('nimf-nim',
     include_directories : inc,
     c_args : c_args,
     link_with : libnimf,
-    install : true)
+    install : true,
+    install_dir : service_module_dir)
