@@ -25,6 +25,24 @@ executable('nimf-settings',
     include_directories : inc,
     link_with : libnimf)
 
+i18n = import('i18n')
+i18n.merge_file(
+  input: 'nimf-settings/nimf-settings.desktop.in',
+  output: 'nimf-settings.desktop',
+  type: 'desktop',
+  po_dir: '../../po',
+  install: true,
+  install_dir: get_option('datadir') / 'applications'
+)
+i18n.merge_file(
+  input: 'nimf-settings/nimf-settings-autostart.desktop.in',
+  output: 'nimf-settings-autostart.desktop',
+  type: 'desktop',
+  po_dir: '../../po',
+  install: true,
+  install_dir: '/etc/xdg/autostart'
+)
+
 install_data('nimf-settings/org.nimf.settings.gschema.xml', 
     install_dir : get_option('datadir') / 'glib-2.0' / 'schemas')
 meson.add_install_script(meson.source_root() / 'meson_post_install.py')
