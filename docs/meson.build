@@ -1,5 +1,9 @@
 gnome = import('gnome')
 
+deps = [dependency('glib-2.0'),
+    dependency('gobject-2.0'),
+    declare_dependency(link_with : libnimf)]
+
 gnome.gtkdoc('nimf',
     main_sgml : 'nimf-docs.xml',
     src_dir : ['@0@/libnimf'.format(meson.source_root()), '@0@/bin'.format(meson.source_root()) ],
@@ -11,5 +15,5 @@ gnome.gtkdoc('nimf',
         'nimf-message-private.h',
         'nimf-module-private.h',
         'nimf-server-private.h'],
-    install : true
-    )
+    dependencies : deps,
+    install : true)

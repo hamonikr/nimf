@@ -10,7 +10,6 @@ nimf_marshalers_private_h = gnome.genmarshal('nimf-marshalers-private',
     sources: 'nimf-marshalers.list',
 prefix : 'nimf_cclosure_marshal')[1]
 
-
 enum_types = gnome.mkenums('nimf-enum-types',
     identifier_prefix : 'Nimf',
     c_template : 'nimf-enum-types.c.template',
@@ -38,7 +37,6 @@ built_sources = [
     message_enum_types_c,
 	message_enum_types_private_h
 ]
-
 
 sources = [
 	'nimf.h',
