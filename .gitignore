@@ -65,3 +65,5 @@ test-*.trs
 test-suite.log
 test-nimf-m17n
 build/*
+.vscode
+data/*.png
