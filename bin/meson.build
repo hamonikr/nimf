@@ -31,7 +31,7 @@ i18n.merge_file(
   input: 'nimf-settings/nimf-settings.desktop.in',
   output: 'nimf-settings.desktop',
   type: 'desktop',
-  po_dir: '../../po',
+  po_dir: '../po',
   install: true,
   install_dir: get_option('datadir') / 'applications'
 )
@@ -39,7 +39,7 @@ i18n.merge_file(
   input: 'nimf-settings/nimf-settings-autostart.desktop.in',
   output: 'nimf-settings-autostart.desktop',
   type: 'desktop',
-  po_dir: '../../po',
+  po_dir: '../po',
   install: true,
   install_dir: '/etc/xdg/autostart'
 )
