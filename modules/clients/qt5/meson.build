@@ -5,17 +5,20 @@ qt5_version = qt5_core.version()
 qt5_inc = qt5_core.get_pkgconfig_variable('includedir')
 qt5_libdir = qt5_core.get_pkgconfig_variable('libdir')
 
-fs = import('fs')
-if fs.is_dir(qt5_libdir / 'qt5')
-    qt5_im_module_dir = qt5_libdir / 'qt5/plugins/platforminputcontexts'
-elif fs.is_dir(qt5_libdir / 'qt')
-    qt5_im_module_dir = qt5_libdir / 'qt/plugins/platforminputcontexts'
+## meson fs module is available on version >= 0.53.0
+# fs = import('fs')
+# if fs.is_dir(qt5_libdir + '/qt5')
+if run_command('[', '-d', qt5_libdir + '/qt5', ']').returncode() == 0
+    qt5_im_module_dir = qt5_libdir + '/qt5/plugins/platforminputcontexts'
+# elif fs.is_dir(qt5_libdir + '/qt')
+elif run_command('[', '-d', qt5_libdir + '/qt', ']').returncode() == 0
+    qt5_im_module_dir = qt5_libdir + '/qt/plugins/platforminputcontexts'
 else
     error('Can not determine Qt5 plugins/platforminputcontexts directory')
 endif
 
-qt5_core_private_inc = qt5_inc / 'QtCore' / qt5_version
-qt5_gui_private_inc = qt5_inc / 'QtGui' / qt5_version
+qt5_core_private_inc = qt5_inc + '/QtCore/' + qt5_version
+qt5_gui_private_inc = qt5_inc + '/QtGui/' + qt5_version
 inc = [libnimf_inc,
     include_directories(qt5_core_private_inc, qt5_gui_private_inc)]
 
@@ -46,5 +49,5 @@ shared_library('qt5im_nimf',
     install_dir : qt5_im_module_dir)
 
 install_data('org.nimf.clients.qt5.gschema.xml', 
-    install_dir : get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+    install_dir : get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')

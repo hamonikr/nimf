@@ -1,5 +1,5 @@
-option('enable_hardening', type : 'feature', value : 'enabled', description : 'Enable Hardening')
-option('enable_gtk_doc', type : 'feature', value : 'disabled', description : 'Enable gtk-doc')
+option('enable_hardening', type : 'boolean', value : true, description : 'Enable Hardening')
+option('enable_gtk_doc', type : 'boolean', value : false, description : 'Enable gtk-doc')
 option('with_im_config_data', type: 'boolean', value: true, description : 'Install im-config data')
 option('with_imsettings_data', type : 'boolean', value: true, description : 'Install imsettings data')
 option('with_nimf_anthy', type : 'boolean', value : true, description : 'Enable nimf-anthy')

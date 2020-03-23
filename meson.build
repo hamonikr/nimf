@@ -2,11 +2,11 @@ project('nimf',
     'c', 'cpp',
     version : '2019.08.14',
     license : 'LGPL3',
-    meson_version : '>= 0.49.0',
+    meson_version : '>= 0.45.1',
     default_options : ['warning_level=1'])
 
 # add_project_arguments('-Werror', language: 'c')
-if get_option('enable_hardening').disabled()
+if not get_option('enable_hardening')
     add_project_arguments('-D_FORTIFY_SOURCE=2', language : 'c')
 endif
 
@@ -24,8 +24,8 @@ libdir = get_option('libdir')
 prefix = get_option('prefix')
 service_module_dir = '@0@/nimf/modules/services'.format(libdir)
 module_dir = '@0@/nimf/modules'.format(libdir)
-header_conf.set_quoted('NIMF_MODULE_DIR', prefix / module_dir)
-header_conf.set_quoted('NIMF_SERVICE_MODULE_DIR', prefix / service_module_dir)
+header_conf.set_quoted('NIMF_MODULE_DIR', '@0@/@1@'.format(prefix, module_dir))
+header_conf.set_quoted('NIMF_SERVICE_MODULE_DIR', '@0@/@1@'.format(prefix, service_module_dir))
 
 configure_file(output : 'config.h', configuration : header_conf)
 

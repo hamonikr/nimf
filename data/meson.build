@@ -27,9 +27,11 @@ install_data(sources : icons_data,
 foreach p : ['16', '22', '24', '32', '48', '96', '256']
     foreach icon : icons_data
         basename = icon.split('/')[2].split('.')[0]
-        scaled_icon = '@0@-@1@.png'.format(p, basename)
-        run_command(rsvg_convert, '-w', p, '-h', p, '-o', scaled_icon, icon)
-        install_data(scaled_icon, rename : basename + '.png',
+        scaled_icon = '@0@.png'.format(basename)
+        outdir = 'resized/@0@/'.format(p)
+        run_command('mkdir', '-p', outdir)
+        run_command(rsvg_convert, '-w', p, '-h', p, '-o', outdir + scaled_icon, icon)
+        install_data(outdir + scaled_icon,
             install_dir : icon_theme_dir + '/@0@x@1@/status'.format(p, p))
     endforeach
 endforeach

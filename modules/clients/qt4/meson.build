@@ -3,8 +3,7 @@ qt4_deps = dependency('qt4', modules: ['Core', 'Gui', 'Widgets'])
 qt4_core = dependency('QtCore')
 qt4_libdir = qt4_core.get_pkgconfig_variable('libdir')
 
-fs = import('fs')
-qt4_im_module_dir = qt4_libdir / 'qt4/plugins/inputmethods'
+qt4_im_module_dir = qt4_libdir + '/qt4/plugins/inputmethods'
 
 moc_files = qt4.preprocess(moc_sources : 'im-nimf-qt4.cpp')
 
@@ -26,5 +25,5 @@ shared_library('qt4im_nimf',
     install_dir : qt4_im_module_dir)
 
 install_data('org.nimf.clients.qt4.gschema.xml', 
-    install_dir : get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+    install_dir : get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')

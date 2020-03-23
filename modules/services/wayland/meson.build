@@ -6,8 +6,7 @@ deps = [common_deps,
     wayland_protocols,
     dependency('xkbcommon')]
 
-wayland_im_xml_path = wayland_protocols.get_pkgconfig_variable('pkgdatadir') \
-    + '/unstable/input-method/input-method-unstable-v1.xml'
+wayland_im_xml_path = wayland_protocols.get_pkgconfig_variable('pkgdatadir') + '/unstable/input-method/input-method-unstable-v1.xml'
 
 wayland_scanner = find_program('wayland-scanner')
 

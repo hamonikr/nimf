@@ -40,5 +40,5 @@ shared_library('im-nimf-gtk2',
 
 
 install_data('org.nimf.clients.gtk.gschema.xml', 
-    install_dir : get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+    install_dir : get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')

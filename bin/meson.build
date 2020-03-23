@@ -33,7 +33,7 @@ i18n.merge_file(
   type: 'desktop',
   po_dir: '../po',
   install: true,
-  install_dir: get_option('datadir') / 'applications'
+  install_dir: get_option('datadir') + '/applications'
 )
 i18n.merge_file(
   input: 'nimf-settings/nimf-settings-autostart.desktop.in',
@@ -45,7 +45,7 @@ i18n.merge_file(
 )
 
 install_data('nimf-settings/org.nimf.settings.gschema.xml', 
-    install_dir : get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+    install_dir : get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')
 
 install_man('nimf/nimf.1')

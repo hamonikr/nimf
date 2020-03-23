@@ -45,11 +45,11 @@ endforeach
 langs_with_gsettings = ['hi', 'hu', 'kn', 'ml', 'mr', 'ne']
 
 install_data('org.nimf.engines.nimf-m17n.gschema.xml',
-    install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+	install_dir: get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')
 
 foreach lang : langs_with_gsettings
     install_data('org.nimf.engines.nimf-m17n-@0@.gschema.xml'.format(lang),
-        install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')
-    meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+        install_dir: get_option('datadir') + '/glib-2.0/schemas')
+    meson.add_install_script(meson.source_root() + '/meson_post_install.py')
 endforeach

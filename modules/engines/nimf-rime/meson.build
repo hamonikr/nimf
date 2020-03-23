@@ -16,5 +16,5 @@ nimf_rime = shared_library('nimf-rime',
     install_dir : module_dir)
 
 install_data('org.nimf.engines.nimf-rime.gschema.xml',
-    install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+	install_dir: get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')

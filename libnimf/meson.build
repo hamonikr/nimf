@@ -112,5 +112,5 @@ headers = [
 install_headers(headers, subdir : 'nimf')
 
 install_data('org.nimf.gschema.xml', 
-	install_dir: get_option('datadir') / 'glib-2.0' / 'schemas')
-meson.add_install_script(meson.source_root() / 'meson_post_install.py')
+	install_dir: get_option('datadir') + '/glib-2.0/schemas')
+meson.add_install_script(meson.source_root() + '/meson_post_install.py')
