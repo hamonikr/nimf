@@ -21,7 +21,8 @@ AS_IF([test "$CXX" = "g++"],
 AC_ARG_ENABLE([hardening],
   AS_HELP_STRING([--disable-hardening], [Disable hardening]))
 
-EXTRA_CFLAGS="-Wall -Werror"
+# EXTRA_CFLAGS="-Wall -Werror"
+EXTRA_CFLAGS="-Wall"
 AS_IF([test "x$enable_hardening" != "xno"],
       [EXTRA_CFLAGS+=" -D_FORTIFY_SOURCE=2"])
 
@@ -116,9 +117,9 @@ dnl ***************************************************************************
 dnl im-nimf-qt4  im-nimf-qt5
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(IM_NIMF_QT4_DEPS, [QtGui], [],
-  [AC_MSG_ERROR([No package 'QtGui' found.
-  If you are using Debian, please install 'libqt4-dev'.])])
+# PKG_CHECK_MODULES(IM_NIMF_QT4_DEPS, [QtGui], [],
+#   [AC_MSG_ERROR([No package 'QtGui' found.
+#   If you are using Debian, please install 'libqt4-dev'.])])
 
 PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [],
   [AC_MSG_ERROR([Package requirements (Qt5Core Qt5Gui Qt5Widgets) were not met:

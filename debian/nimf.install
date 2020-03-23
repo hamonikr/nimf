@@ -5,7 +5,6 @@ usr/lib/*/gtk-2.0
 usr/lib/*/gtk-3.0
 usr/lib/*/nimf/modules/libnimf-system-keyboard.so
 usr/lib/*/nimf/modules/services
-usr/lib/*/qt4
 usr/lib/*/qt5
 usr/share/applications
 usr/share/glib-2.0/schemas/org.nimf.clients.*
