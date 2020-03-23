@@ -74,6 +74,8 @@ https://github.com/hamonikr/nimf/releases
 
 https://github.com/hamonikr/nimf/wiki/build
 
+# AUR
+https://aur.archlinux.org/packages/nimf-git/
 
 # 이슈 발생 시
 사용중 이슈는 깃헙 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
