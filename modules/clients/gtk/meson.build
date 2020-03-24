@@ -7,8 +7,14 @@ gtk3_libdir = gtk3.get_pkgconfig_variable('libdir')
 gtk3_binary_version = gtk3.get_pkgconfig_variable('gtk_binary_version')
 gtk3_im_module_dir = '@0@/gtk-3.0/@1@/immodules'.format(gtk3_libdir, gtk3_binary_version)
 
-gtk3_query_immodules = find_program('gtk-query-immodules-3.0', dirs : [gtk3_libdir + '/libgtk-3-0'])
-assert(gtk3_query_immodules.found(), 'gtk-query-immodules-3.0 not found')
+## find_program dirs args supported after meson version 0.53
+# gtk3_query_immodules = find_program('gtk-query-immodules-3.0', dirs : [gtk3_libdir + '/libgtk-3-0']).found()
+
+gtk3_query_immodules_exists = find_program('gtk-query-immodules-3.0', required : false).found()
+gtk3_query_immodules_exists_in_lib = run_command('[', '-f', gtk3_libdir + '/libgtk-3-0/gtk-query-immodules-3.0', ']').returncode() == 0
+gtk3_query_immodules = gtk3_query_immodules_exists or gtk3_query_immodules_exists_in_lib
+
+assert(gtk3_query_immodules, 'gtk-query-immodules-3.0 not found')
 
 shared_library('im-nimf-gtk3',
     name_prefix : '',
@@ -25,8 +31,14 @@ gtk2_libdir = gtk2.get_pkgconfig_variable('libdir')
 gtk2_binary_version = gtk2.get_pkgconfig_variable('gtk_binary_version')
 gtk2_im_module_dir = '@0@/gtk-2.0/@1@/immodules'.format(gtk2_libdir, gtk2_binary_version)
 
-gtk2_query_immodules = find_program('gtk-query-immodules-2.0', dirs : [gtk2_libdir + '/libgtk2.0-0'])
-assert(gtk2_query_immodules.found(), 'gtk-query-immodules-2.0 not found')
+## find_program dirs args supported after meson version 0.53
+# gtk2_query_immodules = find_program('gtk-query-immodules-2.0', dirs : [gtk2_libdir + '/libgtk2.0-0']).found()
+
+gtk2_query_immodules_exists = find_program('gtk-query-immodules-2.0', required : false).found()
+gtk2_query_immodules_exists_in_lib = run_command('[', '-f', gtk2_libdir + '/libgtk2.0-0/gtk-query-immodules-2.0', ']').returncode() == 0
+gtk2_query_immodules = gtk2_query_immodules_exists or gtk2_query_immodules_exists_in_lib
+
+assert(gtk2_query_immodules, 'gtk-query-immodules-2.0 not found')
 
 shared_library('im-nimf-gtk2',
     name_prefix : '',
