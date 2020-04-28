@@ -72,7 +72,7 @@ https://github.com/hamonikr/nimf/releases
 
 * HamoniKR (>= 1.4), ubuntu 18.04, linuxmint (>= 19) 에서 테스트 되었습니다.
 
-https://github.com/hamonikr/nimf/wiki/build
+https://github.com/hamonikr/nimf/wiki/HamoniKR-build
 
 # AUR
 https://aur.archlinux.org/packages/nimf-git/
