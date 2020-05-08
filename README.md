@@ -37,6 +37,9 @@ sudo bash -c "echo 'deb-src https://apt.hamonikr.org jin main upstream' >> /etc/
 sudo apt-get update
 sudo apt install nimf nimf-libhangul
 
+만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+
 im-config -n nimf
 ```
 
@@ -57,7 +60,13 @@ sudo apt-get update
 3) 입력기 nimf를 설치합니다.
 ```
 sudo apt install nimf nimf-libhangul
-
+```
+만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+```
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+```
+4) 기본 입력기를 nimf 로 설정
+```
 im-config -n nimf
 ```
 
