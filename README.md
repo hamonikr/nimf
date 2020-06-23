@@ -1,4 +1,4 @@
-# 한글 입력기 nimf
+# 가볍고 빠른 입력기 프레임워크 nimf
 
 ![nimf](docs/nimf.png)
 
