@@ -28,7 +28,7 @@
 
 # nimf 설치
 
-## Ubuntu 20.04
+## Ubuntu 20.04 , Linux Mint 20
 ```
 wget -O - http://apt.hamonikr.org/hamonikr.key | sudo apt-key add -
 sudo bash -c "echo 'deb https://apt.hamonikr.org jin main upstream' > /etc/apt/sources.list.d/hamonikr-jin.list"
