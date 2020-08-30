@@ -2,7 +2,7 @@ This document describe to build nimf on Manjaro-Arm OS
 (env : rasberry pi 4, Manjaro Arm)
 
 1. git clone
-git clone https://github.com/hamonikr/nimf.git
+git clone -b manjaro-arm --single-branch https://github.com/hamonikr/nimf.git
 
 2. install depend pkgs
 sudo pacman -S meson ninja qt5-tools
