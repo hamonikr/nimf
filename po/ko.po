@@ -1,7 +1,8 @@
 # Korean translation for Nimf
+# GNU Lesser General Public License v3.0 only
+# Copyright (C) 2019-2020 Kevin Kim <root@hamonikr.org>
 # Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2019.
 #
 #, fuzzy
 msgid ""
@@ -10,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-03 17:54+0900\n"
 "PO-Revision-Date: 2019-07-03 19:04+0900\n"
-"Last-Translator: Hodong Kim <cogniti@gmail.com>\n"
+"Last-Translator: Kevin Kim <root@hamonikr.org>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
@@ -138,8 +139,8 @@ msgid "Nimf is an input method framework"
 msgstr "님프는 입력 방법 프레임워크입니다"
 
 #: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2015-2019 Hodong Kim"
-msgstr "저작권 (c) 2015-2019 김호동"
+msgid "Copyright (c) 2019-2020 HamoniKR Community"
+msgstr "저작권 (c) 2019-2020 하모니카 커뮤니티"
 
 #: ../modules/services/indicator/nimf-indicator.c:127
 msgid "Hodong Kim, Max Neupert"

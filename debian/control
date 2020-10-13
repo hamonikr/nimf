@@ -1,7 +1,7 @@
 Source: nimf
 Section: utils
 Priority: optional
-Maintainer: Hodong Kim <cogniti@gmail.com>
+Maintainer: Kevin Kim <root@hamonikr.org>
 Build-Depends: debhelper (>= 9),
                dh-autoreconf,
                libglib2.0-dev (>= 2.54),
@@ -27,7 +27,7 @@ Build-Depends: debhelper (>= 9),
                m17n-db (>= 1.7.0),
                gtk-doc-tools (>= 1.26)
 Standards-Version: 3.9.8
-Homepage: https://gitlab.com/nimf-i18n/nimf
+Homepage: https://github.com/hamonikr/nimf
 
 Package: nimf
 Architecture: any
