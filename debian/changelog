@@ -1,3 +1,9 @@
+nimf (1.2.0hamonikr30.1) sun; urgency=low
+
+  * Build for Ubuntu 20.04
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 08 May 2020 11:05:01 +0900
+
 nimf (2019.08.14-0~201908141206~hamonikr14.1) me; urgency=low
 
   * Rebuild for HamoniKR.
