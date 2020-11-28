@@ -146,5 +146,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Tue Apr 28 2020 Hodong Kim <cogniti@gmail.com> - 2020.04.28-1
-- See https://www.nimfsoft.com
+* Wed, 23 Sep 2020 HamoniKR <pkg@hamonikr.org> - 2020.04.28-1
+- See https://github.com/hamonikr/nimf/blob/master/debian/changelog

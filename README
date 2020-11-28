@@ -1,5 +1,10 @@
 Nimf is a lightweight, fast and extensible input method framework.
 
+Because this document contains upstream content, there may be errors in the build.
+If you have any questions, please visit the address below.
+https://github.com/hamonikr/nimf/wiki
+https://github.com/hamonikr/nimf/issues
+
 Nimf provides:
   * Input Method Server:
     * nimf
@@ -24,8 +29,7 @@ Nimf provides:
     * C library, headers and documents
 
 Project Homepage:
-  * https://gitlab.com/nimf-i18n/nimf
-  * https://nimf-i18n.gitlab.io
+  * https://github.com/hamonikr/nimf
 
 
 License
@@ -52,11 +56,12 @@ Downloads
 
   * Clone with HTTPS
 
-    git clone https://gitlab.com/nimf-i18n/nimf.git
+    git clone https://github.com/hamonikr/nimf/nimf.git
 
   * Download tar.gz
 
-    https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
+    https://github.com/hamonikr/nimf/archive/master/nimf-master.tar.gz
+
 
 
 Compiling and installing
@@ -73,7 +78,7 @@ Compiling and installing
       username:~$ cd
       username:~$ mkdir tmp-build
       username:~$ cd tmp-build
-      username:~/tmp-build$ wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
+      username:~/tmp-build$ wget https://github.com/hamonikr/nimf/archive/master/nimf-master.tar.gz
       username:~/tmp-build$ tar zxf nimf-master.tar.gz
       username:~/tmp-build$ cd nimf-master
       username:~/tmp-build/nimf-master$ dpkg-checkbuilddeps
@@ -228,13 +233,13 @@ Participate
   * Development
 
     You may send pull requests.
-    https://gitlab.com/nimf-i18n/nimf/merge_requests
+    https://github.com/hamonikr/nimf/pulls
 
   * Translation
 
     You can make nimf.pot using the following commands.
 
-      git clone https://gitlab.com/nimf-i18n/nimf.git
+      git clone https://github.com/hamonikr/nimf/nimf.git
       cd nimf
       ./autogen.sh
       cd po

@@ -3,7 +3,8 @@
  * nimf-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2019-2020 HamoniKR <pkg@hamonikr.org>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
