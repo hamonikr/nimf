@@ -1,4 +1,4 @@
-nimf (2020.04.28~20201128~hamonikr40.2) stable; urgency=medium
+nimf (1.3.0hamonikr40.2) stable; urgency=medium
 
   * Update icons on data/icons/scalable folder
    - Apply new icon for HamoniKR 4.0  
