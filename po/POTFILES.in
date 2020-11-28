@@ -13,7 +13,6 @@ modules/services/indicator/nimf-indicator.c
 [type: gettext/gsettings]bin/nimf-settings/org.nimf.settings.gschema.xml
 [type: gettext/gsettings]libnimf/org.nimf.gschema.xml
 [type: gettext/gsettings]modules/clients/gtk/org.nimf.clients.gtk.gschema.xml
-[type: gettext/gsettings]modules/clients/qt4/org.nimf.clients.qt4.gschema.xml
 [type: gettext/gsettings]modules/clients/qt5/org.nimf.clients.qt5.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml
 [type: gettext/gsettings]modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml

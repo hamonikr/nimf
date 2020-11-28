@@ -1,7 +1,7 @@
 # German translation for Nimf
-# Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2019.
+# Hodong Kim <cogniti@gmail.com>, 2015-2020.
 # Max Neupert <abonnements@revolwear.com>, 2017.
 #
 #, fuzzy
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-03 17:54+0900\n"
-"PO-Revision-Date: 2019-07-03 17:55+0900\n"
+"PO-Revision-Date: 2020-04-28 22:12+0900\n"
 "Last-Translator: Max Neupert <abonnements@revolwear.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -168,7 +168,6 @@ msgstr ""
 
 #: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
@@ -186,7 +185,6 @@ msgstr "nimf-settings Schema name"
 
 #: ../libnimf/org.nimf.gschema.xml.h:3
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
@@ -275,14 +273,9 @@ msgstr ""
 "verhindert Fehler in vielen Anwendungen"
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:4
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "Zurücksetzen bei Mausklick"
-
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:1
-msgid "'Qt4'"
-msgstr ""
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"

@@ -1,3 +1,3 @@
-SUBDIRS = gtk qt4 qt5
+SUBDIRS = gtk qt5
 
 DISTCLEANFILES = Makefile.in

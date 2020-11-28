@@ -3,7 +3,7 @@
  * nimf-im.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -20,14 +20,12 @@
  */
 
 #include "nimf-im.h"
-#include <string.h>
 #include "nimf-marshalers-private.h"
 #include "nimf-message-private.h"
-#include <errno.h>
 #include <glib/gstdio.h>
 #include <gio/gunixsocketaddress.h>
 #include "nimf-utils.h"
-#include <stdlib.h>
+#include "nimf-utils-private.h"
 
 enum {
   PREEDIT_START,
@@ -59,30 +57,10 @@ struct _NimfIMPrivate
 
   guint16       id;
   GFileMonitor *monitor;
-  uid_t         uid;
   gboolean      created;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (NimfIM, nimf_im, G_TYPE_OBJECT);
-
-static uid_t
-get_login_uid (void)
-{
-  gchar *nptr;
-  gsize  length;
-  uid_t  uid;
-
-  if (!g_file_get_contents ("/proc/self/loginuid", &nptr, &length, NULL))
-    return -1;
-
-  errno = 0;
-  uid = strtol (nptr, NULL, 10);
-
-  if (errno)
-    return -1;
-  else
-    return uid;
-}
 
 static gboolean
 nimf_im_is_connected ()
@@ -283,7 +261,7 @@ nimf_im_connect (NimfIM *im)
     {
       if (g_stat (nimf_im_socket_path, &info) == 0)
       {
-        if (im->priv->uid == info.st_uid)
+        if (nimf_get_loginuid () == info.st_uid)
         {
           if (g_socket_connect (nimf_im_socket, address, NULL, &error))
           {
@@ -615,9 +593,6 @@ nimf_im_init (NimfIM *im)
 
   static guint16 next_id = 0;
   guint16 id;
-
-  if ((im->priv->uid = get_login_uid ()) == (uid_t) -1)
-    im->priv->uid = getuid ();
 
   if (!nimf_im_socket_path)
     nimf_im_socket_path = nimf_get_socket_path ();

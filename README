@@ -17,7 +17,7 @@ Nimf provides:
     * Preedit window
     * Candidate
   * Client Modules:
-    * GTK+2, GTK+3, Qt4, Qt5
+    * GTK+2, GTK+3, Qt5
   * Settings tool to configure the Nimf:
     * nimf-settings
   * Development files:
@@ -131,10 +131,10 @@ Compiling and installing
     sudo yum install epel-release
 
     sudo yum install gcc-c++ libtool glib2-devel pkgconfig intltool \
-      gtk3-devel gtk2-devel qt4-devel qt5-qtbase-devel \
-      qt5-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools \
-      google-noto-cjk-fonts libhangul-devel anthy-devel anthy \
-      libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc
+      gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel \
+      libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts \
+      libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel \
+      libxklavier-devel gtk-doc
 
     rpmbuild -bb nimf-master/nimf.spec
     ls -R rpmbuild/RPMS/
@@ -215,7 +215,7 @@ Debugging
   tail -f /var/log/daemon.log # or /var/log/syslog
 
   export GTK_IM_MODULE="nimf"
-  export QT4_IM_MODULE="nimf"
+  export QT4_IM_MODULE="xim"
   export QT_IM_MODULE="nimf"
   export XMODIFIERS="@im=nimf"
   export G_MESSAGES_DEBUG=nimf

@@ -3,7 +3,7 @@
  * nimf-libhangul.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -47,7 +47,7 @@ struct _NimfLibhangul
   NimfKey           **hanja_keys;
   GSettings          *settings;
   gboolean            is_double_consonant_rule;
-  gboolean            is_auto_reordering;
+  gboolean            auto_reordering;
   gchar              *method;
   /* workaround: ignore reset called by commit callback in application */
   gboolean            ignore_reset_in_commit_cb;
@@ -612,35 +612,36 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
   gchar *new_preedit = g_ucs4_to_utf8 (ucs_preedit, -1, NULL, NULL, NULL);
   nimf_libhangul_update_preedit (engine, target, new_preedit);
 
+  if (!retval)
+  {
+    switch (keyval)
+    {
+      case '_':
+      case '-':
+      case '+':
+      case '=':
+      case '{':
+      case '[':
+      case '}':
+      case ']':
+      case ':':
+      case ';':
+      case '\"':
+      case '\'':
+      case '<':
+      case ',':
+      case '>':
+      case '.':
+      case '?':
+      case '/':
+        nimf_libhangul_emit_commit (engine, target, (char *) &keyval);
+        retval = TRUE;
+      default:
+        break;
+    }
+  }
+
   return retval;
-}
-
-static bool
-on_libhangul_transition (HangulInputContext *ic,
-                         ucschar             c,
-                         const ucschar      *preedit,
-                         void               *data)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if ((hangul_is_choseong (c) && (hangul_ic_has_jungseong (ic) ||
-                                  hangul_ic_has_jongseong (ic))) ||
-      (hangul_is_jungseong (c) && hangul_ic_has_jongseong (ic)))
-    return false;
-
-  return true;
-}
-
-static void
-nimf_libhangul_update_transition_cb (NimfLibhangul *hangul)
-{
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if ((g_strcmp0 (hangul->method, "2") == 0) && !hangul->is_auto_reordering)
-    hangul_ic_connect_callback (hangul->context, "transition",
-                                on_libhangul_transition, NULL);
-  else
-    hangul_ic_connect_callback (hangul->context, "transition", NULL, NULL);
 }
 
 static void
@@ -653,7 +654,8 @@ on_changed_method (GSettings     *settings,
   g_free (hangul->method);
   hangul->method = g_settings_get_string (settings, key);
   hangul_ic_select_keyboard (hangul->context, hangul->method);
-  nimf_libhangul_update_transition_cb (hangul);
+  hangul_ic_set_option (hangul->context, HANGUL_IC_OPTION_AUTO_REORDER,
+                        hangul->auto_reordering);
 }
 
 static void
@@ -663,8 +665,9 @@ on_changed_auto_reordering (GSettings     *settings,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  hangul->is_auto_reordering = g_settings_get_boolean (settings, key);
-  nimf_libhangul_update_transition_cb (hangul);
+  hangul->auto_reordering = g_settings_get_boolean (settings, key);
+  hangul_ic_set_option (hangul->context, HANGUL_IC_OPTION_AUTO_REORDER,
+                        hangul->auto_reordering);
 }
 
 static void
@@ -716,7 +719,7 @@ nimf_libhangul_init (NimfLibhangul *hangul)
   hangul->method = g_settings_get_string (hangul->settings, "get-method-infos");
   hangul->is_double_consonant_rule =
     g_settings_get_boolean (hangul->settings, "double-consonant-rule");
-  hangul->is_auto_reordering =
+  hangul->auto_reordering =
     g_settings_get_boolean (hangul->settings, "auto-reordering");
   hangul->ignore_reset_in_commit_cb =
     g_settings_get_boolean (hangul->settings, "ignore-reset-in-commit-cb");
@@ -741,18 +744,19 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   g_strfreev (hanja_keys);
 
-  nimf_libhangul_update_transition_cb (hangul);
+  hangul_ic_set_option (hangul->context, HANGUL_IC_OPTION_AUTO_REORDER,
+                        hangul->auto_reordering);
 
-  g_signal_connect (hangul->settings, "changed::get-method-infos",
-                    G_CALLBACK (on_changed_method), hangul);
-  g_signal_connect (hangul->settings, "changed::hanja-keys",
-                    G_CALLBACK (on_changed_keys), hangul);
-  g_signal_connect (hangul->settings, "changed::double-consonant-rule",
-                    G_CALLBACK (on_changed_double_consonant_rule), hangul);
-  g_signal_connect (hangul->settings, "changed::auto-reordering",
-                    G_CALLBACK (on_changed_auto_reordering), hangul);
-  g_signal_connect (hangul->settings, "changed::ignore-reset-in-commit-cb",
-                    G_CALLBACK (on_changed_ignore_reset_in_commit_cb), hangul);
+  g_signal_connect_data (hangul->settings, "changed::get-method-infos",
+    G_CALLBACK (on_changed_method), hangul, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (hangul->settings, "changed::hanja-keys",
+    G_CALLBACK (on_changed_keys), hangul, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (hangul->settings, "changed::double-consonant-rule",
+    G_CALLBACK (on_changed_double_consonant_rule), hangul, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (hangul->settings, "changed::auto-reordering",
+    G_CALLBACK (on_changed_auto_reordering), hangul, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (hangul->settings, "changed::ignore-reset-in-commit-cb",
+    G_CALLBACK (on_changed_ignore_reset_in_commit_cb), hangul, NULL, G_CONNECT_AFTER);
 }
 
 static void

@@ -1,3 +1,13 @@
+nimf (2020.04.28) stable; urgency=medium
+
+  * Fixed auto-reordering
+  * Fixed errors when typing Hangul with the Dvorak layout.
+  * Fixed wrong path. This prevents nimf from running more than once.
+    Don't use g_get_user_runtime_dir()
+  * Fix an error on compiling im-nimf.c for gtk2
+
+ -- Hodong Kim <nimfsoft@gmail.com>  Tue, 28 Apr 2020 22:14:14 +0900
+
 nimf (2019.08.14) stable; urgency=medium
 
   * Updated README
