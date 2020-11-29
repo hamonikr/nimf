@@ -1,7 +1,7 @@
 #
 # PKGBUILD
 # This file is part of Nimf.
-#
+# Author: Hodong Kim
 # Unlike other files in the Nimf project,
 # this PKGBUILD file is in the public domain.
 
@@ -10,7 +10,7 @@ pkgver=master
 pkgrel=1
 pkgdesc="Nimf is an input method framework."
 arch=('any')
-url="https://github.com/hamonikr/nimf"
+url="https://gitlab.com/nimf-i18n/nimf"
 license=('LGPL3')
 makedepends=('binutils' 'autoconf' 'automake' 'gcc' 'make' 'glib2' 'intltool'
              'gtk3' 'gtk2' 'qt5-base' 'libappindicator-gtk3' 'librsvg'
@@ -21,7 +21,7 @@ depends=('glib2' 'gtk3' 'gtk2' 'qt5-base' 'libappindicator-gtk3' 'libhangul'
          'm17n-db')
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts')
-source=("https://github.com/hamonikr/nimf/archive/nimf-master.tar.gz")
+source=("https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2")
 md5sums=('SKIP')
 
 pkgver() {

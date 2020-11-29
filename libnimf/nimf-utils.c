@@ -3,7 +3,7 @@
  * nimf-utils.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -22,7 +22,6 @@
 #include "nimf-utils.h"
 #include "nimf-enum-types-private.h"
 #include <gio/gio.h>
-#include <errno.h>
 
 /**
  * SECTION:nimf-utils
@@ -46,33 +45,6 @@ nimf_keyval_to_keysym_name (guint keyval)
   return enum_value ? enum_value->value_nick : NULL;
 }
 
-uid_t
-nimf_get_loginuid (void)
-{
-  gchar *loginuid;
-  static uid_t uid = -1;
-
-  if (uid == (uid_t) -1)
-  {
-    g_file_get_contents ("/proc/self/loginuid", &loginuid, NULL, NULL);
-
-    if (loginuid)
-    {
-      errno = 0;
-      uid = strtol (loginuid, NULL, 10);
-
-      g_free (loginuid);
-
-      if (!errno)
-        return uid;
-    }
-
-    uid = getuid ();
-  }
-
-  return uid;
-}
-
 /**
  * nimf_get_socket_path:
  *
@@ -83,7 +55,7 @@ nimf_get_socket_path ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_strdup_printf ("/run/user/%u/nimf/socket", nimf_get_loginuid ());
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf/socket", NULL);
 }
 
 /* private */

@@ -3,7 +3,7 @@
  * nimf.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -33,14 +33,13 @@
 #include <syslog.h>
 #include <errno.h>
 #include <glib-unix.h>
-#include "nimf-utils-private.h"
 
 static gchar *
 nimf_get_nimf_path ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_strdup_printf ("/run/user/%u/nimf", nimf_get_loginuid ());
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf", NULL);
 }
 
 static gboolean
@@ -67,7 +66,7 @@ nimf_get_lock_path ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  return g_strdup_printf ("/run/user/%u/nimf/lock.pid", nimf_get_loginuid ());
+  return g_strconcat (g_get_user_runtime_dir (), "/nimf/lock.pid", NULL);
 }
 
 static int

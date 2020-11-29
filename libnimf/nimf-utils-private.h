@@ -3,7 +3,7 @@
  * nimf-utils-private.h
  * This file is part of Nimf.
  *
- * Copyright (C) 2019,2020 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2019 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -28,8 +28,6 @@ G_BEGIN_DECLS
 
 gboolean gnome_is_running       (void);
 gboolean gnome_xkb_is_available (void);
-uid_t    nimf_get_loginuid      (void);
-
 G_END_DECLS
 
 #endif /* __NIMF_UTILS_PRIVATE_H__ */
