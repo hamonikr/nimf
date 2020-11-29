@@ -28,16 +28,27 @@
 
 # nimf 설치
 
-## Ubuntu 20.04 , Linux Mint 20
+## Ubuntu 20.10
 ```
-wget -O - http://apt.hamonikr.org/hamonikr.key | sudo apt-key add -
-sudo bash -c "echo 'deb https://apt.hamonikr.org jin main upstream' > /etc/apt/sources.list.d/hamonikr-jin.list"
-sudo bash -c "echo 'deb-src https://apt.hamonikr.org jin main upstream' >> /etc/apt/sources.list.d/hamonikr-jin.list"
+curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
-sudo apt-get update
 sudo apt install nimf nimf-libhangul
 
-만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+# 만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+# Install additional packages as follows if you want to use other languages(Japanese, Chinese, etc.)
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+
+im-config -n nimf
+```
+
+## Ubuntu 20.04 , Linux Mint 20
+```
+curl -sL https://apt.hamonikr.org/setup_hamonikr.jin | sudo -E bash -
+
+sudo apt install nimf nimf-libhangul
+
+# 만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+# Install additional packages as follows if you want to use other languages(Japanese, Chinese, etc.)
 sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 
 im-config -n nimf
@@ -47,17 +58,9 @@ im-config -n nimf
 
 1) apt 저장소 추가
 ```
-wget -O - http://apt.hamonikr.org/hamonikr.key | sudo apt-key add -
-sudo bash -c "echo 'deb https://apt.hamonikr.org sun main upstream' > /etc/apt/sources.list.d/hamonikr-sun.list"
-sudo bash -c "echo 'deb-src https://apt.hamonikr.org sun main upstream' >> /etc/apt/sources.list.d/hamonikr-sun.list"
+curl -sL https://apt.hamonikr.org/setup_hamonikr.sun | sudo -E bash -
 ```
-
-2) 추가한 저장소의 프로그램 목록을 업데이트합니다.
-```
-sudo apt-get update
-```
-
-3) 입력기 nimf를 설치합니다.
+2) 입력기 nimf를 설치합니다.
 ```
 sudo apt install nimf nimf-libhangul
 ```
@@ -65,7 +68,7 @@ sudo apt install nimf nimf-libhangul
 ```
 sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 ```
-4) 기본 입력기를 nimf 로 설정
+3) 기본 입력기를 nimf 로 설정
 ```
 im-config -n nimf
 ```
