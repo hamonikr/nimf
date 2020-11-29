@@ -1,3 +1,30 @@
+nimf (1.3.0hamonikr40.1) stable; urgency=medium
+
+  * rebuild deb package for hamonikr 4.0
+   - Build for auto upgrage on HamoniKR 4.0 Jin
+
+ -- HamoniKRTeam <pkg@hamonikr.org>  Sun, 29 Nov 2020 18:07:32 +0900
+
+nimf (2020.04.28-1+hamonikr40.2) focal; urgency=low
+
+  * Apply patch for HamoniKR 4.0
+  * Update icons on data/icons/scalable folder
+   - Apply new icon for HamoniKR 4.0
+  * Update AUTHORS, README
+   - Changed contact into AUTHORS for fix #23
+  * Added BUILD.md and README.md
+   - Add build descriptions for HamoniKR 4.0 (Ubuntu 20.04)
+  * Update modules/services/indicator/nimf-indicator.c
+   - Changed display maintainer name  
+
+-- HamoniKR Team <pkg@hamonikr.org>  Sun, 29 Nov 2020 17:57:07 +0900
+
+nimf (2020.04.28-0~20200428~hamonikr40.1) focal; urgency=low
+
+  * Apply new icons for HamoniKR 4.0
+
+-- HamoniKR Team <pkg@hamonikr.org>  Tue, 13 Oct 2020 15:32:00 +0900
+
 nimf (2020.04.28) stable; urgency=medium
 
   * Fixed auto-reordering
