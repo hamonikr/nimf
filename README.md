@@ -1,5 +1,5 @@
 # 가볍고 빠른 입력기 프레임워크 nimf
-
+![nimf](docs/nimf-info.png)
 ![nimf](docs/nimf.png)
 
 이 프로젝트는 한글입력기 nimf 가 더이상 [지속되기 힘든 상황](https://launchpad.net/~hodong/+archive/ubuntu/nimf) 이 되었기 때문에
