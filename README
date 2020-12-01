@@ -1,5 +1,10 @@
 Nimf is a lightweight, fast and extensible input method framework.
 
+Because this document contains upstream content, there may be errors in the build.
+If you have any questions, please visit the address below.
+https://github.com/hamonikr/nimf/wiki
+https://github.com/hamonikr/nimf/issues
+
 Nimf provides:
   * Input Method Server:
     * nimf
@@ -17,15 +22,14 @@ Nimf provides:
     * Preedit window
     * Candidate
   * Client Modules:
-    * GTK+2, GTK+3, Qt4, Qt5
+    * GTK+2, GTK+3, Qt5
   * Settings tool to configure the Nimf:
     * nimf-settings
   * Development files:
     * C library, headers and documents
 
 Project Homepage:
-  * https://gitlab.com/nimf-i18n/nimf
-  * https://nimf-i18n.gitlab.io
+  * https://github.com/hamonikr/nimf
 
 
 License
@@ -52,11 +56,12 @@ Downloads
 
   * Clone with HTTPS
 
-    git clone https://gitlab.com/nimf-i18n/nimf.git
+    git clone https://github.com/hamonikr/nimf/nimf.git
 
   * Download tar.gz
 
-    https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
+    https://github.com/hamonikr/nimf/archive/master/nimf-master.tar.gz
+
 
 
 Compiling and installing
@@ -73,7 +78,7 @@ Compiling and installing
       username:~$ cd
       username:~$ mkdir tmp-build
       username:~$ cd tmp-build
-      username:~/tmp-build$ wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
+      username:~/tmp-build$ wget https://github.com/hamonikr/nimf/archive/master/nimf-master.tar.gz
       username:~/tmp-build$ tar zxf nimf-master.tar.gz
       username:~/tmp-build$ cd nimf-master
       username:~/tmp-build/nimf-master$ dpkg-checkbuilddeps
@@ -131,10 +136,10 @@ Compiling and installing
     sudo yum install epel-release
 
     sudo yum install gcc-c++ libtool glib2-devel pkgconfig intltool \
-      gtk3-devel gtk2-devel qt4-devel qt5-qtbase-devel \
-      qt5-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools \
-      google-noto-cjk-fonts libhangul-devel anthy-devel anthy \
-      libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc
+      gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel \
+      libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts \
+      libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel \
+      libxklavier-devel gtk-doc
 
     rpmbuild -bb nimf-master/nimf.spec
     ls -R rpmbuild/RPMS/
@@ -215,7 +220,7 @@ Debugging
   tail -f /var/log/daemon.log # or /var/log/syslog
 
   export GTK_IM_MODULE="nimf"
-  export QT4_IM_MODULE="nimf"
+  export QT4_IM_MODULE="xim"
   export QT_IM_MODULE="nimf"
   export XMODIFIERS="@im=nimf"
   export G_MESSAGES_DEBUG=nimf
@@ -228,13 +233,13 @@ Participate
   * Development
 
     You may send pull requests.
-    https://gitlab.com/nimf-i18n/nimf/merge_requests
+    https://github.com/hamonikr/nimf/pulls
 
   * Translation
 
     You can make nimf.pot using the following commands.
 
-      git clone https://gitlab.com/nimf-i18n/nimf.git
+      git clone https://github.com/hamonikr/nimf/nimf.git
       cd nimf
       ./autogen.sh
       cd po

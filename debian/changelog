@@ -1,20 +1,61 @@
-nimf (1.2.0hamonikr30.1) sun; urgency=low
+nimf (1.3.0hamonikr40.3) stable; urgency=medium
 
-  * Build for Ubuntu 20.04
+  * Update nimf/configure.ac
+   - Change version string to 1.3.0
+  * Add doc/nimf-info.png and doc/nimf.png
+   - Update README.md 
+  * Update nimf/po/ko.po
+   - Change distributor name as HamoniKR
+  * Update nimf/modules/services/indicator/nimf-indicator.c
+   - Change distributor name as HamoniKR
 
- -- HamoniKR <pkg@hamonikr.org>  Fri, 08 May 2020 11:05:01 +0900
+ -- HamoniKRTeam <pkg@hamonikr.org>  Tue, 01 Dec 2020 15:23:33 +0900
 
-nimf (2019.08.14-0~201908141206~hamonikr14.1) me; urgency=low
+nimf (1.3.0hamonikr40.2) stable; urgency=medium
 
-  * Rebuild for HamoniKR.
+  * rebuild deb package for hamonikr 4.0
+   - Apply new icons for modules
+  * Removed modules/engines/nimf-m17n/icons/scalable/nimf-m17n-ui.svg
+   - Fix bug for nimf/modules/engines/nimf-m17n/test-nimf-m17n.c 
 
- -- HamoniKR <pkg@hamonikr.org>  Thu, 24 Oct 2019 11:46:02 +0900
+ -- HamoniKRTeam <pkg@hamonikr.org>  Tue, 01 Dec 2020 15:23:33 +0900
 
-nimf (2019.08.14-0~201908141206~ubuntu18.04.1) bionic; urgency=low
+nimf (1.3.0hamonikr40.1) stable; urgency=medium
 
-  * Auto build.
+  * rebuild deb package for hamonikr 4.0
+   - Build for auto upgrage on HamoniKR 4.0 Jin
+ 
+ -- HamoniKRTeam <pkg@hamonikr.org>  Sun, 29 Nov 2020 18:07:32 +0900
 
- -- Hodong Kim <cogniti@gmail.com>  Wed, 14 Aug 2019 12:20:57 +0000
+nimf (2020.04.28-1+hamonikr40.2) focal; urgency=low
+
+  * Apply patch for HamoniKR 4.0
+  * Update icons on data/icons/scalable folder
+   - Apply new icon for HamoniKR 4.0
+  * Update AUTHORS, README
+   - Changed contact into AUTHORS for fix #23
+  * Added BUILD.md and README.md
+   - Add build descriptions for HamoniKR 4.0 (Ubuntu 20.04)
+  * Update modules/services/indicator/nimf-indicator.c
+   - Changed display maintainer name  
+
+-- HamoniKR Team <pkg@hamonikr.org>  Sun, 29 Nov 2020 17:57:07 +0900
+
+nimf (2020.04.28-0~20200428~hamonikr40.1) focal; urgency=low
+
+  * Apply new icons for HamoniKR 4.0
+
+-- HamoniKR Team <pkg@hamonikr.org>  Tue, 13 Oct 2020 15:32:00 +0900
+
+nimf (2020.04.28) stable; urgency=medium
+
+  * Fixed auto-reordering
+  * Fixed errors when typing Hangul with the Dvorak layout.
+  * Fixed wrong path. This prevents nimf from running more than once.
+    Don't use g_get_user_runtime_dir()
+  * Fix an error on compiling im-nimf.c for gtk2
+
+ -- Hodong Kim <nimfsoft@gmail.com>  Tue, 28 Apr 2020 22:14:14 +0900
 
 nimf (2019.08.14) stable; urgency=medium
 

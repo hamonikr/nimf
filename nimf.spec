@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2019.08.14
+Version:  2020.04.28
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -15,14 +15,12 @@ BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
 %if 0%{?is_opensuse}
-BuildRequires: libqt4-devel
 BuildRequires: libqt5-qtbase-devel
 BuildRequires: libQt5Gui-private-headers-devel
 BuildRequires: libappindicator3-devel
 BuildRequires: rsvg-view
 BuildRequires: noto-sans-cjk-fonts
 %else
-BuildRequires: qt4-devel
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtbase-private-devel
 BuildRequires: libappindicator-gtk3-devel
@@ -132,7 +130,6 @@ fi
 %{_libdir}/gtk-3.0/*
 %{_libdir}/libnimf.so.*
 %{_libdir}/nimf/*
-%{_libdir}/qt4/*
 %{_libdir}/qt5/*
 %{_datadir}/applications/*
 %{_datadir}/glib-2.0/*
@@ -149,5 +146,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Wed Aug 14 2019 Hodong Kim <cogniti@gmail.com> - 2019.08.14-1
-- See https://gitlab.com/nimf-i18n/nimf/blob/master/debian/changelog
+* Wed, 23 Sep 2020 HamoniKR <pkg@hamonikr.org> - 2020.04.28-1
+- See https://github.com/hamonikr/nimf/blob/master/debian/changelog

@@ -3,7 +3,7 @@
  * nimf-anthy.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2016-2019 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2016-2020 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -1572,14 +1572,14 @@ nimf_anthy_init (NimfAnthy *anthy)
   g_strfreev (hiragana_keys);
   g_strfreev (katakana_keys);
 
-  g_signal_connect (anthy->settings, "changed::hiragana-keys",
-                    G_CALLBACK (on_changed_keys), anthy);
-  g_signal_connect (anthy->settings, "changed::katakana-keys",
-                    G_CALLBACK (on_changed_keys), anthy);
-  g_signal_connect (anthy->settings, "changed::get-method-infos",
-                    G_CALLBACK (on_changed_method), anthy);
-  g_signal_connect (anthy->settings, "changed::get-n-input-mode-list",
-                    G_CALLBACK (on_changed_n_input_mode), anthy);
+  g_signal_connect_data (anthy->settings, "changed::hiragana-keys",
+          G_CALLBACK (on_changed_keys), anthy, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (anthy->settings, "changed::katakana-keys",
+          G_CALLBACK (on_changed_keys), anthy, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (anthy->settings, "changed::get-method-infos",
+          G_CALLBACK (on_changed_method), anthy, NULL, G_CONNECT_AFTER);
+  g_signal_connect_data (anthy->settings, "changed::get-n-input-mode-list",
+          G_CALLBACK (on_changed_n_input_mode), anthy, NULL, G_CONNECT_AFTER);
 }
 
 static void

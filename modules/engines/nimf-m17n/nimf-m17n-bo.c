@@ -3,7 +3,7 @@
  * nimf-m17n-bo.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2019 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2019,2020 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -58,8 +58,8 @@ nimf_m17n_bo_init (NimfM17nBo *bo)
 
   nimf_m17n_open_im (m17n);
 
-  g_signal_connect (m17n->settings, "changed::get-method-infos",
-                    G_CALLBACK (on_changed_method), m17n);
+  g_signal_connect_data (m17n->settings, "changed::get-method-infos",
+                  G_CALLBACK (on_changed_method), m17n, NULL, G_CONNECT_AFTER);
 }
 
 static void

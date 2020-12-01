@@ -130,21 +130,31 @@ msgstr "라임"
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
+#: ../modules/services/indicator/nimf-indicator.c:108
+#: ../modules/services/indicator/nimf-indicator.c:109
+#: ../modules/services/indicator/nimf-indicator.c:110
+msgid "HamoniKR <pkg@hamonikr.org>"
+msgstr "하모니카 개발팀 <pkg@hamonikr.org>"
+
 #: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr "김범식 <k.bumsik@gmail.com>"
 
 #: ../modules/services/indicator/nimf-indicator.c:121
 msgid "Nimf is an input method framework"
-msgstr "님프는 입력 방법 프레임워크입니다"
+msgstr "님프는 입력기 프레임워크입니다"
 
 #: ../modules/services/indicator/nimf-indicator.c:122
 msgid "Copyright (c) 2019-2020 HamoniKR Community"
 msgstr "저작권 (c) 2019-2020 하모니카 커뮤니티"
 
+#: ../modules/services/indicator/nimf-indicator.c:122
+msgid "Copyright (c) 2019-2020 HamoniKR"
+msgstr "Copyright (c) 2019-2020 하모니카"
+
 #: ../modules/services/indicator/nimf-indicator.c:127
-msgid "Hodong Kim, Max Neupert"
-msgstr "김호동, Max Neupert"
+msgid "HamoniKR, Hodong Kim, Max Neupert"
+msgstr "하모니카, 김호동, Max Neupert"
 
 #: ../modules/services/indicator/nimf-indicator.c:130
 msgid "Website"
@@ -168,7 +178,6 @@ msgstr "'님프'"
 
 #: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:2
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:2
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:2
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:2
@@ -186,7 +195,6 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 
 #: ../libnimf/org.nimf.gschema.xml.h:3
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:3
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:3
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:3
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:3
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:3
@@ -281,14 +289,9 @@ msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니
 " 이것은 여러 응용 프로그램의 버그를 회피합니다."
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:4
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
 msgid "Reset when clicking the mouse button"
 msgstr "마우스 버튼을 클릭할 때 리셋합니다"
-
-#: ../modules/clients/qt4/org.nimf.clients.qt4.gschema.xml.h:1
-msgid "'Qt4'"
-msgstr ""
 
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:1
 msgid "'Qt5'"

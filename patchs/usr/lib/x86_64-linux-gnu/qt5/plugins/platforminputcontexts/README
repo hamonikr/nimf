@@ -1,0 +1,9 @@
+usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts/libqt5im-nimf.so
+
+한컴구름 OS에서 설치할수 있는 패키지를 하모니카 OS에 정상적으로 설치되는지 확인한 결과
+하모니카 3.0에서는 정상적으로 사용가능, 하지만 하모니카 4.0에서는 한글입력이 되지 않는 오류 발견
+
+이 경우에는 하모니카 3.0에 있는 /usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts/libqt5im-nimf.so 파일을 하모니카 4.0에 복사하면 한글 입력이 정상으로 됨
+
+이 파일은 하모니카 3.0에 있는 libqt5im-nimf.so 파일.
+

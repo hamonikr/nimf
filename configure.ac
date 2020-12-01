@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 2019.08.14)
+AC_INIT(nimf, 1.3.0)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -114,12 +114,8 @@ AS_IF([test "x$enable_nimf_anthy" != "xno" -a "x$HAVE_ANTHY_DIC" != "xyes"],
 AM_CONDITIONAL([ENABLE_NIMF_ANTHY], [test "x$enable_nimf_anthy" != "xno"])
 
 dnl ***************************************************************************
-dnl im-nimf-qt4  im-nimf-qt5
+dnl im-nimf-qt5
 dnl ***************************************************************************
-
-# PKG_CHECK_MODULES(IM_NIMF_QT4_DEPS, [QtGui], [],
-#   [AC_MSG_ERROR([No package 'QtGui' found.
-#   If you are using Debian, please install 'libqt4-dev'.])])
 
 PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [],
   [AC_MSG_ERROR([Package requirements (Qt5Core Qt5Gui Qt5Widgets) were not met:
@@ -311,7 +307,6 @@ AC_OUTPUT([
   modules/Makefile
   modules/clients/Makefile
   modules/clients/gtk/Makefile
-  modules/clients/qt4/Makefile
   modules/clients/qt5/Makefile
   modules/engines/Makefile
   modules/engines/nimf-anthy/Makefile
