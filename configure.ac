@@ -21,7 +21,8 @@ AS_IF([test "$CXX" = "g++"],
 AC_ARG_ENABLE([hardening],
   AS_HELP_STRING([--disable-hardening], [Disable hardening]))
 
-EXTRA_CFLAGS="-Wall -Werror"
+# EXTRA_CFLAGS="-Wall -Werror"
+EXTRA_CFLAGS="-Wall"
 AS_IF([test "x$enable_hardening" != "xno"],
       [EXTRA_CFLAGS+=" -D_FORTIFY_SOURCE=2"])
 
