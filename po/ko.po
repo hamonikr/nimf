@@ -133,7 +133,7 @@ msgstr "김호동 <cogniti@gmail.com>"
 #: ../modules/services/indicator/nimf-indicator.c:109
 #: ../modules/services/indicator/nimf-indicator.c:110
 msgid "HamoniKR <pkg@hamonikr.org>"
-msgstr "msgid "하모니카 개발팀 <pkg@hamonikr.org>"
+msgstr "하모니카 개발팀 <pkg@hamonikr.org>"
 
 #: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
