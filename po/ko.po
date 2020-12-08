@@ -130,12 +130,6 @@ msgstr "라임"
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:108
-#: ../modules/services/indicator/nimf-indicator.c:109
-#: ../modules/services/indicator/nimf-indicator.c:110
-msgid "HamoniKR <pkg@hamonikr.org>"
-msgstr "하모니카 개발팀 <pkg@hamonikr.org>"
-
 #: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr "김범식 <k.bumsik@gmail.com>"
@@ -145,16 +139,12 @@ msgid "Nimf is an input method framework"
 msgstr "님프는 입력기 프레임워크입니다"
 
 #: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2019-2020 HamoniKR Community"
-msgstr "저작권 (c) 2019-2020 하모니카 커뮤니티"
-
-#: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2019-2020 HamoniKR"
-msgstr "Copyright (c) 2019-2020 하모니카"
+msgid "Copyright (c) 2015-2019 Hodong Kim"
+msgstr "저작권 (c) 2015-2019 김호동"
 
 #: ../modules/services/indicator/nimf-indicator.c:127
-msgid "HamoniKR, Hodong Kim, Max Neupert"
-msgstr "하모니카, 김호동, Max Neupert"
+msgid "Hodong Kim, Max Neupert"
+msgstr "김호동, Max Neupert"
 
 #: ../modules/services/indicator/nimf-indicator.c:130
 msgid "Website"

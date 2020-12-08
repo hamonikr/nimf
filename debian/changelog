@@ -1,3 +1,14 @@
+nimf (1.3.0hamonikr40.4) stable; urgency=medium
+
+  * Remove doc/nimf-info.png
+   - Update README.md 
+  * Update nimf/po/ko.po
+   - Change distributor name to Hodong Kim
+  * Update nimf/modules/services/indicator/nimf-indicator.c
+   - Change distributor name to Hodong Kim
+
+ -- HamoniKRTeam <pkg@hamonikr.org>  Tue, 08 Dec 2020 09:49:50 +0900
+
 nimf (1.3.0hamonikr40.3) stable; urgency=medium
 
   * Update nimf/configure.ac
