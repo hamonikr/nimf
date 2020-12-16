@@ -12,8 +12,11 @@
 
 # nimf 설치
 
-## Ubuntu 20.10
+## Ubuntu 20.10, Ubuntu 20.04 , Linux Mint 20
 ```
+# nimf 패키지 저장소가 변경되었습니다. 예전에 사용하던 하모니카 APT 설정이 있는 경우 삭제합니다. 
+sudo rm -f /etc/apt/sources.list.d/hamonikr.list
+
 curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
 sudo apt install nimf nimf-libhangul
@@ -25,18 +28,6 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 im-config -n nimf
 ```
 
-## Ubuntu 20.04 , Linux Mint 20
-```
-curl -sL https://apt.hamonikr.org/setup_hamonikr.jin | sudo -E bash -
-
-sudo apt install nimf nimf-libhangul
-
-# 만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
-# Install additional packages as follows if you want to use other languages(Japanese, Chinese, etc.)
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-
-im-config -n nimf
-```
 
 ## Ubuntu 18.04, 하모니카 1.4, 하모니카 3.0
 
