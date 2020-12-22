@@ -1,1 +1,69 @@
+Contributors are listed alphabetically:
+
+Aiden <soomtong@gmail.com>
+Bae Haezu <workman729@gmail.com>
+Bumsik Kim <k.bumsik@gmail.com>
+Changjoo Lee <icj7061@gmail.com>
+Dongmin Kim <kim135797531@naver.com>
+Dongook Lee <scorbiclife@gmail.com>
 Hodong Kim <hodong@nimfsoft.com>
+Hyeon Kim <simnalamburt@users.noreply.github.com>
+Jisoo Park <jisoo.park@doomoolmori.com>
+Jonghoon Won <k9200544@hanmail.net>
+julie lee <66409676+jullee96@users.noreply.github.com>
+Jungkyu Park <bagjunggyu@gmail.com>
+Kevin <chaeya@gmail.com>
+Kevin Kim <chaeya@gmail.com>
+Kevin Kim <hckim@invesume.com>
+Kevin_invesume <chaeya@gmail.com>
+Max Neupert <abonnements@revolwear.com>
+Minwook Shin <minwook0106@gmail.com>
+OctopusET <sjmoon2001@gmail.com>
+Tommy <memnoth@users.noreply.github.com>
+Whemoon Jang <palindrom615@gmail.com>
+WooYoung Cho <wy1.cho@samsung.com>
+Youngbin Han <sukso96100@gmail.com>
+ywen407 <ywen407@naver.com>
+
+Special thanks to:
+
+mxa reported:
+  * nimf-settings segmentation fault
+    https://gitlab.com/nimf-i18n/nimf/issues/282
+    https://gitlab.com/nimf-i18n/nimf/issues/280
+    https://gitlab.com/nimf-i18n/nimf/issues/277
+  * Compose key not supported in nimf
+    https://gitlab.com/nimf-i18n/nimf/issues/33
+
+5HARK <blgf6190 at gmail com> reported:
+A problem occurs when statically linking libnimf and then dynamically loading
+client modules.
+https://gitlab.com/nimf-i18n/nimf/issues/16#note_90967748
+
+Determining NIMF_RUNTIME_DIR, NIMF_MODULE_DIR at compile time causes problems
+when distributing static libnimf.a.
+https://gitlab.com/nimf-i18n/nimf/issues/16#note_89891251
+
+Hansol Shin (hshin23) reported segfault.
+https://gitlab.com/nimf-i18n/nimf/issues/57
+
+yueunseon reported: Support multi-user environment
+https://gitlab.com/nimf-i18n/nimf/issues/37
+
+JH (nemonein) reported issues.
+nimf-daemon freezes              https://gitlab.com/nimf-i18n/nimf/issues/22
+Side effect about singleton mode https://gitlab.com/nimf-i18n/nimf/issues/7
+Caps Lock doesn't work correctly https://gitlab.com/nimf-i18n/nimf/issues/2
+
+madhwang reported an issue about the open files limit.
+https://github.com/dasom-im/dasom/issues/64
+
+Youngbin Han <sukso96100 at gmail com> reported a race condition.
+https://github.com/dasom-im/dasom/issues/18
+
+Suhyeok Gwon <gshyuk at gmail com> named Dasom.
+
+--------------------------------------------------------------------------------
+
+If you are a Nimf contributor and your name is missing,
+please request an addition.

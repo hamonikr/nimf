@@ -112,6 +112,7 @@ if [ $1 -eq 0 ] ; then
 fi
 %{_bindir}/update-gtk-immodules %{_host} || :
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
+# copied from https://github.com/ibus/ibus/blob/master/ibus.spec.in
 if [ "$1" = "0" ]; then
   %{_sbindir}/alternatives --remove xinputrc %{_xinputconf} || :
   # if alternative was set to manual, reset to auto

@@ -3,7 +3,7 @@
  * nimf-indicator.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-2020 Hodong Kim <hodong@nimfsoft.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -105,10 +105,9 @@ on_menu_about (GSimpleAction *action,
   {
     GtkWidget *parent;
 
-    gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
-    gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
-    gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"),
-                            _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
+    gchar *artists[]     = {_("The Nimf contributors"), NULL};
+    gchar *authors[]     = {_("The Nimf contributors"), NULL};
+    gchar *documenters[] = {_("The Nimf contributors"), NULL};
 
     parent = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     about  = gtk_about_dialog_new ();
@@ -119,12 +118,12 @@ on_menu_about (GSimpleAction *action,
       "artists",            artists,
       "authors",            authors,
       "comments",           _("Nimf is an input method framework"),
-      "copyright",          _("Copyright (c) 2015-2019 Hodong Kim"),
+      "copyright",          _("Copyright (c) 2015-2020 The Nimf contributors"),
       "documenters",        documenters,
       "license-type",       GTK_LICENSE_LGPL_3_0,
       "logo-icon-name",     "nimf-logo",
       "program-name",       _("Nimf"),
-      "translator-credits", _("Hodong Kim, Max Neupert"),
+      "translator-credits", _("The Nimf contributors"),
       "version",            VERSION,
       "website",            "https://github.com/hamonikr/nimf",
       "website-label",      _("Website"),

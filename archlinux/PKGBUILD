@@ -1,9 +1,13 @@
 #
 # PKGBUILD
 # This file is part of Nimf.
-# Author: Hodong Kim
 # Unlike other files in the Nimf project,
 # this PKGBUILD file is in the public domain.
+# Contributor: Whemoon Jang <palindrom615@gmail.com>
+# Contributor: Hodong Kim <nimfsoft@gmail.com>
+# Contributor: Youngbin Han <sukso96100@gmail.com>
+# Contributor: Changjoo Lee <icj7061@gmail.com>
+# Contributor: ywen407 <ywen407@naver.com>
 
 pkgname=nimf
 pkgver=1.1

@@ -1,17 +1,14 @@
 # German translation for Nimf
-# Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
+# Copyright (C) 2015-2020 Hodong Kim <hodong@nimfsoft.com>
+# Copyright (C) 2017 Max Neupert <abonnements@revolwear.com>
 # This file is distributed under the same license as the Nimf project.
-# Hodong Kim <cogniti@gmail.com>, 2015-2020.
-# Max Neupert <abonnements@revolwear.com>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-03 17:54+0900\n"
-"PO-Revision-Date: 2020-04-28 22:12+0900\n"
-"Last-Translator: Max Neupert <abonnements@revolwear.com>\n"
+"POT-Creation-Date: 2020-12-22 20:40+0900\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -27,36 +24,36 @@ msgstr "Debug Nachrichten protokollieren"
 msgid "Version"
 msgstr ""
 
-#: ../bin/nimf-settings/nimf-settings.c:557
+#: ../bin/nimf-settings/nimf-settings.c:571
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "Bitte melden Sie einen Fehler (keyval: %d)"
 
-#: ../bin/nimf-settings/nimf-settings.c:618
+#: ../bin/nimf-settings/nimf-settings.c:632
 msgid "Press key combination"
 msgstr "Tastenkombination drücken"
 
-#: ../bin/nimf-settings/nimf-settings.c:621
+#: ../bin/nimf-settings/nimf-settings.c:635
 msgid "_OK"
 msgstr "Bestätigen (_O)"
 
-#: ../bin/nimf-settings/nimf-settings.c:622
+#: ../bin/nimf-settings/nimf-settings.c:636
 msgid "_Cancel"
 msgstr "Abbrechen (_C)"
 
-#: ../bin/nimf-settings/nimf-settings.c:634
+#: ../bin/nimf-settings/nimf-settings.c:648
 msgid "Click here and then press key combination"
 msgstr "Hier klicken und dann Tastenkombination drücken"
 
-#: ../bin/nimf-settings/nimf-settings.c:1132
+#: ../bin/nimf-settings/nimf-settings.c:1149
 msgid "Default"
 msgstr ""
 
-#: ../bin/nimf-settings/nimf-settings.c:1227
+#: ../bin/nimf-settings/nimf-settings.c:1244
 msgid "XKB Options"
 msgstr ""
 
-#: ../bin/nimf-settings/nimf-settings.c:1256
+#: ../bin/nimf-settings/nimf-settings.c:1273
 #: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
 #: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
@@ -64,23 +61,23 @@ msgstr "Nimf Einstellungen"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:553
-#: ../modules/services/indicator/nimf-indicator.c:126
+#: ../modules/services/indicator/nimf-indicator.c:125
 msgid "Nimf"
 msgstr ""
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1674
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1689
 msgid "Romaji"
 msgstr ""
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1675
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1690
 msgid "English Keyboard (pc104)"
 msgstr ""
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1703
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1718
 msgid "Common practice"
 msgstr ""
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1704
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1719
 msgid "Explicitly type nn"
 msgstr ""
 
@@ -127,34 +124,27 @@ msgstr ""
 #: ../modules/services/indicator/nimf-indicator.c:108
 #: ../modules/services/indicator/nimf-indicator.c:109
 #: ../modules/services/indicator/nimf-indicator.c:110
-msgid "Hodong Kim <cogniti@gmail.com>"
+#: ../modules/services/indicator/nimf-indicator.c:126
+msgid "The Nimf contributors"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:111
-msgid "Bumsik Kim <k.bumsik@gmail.com>"
-msgstr ""
-
-#: ../modules/services/indicator/nimf-indicator.c:121
+#: ../modules/services/indicator/nimf-indicator.c:120
 msgid "Nimf is an input method framework"
 msgstr "Nimf ist eine Texteingabemethode"
 
-#: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2015-2019 Hodong Kim"
+#: ../modules/services/indicator/nimf-indicator.c:121
+msgid "Copyright (c) 2015-2020 The Nimf contributors"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:127
-msgid "Hodong Kim, Max Neupert"
-msgstr ""
-
-#: ../modules/services/indicator/nimf-indicator.c:130
+#: ../modules/services/indicator/nimf-indicator.c:129
 msgid "Website"
 msgstr ""
 
-#: ../modules/services/indicator/nimf-indicator.c:332
+#: ../modules/services/indicator/nimf-indicator.c:331
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../modules/services/indicator/nimf-indicator.c:333
+#: ../modules/services/indicator/nimf-indicator.c:332
 msgid "About"
 msgstr "Über"
 
