@@ -54,6 +54,9 @@ im-config -n nimf
 ## CentOS 8
 * https://blog.naver.com/dfnk5516/222074913406
 
+## Raspberry pi 4 arm64
+* https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
+
 ## Armbian
 * https://github.com/hamonikr/nimf/wiki/Armbian-build
 
