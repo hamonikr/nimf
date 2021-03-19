@@ -12,7 +12,7 @@
 
 # nimf 설치
 
-## Ubuntu 20.10, Ubuntu 20.04 , Linux Mint 20
+## Ubuntu 21.04, Ubuntu 20.10, Ubuntu 20.04 , Linux Mint 20
 ```
 # nimf 패키지 저장소가 변경되었습니다. 예전에 사용하던 하모니카 APT 설정이 있는 경우 삭제합니다. 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
