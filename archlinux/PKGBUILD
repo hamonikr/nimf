@@ -5,10 +5,10 @@
 # Unlike other files in the Nimf project,
 # this PKGBUILD file is in the public domain.
 
-pkgname=nimf
-pkgver=1.1
-pkgrel=2
-pkgdesc="Nimf is an input method framework."
+pkgname=nimf-hamonikr
+pkgver=1.3.1
+pkgrel=1
+pkgdesc="Nimf is an input method framework. Forked by hamonikr."
 arch=('any')
 url="https://github.com/hamonikr/nimf"
 license=('LGPL3')
@@ -22,17 +22,12 @@ depends=('glib2' 'gtk3' 'gtk2' 'qt5-base' 'libappindicator-gtk3' 'libhangul'
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts')
 source=("https://github.com/hamonikr/nimf/archive/${pkgver}.tar.gz")
-md5sums=('d1141369686a3dd2924474f70525a92f')
-
-pkgver() {
-	cd "$srcdir/nimf-$pkgver"
-	grep AC_INIT configure.ac | grep -Po '\d{4}.\d{2}.\d{2}'
-}
+md5sums=('1016e3680e58e605b111720f0f6d8ab4')
 
 build() {
 	cd "$srcdir/nimf-$pkgver"
 	./autogen.sh --prefix=/usr --enable-gtk-doc
-	make -j 4
+	make -j2
 }
 
 package() {
