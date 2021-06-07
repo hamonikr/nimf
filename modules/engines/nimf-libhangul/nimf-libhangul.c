@@ -86,6 +86,7 @@ static HanjaTable *nimf_libhangul_symbol_table = NULL;
 static gint        nimf_libhangul_hanja_table_ref_count = 0;
 
 G_DEFINE_DYNAMIC_TYPE (NimfLibhangul, nimf_libhangul, NIMF_TYPE_ENGINE);
+HANGUL_IC_OPTION_AUTO_REORDER;
 
 static void
 nimf_libhangul_update_preedit (NimfEngine    *engine,
