@@ -1,9 +1,14 @@
-![ubuntu-bionic](https://img.shields.io/badge/ubuntu-18.04-yellow)
+![ubuntu-bionic](https://img.shields.io/badge/ubuntu-18.04-red)
 ![ubuntu-focal](https://img.shields.io/badge/ubuntu-20.04-red)
-![ubuntu-groovy](https://img.shields.io/badge/ubuntu-20.10-blue)
+![ubuntu-groovy](https://img.shields.io/badge/ubuntu-20.10-red)
+![ubuntu-hirsute](https://img.shields.io/badge/ubuntu-21.04-red)
+![ubuntu-impish](https://img.shields.io/badge/ubuntu-21.10-red)
+
 ![hamonikr-me](https://img.shields.io/badge/hamonikr-me-orange)
-![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-green)
-![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-purple)
+![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-blue)
+![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-green)
+![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-purple)
+
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
@@ -40,6 +45,12 @@ Nimf provides:
 
 * Ubuntu (>= 20.04)
 ```
+# The ibus-daemon start automatically at Ubuntu 21.10.
+# Input method conflict
+# You can remove the ibus or disable ibus-daemon from booting
+# Sol1 : sudo apt purge ibus
+# Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus/ibus-daemon.bak
+
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
 curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
