@@ -1,6 +1,9 @@
 This document describe to build nimf on Manjaro-Arm OS
 (env : rasberry pi 4, Manjaro Arm)
 
+<Fix> windows git clone error : error: invalid path 'manjaro-arm/nimf-1:1.2.0.r22.01ae33c-1-aarch64.pkg.tar.xz'
+Changed the file name.
+
 1. git clone
 git clone -b manjaro-arm --single-branch https://github.com/hamonikr/nimf.git
 
