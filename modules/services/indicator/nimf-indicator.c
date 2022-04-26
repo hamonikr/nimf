@@ -23,7 +23,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include "nimf.h"
-#include <libappindicator/app-indicator.h>
+#include <libayatana-appindicator/app-indicator.h>
 #include <libxklavier/xklavier.h>
 #include <gdk/gdkx.h>
 #include "nimf-utils-private.h"
