@@ -202,10 +202,3 @@ https://github.com/hamonikr/nimf/wiki/HamoniKR-build
 # 소스코드 개선에 참여하는 법
 깃헙 저장소를 포크하신 후 수정하실 내용을 수정하고 PR을 요청하시면 하모니카 팀에서 리뷰 후 대응합니다.
 
-# 우분투 22.04 LTS 버전에서 'Qtbase-abi-5-15-2' 종속성 오류 발생시 해결 방법
-```
-1) nimf_1.3.0hamonikr(버전명)_amd64.deb에서 DEBIAN/control 파일 추출
-2) 추출된 control 파일을 nano, vi 등으로 열어 'Qtbase-abi-5-15-2,' 문자을 지우고 저장
-3) 수정된 control 파일을 다시 nimf_1.3.0hamonikr(버전명)_amd64.deb에 삽입
-4) libnimf, nimf, nimf-libhangul 재설치
-```
