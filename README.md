@@ -3,11 +3,17 @@
 ![ubuntu-groovy](https://img.shields.io/badge/ubuntu-20.10-red)
 ![ubuntu-hirsute](https://img.shields.io/badge/ubuntu-21.04-red)
 ![ubuntu-impish](https://img.shields.io/badge/ubuntu-21.10-red)
+![ubuntu-jammy](https://img.shields.io/badge/ubuntu-22.04-red)
 
 ![hamonikr-me](https://img.shields.io/badge/hamonikr-me-orange)
 ![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-blue)
 ![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-green)
 ![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-purple)
+
+
+In `Ubuntu 22.04`, some packages required for the build have been changed and deleted.
+
+Please use the branch `before-ubuntu21.10` for the information related to the previous version
 
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
@@ -107,7 +113,7 @@ im-config -n nimf
 
 # nimf 설치
 
-## Ubuntu 21.04, Ubuntu 20.10, Ubuntu 20.04 , Linux Mint 20
+## Ubuntu 20.04(>=) , Linux Mint 20
 ```
 # nimf 패키지 저장소가 변경되었습니다. 예전에 사용하던 하모니카 APT 설정이 있는 경우 삭제합니다. 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
