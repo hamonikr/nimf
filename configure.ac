@@ -241,7 +241,7 @@ dnl nimf-indicator
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                  [glib-2.0 x11 gtk+-3.0 appindicator3-0.1 libxklavier gdk-3.0
+                  [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
                    gdk-x11-3.0 gmodule-2.0])
 
 dnl ***************************************************************************
