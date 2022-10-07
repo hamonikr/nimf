@@ -49,6 +49,18 @@ Nimf provides:
 
 # Install
 
+* HamoniKR 6.0
+```
+wget -qO- https://update.hamonikr.org/add-update-repo.apt | sudo -E bash -
+
+sudo apt install nimf nimf-libhangul
+
+im-config -n nimf
+
+# If you want to use other languages(Japanese, Chinese, etc.)
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+```
+
 * Ubuntu (>= 20.04)
 ```
 # The ibus-daemon start automatically at Ubuntu 21.10.
