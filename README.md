@@ -67,7 +67,7 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 # Input method conflict
 # You can remove the ibus or disable ibus-daemon from booting
 # Sol1 : sudo apt purge ibus
-# Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus/ibus-daemon.bak
+# Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
