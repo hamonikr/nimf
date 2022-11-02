@@ -124,6 +124,20 @@ im-config -n nimf
 ![nimf](docs/nimf.png)
 
 # nimf 설치
+## 하모니카 6.0
+```
+# nimf 패키지 저장소를 추가 또는 업그레이드를 합니다.
+wget -qO- https://update.hamonikr.org/add-update-repo.apt | sudo -E bash -
+
+# nimf 패키지를 설치합니다.
+sudo apt install nimf nimf-libhangul
+
+# nimf 입력기를 기본으로 설정합니다.
+im-config -n nimf
+
+# If you want to use other languages(Japanese, Chinese, etc.)
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+```
 
 ## Ubuntu 20.04(>=) , Linux Mint 20
 ```
