@@ -67,7 +67,7 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 # Input method conflict
 # You can remove the ibus or disable ibus-daemon from booting
 # Sol1 : sudo apt purge ibus
-# Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus/ibus-daemon.bak
+# Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
@@ -124,9 +124,28 @@ im-config -n nimf
 ![nimf](docs/nimf.png)
 
 # nimf 설치
+## 하모니카 6.0
+```
+# nimf 패키지 저장소를 추가 또는 업그레이드를 합니다.
+wget -qO- https://update.hamonikr.org/add-update-repo.apt | sudo -E bash -
+
+# nimf 패키지를 설치합니다.
+sudo apt install nimf nimf-libhangul
+
+# nimf 입력기를 기본으로 설정합니다.
+im-config -n nimf
+
+# 만약 일본어, 중국어 등 다른 언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+```
 
 ## Ubuntu 20.04(>=) , Linux Mint 20
 ```
+# 우분투 21.10 이상을 기반으로 하는 배포판에서는 ibus-daemon이 자동으로 시작되어 입력기가 충돌됩니다.
+# 부팅시 ibus가 동작하지 않도록 ibus를 제거하거나 ibus-daemon을 비활성화할 수 있습니다.
+# 방법1 : sudo apt purge ibus
+# 방법2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
+
 # nimf 패키지 저장소가 변경되었습니다. 예전에 사용하던 하모니카 APT 설정이 있는 경우 삭제합니다. 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
@@ -134,7 +153,7 @@ curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
 sudo apt install nimf nimf-libhangul
 
-# 만약 일본어, 중국어 등 다른언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+# 만약 일본어, 중국어 등 다른 언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
 # Install additional packages as follows if you want to use other languages(Japanese, Chinese, etc.)
 sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 
@@ -152,7 +171,7 @@ curl -sL https://apt.hamonikr.org/setup_hamonikr.sun | sudo -E bash -
 ```
 sudo apt install nimf nimf-libhangul
 ```
-만약 일본어, 중국어 등 다른언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+만약 일본어, 중국어 등 다른 언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
 ```
 sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 ```
