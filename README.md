@@ -61,7 +61,7 @@ im-config -n nimf
 sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 ```
 
-* Ubuntu (>= 20.04)
+* Ubuntu (>= 20.04), Debian (bullseye), LMDE 5(Elsie)
 ```
 # The ibus-daemon start automatically at Ubuntu 21.10.
 # Input method conflict
