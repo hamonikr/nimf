@@ -1,3 +1,9 @@
+nimf (1.3.0hamonikr40.9) stable; urgency=medium
+
+  * Relese for debian 12 bookworm
+
+ -- HamoniKRTeam <pkg@hamonikr.org>  Thu, 24 Nov 2022 19:57:21 +0900
+
 nimf (1.3.0hamonikr40.8) stable; urgency=medium
 
   * Relese for Ubuntu 22.04 jammy

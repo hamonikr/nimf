@@ -99,9 +99,9 @@ Description: Chinese input module for Nimf, based on rime
  .
  This package provides a Chinese input module based on rime.
 
-Package: qtbase-abi-5-9-5-dummy
+Package: qtbase-abi-5-12-8-dummy
 Architecture: any
 Depends: libqt5core5a
-Provides: qtbase-abi-5-9-5
-Description: Dummy package for Debian Buster
- This package provides a dummy qtbase-abi-5-9-5 for Debian Buster.
+Provides: qtbase-abi-5-12-8
+Description: Dummy package for Debian bookworm
+ This package provides a dummy qtbase-abi-5-12-8 for Debian bookworm.
