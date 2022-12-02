@@ -180,9 +180,33 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 im-config -n nimf
 ```
 
-## Manjaro
-* https://github.com/hamonikr/nimf/wiki/Manjaro-build
+## Arch Linux, Manjaro
+1) Download and Install
+```
+# install libhangul-git
+# https://aur.archlinux.org/packages/libhangul-git
 
+wget https://github.com/hamonikr/nimf/releases/download/1.3.0hamonikr40.8/libhangul-git-0.1.0.r73.a3d8eb6-1-x86_64.pkg.tar.zst
+
+sudo pacman -U ./libhangul-git-0.1.0.r73.a3d8eb6-1-x86_64.pkg.tar.zst
+
+
+# install nimf
+wget https://github.com/hamonikr/nimf/releases/download/1.3.0hamonikr40.8/nimf-1.3.0.r29.213edaf-1-any.pkg.tar.zst
+
+sudo pacman -U ./nimf-1.3.0.r29.213edaf-1-any.pkg.tar.zst
+```
+
+2) im setting
+```
+vi ~/.xprofile
+
+export GTK_IM_MODULE=nimf
+export QT4_IM_MODULE="nimf"
+export QT_IM_MODULE=nimf
+export XMODIFIERS="@im=nimf"
+nimf
+```
 ## CentOS 8
 * https://blog.naver.com/dfnk5516/222074913406
 

@@ -1,41 +1,36 @@
-#
-# PKGBUILD
-# This file is part of Nimf.
-# Author: Hodong Kim
-# Unlike other files in the Nimf project,
-# this PKGBUILD file is in the public domain.
-
 pkgname=nimf
-pkgver=1.1
-pkgrel=2
+pkgver=1.3.0.r29.213edaf
+pkgrel=1
 pkgdesc="Nimf is an input method framework."
 arch=('any')
 url="https://github.com/hamonikr/nimf"
 license=('LGPL3')
 makedepends=('binutils' 'autoconf' 'automake' 'gcc' 'make' 'glib2' 'intltool'
              'gtk3' 'gtk2' 'qt5-base' 'libappindicator-gtk3' 'librsvg'
-             'noto-fonts-cjk' 'libhangul' 'anthy' 'librime' 'libxkbcommon'
+             'noto-fonts-cjk' 'libhangul-git' 'anthy' 'librime' 'libxkbcommon'
              'wayland' 'libxklavier' 'm17n-lib' 'm17n-db' 'gtk-doc')
-depends=('glib2' 'gtk3' 'gtk2' 'qt5-base' 'libappindicator-gtk3' 'libhangul'
+depends=('glib2' 'gtk3' 'gtk2' 'qt5-base' 'libappindicator-gtk3' 'libhangul-git'
          'anthy' 'librime' 'libxkbcommon' 'wayland' 'libxklavier' 'm17n-lib'
          'm17n-db')
+provides=('nimf-git')
+conflicts=('nimf-git')         
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts')
-source=("https://github.com/hamonikr/nimf/archive/${pkgver}.tar.gz")
-md5sums=('d1141369686a3dd2924474f70525a92f')
+source=("git+https://github.com//hamonikr/nimf.git")
+md5sums=('SKIP')
 
 pkgver() {
-	cd "$srcdir/nimf-$pkgver"
-	grep AC_INIT configure.ac | grep -Po '\d{4}.\d{2}.\d{2}'
+	cd nimf
+	printf "%s" "$(git describe --long | sed 's/nimf-//' | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
 }
 
 build() {
-	cd "$srcdir/nimf-$pkgver"
+	cd nimf
 	./autogen.sh --prefix=/usr --enable-gtk-doc
-	make -j 4
+	make -j $(nproc)
 }
 
 package() {
-	cd "$srcdir/nimf-$pkgver"
+	cd nimf
 	make DESTDIR="${pkgdir}/" install
 }
