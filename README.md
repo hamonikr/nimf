@@ -97,18 +97,19 @@ im-config -n nimf
  
  1) Download and Install
 ```
-# install libhangul-git
-# https://aur.archlinux.org/packages/libhangul-git
+# Install latest libhangul-git
+git clone https://aur.archlinux.org/libhangul-git.git
 
-wget https://github.com/hamonikr/nimf/releases/download/1.3.0hamonikr40.8/libhangul-git-0.1.0.r73.a3d8eb6-1-x86_64.pkg.tar.zst
+cd libhangul-git
 
-sudo pacman -U ./libhangul-git-0.1.0.r73.a3d8eb6-1-x86_64.pkg.tar.zst
+makepag -si 
 
+# Install nimf
+git clone https://github.com/hamonikr/nimf.git
 
-# install nimf
-wget https://github.com/hamonikr/nimf/releases/download/1.3.0hamonikr40.8/nimf-1.3.0.r29.213edaf-1-any.pkg.tar.zst
+cd nimf
 
-sudo pacman -U ./nimf-1.3.0.r29.213edaf-1-any.pkg.tar.zst
+makepag -si 
 ```
 
  2) im setting
@@ -211,18 +212,19 @@ im-config -n nimf
 ## 아치 리눅스, 만자로
 1) 패키지 다운로드 및 설치
 ```
-# install libhangul-git
-# https://aur.archlinux.org/packages/libhangul-git
+# 최신 libhangul-git 패키지 설치
+git clone https://aur.archlinux.org/libhangul-git.git
 
-wget https://github.com/hamonikr/nimf/releases/download/1.3.0hamonikr40.8/libhangul-git-0.1.0.r73.a3d8eb6-1-x86_64.pkg.tar.zst
+cd libhangul-git
 
-sudo pacman -U ./libhangul-git-0.1.0.r73.a3d8eb6-1-x86_64.pkg.tar.zst
+makepag -si 
 
+# nimf 설치
+git clone https://github.com/hamonikr/nimf.git
 
-# install nimf
-wget https://github.com/hamonikr/nimf/releases/download/1.3.0hamonikr40.8/nimf-1.3.0.r29.213edaf-1-any.pkg.tar.zst
+cd nimf
 
-sudo pacman -U ./nimf-1.3.0.r29.213edaf-1-any.pkg.tar.zst
+makepag -si 
 ```
 
 2) 입력기 설정
