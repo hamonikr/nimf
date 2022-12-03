@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="NimfService">
+<refmeta>
+<refentrytitle role="top_of_page" id="NimfService.top_of_page">NimfService</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>NimfService</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="NimfService.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-service-start">nimf_service_start</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-service-stop">nimf_service_stop</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-service-is-active">nimf_service_is_active</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type">const <link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-service-get-id">nimf_service_get_id</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-service-change-engine-by-id">nimf_service_change_engine_by_id</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-service-change-engine">nimf_service_change_engine</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfService.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="other_proto_type" colwidth="150px"/>
+<colspec colname="other_proto_name"/>
+<tbody>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="NimfServiceClass">NimfServiceClass</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfService.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<screen>    <link linkend="GObject">GObject</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> NimfService
+</screen>
+</refsect1>
+
+
+<refsect1 id="NimfService.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="NimfService.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-service-start" role="function">
+<title>nimf_service_start&#160;()</title>
+<indexterm zone="nimf-service-start"><primary sortas="service_start">nimf_service_start</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+nimf_service_start (<parameter><link linkend="NimfService"><type>NimfService</type></link> *service</parameter>);</programlisting>
+<para>Starts <parameter>service</parameter>
+.</para>
+<refsect3 id="nimf-service-start.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>service</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfService"><type>NimfService</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-service-start.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if a service is started.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-service-stop" role="function">
+<title>nimf_service_stop&#160;()</title>
+<indexterm zone="nimf-service-stop"><primary sortas="service_stop">nimf_service_stop</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_service_stop (<parameter><link linkend="NimfService"><type>NimfService</type></link> *service</parameter>);</programlisting>
+<para>Stops a <parameter>service</parameter>
+.</para>
+<refsect3 id="nimf-service-stop.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>service</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfService"><type>NimfService</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-service-is-active" role="function">
+<title>nimf_service_is_active&#160;()</title>
+<indexterm zone="nimf-service-is-active"><primary sortas="service_is_active">nimf_service_is_active</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+nimf_service_is_active (<parameter><link linkend="NimfService"><type>NimfService</type></link> *service</parameter>);</programlisting>
+<refsect3 id="nimf-service-is-active.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>service</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfService"><type>NimfService</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-service-is-active.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if a service is active</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-service-get-id" role="function">
+<title>nimf_service_get_id&#160;()</title>
+<indexterm zone="nimf-service-get-id"><primary sortas="service_get_id">nimf_service_get_id</primary></indexterm>
+<programlisting language="C">const <link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+nimf_service_get_id (<parameter><link linkend="NimfService"><type>NimfService</type></link> *service</parameter>);</programlisting>
+<para>Gets the ID of a <parameter>service</parameter>
+.</para>
+<refsect3 id="nimf-service-get-id.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>service</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfService"><type>NimfService</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-service-get-id.returns" role="returns">
+<title>Returns</title>
+<para> the ID of a service</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-service-change-engine-by-id" role="function">
+<title>nimf_service_change_engine_by_id&#160;()</title>
+<indexterm zone="nimf-service-change-engine-by-id"><primary sortas="service_change_engine_by_id">nimf_service_change_engine_by_id</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_service_change_engine_by_id (<parameter><link linkend="NimfService"><type>NimfService</type></link> *service</parameter>,
+                                  <parameter>const <link linkend="gchar"><type>gchar</type></link> *engine_id</parameter>);</programlisting>
+<refsect3 id="nimf-service-change-engine-by-id.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>service</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfService"><type>NimfService</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-service-change-engine" role="function">
+<title>nimf_service_change_engine&#160;()</title>
+<indexterm zone="nimf-service-change-engine"><primary sortas="service_change_engine">nimf_service_change_engine</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_service_change_engine (<parameter><link linkend="NimfService"><type>NimfService</type></link> *service</parameter>,
+                            <parameter>const <link linkend="gchar"><type>gchar</type></link> *engine_id</parameter>,
+                            <parameter>const <link linkend="gchar"><type>gchar</type></link> *method_id</parameter>);</programlisting>
+<refsect3 id="nimf-service-change-engine.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>service</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfService"><type>NimfService</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>method_id</para></entry>
+<entry role="parameter_description"><para>method id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="NimfService.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="NimfServiceClass" role="struct">
+<title>struct NimfServiceClass</title>
+<indexterm zone="NimfServiceClass"><primary sortas="ServiceClass">NimfServiceClass</primary></indexterm>
+<programlisting language="C">struct NimfServiceClass {
+  /* Virtual functions */
+  const gchar * (* get_id)              (NimfService *service);
+  gboolean      (* start)               (NimfService *service);
+  void          (* stop)                (NimfService *service);
+  gboolean      (* is_active)           (NimfService *service);
+  void          (* change_engine_by_id) (NimfService *service,
+                                         const gchar *engine_id);
+  void          (* change_engine)       (NimfService *service,
+                                         const gchar *engine_id,
+                                         const gchar *method_id);
+};
+</programlisting>
+<refsect3 id="NimfServiceClass.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfServiceClass.get-id">get_id</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Returns a service id.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfServiceClass.start">start</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Starts a service.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfServiceClass.stop">stop</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Stops a service.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfServiceClass.is-active">is_active</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Whether a service is active or not</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfServiceClass.change-engine-by-id">change_engine_by_id</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Changes an engine by engine id.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfServiceClass.change-engine">change_engine</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Changes an engine with engine id and method id.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+
+</refsect1>
+
+</refentry>

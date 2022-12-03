@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="NimfServer">
+<refmeta>
+<refentrytitle role="top_of_page" id="NimfServer.top_of_page">NimfServer</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>NimfServer</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="NimfServer.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-server-change-engine-by-id">nimf_server_change_engine_by_id</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-server-change-engine">nimf_server_change_engine</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;**
+</entry><entry role="function_name"><link linkend="nimf-server-get-loaded-engine-ids">nimf_server_get_loaded_engine_ids</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfServer"><returnvalue>NimfServer</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-server-get-default">nimf_server_get_default</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfPreeditable"><returnvalue>NimfPreeditable</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-server-get-preeditable">nimf_server_get_preeditable</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfServer.signals" role="signal_proto">
+<title role="signal_proto.title">Signals</title>
+<informaltable frame="none">
+<tgroup cols="3">
+<colspec colname="signal_proto_type" colwidth="150px"/>
+<colspec colname="signal_proto_name" colwidth="300px"/>
+<colspec colname="signal_proto_flags" colwidth="200px"/>
+<tbody>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfServer-engine-changed">engine-changed</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfServer-engine-loaded">engine-loaded</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfServer-engine-status-changed">engine-status-changed</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfServer-engine-unloaded">engine-unloaded</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfServer.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<screen>    <link linkend="GObject">GObject</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> NimfServer
+</screen>
+</refsect1>
+
+
+<refsect1 id="NimfServer.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="NimfServer.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-server-change-engine-by-id" role="function">
+<title>nimf_server_change_engine_by_id&#160;()</title>
+<indexterm zone="nimf-server-change-engine-by-id"><primary sortas="server_change_engine_by_id">nimf_server_change_engine_by_id</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_server_change_engine_by_id (<parameter><link linkend="NimfServer"><type>NimfServer</type></link> *server</parameter>,
+                                 <parameter>const <link linkend="gchar"><type>gchar</type></link> *engine_id</parameter>);</programlisting>
+<para>Changes the last focused engine to the engine with the given ID.</para>
+<refsect3 id="nimf-server-change-engine-by-id.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-server-change-engine" role="function">
+<title>nimf_server_change_engine&#160;()</title>
+<indexterm zone="nimf-server-change-engine"><primary sortas="server_change_engine">nimf_server_change_engine</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_server_change_engine (<parameter><link linkend="NimfServer"><type>NimfServer</type></link> *server</parameter>,
+                           <parameter>const <link linkend="gchar"><type>gchar</type></link> *engine_id</parameter>,
+                           <parameter>const <link linkend="gchar"><type>gchar</type></link> *method_id</parameter>);</programlisting>
+<refsect3 id="nimf-server-change-engine.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>method_id</para></entry>
+<entry role="parameter_description"><para>method id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-server-get-loaded-engine-ids" role="function">
+<title>nimf_server_get_loaded_engine_ids&#160;()</title>
+<indexterm zone="nimf-server-get-loaded-engine-ids"><primary sortas="server_get_loaded_engine_ids">nimf_server_get_loaded_engine_ids</primary></indexterm>
+<programlisting language="C"><link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;**
+nimf_server_get_loaded_engine_ids (<parameter><link linkend="NimfServer"><type>NimfServer</type></link> *server</parameter>);</programlisting>
+<para>The array is <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated.</para>
+<refsect3 id="nimf-server-get-loaded-engine-ids.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-server-get-loaded-engine-ids.returns" role="returns">
+<title>Returns</title>
+<para>a new <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated engine id array. </para>
+<para><emphasis role="annotation">[<acronym>transfer full</acronym>]</emphasis></para>
+</refsect3></refsect2>
+<refsect2 id="nimf-server-get-default" role="function">
+<title>nimf_server_get_default&#160;()</title>
+<indexterm zone="nimf-server-get-default"><primary sortas="server_get_default">nimf_server_get_default</primary></indexterm>
+<programlisting language="C"><link linkend="NimfServer"><returnvalue>NimfServer</returnvalue></link>&#160;*
+nimf_server_get_default (<parameter><type>void</type></parameter>);</programlisting>
+<para>Returns the default <link linkend="NimfServer"><type>NimfServer</type></link> instance.</para>
+<para>If there is no default server then <link linkend="NULL:CAPS"><literal>NULL</literal></link> is returned.</para>
+<refsect3 id="nimf-server-get-default.returns" role="returns">
+<title>Returns</title>
+<para>the default server, or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if server is not
+running. </para>
+<para><emphasis role="annotation">[<acronym>transfer none</acronym>]</emphasis></para>
+</refsect3></refsect2>
+<refsect2 id="nimf-server-get-preeditable" role="function">
+<title>nimf_server_get_preeditable&#160;()</title>
+<indexterm zone="nimf-server-get-preeditable"><primary sortas="server_get_preeditable">nimf_server_get_preeditable</primary></indexterm>
+<programlisting language="C"><link linkend="NimfPreeditable"><returnvalue>NimfPreeditable</returnvalue></link>&#160;*
+nimf_server_get_preeditable (<parameter><link linkend="NimfServer"><type>NimfServer</type></link> *server</parameter>);</programlisting>
+<para>Returns the <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link> instance.</para>
+<para>If there is no default preeditable then <link linkend="NULL:CAPS"><literal>NULL</literal></link> is returned.</para>
+<refsect3 id="nimf-server-get-preeditable.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-server-get-preeditable.returns" role="returns">
+<title>Returns</title>
+<para>a <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link>, or <link linkend="NULL:CAPS"><literal>NULL</literal></link>. </para>
+<para><emphasis role="annotation">[<acronym>transfer none</acronym>]</emphasis></para>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="NimfServer.signal-details" role="signals">
+<title role="signals.title">Signal Details</title>
+<refsect2 id="NimfServer-engine-changed" role="signal"><title>The <literal>“engine-changed”</literal> signal</title>
+<indexterm zone="NimfServer-engine-changed"><primary sortas="Server::engine-changed">NimfServer::engine-changed</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
+               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
+               <link linkend="gchar"><type>gchar</type></link>      *icon_name,
+               <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
+<para>The <link linkend="NimfServer-engine-changed"><type>“engine-changed”</type></link> signal is emitted when the engine is
+changed.</para>
+<refsect3 id="NimfServer-engine-changed.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>icon_name</para></entry>
+<entry role="parameter_description"><para>icon name</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfServer-engine-loaded" role="signal"><title>The <literal>“engine-loaded”</literal> signal</title>
+<indexterm zone="NimfServer-engine-loaded"><primary sortas="Server::engine-loaded">NimfServer::engine-loaded</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
+               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
+               <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
+<para>The <link linkend="NimfServer-engine-loaded"><type>“engine-loaded”</type></link> signal is emitted when the engine is loaded.</para>
+<refsect3 id="NimfServer-engine-loaded.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfServer-engine-status-changed" role="signal"><title>The <literal>“engine-status-changed”</literal> signal</title>
+<indexterm zone="NimfServer-engine-status-changed"><primary sortas="Server::engine-status-changed">NimfServer::engine-status-changed</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
+               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
+               <link linkend="gchar"><type>gchar</type></link>      *icon_name,
+               <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
+<para>The <link linkend="NimfServer-engine-status-changed"><type>“engine-status-changed”</type></link> signal is emitted when the engine
+status is changed.</para>
+<refsect3 id="NimfServer-engine-status-changed.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>icon_name</para></entry>
+<entry role="parameter_description"><para>icon name</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfServer-engine-unloaded" role="signal"><title>The <literal>“engine-unloaded”</literal> signal</title>
+<indexterm zone="NimfServer-engine-unloaded"><primary sortas="Server::engine-unloaded">NimfServer::engine-unloaded</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
+               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
+               <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
+<para>The <link linkend="NimfServer-engine-unloaded"><type>“engine-unloaded”</type></link> signal is emitted when the engine is
+unloaded.</para>
+<refsect3 id="NimfServer-engine-unloaded.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>server</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServer"><type>NimfServer</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>engine_id</para></entry>
+<entry role="parameter_description"><para>engine id</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2>
+</refsect1>
+
+</refentry>

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="nimf-settings">
+<refmeta>
+<refentrytitle role="top_of_page" id="nimf-settings.top_of_page">nimf-settings</refentrytitle>
+<manvolnum>1</manvolnum>
+<refmiscinfo>User Commands</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>nimf-settings</refname>
+<refpurpose>Tool for setting up Nimf</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+<cmdsynopsis><command>nimf-settings</command>
+<arg choice="opt" rep="repeat"><replaceable>OPTIONS</replaceable></arg>
+</cmdsynopsis>
+</refsynopsisdiv>
+<refsect1 id="nimf-settings.description" role="desc">
+<title role="desc.title">Description</title>
+<para>nimf-settings is a GUI tool for configuring nimf.</para>
+
+</refsect1>
+<refsect1>
+<title>Options</title>
+<variablelist>
+<varlistentry>
+<term><option>-h</option>
+, <option> --help</option>
+</term>
+<listitem><para>Show help messages
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><option>--help-all</option>
+</term>
+<listitem><para>Show all options
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><option>--help-gapplication</option>
+</term>
+<listitem><para>Show GApplication options
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><option>--gapplication-service</option>
+</term>
+<listitem><para>Enter GApplication service mode. Currently this
+option is used to trigger the nimf indicator.
+</para></listitem>
+</varlistentry>
+</variablelist></refsect1>
+<refsect1 id="nimf-settings.exit-status">
+<title>Exit Status</title>
+<para> 0 on success, non-zero on failure</para>
+
+</refsect1>
+<refsect1 id="nimf-settings.see-also">
+<title>See Also</title>
+<para>nimf(1)</para>
+
+</refsect1>
+
+</refentry>

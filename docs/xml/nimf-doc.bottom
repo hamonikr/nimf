@@ -1,0 +1,11 @@
+    <xi:include href="xml/nimf-candidatable.xml"/>
+    <xi:include href="xml/nimf-engine.xml"/>
+    <xi:include href="xml/nimf-events.xml"/>
+    <xi:include href="xml/nimf-im.xml"/>
+    <xi:include href="xml/nimf-key-syms.xml"/>
+    <xi:include href="xml/nimf-preeditable.xml"/>
+    <xi:include href="xml/nimf-server.xml"/>
+    <xi:include href="xml/nimf-service.xml"/>
+    <xi:include href="xml/nimf-service-ic.xml"/>
+    <xi:include href="xml/nimf-types.xml"/>
+    <xi:include href="xml/nimf-utils.xml"/>

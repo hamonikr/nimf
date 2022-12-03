@@ -1,11 +1,11 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  2020.04.28
+Version:  1.3.1
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
-URL:      https://gitlab.com/nimf-i18n/nimf
-Source0:  https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2
+URL:      https://github.com/hamonikr/nimf
+Source0:  https://github.com/hamonikr/nimf/archive/master.tar.gz
 
 BuildRequires: gcc-c++
 BuildRequires: libtool

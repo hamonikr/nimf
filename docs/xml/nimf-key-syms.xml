@@ -1,0 +1,931 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="nimf-key-syms">
+<refmeta>
+<refentrytitle role="top_of_page" id="nimf-key-syms.top_of_page">Key symbols</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>Key symbols</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="nimf-key-syms.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="other_proto_type" colwidth="150px"/>
+<colspec colname="other_proto_name"/>
+<tbody>
+<row><entry role="datatype_keyword">enum</entry><entry role="function_name"><link linkend="NimfKeySym">NimfKeySym</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+
+
+<refsect1 id="nimf-key-syms.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="nimf-key-syms.functions_details" role="details">
+<title role="details.title">Functions</title>
+<para />
+</refsect1>
+<refsect1 id="nimf-key-syms.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="NimfKeySym" role="enum">
+<title>enum NimfKeySym</title>
+<indexterm zone="NimfKeySym"><primary sortas="KeySym">NimfKeySym</primary></indexterm>
+<refsect3 id="NimfKeySym.members" role="enum_members">
+<title>Members</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="enum_members_name" colwidth="300px"/>
+<colspec colname="enum_members_description"/>
+<colspec colname="enum_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-space">NIMF_KEY_space</para></entry>
+<entry role="enum_member_description"><para>space</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-exclam">NIMF_KEY_exclam</para></entry>
+<entry role="enum_member_description"><para>exclam</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-quotedbl">NIMF_KEY_quotedbl</para></entry>
+<entry role="enum_member_description"><para>quotedbl</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-numbersign">NIMF_KEY_numbersign</para></entry>
+<entry role="enum_member_description"><para>numbersign</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-dollar">NIMF_KEY_dollar</para></entry>
+<entry role="enum_member_description"><para>dollar</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-percent">NIMF_KEY_percent</para></entry>
+<entry role="enum_member_description"><para>percent</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-ampersand">NIMF_KEY_ampersand</para></entry>
+<entry role="enum_member_description"><para>ampersand</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-apostrophe">NIMF_KEY_apostrophe</para></entry>
+<entry role="enum_member_description"><para>apostrophe</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-parenleft">NIMF_KEY_parenleft</para></entry>
+<entry role="enum_member_description"><para>parenleft</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-parenright">NIMF_KEY_parenright</para></entry>
+<entry role="enum_member_description"><para>parenright</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-asterisk">NIMF_KEY_asterisk</para></entry>
+<entry role="enum_member_description"><para>asterisk</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-plus">NIMF_KEY_plus</para></entry>
+<entry role="enum_member_description"><para>plus</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-comma">NIMF_KEY_comma</para></entry>
+<entry role="enum_member_description"><para>comma</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-minus">NIMF_KEY_minus</para></entry>
+<entry role="enum_member_description"><para>minus</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-period">NIMF_KEY_period</para></entry>
+<entry role="enum_member_description"><para>period</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-slash">NIMF_KEY_slash</para></entry>
+<entry role="enum_member_description"><para>slash</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-0:CAPS">NIMF_KEY_0</para></entry>
+<entry role="enum_member_description"><para>0</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-1:CAPS">NIMF_KEY_1</para></entry>
+<entry role="enum_member_description"><para>1</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-2:CAPS">NIMF_KEY_2</para></entry>
+<entry role="enum_member_description"><para>2</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-3:CAPS">NIMF_KEY_3</para></entry>
+<entry role="enum_member_description"><para>3</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-4:CAPS">NIMF_KEY_4</para></entry>
+<entry role="enum_member_description"><para>4</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-5:CAPS">NIMF_KEY_5</para></entry>
+<entry role="enum_member_description"><para>5</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-6:CAPS">NIMF_KEY_6</para></entry>
+<entry role="enum_member_description"><para>6</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-7:CAPS">NIMF_KEY_7</para></entry>
+<entry role="enum_member_description"><para>7</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-8:CAPS">NIMF_KEY_8</para></entry>
+<entry role="enum_member_description"><para>8</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-9:CAPS">NIMF_KEY_9</para></entry>
+<entry role="enum_member_description"><para>9</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-colon">NIMF_KEY_colon</para></entry>
+<entry role="enum_member_description"><para>colon</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-semicolon">NIMF_KEY_semicolon</para></entry>
+<entry role="enum_member_description"><para>semicolon</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-less">NIMF_KEY_less</para></entry>
+<entry role="enum_member_description"><para>less</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-equal">NIMF_KEY_equal</para></entry>
+<entry role="enum_member_description"><para>equal</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-greater">NIMF_KEY_greater</para></entry>
+<entry role="enum_member_description"><para>greater</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-question">NIMF_KEY_question</para></entry>
+<entry role="enum_member_description"><para>question</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-at">NIMF_KEY_at</para></entry>
+<entry role="enum_member_description"><para>at</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-A:CAPS">NIMF_KEY_A</para></entry>
+<entry role="enum_member_description"><para>A</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-B:CAPS">NIMF_KEY_B</para></entry>
+<entry role="enum_member_description"><para>B</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-C:CAPS">NIMF_KEY_C</para></entry>
+<entry role="enum_member_description"><para>C</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-D:CAPS">NIMF_KEY_D</para></entry>
+<entry role="enum_member_description"><para>D</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-E:CAPS">NIMF_KEY_E</para></entry>
+<entry role="enum_member_description"><para>E</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F:CAPS">NIMF_KEY_F</para></entry>
+<entry role="enum_member_description"><para>F</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-G:CAPS">NIMF_KEY_G</para></entry>
+<entry role="enum_member_description"><para>G</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-H:CAPS">NIMF_KEY_H</para></entry>
+<entry role="enum_member_description"><para>H</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-I:CAPS">NIMF_KEY_I</para></entry>
+<entry role="enum_member_description"><para>I</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-J:CAPS">NIMF_KEY_J</para></entry>
+<entry role="enum_member_description"><para>J</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-K:CAPS">NIMF_KEY_K</para></entry>
+<entry role="enum_member_description"><para>K</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-L:CAPS">NIMF_KEY_L</para></entry>
+<entry role="enum_member_description"><para>L</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-M:CAPS">NIMF_KEY_M</para></entry>
+<entry role="enum_member_description"><para>M</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-N:CAPS">NIMF_KEY_N</para></entry>
+<entry role="enum_member_description"><para>N</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-O:CAPS">NIMF_KEY_O</para></entry>
+<entry role="enum_member_description"><para>O</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-P:CAPS">NIMF_KEY_P</para></entry>
+<entry role="enum_member_description"><para>P</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Q:CAPS">NIMF_KEY_Q</para></entry>
+<entry role="enum_member_description"><para>Q</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-R:CAPS">NIMF_KEY_R</para></entry>
+<entry role="enum_member_description"><para>R</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-S:CAPS">NIMF_KEY_S</para></entry>
+<entry role="enum_member_description"><para>S</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-T:CAPS">NIMF_KEY_T</para></entry>
+<entry role="enum_member_description"><para>T</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-U:CAPS">NIMF_KEY_U</para></entry>
+<entry role="enum_member_description"><para>U</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-V:CAPS">NIMF_KEY_V</para></entry>
+<entry role="enum_member_description"><para>V</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-W:CAPS">NIMF_KEY_W</para></entry>
+<entry role="enum_member_description"><para>W</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-X:CAPS">NIMF_KEY_X</para></entry>
+<entry role="enum_member_description"><para>X</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Y:CAPS">NIMF_KEY_Y</para></entry>
+<entry role="enum_member_description"><para>Y</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Z:CAPS">NIMF_KEY_Z</para></entry>
+<entry role="enum_member_description"><para>Z</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-bracketleft">NIMF_KEY_bracketleft</para></entry>
+<entry role="enum_member_description"><para>bracketleft</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-backslash">NIMF_KEY_backslash</para></entry>
+<entry role="enum_member_description"><para>backslash</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-bracketright">NIMF_KEY_bracketright</para></entry>
+<entry role="enum_member_description"><para>bracketright</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-asciicircum">NIMF_KEY_asciicircum</para></entry>
+<entry role="enum_member_description"><para>asciicircum</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-underscore">NIMF_KEY_underscore</para></entry>
+<entry role="enum_member_description"><para>underscore</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-grave">NIMF_KEY_grave</para></entry>
+<entry role="enum_member_description"><para>grave</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-a">NIMF_KEY_a</para></entry>
+<entry role="enum_member_description"><para>a</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-b">NIMF_KEY_b</para></entry>
+<entry role="enum_member_description"><para>b</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-c">NIMF_KEY_c</para></entry>
+<entry role="enum_member_description"><para>c</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-d">NIMF_KEY_d</para></entry>
+<entry role="enum_member_description"><para>d</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-e">NIMF_KEY_e</para></entry>
+<entry role="enum_member_description"><para>e</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-f">NIMF_KEY_f</para></entry>
+<entry role="enum_member_description"><para>f</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-g">NIMF_KEY_g</para></entry>
+<entry role="enum_member_description"><para>g</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-h">NIMF_KEY_h</para></entry>
+<entry role="enum_member_description"><para>h</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-i">NIMF_KEY_i</para></entry>
+<entry role="enum_member_description"><para>i</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-j">NIMF_KEY_j</para></entry>
+<entry role="enum_member_description"><para>j</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-k">NIMF_KEY_k</para></entry>
+<entry role="enum_member_description"><para>k</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-l">NIMF_KEY_l</para></entry>
+<entry role="enum_member_description"><para>l</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-m">NIMF_KEY_m</para></entry>
+<entry role="enum_member_description"><para>m</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-n">NIMF_KEY_n</para></entry>
+<entry role="enum_member_description"><para>n</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-o">NIMF_KEY_o</para></entry>
+<entry role="enum_member_description"><para>o</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-p">NIMF_KEY_p</para></entry>
+<entry role="enum_member_description"><para>p</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-q">NIMF_KEY_q</para></entry>
+<entry role="enum_member_description"><para>q</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-r">NIMF_KEY_r</para></entry>
+<entry role="enum_member_description"><para>r</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-s">NIMF_KEY_s</para></entry>
+<entry role="enum_member_description"><para>s</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-t">NIMF_KEY_t</para></entry>
+<entry role="enum_member_description"><para>t</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-u">NIMF_KEY_u</para></entry>
+<entry role="enum_member_description"><para>u</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-v">NIMF_KEY_v</para></entry>
+<entry role="enum_member_description"><para>v</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-w">NIMF_KEY_w</para></entry>
+<entry role="enum_member_description"><para>w</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-x">NIMF_KEY_x</para></entry>
+<entry role="enum_member_description"><para>x</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-y">NIMF_KEY_y</para></entry>
+<entry role="enum_member_description"><para>y</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-z">NIMF_KEY_z</para></entry>
+<entry role="enum_member_description"><para>z</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-braceleft">NIMF_KEY_braceleft</para></entry>
+<entry role="enum_member_description"><para>braceleft</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-bar">NIMF_KEY_bar</para></entry>
+<entry role="enum_member_description"><para>bar</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-braceright">NIMF_KEY_braceright</para></entry>
+<entry role="enum_member_description"><para>braceright</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-asciitilde">NIMF_KEY_asciitilde</para></entry>
+<entry role="enum_member_description"><para>asciitilde</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-ISO-Level3-Shift">NIMF_KEY_ISO_Level3_Shift</para></entry>
+<entry role="enum_member_description"><para>ISO_Level3_Shift</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-ISO-Left-Tab">NIMF_KEY_ISO_Left_Tab</para></entry>
+<entry role="enum_member_description"><para>ISO_Left_Tab</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-BackSpace">NIMF_KEY_BackSpace</para></entry>
+<entry role="enum_member_description"><para>BackSpace</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Tab">NIMF_KEY_Tab</para></entry>
+<entry role="enum_member_description"><para>Tab</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Return">NIMF_KEY_Return</para></entry>
+<entry role="enum_member_description"><para>Return</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Pause">NIMF_KEY_Pause</para></entry>
+<entry role="enum_member_description"><para>Pause</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Scroll-Lock">NIMF_KEY_Scroll_Lock</para></entry>
+<entry role="enum_member_description"><para>Scroll_Lock</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Sys-Req">NIMF_KEY_Sys_Req</para></entry>
+<entry role="enum_member_description"><para>Sys_Req</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Escape">NIMF_KEY_Escape</para></entry>
+<entry role="enum_member_description"><para>Escape</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Multi-key">NIMF_KEY_Multi_key</para></entry>
+<entry role="enum_member_description"><para>Multi_key</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Kanji">NIMF_KEY_Kanji</para></entry>
+<entry role="enum_member_description"><para>Kanji</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Kana-Shift">NIMF_KEY_Kana_Shift</para></entry>
+<entry role="enum_member_description"><para>Kana_Shift</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Hangul">NIMF_KEY_Hangul</para></entry>
+<entry role="enum_member_description"><para>Hangul</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Hangul-Hanja">NIMF_KEY_Hangul_Hanja</para></entry>
+<entry role="enum_member_description"><para>Hangul_Hanja</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Home">NIMF_KEY_Home</para></entry>
+<entry role="enum_member_description"><para>Home</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Left">NIMF_KEY_Left</para></entry>
+<entry role="enum_member_description"><para>Left</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Up">NIMF_KEY_Up</para></entry>
+<entry role="enum_member_description"><para>Up</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Right">NIMF_KEY_Right</para></entry>
+<entry role="enum_member_description"><para>Right</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Down">NIMF_KEY_Down</para></entry>
+<entry role="enum_member_description"><para>Down</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Page-Up">NIMF_KEY_Page_Up</para></entry>
+<entry role="enum_member_description"><para>Page_Up</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Page-Down">NIMF_KEY_Page_Down</para></entry>
+<entry role="enum_member_description"><para>Page_Down</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-End">NIMF_KEY_End</para></entry>
+<entry role="enum_member_description"><para>End</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Print">NIMF_KEY_Print</para></entry>
+<entry role="enum_member_description"><para>Print</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Execute">NIMF_KEY_Execute</para></entry>
+<entry role="enum_member_description"><para>Execut</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Insert">NIMF_KEY_Insert</para></entry>
+<entry role="enum_member_description"><para>Insert</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Menu">NIMF_KEY_Menu</para></entry>
+<entry role="enum_member_description"><para>Menu</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Break">NIMF_KEY_Break</para></entry>
+<entry role="enum_member_description"><para>Break</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Enter">NIMF_KEY_KP_Enter</para></entry>
+<entry role="enum_member_description"><para>KP_Enter</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Left">NIMF_KEY_KP_Left</para></entry>
+<entry role="enum_member_description"><para>KP_Left</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Up">NIMF_KEY_KP_Up</para></entry>
+<entry role="enum_member_description"><para>KP_Up</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Right">NIMF_KEY_KP_Right</para></entry>
+<entry role="enum_member_description"><para>KP_Right</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Down">NIMF_KEY_KP_Down</para></entry>
+<entry role="enum_member_description"><para>KP_Down</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Page-Up">NIMF_KEY_KP_Page_Up</para></entry>
+<entry role="enum_member_description"><para>KP_Page_Up</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Page-Down">NIMF_KEY_KP_Page_Down</para></entry>
+<entry role="enum_member_description"><para>KP_Page_Down</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Delete">NIMF_KEY_KP_Delete</para></entry>
+<entry role="enum_member_description"><para>KP_Delete</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Multiply">NIMF_KEY_KP_Multiply</para></entry>
+<entry role="enum_member_description"><para>KP_Multiply</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Add">NIMF_KEY_KP_Add</para></entry>
+<entry role="enum_member_description"><para>KP_Add</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Subtract">NIMF_KEY_KP_Subtract</para></entry>
+<entry role="enum_member_description"><para>KP_Subtract</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Decimal">NIMF_KEY_KP_Decimal</para></entry>
+<entry role="enum_member_description"><para>KP_Decimal</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-Divide">NIMF_KEY_KP_Divide</para></entry>
+<entry role="enum_member_description"><para>KP_Divide</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-0:CAPS">NIMF_KEY_KP_0</para></entry>
+<entry role="enum_member_description"><para>KP_0</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-1:CAPS">NIMF_KEY_KP_1</para></entry>
+<entry role="enum_member_description"><para>KP_1</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-2:CAPS">NIMF_KEY_KP_2</para></entry>
+<entry role="enum_member_description"><para>KP_2</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-3:CAPS">NIMF_KEY_KP_3</para></entry>
+<entry role="enum_member_description"><para>KP_3</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-4:CAPS">NIMF_KEY_KP_4</para></entry>
+<entry role="enum_member_description"><para>KP_4</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-5:CAPS">NIMF_KEY_KP_5</para></entry>
+<entry role="enum_member_description"><para>KP_5</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-6:CAPS">NIMF_KEY_KP_6</para></entry>
+<entry role="enum_member_description"><para>KP_6</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-7:CAPS">NIMF_KEY_KP_7</para></entry>
+<entry role="enum_member_description"><para>KP_7</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-8:CAPS">NIMF_KEY_KP_8</para></entry>
+<entry role="enum_member_description"><para>KP_8</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-KP-9:CAPS">NIMF_KEY_KP_9</para></entry>
+<entry role="enum_member_description"><para>KP_9</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F1:CAPS">NIMF_KEY_F1</para></entry>
+<entry role="enum_member_description"><para>F1</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F2:CAPS">NIMF_KEY_F2</para></entry>
+<entry role="enum_member_description"><para>F2</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F3:CAPS">NIMF_KEY_F3</para></entry>
+<entry role="enum_member_description"><para>F3</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F4:CAPS">NIMF_KEY_F4</para></entry>
+<entry role="enum_member_description"><para>F4</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F5:CAPS">NIMF_KEY_F5</para></entry>
+<entry role="enum_member_description"><para>F5</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F6:CAPS">NIMF_KEY_F6</para></entry>
+<entry role="enum_member_description"><para>F6</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F7:CAPS">NIMF_KEY_F7</para></entry>
+<entry role="enum_member_description"><para>F7</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F8:CAPS">NIMF_KEY_F8</para></entry>
+<entry role="enum_member_description"><para>F8</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F9:CAPS">NIMF_KEY_F9</para></entry>
+<entry role="enum_member_description"><para>F9</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F10:CAPS">NIMF_KEY_F10</para></entry>
+<entry role="enum_member_description"><para>F10</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F11:CAPS">NIMF_KEY_F11</para></entry>
+<entry role="enum_member_description"><para>F11</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-F12:CAPS">NIMF_KEY_F12</para></entry>
+<entry role="enum_member_description"><para>F12</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Shift-L">NIMF_KEY_Shift_L</para></entry>
+<entry role="enum_member_description"><para>Shift_L</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Shift-R">NIMF_KEY_Shift_R</para></entry>
+<entry role="enum_member_description"><para>Shift_R</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Control-L">NIMF_KEY_Control_L</para></entry>
+<entry role="enum_member_description"><para>Control_L</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Control-R">NIMF_KEY_Control_R</para></entry>
+<entry role="enum_member_description"><para>Control_R</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Caps-Lock">NIMF_KEY_Caps_Lock</para></entry>
+<entry role="enum_member_description"><para>Caps_Lock</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Shift-Lock">NIMF_KEY_Shift_Lock</para></entry>
+<entry role="enum_member_description"><para>Shift_Lock</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Meta-L">NIMF_KEY_Meta_L</para></entry>
+<entry role="enum_member_description"><para>Meta_L</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Meta-R">NIMF_KEY_Meta_R</para></entry>
+<entry role="enum_member_description"><para>Meta_R</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Alt-L">NIMF_KEY_Alt_L</para></entry>
+<entry role="enum_member_description"><para>Alt_L</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Alt-R">NIMF_KEY_Alt_R</para></entry>
+<entry role="enum_member_description"><para>Alt_R</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Super-L">NIMF_KEY_Super_L</para></entry>
+<entry role="enum_member_description"><para>Super_L</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Super-R">NIMF_KEY_Super_R</para></entry>
+<entry role="enum_member_description"><para>Super_R</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-Delete">NIMF_KEY_Delete</para></entry>
+<entry role="enum_member_description"><para>Delete</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-VoidSymbol">NIMF_KEY_VoidSymbol</para></entry>
+<entry role="enum_member_description"><para>VoidSymbol</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-WakeUp">NIMF_KEY_WakeUp</para></entry>
+<entry role="enum_member_description"><para>WakeUp</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-WebCam">NIMF_KEY_WebCam</para></entry>
+<entry role="enum_member_description"><para>WebCam</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-KEY-WLAN:CAPS">NIMF_KEY_WLAN</para></entry>
+<entry role="enum_member_description"><para>WLAN</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+
+</refentry>

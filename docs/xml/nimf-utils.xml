@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="nimf-utils">
+<refmeta>
+<refentrytitle role="top_of_page" id="nimf-utils.top_of_page">Utility Functions</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>Utility Functions</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="nimf-utils.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type">const <link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-keyval-to-keysym-name">nimf_keyval_to_keysym_name</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-get-socket-path">nimf_get_socket_path</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+
+
+<refsect1 id="nimf-utils.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="nimf-utils.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-keyval-to-keysym-name" role="function">
+<title>nimf_keyval_to_keysym_name&#160;()</title>
+<indexterm zone="nimf-keyval-to-keysym-name"><primary sortas="keyval_to_keysym_name">nimf_keyval_to_keysym_name</primary></indexterm>
+<programlisting language="C">const <link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+nimf_keyval_to_keysym_name (<parameter><link linkend="guint"><type>guint</type></link> keyval</parameter>);</programlisting>
+<refsect3 id="nimf-keyval-to-keysym-name.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keyval</para></entry>
+<entry role="parameter_description"><para>a keyval</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-keyval-to-keysym-name.returns" role="returns">
+<title>Returns</title>
+<para> keysym name</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-get-socket-path" role="function">
+<title>nimf_get_socket_path&#160;()</title>
+<indexterm zone="nimf-get-socket-path"><primary sortas="get_socket_path">nimf_get_socket_path</primary></indexterm>
+<programlisting language="C"><link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+nimf_get_socket_path (<parameter><type>void</type></parameter>);</programlisting>
+<refsect3 id="nimf-get-socket-path.returns" role="returns">
+<title>Returns</title>
+<para> nimf socket path, which should be freed with <link linkend="g-free"><function>g_free()</function></link></para>
+</refsect3></refsect2>
+
+</refsect1>
+
+</refentry>

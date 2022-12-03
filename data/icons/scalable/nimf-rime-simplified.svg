@@ -1,1 +1,56 @@
-<svg id="레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#262933;}</style></defs><title>nimf-rime-simplified</title><rect class="cls-1" width="64" height="64" rx="12.22" ry="12.22"/><path class="cls-2" d="M25.51,36.58A39.87,39.87,0,0,1,14.8,52.07l-1.72-3.53a36.31,36.31,0,0,0,5.33-6,40.48,40.48,0,0,0,4-7.48ZM14.8,24A47.31,47.31,0,0,1,23,28.76l-1.85,3a44.5,44.5,0,0,0-8-4.64ZM17,13.06a47.05,47.05,0,0,1,8.09,5L23.14,21a42.14,42.14,0,0,0-7.87-4.82ZM49.76,52.19A33.41,33.41,0,0,1,39.18,43.9a46.62,46.62,0,0,1-13.29,8.38l-2.23-3.7A45,45,0,0,0,37,40.93c-1.64-2.62-5.16-8.39-7.53-22.45H27.83V15H48.51l1.76,1.68c-.9,9.2-3.09,16.55-6.62,22-.6.91-1.33,1.81-2,2.67a28.34,28.34,0,0,0,11,7.74ZM32.9,18.48c1.42,8.47,3.7,15.7,6.54,20a17,17,0,0,0,1.33-1.72c2.93-4.42,4.9-10.53,5.85-18.23Z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="레이어_1"
+   data-name="레이어 1"
+   viewBox="0 0 64 64"
+   version="1.1"
+   sodipodi:docname="nimf-rime-simplified.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview13"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="11.046875"
+     inkscape:cx="31.954738"
+     inkscape:cy="32"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="레이어_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#fff;}.cls-2{fill:#262933;}</style>
+  </defs>
+  <title
+     id="title6">nimf-rime-simplified</title>
+  <g
+     id="g35"
+     transform="matrix(0.85405272,0,0,0.8649272,4.5217796,4.5271006)">
+    <rect
+       class="cls-1"
+       width="64"
+       height="64"
+       rx="12.22"
+       ry="12.22"
+       id="rect8"
+       style="fill:#f9f9f9"
+       x="0"
+       y="0" />
+    <path
+       class="cls-2"
+       d="M 25.51,36.58 A 39.87,39.87 0 0 1 14.8,52.07 l -1.72,-3.53 a 36.31,36.31 0 0 0 5.33,-6 40.48,40.48 0 0 0 4,-7.48 z M 14.8,24 a 47.31,47.31 0 0 1 8.2,4.76 l -1.85,3 a 44.5,44.5 0 0 0 -8,-4.64 z M 17,13.06 a 47.05,47.05 0 0 1 8.09,5 L 23.14,21 A 42.14,42.14 0 0 0 15.27,16.18 Z M 49.76,52.19 A 33.41,33.41 0 0 1 39.18,43.9 46.62,46.62 0 0 1 25.89,52.28 l -2.23,-3.7 A 45,45 0 0 0 37,40.93 C 35.36,38.31 31.84,32.54 29.47,18.48 H 27.83 V 15 h 20.68 l 1.76,1.68 c -0.9,9.2 -3.09,16.55 -6.62,22 -0.6,0.91 -1.33,1.81 -2,2.67 a 28.34,28.34 0 0 0 11,7.74 z M 32.9,18.48 c 1.42,8.47 3.7,15.7 6.54,20 a 17,17 0 0 0 1.33,-1.72 c 2.93,-4.42 4.9,-10.53 5.85,-18.23 z"
+       id="path10" />
+  </g>
+</svg>

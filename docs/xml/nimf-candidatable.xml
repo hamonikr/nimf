@@ -1,0 +1,550 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="NimfCandidatable">
+<refmeta>
+<refentrytitle role="top_of_page" id="NimfCandidatable.top_of_page">NimfCandidatable</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>NimfCandidatable</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="NimfCandidatable.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-show">nimf_candidatable_show</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-hide">nimf_candidatable_hide</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-is-visible">nimf_candidatable_is_visible</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-clear">nimf_candidatable_clear</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-set-page-values">nimf_candidatable_set_page_values</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-append">nimf_candidatable_append</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gint"><returnvalue>gint</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-get-selected-index">nimf_candidatable_get_selected_index</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-candidatable-get-selected-text">nimf_candidatable_get_selected_text</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-select-first-item-in-page">nimf_candidatable_select_first_item_in_page</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-select-last-item-in-page">nimf_candidatable_select_last_item_in_page</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-select-item-by-index-in-page">nimf_candidatable_select_item_by_index_in_page</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-select-previous-item">nimf_candidatable_select_previous_item</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-select-next-item">nimf_candidatable_select_next_item</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-candidatable-set-auxiliary-text">nimf_candidatable_set_auxiliary_text</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfCandidatable.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="other_proto_type" colwidth="150px"/>
+<colspec colname="other_proto_name"/>
+<tbody>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="NIMF-TYPE-CANDIDATABLE:CAPS">NIMF_TYPE_CANDIDATABLE</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="NimfCandidatableInterface">NimfCandidatableInterface</link></entry></row>
+<row><entry role="datatype_keyword"></entry><entry role="function_name"><link linkend="NimfCandidatable-struct">NimfCandidatable</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfCandidatable.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<screen>    <link linkend="GInterface">GInterface</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> NimfCandidatable
+</screen>
+</refsect1>
+<refsect1 id="NimfCandidatable.prerequisites" role="prerequisites">
+<title role="prerequisites.title">Prerequisites</title>
+<para>
+NimfCandidatable requires
+ <link linkend="GObject">GObject</link>.</para>
+
+</refsect1>
+
+
+<refsect1 id="NimfCandidatable.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="NimfCandidatable.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-candidatable-show" role="function">
+<title>nimf_candidatable_show&#160;()</title>
+<indexterm zone="nimf-candidatable-show"><primary sortas="candidatable_show">nimf_candidatable_show</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_show (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>,
+                        <parameter><link linkend="NimfServiceIC"><type>NimfServiceIC</type></link> *target</parameter>,
+                        <parameter><link linkend="gboolean"><type>gboolean</type></link> show_entry</parameter>);</programlisting>
+<refsect3 id="nimf-candidatable-show.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>target</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServiceIC"><type>NimfServiceIC</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>show_entry</para></entry>
+<entry role="parameter_description"><para><link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the entry for auxiliary text should be shown</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-hide" role="function">
+<title>nimf_candidatable_hide&#160;()</title>
+<indexterm zone="nimf-candidatable-hide"><primary sortas="candidatable_hide">nimf_candidatable_hide</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_hide (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<para>Hides the candidatable</para>
+<refsect3 id="nimf-candidatable-hide.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-is-visible" role="function">
+<title>nimf_candidatable_is_visible&#160;()</title>
+<indexterm zone="nimf-candidatable-is-visible"><primary sortas="candidatable_is_visible">nimf_candidatable_is_visible</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+nimf_candidatable_is_visible (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<refsect3 id="nimf-candidatable-is-visible.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-candidatable-is-visible.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <parameter>candidatable</parameter>
+is visible</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-clear" role="function">
+<title>nimf_candidatable_clear&#160;()</title>
+<indexterm zone="nimf-candidatable-clear"><primary sortas="candidatable_clear">nimf_candidatable_clear</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_clear (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>,
+                         <parameter><link linkend="NimfServiceIC"><type>NimfServiceIC</type></link> *target</parameter>);</programlisting>
+<para>Clears the contents of the candidatable</para>
+<refsect3 id="nimf-candidatable-clear.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>target</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServiceIC"><type>NimfServiceIC</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-set-page-values" role="function">
+<title>nimf_candidatable_set_page_values&#160;()</title>
+<indexterm zone="nimf-candidatable-set-page-values"><primary sortas="candidatable_set_page_values">nimf_candidatable_set_page_values</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_set_page_values (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>,
+                                   <parameter><link linkend="NimfServiceIC"><type>NimfServiceIC</type></link> *target</parameter>,
+                                   <parameter><link linkend="gint"><type>gint</type></link> page_index</parameter>,
+                                   <parameter><link linkend="gint"><type>gint</type></link> n_pages</parameter>,
+                                   <parameter><link linkend="gint"><type>gint</type></link> page_size</parameter>);</programlisting>
+<para>Sets page values.</para>
+<refsect3 id="nimf-candidatable-set-page-values.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>target</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfServiceIC"><type>NimfServiceIC</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>page_index</para></entry>
+<entry role="parameter_description"><para>page index</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>n_pages</para></entry>
+<entry role="parameter_description"><para>the number of pages</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>page_size</para></entry>
+<entry role="parameter_description"><para>page size</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-append" role="function">
+<title>nimf_candidatable_append&#160;()</title>
+<indexterm zone="nimf-candidatable-append"><primary sortas="candidatable_append">nimf_candidatable_append</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_append (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>,
+                          <parameter>const <link linkend="gchar"><type>gchar</type></link> *text1</parameter>,
+                          <parameter>const <link linkend="gchar"><type>gchar</type></link> *text2</parameter>);</programlisting>
+<para>After appending a row, adds <parameter>text1</parameter>
+ to the first column and <parameter>text2</parameter>
+ to the
+second column.</para>
+<refsect3 id="nimf-candidatable-append.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>text1</para></entry>
+<entry role="parameter_description"><para>text for the first column; <parameter>text1</parameter>
+must be non-<link linkend="NULL:CAPS"><literal>NULL</literal></link>.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>text2</para></entry>
+<entry role="parameter_description"><para>text for the second column; <parameter>text2</parameter>
+allows <link linkend="NULL:CAPS"><literal>NULL</literal></link>. </para></entry>
+<entry role="parameter_annotations"><emphasis role="annotation">[<acronym>nullable</acronym>]</emphasis></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-get-selected-index" role="function">
+<title>nimf_candidatable_get_selected_index&#160;()</title>
+<indexterm zone="nimf-candidatable-get-selected-index"><primary sortas="candidatable_get_selected_index">nimf_candidatable_get_selected_index</primary></indexterm>
+<programlisting language="C"><link linkend="gint"><returnvalue>gint</returnvalue></link>
+nimf_candidatable_get_selected_index (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<refsect3 id="nimf-candidatable-get-selected-index.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-candidatable-get-selected-index.returns" role="returns">
+<title>Returns</title>
+<para> index of the selected row</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-get-selected-text" role="function">
+<title>nimf_candidatable_get_selected_text&#160;()</title>
+<indexterm zone="nimf-candidatable-get-selected-text"><primary sortas="candidatable_get_selected_text">nimf_candidatable_get_selected_text</primary></indexterm>
+<programlisting language="C"><link linkend="gchar"><returnvalue>gchar</returnvalue></link>&#160;*
+nimf_candidatable_get_selected_text (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<refsect3 id="nimf-candidatable-get-selected-text.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-candidatable-get-selected-text.returns" role="returns">
+<title>Returns</title>
+<para> text of the first column in the selected row</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-select-first-item-in-page" role="function">
+<title>nimf_candidatable_select_first_item_in_page&#160;()</title>
+<indexterm zone="nimf-candidatable-select-first-item-in-page"><primary sortas="candidatable_select_first_item_in_page">nimf_candidatable_select_first_item_in_page</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_select_first_item_in_page
+                               (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<para>Selects the first item in the page.</para>
+<refsect3 id="nimf-candidatable-select-first-item-in-page.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-select-last-item-in-page" role="function">
+<title>nimf_candidatable_select_last_item_in_page&#160;()</title>
+<indexterm zone="nimf-candidatable-select-last-item-in-page"><primary sortas="candidatable_select_last_item_in_page">nimf_candidatable_select_last_item_in_page</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_select_last_item_in_page
+                               (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<para>Selects the last item in the page.</para>
+<refsect3 id="nimf-candidatable-select-last-item-in-page.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-select-item-by-index-in-page" role="function">
+<title>nimf_candidatable_select_item_by_index_in_page&#160;()</title>
+<indexterm zone="nimf-candidatable-select-item-by-index-in-page"><primary sortas="candidatable_select_item_by_index_in_page">nimf_candidatable_select_item_by_index_in_page</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_select_item_by_index_in_page
+                               (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>,
+                                <parameter><link linkend="gint"><type>gint</type></link> index</parameter>);</programlisting>
+<para>Selects an item by the index in the page.</para>
+<refsect3 id="nimf-candidatable-select-item-by-index-in-page.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>index</para></entry>
+<entry role="parameter_description"><para>a gint</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-select-previous-item" role="function">
+<title>nimf_candidatable_select_previous_item&#160;()</title>
+<indexterm zone="nimf-candidatable-select-previous-item"><primary sortas="candidatable_select_previous_item">nimf_candidatable_select_previous_item</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_select_previous_item
+                               (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<para>Selects the previous item.</para>
+<refsect3 id="nimf-candidatable-select-previous-item.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-select-next-item" role="function">
+<title>nimf_candidatable_select_next_item&#160;()</title>
+<indexterm zone="nimf-candidatable-select-next-item"><primary sortas="candidatable_select_next_item">nimf_candidatable_select_next_item</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_select_next_item (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>);</programlisting>
+<para>Selects the next item.</para>
+<refsect3 id="nimf-candidatable-select-next-item.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-candidatable-set-auxiliary-text" role="function">
+<title>nimf_candidatable_set_auxiliary_text&#160;()</title>
+<indexterm zone="nimf-candidatable-set-auxiliary-text"><primary sortas="candidatable_set_auxiliary_text">nimf_candidatable_set_auxiliary_text</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_candidatable_set_auxiliary_text (<parameter><link linkend="NimfCandidatable"><type>NimfCandidatable</type></link> *candidatable</parameter>,
+                                      <parameter>const <link linkend="gchar"><type>gchar</type></link> *text</parameter>,
+                                      <parameter><link linkend="gint"><type>gint</type></link> cursor_pos</parameter>);</programlisting>
+<para>Sets auxiliary text.</para>
+<refsect3 id="nimf-candidatable-set-auxiliary-text.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>candidatable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfCandidatable"><type>NimfCandidatable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>text</para></entry>
+<entry role="parameter_description"><para>text</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>cursor_pos</para></entry>
+<entry role="parameter_description"><para>cursor position within <parameter>text</parameter>
+</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="NimfCandidatable.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="NIMF-TYPE-CANDIDATABLE:CAPS" role="macro">
+<title>NIMF_TYPE_CANDIDATABLE</title>
+<indexterm zone="NIMF-TYPE-CANDIDATABLE:CAPS"><primary sortas="TYPE_CANDIDATABLE">NIMF_TYPE_CANDIDATABLE</primary></indexterm>
+<programlisting language="C">#define NIMF_TYPE_CANDIDATABLE nimf_candidatable_get_type ()
+</programlisting>
+</refsect2>
+<refsect2 id="NimfCandidatableInterface" role="struct">
+<title>struct NimfCandidatableInterface</title>
+<indexterm zone="NimfCandidatableInterface"><primary sortas="CandidatableInterface">NimfCandidatableInterface</primary></indexterm>
+<programlisting language="C">struct NimfCandidatableInterface {
+  GTypeInterface parent;
+
+  void     (* show)                         (NimfCandidatable *candidatable,
+                                             NimfServiceIC    *target,
+                                             gboolean          show_entry);
+  void     (* hide)                         (NimfCandidatable *candidatable);
+  gboolean (* is_visible)                   (NimfCandidatable *candidatable);
+  void     (* clear)                        (NimfCandidatable *candidatable,
+                                             NimfServiceIC    *target);
+  void     (* set_page_values)              (NimfCandidatable *candidatable,
+                                             NimfServiceIC    *target,
+                                             gint              page_index,
+                                             gint              n_pages,
+                                             gint              page_size);
+  void     (* append)                       (NimfCandidatable *candidatable,
+                                             const gchar      *item1,
+                                             const gchar      *item2);
+  gint     (* get_selected_index)           (NimfCandidatable *candidatable);
+  gchar *  (* get_selected_text)            (NimfCandidatable *candidatable);
+  void     (* select_first_item_in_page)    (NimfCandidatable *candidatable);
+  void     (* select_last_item_in_page)     (NimfCandidatable *candidatable);
+  void     (* select_item_by_index_in_page) (NimfCandidatable *candidatable,
+                                             gint              index);
+  void     (* select_previous_item)         (NimfCandidatable *candidatable);
+  void     (* select_next_item)             (NimfCandidatable *candidatable);
+  void     (* set_auxiliary_text)           (NimfCandidatable *candidatable,
+                                             const gchar      *text,
+                                             gint              cursor_pos);
+};
+</programlisting>
+<para>Provides an interface for candidate window.</para>
+<refsect3 id="NimfCandidatableInterface.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><link linkend="GTypeInterface"><type>GTypeInterface</type></link>&#160;<structfield id="NimfCandidatableInterface.parent">parent</structfield>;</para></entry>
+<entry role="struct_member_description"><para>The parent interface.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.show">show</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Shows the candidatable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.hide">hide</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Hides the candidatable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.is-visible">is_visible</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Determines whether the candidatable is visible.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.clear">clear</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Clears the contents of the candidatable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.set-page-values">set_page_values</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Sets page values.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.append">append</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Appends a new candidate.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.get-selected-index">get_selected_index</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Gets the index of the selected candidatable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.get-selected-text">get_selected_text</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Gets the text of the selected candidatable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.select-first-item-in-page">select_first_item_in_page</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Selects first item in page.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.select-last-item-in-page">select_last_item_in_page</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Selects last item in page.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.select-item-by-index-in-page">select_item_by_index_in_page</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Selects item in page with the index given as the argument.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.select-previous-item">select_previous_item</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Selects previus item.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.select-next-item">select_next_item</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Selects a next item.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfCandidatableInterface.set-auxiliary-text">set_auxiliary_text</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Selects auxiliary text.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+<refsect2 id="NimfCandidatable-struct" role="struct">
+<title>NimfCandidatable</title>
+<indexterm zone="NimfCandidatable-struct"><primary sortas="Candidatable">NimfCandidatable</primary></indexterm>
+<programlisting language="C">typedef struct _NimfCandidatable NimfCandidatable;</programlisting>
+</refsect2>
+
+</refsect1>
+
+</refentry>

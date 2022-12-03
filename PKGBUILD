@@ -1,5 +1,5 @@
 pkgname=nimf
-pkgver=1.3.0.r31.ecb4ba6
+pkgver=1.3.0.r33.68a65d6
 pkgrel=1
 pkgdesc="Nimf is an input method framework."
 arch=('any')

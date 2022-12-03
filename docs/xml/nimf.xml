@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="nimf">
+<refmeta>
+<refentrytitle role="top_of_page" id="nimf.top_of_page">nimf</refentrytitle>
+<manvolnum>1</manvolnum>
+<refmiscinfo>User Commands</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>nimf</refname>
+<refpurpose>Nimf input method daemon</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+<cmdsynopsis><command>nimf</command>
+<arg choice="opt" rep="repeat"><replaceable>OPTIONS</replaceable></arg>
+</cmdsynopsis>
+</refsynopsisdiv>
+<refsect1 id="nimf.description" role="desc">
+<title role="desc.title">Description</title>
+<para>nimf is an input method daemon.</para>
+
+</refsect1>
+<refsect1>
+<title>Options</title>
+<variablelist>
+<varlistentry>
+<term><option>-h</option>
+, <option> --help</option>
+</term>
+<listitem><para>Show help messages
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><option>--debug</option>
+</term>
+<listitem><para>Log debugging messages
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><option>--version</option>
+</term>
+<listitem><para>Show version
+</para></listitem>
+</varlistentry>
+</variablelist></refsect1>
+<refsect1 id="nimf.exit-status">
+<title>Exit Status</title>
+<para> 0 on success, non-zero on failure</para>
+
+</refsect1>
+<refsect1 id="nimf.see-also">
+<title>See Also</title>
+<para>nimf-settings(1)</para>
+
+</refsect1>
+
+</refentry>

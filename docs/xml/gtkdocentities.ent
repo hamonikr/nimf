@@ -1,0 +1,7 @@
+<!ENTITY package "nimf">
+<!ENTITY package_bugreport "">
+<!ENTITY package_name "nimf">
+<!ENTITY package_string "nimf 1.3.1">
+<!ENTITY package_tarname "nimf">
+<!ENTITY package_url "">
+<!ENTITY package_version "1.3.1">

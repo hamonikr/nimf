@@ -1,0 +1,647 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="nimf-types">
+<refmeta>
+<refentrytitle role="top_of_page" id="nimf-types.top_of_page">Types</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>Types</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="nimf-types.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="NimfKey"><returnvalue>NimfKey</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-key-new">nimf_key_new</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfKey"><returnvalue>NimfKey</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-key-new-from-nicks">nimf_key_new_from_nicks</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-key-free">nimf_key_free</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfKey"><returnvalue>NimfKey</returnvalue></link>&#160;**
+</entry><entry role="function_name"><link linkend="nimf-key-newv">nimf_key_newv</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-key-freev">nimf_key_freev</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfPreeditAttr"><returnvalue>NimfPreeditAttr</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-preedit-attr-new">nimf_preedit_attr_new</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfPreeditAttr"><returnvalue>NimfPreeditAttr</returnvalue></link>&#160;**
+</entry><entry role="function_name"><link linkend="nimf-preedit-attrs-copy">nimf_preedit_attrs_copy</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preedit-attr-free">nimf_preedit_attr_free</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preedit-attr-freev">nimf_preedit_attr_freev</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="NimfMethodInfo"><returnvalue>NimfMethodInfo</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-method-info-new">nimf_method_info_new</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-method-info-free">nimf_method_info_free</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-method-info-freev">nimf_method_info_freev</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="nimf-types.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="other_proto_type" colwidth="150px"/>
+<colspec colname="other_proto_name"/>
+<tbody>
+<row><entry role="datatype_keyword">enum</entry><entry role="function_name"><link linkend="NimfModifierType">NimfModifierType</link></entry></row>
+<row><entry role="datatype_keyword"></entry><entry role="function_name"><link linkend="NimfRectangle">NimfRectangle</link></entry></row>
+<row><entry role="datatype_keyword"></entry><entry role="function_name"><link linkend="NimfKey">NimfKey</link></entry></row>
+<row><entry role="datatype_keyword">enum</entry><entry role="function_name"><link linkend="NimfPreeditState">NimfPreeditState</link></entry></row>
+<row><entry role="datatype_keyword">enum</entry><entry role="function_name"><link linkend="NimfPreeditAttrType">NimfPreeditAttrType</link></entry></row>
+<row><entry role="datatype_keyword"></entry><entry role="function_name"><link linkend="NimfPreeditAttr">NimfPreeditAttr</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+
+
+<refsect1 id="nimf-types.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="nimf-types.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-key-new" role="function">
+<title>nimf_key_new&#160;()</title>
+<indexterm zone="nimf-key-new"><primary sortas="key_new">nimf_key_new</primary></indexterm>
+<programlisting language="C"><link linkend="NimfKey"><returnvalue>NimfKey</returnvalue></link>&#160;*
+nimf_key_new (<parameter><type>void</type></parameter>);</programlisting>
+<para>Creates a new <link linkend="NimfKey"><type>NimfKey</type></link>. All fields are set to 0.</para>
+<para>Return: a new <link linkend="NimfKey"><type>NimfKey</type></link>, which should be freed with <link linkend="nimf-key-free"><function>nimf_key_free()</function></link>.</para>
+</refsect2>
+<refsect2 id="nimf-key-new-from-nicks" role="function">
+<title>nimf_key_new_from_nicks&#160;()</title>
+<indexterm zone="nimf-key-new-from-nicks"><primary sortas="key_new_from_nicks">nimf_key_new_from_nicks</primary></indexterm>
+<programlisting language="C"><link linkend="NimfKey"><returnvalue>NimfKey</returnvalue></link>&#160;*
+nimf_key_new_from_nicks (<parameter>const <link linkend="gchar"><type>gchar</type></link> **nicks</parameter>);</programlisting>
+<para>Return: a new <link linkend="NimfKey"><type>NimfKey</type></link>, which should be freed with <link linkend="nimf-key-free"><function>nimf_key_free()</function></link>.</para>
+<refsect3 id="nimf-key-new-from-nicks.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>nicks</para></entry>
+<entry role="parameter_description"><para>an array of gchar</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-key-free" role="function">
+<title>nimf_key_free&#160;()</title>
+<indexterm zone="nimf-key-free"><primary sortas="key_free">nimf_key_free</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_key_free (<parameter><link linkend="NimfKey"><type>NimfKey</type></link> *key</parameter>);</programlisting>
+<para>Frees a <parameter>key</parameter>
+</para>
+<refsect3 id="nimf-key-free.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>key</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfKey"><type>NimfKey</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-key-newv" role="function">
+<title>nimf_key_newv&#160;()</title>
+<indexterm zone="nimf-key-newv"><primary sortas="key_newv">nimf_key_newv</primary></indexterm>
+<programlisting language="C"><link linkend="NimfKey"><returnvalue>NimfKey</returnvalue></link>&#160;**
+nimf_key_newv (<parameter>const <link linkend="gchar"><type>gchar</type></link> **keys</parameter>);</programlisting>
+<para>Creates a new array of <link linkend="NimfKey"><type>NimfKey</type></link>.</para>
+<refsect3 id="nimf-key-newv.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keys</para></entry>
+<entry role="parameter_description"><para>an array of gchar</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-key-newv.returns" role="returns">
+<title>Returns</title>
+<para> a new array of <link linkend="NimfKey"><type>NimfKey</type></link>, which should be freed with
+<link linkend="nimf-key-freev"><function>nimf_key_freev()</function></link>.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-key-freev" role="function">
+<title>nimf_key_freev&#160;()</title>
+<indexterm zone="nimf-key-freev"><primary sortas="key_freev">nimf_key_freev</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_key_freev (<parameter><link linkend="NimfKey"><type>NimfKey</type></link> **keys</parameter>);</programlisting>
+<para>Frees an array of <parameter>keys</parameter>
+</para>
+<refsect3 id="nimf-key-freev.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>keys</para></entry>
+<entry role="parameter_description"><para>an array of <link linkend="NimfKey"><type>NimfKey</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-preedit-attr-new" role="function">
+<title>nimf_preedit_attr_new&#160;()</title>
+<indexterm zone="nimf-preedit-attr-new"><primary sortas="preedit_attr_new">nimf_preedit_attr_new</primary></indexterm>
+<programlisting language="C"><link linkend="NimfPreeditAttr"><returnvalue>NimfPreeditAttr</returnvalue></link>&#160;*
+nimf_preedit_attr_new (<parameter><link linkend="NimfPreeditAttrType"><type>NimfPreeditAttrType</type></link> type</parameter>,
+                       <parameter><link linkend="guint"><type>guint</type></link> start_index</parameter>,
+                       <parameter><link linkend="guint"><type>guint</type></link> end_index</parameter>);</programlisting>
+<refsect3 id="nimf-preedit-attr-new.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditAttrType"><type>NimfPreeditAttrType</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>start_index</para></entry>
+<entry role="parameter_description"><para>start index in characters</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>end_index</para></entry>
+<entry role="parameter_description"><para>end index in characters; The character at this index is not
+included.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-preedit-attr-new.returns" role="returns">
+<title>Returns</title>
+<para> a new <link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link>, which should be freed with
+<link linkend="nimf-preedit-attr-free"><function>nimf_preedit_attr_free()</function></link>.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-preedit-attrs-copy" role="function">
+<title>nimf_preedit_attrs_copy&#160;()</title>
+<indexterm zone="nimf-preedit-attrs-copy"><primary sortas="preedit_attrs_copy">nimf_preedit_attrs_copy</primary></indexterm>
+<programlisting language="C"><link linkend="NimfPreeditAttr"><returnvalue>NimfPreeditAttr</returnvalue></link>&#160;**
+nimf_preedit_attrs_copy (<parameter><link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link> **attrs</parameter>);</programlisting>
+<refsect3 id="nimf-preedit-attrs-copy.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>attrs</para></entry>
+<entry role="parameter_description"><para>an array of <link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-preedit-attrs-copy.returns" role="returns">
+<title>Returns</title>
+<para> a new array of <link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link>, which should be freed with
+<link linkend="nimf-preedit-attr-freev"><function>nimf_preedit_attr_freev()</function></link>.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-preedit-attr-free" role="function">
+<title>nimf_preedit_attr_free&#160;()</title>
+<indexterm zone="nimf-preedit-attr-free"><primary sortas="preedit_attr_free">nimf_preedit_attr_free</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_preedit_attr_free (<parameter><link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link> *attr</parameter>);</programlisting>
+<para>Frees a <parameter>attr</parameter>
+</para>
+<refsect3 id="nimf-preedit-attr-free.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>attr</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-preedit-attr-freev" role="function">
+<title>nimf_preedit_attr_freev&#160;()</title>
+<indexterm zone="nimf-preedit-attr-freev"><primary sortas="preedit_attr_freev">nimf_preedit_attr_freev</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_preedit_attr_freev (<parameter><link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link> **attrs</parameter>);</programlisting>
+<para>Frees an array of <parameter>attrs</parameter>
+</para>
+<refsect3 id="nimf-preedit-attr-freev.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>attrs</para></entry>
+<entry role="parameter_description"><para>an array of <link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-method-info-new" role="function">
+<title>nimf_method_info_new&#160;()</title>
+<indexterm zone="nimf-method-info-new"><primary sortas="method_info_new">nimf_method_info_new</primary></indexterm>
+<programlisting language="C"><link linkend="NimfMethodInfo"><returnvalue>NimfMethodInfo</returnvalue></link>&#160;*
+nimf_method_info_new (<parameter><type>void</type></parameter>);</programlisting>
+<refsect3 id="nimf-method-info-new.returns" role="returns">
+<title>Returns</title>
+<para> a new <link linkend="NimfMethodInfo"><type>NimfMethodInfo</type></link>, which should be freed with
+<link linkend="nimf-method-info-free"><function>nimf_method_info_free()</function></link>.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-method-info-free" role="function">
+<title>nimf_method_info_free&#160;()</title>
+<indexterm zone="nimf-method-info-free"><primary sortas="method_info_free">nimf_method_info_free</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_method_info_free (<parameter><link linkend="NimfMethodInfo"><type>NimfMethodInfo</type></link> *info</parameter>);</programlisting>
+<para>Frees an <parameter>info</parameter>
+.</para>
+<refsect3 id="nimf-method-info-free.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>info</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfMethodInfo"><type>NimfMethodInfo</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-method-info-freev" role="function">
+<title>nimf_method_info_freev&#160;()</title>
+<indexterm zone="nimf-method-info-freev"><primary sortas="method_info_freev">nimf_method_info_freev</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_method_info_freev (<parameter><link linkend="NimfMethodInfo"><type>NimfMethodInfo</type></link> **infos</parameter>);</programlisting>
+<para>Frees an array of <parameter>infos</parameter>
+.</para>
+<refsect3 id="nimf-method-info-freev.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>infos</para></entry>
+<entry role="parameter_description"><para>an array of <link linkend="NimfMethodInfo"><type>NimfMethodInfo</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="nimf-types.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="NimfModifierType" role="enum">
+<title>enum NimfModifierType</title>
+<indexterm zone="NimfModifierType"><primary sortas="ModifierType">NimfModifierType</primary></indexterm>
+<para>A set of bit-flags to indicate the state of modifier keys and mouse buttons
+in various event types. Typical modifier keys are Shift, Control, Meta,
+Super, Hyper, Alt, Compose, Apple, CapsLock or ShiftLock.</para>
+<refsect3 id="NimfModifierType.members" role="enum_members">
+<title>Members</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="enum_members_name" colwidth="300px"/>
+<colspec colname="enum_members_description"/>
+<colspec colname="enum_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-SHIFT-MASK:CAPS">NIMF_SHIFT_MASK</para></entry>
+<entry role="enum_member_description"><para>the Shift key.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-LOCK-MASK:CAPS">NIMF_LOCK_MASK</para></entry>
+<entry role="enum_member_description"><para>a Lock key (depending on the modifier mapping of the
+X server this may either be CapsLock or ShiftLock).</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-CONTROL-MASK:CAPS">NIMF_CONTROL_MASK</para></entry>
+<entry role="enum_member_description"><para>the Control key.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MOD1-MASK:CAPS">NIMF_MOD1_MASK</para></entry>
+<entry role="enum_member_description"><para>the fourth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier, but
+normally it is the Alt key).</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MOD2-MASK:CAPS">NIMF_MOD2_MASK</para></entry>
+<entry role="enum_member_description"><para>the fifth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MOD3-MASK:CAPS">NIMF_MOD3_MASK</para></entry>
+<entry role="enum_member_description"><para>the sixth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MOD4-MASK:CAPS">NIMF_MOD4_MASK</para></entry>
+<entry role="enum_member_description"><para>the seventh modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MOD5-MASK:CAPS">NIMF_MOD5_MASK</para></entry>
+<entry role="enum_member_description"><para>the eighth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-BUTTON1-MASK:CAPS">NIMF_BUTTON1_MASK</para></entry>
+<entry role="enum_member_description"><para>the first mouse button.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-BUTTON2-MASK:CAPS">NIMF_BUTTON2_MASK</para></entry>
+<entry role="enum_member_description"><para>the second mouse button.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-BUTTON3-MASK:CAPS">NIMF_BUTTON3_MASK</para></entry>
+<entry role="enum_member_description"><para>the third mouse button.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-BUTTON4-MASK:CAPS">NIMF_BUTTON4_MASK</para></entry>
+<entry role="enum_member_description"><para>the fourth mouse button.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-BUTTON5-MASK:CAPS">NIMF_BUTTON5_MASK</para></entry>
+<entry role="enum_member_description"><para>the fifth mouse button.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-13-MASK:CAPS">NIMF_MODIFIER_RESERVED_13_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-14-MASK:CAPS">NIMF_MODIFIER_RESERVED_14_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-15-MASK:CAPS">NIMF_MODIFIER_RESERVED_15_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-16-MASK:CAPS">NIMF_MODIFIER_RESERVED_16_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-17-MASK:CAPS">NIMF_MODIFIER_RESERVED_17_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-18-MASK:CAPS">NIMF_MODIFIER_RESERVED_18_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-19-MASK:CAPS">NIMF_MODIFIER_RESERVED_19_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-20-MASK:CAPS">NIMF_MODIFIER_RESERVED_20_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-21-MASK:CAPS">NIMF_MODIFIER_RESERVED_21_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-22-MASK:CAPS">NIMF_MODIFIER_RESERVED_22_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-23-MASK:CAPS">NIMF_MODIFIER_RESERVED_23_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-24-MASK:CAPS">NIMF_MODIFIER_RESERVED_24_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-25-MASK:CAPS">NIMF_MODIFIER_RESERVED_25_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-SUPER-MASK:CAPS">NIMF_SUPER_MASK</para></entry>
+<entry role="enum_member_description"><para>the Super modifier.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-HYPER-MASK:CAPS">NIMF_HYPER_MASK</para></entry>
+<entry role="enum_member_description"><para>the Hyper modifier.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-META-MASK:CAPS">NIMF_META_MASK</para></entry>
+<entry role="enum_member_description"><para>the Meta modifier.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-RESERVED-29-MASK:CAPS">NIMF_MODIFIER_RESERVED_29_MASK</para></entry>
+<entry role="enum_member_description"><para>A reserved bit flag; do not use in your own code</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-RELEASE-MASK:CAPS">NIMF_RELEASE_MASK</para></entry>
+<entry role="enum_member_description"><para>exists because of compatibility.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-MODIFIER-MASK:CAPS">NIMF_MODIFIER_MASK</para></entry>
+<entry role="enum_member_description"><para>a mask covering all modifier types.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="NimfRectangle" role="struct">
+<title>NimfRectangle</title>
+<indexterm zone="NimfRectangle"><primary sortas="Rectangle">NimfRectangle</primary></indexterm>
+<programlisting language="C">typedef struct {
+  int x, y;
+  int width, height;
+} NimfRectangle;
+</programlisting>
+<para>Defines the position and size of a rectangle.</para>
+<refsect3 id="NimfRectangle.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><link linkend="int"><type>int</type></link>&#160;<structfield id="NimfRectangle.x">x</structfield>;</para></entry>
+<entry role="struct_member_description"><para>x</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="int"><type>int</type></link>&#160;<structfield id="NimfRectangle.y">y</structfield>;</para></entry>
+<entry role="struct_member_description"><para>y</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="int"><type>int</type></link>&#160;<structfield id="NimfRectangle.width">width</structfield>;</para></entry>
+<entry role="struct_member_description"><para>width</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="int"><type>int</type></link>&#160;<structfield id="NimfRectangle.height">height</structfield>;</para></entry>
+<entry role="struct_member_description"><para>height</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+<refsect2 id="NimfKey" role="struct">
+<title>NimfKey</title>
+<indexterm zone="NimfKey"><primary sortas="Key">NimfKey</primary></indexterm>
+<programlisting language="C">typedef struct {
+  guint32 state;
+  guint32 keyval;
+} NimfKey;
+</programlisting>
+<refsect3 id="NimfKey.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint32"><type>guint32</type></link>&#160;<structfield id="NimfKey.state">state</structfield>;</para></entry>
+<entry role="struct_member_description"><para>a bit-mask representing the state of the modifier keys</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint32"><type>guint32</type></link>&#160;<structfield id="NimfKey.keyval">keyval</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the key that was pressed or released.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+<refsect2 id="NimfPreeditState" role="enum">
+<title>enum NimfPreeditState</title>
+<indexterm zone="NimfPreeditState"><primary sortas="PreeditState">NimfPreeditState</primary></indexterm>
+<refsect3 id="NimfPreeditState.members" role="enum_members">
+<title>Members</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="enum_members_name" colwidth="300px"/>
+<colspec colname="enum_members_description"/>
+<colspec colname="enum_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-PREEDIT-STATE-START:CAPS">NIMF_PREEDIT_STATE_START</para></entry>
+<entry role="enum_member_description"><para>presents preedit-start state.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-PREEDIT-STATE-END:CAPS">NIMF_PREEDIT_STATE_END</para></entry>
+<entry role="enum_member_description"><para>presents preedit-end state.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="NimfPreeditAttrType" role="enum">
+<title>enum NimfPreeditAttrType</title>
+<indexterm zone="NimfPreeditAttrType"><primary sortas="PreeditAttrType">NimfPreeditAttrType</primary></indexterm>
+<refsect3 id="NimfPreeditAttrType.members" role="enum_members">
+<title>Members</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="enum_members_name" colwidth="300px"/>
+<colspec colname="enum_members_description"/>
+<colspec colname="enum_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-PREEDIT-ATTR-UNDERLINE:CAPS">NIMF_PREEDIT_ATTR_UNDERLINE</para></entry>
+<entry role="enum_member_description"><para>whether the text has an underline</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-PREEDIT-ATTR-HIGHLIGHT:CAPS">NIMF_PREEDIT_ATTR_HIGHLIGHT</para></entry>
+<entry role="enum_member_description"><para>whether the text has a highlight</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="NimfPreeditAttr" role="struct">
+<title>NimfPreeditAttr</title>
+<indexterm zone="NimfPreeditAttr"><primary sortas="PreeditAttr">NimfPreeditAttr</primary></indexterm>
+<programlisting language="C">typedef struct {
+  NimfPreeditAttrType type;
+  guint start_index; /* in characters */
+  guint end_index; /* in characters. The character at this index is not included */
+} NimfPreeditAttr;
+</programlisting>
+<refsect3 id="NimfPreeditAttr.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><link linkend="NimfPreeditAttrType"><type>NimfPreeditAttrType</type></link>&#160;<structfield id="NimfPreeditAttr.type">type</structfield>;</para></entry>
+<entry role="struct_member_description"><para>a <link linkend="NimfPreeditAttrType"><type>NimfPreeditAttrType</type></link></para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint"><type>guint</type></link>&#160;<structfield id="NimfPreeditAttr.start-index">start_index</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the start index of the range (in characters).</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint"><type>guint</type></link>&#160;<structfield id="NimfPreeditAttr.end-index">end_index</structfield>;</para></entry>
+<entry role="struct_member_description"><para>end index of the range (in characters). The character at this
+index is not included in the range.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+
+</refsect1>
+
+</refentry>

@@ -1,0 +1,707 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>NimfIM: Nimf Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Nimf Reference Manual">
+<link rel="up" href="libnimf-api.html" title="Part I. libnimf API">
+<link rel="prev" href="libnimf-api.html" title="Part I. libnimf API">
+<link rel="next" href="nimf-events.html" title="Events">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#NimfIM.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#NimfIM.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#NimfIM.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libnimf-api.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libnimf-api.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="nimf-events.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="NimfIM"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="NimfIM.top_of_page"></a>NimfIM</span></h2>
+<p>NimfIM</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="NimfIM.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="NimfIM.html" title="NimfIM"><span class="returnvalue">NimfIM</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-new" title="nimf_im_new ()">nimf_im_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-focus-in" title="nimf_im_focus_in ()">nimf_im_focus_in</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-focus-out" title="nimf_im_focus_out ()">nimf_im_focus_out</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-reset" title="nimf_im_reset ()">nimf_im_reset</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-filter-event" title="nimf_im_filter_event ()">nimf_im_filter_event</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-get-preedit-string" title="nimf_im_get_preedit_string ()">nimf_im_get_preedit_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-set-cursor-location" title="nimf_im_set_cursor_location ()">nimf_im_set_cursor_location</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-set-use-preedit" title="nimf_im_set_use_preedit ()">nimf_im_set_use_preedit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="NimfIM.html#nimf-im-set-surrounding" title="nimf_im_set_surrounding ()">nimf_im_set_surrounding</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="NimfIM.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-beep" title="The “beep” signal">beep</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-commit" title="The “commit” signal">commit</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-delete-surrounding" title="The “delete-surrounding” signal">delete-surrounding</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-preedit-changed" title="The “preedit-changed” signal">preedit-changed</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-preedit-end" title="The “preedit-end” signal">preedit-end</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-preedit-start" title="The “preedit-start” signal">preedit-start</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+<tr>
+<td class="signal_type"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a></td>
+<td class="signal_name"><a class="link" href="NimfIM.html#NimfIM-retrieve-surrounding" title="The “retrieve-surrounding” signal">retrieve-surrounding</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="NimfIM.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> NimfIM
+</pre>
+</div>
+<div class="refsect1">
+<a name="NimfIM.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="NimfIM.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="nimf-im-new"></a><h3>nimf_im_new ()</h3>
+<pre class="programlisting"><a class="link" href="NimfIM.html" title="NimfIM"><span class="returnvalue">NimfIM</span></a> *
+nimf_im_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a new <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>.</p>
+<div class="refsect3">
+<a name="nimf-im-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-focus-in"></a><h3>nimf_im_focus_in ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_focus_in (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>);</pre>
+<p>Notifies the input method that the caller has gained focus.</p>
+<div class="refsect3">
+<a name="nimf-im-focus-in.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-focus-out"></a><h3>nimf_im_focus_out ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_focus_out (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>);</pre>
+<p>Notifies the input method that the caller has lost focus.</p>
+<div class="refsect3">
+<a name="nimf-im-focus-out.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-reset"></a><h3>nimf_im_reset ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_reset (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>);</pre>
+<p>Reset the input method.</p>
+<div class="refsect3">
+<a name="nimf-im-reset.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-filter-event"></a><h3>nimf_im_filter_event ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+nimf_im_filter_event (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>,
+                      <em class="parameter"><code><a class="link" href="nimf-events.html#NimfEvent" title="union NimfEvent"><span class="type">NimfEvent</span></a> *event</code></em>);</pre>
+<p>Let the input method handle the <em class="parameter"><code>event</code></em>
+.</p>
+<div class="refsect3">
+<a name="nimf-im-filter-event.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>a <a class="link" href="nimf-events.html#NimfEvent" title="union NimfEvent"><span class="type">NimfEvent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="nimf-im-filter-event.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the input method handled the <em class="parameter"><code>event</code></em>
+.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-get-preedit-string"></a><h3>nimf_im_get_preedit_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_get_preedit_string (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **str</code></em>,
+                            <em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a> ***attrs</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *cursor_pos</code></em>);</pre>
+<p>Retrieve the current preedit string, an array of attributes to apply to the
+string and position of cursor within the preedit string from the input
+method.</p>
+<div class="refsect3">
+<a name="nimf-im-get-preedit-string.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>location to store the retrieved
+string. The string retrieved must be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>attrs</p></td>
+<td class="parameter_description"><p>location to store the retrieved
+attribute array. When you are done with this array, you
+must free it with <a class="link" href="nimf-types.html#nimf-preedit-attr-freev" title="nimf_preedit_attr_freev ()"><code class="function">nimf_preedit_attr_freev()</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cursor_pos</p></td>
+<td class="parameter_description"><p>location to store position of cursor (in
+characters) within the preedit string. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-set-cursor-location"></a><h3>nimf_im_set_cursor_location ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_set_cursor_location (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>,
+                             <em class="parameter"><code>const <a class="link" href="nimf-types.html#NimfRectangle" title="NimfRectangle"><span class="type">NimfRectangle</span></a> *area</code></em>);</pre>
+<p>Notifies the input method that a change in cursor position has been made. The
+location is the position of a window position in root window coordinates.</p>
+<div class="refsect3">
+<a name="nimf-im-set-cursor-location.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>area</p></td>
+<td class="parameter_description"><p>new location</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-set-use-preedit"></a><h3>nimf_im_set_use_preedit ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_set_use_preedit (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> use_preedit</code></em>);</pre>
+<p>If <em class="parameter"><code>use_preedit</code></em>
+ is <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> (default is <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>), then the input method may use
+some other input styles, such as over-the-spot, off-the-spot or root-window.</p>
+<div class="refsect3">
+<a name="nimf-im-set-use-preedit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>use_preedit</p></td>
+<td class="parameter_description"><p>whether the input method should use an on-the-spot input style</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-im-set-surrounding"></a><h3>nimf_im_set_surrounding ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_im_set_surrounding (<em class="parameter"><code><a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a> *im</code></em>,
+                         <em class="parameter"><code>const <span class="type">char</span> *text</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> len</code></em>,
+                         <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> cursor_index</code></em>);</pre>
+<p>Sets surrounding text to input method. This function is expected to be
+called in response to NimfIM::retrieve-surrounding which is emitted by
+<a class="link" href="NimfEngine.html#nimf-engine-emit-retrieve-surrounding" title="nimf_engine_emit_retrieve_surrounding ()"><code class="function">nimf_engine_emit_retrieve_surrounding()</code></a>.</p>
+<div class="refsect3">
+<a name="nimf-im-set-surrounding.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p>surrounding text</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>len</p></td>
+<td class="parameter_description"><p>the byte length of <em class="parameter"><code>text</code></em>
+, or -1 if <em class="parameter"><code>text</code></em>
+is nul-terminated.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cursor_index</p></td>
+<td class="parameter_description"><p>the character index of the cursor within <em class="parameter"><code>text</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="NimfIM.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="NimfIM-beep"></a><h3>The <code class="literal">“beep”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-beep" title="The “beep” signal"><span class="type">“beep”</span></a> signal is emitted when the input method needs to beep,
+if supported.</p>
+<div class="refsect3">
+<a name="NimfIM-beep.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfIM-commit"></a><h3>The <code class="literal">“commit”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>   *text,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-commit" title="The “commit” signal"><span class="type">“commit”</span></a> signal is emitted when a complete input sequence has
+been entered by the user.</p>
+<div class="refsect3">
+<a name="NimfIM-commit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p>text to commit</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfIM-delete-surrounding"></a><h3>The <code class="literal">“delete-surrounding”</code> signal</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>     offset,
+               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>     n_chars,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-delete-surrounding" title="The “delete-surrounding” signal"><span class="type">“delete-surrounding”</span></a> signal is emitted when the input method
+needs to delete all or part of the text surrounding the cursor.</p>
+<div class="refsect3">
+<a name="NimfIM-delete-surrounding.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>offset</p></td>
+<td class="parameter_description"><p>the character offset from the cursor position of the text to be
+deleted. A negative value indicates a position before the cursor.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_chars</p></td>
+<td class="parameter_description"><p>the number of characters to be deleted</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="NimfIM-delete-surrounding.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the signal was handled.</p>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfIM-preedit-changed"></a><h3>The <code class="literal">“preedit-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-preedit-changed" title="The “preedit-changed” signal"><span class="type">“preedit-changed”</span></a> signal is emitted whenever the preedit
+sequence has been changed.</p>
+<div class="refsect3">
+<a name="NimfIM-preedit-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfIM-preedit-end"></a><h3>The <code class="literal">“preedit-end”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-preedit-end" title="The “preedit-end” signal"><span class="type">“preedit-end”</span></a> signal is emitted when a preediting sequence has
+been completed or canceled.</p>
+<div class="refsect3">
+<a name="NimfIM-preedit-end.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfIM-preedit-start"></a><h3>The <code class="literal">“preedit-start”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-preedit-start" title="The “preedit-start” signal"><span class="type">“preedit-start”</span></a> signal is emitted when a new preediting
+sequence starts.</p>
+<div class="refsect3">
+<a name="NimfIM-preedit-start.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfIM-retrieve-surrounding"></a><h3>The <code class="literal">“retrieve-surrounding”</code> signal</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+user_function (<a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a>  *im,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data)</pre>
+<p>The <a class="link" href="NimfIM.html#NimfIM-retrieve-surrounding" title="The “retrieve-surrounding” signal"><span class="type">“retrieve-surrounding”</span></a> signal is emitted when the input method
+requires the text surrounding the cursor. The callback should set the
+input method surrounding text by calling the <a class="link" href="NimfIM.html#nimf-im-set-surrounding" title="nimf_im_set_surrounding ()"><code class="function">nimf_im_set_surrounding()</code></a>
+method.</p>
+<div class="refsect3">
+<a name="NimfIM-retrieve-surrounding.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>im</p></td>
+<td class="parameter_description"><p>a <a class="link" href="NimfIM.html" title="NimfIM"><span class="type">NimfIM</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="NimfIM-retrieve-surrounding.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the signal was handled.</p>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.32</div>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="NimfIM">
+<refmeta>
+<refentrytitle role="top_of_page" id="NimfIM.top_of_page">NimfIM</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>NimfIM</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="NimfIM.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="NimfIM"><returnvalue>NimfIM</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-im-new">nimf_im_new</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-focus-in">nimf_im_focus_in</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-focus-out">nimf_im_focus_out</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-reset">nimf_im_reset</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-filter-event">nimf_im_filter_event</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-get-preedit-string">nimf_im_get_preedit_string</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-set-cursor-location">nimf_im_set_cursor_location</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-set-use-preedit">nimf_im_set_use_preedit</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-im-set-surrounding">nimf_im_set_surrounding</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfIM.signals" role="signal_proto">
+<title role="signal_proto.title">Signals</title>
+<informaltable frame="none">
+<tgroup cols="3">
+<colspec colname="signal_proto_type" colwidth="150px"/>
+<colspec colname="signal_proto_name" colwidth="300px"/>
+<colspec colname="signal_proto_flags" colwidth="200px"/>
+<tbody>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-beep">beep</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-commit">commit</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-delete-surrounding">delete-surrounding</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-preedit-changed">preedit-changed</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-preedit-end">preedit-end</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="void"><returnvalue>void</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-preedit-start">preedit-start</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+<row><entry role="signal_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link></entry><entry role="signal_name"><link linkend="NimfIM-retrieve-surrounding">retrieve-surrounding</link></entry><entry role="signal_flags"><link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfIM.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<screen>    <link linkend="GObject">GObject</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> NimfIM
+</screen>
+</refsect1>
+
+
+<refsect1 id="NimfIM.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="NimfIM.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-im-new" role="function">
+<title>nimf_im_new&#160;()</title>
+<indexterm zone="nimf-im-new"><primary sortas="im_new">nimf_im_new</primary></indexterm>
+<programlisting language="C"><link linkend="NimfIM"><returnvalue>NimfIM</returnvalue></link>&#160;*
+nimf_im_new (<parameter><type>void</type></parameter>);</programlisting>
+<para>Creates a new <link linkend="NimfIM"><type>NimfIM</type></link>.</para>
+<refsect3 id="nimf-im-new.returns" role="returns">
+<title>Returns</title>
+<para> a new <link linkend="NimfIM"><type>NimfIM</type></link></para>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-focus-in" role="function">
+<title>nimf_im_focus_in&#160;()</title>
+<indexterm zone="nimf-im-focus-in"><primary sortas="im_focus_in">nimf_im_focus_in</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_focus_in (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>);</programlisting>
+<para>Notifies the input method that the caller has gained focus.</para>
+<refsect3 id="nimf-im-focus-in.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-focus-out" role="function">
+<title>nimf_im_focus_out&#160;()</title>
+<indexterm zone="nimf-im-focus-out"><primary sortas="im_focus_out">nimf_im_focus_out</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_focus_out (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>);</programlisting>
+<para>Notifies the input method that the caller has lost focus.</para>
+<refsect3 id="nimf-im-focus-out.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-reset" role="function">
+<title>nimf_im_reset&#160;()</title>
+<indexterm zone="nimf-im-reset"><primary sortas="im_reset">nimf_im_reset</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_reset (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>);</programlisting>
+<para>Reset the input method.</para>
+<refsect3 id="nimf-im-reset.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-filter-event" role="function">
+<title>nimf_im_filter_event&#160;()</title>
+<indexterm zone="nimf-im-filter-event"><primary sortas="im_filter_event">nimf_im_filter_event</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+nimf_im_filter_event (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>,
+                      <parameter><link linkend="NimfEvent"><type>NimfEvent</type></link> *event</parameter>);</programlisting>
+<para>Let the input method handle the <parameter>event</parameter>
+.</para>
+<refsect3 id="nimf-im-filter-event.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>event</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfEvent"><type>NimfEvent</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-im-filter-event.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the input method handled the <parameter>event</parameter>
+.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-get-preedit-string" role="function">
+<title>nimf_im_get_preedit_string&#160;()</title>
+<indexterm zone="nimf-im-get-preedit-string"><primary sortas="im_get_preedit_string">nimf_im_get_preedit_string</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_get_preedit_string (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>,
+                            <parameter><link linkend="gchar"><type>gchar</type></link> **str</parameter>,
+                            <parameter><link linkend="NimfPreeditAttr"><type>NimfPreeditAttr</type></link> ***attrs</parameter>,
+                            <parameter><link linkend="gint"><type>gint</type></link> *cursor_pos</parameter>);</programlisting>
+<para>Retrieve the current preedit string, an array of attributes to apply to the
+string and position of cursor within the preedit string from the input
+method.</para>
+<refsect3 id="nimf-im-get-preedit-string.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>str</para></entry>
+<entry role="parameter_description"><para>location to store the retrieved
+string. The string retrieved must be freed with <link linkend="g-free"><function>g_free()</function></link>. </para></entry>
+<entry role="parameter_annotations"><emphasis role="annotation">[<acronym>out</acronym>][<acronym>transfer full</acronym>]</emphasis></entry></row>
+<row><entry role="parameter_name"><para>attrs</para></entry>
+<entry role="parameter_description"><para>location to store the retrieved
+attribute array. When you are done with this array, you
+must free it with <link linkend="nimf-preedit-attr-freev"><function>nimf_preedit_attr_freev()</function></link>. </para></entry>
+<entry role="parameter_annotations"><emphasis role="annotation">[<acronym>out</acronym>][<acronym>transfer full</acronym>]</emphasis></entry></row>
+<row><entry role="parameter_name"><para>cursor_pos</para></entry>
+<entry role="parameter_description"><para>location to store position of cursor (in
+characters) within the preedit string. </para></entry>
+<entry role="parameter_annotations"><emphasis role="annotation">[<acronym>out</acronym>][<acronym>transfer full</acronym>]</emphasis></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-set-cursor-location" role="function">
+<title>nimf_im_set_cursor_location&#160;()</title>
+<indexterm zone="nimf-im-set-cursor-location"><primary sortas="im_set_cursor_location">nimf_im_set_cursor_location</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_set_cursor_location (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>,
+                             <parameter>const <link linkend="NimfRectangle"><type>NimfRectangle</type></link> *area</parameter>);</programlisting>
+<para>Notifies the input method that a change in cursor position has been made. The
+location is the position of a window position in root window coordinates.</para>
+<refsect3 id="nimf-im-set-cursor-location.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>area</para></entry>
+<entry role="parameter_description"><para>new location</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-set-use-preedit" role="function">
+<title>nimf_im_set_use_preedit&#160;()</title>
+<indexterm zone="nimf-im-set-use-preedit"><primary sortas="im_set_use_preedit">nimf_im_set_use_preedit</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_set_use_preedit (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>,
+                         <parameter><link linkend="gboolean"><type>gboolean</type></link> use_preedit</parameter>);</programlisting>
+<para>If <parameter>use_preedit</parameter>
+ is <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> (default is <link linkend="TRUE:CAPS"><literal>TRUE</literal></link>), then the input method may use
+some other input styles, such as over-the-spot, off-the-spot or root-window.</para>
+<refsect3 id="nimf-im-set-use-preedit.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>use_preedit</para></entry>
+<entry role="parameter_description"><para>whether the input method should use an on-the-spot input style</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-im-set-surrounding" role="function">
+<title>nimf_im_set_surrounding&#160;()</title>
+<indexterm zone="nimf-im-set-surrounding"><primary sortas="im_set_surrounding">nimf_im_set_surrounding</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_im_set_surrounding (<parameter><link linkend="NimfIM"><type>NimfIM</type></link> *im</parameter>,
+                         <parameter>const <link linkend="char"><type>char</type></link> *text</parameter>,
+                         <parameter><link linkend="gint"><type>gint</type></link> len</parameter>,
+                         <parameter><link linkend="gint"><type>gint</type></link> cursor_index</parameter>);</programlisting>
+<para>Sets surrounding text to input method. This function is expected to be
+called in response to NimfIM::retrieve-surrounding which is emitted by
+<link linkend="nimf-engine-emit-retrieve-surrounding"><function>nimf_engine_emit_retrieve_surrounding()</function></link>.</para>
+<refsect3 id="nimf-im-set-surrounding.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>text</para></entry>
+<entry role="parameter_description"><para>surrounding text</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>len</para></entry>
+<entry role="parameter_description"><para>the byte length of <parameter>text</parameter>
+, or -1 if <parameter>text</parameter>
+is nul-terminated.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>cursor_index</para></entry>
+<entry role="parameter_description"><para>the character index of the cursor within <parameter>text</parameter>
+.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="NimfIM.signal-details" role="signals">
+<title role="signals.title">Signal Details</title>
+<refsect2 id="NimfIM-beep" role="signal"><title>The <literal>“beep”</literal> signal</title>
+<indexterm zone="NimfIM-beep"><primary sortas="IM::beep">NimfIM::beep</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-beep"><type>“beep”</type></link> signal is emitted when the input method needs to beep,
+if supported.</para>
+<refsect3 id="NimfIM-beep.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfIM-commit" role="signal"><title>The <literal>“commit”</literal> signal</title>
+<indexterm zone="NimfIM-commit"><primary sortas="IM::commit">NimfIM::commit</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gchar"><type>gchar</type></link>   *text,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-commit"><type>“commit”</type></link> signal is emitted when a complete input sequence has
+been entered by the user.</para>
+<refsect3 id="NimfIM-commit.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>text</para></entry>
+<entry role="parameter_description"><para>text to commit</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfIM-delete-surrounding" role="signal"><title>The <literal>“delete-surrounding”</literal> signal</title>
+<indexterm zone="NimfIM-delete-surrounding"><primary sortas="IM::delete-surrounding">NimfIM::delete-surrounding</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gint"><type>gint</type></link>     offset,
+               <link linkend="gint"><type>gint</type></link>     n_chars,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-delete-surrounding"><type>“delete-surrounding”</type></link> signal is emitted when the input method
+needs to delete all or part of the text surrounding the cursor.</para>
+<refsect3 id="NimfIM-delete-surrounding.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>offset</para></entry>
+<entry role="parameter_description"><para>the character offset from the cursor position of the text to be
+deleted. A negative value indicates a position before the cursor.</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>n_chars</para></entry>
+<entry role="parameter_description"><para>the number of characters to be deleted</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="NimfIM-delete-surrounding.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the signal was handled.</para>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfIM-preedit-changed" role="signal"><title>The <literal>“preedit-changed”</literal> signal</title>
+<indexterm zone="NimfIM-preedit-changed"><primary sortas="IM::preedit-changed">NimfIM::preedit-changed</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-preedit-changed"><type>“preedit-changed”</type></link> signal is emitted whenever the preedit
+sequence has been changed.</para>
+<refsect3 id="NimfIM-preedit-changed.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfIM-preedit-end" role="signal"><title>The <literal>“preedit-end”</literal> signal</title>
+<indexterm zone="NimfIM-preedit-end"><primary sortas="IM::preedit-end">NimfIM::preedit-end</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-preedit-end"><type>“preedit-end”</type></link> signal is emitted when a preediting sequence has
+been completed or canceled.</para>
+<refsect3 id="NimfIM-preedit-end.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfIM-preedit-start" role="signal"><title>The <literal>“preedit-start”</literal> signal</title>
+<indexterm zone="NimfIM-preedit-start"><primary sortas="IM::preedit-start">NimfIM::preedit-start</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-preedit-start"><type>“preedit-start”</type></link> signal is emitted when a new preediting
+sequence starts.</para>
+<refsect3 id="NimfIM-preedit-start.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2><refsect2 id="NimfIM-retrieve-surrounding" role="signal"><title>The <literal>“retrieve-surrounding”</literal> signal</title>
+<indexterm zone="NimfIM-retrieve-surrounding"><primary sortas="IM::retrieve-surrounding">NimfIM::retrieve-surrounding</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
+               <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
+<para>The <link linkend="NimfIM-retrieve-surrounding"><type>“retrieve-surrounding”</type></link> signal is emitted when the input method
+requires the text surrounding the cursor. The callback should set the
+input method surrounding text by calling the <link linkend="nimf-im-set-surrounding"><function>nimf_im_set_surrounding()</function></link>
+method.</para>
+<refsect3 id="NimfIM-retrieve-surrounding.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>im</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfIM"><type>NimfIM</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><simpara>user_data</simpara></entry>
+<entry role="parameter_description"><simpara>user data set when the signal handler was connected.</simpara></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="NimfIM-retrieve-surrounding.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the signal was handled.</para>
+</refsect3><para>Flags: <link linkend="G-SIGNAL-RUN-LAST:CAPS">Run Last</link></para>
+</refsect2>
+</refsect1>
+
+</refentry>

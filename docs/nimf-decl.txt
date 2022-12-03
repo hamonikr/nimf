@@ -1,0 +1,1176 @@
+<MACRO>
+<NAME>NIMF_TYPE_CANDIDATABLE</NAME>
+#define NIMF_TYPE_CANDIDATABLE nimf_candidatable_get_type ()
+</MACRO>
+<STRUCT>
+<NAME>NimfCandidatableInterface</NAME>
+struct _NimfCandidatableInterface
+{
+  GTypeInterface parent;
+
+  void     (* show)                         (NimfCandidatable *candidatable,
+                                             NimfServiceIC    *target,
+                                             gboolean          show_entry);
+  void     (* hide)                         (NimfCandidatable *candidatable);
+  gboolean (* is_visible)                   (NimfCandidatable *candidatable);
+  void     (* clear)                        (NimfCandidatable *candidatable,
+                                             NimfServiceIC    *target);
+  void     (* set_page_values)              (NimfCandidatable *candidatable,
+                                             NimfServiceIC    *target,
+                                             gint              page_index,
+                                             gint              n_pages,
+                                             gint              page_size);
+  void     (* append)                       (NimfCandidatable *candidatable,
+                                             const gchar      *item1,
+                                             const gchar      *item2);
+  gint     (* get_selected_index)           (NimfCandidatable *candidatable);
+  gchar *  (* get_selected_text)            (NimfCandidatable *candidatable);
+  void     (* select_first_item_in_page)    (NimfCandidatable *candidatable);
+  void     (* select_last_item_in_page)     (NimfCandidatable *candidatable);
+  void     (* select_item_by_index_in_page) (NimfCandidatable *candidatable,
+                                             gint              index);
+  void     (* select_previous_item)         (NimfCandidatable *candidatable);
+  void     (* select_next_item)             (NimfCandidatable *candidatable);
+  void     (* set_auxiliary_text)           (NimfCandidatable *candidatable,
+                                             const gchar      *text,
+                                             gint              cursor_pos);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_candidatable_show</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable, NimfServiceIC    *target, gboolean          show_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_hide</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_is_visible</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_clear</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable, NimfServiceIC    *target
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_set_page_values</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable, NimfServiceIC    *target, gint              page_index, gint              n_pages, gint              page_size
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_append</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable, const gchar      *text1, const gchar      *text2
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_get_selected_index</NAME>
+<RETURNS>gint</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_get_selected_text</NAME>
+<RETURNS>gchar *</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_select_first_item_in_page</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_select_last_item_in_page</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_select_item_by_index_in_page</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable, gint              index
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_select_previous_item</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_select_next_item</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_candidatable_set_auxiliary_text</NAME>
+<RETURNS>void</RETURNS>
+NimfCandidatable *candidatable, const gchar      *text, gint              cursor_pos
+</FUNCTION>
+<STRUCT>
+<NAME>NimfCandidatable</NAME>
+</STRUCT>
+<MACRO>
+<NAME>NIMF_TYPE_ENGINE</NAME>
+#define NIMF_TYPE_ENGINE            (nimf_engine_get_type ())
+</MACRO>
+<MACRO>
+<NAME>NIMF_ENGINE</NAME>
+#define NIMF_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_ENGINE, NimfEngine))
+</MACRO>
+<MACRO>
+<NAME>NIMF_ENGINE_CLASS</NAME>
+#define NIMF_ENGINE_CLASS(class)    (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_ENGINE, NimfEngineClass))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IS_ENGINE</NAME>
+#define NIMF_IS_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_ENGINE))
+</MACRO>
+<MACRO>
+<NAME>NIMF_ENGINE_GET_CLASS</NAME>
+#define NIMF_ENGINE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_ENGINE, NimfEngineClass))
+</MACRO>
+<STRUCT>
+<NAME>NimfEngine</NAME>
+struct _NimfEngine
+{
+  GObject parent_instance;
+  NimfEnginePrivate *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>NimfEngineClass</NAME>
+struct _NimfEngineClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Virtual functions */
+  gboolean (* filter_event)       (NimfEngine          *engine,
+                                   NimfServiceIC       *ic,
+                                   NimfEvent           *event);
+  void     (* reset)              (NimfEngine          *engine,
+                                   NimfServiceIC       *ic);
+  void     (* focus_in)           (NimfEngine          *engine,
+                                   NimfServiceIC       *ic);
+  void     (* focus_out)          (NimfEngine          *engine,
+                                   NimfServiceIC       *ic);
+  void     (* set_method)         (NimfEngine          *engine,
+                                   const gchar         *method_id);
+  /* candidate */
+  gboolean (* candidate_page_up)   (NimfEngine         *engine,
+                                    NimfServiceIC      *ic);
+  gboolean (* candidate_page_down) (NimfEngine         *engine,
+                                    NimfServiceIC      *ic);
+  void     (* candidate_clicked)   (NimfEngine         *engine,
+                                    NimfServiceIC      *ic,
+                                    gchar              *text,
+                                    gint                index);
+  void     (* candidate_scrolled)  (NimfEngine         *engine,
+                                    NimfServiceIC      *ic,
+                                    gdouble             value);
+  /* info */
+  const gchar * (* get_id)        (NimfEngine          *engine);
+  const gchar * (* get_icon_name) (NimfEngine          *engine);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_engine_get_type</NAME>
+<RETURNS>GType</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_filter_event</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfEngine          *engine, NimfServiceIC       *ic, NimfEvent           *event
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_reset</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine          *engine, NimfServiceIC       *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_focus_in</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine          *engine, NimfServiceIC       *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_focus_out</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine          *engine, NimfServiceIC       *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_set_surrounding</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine          *engine, const char          *text, gint                 len, gint                 cursor_index
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_get_surrounding</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfEngine          *engine, NimfServiceIC       *ic, gchar              **text, gint                *cursor_index
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_status_changed</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine          *engine
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_set_method</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine          *engine, const gchar         *method_id
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_preedit_start</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_preedit_changed</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic, const gchar      *preedit_string, NimfPreeditAttr **attrs, gint              cursor_pos
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_preedit_end</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_commit</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic, gchar const      *text
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_retrieve_surrounding</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_delete_surrounding</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic, gint              offset, gint              n_chars
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_emit_beep</NAME>
+<RETURNS>void</RETURNS>
+NimfEngine       *engine, NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_get_id</NAME>
+<RETURNS>const gchar *</RETURNS>
+NimfEngine *engine
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_get_icon_name</NAME>
+<RETURNS>const gchar *</RETURNS>
+NimfEngine *engine
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_engine_get_candidatable</NAME>
+<RETURNS>NimfCandidatable *</RETURNS>
+NimfEngine *engine
+</FUNCTION>
+<STRUCT>
+<NAME>NimfEnginePrivate</NAME>
+</STRUCT>
+<ENUM>
+<NAME>NimfEventType</NAME>
+typedef enum
+{
+  NIMF_EVENT_NOTHING     = -1,
+  NIMF_EVENT_KEY_PRESS   =  0,
+  NIMF_EVENT_KEY_RELEASE =  1,
+} NimfEventType;
+</ENUM>
+<STRUCT>
+<NAME>NimfEventKey</NAME>
+struct _NimfEventKey
+{
+  NimfEventType type;
+  guint32       state;
+  guint32       keyval;
+  guint32       hardware_keycode;
+};
+</STRUCT>
+<UNION>
+<NAME>NimfEvent</NAME>
+union _NimfEvent
+{
+  NimfEventType type;
+  NimfEventKey  key;
+};
+</UNION>
+<FUNCTION>
+<NAME>nimf_event_new</NAME>
+<RETURNS>NimfEvent *</RETURNS>
+NimfEventType     type
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_event_free</NAME>
+<RETURNS>void</RETURNS>
+NimfEvent        *event
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_event_matches</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfEvent        *event, const NimfKey   **keys
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_event_keycode_to_qwerty_keyval</NAME>
+<RETURNS>guint</RETURNS>
+const NimfEvent  *event
+</FUNCTION>
+<MACRO>
+<NAME>NIMF_TYPE_IM</NAME>
+#define NIMF_TYPE_IM             (nimf_im_get_type ())
+</MACRO>
+<MACRO>
+<NAME>NIMF_IM</NAME>
+#define NIMF_IM(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_IM, NimfIM))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IM_CLASS</NAME>
+#define NIMF_IM_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), NIMF_TYPE_IM, NimfIMClass))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IS_IM</NAME>
+#define NIMF_IS_IM(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_IM))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IM_GET_CLASS</NAME>
+#define NIMF_IM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_IM, NimfIMClass))
+</MACRO>
+<STRUCT>
+<NAME>NimfIM</NAME>
+struct _NimfIM
+{
+  GObject parent_instance;
+  NimfIMPrivate *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>NimfIMClass</NAME>
+struct _NimfIMClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Signals */
+  void     (*preedit_start)        (NimfIM *im);
+  void     (*preedit_end)          (NimfIM *im);
+  void     (*preedit_changed)      (NimfIM *im);
+  void     (*commit)               (NimfIM *im, const gchar *text);
+  gboolean (*retrieve_surrounding) (NimfIM *im);
+  gboolean (*delete_surrounding)   (NimfIM *im,
+                                    gint    offset,
+                                    gint    n_chars);
+  void     (*beep)                 (NimfIM *im);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_im_get_type</NAME>
+<RETURNS>GType</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_new</NAME>
+<RETURNS>NimfIM *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_focus_in</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_focus_out</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_reset</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_filter_event</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfIM              *im, NimfEvent           *event
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_get_preedit_string</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im, gchar              **str, NimfPreeditAttr   ***attrs, gint                *cursor_pos
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_set_cursor_location</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im, const NimfRectangle *area
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_set_use_preedit</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im, gboolean             use_preedit
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_im_set_surrounding</NAME>
+<RETURNS>void</RETURNS>
+NimfIM              *im, const char          *text, gint                 len, gint                 cursor_index
+</FUNCTION>
+<STRUCT>
+<NAME>NimfIMPrivate</NAME>
+</STRUCT>
+<ENUM>
+<NAME>NimfKeySym</NAME>
+typedef enum
+{
+  NIMF_KEY_space            = 0x020, /*< nick=space >*/
+  NIMF_KEY_exclam           = 0x021, /*< nick=exclam >*/
+  NIMF_KEY_quotedbl         = 0x022, /*< nick=quotedbl >*/
+  NIMF_KEY_numbersign       = 0x023, /*< nick=numbersign >*/
+  NIMF_KEY_dollar           = 0x024, /*< nick=dollar >*/
+  NIMF_KEY_percent          = 0x025, /*< nick=percent >*/
+  NIMF_KEY_ampersand        = 0x026, /*< nick=ampersand >*/
+  NIMF_KEY_apostrophe       = 0x027, /*< nick=apostrophe >*/
+  NIMF_KEY_parenleft        = 0x028, /*< nick=parenleft >*/
+  NIMF_KEY_parenright       = 0x029, /*< nick=parenright >*/
+  NIMF_KEY_asterisk         = 0x02a, /*< nick=asterisk >*/
+  NIMF_KEY_plus             = 0x02b, /*< nick=plus >*/
+  NIMF_KEY_comma            = 0x02c, /*< nick=comma >*/
+  NIMF_KEY_minus            = 0x02d, /*< nick=minus >*/
+  NIMF_KEY_period           = 0x02e, /*< nick=period >*/
+  NIMF_KEY_slash            = 0x02f, /*< nick=slash >*/
+  NIMF_KEY_0                = 0x030, /*< nick=0 >*/
+  NIMF_KEY_1                = 0x031, /*< nick=1 >*/
+  NIMF_KEY_2                = 0x032, /*< nick=2 >*/
+  NIMF_KEY_3                = 0x033, /*< nick=3 >*/
+  NIMF_KEY_4                = 0x034, /*< nick=4 >*/
+  NIMF_KEY_5                = 0x035, /*< nick=5 >*/
+  NIMF_KEY_6                = 0x036, /*< nick=6 >*/
+  NIMF_KEY_7                = 0x037, /*< nick=7 >*/
+  NIMF_KEY_8                = 0x038, /*< nick=8 >*/
+  NIMF_KEY_9                = 0x039, /*< nick=9 >*/
+  NIMF_KEY_colon            = 0x03a, /*< nick=colon >*/
+  NIMF_KEY_semicolon        = 0x03b, /*< nick=semicolon >*/
+  NIMF_KEY_less             = 0x03c, /*< nick=less >*/
+  NIMF_KEY_equal            = 0x03d, /*< nick=equal >*/
+  NIMF_KEY_greater          = 0x03e, /*< nick=greater >*/
+  NIMF_KEY_question         = 0x03f, /*< nick=question >*/
+  NIMF_KEY_at               = 0x040, /*< nick=at >*/
+  NIMF_KEY_A                = 0x041, /*< nick=A >*/
+  NIMF_KEY_B                = 0x042, /*< nick=B >*/
+  NIMF_KEY_C                = 0x043, /*< nick=C >*/
+  NIMF_KEY_D                = 0x044, /*< nick=D >*/
+  NIMF_KEY_E                = 0x045, /*< nick=E >*/
+  NIMF_KEY_F                = 0x046, /*< nick=F >*/
+  NIMF_KEY_G                = 0x047, /*< nick=G >*/
+  NIMF_KEY_H                = 0x048, /*< nick=H >*/
+  NIMF_KEY_I                = 0x049, /*< nick=I >*/
+  NIMF_KEY_J                = 0x04a, /*< nick=J >*/
+  NIMF_KEY_K                = 0x04b, /*< nick=K >*/
+  NIMF_KEY_L                = 0x04c, /*< nick=L >*/
+  NIMF_KEY_M                = 0x04d, /*< nick=M >*/
+  NIMF_KEY_N                = 0x04e, /*< nick=N >*/
+  NIMF_KEY_O                = 0x04f, /*< nick=O >*/
+  NIMF_KEY_P                = 0x050, /*< nick=P >*/
+  NIMF_KEY_Q                = 0x051, /*< nick=Q >*/
+  NIMF_KEY_R                = 0x052, /*< nick=R >*/
+  NIMF_KEY_S                = 0x053, /*< nick=S >*/
+  NIMF_KEY_T                = 0x054, /*< nick=T >*/
+  NIMF_KEY_U                = 0x055, /*< nick=U >*/
+  NIMF_KEY_V                = 0x056, /*< nick=V >*/
+  NIMF_KEY_W                = 0x057, /*< nick=W >*/
+  NIMF_KEY_X                = 0x058, /*< nick=X >*/
+  NIMF_KEY_Y                = 0x059, /*< nick=Y >*/
+  NIMF_KEY_Z                = 0x05a, /*< nick=Z >*/
+  NIMF_KEY_bracketleft      = 0x05b, /*< nick=bracketleft >*/
+  NIMF_KEY_backslash        = 0x05c, /*< nick=backslash >*/
+  NIMF_KEY_bracketright     = 0x05d, /*< nick=bracketright >*/
+  NIMF_KEY_asciicircum      = 0x05e, /*< nick=asciicircum >*/
+  NIMF_KEY_underscore       = 0x05f, /*< nick=underscore >*/
+  NIMF_KEY_grave            = 0x060, /*< nick=grave >*/
+  NIMF_KEY_a                = 0x061, /*< nick=a >*/
+  NIMF_KEY_b                = 0x062, /*< nick=b >*/
+  NIMF_KEY_c                = 0x063, /*< nick=c >*/
+  NIMF_KEY_d                = 0x064, /*< nick=d >*/
+  NIMF_KEY_e                = 0x065, /*< nick=e >*/
+  NIMF_KEY_f                = 0x066, /*< nick=f >*/
+  NIMF_KEY_g                = 0x067, /*< nick=g >*/
+  NIMF_KEY_h                = 0x068, /*< nick=h >*/
+  NIMF_KEY_i                = 0x069, /*< nick=i >*/
+  NIMF_KEY_j                = 0x06a, /*< nick=j >*/
+  NIMF_KEY_k                = 0x06b, /*< nick=k >*/
+  NIMF_KEY_l                = 0x06c, /*< nick=l >*/
+  NIMF_KEY_m                = 0x06d, /*< nick=m >*/
+  NIMF_KEY_n                = 0x06e, /*< nick=n >*/
+  NIMF_KEY_o                = 0x06f, /*< nick=o >*/
+  NIMF_KEY_p                = 0x070, /*< nick=p >*/
+  NIMF_KEY_q                = 0x071, /*< nick=q >*/
+  NIMF_KEY_r                = 0x072, /*< nick=r >*/
+  NIMF_KEY_s                = 0x073, /*< nick=s >*/
+  NIMF_KEY_t                = 0x074, /*< nick=t >*/
+  NIMF_KEY_u                = 0x075, /*< nick=u >*/
+  NIMF_KEY_v                = 0x076, /*< nick=v >*/
+  NIMF_KEY_w                = 0x077, /*< nick=w >*/
+  NIMF_KEY_x                = 0x078, /*< nick=x >*/
+  NIMF_KEY_y                = 0x079, /*< nick=y >*/
+  NIMF_KEY_z                = 0x07a, /*< nick=z >*/
+  NIMF_KEY_braceleft        = 0x07b, /*< nick=braceleft >*/
+  NIMF_KEY_bar              = 0x07c, /*< nick=bar >*/
+  NIMF_KEY_braceright       = 0x07d, /*< nick=braceright >*/
+  NIMF_KEY_asciitilde       = 0x07e, /*< nick=asciitilde >*/
+
+  NIMF_KEY_ISO_Level3_Shift = 0xfe03, /*< nick=ISO_Level3_Shift >*/
+  NIMF_KEY_ISO_Left_Tab     = 0xfe20, /*< nick=ISO_Left_Tab >*/
+
+  NIMF_KEY_BackSpace        = 0xff08, /*< nick=BackSpace >*/
+  NIMF_KEY_Tab              = 0xff09, /*< nick=Tab >*/
+
+  NIMF_KEY_Return           = 0xff0d, /*< nick=Return >*/
+
+  NIMF_KEY_Pause            = 0xff13, /*< nick=Pause >*/
+  NIMF_KEY_Scroll_Lock      = 0xff14, /*< nick=Scroll_Lock >*/
+  NIMF_KEY_Sys_Req          = 0xff15, /*< nick=Sys_Req >*/
+
+  NIMF_KEY_Escape           = 0xff1b, /*< nick=Escape >*/
+
+  NIMF_KEY_Multi_key        = 0xff20, /*< nick=Multi_key >*/
+  NIMF_KEY_Kanji            = 0xff21, /*< nick=Kanji >*/
+
+  NIMF_KEY_Kana_Shift       = 0xff2e, /*< nick=Kana_Shift >*/
+
+  NIMF_KEY_Hangul           = 0xff31, /*< nick=Hangul >*/
+
+  NIMF_KEY_Hangul_Hanja     = 0xff34, /*< nick=Hangul_Hanja >*/
+
+  NIMF_KEY_Home             = 0xff50, /*< nick=Home >*/
+  NIMF_KEY_Left             = 0xff51, /*< nick=Left >*/
+  NIMF_KEY_Up               = 0xff52, /*< nick=Up >*/
+  NIMF_KEY_Right            = 0xff53, /*< nick=Right >*/
+  NIMF_KEY_Down             = 0xff54, /*< nick=Down >*/
+  NIMF_KEY_Page_Up          = 0xff55, /*< nick=Page_Up >*/
+  NIMF_KEY_Page_Down        = 0xff56, /*< nick=Page_Down >*/
+  NIMF_KEY_End              = 0xff57, /*< nick=End >*/
+
+  NIMF_KEY_Print            = 0xff61, /*< nick=Print >*/
+  NIMF_KEY_Execute          = 0xff62, /*< nick=Execut >*/
+  NIMF_KEY_Insert           = 0xff63, /*< nick=Insert >*/
+
+  NIMF_KEY_Menu             = 0xff67, /*< nick=Menu >*/
+
+  NIMF_KEY_Break            = 0xff6b, /*< nick=Break >*/
+
+  NIMF_KEY_KP_Enter         = 0xff8d, /*< nick=KP_Enter >*/
+
+  NIMF_KEY_KP_Left          = 0xff96, /*< nick=KP_Left >*/
+  NIMF_KEY_KP_Up            = 0xff97, /*< nick=KP_Up >*/
+  NIMF_KEY_KP_Right         = 0xff98, /*< nick=KP_Right >*/
+  NIMF_KEY_KP_Down          = 0xff99, /*< nick=KP_Down >*/
+  NIMF_KEY_KP_Page_Up       = 0xff9a, /*< nick=KP_Page_Up >*/
+  NIMF_KEY_KP_Page_Down     = 0xff9b, /*< nick=KP_Page_Down >*/
+
+  NIMF_KEY_KP_Delete        = 0xff9f, /*< nick=KP_Delete >*/
+
+  NIMF_KEY_KP_Multiply      = 0xffaa, /*< nick=KP_Multiply >*/
+  NIMF_KEY_KP_Add           = 0xffab, /*< nick=KP_Add >*/
+
+  NIMF_KEY_KP_Subtract      = 0xffad, /*< nick=KP_Subtract >*/
+  NIMF_KEY_KP_Decimal       = 0xffae, /*< nick=KP_Decimal >*/
+  NIMF_KEY_KP_Divide        = 0xffaf, /*< nick=KP_Divide >*/
+  NIMF_KEY_KP_0             = 0xffb0, /*< nick=KP_0 >*/
+  NIMF_KEY_KP_1             = 0xffb1, /*< nick=KP_1 >*/
+  NIMF_KEY_KP_2             = 0xffb2, /*< nick=KP_2 >*/
+  NIMF_KEY_KP_3             = 0xffb3, /*< nick=KP_3 >*/
+  NIMF_KEY_KP_4             = 0xffb4, /*< nick=KP_4 >*/
+  NIMF_KEY_KP_5             = 0xffb5, /*< nick=KP_5 >*/
+  NIMF_KEY_KP_6             = 0xffb6, /*< nick=KP_6 >*/
+  NIMF_KEY_KP_7             = 0xffb7, /*< nick=KP_7 >*/
+  NIMF_KEY_KP_8             = 0xffb8, /*< nick=KP_8 >*/
+  NIMF_KEY_KP_9             = 0xffb9, /*< nick=KP_9 >*/
+
+  NIMF_KEY_F1               = 0xffbe, /*< nick=F1 >*/
+  NIMF_KEY_F2               = 0xffbf, /*< nick=F2 >*/
+  NIMF_KEY_F3               = 0xffc0, /*< nick=F3 >*/
+  NIMF_KEY_F4               = 0xffc1, /*< nick=F4 >*/
+  NIMF_KEY_F5               = 0xffc2, /*< nick=F5 >*/
+  NIMF_KEY_F6               = 0xffc3, /*< nick=F6 >*/
+  NIMF_KEY_F7               = 0xffc4, /*< nick=F7 >*/
+  NIMF_KEY_F8               = 0xffc5, /*< nick=F8 >*/
+  NIMF_KEY_F9               = 0xffc6, /*< nick=F9 >*/
+  NIMF_KEY_F10              = 0xffc7, /*< nick=F10 >*/
+  NIMF_KEY_F11              = 0xffc8, /*< nick=F11 >*/
+  NIMF_KEY_F12              = 0xffc9, /*< nick=F12 >*/
+
+  NIMF_KEY_Shift_L          = 0xffe1, /*< nick=Shift_L >*/
+  NIMF_KEY_Shift_R          = 0xffe2, /*< nick=Shift_R >*/
+  NIMF_KEY_Control_L        = 0xffe3, /*< nick=Control_L >*/
+  NIMF_KEY_Control_R        = 0xffe4, /*< nick=Control_R >*/
+  NIMF_KEY_Caps_Lock        = 0xffe5, /*< nick=Caps_Lock >*/
+  NIMF_KEY_Shift_Lock       = 0xffe6, /*< nick=Shift_Lock >*/
+  NIMF_KEY_Meta_L           = 0xffe7, /*< nick=Meta_L >*/
+  NIMF_KEY_Meta_R           = 0xffe8, /*< nick=Meta_R >*/
+  NIMF_KEY_Alt_L            = 0xffe9, /*< nick=Alt_L >*/
+  NIMF_KEY_Alt_R            = 0xffea, /*< nick=Alt_R >*/
+  NIMF_KEY_Super_L          = 0xffeb, /*< nick=Super_L >*/
+  NIMF_KEY_Super_R          = 0xffec, /*< nick=Super_R >*/
+
+  NIMF_KEY_Delete           = 0xffff, /*< nick=Delete >*/
+
+  NIMF_KEY_VoidSymbol       = 0xffffff, /*< nick=VoidSymbol >*/
+  NIMF_KEY_WakeUp           = 0x1008ff2b, /*< nick=WakeUp >*/
+  NIMF_KEY_WebCam           = 0x1008ff8f, /*< nick=WebCam >*/
+  NIMF_KEY_WLAN             = 0x1008ff95 /*< nick=WLAN >*/
+} NimfKeySym;
+</ENUM>
+<MACRO>
+<NAME>NIMF_TYPE_PREEDITABLE</NAME>
+#define NIMF_TYPE_PREEDITABLE nimf_preeditable_get_type ()
+</MACRO>
+<STRUCT>
+<NAME>NimfPreeditableInterface</NAME>
+struct _NimfPreeditableInterface
+{
+  GTypeInterface parent;
+
+  void     (* show)                (NimfPreeditable     *preeditable);
+  void     (* hide)                (NimfPreeditable     *preeditable);
+  gboolean (* is_visible)          (NimfPreeditable     *preeditable);
+  void     (* set_text)            (NimfPreeditable     *preeditable,
+                                    const gchar         *text,
+                                    gint                 cursor_pos);
+  void     (* set_cursor_location) (NimfPreeditable     *preeditable,
+                                    const NimfRectangle *area);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_preeditable_show</NAME>
+<RETURNS>void</RETURNS>
+NimfPreeditable     *preeditable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preeditable_hide</NAME>
+<RETURNS>void</RETURNS>
+NimfPreeditable     *preeditable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preeditable_is_visible</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfPreeditable     *preeditable
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preeditable_set_text</NAME>
+<RETURNS>void</RETURNS>
+NimfPreeditable     *preeditable, const gchar         *text, gint                 cursor_pos
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preeditable_set_cursor_location</NAME>
+<RETURNS>void</RETURNS>
+NimfPreeditable     *preeditable, const NimfRectangle *area
+</FUNCTION>
+<STRUCT>
+<NAME>NimfPreeditable</NAME>
+</STRUCT>
+<MACRO>
+<NAME>NIMF_TYPE_SERVER</NAME>
+#define NIMF_TYPE_SERVER             (nimf_server_get_type ())
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVER</NAME>
+#define NIMF_SERVER(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SERVER, NimfServer))
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVER_CLASS</NAME>
+#define NIMF_SERVER_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_SERVER, NimfServerClass))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IS_SERVER</NAME>
+#define NIMF_IS_SERVER(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SERVER))
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVER_GET_CLASS</NAME>
+#define NIMF_SERVER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVER, NimfServerClass))
+</MACRO>
+<STRUCT>
+<NAME>NimfServer</NAME>
+struct _NimfServer
+{
+  GObject parent_instance;
+  NimfServerPrivate *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>NimfServerClass</NAME>
+struct _NimfServerClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Signals */
+  void (* engine_changed)        (NimfServer  *server,
+                                  const gchar *engine_id,
+                                  const gchar *icon_name);
+  void (* engine_status_changed) (NimfServer  *server,
+                                  const gchar *engine_id,
+                                  const gchar *icon_name);
+  void (* engine_loaded)         (NimfServer  *server,
+                                  const gchar *engine_id);
+  void (* engine_unloaded)       (NimfServer  *server,
+                                  const gchar *engine_id);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_server_get_type</NAME>
+<RETURNS>GType</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_server_change_engine_by_id</NAME>
+<RETURNS>void</RETURNS>
+NimfServer   *server, const gchar  *engine_id
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_server_change_engine</NAME>
+<RETURNS>void</RETURNS>
+NimfServer   *server, const gchar  *engine_id, const gchar  *method_id
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_server_get_loaded_engine_ids</NAME>
+<RETURNS>gchar **</RETURNS>
+NimfServer   *server
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_server_get_default</NAME>
+<RETURNS>NimfServer *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_server_get_preeditable</NAME>
+<RETURNS>NimfPreeditable *</RETURNS>
+NimfServer   *server
+</FUNCTION>
+<STRUCT>
+<NAME>NimfServerPrivate</NAME>
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_service_ic_load_engine</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC *ic, const gchar   *engine_id, NimfServer    *server
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_unload_engine</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC *ic, const gchar   *engine_id, NimfEngine    *signleton_engine_to_be_deleted, NimfServer    *server
+</FUNCTION>
+<MACRO>
+<NAME>NIMF_TYPE_SERVICE_IC</NAME>
+#define NIMF_TYPE_SERVICE_IC             (nimf_service_ic_get_type ())
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVICE_IC</NAME>
+#define NIMF_SERVICE_IC(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SERVICE_IC, NimfServiceIC))
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVICE_IC_CLASS</NAME>
+#define NIMF_SERVICE_IC_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_SERVICE_IC, NimfServiceICClass))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IS_SERVICE_IC</NAME>
+#define NIMF_IS_SERVICE_IC(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SERVICE_IC))
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVICE_IC_GET_CLASS</NAME>
+#define NIMF_SERVICE_IC_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVICE_IC, NimfServiceICClass))
+</MACRO>
+<STRUCT>
+<NAME>NimfServiceICClass</NAME>
+struct _NimfServiceICClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Virtual functions */
+  const gchar * (* get_service_id) (NimfServiceIC *ic);
+
+  void     (* emit_commit)               (NimfServiceIC    *ic,
+                                          const gchar      *text);
+  void     (* emit_preedit_start)        (NimfServiceIC    *ic);
+  void     (* emit_preedit_changed)      (NimfServiceIC    *ic,
+                                          const gchar      *preedit_string,
+                                          NimfPreeditAttr **attrs,
+                                          gint              cursor_pos);
+  void     (* emit_preedit_end)          (NimfServiceIC    *ic);
+  gboolean (* emit_retrieve_surrounding) (NimfServiceIC    *ic);
+  gboolean (* emit_delete_surrounding)   (NimfServiceIC    *ic,
+                                          gint              offset,
+                                          gint              n_chars);
+  void     (* emit_beep)                 (NimfServiceIC    *ic);
+};
+</STRUCT>
+<STRUCT>
+<NAME>NimfServiceIC</NAME>
+struct _NimfServiceIC
+{
+  GObject parent_instance;
+  NimfServiceICPrivate *priv;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_service_ic_get_type</NAME>
+<RETURNS>GType</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_focus_in</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_focus_out</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_filter_event</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfServiceIC *ic, NimfEvent     *event
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_set_surrounding</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic, const char     *text, gint            len, gint            cursor_index
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_set_use_preedit</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic, gboolean        use_preedit
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_get_use_preedit</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfServiceIC  *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_set_cursor_location</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic, const NimfRectangle *area
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_get_cursor_location</NAME>
+<RETURNS>const NimfRectangle *</RETURNS>
+NimfServiceIC  *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_reset</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_change_engine_by_id</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic, const gchar    *engine_id
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_change_engine</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic, const gchar    *engine_id, const gchar    *method_id
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_engine_changed</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC  *ic, const gchar    *engine_id, const gchar    *name
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_get_engine</NAME>
+<RETURNS>NimfEngine *</RETURNS>
+NimfServiceIC  *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_get_service_id</NAME>
+<RETURNS>const gchar *</RETURNS>
+NimfServiceIC  *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_preedit_start</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_preedit_changed</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC    *ic, const gchar      *preedit_string, NimfPreeditAttr **attrs, gint              cursor_pos
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_preedit_end</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_commit</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC    *ic, const gchar      *text
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_retrieve_surrounding</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfServiceIC    *ic
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_delete_surrounding</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfServiceIC    *ic, gint              offset, gint              n_chars
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_ic_emit_beep</NAME>
+<RETURNS>void</RETURNS>
+NimfServiceIC    *ic
+</FUNCTION>
+<STRUCT>
+<NAME>NimfServiceICPrivate</NAME>
+</STRUCT>
+<MACRO>
+<NAME>NIMF_TYPE_SERVICE</NAME>
+#define NIMF_TYPE_SERVICE             (nimf_service_get_type ())
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVICE</NAME>
+#define NIMF_SERVICE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SERVICE, NimfService))
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVICE_CLASS</NAME>
+#define NIMF_SERVICE_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_SERVICE, NimfServiceClass))
+</MACRO>
+<MACRO>
+<NAME>NIMF_IS_SERVICE</NAME>
+#define NIMF_IS_SERVICE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SERVICE))
+</MACRO>
+<MACRO>
+<NAME>NIMF_SERVICE_GET_CLASS</NAME>
+#define NIMF_SERVICE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SERVICE, NimfServiceClass))
+</MACRO>
+<STRUCT>
+<NAME>NimfService</NAME>
+struct _NimfService
+{
+  GObject parent_instance;
+};
+</STRUCT>
+<STRUCT>
+<NAME>NimfServiceClass</NAME>
+struct _NimfServiceClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Virtual functions */
+  const gchar * (* get_id)              (NimfService *service);
+  gboolean      (* start)               (NimfService *service);
+  void          (* stop)                (NimfService *service);
+  gboolean      (* is_active)           (NimfService *service);
+  void          (* change_engine_by_id) (NimfService *service,
+                                         const gchar *engine_id);
+  void          (* change_engine)       (NimfService *service,
+                                         const gchar *engine_id,
+                                         const gchar *method_id);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_service_get_type</NAME>
+<RETURNS>GType</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_start</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfService *service
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_stop</NAME>
+<RETURNS>void</RETURNS>
+NimfService *service
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_is_active</NAME>
+<RETURNS>gboolean</RETURNS>
+NimfService *service
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_get_id</NAME>
+<RETURNS>const gchar *</RETURNS>
+NimfService *service
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_change_engine_by_id</NAME>
+<RETURNS>void</RETURNS>
+NimfService *service, const gchar *engine_id
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_service_change_engine</NAME>
+<RETURNS>void</RETURNS>
+NimfService *service, const gchar *engine_id, const gchar *method_id
+</FUNCTION>
+<ENUM>
+<NAME>NimfModifierType</NAME>
+typedef enum
+{
+  NIMF_SHIFT_MASK    = 1 << 0, /*< nick=<Shift> >*/
+  NIMF_LOCK_MASK     = 1 << 1, /*< nick=<Lock> >*/
+  NIMF_CONTROL_MASK  = 1 << 2, /*< nick=<Control> >*/
+  NIMF_MOD1_MASK     = 1 << 3, /*< nick=<Mod1> >*/
+  NIMF_MOD2_MASK     = 1 << 4, /*< nick=<Mod2> >*/
+  NIMF_MOD3_MASK     = 1 << 5, /*< nick=<Mod3> >*/
+  NIMF_MOD4_MASK     = 1 << 6, /*< nick=<Mod4> >*/
+  NIMF_MOD5_MASK     = 1 << 7, /*< nick=<Mod5> >*/
+  NIMF_BUTTON1_MASK  = 1 << 8, /*< nick=<Button1> >*/
+  NIMF_BUTTON2_MASK  = 1 << 9, /*< nick=<Button2> >*/
+  NIMF_BUTTON3_MASK  = 1 << 10, /*< nick=<Button3> >*/
+  NIMF_BUTTON4_MASK  = 1 << 11, /*< nick=<Button4> >*/
+  NIMF_BUTTON5_MASK  = 1 << 12, /*< nick=<Button5> >*/
+
+  NIMF_MODIFIER_RESERVED_13_MASK  = 1 << 13,
+  NIMF_MODIFIER_RESERVED_14_MASK  = 1 << 14,
+  NIMF_MODIFIER_RESERVED_15_MASK  = 1 << 15,
+  NIMF_MODIFIER_RESERVED_16_MASK  = 1 << 16,
+  NIMF_MODIFIER_RESERVED_17_MASK  = 1 << 17,
+  NIMF_MODIFIER_RESERVED_18_MASK  = 1 << 18,
+  NIMF_MODIFIER_RESERVED_19_MASK  = 1 << 19,
+  NIMF_MODIFIER_RESERVED_20_MASK  = 1 << 20,
+  NIMF_MODIFIER_RESERVED_21_MASK  = 1 << 21,
+  NIMF_MODIFIER_RESERVED_22_MASK  = 1 << 22,
+  NIMF_MODIFIER_RESERVED_23_MASK  = 1 << 23,
+  NIMF_MODIFIER_RESERVED_24_MASK  = 1 << 24,
+  NIMF_MODIFIER_RESERVED_25_MASK  = 1 << 25,
+
+  NIMF_SUPER_MASK    = 1 << 26, /*< nick=<Super> >*/
+  NIMF_HYPER_MASK    = 1 << 27, /*< nick=<Hyper> >*/
+  NIMF_META_MASK     = 1 << 28, /*< nick=<Meta> >*/
+
+  NIMF_MODIFIER_RESERVED_29_MASK  = 1 << 29,
+
+  NIMF_RELEASE_MASK  = 1 << 30, /*< nick=<Release> >*/
+
+  /* Combination of NIMF_SHIFT_MASK..NIMF_BUTTON5_MASK + NIMF_SUPER_MASK
+     + NIMF_HYPER_MASK + NIMF_META_MASK + NIMF_RELEASE_MASK */
+  NIMF_MODIFIER_MASK = 0x5c001fff
+} NimfModifierType;
+</ENUM>
+<STRUCT>
+<NAME>NimfRectangle</NAME>
+typedef struct {
+  int x, y;
+  int width, height;
+} NimfRectangle;
+</STRUCT>
+<STRUCT>
+<NAME>NimfKey</NAME>
+typedef struct {
+  guint32 state;
+  guint32 keyval;
+} NimfKey;
+</STRUCT>
+<ENUM>
+<NAME>NimfPreeditState</NAME>
+typedef enum
+{
+  NIMF_PREEDIT_STATE_START = 1,
+  NIMF_PREEDIT_STATE_END   = 0
+} NimfPreeditState;
+</ENUM>
+<ENUM>
+<NAME>NimfPreeditAttrType</NAME>
+typedef enum
+{
+  NIMF_PREEDIT_ATTR_UNDERLINE,
+  NIMF_PREEDIT_ATTR_HIGHLIGHT
+} NimfPreeditAttrType;
+</ENUM>
+<STRUCT>
+<NAME>NimfPreeditAttr</NAME>
+typedef struct {
+  NimfPreeditAttrType type;
+  guint start_index; /* in characters */
+  guint end_index; /* in characters. The character at this index is not included */
+} NimfPreeditAttr;
+</STRUCT>
+<FUNCTION>
+<NAME>nimf_key_new</NAME>
+<RETURNS>NimfKey *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_key_new_from_nicks</NAME>
+<RETURNS>NimfKey *</RETURNS>
+const gchar **nicks
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_key_free</NAME>
+<RETURNS>void</RETURNS>
+NimfKey      *key
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_key_newv</NAME>
+<RETURNS>NimfKey **</RETURNS>
+const gchar **keys
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_key_freev</NAME>
+<RETURNS>void</RETURNS>
+NimfKey     **keys
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preedit_attr_new</NAME>
+<RETURNS>NimfPreeditAttr *</RETURNS>
+NimfPreeditAttrType type, guint               start_index, guint               end_index
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preedit_attrs_copy</NAME>
+<RETURNS>NimfPreeditAttr **</RETURNS>
+NimfPreeditAttr   **attrs
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preedit_attr_free</NAME>
+<RETURNS>void</RETURNS>
+NimfPreeditAttr    *attr
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_preedit_attr_freev</NAME>
+<RETURNS>void</RETURNS>
+NimfPreeditAttr   **attrs
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_method_info_new</NAME>
+<RETURNS>NimfMethodInfo *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_method_info_free</NAME>
+<RETURNS>void</RETURNS>
+NimfMethodInfo  *info
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_method_info_freev</NAME>
+<RETURNS>void</RETURNS>
+NimfMethodInfo **infos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_is_running</NAME>
+<RETURNS>gboolean</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_xkb_is_available</NAME>
+<RETURNS>gboolean</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_keyval_to_keysym_name</NAME>
+<RETURNS>const gchar *</RETURNS>
+guint keyval
+</FUNCTION>
+<FUNCTION>
+<NAME>nimf_get_socket_path</NAME>
+<RETURNS>gchar *</RETURNS>
+void
+</FUNCTION>

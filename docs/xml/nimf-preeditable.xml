@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="NimfPreeditable">
+<refmeta>
+<refentrytitle role="top_of_page" id="NimfPreeditable.top_of_page">NimfPreeditable</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>NimfPreeditable</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="NimfPreeditable.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preeditable-show">nimf_preeditable_show</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preeditable-hide">nimf_preeditable_hide</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preeditable-is-visible">nimf_preeditable_is_visible</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preeditable-set-text">nimf_preeditable_set_text</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-preeditable-set-cursor-location">nimf_preeditable_set_cursor_location</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfPreeditable.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="other_proto_type" colwidth="150px"/>
+<colspec colname="other_proto_name"/>
+<tbody>
+<row><entry role="define_keyword">#define</entry><entry role="function_name"><link linkend="NIMF-TYPE-PREEDITABLE:CAPS">NIMF_TYPE_PREEDITABLE</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="NimfPreeditableInterface">NimfPreeditableInterface</link></entry></row>
+<row><entry role="datatype_keyword"></entry><entry role="function_name"><link linkend="NimfPreeditable-struct">NimfPreeditable</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="NimfPreeditable.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<screen>    <link linkend="GInterface">GInterface</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> NimfPreeditable
+</screen>
+</refsect1>
+<refsect1 id="NimfPreeditable.prerequisites" role="prerequisites">
+<title role="prerequisites.title">Prerequisites</title>
+<para>
+NimfPreeditable requires
+ <link linkend="GObject">GObject</link>.</para>
+
+</refsect1>
+
+
+<refsect1 id="NimfPreeditable.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="NimfPreeditable.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-preeditable-show" role="function">
+<title>nimf_preeditable_show&#160;()</title>
+<indexterm zone="nimf-preeditable-show"><primary sortas="preeditable_show">nimf_preeditable_show</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_preeditable_show (<parameter><link linkend="NimfPreeditable"><type>NimfPreeditable</type></link> *preeditable</parameter>);</programlisting>
+<para>Shows <parameter>preeditable</parameter>
+</para>
+<refsect3 id="nimf-preeditable-show.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>preeditable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-preeditable-hide" role="function">
+<title>nimf_preeditable_hide&#160;()</title>
+<indexterm zone="nimf-preeditable-hide"><primary sortas="preeditable_hide">nimf_preeditable_hide</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_preeditable_hide (<parameter><link linkend="NimfPreeditable"><type>NimfPreeditable</type></link> *preeditable</parameter>);</programlisting>
+<para>Hides the <parameter>preeditable</parameter>
+</para>
+<refsect3 id="nimf-preeditable-hide.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>preeditable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-preeditable-is-visible" role="function">
+<title>nimf_preeditable_is_visible&#160;()</title>
+<indexterm zone="nimf-preeditable-is-visible"><primary sortas="preeditable_is_visible">nimf_preeditable_is_visible</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+nimf_preeditable_is_visible (<parameter><link linkend="NimfPreeditable"><type>NimfPreeditable</type></link> *preeditable</parameter>);</programlisting>
+<refsect3 id="nimf-preeditable-is-visible.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>preeditable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-preeditable-is-visible.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <parameter>preeditable</parameter>
+is visible</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-preeditable-set-text" role="function">
+<title>nimf_preeditable_set_text&#160;()</title>
+<indexterm zone="nimf-preeditable-set-text"><primary sortas="preeditable_set_text">nimf_preeditable_set_text</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_preeditable_set_text (<parameter><link linkend="NimfPreeditable"><type>NimfPreeditable</type></link> *preeditable</parameter>,
+                           <parameter>const <link linkend="gchar"><type>gchar</type></link> *text</parameter>,
+                           <parameter><link linkend="gint"><type>gint</type></link> cursor_pos</parameter>);</programlisting>
+<para>Sets <parameter>text</parameter>
+ to <parameter>preeditable</parameter>
+.</para>
+<refsect3 id="nimf-preeditable-set-text.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>preeditable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>text</para></entry>
+<entry role="parameter_description"><para>text</para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>cursor_pos</para></entry>
+<entry role="parameter_description"><para>cursor position</para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-preeditable-set-cursor-location" role="function">
+<title>nimf_preeditable_set_cursor_location&#160;()</title>
+<indexterm zone="nimf-preeditable-set-cursor-location"><primary sortas="preeditable_set_cursor_location">nimf_preeditable_set_cursor_location</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_preeditable_set_cursor_location (<parameter><link linkend="NimfPreeditable"><type>NimfPreeditable</type></link> *preeditable</parameter>,
+                                      <parameter>const <link linkend="NimfRectangle"><type>NimfRectangle</type></link> *area</parameter>);</programlisting>
+<para>Notifies the <parameter>preeditable</parameter>
+ that a change in cursor position has been made.
+The location is the position of a window position in root window coordinates.</para>
+<refsect3 id="nimf-preeditable-set-cursor-location.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>preeditable</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfPreeditable"><type>NimfPreeditable</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>area</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfRectangle"><type>NimfRectangle</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="NimfPreeditable.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="NIMF-TYPE-PREEDITABLE:CAPS" role="macro">
+<title>NIMF_TYPE_PREEDITABLE</title>
+<indexterm zone="NIMF-TYPE-PREEDITABLE:CAPS"><primary sortas="TYPE_PREEDITABLE">NIMF_TYPE_PREEDITABLE</primary></indexterm>
+<programlisting language="C">#define NIMF_TYPE_PREEDITABLE nimf_preeditable_get_type ()
+</programlisting>
+</refsect2>
+<refsect2 id="NimfPreeditableInterface" role="struct">
+<title>struct NimfPreeditableInterface</title>
+<indexterm zone="NimfPreeditableInterface"><primary sortas="PreeditableInterface">NimfPreeditableInterface</primary></indexterm>
+<programlisting language="C">struct NimfPreeditableInterface {
+  GTypeInterface parent;
+
+  void     (* show)                (NimfPreeditable     *preeditable);
+  void     (* hide)                (NimfPreeditable     *preeditable);
+  gboolean (* is_visible)          (NimfPreeditable     *preeditable);
+  void     (* set_text)            (NimfPreeditable     *preeditable,
+                                    const gchar         *text,
+                                    gint                 cursor_pos);
+  void     (* set_cursor_location) (NimfPreeditable     *preeditable,
+                                    const NimfRectangle *area);
+};
+</programlisting>
+<para>Provides an interface for preedit gadget.</para>
+<refsect3 id="NimfPreeditableInterface.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><link linkend="GTypeInterface"><type>GTypeInterface</type></link>&#160;<structfield id="NimfPreeditableInterface.parent">parent</structfield>;</para></entry>
+<entry role="struct_member_description"><para>The parent interface.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfPreeditableInterface.show">show</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Shows the preeditable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfPreeditableInterface.hide">hide</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Hides the preeditable.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfPreeditableInterface.is-visible">is_visible</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Checks if the preeditable is visible.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfPreeditableInterface.set-text">set_text</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Sets the text in the preeditable to the given value, replacing
+the current contents.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><structfield id="NimfPreeditableInterface.set-cursor-location">set_cursor_location</structfield>&#160;()</para></entry>
+<entry role="struct_member_description"><para>Sets the cursor position.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+<refsect2 id="NimfPreeditable-struct" role="struct">
+<title>NimfPreeditable</title>
+<indexterm zone="NimfPreeditable-struct"><primary sortas="Preeditable">NimfPreeditable</primary></indexterm>
+<programlisting language="C">typedef struct _NimfPreeditable NimfPreeditable;</programlisting>
+</refsect2>
+
+</refsect1>
+
+</refentry>

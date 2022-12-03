@@ -1,1 +1,191 @@
-<svg id="레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#262933;}</style></defs><title>nimf-system-keyboard</title><rect class="cls-1" width="64" height="64" rx="12.22" ry="12.22"/><rect class="cls-2" x="28.99" y="37.74" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="32.36" y="28.48" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="24.78" y="28.48" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="39.94" y="28.48" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="47.29" y="28.48" width="9.49" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="36.57" y="37.74" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="17.2" y="28.48" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="21.41" y="37.74" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="51.73" y="47.01" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="44.15" y="37.74" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="51.73" y="37.74" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="7.09" y="47.01" width="5.41" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="14.66" y="47.01" width="34.55" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="6.86" y="28.48" width="7.81" height="6.49" rx="2" ry="2"/><rect class="cls-2" x="7.09" y="37.74" width="12.64" height="6.49" rx="2" ry="2"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="레이어_1"
+   data-name="레이어 1"
+   viewBox="0 0 64 64"
+   version="1.1"
+   sodipodi:docname="nimf-system-keyboard.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview41"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="5.5234375"
+     inkscape:cx="0.7241867"
+     inkscape:cy="26.885431"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="레이어_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#fff;}.cls-2{fill:#262933;}</style>
+  </defs>
+  <title
+     id="title6">nimf-system-keyboard</title>
+  <g
+     id="g41"
+     transform="matrix(1.0490311,0,0,1.0546842,-1.7636977,-1.2042515)">
+    <rect
+       class="cls-1"
+       width="52.121643"
+       height="51.836411"
+       rx="9.9519768"
+       ry="9.8975153"
+       id="rect8"
+       style="fill:#f9f9f9;stroke-width:0.81217"
+       x="5.9576001"
+       y="5.5064812" />
+    <g
+       id="g202"
+       transform="matrix(0.64159423,0,0,0.59512851,11.689247,13.161949)">
+      <rect
+         class="cls-2"
+         x="28.99"
+         y="37.740002"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect10" />
+      <rect
+         class="cls-2"
+         x="32.360001"
+         y="28.48"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect12" />
+      <rect
+         class="cls-2"
+         x="24.780001"
+         y="28.48"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect14" />
+      <rect
+         class="cls-2"
+         x="39.939999"
+         y="28.48"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect16" />
+      <rect
+         class="cls-2"
+         x="47.290001"
+         y="28.48"
+         width="9.4899998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect18" />
+      <rect
+         class="cls-2"
+         x="36.57"
+         y="37.740002"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect20" />
+      <rect
+         class="cls-2"
+         x="17.200001"
+         y="28.48"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect22" />
+      <rect
+         class="cls-2"
+         x="21.41"
+         y="37.740002"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect24" />
+      <rect
+         class="cls-2"
+         x="51.73"
+         y="47.009998"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect26" />
+      <rect
+         class="cls-2"
+         x="44.150002"
+         y="37.740002"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect28" />
+      <rect
+         class="cls-2"
+         x="51.73"
+         y="37.740002"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect30" />
+      <rect
+         class="cls-2"
+         x="7.0900002"
+         y="47.009998"
+         width="5.4099998"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect32" />
+      <rect
+         class="cls-2"
+         x="14.66"
+         y="47.009998"
+         width="34.549999"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect34" />
+      <rect
+         class="cls-2"
+         x="6.8600001"
+         y="28.48"
+         width="7.8099999"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect36" />
+      <rect
+         class="cls-2"
+         x="7.0900002"
+         y="37.740002"
+         width="12.64"
+         height="6.4899998"
+         rx="2"
+         ry="2"
+         id="rect38" />
+    </g>
+  </g>
+</svg>

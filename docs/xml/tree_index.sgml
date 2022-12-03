@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE screen PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<screen>
+    <link linkend="GObject">GObject</link>
+    <phrase role="lineart">&#9500;&#9472;&#9472;</phrase> <link linkend="NimfEngine">NimfEngine</link>
+    <phrase role="lineart">&#9500;&#9472;&#9472;</phrase> <link linkend="NimfIM">NimfIM</link>
+    <phrase role="lineart">&#9500;&#9472;&#9472;</phrase> <link linkend="NimfServer">NimfServer</link>
+    <phrase role="lineart">&#9500;&#9472;&#9472;</phrase> <link linkend="NimfService">NimfService</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> <link linkend="NimfServiceIC">NimfServiceIC</link>
+    <link linkend="GInterface">GInterface</link>
+    <phrase role="lineart">&#9500;&#9472;&#9472;</phrase> <link linkend="NimfCandidatable">NimfCandidatable</link>
+    <phrase role="lineart">&#9584;&#9472;&#9472;</phrase> <link linkend="NimfPreeditable">NimfPreeditable</link>
+</screen>

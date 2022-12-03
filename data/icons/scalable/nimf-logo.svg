@@ -1,1 +1,114 @@
-<svg id="레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64"><defs><style>.cls-1{fill:#dfedf2;}.cls-2{fill:#4bced6;}.cls-3{fill:url(#무제_그라디언트_43);}.cls-4{fill:url(#무제_그라디언트_43-2);}</style><linearGradient id="무제_그라디언트_43" x1="18.1" y1="11.37" x2="18.1" y2="45.96" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#50d7d7"/><stop offset="0.2" stop-color="#41bdd4"/><stop offset="0.84" stop-color="#8253d6"/><stop offset="0.89" stop-color="#8457d6"/><stop offset="0.95" stop-color="#8963d6"/><stop offset="1" stop-color="#9174d6"/></linearGradient><linearGradient id="무제_그라디언트_43-2" x1="-385.8" y1="11.37" x2="-385.8" y2="45.96" gradientTransform="matrix(-1, 0, 0, 1, -339.69, 0)" xlink:href="#무제_그라디언트_43"/></defs><title>nimf-logo</title><path class="cls-1" d="M49.6,64H14.4A14.4,14.4,0,0,1,0,49.6V14.4A14.4,14.4,0,0,1,14.4,0H49.6A14.4,14.4,0,0,1,64,14.4V49.6A14.4,14.4,0,0,1,49.6,64Z"/><path class="cls-2" d="M18.77,39.28H29.63a1.62,1.62,0,0,1,1.62,1.62v8.33A6.27,6.27,0,0,1,25,55.5H12.8a0,0,0,0,1,0,0V45.25A6,6,0,0,1,18.77,39.28Z" transform="translate(44.05 94.78) rotate(-180)"/><path class="cls-3" d="M8.71,15.69H21.3a10,10,0,0,1,10,10h0V49.31l-5.92-7.4A6.77,6.77,0,0,0,20,39.35H12.73A7.77,7.77,0,0,1,5,31.58V19.45A3.76,3.76,0,0,1,8.71,15.69Z"/><path class="cls-2" d="M32.95,33.28h12.2a6.27,6.27,0,0,1,6.27,6.27v8.33a1.62,1.62,0,0,1-1.62,1.62H38.92a6,6,0,0,1-6-6V33.28a0,0,0,0,1,0,0Z"/><path class="cls-4" d="M55.5,9.69H42.9a10,10,0,0,0-9.95,10h0V43.31l5.91-7.4a6.78,6.78,0,0,1,5.31-2.56h7.31a7.78,7.78,0,0,0,7.78-7.77V13.45A3.77,3.77,0,0,0,55.5,9.69Z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="레이어_1"
+   data-name="레이어 1"
+   viewBox="0 0 64 64"
+   version="1.1"
+   sodipodi:docname="nimf-logo.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview33"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="5.5234375"
+     inkscape:cx="-5.2503536"
+     inkscape:cy="11.315417"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="레이어_1" />
+  <defs
+     id="defs18">
+    <style
+       id="style2">.cls-1{fill:#dfedf2;}.cls-2{fill:#4bced6;}.cls-3{fill:url(#무제_그라디언트_43);}.cls-4{fill:url(#무제_그라디언트_43-2);}</style>
+    <linearGradient
+       id="무제_그라디언트_43"
+       x1="18.1"
+       y1="11.37"
+       x2="18.1"
+       y2="45.96"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#50d7d7"
+         id="stop4" />
+      <stop
+         offset="0.2"
+         stop-color="#41bdd4"
+         id="stop6" />
+      <stop
+         offset="0.84"
+         stop-color="#8253d6"
+         id="stop8" />
+      <stop
+         offset="0.89"
+         stop-color="#8457d6"
+         id="stop10" />
+      <stop
+         offset="0.95"
+         stop-color="#8963d6"
+         id="stop12" />
+      <stop
+         offset="1"
+         stop-color="#9174d6"
+         id="stop14" />
+    </linearGradient>
+    <linearGradient
+       id="무제_그라디언트_43-2"
+       x1="-385.8"
+       y1="11.37"
+       x2="-385.8"
+       y2="45.96"
+       gradientTransform="matrix(-0.80748407,0,0,0.80824781,-268.66764,6.0164203)"
+       xlink:href="#무제_그라디언트_43" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#무제_그라디언트_43"
+       id="linearGradient42"
+       gradientUnits="userSpaceOnUse"
+       x1="18.1"
+       y1="11.37"
+       x2="18.1"
+       y2="45.96"
+       gradientTransform="matrix(0.80748407,0,0,0.80824781,5.6266244,6.0164203)" />
+  </defs>
+  <title
+     id="title20">nimf-logo</title>
+  <path
+     class="cls-1"
+     d="M 47.149925,60.50354 H 16.546548 A 12.519564,12.538215 0 0 1 4.0269847,47.965323 V 17.31635 A 12.519564,12.538215 0 0 1 16.546548,4.7781336 H 47.149925 A 12.519564,12.538215 0 0 1 59.669488,17.31635 V 47.965323 A 12.519564,12.538215 0 0 1 47.149925,60.50354 Z"
+     id="path22"
+     style="stroke-width:0.870062" />
+  <path
+     class="cls-2"
+     d="m 26.039822,50.874174 h -8.769277 a 1.3081242,1.3093615 0 0 1 -1.308124,-1.309361 v -6.732705 a 5.0629251,5.0677138 0 0 1 5.046775,-5.067713 h 9.851306 v 8.28454 a 4.8449044,4.8494869 0 0 1 -4.82068,4.825239 z"
+     id="path24"
+     style="stroke-width:0.807866" />
+  <path
+     class="cls-3"
+     d="m 12.659811,18.697828 h 10.166224 a 8.0748407,8.0824781 0 0 1 8.074841,8.082478 v 0 19.090814 L 26.12057,39.890086 A 5.4666672,5.4718377 0 0 0 21.776306,37.820971 H 15.905897 A 6.2741512,6.2800855 0 0 1 9.6640447,31.540886 V 21.73684 a 3.0361401,3.0390118 0 0 1 2.9957663,-3.039012 z"
+     id="path26"
+     style="fill:url(#linearGradient42);stroke-width:0.807866" />
+  <path
+     class="cls-2"
+     d="m 32.233225,32.914907 h 9.851305 a 5.0629251,5.0677138 0 0 1 5.062926,5.067714 v 6.732704 a 1.3081242,1.3093615 0 0 1 -1.308125,1.309362 H 37.053905 A 4.8449044,4.8494869 0 0 1 32.209,41.1752 v -8.260293 z"
+     id="path28"
+     style="stroke-width:0.807866" />
+  <path
+     class="cls-4"
+     d="m 50.441991,13.848341 h -10.1743 a 8.0748407,8.0824781 0 0 0 -8.034466,8.082478 v 0 19.090814 l 4.772231,-5.981034 a 5.474742,5.4799202 0 0 1 4.28774,-2.069114 h 5.902709 a 6.2822261,6.288168 0 0 0 6.282226,-6.280086 v -9.804046 a 3.0442149,3.0470942 0 0 0 -3.03614,-3.039012 z"
+     id="path30"
+     style="fill:url(#%EB%AC%B4%EC%A0%9C_%EA%B7%B8%EB%9D%BC%EB%94%94%EC%96%B8%ED%8A%B8_43-2);stroke-width:0.807866" />
+</svg>

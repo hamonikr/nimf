@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<indexdiv id="api-index-full">
+<indexdiv><title>C</title>
+<indexentry><primaryie linkends="NimfCandidatable-struct"><link linkend="NimfCandidatable-struct">NimfCandidatable</link>, struct in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfCandidatableInterface"><link linkend="NimfCandidatableInterface">NimfCandidatableInterface</link>, struct in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-append"><link linkend="nimf-candidatable-append">nimf_candidatable_append</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-clear"><link linkend="nimf-candidatable-clear">nimf_candidatable_clear</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-get-selected-index"><link linkend="nimf-candidatable-get-selected-index">nimf_candidatable_get_selected_index</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-get-selected-text"><link linkend="nimf-candidatable-get-selected-text">nimf_candidatable_get_selected_text</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-hide"><link linkend="nimf-candidatable-hide">nimf_candidatable_hide</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-is-visible"><link linkend="nimf-candidatable-is-visible">nimf_candidatable_is_visible</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-select-first-item-in-page"><link linkend="nimf-candidatable-select-first-item-in-page">nimf_candidatable_select_first_item_in_page</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-select-item-by-index-in-page"><link linkend="nimf-candidatable-select-item-by-index-in-page">nimf_candidatable_select_item_by_index_in_page</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-select-last-item-in-page"><link linkend="nimf-candidatable-select-last-item-in-page">nimf_candidatable_select_last_item_in_page</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-select-next-item"><link linkend="nimf-candidatable-select-next-item">nimf_candidatable_select_next_item</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-select-previous-item"><link linkend="nimf-candidatable-select-previous-item">nimf_candidatable_select_previous_item</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-set-auxiliary-text"><link linkend="nimf-candidatable-set-auxiliary-text">nimf_candidatable_set_auxiliary_text</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-set-page-values"><link linkend="nimf-candidatable-set-page-values">nimf_candidatable_set_page_values</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-candidatable-show"><link linkend="nimf-candidatable-show">nimf_candidatable_show</link>, function in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>E</title>
+<indexentry><primaryie linkends="NimfEngineClass"><link linkend="NimfEngineClass">NimfEngineClass</link>, struct in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-beep"><link linkend="nimf-engine-emit-beep">nimf_engine_emit_beep</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-commit"><link linkend="nimf-engine-emit-commit">nimf_engine_emit_commit</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-delete-surrounding"><link linkend="nimf-engine-emit-delete-surrounding">nimf_engine_emit_delete_surrounding</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-preedit-changed"><link linkend="nimf-engine-emit-preedit-changed">nimf_engine_emit_preedit_changed</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-preedit-end"><link linkend="nimf-engine-emit-preedit-end">nimf_engine_emit_preedit_end</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-preedit-start"><link linkend="nimf-engine-emit-preedit-start">nimf_engine_emit_preedit_start</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-emit-retrieve-surrounding"><link linkend="nimf-engine-emit-retrieve-surrounding">nimf_engine_emit_retrieve_surrounding</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-filter-event"><link linkend="nimf-engine-filter-event">nimf_engine_filter_event</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-focus-in"><link linkend="nimf-engine-focus-in">nimf_engine_focus_in</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-focus-out"><link linkend="nimf-engine-focus-out">nimf_engine_focus_out</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-get-candidatable"><link linkend="nimf-engine-get-candidatable">nimf_engine_get_candidatable</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-get-icon-name"><link linkend="nimf-engine-get-icon-name">nimf_engine_get_icon_name</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-get-id"><link linkend="nimf-engine-get-id">nimf_engine_get_id</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-get-surrounding"><link linkend="nimf-engine-get-surrounding">nimf_engine_get_surrounding</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-reset"><link linkend="nimf-engine-reset">nimf_engine_reset</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-set-method"><link linkend="nimf-engine-set-method">nimf_engine_set_method</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-set-surrounding"><link linkend="nimf-engine-set-surrounding">nimf_engine_set_surrounding</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-engine-status-changed"><link linkend="nimf-engine-status-changed">nimf_engine_status_changed</link>, function in <link linkend="NimfEngine">NimfEngine</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfEvent"><link linkend="NimfEvent">NimfEvent</link>, union in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfEventKey"><link linkend="NimfEventKey">NimfEventKey</link>, struct in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfEventType"><link linkend="NimfEventType">NimfEventType</link>, enum in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-event-free"><link linkend="nimf-event-free">nimf_event_free</link>, function in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-event-keycode-to-qwerty-keyval"><link linkend="nimf-event-keycode-to-qwerty-keyval">nimf_event_keycode_to_qwerty_keyval</link>, function in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-event-matches"><link linkend="nimf-event-matches">nimf_event_matches</link>, function in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-event-new"><link linkend="nimf-event-new">nimf_event_new</link>, function in <link linkend="nimf-events">Events</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="nimf-get-socket-path"><link linkend="nimf-get-socket-path">nimf_get_socket_path</link>, function in <link linkend="nimf-utils">Utility Functions</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>I</title>
+<indexentry><primaryie linkends="NimfIM-beep"><link linkend="NimfIM-beep">NimfIM::beep</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfIM-commit"><link linkend="NimfIM-commit">NimfIM::commit</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfIM-delete-surrounding"><link linkend="NimfIM-delete-surrounding">NimfIM::delete-surrounding</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfIM-preedit-changed"><link linkend="NimfIM-preedit-changed">NimfIM::preedit-changed</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfIM-preedit-end"><link linkend="NimfIM-preedit-end">NimfIM::preedit-end</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfIM-preedit-start"><link linkend="NimfIM-preedit-start">NimfIM::preedit-start</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfIM-retrieve-surrounding"><link linkend="NimfIM-retrieve-surrounding">NimfIM::retrieve-surrounding</link>, object signal in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-filter-event"><link linkend="nimf-im-filter-event">nimf_im_filter_event</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-focus-in"><link linkend="nimf-im-focus-in">nimf_im_focus_in</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-focus-out"><link linkend="nimf-im-focus-out">nimf_im_focus_out</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-get-preedit-string"><link linkend="nimf-im-get-preedit-string">nimf_im_get_preedit_string</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-new"><link linkend="nimf-im-new">nimf_im_new</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-reset"><link linkend="nimf-im-reset">nimf_im_reset</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-set-cursor-location"><link linkend="nimf-im-set-cursor-location">nimf_im_set_cursor_location</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-set-surrounding"><link linkend="nimf-im-set-surrounding">nimf_im_set_surrounding</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-im-set-use-preedit"><link linkend="nimf-im-set-use-preedit">nimf_im_set_use_preedit</link>, function in <link linkend="NimfIM">NimfIM</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>K</title>
+<indexentry><primaryie linkends="NimfKey"><link linkend="NimfKey">NimfKey</link>, struct in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfKeySym"><link linkend="NimfKeySym">NimfKeySym</link>, enum in <link linkend="nimf-key-syms">Key symbols</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-keyval-to-keysym-name"><link linkend="nimf-keyval-to-keysym-name">nimf_keyval_to_keysym_name</link>, function in <link linkend="nimf-utils">Utility Functions</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-key-free"><link linkend="nimf-key-free">nimf_key_free</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-key-freev"><link linkend="nimf-key-freev">nimf_key_freev</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-key-new"><link linkend="nimf-key-new">nimf_key_new</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-key-newv"><link linkend="nimf-key-newv">nimf_key_newv</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-key-new-from-nicks"><link linkend="nimf-key-new-from-nicks">nimf_key_new_from_nicks</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>M</title>
+<indexentry><primaryie linkends="nimf-method-info-free"><link linkend="nimf-method-info-free">nimf_method_info_free</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-method-info-freev"><link linkend="nimf-method-info-freev">nimf_method_info_freev</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-method-info-new"><link linkend="nimf-method-info-new">nimf_method_info_new</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfModifierType"><link linkend="NimfModifierType">NimfModifierType</link>, enum in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>P</title>
+<indexentry><primaryie linkends="NimfPreeditable-struct"><link linkend="NimfPreeditable-struct">NimfPreeditable</link>, struct in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfPreeditableInterface"><link linkend="NimfPreeditableInterface">NimfPreeditableInterface</link>, struct in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preeditable-hide"><link linkend="nimf-preeditable-hide">nimf_preeditable_hide</link>, function in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preeditable-is-visible"><link linkend="nimf-preeditable-is-visible">nimf_preeditable_is_visible</link>, function in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preeditable-set-cursor-location"><link linkend="nimf-preeditable-set-cursor-location">nimf_preeditable_set_cursor_location</link>, function in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preeditable-set-text"><link linkend="nimf-preeditable-set-text">nimf_preeditable_set_text</link>, function in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preeditable-show"><link linkend="nimf-preeditable-show">nimf_preeditable_show</link>, function in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfPreeditAttr"><link linkend="NimfPreeditAttr">NimfPreeditAttr</link>, struct in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfPreeditAttrType"><link linkend="NimfPreeditAttrType">NimfPreeditAttrType</link>, enum in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfPreeditState"><link linkend="NimfPreeditState">NimfPreeditState</link>, enum in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preedit-attrs-copy"><link linkend="nimf-preedit-attrs-copy">nimf_preedit_attrs_copy</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preedit-attr-free"><link linkend="nimf-preedit-attr-free">nimf_preedit_attr_free</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preedit-attr-freev"><link linkend="nimf-preedit-attr-freev">nimf_preedit_attr_freev</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-preedit-attr-new"><link linkend="nimf-preedit-attr-new">nimf_preedit_attr_new</link>, function in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>R</title>
+<indexentry><primaryie linkends="NimfRectangle"><link linkend="NimfRectangle">NimfRectangle</link>, struct in <link linkend="nimf-types">Types</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>S</title>
+<indexentry><primaryie linkends="NimfServer-engine-changed"><link linkend="NimfServer-engine-changed">NimfServer::engine-changed</link>, object signal in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfServer-engine-loaded"><link linkend="NimfServer-engine-loaded">NimfServer::engine-loaded</link>, object signal in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfServer-engine-status-changed"><link linkend="NimfServer-engine-status-changed">NimfServer::engine-status-changed</link>, object signal in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfServer-engine-unloaded"><link linkend="NimfServer-engine-unloaded">NimfServer::engine-unloaded</link>, object signal in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-server-change-engine"><link linkend="nimf-server-change-engine">nimf_server_change_engine</link>, function in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-server-change-engine-by-id"><link linkend="nimf-server-change-engine-by-id">nimf_server_change_engine_by_id</link>, function in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-server-get-default"><link linkend="nimf-server-get-default">nimf_server_get_default</link>, function in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-server-get-loaded-engine-ids"><link linkend="nimf-server-get-loaded-engine-ids">nimf_server_get_loaded_engine_ids</link>, function in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-server-get-preeditable"><link linkend="nimf-server-get-preeditable">nimf_server_get_preeditable</link>, function in <link linkend="NimfServer">NimfServer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NimfServiceClass"><link linkend="NimfServiceClass">NimfServiceClass</link>, struct in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-change-engine"><link linkend="nimf-service-change-engine">nimf_service_change_engine</link>, function in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-change-engine-by-id"><link linkend="nimf-service-change-engine-by-id">nimf_service_change_engine_by_id</link>, function in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-get-id"><link linkend="nimf-service-get-id">nimf_service_get_id</link>, function in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-change-engine"><link linkend="nimf-service-ic-change-engine">nimf_service_ic_change_engine</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-change-engine-by-id"><link linkend="nimf-service-ic-change-engine-by-id">nimf_service_ic_change_engine_by_id</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-beep"><link linkend="nimf-service-ic-emit-beep">nimf_service_ic_emit_beep</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-commit"><link linkend="nimf-service-ic-emit-commit">nimf_service_ic_emit_commit</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-delete-surrounding"><link linkend="nimf-service-ic-emit-delete-surrounding">nimf_service_ic_emit_delete_surrounding</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-preedit-changed"><link linkend="nimf-service-ic-emit-preedit-changed">nimf_service_ic_emit_preedit_changed</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-preedit-end"><link linkend="nimf-service-ic-emit-preedit-end">nimf_service_ic_emit_preedit_end</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-preedit-start"><link linkend="nimf-service-ic-emit-preedit-start">nimf_service_ic_emit_preedit_start</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-emit-retrieve-surrounding"><link linkend="nimf-service-ic-emit-retrieve-surrounding">nimf_service_ic_emit_retrieve_surrounding</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-engine-changed"><link linkend="nimf-service-ic-engine-changed">nimf_service_ic_engine_changed</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-filter-event"><link linkend="nimf-service-ic-filter-event">nimf_service_ic_filter_event</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-focus-in"><link linkend="nimf-service-ic-focus-in">nimf_service_ic_focus_in</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-focus-out"><link linkend="nimf-service-ic-focus-out">nimf_service_ic_focus_out</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-get-cursor-location"><link linkend="nimf-service-ic-get-cursor-location">nimf_service_ic_get_cursor_location</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-get-engine"><link linkend="nimf-service-ic-get-engine">nimf_service_ic_get_engine</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-get-service-id"><link linkend="nimf-service-ic-get-service-id">nimf_service_ic_get_service_id</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-get-use-preedit"><link linkend="nimf-service-ic-get-use-preedit">nimf_service_ic_get_use_preedit</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-reset"><link linkend="nimf-service-ic-reset">nimf_service_ic_reset</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-set-cursor-location"><link linkend="nimf-service-ic-set-cursor-location">nimf_service_ic_set_cursor_location</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-set-surrounding"><link linkend="nimf-service-ic-set-surrounding">nimf_service_ic_set_surrounding</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-ic-set-use-preedit"><link linkend="nimf-service-ic-set-use-preedit">nimf_service_ic_set_use_preedit</link>, function in <link linkend="NimfServiceIC">NimfServiceIC</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-is-active"><link linkend="nimf-service-is-active">nimf_service_is_active</link>, function in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-start"><link linkend="nimf-service-start">nimf_service_start</link>, function in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+<indexentry><primaryie linkends="nimf-service-stop"><link linkend="nimf-service-stop">nimf_service_stop</link>, function in <link linkend="NimfService">NimfService</link></primaryie></indexentry>
+</indexdiv>
+<indexdiv><title>T</title>
+<indexentry><primaryie linkends="NIMF-TYPE-CANDIDATABLE:CAPS"><link linkend="NIMF-TYPE-CANDIDATABLE:CAPS">NIMF_TYPE_CANDIDATABLE</link>, macro in <link linkend="NimfCandidatable">NimfCandidatable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="NIMF-TYPE-PREEDITABLE:CAPS"><link linkend="NIMF-TYPE-PREEDITABLE:CAPS">NIMF_TYPE_PREEDITABLE</link>, macro in <link linkend="NimfPreeditable">NimfPreeditable</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

@@ -1,0 +1,881 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Types: Nimf Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Nimf Reference Manual">
+<link rel="up" href="libnimf-api.html" title="Part I. libnimf API">
+<link rel="prev" href="nimf-key-syms.html" title="Key symbols">
+<link rel="next" href="NimfServer.html" title="NimfServer">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#nimf-types.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="libnimf-api.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="nimf-key-syms.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="NimfServer.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="nimf-types"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="nimf-types.top_of_page"></a>Types</span></h2>
+<p>Types</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="nimf-types.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-key-new" title="nimf_key_new ()">nimf_key_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-key-new-from-nicks" title="nimf_key_new_from_nicks ()">nimf_key_new_from_nicks</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-key-free" title="nimf_key_free ()">nimf_key_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> **
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-key-newv" title="nimf_key_newv ()">nimf_key_newv</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-key-freev" title="nimf_key_freev ()">nimf_key_freev</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="returnvalue">NimfPreeditAttr</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-preedit-attr-new" title="nimf_preedit_attr_new ()">nimf_preedit_attr_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="returnvalue">NimfPreeditAttr</span></a> **
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-preedit-attrs-copy" title="nimf_preedit_attrs_copy ()">nimf_preedit_attrs_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-preedit-attr-free" title="nimf_preedit_attr_free ()">nimf_preedit_attr_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-preedit-attr-freev" title="nimf_preedit_attr_freev ()">nimf_preedit_attr_freev</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">NimfMethodInfo</span> *
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-method-info-new" title="nimf_method_info_new ()">nimf_method_info_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-method-info-free" title="nimf_method_info_free ()">nimf_method_info_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="nimf-types.html#nimf-method-info-freev" title="nimf_method_info_freev ()">nimf_method_info_freev</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="nimf-types.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="nimf-types.html#NimfModifierType" title="enum NimfModifierType">NimfModifierType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="nimf-types.html#NimfRectangle" title="NimfRectangle">NimfRectangle</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="nimf-types.html#NimfKey" title="NimfKey">NimfKey</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="nimf-types.html#NimfPreeditState" title="enum NimfPreeditState">NimfPreeditState</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="nimf-types.html#NimfPreeditAttrType" title="enum NimfPreeditAttrType">NimfPreeditAttrType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr">NimfPreeditAttr</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="nimf-types.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="nimf-types.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="nimf-key-new"></a><h3>nimf_key_new ()</h3>
+<pre class="programlisting"><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> *
+nimf_key_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a new <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>. All fields are set to 0.</p>
+<p>Return: a new <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>, which should be freed with <a class="link" href="nimf-types.html#nimf-key-free" title="nimf_key_free ()"><code class="function">nimf_key_free()</code></a>.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-key-new-from-nicks"></a><h3>nimf_key_new_from_nicks ()</h3>
+<pre class="programlisting"><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> *
+nimf_key_new_from_nicks (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **nicks</code></em>);</pre>
+<p>Return: a new <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>, which should be freed with <a class="link" href="nimf-types.html#nimf-key-free" title="nimf_key_free ()"><code class="function">nimf_key_free()</code></a>.</p>
+<div class="refsect3">
+<a name="nimf-key-new-from-nicks.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>nicks</p></td>
+<td class="parameter_description"><p>an array of gchar</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-key-free"></a><h3>nimf_key_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_key_free (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a> *key</code></em>);</pre>
+<p>Frees a <em class="parameter"><code>key</code></em>
+</p>
+<div class="refsect3">
+<a name="nimf-key-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>a <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-key-newv"></a><h3>nimf_key_newv ()</h3>
+<pre class="programlisting"><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> **
+nimf_key_newv (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **keys</code></em>);</pre>
+<p>Creates a new array of <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>.</p>
+<div class="refsect3">
+<a name="nimf-key-newv.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>keys</p></td>
+<td class="parameter_description"><p>an array of gchar</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="nimf-key-newv.returns"></a><h4>Returns</h4>
+<p> a new array of <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>, which should be freed with
+<a class="link" href="nimf-types.html#nimf-key-freev" title="nimf_key_freev ()"><code class="function">nimf_key_freev()</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-key-freev"></a><h3>nimf_key_freev ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_key_freev (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a> **keys</code></em>);</pre>
+<p>Frees an array of <em class="parameter"><code>keys</code></em>
+</p>
+<div class="refsect3">
+<a name="nimf-key-freev.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>keys</p></td>
+<td class="parameter_description"><p>an array of <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-preedit-attr-new"></a><h3>nimf_preedit_attr_new ()</h3>
+<pre class="programlisting"><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="returnvalue">NimfPreeditAttr</span></a> *
+nimf_preedit_attr_new (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttrType" title="enum NimfPreeditAttrType"><span class="type">NimfPreeditAttrType</span></a> type</code></em>,
+                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> start_index</code></em>,
+                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> end_index</code></em>);</pre>
+<div class="refsect3">
+<a name="nimf-preedit-attr-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>a <a class="link" href="nimf-types.html#NimfPreeditAttrType" title="enum NimfPreeditAttrType"><span class="type">NimfPreeditAttrType</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>start_index</p></td>
+<td class="parameter_description"><p>start index in characters</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>end_index</p></td>
+<td class="parameter_description"><p>end index in characters; The character at this index is not
+included.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="nimf-preedit-attr-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a>, which should be freed with
+<a class="link" href="nimf-types.html#nimf-preedit-attr-free" title="nimf_preedit_attr_free ()"><code class="function">nimf_preedit_attr_free()</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-preedit-attrs-copy"></a><h3>nimf_preedit_attrs_copy ()</h3>
+<pre class="programlisting"><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="returnvalue">NimfPreeditAttr</span></a> **
+nimf_preedit_attrs_copy (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a> **attrs</code></em>);</pre>
+<div class="refsect3">
+<a name="nimf-preedit-attrs-copy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>attrs</p></td>
+<td class="parameter_description"><p>an array of <a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="nimf-preedit-attrs-copy.returns"></a><h4>Returns</h4>
+<p> a new array of <a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a>, which should be freed with
+<a class="link" href="nimf-types.html#nimf-preedit-attr-freev" title="nimf_preedit_attr_freev ()"><code class="function">nimf_preedit_attr_freev()</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-preedit-attr-free"></a><h3>nimf_preedit_attr_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_preedit_attr_free (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a> *attr</code></em>);</pre>
+<p>Frees a <em class="parameter"><code>attr</code></em>
+</p>
+<div class="refsect3">
+<a name="nimf-preedit-attr-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>attr</p></td>
+<td class="parameter_description"><p>a <a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-preedit-attr-freev"></a><h3>nimf_preedit_attr_freev ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_preedit_attr_freev (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a> **attrs</code></em>);</pre>
+<p>Frees an array of <em class="parameter"><code>attrs</code></em>
+</p>
+<div class="refsect3">
+<a name="nimf-preedit-attr-freev.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>attrs</p></td>
+<td class="parameter_description"><p>an array of <a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-method-info-new"></a><h3>nimf_method_info_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">NimfMethodInfo</span> *
+nimf_method_info_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="refsect3">
+<a name="nimf-method-info-new.returns"></a><h4>Returns</h4>
+<p> a new <span class="type">NimfMethodInfo</span>, which should be freed with
+<a class="link" href="nimf-types.html#nimf-method-info-free" title="nimf_method_info_free ()"><code class="function">nimf_method_info_free()</code></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-method-info-free"></a><h3>nimf_method_info_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_method_info_free (<em class="parameter"><code><span class="type">NimfMethodInfo</span> *info</code></em>);</pre>
+<p>Frees an <em class="parameter"><code>info</code></em>
+.</p>
+<div class="refsect3">
+<a name="nimf-method-info-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>a <span class="type">NimfMethodInfo</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nimf-method-info-freev"></a><h3>nimf_method_info_freev ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+nimf_method_info_freev (<em class="parameter"><code><span class="type">NimfMethodInfo</span> **infos</code></em>);</pre>
+<p>Frees an array of <em class="parameter"><code>infos</code></em>
+.</p>
+<div class="refsect3">
+<a name="nimf-method-info-freev.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>infos</p></td>
+<td class="parameter_description"><p>an array of <span class="type">NimfMethodInfo</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="nimf-types.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="NimfModifierType"></a><h3>enum NimfModifierType</h3>
+<p>A set of bit-flags to indicate the state of modifier keys and mouse buttons
+in various event types. Typical modifier keys are Shift, Control, Meta,
+Super, Hyper, Alt, Compose, Apple, CapsLock or ShiftLock.</p>
+<div class="refsect3">
+<a name="NimfModifierType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-SHIFT-MASK:CAPS"></a>NIMF_SHIFT_MASK</p></td>
+<td class="enum_member_description">
+<p>the Shift key.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-LOCK-MASK:CAPS"></a>NIMF_LOCK_MASK</p></td>
+<td class="enum_member_description">
+<p>a Lock key (depending on the modifier mapping of the
+X server this may either be CapsLock or ShiftLock).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-CONTROL-MASK:CAPS"></a>NIMF_CONTROL_MASK</p></td>
+<td class="enum_member_description">
+<p>the Control key.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MOD1-MASK:CAPS"></a>NIMF_MOD1_MASK</p></td>
+<td class="enum_member_description">
+<p>the fourth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier, but
+normally it is the Alt key).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MOD2-MASK:CAPS"></a>NIMF_MOD2_MASK</p></td>
+<td class="enum_member_description">
+<p>the fifth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MOD3-MASK:CAPS"></a>NIMF_MOD3_MASK</p></td>
+<td class="enum_member_description">
+<p>the sixth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MOD4-MASK:CAPS"></a>NIMF_MOD4_MASK</p></td>
+<td class="enum_member_description">
+<p>the seventh modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MOD5-MASK:CAPS"></a>NIMF_MOD5_MASK</p></td>
+<td class="enum_member_description">
+<p>the eighth modifier key (it depends on the modifier
+mapping of the X server which key is interpreted as this modifier).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-BUTTON1-MASK:CAPS"></a>NIMF_BUTTON1_MASK</p></td>
+<td class="enum_member_description">
+<p>the first mouse button.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-BUTTON2-MASK:CAPS"></a>NIMF_BUTTON2_MASK</p></td>
+<td class="enum_member_description">
+<p>the second mouse button.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-BUTTON3-MASK:CAPS"></a>NIMF_BUTTON3_MASK</p></td>
+<td class="enum_member_description">
+<p>the third mouse button.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-BUTTON4-MASK:CAPS"></a>NIMF_BUTTON4_MASK</p></td>
+<td class="enum_member_description">
+<p>the fourth mouse button.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-BUTTON5-MASK:CAPS"></a>NIMF_BUTTON5_MASK</p></td>
+<td class="enum_member_description">
+<p>the fifth mouse button.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-13-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_13_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-14-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_14_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-15-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_15_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-16-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_16_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-17-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_17_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-18-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_18_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-19-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_19_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-20-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_20_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-21-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_21_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-22-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_22_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-23-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_23_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-24-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_24_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-25-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_25_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-SUPER-MASK:CAPS"></a>NIMF_SUPER_MASK</p></td>
+<td class="enum_member_description">
+<p>the Super modifier.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-HYPER-MASK:CAPS"></a>NIMF_HYPER_MASK</p></td>
+<td class="enum_member_description">
+<p>the Hyper modifier.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-META-MASK:CAPS"></a>NIMF_META_MASK</p></td>
+<td class="enum_member_description">
+<p>the Meta modifier.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-RESERVED-29-MASK:CAPS"></a>NIMF_MODIFIER_RESERVED_29_MASK</p></td>
+<td class="enum_member_description">
+<p>A reserved bit flag; do not use in your own code</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-RELEASE-MASK:CAPS"></a>NIMF_RELEASE_MASK</p></td>
+<td class="enum_member_description">
+<p>exists because of compatibility.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-MODIFIER-MASK:CAPS"></a>NIMF_MODIFIER_MASK</p></td>
+<td class="enum_member_description">
+<p>a mask covering all modifier types.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfRectangle"></a><h3>NimfRectangle</h3>
+<pre class="programlisting">typedef struct {
+  int x, y;
+  int width, height;
+} NimfRectangle;
+</pre>
+<p>Defines the position and size of a rectangle.</p>
+<div class="refsect3">
+<a name="NimfRectangle.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><span class="type">int</span> <em class="structfield"><code><a name="NimfRectangle.x"></a>x</code></em>;</p></td>
+<td class="struct_member_description"><p>x</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">int</span> <em class="structfield"><code><a name="NimfRectangle.y"></a>y</code></em>;</p></td>
+<td class="struct_member_description"><p>y</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">int</span> <em class="structfield"><code><a name="NimfRectangle.width"></a>width</code></em>;</p></td>
+<td class="struct_member_description"><p>width</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">int</span> <em class="structfield"><code><a name="NimfRectangle.height"></a>height</code></em>;</p></td>
+<td class="struct_member_description"><p>height</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfKey"></a><h3>NimfKey</h3>
+<pre class="programlisting">typedef struct {
+  guint32 state;
+  guint32 keyval;
+} NimfKey;
+</pre>
+<div class="refsect3">
+<a name="NimfKey.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="NimfKey.state"></a>state</code></em>;</p></td>
+<td class="struct_member_description"><p>a bit-mask representing the state of the modifier keys</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="NimfKey.keyval"></a>keyval</code></em>;</p></td>
+<td class="struct_member_description"><p>the key that was pressed or released.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfPreeditState"></a><h3>enum NimfPreeditState</h3>
+<div class="refsect3">
+<a name="NimfPreeditState.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-PREEDIT-STATE-START:CAPS"></a>NIMF_PREEDIT_STATE_START</p></td>
+<td class="enum_member_description">
+<p>presents preedit-start state.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-PREEDIT-STATE-END:CAPS"></a>NIMF_PREEDIT_STATE_END</p></td>
+<td class="enum_member_description">
+<p>presents preedit-end state.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfPreeditAttrType"></a><h3>enum NimfPreeditAttrType</h3>
+<div class="refsect3">
+<a name="NimfPreeditAttrType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-PREEDIT-ATTR-UNDERLINE:CAPS"></a>NIMF_PREEDIT_ATTR_UNDERLINE</p></td>
+<td class="enum_member_description">
+<p>whether the text has an underline</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="NIMF-PREEDIT-ATTR-HIGHLIGHT:CAPS"></a>NIMF_PREEDIT_ATTR_HIGHLIGHT</p></td>
+<td class="enum_member_description">
+<p>whether the text has a highlight</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="NimfPreeditAttr"></a><h3>NimfPreeditAttr</h3>
+<pre class="programlisting">typedef struct {
+  NimfPreeditAttrType type;
+  guint start_index; /* in characters */
+  guint end_index; /* in characters. The character at this index is not included */
+} NimfPreeditAttr;
+</pre>
+<div class="refsect3">
+<a name="NimfPreeditAttr.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="nimf-types.html#NimfPreeditAttrType" title="enum NimfPreeditAttrType"><span class="type">NimfPreeditAttrType</span></a> <em class="structfield"><code><a name="NimfPreeditAttr.type"></a>type</code></em>;</p></td>
+<td class="struct_member_description"><p>a <a class="link" href="nimf-types.html#NimfPreeditAttrType" title="enum NimfPreeditAttrType"><span class="type">NimfPreeditAttrType</span></a></p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="NimfPreeditAttr.start-index"></a>start_index</code></em>;</p></td>
+<td class="struct_member_description"><p>the start index of the range (in characters).</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="NimfPreeditAttr.end-index"></a>end_index</code></em>;</p></td>
+<td class="struct_member_description"><p>end index of the range (in characters). The character at this
+index is not included in the range.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.32</div>
+</body>
+</html>

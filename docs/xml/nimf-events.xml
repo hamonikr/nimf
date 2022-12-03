@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<refentry id="nimf-events">
+<refmeta>
+<refentrytitle role="top_of_page" id="nimf-events.top_of_page">Events</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>NIMF Library</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>Events</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsect1 id="nimf-events.functions" role="functions_proto">
+<title role="functions_proto.title">Functions</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="functions_proto_type" colwidth="150px"/>
+<colspec colname="functions_proto_name"/>
+<tbody>
+<row><entry role="function_type"><link linkend="NimfEvent"><returnvalue>NimfEvent</returnvalue></link>&#160;*
+</entry><entry role="function_name"><link linkend="nimf-event-new">nimf_event_new</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="void"><returnvalue>void</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-event-free">nimf_event_free</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-event-matches">nimf_event_matches</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+<row><entry role="function_type"><link linkend="guint"><returnvalue>guint</returnvalue></link>
+</entry><entry role="function_name"><link linkend="nimf-event-keycode-to-qwerty-keyval">nimf_event_keycode_to_qwerty_keyval</link>&#160;<phrase role="c_punctuation">()</phrase></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1 id="nimf-events.other" role="other_proto">
+<title role="other_proto.title">Types and Values</title>
+<informaltable pgwide="1" frame="none">
+<tgroup cols="2">
+<colspec colname="other_proto_type" colwidth="150px"/>
+<colspec colname="other_proto_name"/>
+<tbody>
+<row><entry role="datatype_keyword">enum</entry><entry role="function_name"><link linkend="NimfEventType">NimfEventType</link></entry></row>
+<row><entry role="datatype_keyword">struct</entry><entry role="function_name"><link linkend="NimfEventKey">NimfEventKey</link></entry></row>
+<row><entry role="datatype_keyword">union</entry><entry role="function_name"><link linkend="NimfEvent">NimfEvent</link></entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+
+
+<refsect1 id="nimf-events.description" role="desc">
+<title role="desc.title">Description</title>
+
+</refsect1>
+<refsect1 id="nimf-events.functions_details" role="details">
+<title role="details.title">Functions</title>
+<refsect2 id="nimf-event-new" role="function">
+<title>nimf_event_new&#160;()</title>
+<indexterm zone="nimf-event-new"><primary sortas="event_new">nimf_event_new</primary></indexterm>
+<programlisting language="C"><link linkend="NimfEvent"><returnvalue>NimfEvent</returnvalue></link>&#160;*
+nimf_event_new (<parameter><link linkend="NimfEventType"><type>NimfEventType</type></link> type</parameter>);</programlisting>
+<para>Creates a new event of the given type. All fields are set to 0.</para>
+<refsect3 id="nimf-event-new.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>type</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfEventType"><type>NimfEventType</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-event-new.returns" role="returns">
+<title>Returns</title>
+<para> a new <link linkend="NimfEvent"><type>NimfEvent</type></link>, which should be freed with <link linkend="nimf-event-free"><function>nimf_event_free()</function></link>.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-event-free" role="function">
+<title>nimf_event_free&#160;()</title>
+<indexterm zone="nimf-event-free"><primary sortas="event_free">nimf_event_free</primary></indexterm>
+<programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
+nimf_event_free (<parameter><link linkend="NimfEvent"><type>NimfEvent</type></link> *event</parameter>);</programlisting>
+<para>Frees <parameter>event</parameter>
+.</para>
+<refsect3 id="nimf-event-free.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>event</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfEvent"><type>NimfEvent</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="nimf-event-matches" role="function">
+<title>nimf_event_matches&#160;()</title>
+<indexterm zone="nimf-event-matches"><primary sortas="event_matches">nimf_event_matches</primary></indexterm>
+<programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
+nimf_event_matches (<parameter><link linkend="NimfEvent"><type>NimfEvent</type></link> *event</parameter>,
+                    <parameter>const <link linkend="NimfKey"><type>NimfKey</type></link> **keys</parameter>);</programlisting>
+<para>Checks if <parameter>event</parameter>
+ matches one of the <parameter>keys</parameter>
+.</para>
+<refsect3 id="nimf-event-matches.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>event</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfEvent"><type>NimfEvent</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+<row><entry role="parameter_name"><para>keys</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated array of <link linkend="NimfKey"><type>NimfKey</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-event-matches.returns" role="returns">
+<title>Returns</title>
+<para> <link linkend="TRUE:CAPS"><type>TRUE</type></link> if a match was found.</para>
+</refsect3></refsect2>
+<refsect2 id="nimf-event-keycode-to-qwerty-keyval" role="function">
+<title>nimf_event_keycode_to_qwerty_keyval&#160;()</title>
+<indexterm zone="nimf-event-keycode-to-qwerty-keyval"><primary sortas="event_keycode_to_qwerty_keyval">nimf_event_keycode_to_qwerty_keyval</primary></indexterm>
+<programlisting language="C"><link linkend="guint"><returnvalue>guint</returnvalue></link>
+nimf_event_keycode_to_qwerty_keyval (<parameter>const <link linkend="NimfEvent"><type>NimfEvent</type></link> *event</parameter>);</programlisting>
+<para>Converts <parameter>event</parameter>
+ to qwerty keyval. Use only for PC keyboards.</para>
+<refsect3 id="nimf-event-keycode-to-qwerty-keyval.parameters" role="parameters">
+<title>Parameters</title>
+<informaltable role="parameters_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="parameters_name" colwidth="150px"/>
+<colspec colname="parameters_description"/>
+<colspec colname="parameters_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="parameter_name"><para>event</para></entry>
+<entry role="parameter_description"><para>a <link linkend="NimfEvent"><type>NimfEvent</type></link></para></entry>
+<entry role="parameter_annotations"></entry></row>
+</tbody></tgroup></informaltable>
+</refsect3><refsect3 id="nimf-event-keycode-to-qwerty-keyval.returns" role="returns">
+<title>Returns</title>
+<para> the <link linkend="guint"><type>guint</type></link> value</para>
+</refsect3></refsect2>
+
+</refsect1>
+<refsect1 id="nimf-events.other_details" role="details">
+<title role="details.title">Types and Values</title>
+<refsect2 id="NimfEventType" role="enum">
+<title>enum NimfEventType</title>
+<indexterm zone="NimfEventType"><primary sortas="EventType">NimfEventType</primary></indexterm>
+<refsect3 id="NimfEventType.members" role="enum_members">
+<title>Members</title>
+<informaltable role="enum_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="enum_members_name" colwidth="300px"/>
+<colspec colname="enum_members_description"/>
+<colspec colname="enum_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-EVENT-NOTHING:CAPS">NIMF_EVENT_NOTHING</para></entry>
+<entry role="enum_member_description"><para>a special code to indicate a null event.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-EVENT-KEY-PRESS:CAPS">NIMF_EVENT_KEY_PRESS</para></entry>
+<entry role="enum_member_description"><para>a key has been pressed.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+<row role="constant"><entry role="enum_member_name"><para id="NIMF-EVENT-KEY-RELEASE:CAPS">NIMF_EVENT_KEY_RELEASE</para></entry>
+<entry role="enum_member_description"><para>a key has been released.</para>
+</entry>
+<entry role="enum_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+<refsect2 id="NimfEventKey" role="struct">
+<title>struct NimfEventKey</title>
+<indexterm zone="NimfEventKey"><primary sortas="EventKey">NimfEventKey</primary></indexterm>
+<programlisting language="C">struct NimfEventKey {
+  NimfEventType type;
+  guint32       state;
+  guint32       keyval;
+  guint32       hardware_keycode;
+};
+</programlisting>
+<para>Describes a key press or key release event.</para>
+<refsect3 id="NimfEventKey.members" role="struct_members">
+<title>Members</title>
+<informaltable role="struct_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="struct_members_name" colwidth="300px"/>
+<colspec colname="struct_members_description"/>
+<colspec colname="struct_members_annotations" colwidth="200px"/>
+<tbody>
+<row role="member"><entry role="struct_member_name"><para><link linkend="NimfEventType"><type>NimfEventType</type></link>&#160;<structfield id="NimfEventKey.type">type</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the type of the event (<link linkend="NIMF-EVENT-KEY-PRESS:CAPS"><literal>NIMF_EVENT_KEY_PRESS</literal></link> or
+<link linkend="NIMF-EVENT-KEY-RELEASE:CAPS"><literal>NIMF_EVENT_KEY_RELEASE</literal></link>).</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint32"><type>guint32</type></link>&#160;<structfield id="NimfEventKey.state">state</structfield>;</para></entry>
+<entry role="struct_member_description"><para>a bit-mask representing the state of
+the modifier keys (e.g. Control, Shift and Alt) and the pointer
+buttons. See <link linkend="NimfModifierType"><type>NimfModifierType</type></link>. </para></entry>
+<entry role="struct_member_annotations"><emphasis role="annotation">[<acronym>type</acronym> NimfModifierType]</emphasis></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint32"><type>guint32</type></link>&#160;<structfield id="NimfEventKey.keyval">keyval</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the key that was pressed or released. See the
+<literal>nimf-key-syms.h</literal> header file for a complete list of Nimf key codes.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+<row role="member"><entry role="struct_member_name"><para><link linkend="guint32"><type>guint32</type></link>&#160;<structfield id="NimfEventKey.hardware-keycode">hardware_keycode</structfield>;</para></entry>
+<entry role="struct_member_description"><para>the raw code of the key that was pressed or released.</para></entry>
+<entry role="struct_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3>
+</refsect2>
+<refsect2 id="NimfEvent" role="union">
+<title>union NimfEvent</title>
+<indexterm zone="NimfEvent"><primary sortas="Event">NimfEvent</primary></indexterm>
+<para>A <link linkend="NimfEvent"><type>NimfEvent</type></link> contains a union.</para>
+<refsect3 id="NimfEvent.members" role="union_members">
+<title>Members</title>
+<informaltable role="union_members_table" pgwide="1" frame="none">
+<tgroup cols="3">
+<colspec colname="union_members_name" colwidth="300px"/>
+<colspec colname="union_members_description"/>
+<colspec colname="union_members_annotations" colwidth="200px"/>
+<tbody>
+<row><entry role="union_member_name"><para><link linkend="NimfEventType"><type>NimfEventType</type></link>&#160;<structfield id="NimfEvent.type">type</structfield>;</para></entry>
+<entry role="union_member_description"><para>a <link linkend="NimfEventType"><type>NimfEventType</type></link></para></entry>
+<entry role="union_member_annotations"></entry>
+</row>
+<row><entry role="union_member_name"><para><link linkend="NimfEventKey"><type>NimfEventKey</type></link>&#160;<structfield id="NimfEvent.key">key</structfield>;</para></entry>
+<entry role="union_member_description"><para>a <link linkend="NimfEventKey"><type>NimfEventKey</type></link></para></entry>
+<entry role="union_member_annotations"></entry>
+</row>
+</tbody></tgroup></informaltable>
+</refsect3></refsect2>
+
+</refsect1>
+
+</refentry>

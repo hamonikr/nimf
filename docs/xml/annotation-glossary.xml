@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE glossary PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "../xml/gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<glossary id="annotation-glossary">
+  <title>Annotation Glossary</title>
+<glossdiv><title>N</title>
+    <glossentry>
+      <glossterm><anchor id="annotation-glossterm-nullable"/>nullable</glossterm>
+      <glossdef>
+        <para>NULL may be passed as the value in, out, in-out; or as a return value.</para>
+      </glossdef>
+    </glossentry>
+</glossdiv>
+<glossdiv><title>O</title>
+    <glossentry>
+      <glossterm><anchor id="annotation-glossterm-out"/>out</glossterm>
+      <glossdef>
+        <para>Parameter for returning results. Default is <acronym>transfer full</acronym>.</para>
+      </glossdef>
+    </glossentry>
+</glossdiv>
+<glossdiv><title>T</title>
+    <glossentry>
+      <glossterm><anchor id="annotation-glossterm-transfer full"/>transfer full</glossterm>
+      <glossdef>
+        <para>Free data after the code is done.</para>
+      </glossdef>
+    </glossentry>
+    <glossentry>
+      <glossterm><anchor id="annotation-glossterm-transfer none"/>transfer none</glossterm>
+      <glossdef>
+        <para>Don't free data after the code is done.</para>
+      </glossdef>
+    </glossentry>
+    <glossentry>
+      <glossterm><anchor id="annotation-glossterm-type"/>type</glossterm>
+      <glossdef>
+        <para>Override the parsed C type with given type.</para>
+      </glossdef>
+    </glossentry>
+</glossdiv>
+</glossary>
