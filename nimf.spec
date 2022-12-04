@@ -3,9 +3,10 @@ Summary:  An input method framework
 Version:  1.3.1
 Release:  1%{?dist}
 License:  LGPLv3+
-Group:    User Interface/Desktops
+BuildArch: noarch
+Group:    System Environment/Base
 URL:      https://github.com/hamonikr/nimf
-Source0:  https://github.com/hamonikr/nimf/archive/master.tar.gz
+Source0:  https://github.com/hamonikr/nimf/archive/refs/tags/%{version}.tar.gz
 
 BuildRequires: gcc-c++
 BuildRequires: libtool
@@ -14,18 +15,22 @@ BuildRequires: pkgconfig
 BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires: libqt5-qtbase-devel
 BuildRequires: libQt5Gui-private-headers-devel
-BuildRequires: libappindicator3-devel
-BuildRequires: rsvg-view
+BuildRequires: libappindicator-devel
+BuildRequires: rsvg-convert
 BuildRequires: noto-sans-cjk-fonts
+BuildRequires: wayland-protocols-devel
+BuildRequires: libappindicator3-devel
 %else
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtbase-private-devel
-BuildRequires: libappindicator-gtk3-devel
-BuildRequires: librsvg2-tools
-BuildRequires: google-noto-cjk-fonts
+BuildRequires: libappindicator-devel
+BuildRequires: librsvg-2-2
+BuildRequires: noto-sans-cjk-fonts
+BuildRequires: wayland-protocols
+BuildRequires: libappindicator3-devel
 %endif
 BuildRequires: libhangul-devel
 BuildRequires: anthy-devel
@@ -34,14 +39,14 @@ BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 BuildRequires: libxklavier-devel
 BuildRequires: gtk-doc
-%if 0%{?fedora} || 0%{?is_opensuse}
+%if 0%{?fedora} || 0%{?suse_version}
 BuildRequires: librime-devel >= 1.2.9
 BuildRequires: m17n-lib-devel >= 1.7.0
 %endif
 %if 0%{?fedora}
 BuildRequires: m17n-db-devel >= 1.7.0
 %endif
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires: m17n-db >= 1.7.0
 %endif
 
@@ -49,7 +54,7 @@ Requires: anthy
 Requires: glib2
 Requires: gtk3
 Requires: im-chooser
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 Requires: libappindicator3
 %else
 Requires: libappindicator-gtk3
@@ -57,7 +62,7 @@ Requires: libappindicator-gtk3
 Requires: libhangul
 Requires: libxkbcommon
 Requires: libxklavier
-%if 0%{?fedora} || 0%{?is_opensuse}
+%if 0%{?fedora} || 0%{?suse_version}
 Requires: librime
 Requires: m17n-lib >= 1.7.0, m17n-db >= 1.7.0
 %endif
@@ -146,5 +151,6 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Wed, 23 Sep 2020 HamoniKR <pkg@hamonikr.org> - 2020.04.28-1
+# date "+%a %b %d %Y"
+* Sat Dec 03 2022 HamoniKR <pkg@hamonikr.org> - v1.3.1
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog

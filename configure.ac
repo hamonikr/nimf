@@ -28,6 +28,13 @@ AS_IF([test "x$enable_hardening" != "xno"],
 
 AC_SUBST(EXTRA_CFLAGS)
 
+dnl -------------------------------------------------------------------------
+dnl Add more distributions if needed
+AM_CONDITIONAL([DIST_REDHAT], [grep -E -iq "^NAME=\"?(fedora|redhat)\"?" /etc/os-release])
+AM_CONDITIONAL([DIST_SUSE], [grep -E -iq "^NAME=\"?(opensuse|sles|sled)\"?" /etc/os-release])
+AM_CONDITIONAL([DIST_DEBIAN], [grep -E -iq "^NAME=\"?(hamonikr|linuxmint|ubuntu|debian)\"?" /etc/os-release])
+
+
 dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************
@@ -240,9 +247,14 @@ dnl ***************************************************************************
 dnl nimf-indicator
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                  [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
-                   gdk-x11-3.0 gmodule-2.0])
+PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, 
+                  [glib-2.0 x11 gtk+-3.0 libxklavier gdk-3.0 gdk-x11-3.0 gmodule-2.0])
+AM_CONDITIONAL([DIST_DEBIAN],
+      [PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [ayatana-appindicator3-0.1])])
+AM_CONDITIONAL([DIST_SUSE],
+      [PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [libappindicator3-1])])
+AM_CONDITIONAL([DIST_REDHAT],
+      [PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS, [libappindicator3-1])])
 
 dnl ***************************************************************************
 dnl nimf-preedit-window  nimf-candidate
