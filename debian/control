@@ -105,3 +105,10 @@ Depends: libqt5core5a
 Provides: qtbase-abi-5-12-8
 Description: Dummy package for Debian bookworm
  This package provides a dummy qtbase-abi-5-12-8 for Debian bookworm.
+
+Package: qtbase-abi-5-15-3-dummy
+Architecture: any
+Depends: libqt5core5a
+Provides: qtbase-abi-5-15-3
+Description: Dummy package for KDE neon (Ubuntu 22.04 based)
+ This package provides a dummy qtbase-abi-5-15-3 for KDE neon.
