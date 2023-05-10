@@ -102,14 +102,14 @@ git clone https://aur.archlinux.org/libhangul-git.git
 
 cd libhangul-git
 
-makepag -si 
+makepkg -si 
 
 # Install nimf
 git clone https://github.com/hamonikr/nimf.git
 
 cd nimf
 
-makepag -si 
+makepkg -si 
 ```
 
  2) im setting
@@ -217,14 +217,14 @@ git clone https://aur.archlinux.org/libhangul-git.git
 
 cd libhangul-git
 
-makepag -si 
+makepkg -si 
 
 # nimf 설치
 git clone https://github.com/hamonikr/nimf.git
 
 cd nimf
 
-makepag -si 
+makepkg -si 
 ```
 
 2) 입력기 설정
