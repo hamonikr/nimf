@@ -270,8 +270,21 @@ https://github.com/hamonikr/nimf/releases
 * HamoniKR (>= 1.4), ubuntu 18.04, linuxmint (>= 19) 에서 테스트 되었습니다.
 https://github.com/hamonikr/nimf/wiki/HamoniKR-build
 
+## How to remove completely?
+```
+sudo apt purge '*nimf*'
+```
 
-# 라이선스
+## Debugging
+```
+  nimf --debug
+  # for nimf-indicator
+  nimf-settings --gapplication-service & 
+
+  tail -f /var/log/syslog (or /var/log/daemon.log)
+```
+
+# 라이선스(License)
 * GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
   
   Nimf is free software: you can redistribute it and/or modify it
@@ -291,5 +304,5 @@ https://github.com/hamonikr/nimf/wiki/HamoniKR-build
 사용중 이슈는 깃헙 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
 
 # 소스코드 개선에 참여하는 법
-깃헙 저장소를 포크하신 후 수정하실 내용을 수정하고 PR을 요청하시면 하모니카 팀에서 리뷰 후 대응합니다.
+깃헙 저장소를 포크하신 후 수정하실 내용을 수정하고 PR을 요청하시면 하모니카 개발 팀에서 리뷰 후 대응합니다.
 

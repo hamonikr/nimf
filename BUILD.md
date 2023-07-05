@@ -41,3 +41,8 @@ sudo apt install nimf nimf-libhangul
 
 im-config -n nimf
 ```
+
+## How to remove completely?
+```
+sudo apt purge '*nimf*'
+```

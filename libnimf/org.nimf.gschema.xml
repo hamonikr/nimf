@@ -10,7 +10,7 @@
       <description>This key is intended for nimf-settings.</description>
     </key>
     <key type="as" name="hotkeys">
-      <default>['&lt;Control&gt; space']</default>
+      <default>['&lt;Control&gt; space', '&lt;Shift&gt; space', 'Hangul']</default>
       <summary>Hotkeys for rotating input method engines</summary>
       <description>Hotkeys for rotating input method engines</description>
     </key>
