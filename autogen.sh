@@ -52,4 +52,4 @@ else
 fi
 
 cd "$olddir"
-test -n "$NOCONFIGURE" || "$srcdir/configure" "$@"
+test -n "$NOCONFIGURE" || "$srcdir/configure" "$@" --libdir=/usr/lib/x86_64-linux-gnu

@@ -1,5 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
 
+# 추가된 경로 설정
+libdir='/usr/lib/x86_64-linux-gnu'
+
+AC_SUBST(libdir)
+
 AC_INIT(nimf, 1.3.1)
 
 AC_CONFIG_HEADERS([config.h])
@@ -177,22 +182,19 @@ GTK3_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-3.0`
 AC_SUBST(GTK3_LIBDIR)
 AC_SUBST(GTK3_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
-              [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
-              [/usr/bin:$GTK3_LIBDIR/libgtk-3-0])
+              [gtk-query-immodules-3.0 gtk-query-immodules-3.0-64], [no],
+              [/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk-3-0:/usr/lib/x86_64-linux-gnu/libgtk-3-0t64])
 if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
+  AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-64 not found])
 fi
 
-GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
-GTK2_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-2.0`
-AC_SUBST(GTK2_LIBDIR)
-AC_SUBST(GTK2_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
-              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
-              [/usr/bin:$GTK2_LIBDIR/libgtk2.0-0])
+              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-64], [no],
+              [/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:/usr/lib/x86_64-linux-gnu/libgtk2.0-0t64])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
+  AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-64 not found])
 fi
+
 
 dnl ***************************************************************************
 dnl  icon cache

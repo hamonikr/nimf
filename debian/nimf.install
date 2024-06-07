@@ -1,8 +1,8 @@
 etc/input.d/nimf.conf
 etc/xdg/autostart
 usr/bin
-usr/lib/*/gtk-2.0
 usr/lib/*/gtk-3.0
+usr/lib/*/gtk-4.0
 usr/lib/*/nimf/modules/libnimf-system-keyboard.so
 usr/lib/*/nimf/modules/services
 usr/lib/*/qt5
