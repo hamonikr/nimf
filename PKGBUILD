@@ -1,3 +1,5 @@
+# Maintainer: Kevin Kim <root@hamonikr.org>
+
 pkgname=nimf
 pkgver=1.3.1.r5.f48a151
 pkgrel=1
@@ -33,11 +35,16 @@ build() {
 package() {
 	cd nimf
 	make DESTDIR="${pkgdir}/" install
+}
 
-	# Add environment variables to ~/.xprofile
-	install -Dm644 /dev/null "${pkgdir}/etc/skel/.xprofile"
-	echo 'export GTK_IM_MODULE=nimf' >> "${pkgdir}/etc/skel/.xprofile"
-	echo 'export QT4_IM_MODULE="nimf"' >> "${pkgdir}/etc/skel/.xprofile"
-	echo 'export QT_IM_MODULE=nimf' >> "${pkgdir}/etc/skel/.xprofile"
-	echo 'export XMODIFIERS="@im=nimf"' >> "${pkgdir}/etc/skel/.xprofile"
+post_install() {
+	cat <<EOF
+To use Nimf as your input method framework, add the following lines to your ~/.xprofile:
+
+export GTK_IM_MODULE=nimf
+export QT4_IM_MODULE="nimf"
+export QT_IM_MODULE=nimf
+export XMODIFIERS="@im=nimf"
+
+EOF
 }
