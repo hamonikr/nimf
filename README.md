@@ -4,11 +4,14 @@
 ![ubuntu-hirsute](https://img.shields.io/badge/ubuntu-21.04-red)
 ![ubuntu-impish](https://img.shields.io/badge/ubuntu-21.10-red)
 ![ubuntu-jammy](https://img.shields.io/badge/ubuntu-22.04-red)
+![ubuntu-noble](https://img.shields.io/badge/ubuntu-24.04-red)
 
 ![hamonikr-me](https://img.shields.io/badge/hamonikr-me-orange)
 ![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-blue)
 ![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-green)
 ![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-purple)
+![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-orange)
+![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-green)
 
 
 In `Ubuntu 22.04`, some packages required for the build have been changed and deleted.
@@ -49,18 +52,6 @@ Nimf provides:
 
 # Install
 
-* HamoniKR 6.0
-```
-wget -qO- https://update.hamonikr.org/add-update-repo.apt | sudo -E bash -
-
-sudo apt install nimf nimf-libhangul
-
-im-config -n nimf
-
-# If you want to use other languages(Japanese, Chinese, etc.)
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-```
-
 * Ubuntu (>= 20.04), Debian (bullseye), LMDE 5(Elsie)
 ```
 # The ibus-daemon start automatically at Ubuntu 21.10.
@@ -71,7 +62,7 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
-curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
+wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
 sudo apt install nimf nimf-libhangul
 
