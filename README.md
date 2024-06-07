@@ -120,7 +120,7 @@ export GTK_IM_MODULE=nimf
 export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
-nimf
+
 ```
 
 * Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build

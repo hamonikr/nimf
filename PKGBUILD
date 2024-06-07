@@ -1,5 +1,5 @@
 pkgname=nimf
-pkgver=1.3.0.r33.68a65d6
+pkgver=1.3.1.r5.f48a151
 pkgrel=1
 pkgdesc="Nimf is an input method framework."
 arch=('any')
@@ -33,4 +33,11 @@ build() {
 package() {
 	cd nimf
 	make DESTDIR="${pkgdir}/" install
+
+	# Add environment variables to ~/.xprofile
+	install -Dm644 /dev/null "${pkgdir}/etc/skel/.xprofile"
+	echo 'export GTK_IM_MODULE=nimf' >> "${pkgdir}/etc/skel/.xprofile"
+	echo 'export QT4_IM_MODULE="nimf"' >> "${pkgdir}/etc/skel/.xprofile"
+	echo 'export QT_IM_MODULE=nimf' >> "${pkgdir}/etc/skel/.xprofile"
+	echo 'export XMODIFIERS="@im=nimf"' >> "${pkgdir}/etc/skel/.xprofile"
 }
