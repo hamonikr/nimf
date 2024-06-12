@@ -30,7 +30,8 @@ AC_ARG_ENABLE([hardening],
 # EXTRA_CFLAGS="-Wall -Werror"
 EXTRA_CFLAGS="-Wall"
 AS_IF([test "x$enable_hardening" != "xno"],
-      [EXTRA_CFLAGS+=" -D_FORTIFY_SOURCE=2"])
+      [AS_IF([echo "$EXTRA_CFLAGS" | grep -vq '\-D_FORTIFY_SOURCE'],
+             [EXTRA_CFLAGS+=" -D_FORTIFY_SOURCE=2"])])
 
 AC_SUBST(EXTRA_CFLAGS)
 
