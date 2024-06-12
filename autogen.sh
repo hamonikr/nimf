@@ -7,6 +7,12 @@ test -n "$srcdir" || srcdir=.
 olddir=`pwd`
 cd "$srcdir"
 
+# Clean up previous build files
+echo "Cleaning up previous build files..."
+make clean > /dev/null 2>&1
+rm -rf autom4te.cache
+rm -f aclocal.m4 ltmain.sh
+
 mkdir -p m4
 
 PKGCONFIG=`which pkg-config`

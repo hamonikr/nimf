@@ -1,17 +1,13 @@
 ![ubuntu-bionic](https://img.shields.io/badge/ubuntu-18.04-red)
 ![ubuntu-focal](https://img.shields.io/badge/ubuntu-20.04-red)
-![ubuntu-groovy](https://img.shields.io/badge/ubuntu-20.10-red)
-![ubuntu-hirsute](https://img.shields.io/badge/ubuntu-21.04-red)
-![ubuntu-impish](https://img.shields.io/badge/ubuntu-21.10-red)
 ![ubuntu-jammy](https://img.shields.io/badge/ubuntu-22.04-red)
 ![ubuntu-noble](https://img.shields.io/badge/ubuntu-24.04-red)
 
-![hamonikr-me](https://img.shields.io/badge/hamonikr-me-orange)
 ![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-blue)
-![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-green)
-![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-purple)
-![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-orange)
-![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-green)
+![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-blue)
+![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-blue)
+![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-blue)
+![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-blue)
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
@@ -47,21 +43,29 @@ Nimf provides:
 # Install
 
 ## Ubuntu, Debian, LinuxMint...
-```
-# The ibus-daemon start automatically since Ubuntu 21.10.
-# Input method conflict
-# You can remove the ibus or disable ibus-daemon from booting
-# Sol1 : sudo apt purge ibus
-# Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
+On Ubuntu 21.10 or later distributions, the ibus-daemon starts automatically, causing conflicts with the input method nimf. 
 
+Method 1: Remove ibus
+```
+sudo apt purge ibus
+```
+Method 2: Disable ibus-daemon
+```
+sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
+```
+
+Install nimf
+```
 wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
 sudo apt install nimf nimf-libhangul
 
-# If you want to use other languages(Japanese, Chinese, etc.)
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-
 im-config -n nimf
+```
+
+If you want to use other languages (Japanese, Chinese, etc.)
+```
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 ```
 
 ## Arch Linux, Manjaro
@@ -111,54 +115,41 @@ export XMODIFIERS="@im=nimf"
 
 
 ## Build from Source
+Open the terminal and run the following commands step by step.
 ```
 git clone https://github.com/hamonikr/nimf.git
 cd nimf
+
 autoreconf --force --install --verbose
 ./configure
 make clean
 make -j $(nproc)
 sudo make install
+```
 
 There are configuration options. Use it for your situation.
+```
+--disable-hardening     Disable hardening
+--disable-nimf-anthy    Disable nimf-anthy
+--disable-nimf-m17n     Disable nimf-m17n
+--disable-nimf-rime     Disable nimf-rime
+--with-im-config-data   Install im-config data
+--with-imsettings-data  Install imsettings data
 
-  --disable-hardening     Disable hardening
-  --disable-nimf-anthy    Disable nimf-anthy
-  --disable-nimf-m17n     Disable nimf-m17n
-  --disable-nimf-rime     Disable nimf-rime
-  --with-im-config-data   Install im-config data
-  --with-imsettings-data  Install imsettings data
-
-Open the terminal and run the following commands step by step.
-
-  username:~$ cd
-  username:~$ mkdir tmp-build
-  username:~$ cd tmp-build
-  username:~/tmp-build$ wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
-  username:~/tmp-build$ tar zxf nimf-master.tar.gz
-  username:~/tmp-build$ cd nimf-master
-
+ex)
+./configure --disable-nimf-m17n
+```
 If you are using im-config
-
-  ./autogen.sh --with-im-config-data
-
+```
+./autogen.sh --with-im-config-data
+```
 If you are using im-chooser
-
-  ./autogen.sh --with-imsettings-data
-
-Otherwise
-
-  ./autogen.sh
-
-  make
-  sudo make install
-  sudo ldconfig
-  sudo make update-gtk-im-cache
-  sudo make update-gtk-icon-cache
-
+```
+./autogen.sh --with-imsettings-data
+```
 To uninstall nimf, run the following command.
-
-  sudo make uninstall
+```
+sudo make uninstall
 ```
 
 ## Debugging
@@ -187,34 +178,34 @@ To uninstall nimf, run the following command.
 [Go to English](#nimf)
 
 이 프로젝트는 한글입력기 nimf 가 더이상 [지속되기 힘든 상황](https://launchpad.net/~hodong/+archive/ubuntu/nimf) 이 되었기 때문에
+
 프로젝트의 지속적인 사용을 위해서는 관리가 필요하다고 생각되어 [nimf Project](https://gitlab.com/nimf-i18n/nimf) 를 포크한 프로젝트 입니다.
+
 다년간 한글 사용자를 위한 환경 개선에 많은 기여를 하신 Hodong Kim 님께 감사를 드립니다. 
 
 하모니카 개발팀은 개방형OS 배포에 필수적인 한글입력기에 대한 관리가 필요하다고 생각하고 있으며
+
 앞으로 하모니카 팀에서 직접 nimf 프로젝트를 계속 관리하기로 결정하였습니다.
+
 향후 하모니카 팀에서 이 프로젝트에 필요한 기능을 계속 추가하여 좋은 소프트웨어를 사용할 수 있도록 노력하겠습니다.
 
 # nimf 설치
 
 ## Ubuntu, Debian, LinuxMint...
 ```
-# 우분투 21.10 이상을 기반으로 하는 배포판에서는 ibus-daemon이 자동으로 시작되어 입력기가 충돌됩니다.
-# 부팅시 ibus가 동작하지 않도록 ibus를 제거하거나 ibus-daemon을 비활성화할 수 있습니다.
+# 우분투 21.10 이상을 기반으로 하는 배포판에서는 ibus-daemon이 자동으로 시작되어 입력기가 nimf 와 충돌됩니다.
+# 부팅 시 ibus가 동작하지 않도록 아래의 방법으로 ibus를 제거하거나 ibus-daemon을 비활성화할 수 있습니다.
 # 방법1 : sudo apt purge ibus
 # 방법2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
-
-# nimf 패키지 저장소가 변경되었습니다. 예전에 사용하던 하모니카 APT 설정이 있는 경우 삭제합니다. 
-sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
 wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
 sudo apt install nimf nimf-libhangul
 
-# 만약 일본어, 중국어 등 다른 언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
-# Install additional packages as follows if you want to use other languages(Japanese, Chinese, etc.)
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-
 im-config -n nimf
+
+# 만약 일본어, 중국어 등 다른 언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
+sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
 ```
 ## Arch Linux, Manjaro
 1) 패키지 다운로드 및 설치
