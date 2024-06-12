@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>NimfServer: Nimf Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Nimf Reference Manual">
 <link rel="up" href="libnimf-api.html" title="Part I. libnimf API">
 <link rel="prev" href="nimf-types.html" title="Types">
 <link rel="next" href="nimf-utils.html" title="Utility Functions">
-<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -59,7 +59,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+<span class="returnvalue">gchar</span> **
 </td>
 <td class="function_name">
 <a class="link" href="NimfServer.html#nimf-server-get-loaded-engine-ids" title="nimf_server_get_loaded_engine_ids ()">nimf_server_get_loaded_engine_ids</a> <span class="c_punctuation">()</span>
@@ -96,29 +96,29 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="NimfServer.html#NimfServer-engine-changed" title="The “engine-changed” signal">engine-changed</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+<td class="signal_flags">Run Last</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="NimfServer.html#NimfServer-engine-loaded" title="The “engine-loaded” signal">engine-loaded</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+<td class="signal_flags">Run Last</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="NimfServer.html#NimfServer-engine-status-changed" title="The “engine-status-changed” signal">engine-status-changed</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+<td class="signal_flags">Run Last</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="NimfServer.html#NimfServer-engine-unloaded" title="The “engine-unloaded” signal">engine-unloaded</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></td>
+<td class="signal_flags">Run Last</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect1">
 <a name="NimfServer.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    GObject
     <span class="lineart">╰──</span> NimfServer
 </pre>
 </div>
@@ -131,7 +131,7 @@
 <a name="nimf-server-change-engine-by-id"></a><h3>nimf_server_change_engine_by_id ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_server_change_engine_by_id (<em class="parameter"><code><a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server</code></em>,
-                                 <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *engine_id</code></em>);</pre>
+                                 <em class="parameter"><code>const <span class="type">gchar</span> *engine_id</code></em>);</pre>
 <p>Changes the last focused engine to the engine with the given ID.</p>
 <div class="refsect3">
 <a name="nimf-server-change-engine-by-id.parameters"></a><h4>Parameters</h4>
@@ -161,8 +161,8 @@ nimf_server_change_engine_by_id (<em class="parameter"><code><a class="link" hre
 <a name="nimf-server-change-engine"></a><h3>nimf_server_change_engine ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_server_change_engine (<em class="parameter"><code><a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server</code></em>,
-                           <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *engine_id</code></em>,
-                           <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *method_id</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">gchar</span> *engine_id</code></em>,
+                           <em class="parameter"><code>const <span class="type">gchar</span> *method_id</code></em>);</pre>
 <div class="refsect3">
 <a name="nimf-server-change-engine.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -194,9 +194,9 @@ nimf_server_change_engine (<em class="parameter"><code><a class="link" href="Nim
 <hr>
 <div class="refsect2">
 <a name="nimf-server-get-loaded-engine-ids"></a><h3>nimf_server_get_loaded_engine_ids ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **
+<pre class="programlisting"><span class="returnvalue">gchar</span> **
 nimf_server_get_loaded_engine_ids (<em class="parameter"><code><a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server</code></em>);</pre>
-<p>The array is <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated.</p>
+<p>The array is <code class="literal">NULL</code>-terminated.</p>
 <div class="refsect3">
 <a name="nimf-server-get-loaded-engine-ids.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -214,8 +214,8 @@ nimf_server_get_loaded_engine_ids (<em class="parameter"><code><a class="link" h
 </div>
 <div class="refsect3">
 <a name="nimf-server-get-loaded-engine-ids.returns"></a><h4>Returns</h4>
-<p>a new <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>-terminated engine id array. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p>a new <code class="literal">NULL</code>-terminated engine id array. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -224,12 +224,12 @@ nimf_server_get_loaded_engine_ids (<em class="parameter"><code><a class="link" h
 <pre class="programlisting"><a class="link" href="NimfServer.html" title="NimfServer"><span class="returnvalue">NimfServer</span></a> *
 nimf_server_get_default (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Returns the default <a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> instance.</p>
-<p>If there is no default server then <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned.</p>
+<p>If there is no default server then <code class="literal">NULL</code> is returned.</p>
 <div class="refsect3">
 <a name="nimf-server-get-default.returns"></a><h4>Returns</h4>
-<p>the default server, or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if server is not
+<p>the default server, or <code class="literal">NULL</code> if server is not
 running. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -238,7 +238,7 @@ running. </p>
 <pre class="programlisting"><a class="link" href="NimfPreeditable.html" title="NimfPreeditable"><span class="returnvalue">NimfPreeditable</span></a> *
 nimf_server_get_preeditable (<em class="parameter"><code><a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server</code></em>);</pre>
 <p>Returns the <a class="link" href="NimfPreeditable.html" title="NimfPreeditable"><span class="type">NimfPreeditable</span></a> instance.</p>
-<p>If there is no default preeditable then <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned.</p>
+<p>If there is no default preeditable then <code class="literal">NULL</code> is returned.</p>
 <div class="refsect3">
 <a name="nimf-server-get-preeditable.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -256,8 +256,8 @@ nimf_server_get_preeditable (<em class="parameter"><code><a class="link" href="N
 </div>
 <div class="refsect3">
 <a name="nimf-server-get-preeditable.returns"></a><h4>Returns</h4>
-<p>a <a class="link" href="NimfPreeditable.html" title="NimfPreeditable"><span class="type">NimfPreeditable</span></a>, or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p>a <a class="link" href="NimfPreeditable.html" title="NimfPreeditable"><span class="type">NimfPreeditable</span></a>, or <code class="literal">NULL</code>. </p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 </div>
@@ -267,9 +267,9 @@ nimf_server_get_preeditable (<em class="parameter"><code><a class="link" href="N
 <a name="NimfServer-engine-changed"></a><h3>The <code class="literal">“engine-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server,
-               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>      *engine_id,
-               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>      *icon_name,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>    user_data)</pre>
+               <span class="type">char</span>       *engine_id,
+               <span class="type">char</span>       *icon_name,
+               <span class="type">gpointer</span>    user_data)</pre>
 <p>The <a class="link" href="NimfServer.html#NimfServer-engine-changed" title="The “engine-changed” signal"><span class="type">“engine-changed”</span></a> signal is emitted when the engine is
 changed.</p>
 <div class="refsect3">
@@ -304,15 +304,15 @@ changed.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+<p>Flags: Run Last</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="NimfServer-engine-loaded"></a><h3>The <code class="literal">“engine-loaded”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server,
-               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>      *engine_id,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>    user_data)</pre>
+               <span class="type">char</span>       *engine_id,
+               <span class="type">gpointer</span>    user_data)</pre>
 <p>The <a class="link" href="NimfServer.html#NimfServer-engine-loaded" title="The “engine-loaded” signal"><span class="type">“engine-loaded”</span></a> signal is emitted when the engine is loaded.</p>
 <div class="refsect3">
 <a name="NimfServer-engine-loaded.parameters"></a><h4>Parameters</h4>
@@ -341,16 +341,16 @@ user_function (<a class="link" href="NimfServer.html" title="NimfServer"><span c
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+<p>Flags: Run Last</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="NimfServer-engine-status-changed"></a><h3>The <code class="literal">“engine-status-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server,
-               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>      *engine_id,
-               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>      *icon_name,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>    user_data)</pre>
+               <span class="type">char</span>       *engine_id,
+               <span class="type">char</span>       *icon_name,
+               <span class="type">gpointer</span>    user_data)</pre>
 <p>The <a class="link" href="NimfServer.html#NimfServer-engine-status-changed" title="The “engine-status-changed” signal"><span class="type">“engine-status-changed”</span></a> signal is emitted when the engine
 status is changed.</p>
 <div class="refsect3">
@@ -385,15 +385,15 @@ status is changed.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+<p>Flags: Run Last</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="NimfServer-engine-unloaded"></a><h3>The <code class="literal">“engine-unloaded”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="NimfServer.html" title="NimfServer"><span class="type">NimfServer</span></a> *server,
-               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>      *engine_id,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>    user_data)</pre>
+               <span class="type">char</span>       *engine_id,
+               <span class="type">gpointer</span>    user_data)</pre>
 <p>The <a class="link" href="NimfServer.html#NimfServer-engine-unloaded" title="The “engine-unloaded” signal"><span class="type">“engine-unloaded”</span></a> signal is emitted when the engine is
 unloaded.</p>
 <div class="refsect3">
@@ -423,11 +423,11 @@ unloaded.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
+<p>Flags: Run Last</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.32</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>

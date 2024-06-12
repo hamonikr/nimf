@@ -5,9 +5,10 @@ libdir='/usr/lib/x86_64-linux-gnu'
 
 AC_SUBST(libdir)
 
-AC_INIT(nimf, 1.3.1)
+AC_INIT(nimf, 1.3.5)
 
 AC_CONFIG_HEADERS([config.h])
+
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 
@@ -122,44 +123,99 @@ dnl ***************************************************************************
 dnl im-nimf-qt5
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [],
-  [AC_MSG_ERROR([Package requirements (Qt5Core Qt5Gui Qt5Widgets) were not met:
-  If you are using Debian, please install 'qtbase5-dev'.])])
+# Check for Qt5
+PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [has_qt5=yes], [has_qt5=no])
+AS_IF([test "x$has_qt5" = "xyes"], [
+  QT5_VERSION=`pkg-config --modversion Qt5Core`
+  QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
+  QT5_CORE_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtCore/$QT5_VERSION
+  QT5_GUI_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtGui/$QT5_VERSION
 
-QT5_VERSION=`pkg-config --modversion Qt5Core`
-QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
-QT5_CORE_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtCore/$QT5_VERSION
-QT5_GUI_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtGui/$QT5_VERSION
+  AC_CHECK_FILES(
+     [$QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
+      $QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontextplugin_p.h], [],
+      AC_MSG_ERROR([Qt 5 base private development files are not found.]))
 
-AC_CHECK_FILES(
-   [$QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
-    $QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontextplugin_p.h], [],
-    AC_MSG_ERROR([Qt 5 base private development files are not found.]))
+  AC_SUBST(QT5_CORE_PRIVATE_INCLUDE_PATH)
+  AC_SUBST(QT5_GUI_PRIVATE_INCLUDE_PATH)
 
-AC_SUBST(QT5_CORE_PRIVATE_INCLUDE_PATH)
-AC_SUBST(QT5_GUI_PRIVATE_INCLUDE_PATH)
+  AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
+                [`pkg-config --variable=host_bins Qt5Core`])
+  if test "x$QT5_MOC" = "xno"; then
+    AC_MSG_ERROR([moc for qt5 not found])
+  fi
 
-AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
-              [`pkg-config --variable=host_bins Qt5Core`])
-if test "x$QT5_MOC" = "xno"; then
-  AC_MSG_ERROR([moc for qt5 not found])
-fi
+  QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
 
-QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
+  case `pkg-config --variable=includedir Qt5Core` in
+    */qt5)
+      QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
+      ;;
+    */qt)
+      QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
+      ;;
+    *)
+      AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
+      ;;
+  esac
 
-case `pkg-config --variable=includedir Qt5Core` in
-  */qt5)
-    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
-    ;;
-  */qt)
-    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
-    ;;
-  *)
-    AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
-    ;;
-esac
+  AC_SUBST(QT5_IM_MODULE_DIR)
+])
 
-AC_SUBST(QT5_IM_MODULE_DIR)
+dnl ***************************************************************************
+dnl im-nimf-qt6
+dnl ***************************************************************************
+
+PKG_CHECK_MODULES(IM_NIMF_QT6_DEPS, [Qt6Core Qt6Gui Qt6Widgets], [has_qt6=yes], [has_qt6=no])
+AS_IF([test "x$has_qt6" = "xyes"], [
+  QT6_VERSION=`pkg-config --modversion Qt6Core`
+  QT6_INCLUDE_DIR=`pkg-config --variable=includedir Qt6Core`
+  QT6_CORE_PRIVATE_INCLUDE_PATH=$QT6_INCLUDE_DIR/QtCore/$QT6_VERSION
+  QT6_GUI_PRIVATE_INCLUDE_PATH=$QT6_INCLUDE_DIR/QtGui/$QT6_VERSION
+
+  # Add Qt6 checks
+  AC_CHECK_HEADERS([QtCore/QtCore,
+                    QtGui/QtGui,
+                    QtWidgets/QtWidgets,
+                    QtGui/6.4.2/QtGui/qpa/qplatforminputcontext.h])
+
+  AC_CHECK_FILES(
+     [$QT6_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
+      $QT6_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontextplugin_p.h], [],
+      AC_MSG_ERROR([Qt 6 base private development files are not found.]))
+
+  AC_SUBST(QT6_CORE_PRIVATE_INCLUDE_PATH)
+  AC_SUBST(QT6_GUI_PRIVATE_INCLUDE_PATH)
+
+  AC_PATH_PROGS([QT6_MOC], [moc-qt6 moc], [no],
+                [`pkg-config --variable=host_bins Qt6Core`])
+  if test "x$QT6_MOC" = "xno"; then
+    QT6_MOC=`find /usr/lib/ -name moc -type f | grep qt6`
+    if test "x$QT6_MOC" = "x"; then
+      AC_MSG_ERROR([moc for qt6 not found])
+    fi
+  fi
+
+  QT6_LIB_DIR=`pkg-config --variable=libdir Qt6Core`
+
+  case `pkg-config --variable=includedir Qt6Core` in
+    */qt6)
+      QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts
+      ;;
+    */qt)
+      QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt/plugins/platforminputcontexts
+      ;;
+    *)
+      AC_MSG_ERROR(Can not determine Qt6 plugins/platforminputcontexts directory)
+      ;;
+  esac
+
+  AC_SUBST(QT6_IM_MODULE_DIR)
+])
+
+AM_CONDITIONAL([HAVE_QT5], [test "x$has_qt5" = "xyes"])
+AM_CONDITIONAL([HAVE_QT6], [test "x$has_qt6" = "xyes"])
+
 
 dnl ***************************************************************************
 dnl  Check for im-nimf-gtk
@@ -310,6 +366,7 @@ AC_OUTPUT([
   modules/clients/Makefile
   modules/clients/gtk/Makefile
   modules/clients/qt5/Makefile
+  modules/clients/qt6/Makefile  
   modules/engines/Makefile
   modules/engines/nimf-anthy/Makefile
   modules/engines/nimf-libhangul/Makefile

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Types: Nimf Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Nimf Reference Manual">
 <link rel="up" href="libnimf-api.html" title="Part I. libnimf API">
 <link rel="prev" href="nimf-key-syms.html" title="Key symbols">
 <link rel="next" href="NimfServer.html" title="NimfServer">
-<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -189,7 +189,7 @@ nimf_key_new (<em class="parameter"><code><span class="type">void</span></code><
 <div class="refsect2">
 <a name="nimf-key-new-from-nicks"></a><h3>nimf_key_new_from_nicks ()</h3>
 <pre class="programlisting"><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> *
-nimf_key_new_from_nicks (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **nicks</code></em>);</pre>
+nimf_key_new_from_nicks (<em class="parameter"><code>const <span class="type">gchar</span> **nicks</code></em>);</pre>
 <p>Return: a new <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>, which should be freed with <a class="link" href="nimf-types.html#nimf-key-free" title="nimf_key_free ()"><code class="function">nimf_key_free()</code></a>.</p>
 <div class="refsect3">
 <a name="nimf-key-new-from-nicks.parameters"></a><h4>Parameters</h4>
@@ -234,7 +234,7 @@ nimf_key_free (<em class="parameter"><code><a class="link" href="nimf-types.html
 <div class="refsect2">
 <a name="nimf-key-newv"></a><h3>nimf_key_newv ()</h3>
 <pre class="programlisting"><a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="returnvalue">NimfKey</span></a> **
-nimf_key_newv (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **keys</code></em>);</pre>
+nimf_key_newv (<em class="parameter"><code>const <span class="type">gchar</span> **keys</code></em>);</pre>
 <p>Creates a new array of <a class="link" href="nimf-types.html#NimfKey" title="NimfKey"><span class="type">NimfKey</span></a>.</p>
 <div class="refsect3">
 <a name="nimf-key-newv.parameters"></a><h4>Parameters</h4>
@@ -285,8 +285,8 @@ nimf_key_freev (<em class="parameter"><code><a class="link" href="nimf-types.htm
 <a name="nimf-preedit-attr-new"></a><h3>nimf_preedit_attr_new ()</h3>
 <pre class="programlisting"><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="returnvalue">NimfPreeditAttr</span></a> *
 nimf_preedit_attr_new (<em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttrType" title="enum NimfPreeditAttrType"><span class="type">NimfPreeditAttrType</span></a> type</code></em>,
-                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> start_index</code></em>,
-                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> end_index</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">guint</span> start_index</code></em>,
+                       <em class="parameter"><code><span class="type">guint</span> end_index</code></em>);</pre>
 <div class="refsect3">
 <a name="nimf-preedit-attr-new.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -762,12 +762,12 @@ mapping of the X server which key is interpreted as this modifier).</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="NimfKey.state"></a>state</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">guint32</span> <em class="structfield"><code><a name="NimfKey.state"></a>state</code></em>;</p></td>
 <td class="struct_member_description"><p>a bit-mask representing the state of the modifier keys</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="NimfKey.keyval"></a>keyval</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">guint32</span> <em class="structfield"><code><a name="NimfKey.keyval"></a>keyval</code></em>;</p></td>
 <td class="struct_member_description"><p>the key that was pressed or released.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -859,12 +859,12 @@ mapping of the X server which key is interpreted as this modifier).</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="NimfPreeditAttr.start-index"></a>start_index</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">guint</span> <em class="structfield"><code><a name="NimfPreeditAttr.start-index"></a>start_index</code></em>;</p></td>
 <td class="struct_member_description"><p>the start index of the range (in characters).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> <em class="structfield"><code><a name="NimfPreeditAttr.end-index"></a>end_index</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">guint</span> <em class="structfield"><code><a name="NimfPreeditAttr.end-index"></a>end_index</code></em>;</p></td>
 <td class="struct_member_description"><p>end index of the range (in characters). The character at this
 index is not included in the range.</p></td>
 <td class="struct_member_annotations"> </td>
@@ -876,6 +876,6 @@ index is not included in the range.</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.32</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>

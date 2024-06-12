@@ -329,7 +329,7 @@ if supported.</para>
 <indexterm zone="NimfIM-commit"><primary sortas="IM::commit">NimfIM::commit</primary></indexterm>
 <programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
 user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
-               <link linkend="gchar"><type>gchar</type></link>   *text,
+               <link linkend="char"><type>char</type></link>    *text,
                <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
 <para>The <link linkend="NimfIM-commit"><type>“commit”</type></link> signal is emitted when a complete input sequence has
 been entered by the user.</para>
@@ -356,8 +356,8 @@ been entered by the user.</para>
 <indexterm zone="NimfIM-delete-surrounding"><primary sortas="IM::delete-surrounding">NimfIM::delete-surrounding</primary></indexterm>
 <programlisting language="C"><link linkend="gboolean"><returnvalue>gboolean</returnvalue></link>
 user_function (<link linkend="NimfIM"><type>NimfIM</type></link>  *im,
-               <link linkend="gint"><type>gint</type></link>     offset,
-               <link linkend="gint"><type>gint</type></link>     n_chars,
+               <link linkend="int"><type>int</type></link>      offset,
+               <link linkend="int"><type>int</type></link>      n_chars,
                <link linkend="gpointer"><type>gpointer</type></link> user_data)</programlisting>
 <para>The <link linkend="NimfIM-delete-surrounding"><type>“delete-surrounding”</type></link> signal is emitted when the input method
 needs to delete all or part of the text surrounding the cursor.</para>

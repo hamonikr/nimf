@@ -13,19 +13,13 @@
 ![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-orange)
 ![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-green)
 
-
-In `Ubuntu 22.04`, some packages required for the build have been changed and deleted.
-
-Please use the branch `before-ubuntu21.10` for the information related to the previous version
-
-
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
 # nimf
 
-[한국어 바로가기](#가볍고-빠른-입력기-프레임워크-nimf)
-
 Nimf is a lightweight, fast and extensible input method framework.
+
+![nimf](docs/nimf.png)
 
 Nimf provides:
   * Input Method Server:
@@ -44,7 +38,7 @@ Nimf provides:
     * Preedit window
     * Candidate
   * Client Modules:
-    * GTK+2, GTK+3, Qt5
+    * GTK+2, GTK+3, Qt5, Qt6
   * Settings tool to configure the Nimf:
     * nimf-settings
   * Development files:
@@ -52,15 +46,13 @@ Nimf provides:
 
 # Install
 
-* Ubuntu (>= 20.04), Debian (bullseye), LMDE 5(Elsie)
+## Ubuntu, Debian, LinuxMint...
 ```
-# The ibus-daemon start automatically at Ubuntu 21.10.
+# The ibus-daemon start automatically since Ubuntu 21.10.
 # Input method conflict
 # You can remove the ibus or disable ibus-daemon from booting
 # Sol1 : sudo apt purge ibus
 # Sol2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
-
-sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
 wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
@@ -72,19 +64,7 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 im-config -n nimf
 ```
 
-* Ubuntu (18.04), Debian 10
-```
-curl -sL https://apt.hamonikr.org/setup_hamonikr.sun | sudo -E bash -
-
-sudo apt install nimf nimf-libhangul
-
-# If you want to use other languages(Japanese, Chinese, etc.)
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-
-im-config -n nimf
-```
-
-* Arch Linux, Manjaro
+## Arch Linux, Manjaro
  
  1) Download and Install
 ```
@@ -111,8 +91,9 @@ export GTK_IM_MODULE=nimf
 export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
-
 ```
+
+## Others
 
 * Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
 
@@ -128,6 +109,77 @@ export XMODIFIERS="@im=nimf"
 
 * Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
 
+
+## Build from Source
+```
+git clone https://github.com/hamonikr/nimf.git
+cd nimf
+autoreconf --force --install --verbose
+./configure
+make clean
+make -j $(nproc)
+sudo make install
+
+There are configuration options. Use it for your situation.
+
+  --disable-hardening     Disable hardening
+  --disable-nimf-anthy    Disable nimf-anthy
+  --disable-nimf-m17n     Disable nimf-m17n
+  --disable-nimf-rime     Disable nimf-rime
+  --with-im-config-data   Install im-config data
+  --with-imsettings-data  Install imsettings data
+
+Open the terminal and run the following commands step by step.
+
+  username:~$ cd
+  username:~$ mkdir tmp-build
+  username:~$ cd tmp-build
+  username:~/tmp-build$ wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.gz
+  username:~/tmp-build$ tar zxf nimf-master.tar.gz
+  username:~/tmp-build$ cd nimf-master
+
+If you are using im-config
+
+  ./autogen.sh --with-im-config-data
+
+If you are using im-chooser
+
+  ./autogen.sh --with-imsettings-data
+
+Otherwise
+
+  ./autogen.sh
+
+  make
+  sudo make install
+  sudo ldconfig
+  sudo make update-gtk-im-cache
+  sudo make update-gtk-icon-cache
+
+To uninstall nimf, run the following command.
+
+  sudo make uninstall
+```
+
+## Debugging
+```
+  nimf --debug
+
+  # for nimf-indicator
+  nimf-settings --gapplication-service & 
+  
+  tail -f /var/log/syslog
+
+  export GTK_IM_MODULE="nimf"
+  export QT4_IM_MODULE="xim"
+  export QT_IM_MODULE="nimf"
+  export XMODIFIERS="@im=nimf"
+  export G_MESSAGES_DEBUG=nimf
+
+  # run application
+  gedit or kate # for Qt
+```
+
 <hr>
 
 # 가볍고 빠른 입력기 프레임워크 nimf
@@ -142,25 +194,9 @@ export XMODIFIERS="@im=nimf"
 앞으로 하모니카 팀에서 직접 nimf 프로젝트를 계속 관리하기로 결정하였습니다.
 향후 하모니카 팀에서 이 프로젝트에 필요한 기능을 계속 추가하여 좋은 소프트웨어를 사용할 수 있도록 노력하겠습니다.
 
-![nimf](docs/nimf.png)
-
 # nimf 설치
-## 하모니카 6.0
-```
-# nimf 패키지 저장소를 추가 또는 업그레이드를 합니다.
-wget -qO- https://update.hamonikr.org/add-update-repo.apt | sudo -E bash -
 
-# nimf 패키지를 설치합니다.
-sudo apt install nimf nimf-libhangul
-
-# nimf 입력기를 기본으로 설정합니다.
-im-config -n nimf
-
-# 만약 일본어, 중국어 등 다른 언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-```
-
-## Ubuntu 20.04(>=) , Linux Mint 20
+## Ubuntu, Debian, LinuxMint...
 ```
 # 우분투 21.10 이상을 기반으로 하는 배포판에서는 ibus-daemon이 자동으로 시작되어 입력기가 충돌됩니다.
 # 부팅시 ibus가 동작하지 않도록 ibus를 제거하거나 ibus-daemon을 비활성화할 수 있습니다.
@@ -170,7 +206,7 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 # nimf 패키지 저장소가 변경되었습니다. 예전에 사용하던 하모니카 APT 설정이 있는 경우 삭제합니다. 
 sudo rm -f /etc/apt/sources.list.d/hamonikr.list
 
-curl -sL https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
+wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
 sudo apt install nimf nimf-libhangul
 
@@ -180,27 +216,7 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 
 im-config -n nimf
 ```
-
-## Debian 10, Ubuntu 18.04, 하모니카 1.4, 하모니카 3.0
-
-1) apt 저장소 추가
-```
-curl -sL https://apt.hamonikr.org/setup_hamonikr.sun | sudo -E bash -
-```
-2) 입력기 nimf를 설치합니다.
-```
-sudo apt install nimf nimf-libhangul
-```
-만약 일본어, 중국어 등 다른 언어를 사용하고 싶은경우에는 다음과 같이 추가 패키지를 설치해줍니다.
-```
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
-```
-3) 기본 입력기를 nimf 로 설정
-```
-im-config -n nimf
-```
-
-## 아치 리눅스, 만자로
+## Arch Linux, Manjaro
 1) 패키지 다운로드 및 설치
 ```
 # 최신 libhangul-git 패키지 설치
@@ -226,40 +242,22 @@ export GTK_IM_MODULE=nimf
 export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
-nimf
 ```
-## CentOS 8
-* https://blog.naver.com/dfnk5516/222074913406
+## 다른 리눅스들
 
-## Raspberry pi 4 arm64
-* https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
+* Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
 
-## Armbian
-* https://github.com/hamonikr/nimf/wiki/Armbian-build
+* CentOS 8 : https://blog.naver.com/dfnk5516/222074913406
 
-## Manjaro ARM
-* https://github.com/hamonikr/nimf/wiki/Manjaro-build
+* Raspberry pi 4 arm64 : https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
 
-## Arch AUR
-* https://aur.archlinux.org/packages/nimf-git/
+* Armbian : https://github.com/hamonikr/nimf/wiki/Armbian-build
 
-## Others
-* https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
+* Manjaro ARM : https://github.com/hamonikr/nimf/wiki/Manjaro-build
 
+* Arch AUR : https://aur.archlinux.org/packages/nimf-git/
 
-# Build from Source
-## git clone
-프로그램 소스코드를 직접 다운로드 받는 경우 아래 경로에서 다운로드 가능합니다.
-```
-git clone https://github.com/hamonikr/nimf.git
-```
-## 또는 압축파일로 소스코드 다운로드
-https://github.com/hamonikr/nimf/releases
-
-
-## Build debian package 
-* HamoniKR (>= 1.4), ubuntu 18.04, linuxmint (>= 19) 에서 테스트 되었습니다.
-https://github.com/hamonikr/nimf/wiki/HamoniKR-build
+* Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
 
 
 # 라이선스
