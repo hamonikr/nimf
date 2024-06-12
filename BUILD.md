@@ -6,7 +6,7 @@ To build a Debian package for Nimf, follow these steps:
 ### Install Dependencies:
 
 ```sudo apt-get update
-sudo apt-get install build-essential devscripts debhelper autoconf automake libglib2.0-dev intltool gtk-doc-tools libgtk-3-dev libgtk-2.0-dev libqt5core5a libqt5gui5 libqt5widgets5 qtbase5-dev libappindicator3-dev librsvg2-bin libhangul-dev anthy libxkbcommon-dev libxklavier-dev m17n-lib m17n-db librime-dev
+sudo apt-get install build-essential devscripts debhelper autoconf automake libglib2.0-dev intltool gtk-doc-tools libgtk-3-dev libgtk2.0-dev libqt5core5a libqt5gui5 libqt5widgets5 qtbase5-dev libappindicator3-dev librsvg2-bin libhangul-dev anthy libxkbcommon-dev libxklavier-dev m17n-lib m17n-db librime-dev
 ```
 
 ### Clone the Repository:
