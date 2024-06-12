@@ -18,9 +18,10 @@ override_dh_auto_clean:
 
 override_dh_clean:
 	dh_clean
+	rm -rf autom4te.cache
+	rm -f aclocal.m4 config.log config.status
 	rm -rf debian/tmp
-	rm -f config.log config.status
-
+	
 override_dh_auto_install:
 	dh_auto_install
 	# Ensure the correct installation path for GTK 4.0

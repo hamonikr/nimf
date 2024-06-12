@@ -13,7 +13,8 @@ DISTCLEANFILES = \
 	gtk-doc.make
 
 clean-local:
-	-debian/rules clean
+	@debian/rules clean || true
+	rm -rf $(STAMP_DIR) $(SOURCE_DIR) debian/tmp config.log config.status
 
 distclean-local:
 	rm -rf autom4te.cache build-aux m4 .anjuta .anjuta_sym_db.db
