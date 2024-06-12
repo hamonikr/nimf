@@ -93,7 +93,6 @@ cd nimf
 
 autoreconf --force --install --verbose
 ./configure
-make clean
 make -j $(nproc)
 sudo make install
 ```
