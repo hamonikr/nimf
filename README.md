@@ -20,12 +20,14 @@ Nimf is a lightweight, fast and extensible input method framework.
 Nimf provides:
   * Input Method Server:
     * nimf
+
   * Language Engines:
     * System keyboard
     * Chinese (based on librime)
     * Japanese (based on anthy)
     * Korean (based on libhangul)
     * Various languages (based on m17n)
+
   * Service Modules:
     * Indicator (based on appindicator)
     * Wayland
@@ -33,12 +35,12 @@ Nimf provides:
     * XIM (based on IMdkit)
     * Preedit window
     * Candidate
+
   * Client Modules:
     * GTK+2, GTK+3, Qt5, Qt6
+    
   * Settings tool to configure the Nimf:
     * nimf-settings
-  * Development files:
-    * C library, headers and documents
 
 # Install
 
@@ -97,79 +99,25 @@ export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
 ```
 
-## Others
+## Build Instructions
+
+For detailed build instructions, see the following sections in the [BUILD.md](BUILD.md) file:
+
+- [Building Debian Package](BUILD.md#debian-package)
+- [Building RPM Package](BUILD.md#rpm-package)
+- [Building Arch Linux Package](BUILD.md#arch-linux-package)
+- [Building from source](BUILD.md#Build-from-Source)
+- [Debugging](BUILD.md#Debugging)
+
+### Others
 
 * Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
-
 * CentOS 8 : https://blog.naver.com/dfnk5516/222074913406
-
 * Raspberry pi 4 arm64 : https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
-
 * Armbian : https://github.com/hamonikr/nimf/wiki/Armbian-build
-
 * Manjaro ARM : https://github.com/hamonikr/nimf/wiki/Manjaro-build
-
 * Arch AUR : https://aur.archlinux.org/packages/nimf-git/
-
 * Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
-
-
-## Build from Source
-Open the terminal and run the following commands step by step.
-```
-git clone https://github.com/hamonikr/nimf.git
-cd nimf
-
-autoreconf --force --install --verbose
-./configure
-make clean
-make -j $(nproc)
-sudo make install
-```
-
-There are configuration options. Use it for your situation.
-```
---disable-hardening     Disable hardening
---disable-nimf-anthy    Disable nimf-anthy
---disable-nimf-m17n     Disable nimf-m17n
---disable-nimf-rime     Disable nimf-rime
---with-im-config-data   Install im-config data
---with-imsettings-data  Install imsettings data
-
-ex)
-./configure --disable-nimf-m17n
-```
-If you are using im-config
-```
-./autogen.sh --with-im-config-data
-```
-If you are using im-chooser
-```
-./autogen.sh --with-imsettings-data
-```
-To uninstall nimf, run the following command.
-```
-sudo make uninstall
-```
-
-## Debugging
-```
-  nimf --debug
-
-  # for nimf-indicator
-  nimf-settings --gapplication-service & 
-  
-  tail -f /var/log/syslog
-
-  export GTK_IM_MODULE="nimf"
-  export QT4_IM_MODULE="xim"
-  export QT_IM_MODULE="nimf"
-  export XMODIFIERS="@im=nimf"
-  export G_MESSAGES_DEBUG=nimf
-
-  # run application
-  gedit or kate # for Qt
-```
 
 <hr>
 
@@ -234,24 +182,7 @@ export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
 ```
-## 다른 리눅스들
-
-* Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
-
-* CentOS 8 : https://blog.naver.com/dfnk5516/222074913406
-
-* Raspberry pi 4 arm64 : https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
-
-* Armbian : https://github.com/hamonikr/nimf/wiki/Armbian-build
-
-* Manjaro ARM : https://github.com/hamonikr/nimf/wiki/Manjaro-build
-
-* Arch AUR : https://aur.archlinux.org/packages/nimf-git/
-
-* Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
-
-
-# 라이선스
+# LICENSE
 * GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
   
   Nimf is free software: you can redistribute it and/or modify it
@@ -267,9 +198,14 @@ export XMODIFIERS="@im=nimf"
   You should have received a copy of the GNU Lesser General Public License
   along with this program;  If not, see <http://www.gnu.org/licenses/>.
 
-# 이슈 발생 시
-사용중 이슈는 깃헙 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
+## ISSUE
+사용 중 이슈는 깃허브 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
 
-# 소스코드 개선에 참여하는 법
-깃헙 저장소를 포크하신 후 수정하실 내용을 수정하고 PR을 요청하시면 하모니카 팀에서 리뷰 후 대응합니다.
+For any issues you encounter while using this software, please use GitHub Issues or visit the [Hamonikr Community](https://hamonikr.org) to let us know so we can work together to address them.
+
+## Contribution
+깃허브 저장소를 포크하신 후 수정하실 내용을 수정하고 PR을 요청하시면 하모니카 팀에서 리뷰 후 반영됩니다.
+
+To contribute, please fork the GitHub repository, make your changes, and submit a PR. The Hamonikr team will review and integrate your contributions.
+
 
