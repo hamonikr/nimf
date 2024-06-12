@@ -187,8 +187,8 @@ nimf_server_get_preeditable (<parameter><link linkend="NimfServer"><type>NimfSer
 <indexterm zone="NimfServer-engine-changed"><primary sortas="Server::engine-changed">NimfServer::engine-changed</primary></indexterm>
 <programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
 user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
-               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
-               <link linkend="gchar"><type>gchar</type></link>      *icon_name,
+               <link linkend="char"><type>char</type></link>       *engine_id,
+               <link linkend="char"><type>char</type></link>       *icon_name,
                <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
 <para>The <link linkend="NimfServer-engine-changed"><type>“engine-changed”</type></link> signal is emitted when the engine is
 changed.</para>
@@ -218,7 +218,7 @@ changed.</para>
 <indexterm zone="NimfServer-engine-loaded"><primary sortas="Server::engine-loaded">NimfServer::engine-loaded</primary></indexterm>
 <programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
 user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
-               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
+               <link linkend="char"><type>char</type></link>       *engine_id,
                <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
 <para>The <link linkend="NimfServer-engine-loaded"><type>“engine-loaded”</type></link> signal is emitted when the engine is loaded.</para>
 <refsect3 id="NimfServer-engine-loaded.parameters" role="parameters">
@@ -244,8 +244,8 @@ user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server
 <indexterm zone="NimfServer-engine-status-changed"><primary sortas="Server::engine-status-changed">NimfServer::engine-status-changed</primary></indexterm>
 <programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
 user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
-               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
-               <link linkend="gchar"><type>gchar</type></link>      *icon_name,
+               <link linkend="char"><type>char</type></link>       *engine_id,
+               <link linkend="char"><type>char</type></link>       *icon_name,
                <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
 <para>The <link linkend="NimfServer-engine-status-changed"><type>“engine-status-changed”</type></link> signal is emitted when the engine
 status is changed.</para>
@@ -275,7 +275,7 @@ status is changed.</para>
 <indexterm zone="NimfServer-engine-unloaded"><primary sortas="Server::engine-unloaded">NimfServer::engine-unloaded</primary></indexterm>
 <programlisting language="C"><link linkend="void"><returnvalue>void</returnvalue></link>
 user_function (<link linkend="NimfServer"><type>NimfServer</type></link> *server,
-               <link linkend="gchar"><type>gchar</type></link>      *engine_id,
+               <link linkend="char"><type>char</type></link>       *engine_id,
                <link linkend="gpointer"><type>gpointer</type></link>    user_data)</programlisting>
 <para>The <link linkend="NimfServer-engine-unloaded"><type>“engine-unloaded”</type></link> signal is emitted when the engine is
 unloaded.</para>

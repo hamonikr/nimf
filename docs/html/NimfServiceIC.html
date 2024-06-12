@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>NimfServiceIC: Nimf Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Nimf Reference Manual">
 <link rel="up" href="abstract-classes.html" title="Abstract Classes">
 <link rel="prev" href="NimfService.html" title="NimfService">
 <link rel="next" href="executables.html" title="Part II. Executables">
-<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="NimfServiceIC.html#nimf-service-ic-filter-event" title="nimf_service_ic_filter_event ()">nimf_service_ic_filter_event</a> <span class="c_punctuation">()</span>
@@ -82,7 +82,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="NimfServiceIC.html#nimf-service-ic-get-use-preedit" title="nimf_service_ic_get_use_preedit ()">nimf_service_ic_get_use_preedit</a> <span class="c_punctuation">()</span>
@@ -144,7 +144,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<td class="function_type">const <span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="NimfServiceIC.html#nimf-service-ic-get-service-id" title="nimf_service_ic_get_service_id ()">nimf_service_ic_get_service_id</a> <span class="c_punctuation">()</span>
@@ -184,7 +184,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="NimfServiceIC.html#nimf-service-ic-emit-retrieve-surrounding" title="nimf_service_ic_emit_retrieve_surrounding ()">nimf_service_ic_emit_retrieve_surrounding</a> <span class="c_punctuation">()</span>
@@ -192,7 +192,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="NimfServiceIC.html#nimf-service-ic-emit-delete-surrounding" title="nimf_service_ic_emit_delete_surrounding ()">nimf_service_ic_emit_delete_surrounding</a> <span class="c_punctuation">()</span>
@@ -211,7 +211,7 @@
 </div>
 <div class="refsect1">
 <a name="NimfServiceIC.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    GObject
     <span class="lineart">╰──</span> NimfServiceIC
 </pre>
 </div>
@@ -264,7 +264,7 @@ nimf_service_ic_focus_out (<em class="parameter"><code><a class="link" href="Nim
 <hr>
 <div class="refsect2">
 <a name="nimf-service-ic-filter-event"></a><h3>nimf_service_ic_filter_event ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 nimf_service_ic_filter_event (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
                               <em class="parameter"><code><a class="link" href="nimf-events.html#NimfEvent" title="union NimfEvent"><span class="type">NimfEvent</span></a> *event</code></em>);</pre>
 <div class="refsect3">
@@ -300,8 +300,8 @@ nimf_service_ic_filter_event (<em class="parameter"><code><a class="link" href="
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_set_surrounding (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
                                  <em class="parameter"><code>const <span class="type">char</span> *text</code></em>,
-                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> len</code></em>,
-                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> cursor_index</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">gint</span> len</code></em>,
+                                 <em class="parameter"><code><span class="type">gint</span> cursor_index</code></em>);</pre>
 <div class="refsect3">
 <a name="nimf-service-ic-set-surrounding.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -340,9 +340,9 @@ nimf_service_ic_set_surrounding (<em class="parameter"><code><a class="link" hre
 <a name="nimf-service-ic-set-use-preedit"></a><h3>nimf_service_ic_set_use_preedit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_set_use_preedit (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> use_preedit</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">gboolean</span> use_preedit</code></em>);</pre>
 <p>If <em class="parameter"><code>use_preedit</code></em>
- is <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> (default is <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>), then the input method may use
+ is <code class="literal">FALSE</code> (default is <code class="literal">TRUE</code>), then the input method may use
 some other input styles, such as over-the-spot, off-the-spot or root-window.</p>
 <div class="refsect3">
 <a name="nimf-service-ic-set-use-preedit.parameters"></a><h4>Parameters</h4>
@@ -370,7 +370,7 @@ some other input styles, such as over-the-spot, off-the-spot or root-window.</p>
 <hr>
 <div class="refsect2">
 <a name="nimf-service-ic-get-use-preedit"></a><h3>nimf_service_ic_get_use_preedit ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 nimf_service_ic_get_use_preedit (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>);</pre>
 <div class="refsect3">
 <a name="nimf-service-ic-get-use-preedit.parameters"></a><h4>Parameters</h4>
@@ -447,7 +447,7 @@ nimf_service_ic_get_cursor_location (<em class="parameter"><code><a class="link"
 <div class="refsect3">
 <a name="nimf-service-ic-get-cursor-location.returns"></a><h4>Returns</h4>
 <p>a <a class="link" href="nimf-types.html#NimfRectangle" title="NimfRectangle"><span class="type">NimfRectangle</span></a>. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -476,7 +476,7 @@ nimf_service_ic_reset (<em class="parameter"><code><a class="link" href="NimfSer
 <a name="nimf-service-ic-change-engine-by-id"></a><h3>nimf_service_ic_change_engine_by_id ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_change_engine_by_id (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *engine_id</code></em>);</pre>
+                                     <em class="parameter"><code>const <span class="type">gchar</span> *engine_id</code></em>);</pre>
 <p>Changes the engine by engine id.</p>
 <div class="refsect3">
 <a name="nimf-service-ic-change-engine-by-id.parameters"></a><h4>Parameters</h4>
@@ -506,8 +506,8 @@ nimf_service_ic_change_engine_by_id (<em class="parameter"><code><a class="link"
 <a name="nimf-service-ic-change-engine"></a><h3>nimf_service_ic_change_engine ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_change_engine (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *engine_id</code></em>,
-                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *method_id</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">gchar</span> *engine_id</code></em>,
+                               <em class="parameter"><code>const <span class="type">gchar</span> *method_id</code></em>);</pre>
 <p>Changes the engine by engine id and method id.</p>
 <div class="refsect3">
 <a name="nimf-service-ic-change-engine.parameters"></a><h4>Parameters</h4>
@@ -542,8 +542,8 @@ nimf_service_ic_change_engine (<em class="parameter"><code><a class="link" href=
 <a name="nimf-service-ic-engine-changed"></a><h3>nimf_service_ic_engine_changed ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_engine_changed (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                                <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *engine_id</code></em>,
-                                <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *engine_id</code></em>,
+                                <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
 <div class="refsect3">
 <a name="nimf-service-ic-engine-changed.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -596,13 +596,13 @@ nimf_service_ic_get_engine (<em class="parameter"><code><a class="link" href="Ni
 <div class="refsect3">
 <a name="nimf-service-ic-get-engine.returns"></a><h4>Returns</h4>
 <p>the engine instance. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nimf-service-ic-get-service-id"></a><h3>nimf_service_ic_get_service_id ()</h3>
-<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
 nimf_service_ic_get_service_id (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>);</pre>
 <div class="refsect3">
 <a name="nimf-service-ic-get-service-id.parameters"></a><h4>Parameters</h4>
@@ -622,7 +622,7 @@ nimf_service_ic_get_service_id (<em class="parameter"><code><a class="link" href
 <div class="refsect3">
 <a name="nimf-service-ic-get-service-id.returns"></a><h4>Returns</h4>
 <p>a service id. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -652,9 +652,9 @@ nimf_service_ic_emit_preedit_start (<em class="parameter"><code><a class="link" 
 <a name="nimf-service-ic-emit-preedit-changed"></a><h3>nimf_service_ic_emit_preedit_changed ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_emit_preedit_changed (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                                      <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *preedit_string</code></em>,
+                                      <em class="parameter"><code>const <span class="type">gchar</span> *preedit_string</code></em>,
                                       <em class="parameter"><code><a class="link" href="nimf-types.html#NimfPreeditAttr" title="NimfPreeditAttr"><span class="type">NimfPreeditAttr</span></a> **attrs</code></em>,
-                                      <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> cursor_pos</code></em>);</pre>
+                                      <em class="parameter"><code><span class="type">gint</span> cursor_pos</code></em>);</pre>
 <p>Emits a <a class="link" href="NimfIM.html#NimfIM-preedit-changed" title="The “preedit-changed” signal"><span class="type">“preedit-changed”</span></a> signal.</p>
 <div class="refsect3">
 <a name="nimf-service-ic-emit-preedit-changed.parameters"></a><h4>Parameters</h4>
@@ -716,7 +716,7 @@ nimf_service_ic_emit_preedit_end (<em class="parameter"><code><a class="link" hr
 <a name="nimf-service-ic-emit-commit"></a><h3>nimf_service_ic_emit_commit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 nimf_service_ic_emit_commit (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                             <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);</pre>
+                             <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
 <p>Emits a <a class="link" href="NimfIM.html#NimfIM-commit" title="The “commit” signal"><span class="type">“commit”</span></a> signal.</p>
 <div class="refsect3">
 <a name="nimf-service-ic-emit-commit.parameters"></a><h4>Parameters</h4>
@@ -744,7 +744,7 @@ nimf_service_ic_emit_commit (<em class="parameter"><code><a class="link" href="N
 <hr>
 <div class="refsect2">
 <a name="nimf-service-ic-emit-retrieve-surrounding"></a><h3>nimf_service_ic_emit_retrieve_surrounding ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 nimf_service_ic_emit_retrieve_surrounding
                                (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>);</pre>
 <p>Emits a <a class="link" href="NimfIM.html#NimfIM-retrieve-surrounding" title="The “retrieve-surrounding” signal"><span class="type">“retrieve-surrounding”</span></a> signal.</p>
@@ -767,11 +767,11 @@ nimf_service_ic_emit_retrieve_surrounding
 <hr>
 <div class="refsect2">
 <a name="nimf-service-ic-emit-delete-surrounding"></a><h3>nimf_service_ic_emit_delete_surrounding ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 nimf_service_ic_emit_delete_surrounding
                                (<em class="parameter"><code><a class="link" href="NimfServiceIC.html" title="NimfServiceIC"><span class="type">NimfServiceIC</span></a> *ic</code></em>,
-                                <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> offset</code></em>,
-                                <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_chars</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">gint</span> offset</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> n_chars</code></em>);</pre>
 <p>Emits a <a class="link" href="NimfIM.html#NimfIM-delete-surrounding" title="The “delete-surrounding” signal"><span class="type">“delete-surrounding”</span></a> signal.</p>
 <div class="refsect3">
 <a name="nimf-service-ic-emit-delete-surrounding.parameters"></a><h4>Parameters</h4>
@@ -803,7 +803,7 @@ deleted. A negative value indicates a position before the cursor.</p></td>
 </div>
 <div class="refsect3">
 <a name="nimf-service-ic-emit-delete-surrounding.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the signal was handled.</p>
+<p> <code class="literal">TRUE</code> if the signal was handled.</p>
 </div>
 </div>
 <hr>
@@ -831,6 +831,6 @@ nimf_service_ic_emit_beep (<em class="parameter"><code><a class="link" href="Nim
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.32</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>

@@ -25,6 +25,13 @@ update-gtk-im-cache:
 update-gtk-icon-cache:
 	(cd data/icons; make update-gtk-icon-cache)
 
+install-exec-hook:
+	$(LIBTOOL) --finish $(DESTDIR)/usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts
+	$(LIBTOOL) --finish $(DESTDIR)/usr/lib/x86_64-linux-gnu/nimf/modules/services
+	$(LIBTOOL) --finish $(DESTDIR)/usr/lib/x86_64-linux-gnu/gtk-3.0/3.0.0/immodules
+	$(LIBTOOL) --finish $(DESTDIR)/usr/lib/x86_64-linux-gnu/nimf/modules
+	$(LIBTOOL) --finish $(DESTDIR)/usr/lib/x86_64-linux-gnu
+
 ChangeLog:
 
 .PHONY: ChangeLog

@@ -143,6 +143,7 @@ test_nimf_m17n_available_languages ()
       code = g_strndup (strlen ("nimf-m17n-") + filename,
                         strlen (filename) - strlen (".c") - strlen ("nimf-m17n-"));
       g_hash_table_add (c_table, code);
+      g_print ("Added key to c_table: %s\n", code); // 추가된 디버그 메시지
       g_assert_true (g_hash_table_contains (code_table, code));
     }
   }
@@ -165,6 +166,7 @@ test_nimf_m17n_available_languages ()
       code = g_strndup (strlen ("nimf-m17n-") + filename,
                         strlen (filename) - strlen (".svg") - strlen ("nimf-m17n-"));
       g_hash_table_add (icon_table, code);
+      g_print ("Added key to icon_table: %s\n", code); // 디버그 메시지 추가
       g_assert_true (g_hash_table_contains (code_table, code));
     }
   }
@@ -185,7 +187,9 @@ test_nimf_m17n_available_languages ()
         !g_strcmp0 (key, "zh"))
       continue;
 
+    g_print ("Checking key in c_table: %s\n", (const gchar *) key); // 추가된 디버그 메시지
     g_assert_nonnull (g_hash_table_lookup (c_table, key));
+    g_print ("Checking key in icon_table: %s\n", (const gchar *) key); // 추가된 디버그 메시지
     g_assert_nonnull (g_hash_table_lookup (icon_table, key));
   }
 
