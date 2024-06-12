@@ -7,7 +7,7 @@
 	dh $@ --with autoreconf
 
 override_dh_autoreconf:
-	NOCONFIGURE=1 dh_autoreconf ./autogen.sh
+	./autogen.sh
 
 override_dh_auto_configure:
 	dh_auto_configure -- --with-im-config-data --enable-gtk-doc
@@ -19,12 +19,17 @@ override_dh_auto_clean:
 override_dh_clean:
 	dh_clean
 	rm -rf debian/tmp
+	rm -f config.log config.status
 
 override_dh_auto_install:
 	dh_auto_install
 	# Ensure the correct installation path for GTK 4.0
 	mkdir -p debian/tmp/usr/lib/x86_64-linux-gnu/gtk-4.0
 
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -- -l/usr/lib/nimf
+
 # Add this override to skip tests
 override_dh_auto_test:
 	echo "Skipping tests"
+

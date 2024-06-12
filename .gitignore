@@ -7,7 +7,12 @@ build-aux/
 config.*
 configure
 .deps/
-.libs/
+# Ignore everything in .libs directories
+.libs/*
+# But not these specific files
+!.libs/*.so
+!.libs/*.soT
+!.libs/*.so.1.0.0
 *.la
 *.lo
 *.o
@@ -66,3 +71,5 @@ test-suite.log
 test-nimf-m17n
 # vscode
 .vscode/
+config.log
+config.status
