@@ -1,7 +1,7 @@
 # Maintainer: Kevin Kim <root@hamonikr.org>
 
 pkgname=nimf
-pkgver=v1.3.5.r8.7e55f06
+pkgver=1.3.5
 pkgrel=1
 pkgdesc="Nimf is an input method framework."
 arch=('any')
@@ -18,13 +18,8 @@ provides=('nimf-git')
 conflicts=('nimf-git')         
 optdepends=('brise: Rime schema repository'
             'noto-fonts-cjk: Google Noto CJK fonts')
-source=("git+https://github.com/hamonikr/nimf.git")
+source=("git+https://github.com/hamonikr/nimf.git#tag=v1.3.5")
 md5sums=('SKIP')
-
-pkgver() {
-	cd nimf
-	printf "%s" "$(git describe --long | sed 's/nimf-//' | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
-}
 
 build() {
 	cd nimf
