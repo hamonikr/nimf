@@ -1,10 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
 
-# 추가된 경로 설정
-libdir='/usr/lib/x86_64-linux-gnu'
-
-AC_SUBST(libdir)
-
 AC_INIT(nimf, 1.3.5)
 
 AC_CONFIG_HEADERS([config.h])
@@ -163,6 +158,8 @@ AS_IF([test "x$has_qt5" = "xyes"], [
   AC_SUBST(QT5_IM_MODULE_DIR)
 ])
 
+AM_CONDITIONAL([HAVE_QT5], [test "x$has_qt5" = "xyes"])
+
 dnl ***************************************************************************
 dnl im-nimf-qt6
 dnl ***************************************************************************
@@ -173,12 +170,8 @@ AS_IF([test "x$has_qt6" = "xyes"], [
   QT6_INCLUDE_DIR=`pkg-config --variable=includedir Qt6Core`
   QT6_CORE_PRIVATE_INCLUDE_PATH=$QT6_INCLUDE_DIR/QtCore/$QT6_VERSION
   QT6_GUI_PRIVATE_INCLUDE_PATH=$QT6_INCLUDE_DIR/QtGui/$QT6_VERSION
-
-  # Add Qt6 checks
-  AC_CHECK_HEADERS([QtCore/QtCore,
-                    QtGui/QtGui,
-                    QtWidgets/QtWidgets,
-                    QtGui/6.4.2/QtGui/qpa/qplatforminputcontext.h])
+  QT6_CFLAGS=`$PKG_CONFIG --cflags Qt6Core Qt6Gui Qt6Widgets`
+  QT6_LIBS=`$PKG_CONFIG --libs Qt6Core Qt6Gui Qt6Widgets`  
 
   AC_CHECK_FILES(
      [$QT6_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
@@ -187,7 +180,9 @@ AS_IF([test "x$has_qt6" = "xyes"], [
 
   AC_SUBST(QT6_CORE_PRIVATE_INCLUDE_PATH)
   AC_SUBST(QT6_GUI_PRIVATE_INCLUDE_PATH)
-
+  AC_SUBST(QT6_CFLAGS)
+  AC_SUBST(QT6_LIBS)
+  
   AC_PATH_PROGS([QT6_MOC], [moc-qt6 moc], [no],
                 [`pkg-config --variable=host_bins Qt6Core`])
   if test "x$QT6_MOC" = "xno"; then
@@ -214,7 +209,6 @@ AS_IF([test "x$has_qt6" = "xyes"], [
   AC_SUBST(QT6_IM_MODULE_DIR)
 ])
 
-AM_CONDITIONAL([HAVE_QT5], [test "x$has_qt5" = "xyes"])
 AM_CONDITIONAL([HAVE_QT6], [test "x$has_qt6" = "xyes"])
 
 

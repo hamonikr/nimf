@@ -1,6 +1,10 @@
 gsettings_SCHEMAS = org.nimf.clients.qt6.gschema.xml
 @GSETTINGS_RULES@
 
+# Use the QT6_CFLAGS and QT6_LIBS variables from configure.ac
+AM_CPPFLAGS = $(QT6_CFLAGS)
+LDADD = $(QT6_LIBS)
+
 qt6_im_moduledir = $(QT6_IM_MODULE_DIR)
 qt6_im_module_LTLIBRARIES = libqt6im-nimf.la
 
@@ -16,15 +20,12 @@ libqt6im_nimf_la_CXXFLAGS = \
 	$(IM_NIMF_QT6_DEPS_CFLAGS) \
 	-I$(QT6_CORE_PRIVATE_INCLUDE_PATH) \
 	-I$(QT6_GUI_PRIVATE_INCLUDE_PATH) \
-	-I/usr/include/x86_64-linux-gnu/qt6/QtGui/6.4.2/QtGui/qpa \
 	-DQT_NO_KEYWORDS \
 	-fPIC \
 	-std=c++17
 
-libqt6im_nimf_la_LDFLAGS = -avoid-version -module \
-	                         $(IM_NIMF_QT6_DEPS_LIBS) \
-	                         $(LIBNIMF_DEPS_LIBS)
-libqt6im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
+libqt6im_nimf_la_LDFLAGS = -avoid-version -module
+libqt6im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la $(IM_NIMF_QT6_DEPS_LIBS)
 
 im-nimf-qt6.moc: im-nimf-qt6.cpp
 	$(AM_V_GEN) $(QT6_MOC) -I $(QT6_CORE_PRIVATE_INCLUDE_PATH) \

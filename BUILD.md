@@ -140,3 +140,50 @@ sudo make uninstall
   # run application
   gedit or kate # for Qt
 ```
+
+## If you are not recognized by pkg-config even if you install the qt6-base-dev package at Ubuntu 22.04
+```
+sudo vi /usr/lib/pkgconfig/Qt6Core.pc
+
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/x86_64-linux-gnu/qt6
+
+Name: Qt6 Core
+Description: Qt6 Core module
+Version: 6.2.4 # Replace with the exact version of the installed Qt6
+Libs: -L${libdir} -lQt6Core
+Cflags: -I${includedir}/QtCore
+```
+```
+sudo vi /usr/lib/pkgconfig/Qt6Gui.pc
+
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/x86_64-linux-gnu/qt6
+
+Name: Qt6 Gui
+Description: Qt6 Gui module
+Version: 6.2.4  
+Libs: -L${libdir} -lQt6Gui
+Cflags: -I${includedir} -I${includedir}/QtGui
+
+```
+```
+sudo vi /usr/lib/pkgconfig/Qt6Widgets.pc
+
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/x86_64-linux-gnu/qt6
+
+Name: Qt6 Widgets
+Description: Qt6 Widgets module
+Version: 6.2.4  
+Libs: -L${libdir} -lQt6Widgets
+Cflags: -I${includedir}/QtWidgets
+
+
+```

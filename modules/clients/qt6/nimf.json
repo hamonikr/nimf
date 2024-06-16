@@ -1,3 +1,5 @@
 {
-  "Keys": [ "nimf" ]
+  "Keys": ["nimf"],
+  "Library": "libqt6im-nimf.so",
+  "Version": "1.0"
 }
