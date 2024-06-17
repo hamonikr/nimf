@@ -124,21 +124,21 @@ sudo make uninstall
 
 ## Debugging
 ```
-  nimf --debug
+nimf --debug
 
-  # for nimf-indicator
-  nimf-settings --gapplication-service & 
-  
-  tail -f /var/log/syslog
+# for nimf-indicator
+nimf-settings --gapplication-service & 
 
-  export GTK_IM_MODULE="nimf"
-  export QT4_IM_MODULE="xim"
-  export QT_IM_MODULE="nimf"
-  export XMODIFIERS="@im=nimf"
-  export G_MESSAGES_DEBUG=nimf
+tail -f /var/log/syslog
 
-  # run application
-  gedit or kate # for Qt
+export GTK_IM_MODULE="nimf"
+export QT4_IM_MODULE="xim"
+export QT_IM_MODULE="nimf"
+export XMODIFIERS="@im=nimf"
+export G_MESSAGES_DEBUG=nimf
+
+# run application
+gedit or kate # for Qt
 ```
 
 ## If you are not recognized by pkg-config even if you install the qt6-base-dev package at Ubuntu 22.04
