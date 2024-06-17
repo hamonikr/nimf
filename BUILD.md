@@ -92,7 +92,7 @@ git clone https://github.com/hamonikr/nimf.git
 cd nimf
 
 autoreconf --force --install --verbose
-./configure
+./configure --prefix=/usr/local
 make -j $(nproc)
 sudo make install
 ```
