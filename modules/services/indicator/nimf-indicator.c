@@ -28,12 +28,12 @@
 #include <gdk/gdkx.h>
 #include "nimf-utils-private.h"
 
-#define NIMF_TYPE_INDICATOR             (nimf_indicator_get_type ())
-#define NIMF_INDICATOR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_INDICATOR, NimfIndicator))
-#define NIMF_INDICATOR_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST ((class), NIMF_TYPE_INDICATOR, NimfIndicatorClass))
-#define NIMF_IS_INDICATOR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_INDICATOR))
-#define NIMF_IS_INDICATOR_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE ((class), NIMF_TYPE_INDICATOR))
-#define NIMF_INDICATOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_INDICATOR, NimfIndicatorClass))
+#define NIMF_TYPE_INDICATOR             (nimf_indicator_get_type())
+#define NIMF_INDICATOR(obj)             (G_TYPE_CHECK_INSTANCE_CAST((obj), NIMF_TYPE_INDICATOR, NimfIndicator))
+#define NIMF_INDICATOR_CLASS(class)     (G_TYPE_CHECK_CLASS_CAST((class), NIMF_TYPE_INDICATOR, NimfIndicatorClass))
+#define NIMF_IS_INDICATOR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE((obj), NIMF_TYPE_INDICATOR))
+#define NIMF_IS_INDICATOR_CLASS(class)  (G_TYPE_CHECK_CLASS_TYPE((class), NIMF_TYPE_INDICATOR))
+#define NIMF_INDICATOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), NIMF_TYPE_INDICATOR, NimfIndicatorClass))
 
 typedef struct _NimfIndicator      NimfIndicator;
 typedef struct _NimfIndicatorClass NimfIndicatorClass;
@@ -60,10 +60,7 @@ GType nimf_indicator_get_type(void) G_GNUC_CONST;
 
 G_DEFINE_DYNAMIC_TYPE(NimfIndicator, nimf_indicator, NIMF_TYPE_SERVICE);
 
-static void
-on_menu_engine(GSimpleAction *action,
-               GVariant      *parameter,
-               gpointer       server)
+static void on_menu_engine(GSimpleAction *action, GVariant *parameter, gpointer server)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -81,20 +78,14 @@ on_menu_engine(GSimpleAction *action,
   g_strfreev(strv);
 }
 
-static void
-on_menu_settings(GSimpleAction *action,
-                 GVariant      *parameter,
-                 gpointer       user_data)
+static void on_menu_settings(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
   g_spawn_command_line_async("nimf-settings", NULL);
 }
 
-static void
-on_menu_about(GSimpleAction *action,
-              GVariant      *parameter,
-              gpointer       user_data)
+static void on_menu_about(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -105,8 +96,7 @@ on_menu_about(GSimpleAction *action,
 
     gchar *artists[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
     gchar *authors[]     = {_("Hodong Kim <cogniti@gmail.com>"), NULL};
-    gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"),
-                            _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
+    gchar *documenters[] = {_("Hodong Kim <cogniti@gmail.com>"), _("Bumsik Kim <k.bumsik@gmail.com>"), NULL};
 
     parent = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     about  = gtk_about_dialog_new();
@@ -143,10 +133,7 @@ const GActionEntry entries[] = {
   { "about",    on_menu_about,    NULL, NULL, NULL }
 };
 
-static void on_engine_changed(NimfServer    *server,
-                              const gchar   *engine_id,
-                              const gchar   *icon_name,
-                              NimfIndicator *indicator)
+static void on_engine_changed(NimfServer *server, const gchar *engine_id, const gchar *icon_name, NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
 
@@ -159,10 +146,7 @@ static void on_engine_changed(NimfServer    *server,
     gtk_status_icon_set_from_icon_name(indicator->status_icon, icon_name);
 }
 
-static void on_engine_status_changed(NimfServer    *server,
-                                     const gchar   *engine_id,
-                                     const gchar   *icon_name,
-                                     NimfIndicator *indicator)
+static void on_engine_status_changed(NimfServer *server, const gchar *engine_id, const gchar *icon_name, NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
 
@@ -174,8 +158,7 @@ static void on_engine_status_changed(NimfServer    *server,
   }
 }
 
-const gchar *
-nimf_indicator_get_id(NimfService *service)
+const gchar *nimf_indicator_get_id(NimfService *service)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -191,9 +174,7 @@ static gboolean nimf_indicator_is_active(NimfService *service)
   return NIMF_INDICATOR(service)->active;
 }
 
-static GMenu *
-nimf_indicator_build_section1(NimfIndicator *indicator,
-                              NimfServer    *server)
+static GMenu *nimf_indicator_build_section1(NimfIndicator *indicator, NimfServer *server)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -212,7 +193,7 @@ nimf_indicator_build_section1(NimfIndicator *indicator,
     gchar     *path;
     gchar     *symbol_name;
     gchar     *p;
-    NimfMethodInfo ** (* get_method_infos) ();
+    NimfMethodInfo **(*get_method_infos) ();
 
     schema_id = g_strdup_printf("org.nimf.engines.%s", engine_ids[i]);
     settings = g_settings_new(schema_id);
@@ -298,15 +279,13 @@ nimf_indicator_build_section1(NimfIndicator *indicator,
   return section1;
 }
 
-static GtkMenu *
-nimf_indicator_build_menu(NimfIndicator *indicator)
+static GtkMenu *nimf_indicator_build_menu(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
   if (!gtk_init_check(NULL, NULL))
     return NULL;
 
-  /* menu */
   GtkWidget          *gtk_menu;
   GMenu              *section1;
   GMenu              *section2;
@@ -354,70 +333,38 @@ nimf_indicator_build_menu(NimfIndicator *indicator)
   return GTK_MENU(gtk_menu);
 }
 
-static void
-nimf_indicator_update_menu(NimfIndicator *indicator)
+static void nimf_indicator_update_menu(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
   GMenu *section1;
 
-  section1 = nimf_indicator_build_section1(indicator,
-                                           nimf_server_get_default());
+  section1 = nimf_indicator_build_section1(indicator, nimf_server_get_default());
   g_menu_remove(indicator->menu, 0);
   g_menu_prepend_section(indicator->menu, NULL, G_MENU_MODEL(section1));
 
   g_object_unref(section1);
 }
 
-static void
-nimf_indicator_create_appindicator(NimfIndicator *indicator)
+static void nimf_indicator_create_appindicator(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
   GtkMenu    *gtk_menu = nimf_indicator_build_menu(indicator);
   NimfServer *server   = nimf_server_get_default();
-  indicator->appindicator = app_indicator_new("nimf-indicator",
-                                              "nimf-focus-out",
-                                              APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
-  app_indicator_set_status(indicator->appindicator,
-                           APP_INDICATOR_STATUS_ACTIVE);
-  app_indicator_set_icon_full(indicator->appindicator,
-                              "nimf-focus-out", "Nimf");
+
+  indicator->appindicator = app_indicator_new("nimf-indicator", "nimf-focus-out", APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+  app_indicator_set_status(indicator->appindicator, APP_INDICATOR_STATUS_ACTIVE);
+  app_indicator_set_icon_full(indicator->appindicator, "nimf-focus-out", "Nimf");
   app_indicator_set_menu(indicator->appindicator, GTK_MENU(gtk_menu));
 
-  g_signal_connect(server, "engine-changed",
-                   G_CALLBACK(on_engine_changed), indicator);
-  g_signal_connect(server, "engine-status-changed",
-                   G_CALLBACK(on_engine_status_changed), indicator);
-  g_signal_connect_swapped(server, "engine-loaded",
-                           G_CALLBACK(nimf_indicator_update_menu), indicator);
-  g_signal_connect_swapped(server, "engine-unloaded",
-                           G_CALLBACK(nimf_indicator_update_menu), indicator);
-
-  /* activate xkb options for x11 */
-  if ((!gnome_xkb_is_available() || !gnome_is_running()) &&
-      !g_strcmp0(g_getenv("XDG_SESSION_TYPE"), "x11")) {
-    XklConfigRec *rec;
-    GSettings    *settings;
-
-    if (!indicator->xklengine)
-      indicator->xklengine = xkl_engine_get_instance(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()));
-
-    rec = xkl_config_rec_new();
-    settings = g_settings_new("org.nimf.settings");
-
-    xkl_config_rec_get_from_server(rec, indicator->xklengine);
-    g_strfreev(rec->options);
-    rec->options = g_settings_get_strv(settings, "xkb-options");
-    xkl_config_rec_activate(rec, indicator->xklengine);
-
-    g_object_unref(settings);
-    g_object_unref(rec);
-  }
+  g_signal_connect(server, "engine-changed", G_CALLBACK(on_engine_changed), indicator);
+  g_signal_connect(server, "engine-status-changed", G_CALLBACK(on_engine_status_changed), indicator);
+  g_signal_connect_swapped(server, "engine-loaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
+  g_signal_connect_swapped(server, "engine-unloaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
 }
 
-static void
-nimf_indicator_create_status_icon(NimfIndicator *indicator)
+static void nimf_indicator_create_status_icon(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -426,23 +373,15 @@ nimf_indicator_create_status_icon(NimfIndicator *indicator)
   indicator->status_icon = gtk_status_icon_new_from_icon_name("nimf-focus-out");
   gtk_status_icon_set_visible(indicator->status_icon, TRUE);
 
-  g_signal_connect(server, "engine-changed",
-                   G_CALLBACK(on_engine_changed), indicator);
-  g_signal_connect(server, "engine-status-changed",
-                   G_CALLBACK(on_engine_status_changed), indicator);
-  g_signal_connect_swapped(server, "engine-loaded",
-                           G_CALLBACK(nimf_indicator_update_menu), indicator);
-  g_signal_connect_swapped(server, "engine-unloaded",
-                           G_CALLBACK(nimf_indicator_update_menu), indicator);
+  g_signal_connect(server, "engine-changed", G_CALLBACK(on_engine_changed), indicator);
+  g_signal_connect(server, "engine-status-changed", G_CALLBACK(on_engine_status_changed), indicator);
+  g_signal_connect_swapped(server, "engine-loaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
+  g_signal_connect_swapped(server, "engine-unloaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
 
   g_signal_connect(indicator->status_icon, "activate", G_CALLBACK(gtk_menu_popup), gtk_menu);
 }
 
-static void
-on_name_appeared(GDBusConnection *connection,
-                 const gchar     *name,
-                 const gchar     *name_owner,
-                 gpointer         user_data)
+static void on_name_appeared(GDBusConnection *connection, const gchar *name, const gchar *name_owner, gpointer user_data)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -462,8 +401,7 @@ on_name_appeared(GDBusConnection *connection,
     nimf_indicator_create_status_icon(indicator);
 }
 
-static gboolean
-on_timeout(NimfIndicator *indicator)
+static gboolean on_timeout(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -544,16 +482,14 @@ static void nimf_indicator_stop(NimfService *service)
   indicator->active = FALSE;
 }
 
-static void
-nimf_indicator_init(NimfIndicator *indicator)
+static void nimf_indicator_init(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
   indicator->id = g_strdup("nimf-indicator");
 }
 
-static void
-nimf_indicator_finalize(GObject *object)
+static void nimf_indicator_finalize(GObject *object)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -571,8 +507,7 @@ nimf_indicator_finalize(GObject *object)
   G_OBJECT_CLASS(nimf_indicator_parent_class)->finalize(object);
 }
 
-static void
-nimf_indicator_class_init(NimfIndicatorClass *class)
+static void nimf_indicator_class_init(NimfIndicatorClass *class)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
@@ -587,8 +522,7 @@ nimf_indicator_class_init(NimfIndicatorClass *class)
   object_class->finalize = nimf_indicator_finalize;
 }
 
-static void
-nimf_indicator_class_finalize(NimfIndicatorClass *class)
+static void nimf_indicator_class_finalize(NimfIndicatorClass *class)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 }
