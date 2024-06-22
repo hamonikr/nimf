@@ -3,6 +3,7 @@
  * nimf-indicator.c
  * This file is part of Nimf.
  *
+ * Copyright (C) 2021-2024 Kevin Kim <chaeya@gmail.com>
  * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
@@ -364,12 +365,20 @@ static void nimf_indicator_create_appindicator(NimfIndicator *indicator)
   g_signal_connect_swapped(server, "engine-unloaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
 }
 
+static void on_status_icon_activate(GtkStatusIcon *status_icon, guint button, guint activate_time, gpointer user_data)
+{
+  g_debug(G_STRLOC ": %s", G_STRFUNC);
+
+  GtkMenu *menu = GTK_MENU(user_data);
+  gtk_menu_popup_at_pointer(menu, NULL);
+}
+
 static void nimf_indicator_create_status_icon(NimfIndicator *indicator)
 {
   g_debug(G_STRLOC ": %s", G_STRFUNC);
 
-  GtkMenu    *gtk_menu = nimf_indicator_build_menu(indicator);
-  NimfServer *server   = nimf_server_get_default();
+  GtkMenu *gtk_menu = nimf_indicator_build_menu(indicator);
+  NimfServer *server = nimf_server_get_default();
   indicator->status_icon = gtk_status_icon_new_from_icon_name("nimf-focus-out");
   gtk_status_icon_set_visible(indicator->status_icon, TRUE);
 
@@ -378,7 +387,7 @@ static void nimf_indicator_create_status_icon(NimfIndicator *indicator)
   g_signal_connect_swapped(server, "engine-loaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
   g_signal_connect_swapped(server, "engine-unloaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
 
-  g_signal_connect(indicator->status_icon, "activate", G_CALLBACK(gtk_menu_popup), gtk_menu);
+  g_signal_connect(indicator->status_icon, "popup-menu", G_CALLBACK(on_status_icon_activate), gtk_menu);
 }
 
 static void on_name_appeared(GDBusConnection *connection, const gchar *name, const gchar *name_owner, gpointer user_data)
