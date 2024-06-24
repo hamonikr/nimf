@@ -139,8 +139,8 @@ msgid "Nimf is an input method framework"
 msgstr "님프는 입력기 프레임워크입니다"
 
 #: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2015-2019 Hodong Kim"
-msgstr "저작권 (c) 2015-2019 김호동"
+msgid "Copyright (c) 2015-2019 Hodong Kim\nCopyright (c) 2020-2024 HamoniKR"
+msgstr "저작권 (c) 2015-2019 김호동 \n저작권 (c) 2020-2024 하모니카"
 
 #: ../modules/services/indicator/nimf-indicator.c:127
 msgid "Hodong Kim, Max Neupert"

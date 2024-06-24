@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 1.3.6)
+AC_INIT(nimf, 1.3.7)
 
 AC_CONFIG_HEADERS([config.h])
 
