@@ -3,8 +3,8 @@
  * nimf-indicator.c
  * This file is part of Nimf.
  *
- * Copyright (C) 2021-2024 Kevin Kim <chaeya@gmail.com>
- * Copyright (C) 2015-2020 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2015-20 Hodong Kim <cogniti@gmail.com>
+ * Copyright (C) 2020-2024 Kevin Kim <chaeya@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -108,7 +108,7 @@ static void on_menu_about(GSimpleAction *action, GVariant *parameter, gpointer u
                  "artists",            artists,
                  "authors",            authors,
                  "comments",           _("Nimf is an input method framework"),
-                 "copyright",          _("Copyright (c) 2015-2019 Hodong Kim"),
+                 "copyright",          _("Copyright (c) 2015-2019 Hodong Kim\nCopyright (c) 2020-2024 HamoniKR"),
                  "documenters",        documenters,
                  "license-type",       GTK_LICENSE_LGPL_3_0,
                  "logo-icon-name",     "nimf-logo",
