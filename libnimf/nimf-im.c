@@ -176,7 +176,7 @@ on_incoming_message (GSocket      *socket,
                                                sizeof (NimfPreeditAttr *));
 
         for (i = 0; i < n_attr; i++)
-          im->priv->preedit_attrs[i] = g_memdup (message->data + str_len + 1 + i * sizeof (NimfPreeditAttr),
+          im->priv->preedit_attrs[i] = g_memdup2 (message->data + str_len + 1 + i * sizeof (NimfPreeditAttr),
                                                  sizeof (NimfPreeditAttr));
 
         im->priv->preedit_attrs[n_attr] = NULL;
