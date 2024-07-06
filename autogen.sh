@@ -49,11 +49,12 @@ else
     intltoolize --force --copy --automake || exit $?
 fi
 
-# Detect Ubuntu version
-UBUNTU_VERSION=`lsb_release -r | awk '{print $2}'`
-
 # Check if Qt6Core.pc exists
 if ! pkg-config --exists Qt6Core; then
+    
+    # Detect Ubuntu version
+    UBUNTU_VERSION=`lsb_release -r | awk '{print $2}'`    
+
     # Check if Ubuntu version is 22.04 or 7.0
     if [ "$UBUNTU_VERSION" = "22.04" ] || [ "$UBUNTU_VERSION" = "7.0" ]; then
         echo "Creating missing Qt6 .pc files"

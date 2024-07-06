@@ -1,0 +1,66 @@
+name: Build tests in various OS environments
+
+on:
+  push:
+    branches: [ "master", "development" ]
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile: [arch.Dockerfile]
+        # dockerfile: [arch.Dockerfile, fedora.latest.Dockerfile, ubuntu.2204.Dockerfile, ubuntu.2404.Dockerfile]
+
+    steps:
+    
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          
+      - name: Build docker test image
+        run: docker build . --file .docker/${{ matrix.dockerfile }}
+
+    # runs-on: ${{ matrix.os }}
+    
+    # strategy:
+    #   matrix:
+    #     os: [ubuntu-latest, fedora-latest, archlinux]
+
+    # steps:
+    # - name: Checkout code
+    #   uses: actions/checkout@v2
+
+    # - name: Set up dependencies for Ubuntu
+    #   if: matrix.os == 'ubuntu-latest'
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y devscripts equivs && mk-build-deps --install --root-cmd sudo --remove debian/control
+
+    # - name: Set up dependencies for Fedora
+    #   if: matrix.os == 'fedora-latest'
+    #   run: |
+    #     sudo dnf install -y autoconf automake libtool pkg-config make gcc gcc-c++ libtool glib2-devel pkgconfig intltool gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel qt6-qtbase-devel qt6-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc librime-devel m17n-lib-devel m17n-db-devel
+
+    # - name: Set up dependencies for Arch Linux
+    #   if: matrix.os == 'archlinux'
+    #   run: |
+    #     sudo pacman -Syu --noconfirm
+    #     sudo pacman -S --noconfirm autoconf automake libtool pkg-config base-devel base-devel git glib2 gtk3 gtk2 qt5-base qt6-base libappindicator-gtk3 librsvg noto-fonts-cjk libhangul libanthy librime libxkbcommon wayland libxklavier m17n-lib m17n-db gtk-doc
+
+    # - name: Build and install
+    #   run: |
+    #     autoreconf --force --install --verbose
+    #     ./configure --prefix=/usr/local
+    #     make -j $(nproc)
+    #     sudo make install

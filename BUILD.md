@@ -91,7 +91,7 @@ Open the terminal and run the following commands step by step.
 git clone https://github.com/hamonikr/nimf.git
 cd nimf
 
-autoreconf --force --install --verbose
+./autogen.sh
 ./configure --prefix=/usr/local
 make -j $(nproc)
 sudo make install

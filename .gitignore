@@ -59,7 +59,7 @@ po/.intltool-merge-cache
 tags
 # docs
 gtk-doc.make
-docs/
+# docs/
 !docs/nimf.png
 # tests
 test-*.log
