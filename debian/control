@@ -15,6 +15,8 @@ Build-Depends: debhelper (>= 11),
                qtbase5-private-dev,
                qt6-base-dev,
                qt6-base-private-dev,
+               qt6-tools-dev, 
+               qt6-tools-dev-tools,                
                libayatana-appindicator3-dev,
                librsvg2-bin,
                fonts-noto-cjk,
@@ -28,7 +30,8 @@ Build-Depends: debhelper (>= 11),
                libxklavier-dev,
                libm17n-dev (>= 1.7.0),
                m17n-db (>= 1.7.0),
-               gtk-doc-tools (>= 1.26)
+               gtk-doc-tools (>= 1.26),
+               lsb-release
 Standards-Version: 3.9.8
 Homepage: https://github.com/hamonikr/nimf
 
