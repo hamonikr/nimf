@@ -244,7 +244,7 @@ main (int argc, char **argv)
 
   if (is_version)
   {
-    g_print ("%s %s\n", argv[0], VERSION);
+    g_print ("%s %s\n", argv[0], PACKAGE_VERSION);
     return EXIT_SUCCESS;
   }
 

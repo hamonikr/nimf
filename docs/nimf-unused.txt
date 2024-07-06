@@ -1,0 +1,4 @@
+gnome_is_running
+gnome_xkb_is_available
+nimf_service_ic_load_engine
+nimf_service_ic_unload_engine

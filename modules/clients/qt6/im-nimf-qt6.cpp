@@ -4,7 +4,7 @@
  * This file is part of Nimf.
  *
  * Copyright (C) 2015-2019 Hodong Kim <hodong@nimfsoft.art>
- * Copyright (C) 2024 Kevin Kim <chaeya@gmail.com>
+ * Copyright (C) 2020-2024 Kevin Kim <chaeya@gmail.com>
  *
  * Nimf is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published

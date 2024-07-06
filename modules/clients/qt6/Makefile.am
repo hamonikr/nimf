@@ -25,7 +25,8 @@ libqt6im_nimf_la_CXXFLAGS = \
 	-std=c++17
 
 libqt6im_nimf_la_LDFLAGS = -avoid-version -module
-libqt6im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la $(IM_NIMF_QT6_DEPS_LIBS)
+libqt6im_nimf_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la $(IM_NIMF_QT6_DEPS_LIBS) \
+                           -lgio-2.0 -lgobject-2.0 -lglib-2.0
 
 im-nimf-qt6.moc: im-nimf-qt6.cpp
 	$(AM_V_GEN) $(QT6_MOC) -I $(QT6_CORE_PRIVATE_INCLUDE_PATH) \
