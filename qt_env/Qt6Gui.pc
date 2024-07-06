@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/x86_64-linux-gnu/qt6
+
+Name: Qt6 Gui
+Description: Qt6 Gui module
+Version: 6.2.4  # 설치된 Qt6의 정확한 버전으로 대체
+Libs: -L${libdir} -lQt6Gui
+Cflags: -I${includedir} -I${includedir}/QtGui
