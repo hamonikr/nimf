@@ -6,6 +6,7 @@ autom4te.cache/
 build-aux/
 config.*
 configure
+configure~
 .deps/
 .libs/
 *.la
@@ -59,7 +60,7 @@ po/.intltool-merge-cache
 tags
 # docs
 gtk-doc.make
-docs/
+# docs/
 !docs/nimf.png
 # tests
 test-*.log

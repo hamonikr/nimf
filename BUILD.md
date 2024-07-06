@@ -32,7 +32,7 @@ To build an RPM package for Nimf, follow these steps:
 ### Install Dependencies:
 
 ```
-sudo dnf install gcc-c++ libtool glib2-devel pkgconfig intltool gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel qt6-qtbase-devel qt6-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc librime-devel m17n-lib-devel m17n-db-devel
+sudo dnf install gcc-c++ libtool glib2-devel pkgconfig intltool gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel qt6-qtbase-devel qt6-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc librime-devel m17n-lib-devel m17n-db-devel ayatana-appindicator3-0.1
 ```
 
 ### Clone the Repository:
@@ -91,7 +91,7 @@ Open the terminal and run the following commands step by step.
 git clone https://github.com/hamonikr/nimf.git
 cd nimf
 
-autoreconf --force --install --verbose
+./autogen.sh
 ./configure --prefix=/usr/local
 make -j $(nproc)
 sudo make install

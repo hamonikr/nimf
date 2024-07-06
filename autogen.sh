@@ -49,11 +49,27 @@ else
     intltoolize --force --copy --automake || exit $?
 fi
 
-# Detect Ubuntu version
-UBUNTU_VERSION=`lsb_release -r | awk '{print $2}'`
+# Check if Fedora and download libhangul if true
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "$ID" = "fedora" ]; then
+        echo "Detected Fedora. Installing libhangul..."
+        # Build libhangul from the submodule
+        cd libhangul
+        ./autogen.sh
+        ./configure --prefix=/usr
+        make
+        sudo make install
+        cd "$srcdir"
+    fi
+fi
 
 # Check if Qt6Core.pc exists
 if ! pkg-config --exists Qt6Core; then
+    
+    # Detect Ubuntu version
+    UBUNTU_VERSION=`lsb_release -r | awk '{print $2}'`    
+
     # Check if Ubuntu version is 22.04 or 7.0
     if [ "$UBUNTU_VERSION" = "22.04" ] || [ "$UBUNTU_VERSION" = "7.0" ]; then
         echo "Creating missing Qt6 .pc files"

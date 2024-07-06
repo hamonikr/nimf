@@ -1,0 +1,3 @@
+[submodule "libhangul"]
+	path = libhangul
+	url = https://github.com/libhangul/libhangul.git

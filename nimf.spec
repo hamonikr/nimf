@@ -1,11 +1,10 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  1.3.5
+Version:  1.3.7
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
 URL:      https://github.com/hamonikr/nimf
-Source0:  https://github.com/hamonikr/nimf/archive/master.tar.gz
 
 BuildRequires: gcc-c++
 BuildRequires: libtool
@@ -14,10 +13,12 @@ BuildRequires: pkgconfig
 BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
+BuildRequires: git
 %if 0%{?is_opensuse}
 BuildRequires: libqt5-qtbase-devel
 BuildRequires: libQt5Gui-private-headers-devel
 BuildRequires: libappindicator3-devel
+BuildRequires: ayatana-appindicator3-0.1
 BuildRequires: rsvg-view
 BuildRequires: noto-sans-cjk-fonts
 BuildRequires: libqt6-qtbase-devel
@@ -86,7 +87,10 @@ Requires: gtk3-devel
 This package contains development files.
 
 %prep
-%setup -q
+%autosetup -c -T
+git clone --branch fedora40 https://github.com/hamonikr/nimf.git .
+git submodule update --init --recursive
+autoreconf -ivf
 
 %build
 %if 0%{?rhel}
@@ -118,7 +122,7 @@ if [ $1 -eq 0 ] ; then
 fi
 %{_bindir}/update-gtk-immodules %{_host} || :
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
-if [ "$1" = "0" ]; then
+if [ "$1" = "0"] ; then
   %{_sbindir}/alternatives --remove xinputrc %{_xinputconf} || :
   # if alternative was set to manual, reset to auto
   [ -L %{_sysconfdir}/alternatives/xinputrc -a "`readlink %{_sysconfdir}/alternatives/xinputrc`" = "%{_xinputconf}" ] && %{_sbindir}/alternatives --auto xinputrc || :
@@ -129,29 +133,42 @@ fi
 /usr/bin/glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files
-%config %{_xinputconf}
-%config %{_sysconfdir}/apparmor.d/abstractions/nimf
-%{_bindir}/*
-%{_libdir}/gtk-2.0/*
-%{_libdir}/gtk-3.0/*
-%{_libdir}/libnimf.so.*
-%{_libdir}/nimf/*
-%{_libdir}/qt5/*
-%{_libdir}/qt6/*
-%{_datadir}/applications/*
-%{_datadir}/glib-2.0/*
-%{_datadir}/icons/*
-%{_datadir}/locale/*
-%{_datadir}/man/*
-%{_sysconfdir}/input.d/nimf.conf
-%{_sysconfdir}/xdg/autostart/*
+%config /etc/X11/xinit/xinput.d/nimf.conf
+%config /etc/apparmor.d/abstractions/nimf
+%config /etc/input.d/nimf.conf
+%config /etc/xdg/autostart/nimf-settings-autostart.desktop
+%{_bindir}/nimf
+%{_bindir}/nimf-settings
+%{_includedir}/nimf/*
+/usr/lib/debug/usr/bin/nimf-1.3.7-1.fc40.x86_64.debug
+/usr/lib/debug/usr/bin/nimf-settings-1.3.7-1.fc40.x86_64.debug
+/usr/lib/debug/usr/lib/x86_64-linux-gnu/libnimf.so.1.0.0-1.3.7-1.fc40.x86_64.debug
+/usr/lib/x86_64-linux-gnu/libnimf.so
+/usr/lib/x86_64-linux-gnu/libnimf.so.1
+/usr/lib/x86_64-linux-gnu/libnimf.so.1.0.0
+/usr/lib/x86_64-linux-gnu/nimf/modules/*.so
+/usr/lib/x86_64-linux-gnu/nimf/modules/services/*.so
+/usr/lib/x86_64-linux-gnu/nimf/mssymbol.txt
+/usr/lib/x86_64-linux-gnu/pkgconfig/nimf.pc
+/gtk-2.0/immodules/im-nimf-gtk2.so
+/usr/lib64/gtk-3.0/3.0.0/immodules/im-nimf-gtk3.so
+/usr/lib64/qt5/plugins/platforminputcontexts/libqt5im-nimf.so
+/usr/lib64/qt6/plugins/platforminputcontexts/libqt6im-nimf.so
+%{_datadir}/applications/nimf-settings.desktop
+%{_datadir}/glib-2.0/schemas/*.xml
+%{_datadir}/gtk-doc/html/nimf/*
+%{_datadir}/icons/hicolor/*/status/*.png
+%{_datadir}/icons/hicolor/*/status/*.svg
+%{_datadir}/locale/*/LC_MESSAGES/nimf.mo
+%{_datadir}/man/man1/nimf-settings.1.gz
+%{_datadir}/man/man1/nimf.1.gz
 
 %files devel
-%{_datadir}/gtk-doc/*
-%{_includedir}/*
-%{_libdir}/libnimf.so
-%{_libdir}/pkgconfig/*
+%{_includedir}/nimf/*
+/usr/lib/x86_64-linux-gnu/libnimf.so
+/usr/lib/x86_64-linux-gnu/pkgconfig/nimf.pc
+%{_datadir}/gtk-doc/html/nimf/*
 
 %changelog
-* Wed, 23 Sep 2020 HamoniKR <pkg@hamonikr.org> - 2020.04.28-1
+* Wed Sep 23 2020 HamoniKR <pkg@hamonikr.org> - 1.3.7-1
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog
