@@ -31,7 +31,8 @@ Build-Depends: debhelper (>= 11),
                libm17n-dev (>= 1.7.0),
                m17n-db (>= 1.7.0),
                gtk-doc-tools (>= 1.26),
-               lsb-release
+               lsb-release,
+               sudo,
 Standards-Version: 3.9.8
 Homepage: https://github.com/hamonikr/nimf
 
