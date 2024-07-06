@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  1.3.1
+Version:  1.3.5
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -20,9 +20,13 @@ BuildRequires: libQt5Gui-private-headers-devel
 BuildRequires: libappindicator3-devel
 BuildRequires: rsvg-view
 BuildRequires: noto-sans-cjk-fonts
+BuildRequires: libqt6-qtbase-devel
+BuildRequires: libQt6Gui-private-headers-devel
 %else
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtbase-private-devel
+BuildRequires: qt6-qtbase-devel
+BuildRequires: qt6-qtbase-private-devel
 BuildRequires: libappindicator-gtk3-devel
 BuildRequires: librsvg2-tools
 BuildRequires: google-noto-cjk-fonts
@@ -57,6 +61,8 @@ Requires: libappindicator-gtk3
 Requires: libhangul
 Requires: libxkbcommon
 Requires: libxklavier
+Requires: qt5-qtbase
+Requires: qt6-qtbase
 %if 0%{?fedora} || 0%{?is_opensuse}
 Requires: librime
 Requires: m17n-lib >= 1.7.0, m17n-db >= 1.7.0
@@ -131,6 +137,7 @@ fi
 %{_libdir}/libnimf.so.*
 %{_libdir}/nimf/*
 %{_libdir}/qt5/*
+%{_libdir}/qt6/*
 %{_datadir}/applications/*
 %{_datadir}/glib-2.0/*
 %{_datadir}/icons/*

@@ -204,7 +204,7 @@ nimf_preedit_attrs_copy (NimfPreeditAttr **attrs)
   for (i = 0; attrs[i] != NULL; i++)
   {
     preedit_attrs = g_realloc_n (preedit_attrs, 1 + i + 1, sizeof (NimfPreeditAttr *));
-    preedit_attrs[i] = g_memdup (attrs[i], sizeof (NimfPreeditAttr));
+    preedit_attrs[i] = g_memdup2 (attrs[i], sizeof (NimfPreeditAttr));
     preedit_attrs[i + 1] = NULL;
   }
 

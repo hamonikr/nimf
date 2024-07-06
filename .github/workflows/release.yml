@@ -1,0 +1,54 @@
+name: Build and Release Debian Package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Build Debian Package
+        uses: jtdor/build-deb-action@v1
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          docker-image: ubuntu:24.04          
+          buildpackage-opts: -us -uc
+          # When change deb package name as git rev id
+          # before-build-hook: debchange --controlmaint --local="+ci${{ github.run_id }}~git$(git rev-parse --short HEAD)" "CI build"
+          extra-build-deps: build-essential devscripts debhelper autoconf automake debhelper libglib2.0-dev pkgconf intltool libgtk-3-dev libgtk-3-bin libgtk-4-dev libgtk-4-bin libgtk2.0-dev qtbase5-dev qtbase5-private-dev qt6-base-dev qt6-base-private-dev libayatana-appindicator3-dev librsvg2-bin fonts-noto-cjk libhangul-dev libanthy-dev anthy librime-dev libxkbcommon-dev libwayland-dev wayland-protocols libxklavier-dev libm17n-dev m17n-db gtk-doc-tools
+          host-arch: amd64
+          artifacts-dir: debian/artifacts
+
+      - name: Upload Debian Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: debian-package
+          path: debian/artifacts/*.deb
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: debian-package
+          path: .
+
+      - run: ls -R .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

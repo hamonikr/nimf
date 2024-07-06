@@ -1,17 +1,20 @@
 Source: nimf
 Section: utils
 Priority: optional
-Maintainer: Kevin Kim <root@hamonikr.org>
-Build-Depends: debhelper (>= 9),
-               dh-autoreconf,
+Maintainer: Kevin Kim <chaeya@gmail.com>
+Build-Depends: debhelper (>= 11),
                libglib2.0-dev (>= 2.54),
-               pkg-config,
+               pkgconf | pkg-config,
                intltool (>= 0.50.1),
                libgtk-3-dev,
                libgtk-3-bin,
+               libgtk-4-dev,
+               libgtk-4-bin,               
                libgtk2.0-dev,
                qtbase5-dev,
                qtbase5-private-dev,
+               qt6-base-dev,
+               qt6-base-private-dev,
                libayatana-appindicator3-dev,
                librsvg2-bin,
                fonts-noto-cjk,
@@ -99,16 +102,19 @@ Description: Chinese input module for Nimf, based on rime
  .
  This package provides a Chinese input module based on rime.
 
-Package: qtbase-abi-5-12-8-dummy
-Architecture: any
-Depends: libqt5core5a
-Provides: qtbase-abi-5-12-8
-Description: Dummy package for Debian bookworm
- This package provides a dummy qtbase-abi-5-12-8 for Debian bookworm.
-
 Package: qtbase-abi-5-15-3-dummy
 Architecture: any
-Depends: libqt5core5a
-Provides: qtbase-abi-5-15-3
-Description: Dummy package for KDE neon (Ubuntu 22.04 based)
- This package provides a dummy qtbase-abi-5-15-3 for KDE neon.
+Depends: ${misc:Depends}
+Description: Dummy package for qtbase-abi-5-15-3
+ This is a dummy package to satisfy dependencies for the qtbase-abi-5-15-3
+ transition. It does not contain any files or functionality and can be safely
+ removed once the transition is complete.
+
+Package: qtbase-abi-5-12-8-dummy
+Architecture: any
+Depends: ${misc:Depends}
+Description: Dummy package for qtbase-abi-5-12-8
+ This is a dummy package to satisfy dependencies for the qtbase-abi-5-12-8
+ transition. It does not contain any files or functionality and can be safely
+ removed once the transition is complete.
+

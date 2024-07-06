@@ -59,6 +59,8 @@ po/.intltool-merge-cache
 tags
 # docs
 gtk-doc.make
+docs/
+!docs/nimf.png
 # tests
 test-*.log
 test-*.trs
@@ -66,3 +68,4 @@ test-suite.log
 test-nimf-m17n
 # vscode
 .vscode/
+*.stamp
