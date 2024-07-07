@@ -26,8 +26,7 @@ RUN yum install -y \
     qt6-qttools-devel \
     gtk3-devel \
     gtk2-devel \
-    librsvg2-tools \
-    ayatana-appindicator3-0.1
+    librsvg2-tools
 
 # 소스 코드 복사 및 작업 디렉토리 설정
 COPY . /src
