@@ -49,6 +49,22 @@ else
     intltoolize --force --copy --automake || exit $?
 fi
 
+# Check if Fedora and download libhangul if true
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "$ID" = "fedora" ]; then
+        echo "Detected Fedora. Installing libhangul..."
+        sudo dnf install -y git autoconf automake libtool
+        # Build libhangul from the submodule
+        cd libhangul
+        ./autogen.sh
+        ./configure --prefix=/usr
+        make
+        sudo make install
+        cd "$srcdir"
+    fi
+fi
+
 # Check if Qt6Core.pc exists
 if ! pkg-config --exists Qt6Core; then
     

@@ -186,7 +186,7 @@ AS_IF([test "x$has_qt6" = "xyes"], [
   AC_PATH_PROGS([QT6_MOC], [moc-qt6 moc], [no],
                 [`pkg-config --variable=host_bins Qt6Core`])
   if test "x$QT6_MOC" = "xno"; then
-    QT6_MOC=`find /usr/lib/ -name moc -type f | grep qt6`
+    QT6_MOC=`find /usr/ -name moc -type f | grep qt6`
     if test "x$QT6_MOC" = "x"; then
       AC_MSG_ERROR([moc for qt6 not found])
     fi
@@ -293,9 +293,29 @@ dnl ***************************************************************************
 dnl nimf-indicator
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                  [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
-                   gdk-x11-3.0 gmodule-2.0])
+# Detect OS using /etc/os-release
+OS_ID=""
+if test -f /etc/os-release; then
+  . /etc/os-release
+  OS_ID=$ID
+fi
+
+AC_MSG_NOTICE([Detected OS: $OS_ID])
+
+case $OS_ID in
+  fedora)
+    AC_MSG_NOTICE([Fedora detected, using ayatana-appindicator3-0.1])
+    PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
+                      [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
+                       gdk-x11-3.0 gmodule-2.0])
+    ;;
+  *)
+    AC_MSG_NOTICE([Non-Fedora OS detected, using ayatana-appindicator3-0.1])
+    PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
+                      [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
+                       gdk-x11-3.0 gmodule-2.0])
+    ;;
+esac
 
 dnl ***************************************************************************
 dnl nimf-preedit-window  nimf-candidate

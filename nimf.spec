@@ -1,11 +1,11 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  1.3.5
+Version:  1.3.7
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
 URL:      https://github.com/hamonikr/nimf
-Source0:  https://github.com/hamonikr/nimf/archive/master.tar.gz
+Source0:  https://github.com/hamonikr/nimf/archive/refs/tags/v1.3.7.tar.gz
 
 BuildRequires: gcc-c++
 BuildRequires: libtool
@@ -18,6 +18,7 @@ BuildRequires: gtk2-devel
 BuildRequires: libqt5-qtbase-devel
 BuildRequires: libQt5Gui-private-headers-devel
 BuildRequires: libappindicator3-devel
+BuildRequires: ayatana-appindicator3-0.1
 BuildRequires: rsvg-view
 BuildRequires: noto-sans-cjk-fonts
 BuildRequires: libqt6-qtbase-devel
@@ -86,7 +87,7 @@ Requires: gtk3-devel
 This package contains development files.
 
 %prep
-%setup -q
+%setup -q -n nimf-1.3.7
 
 %build
 %if 0%{?rhel}
@@ -153,5 +154,5 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
-* Wed, 23 Sep 2020 HamoniKR <pkg@hamonikr.org> - 2020.04.28-1
+* Wed Sep 23 2020 HamoniKR <pkg@hamonikr.org> - 1.3.7-1
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog
