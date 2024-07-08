@@ -72,18 +72,21 @@ sudo pacman -S --needed base-devel git glib2 gtk3 gtk2 qt5-base qt6-base libappi
 ### Clone the Repository:
 
 ```
+# Install latest libhangul-git
+git clone https://aur.archlinux.org/libhangul-git.git
+
+cd libhangul-git
+
+makepkg -si 
+
+# Install nimf
 git clone https://github.com/hamonikr/nimf.git
+
 cd nimf
-```
 
-### Build and Install the Package:
-
+makepkg -si 
 ```
-makepkg -si
-```
-
 By following these steps, you can build and install Nimf on Debian, RPM-based, and Arch Linux systems.
-
 
 ## Build from Source
 Open the terminal and run the following commands step by step.

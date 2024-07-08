@@ -71,23 +71,13 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 ```
 
 ## Arch Linux, Manjaro
- 
+
  1) Download and Install
 ```
-# Install latest libhangul-git
-git clone https://aur.archlinux.org/libhangul-git.git
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1-any.pkg.tar.zst
 
-cd libhangul-git
-
-makepkg -si 
-
-# Install nimf
-git clone https://github.com/hamonikr/nimf.git
-
-cd nimf
-
-makepkg -si 
-```
+sudo pacman -U ./nimf-1.3.8-1-any.pkg.tar.zst
+``` 
 
  2) im setting
 ```
