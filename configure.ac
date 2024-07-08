@@ -45,13 +45,6 @@ LT_INIT([disable-static])
 dnl ***************************************************************************
 dnl libnimf
 dnl ***************************************************************************
-# Before making a release, the LT_VERSION string should be modified.
-# The string is of the form C:R:A.
-# - If interfaces have been changed or added, but binary compatibility has
-#   been preserved, change to C+1:0:A+1
-# - If binary compatibility has been broken (eg removed or changed interfaces)
-#   change to C+1:0:0
-# - If the interface is the same as the previous version, change to C:R+1:A
 
 LIBNIMF_LT_VERSION=1:0:0
 AC_SUBST(LIBNIMF_LT_VERSION)
@@ -186,7 +179,7 @@ AS_IF([test "x$has_qt6" = "xyes"], [
                 [`pkg-config --variable=host_bins Qt6Core`])
   if test "x$QT6_MOC" = "xno"; then
     AC_MSG_CHECKING([for moc-qt6 using find])
-    QT6_MOC=`find /usr/ -name moc -type f | grep qt6`
+    QT6_MOC=`find /usr/ -name moc -type f 2>/dev/null | grep qt6`
     if test "x$QT6_MOC" = "x"; then
       AC_MSG_ERROR([moc for qt6 not found])
     else
@@ -196,18 +189,24 @@ AS_IF([test "x$has_qt6" = "xyes"], [
 
   # Detect distribution
   AC_MSG_CHECKING([distribution])
-  DISTRIB_ID=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
-  DISTRIB_RELEASE=$(lsb_release -rs | tr '[:upper:]' '[:lower:]')
+  if test -f /etc/os-release; then
+    . /etc/os-release
+    DISTRIB_ID=$ID
+    DISTRIB_RELEASE=$VERSION_ID
+  else
+    DISTRIB_ID=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+    DISTRIB_RELEASE=$(lsb_release -rs | tr '[:upper:]' '[:lower:]')
+  fi
   AC_MSG_RESULT([$DISTRIB_ID $DISTRIB_RELEASE])
 
   QT6_LIB_DIR=`pkg-config --variable=libdir Qt6Core`
 
   case `pkg-config --variable=includedir Qt6Core` in
     */qt6)
-      if test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xUbuntu22.04"; then
+      if test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xubuntu22.04"; then
         AC_MSG_NOTICE("Found Ubuntu 22.04")
         QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
-      elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xHamonikr7.0"; then
+      elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xhamonikr7.0"; then
         AC_MSG_NOTICE("Found HamoniKR 7.0")
         QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
       else
@@ -312,9 +311,29 @@ dnl ***************************************************************************
 dnl nimf-indicator
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                  [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
-                   gdk-x11-3.0 gmodule-2.0])
+# Detect OS using /etc/os-release
+OS_ID=""
+if test -f /etc/os-release; then
+  . /etc/os-release
+  OS_ID=$ID
+fi
+
+AC_MSG_NOTICE([Detected OS: $OS_ID])
+
+case $OS_ID in
+  fedora)
+    AC_MSG_NOTICE([Fedora detected, using ayatana-appindicator3-0.1])
+    PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
+                      [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
+                       gdk-x11-3.0 gmodule-2.0])
+    ;;
+  *)
+    AC_MSG_NOTICE([Non-Fedora OS detected, using ayatana-appindicator3-0.1])
+    PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
+                      [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
+                       gdk-x11-3.0 gmodule-2.0])
+    ;;
+esac
 
 dnl ***************************************************************************
 dnl nimf-preedit-window  nimf-candidate
