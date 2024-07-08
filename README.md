@@ -3,11 +3,16 @@
 ![ubuntu-jammy](https://img.shields.io/badge/ubuntu-22.04-red)
 ![ubuntu-noble](https://img.shields.io/badge/ubuntu-24.04-red)
 
-![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-blue)
-![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-blue)
-![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-blue)
-![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-blue)
-![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-blue)
+![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-purple)
+![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-purple)
+![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-purple)
+![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-purple)
+![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-purple)
+
+![arch](https://img.shields.io/badge/archlinux-rolling-blue)
+![manjaro](https://img.shields.io/badge/manjaro-x86_64-blue)
+![fedora-33](https://img.shields.io/badge/fedora-33-blue)
+![fedora-40](https://img.shields.io/badge/fedora-40-blue)
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
@@ -88,6 +93,15 @@ export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
 ```
+
+## fedora, centos, redhat
+
+ 1) Download and Install
+```
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
+
+sudo yum install ~/nimf-*.rpm
+``` 
 
 ## Build Instructions
 
@@ -172,6 +186,16 @@ export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
 ```
+
+## fedora, centos, redhat
+
+ 1) 패키지 다운로드 및 설치
+```
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
+
+sudo yum install ~/nimf-*.rpm
+``` 
+
 # LICENSE
 * GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
   
