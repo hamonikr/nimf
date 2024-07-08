@@ -185,9 +185,12 @@ AS_IF([test "x$has_qt6" = "xyes"], [
   AC_PATH_PROGS([QT6_MOC], [moc-qt6 moc], [no],
                 [`pkg-config --variable=host_bins Qt6Core`])
   if test "x$QT6_MOC" = "xno"; then
+    AC_MSG_CHECKING([for moc-qt6 using find])
     QT6_MOC=`find /usr/ -name moc -type f | grep qt6`
     if test "x$QT6_MOC" = "x"; then
       AC_MSG_ERROR([moc for qt6 not found])
+    else
+      AC_MSG_RESULT([$QT6_MOC])
     fi
   fi
 

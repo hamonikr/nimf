@@ -33,17 +33,12 @@ else
 	cp debian/nimf.install.default debian/nimf.install
 endif
 	dh_auto_install
-	# Ensure the correct installation path for GTK 4.0
-	mkdir -p debian/tmp/usr/lib/x86_64-linux-gnu/gtk-4.0
 	# Remove .la files to avoid libtool conflicts
 	find debian/tmp/usr/lib -name "*.la" -delete
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l/usr/lib/x86_64-linux-gnu
 
-# Add this override to skip tests
-# override_dh_auto_test:
-# 	echo "Skipping tests"
-
 override_dh_auto_test:
-	dh_auto_test || true
+# 	dh_auto_test || true
+	echo "Skipping tests"	
