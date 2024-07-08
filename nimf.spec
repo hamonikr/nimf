@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  1.3.5
+Version:  1.3.8
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -86,7 +86,8 @@ Requires: gtk3-devel
 This package contains development files.
 
 %prep
-%setup -q
+%setup -q -n nimf
+autoreconf -ivf
 
 %build
 %if 0%{?rhel}
@@ -108,7 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/update-gtk-immodules %{_host} || :
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
-%{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 55 || :
+%{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 99 || :
 
 %postun
 /sbin/ldconfig
@@ -134,8 +135,8 @@ fi
 %{_bindir}/*
 %{_libdir}/gtk-2.0/*
 %{_libdir}/gtk-3.0/*
-%{_libdir}/libnimf.so.*
-%{_libdir}/nimf/*
+/usr/lib/x86_64-linux-gnu/libnimf.so*
+/usr/lib/x86_64-linux-gnu/nimf/*
 %{_libdir}/qt5/*
 %{_libdir}/qt6/*
 %{_datadir}/applications/*
@@ -149,9 +150,9 @@ fi
 %files devel
 %{_datadir}/gtk-doc/*
 %{_includedir}/*
-%{_libdir}/libnimf.so
-%{_libdir}/pkgconfig/*
+/usr/lib/x86_64-linux-gnu/libnimf.so
+/usr/lib/x86_64-linux-gnu/pkgconfig/*
 
 %changelog
-* Wed, 23 Sep 2020 HamoniKR <pkg@hamonikr.org> - 2020.04.28-1
+* Mon Jul 08 2024 HamoniKR <pkg@hamonikr.org> - 1.3.8-1
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog

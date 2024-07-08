@@ -62,13 +62,17 @@ detect_os() {
 }
 
 handle_fedora() {
-    echo "Detected Fedora. Installing libhangul..."
-    cd libhangul
-    ./autogen.sh
-    ./configure --prefix=/usr
-    make
-    sudo make install
-    cd "$srcdir"
+    if pkg-config --exists "libhangul >= 0.1.0"; then
+        echo "libhangul is already installed. Skipping installation."
+    else
+        echo "Detected Fedora. Installing libhangul..."
+        cd libhangul
+        ./autogen.sh
+        ./configure --prefix=/usr
+        make
+        sudo make install
+        cd "$srcdir"
+    fi
 }
 
 handle_ubuntu() {
