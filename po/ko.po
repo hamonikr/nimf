@@ -60,13 +60,13 @@ msgstr "XKB 옵션"
 #: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
 #: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
-msgstr "님프 설정"
+msgstr "입력기 설정"
 
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:553
 #: ../modules/services/indicator/nimf-indicator.c:126
 msgid "Nimf"
-msgstr "님프"
+msgstr "입력기(님프)"
 
 #: ../modules/engines/nimf-anthy/nimf-anthy.c:1674
 msgid "Romaji"
@@ -139,8 +139,8 @@ msgid "Nimf is an input method framework"
 msgstr "님프는 입력기 프레임워크입니다"
 
 #: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2015-2019 Hodong Kim"
-msgstr "저작권 (c) 2015-2019 김호동"
+msgid "Copyright (c) 2015-2019 Hodong Kim\nCopyright (c) 2020-2024 HamoniKR"
+msgstr "저작권 (c) 2015-2019 김호동 \n저작권 (c) 2020-2024 하모니카"
 
 #: ../modules/services/indicator/nimf-indicator.c:127
 msgid "Hodong Kim, Max Neupert"
@@ -164,7 +164,7 @@ msgstr "xkb 옵션"
 
 #: ../libnimf/org.nimf.gschema.xml.h:1
 msgid "'Nimf'"
-msgstr "'님프'"
+msgstr "'기본 설정'"
 
 #: ../libnimf/org.nimf.gschema.xml.h:2
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:2
@@ -378,11 +378,11 @@ msgstr "한자키에 대한 바인딩"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:11
 msgid "Use a rule composing double consonants"
-msgstr "겹자음 조합 규칙을 사용합니다"
+msgstr "쌍자음 조합 규칙을 사용합니다"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:12
 msgid "Compose a double consonant on pressing same consonant twice"
-msgstr "같은 자음을 두 번 누를 때 겹자음을 조합합니다"
+msgstr "같은 자음을 두 번 누를 때 쌍자음을 조합합니다"
 
 #: ../modules/engines/nimf-libhangul/org.nimf.engines.nimf-libhangul.gschema.xml.h:13
 msgid "Auto-reordering in Dubeolsik"
