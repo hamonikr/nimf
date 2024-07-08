@@ -28,13 +28,13 @@
     <glossentry>
       <glossterm><anchor id="annotation-glossterm-transfer full"/>transfer full</glossterm>
       <glossdef>
-        <para>Free data after the code is done.</para>
+        <para>The caller owns the data, and is responsible for free it.</para>
       </glossdef>
     </glossentry>
     <glossentry>
       <glossterm><anchor id="annotation-glossterm-transfer none"/>transfer none</glossterm>
       <glossdef>
-        <para>Don't free data after the code is done.</para>
+        <para>The data is owned by the callee, which is responsible of freeing it.</para>
       </glossdef>
     </glossentry>
     <glossentry>

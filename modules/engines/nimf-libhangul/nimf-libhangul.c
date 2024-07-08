@@ -452,6 +452,9 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
       if (hangul->hanja_list == NULL)
         hangul->hanja_list = hanja_table_match_exact (nimf_libhangul_symbol_table, key);
 
+      if (hangul->hanja_list == NULL)
+	      return FALSE;
+
       hangul->n_pages = (hanja_list_get_size (hangul->hanja_list) + 9) / 10;
       hangul->current_page = 1;
       nimf_libhangul_update_page (engine, target);

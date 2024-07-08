@@ -1,0 +1,7 @@
+nimf_candidatable_get_type
+nimf_engine_get_type
+nimf_im_get_type
+nimf_preeditable_get_type
+nimf_server_get_type
+nimf_service_get_type
+nimf_service_ic_get_type

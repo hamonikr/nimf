@@ -50,6 +50,7 @@ struct _NimfIndicator
   gchar        *id;
   gboolean      active;
   AppIndicator *appindicator;
+  GtkStatusIcon *status_icon;
   gchar        *engine_id;
   guint         watcher_id;
   guint         source_id;
@@ -157,7 +158,10 @@ static void on_engine_changed (NimfServer    *server,
   g_free (indicator->engine_id);
   indicator->engine_id = g_strdup (engine_id);
 
-  app_indicator_set_icon_full (indicator->appindicator, icon_name, icon_name);
+  if (indicator->appindicator)
+    app_indicator_set_icon_full(indicator->appindicator, icon_name, icon_name);
+  else if (indicator->status_icon)
+    gtk_status_icon_set_from_icon_name(indicator->status_icon, icon_name);
 }
 
 static void on_engine_status_changed (NimfServer    *server,
@@ -167,8 +171,12 @@ static void on_engine_status_changed (NimfServer    *server,
 {
   g_debug (G_STRLOC ": %s: icon_name: %s", G_STRFUNC, icon_name);
 
-  if (!g_strcmp0 (indicator->engine_id, engine_id))
-    app_indicator_set_icon_full (indicator->appindicator, icon_name, icon_name);
+  if (!g_strcmp0(indicator->engine_id, engine_id)) {
+    if (indicator->appindicator)
+      app_indicator_set_icon_full(indicator->appindicator, icon_name, icon_name);
+    else if (indicator->status_icon)
+      gtk_status_icon_set_from_icon_name(indicator->status_icon, icon_name);
+  }
 }
 
 const gchar *
@@ -420,6 +428,31 @@ nimf_indicator_create_appindicator (NimfIndicator *indicator)
   }
 }
 
+static void on_status_icon_activate(GtkStatusIcon *status_icon, guint button, guint activate_time, gpointer user_data)
+{
+  g_debug(G_STRLOC ": %s", G_STRFUNC);
+
+  GtkMenu *menu = GTK_MENU(user_data);
+  gtk_menu_popup_at_pointer(menu, NULL);
+}
+
+static void nimf_indicator_create_status_icon(NimfIndicator *indicator)
+{
+  g_debug(G_STRLOC ": %s", G_STRFUNC);
+
+  GtkMenu *gtk_menu = nimf_indicator_build_menu(indicator);
+  NimfServer *server = nimf_server_get_default();
+  indicator->status_icon = gtk_status_icon_new_from_icon_name("nimf-focus-out");
+  gtk_status_icon_set_visible(indicator->status_icon, TRUE);
+
+  g_signal_connect(server, "engine-changed", G_CALLBACK(on_engine_changed), indicator);
+  g_signal_connect(server, "engine-status-changed", G_CALLBACK(on_engine_status_changed), indicator);
+  g_signal_connect_swapped(server, "engine-loaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
+  g_signal_connect_swapped(server, "engine-unloaded", G_CALLBACK(nimf_indicator_update_menu), indicator);
+
+  g_signal_connect(indicator->status_icon, "popup-menu", G_CALLBACK(on_status_icon_activate), gtk_menu);
+}
+
 static void
 on_name_appeared (GDBusConnection *connection,
                   const gchar     *name,
@@ -439,7 +472,10 @@ on_name_appeared (GDBusConnection *connection,
   g_bus_unwatch_name (indicator->watcher_id);
   indicator->watcher_id = 0;
 
-  nimf_indicator_create_appindicator (indicator);
+  if (g_strcmp0(g_getenv("XDG_SESSION_TYPE"), "wayland") == 0)
+    nimf_indicator_create_appindicator(indicator);
+  else
+    nimf_indicator_create_status_icon(indicator);
 }
 
 static gboolean
@@ -455,7 +491,10 @@ on_timeout (NimfIndicator *indicator)
 
   indicator->source_id = 0;
 
-  nimf_indicator_create_appindicator (indicator);
+  if (g_strcmp0(g_getenv("XDG_SESSION_TYPE"), "wayland") == 0)
+    nimf_indicator_create_appindicator(indicator);
+  else
+    nimf_indicator_create_status_icon(indicator);
 
   return G_SOURCE_REMOVE;
 }
@@ -508,10 +547,14 @@ static void nimf_indicator_stop (NimfService *service)
     indicator->source_id = 0;
   }
 
-  if (indicator->appindicator)
-  {
-    g_signal_handlers_disconnect_by_data (nimf_server_get_default (), indicator);
-    g_object_unref (indicator->appindicator);
+  if (indicator->appindicator) {
+    g_signal_handlers_disconnect_by_data(nimf_server_get_default(), indicator);
+    g_object_unref(indicator->appindicator);
+  }
+
+  if (indicator->status_icon) {
+    g_signal_handlers_disconnect_by_data(nimf_server_get_default(), indicator);
+    g_object_unref(indicator->status_icon);
   }
 
   if (indicator->menu)
