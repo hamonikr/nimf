@@ -194,11 +194,25 @@ AS_IF([test "x$has_qt6" = "xyes"], [
     fi
   fi
 
+  # Detect distribution
+  AC_MSG_CHECKING([distribution])
+  DISTRIB_ID=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+  DISTRIB_RELEASE=$(lsb_release -rs | tr '[:upper:]' '[:lower:]')
+  AC_MSG_RESULT([$DISTRIB_ID $DISTRIB_RELEASE])
+
   QT6_LIB_DIR=`pkg-config --variable=libdir Qt6Core`
 
   case `pkg-config --variable=includedir Qt6Core` in
     */qt6)
-      QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts
+      if test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xUbuntu22.04"; then
+        AC_MSG_NOTICE("Found Ubuntu 22.04")
+        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
+      elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xHamonikr7.0"; then
+        AC_MSG_NOTICE("Found HamoniKR 7.0")
+        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
+      else
+        QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts      
+      fi
       ;;
     */qt)
       QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt/plugins/platforminputcontexts
