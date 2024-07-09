@@ -25,7 +25,6 @@ RUN yum install -y \
     libayatana-appindicator-gtk3-devel.x86_64 \
     librsvg2-tools \
     google-noto-cjk-fonts \
-    libhangul-devel \
     m17n-lib-devel \
     m17n-db-devel \
     anthy-devel \
@@ -34,11 +33,19 @@ RUN yum install -y \
     qt5-qtbase-private-devel \
     qt6-qtbase-devel \
     qt6-qttools-devel \
-    qt6-qtbase-private-devel \    
     librime-devel \
     gtk-doc \
     intltool \
-    gettext-devel
+    gettext-devel \
+    git
+
+# Clone, build, and install libhangul
+RUN git clone https://github.com/libhangul/libhangul.git \
+ && cd libhangul \
+ && ./autogen.sh \
+ && ./configure --prefix=/usr \
+ && make \
+ && sudo make install
 
 # Copy the source code and set the working directory
 COPY . /src
