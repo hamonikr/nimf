@@ -37,7 +37,8 @@ RUN yum install -y \
     gtk-doc \
     intltool \
     gettext-devel \
-    git
+    git \
+    expat
 
 # Clone, build, and install libhangul
 RUN git clone https://github.com/libhangul/libhangul.git \
