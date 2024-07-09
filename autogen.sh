@@ -96,11 +96,11 @@ handle_ubuntu() {
     done
 }
 
-check_ubuntu_version_and_handle() {
-    if [ "$OS" = "ubuntu" ]; then
-        if [ "$OS_VERSION" = "22.04" ] || [ "$OS_VERSION" = "7.0" ]; then
-            handle_ubuntu
-        fi
+check_version_and_handle() {
+    if [ "$OS" = "ubuntu" ] && [ "$OS_VERSION" = "22.04" ]; then
+        handle_ubuntu
+    elif [ "$OS" = "hamonikr" ] && [ "$OS_VERSION" = "7.0" ]; then
+        handle_ubuntu
     fi
 }
 
@@ -110,7 +110,7 @@ if [ "$OS" = "fedora" ]; then
     handle_fedora
 fi
 
-check_ubuntu_version_and_handle
+check_version_and_handle
 
 AUTORECONF=`which autoreconf`
 if test -z $AUTORECONF; then
