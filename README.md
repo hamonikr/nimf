@@ -1,18 +1,37 @@
+![x86_64](https://img.shields.io/badge/amd64-darkblue)
 ![ubuntu-bionic](https://img.shields.io/badge/ubuntu-18.04-red)
 ![ubuntu-focal](https://img.shields.io/badge/ubuntu-20.04-red)
 ![ubuntu-jammy](https://img.shields.io/badge/ubuntu-22.04-red)
 ![ubuntu-noble](https://img.shields.io/badge/ubuntu-24.04-red)
 
-![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-purple)
-![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-purple)
-![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-purple)
-![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-purple)
-![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-purple)
+![arm64](https://img.shields.io/badge/arm64-purple)
+![ubuntu-bionic](https://img.shields.io/badge/ubuntu-18.04-red)
+![ubuntu-focal](https://img.shields.io/badge/ubuntu-20.04-red)
+![ubuntu-jammy](https://img.shields.io/badge/ubuntu-22.04-red)
+![ubuntu-noble](https://img.shields.io/badge/ubuntu-24.04-red)
 
+![x86_64](https://img.shields.io/badge/amd64-darkblue)
+![debian](https://img.shields.io/badge/debian-buster-brown)
+![debian](https://img.shields.io/badge/debian-bullseye-brown)
+![debian](https://img.shields.io/badge/debian-bookworm-brown)
+
+![arm64](https://img.shields.io/badge/arm64-purple)
+![debian](https://img.shields.io/badge/debian-buster-brown)
+![debian](https://img.shields.io/badge/debian-bullseye-brown)
+![debian](https://img.shields.io/badge/debian-bookworm-brown)
+
+![x86_64](https://img.shields.io/badge/amd64-darkblue)
 ![arch](https://img.shields.io/badge/archlinux-rolling-blue)
-![manjaro](https://img.shields.io/badge/manjaro-x86_64-blue)
+![manjaro](https://img.shields.io/badge/manjaro-x86_64-freen)
 ![fedora-33](https://img.shields.io/badge/fedora-33-blue)
 ![fedora-40](https://img.shields.io/badge/fedora-40-blue)
+
+![x86_64](https://img.shields.io/badge/amd64-darkblue)
+![hamonikr-sun](https://img.shields.io/badge/hamonikr-sun-black)
+![hamonikr-jin](https://img.shields.io/badge/hamonikr-jin-black)
+![hamonikr-hanla](https://img.shields.io/badge/hamonikr-hanla-black)
+![hamonikr-kumkang](https://img.shields.io/badge/hamonikr-kumkang-black)
+![hamonikr-paektu](https://img.shields.io/badge/hamonikr-paektu-black)
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
@@ -49,7 +68,7 @@ Nimf provides:
 
 # Install
 
-## Ubuntu, Debian, LinuxMint...
+## Ubuntu(amd64, arm64), Debian(amd64, arm64), LinuxMint
 On Ubuntu 21.10 or later distributions, the ibus-daemon starts automatically, causing conflicts with the input method nimf. 
 
 Method 1: Remove ibus
@@ -143,7 +162,7 @@ For detailed build instructions, see the following sections in the [BUILD.md](BU
 
 # nimf 설치
 
-## Ubuntu, Debian, LinuxMint...
+## Ubuntu(amd64, arm64), Debian(amd64, arm64), LinuxMint
 ```
 # 우분투 21.10 이상을 기반으로 하는 배포판에서는 ibus-daemon이 자동으로 시작되어 입력기가 nimf 와 충돌됩니다.
 # 부팅 시 ibus가 동작하지 않도록 아래의 방법으로 ibus를 제거하거나 ibus-daemon을 비활성화할 수 있습니다.
