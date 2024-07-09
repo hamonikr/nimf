@@ -249,7 +249,9 @@ AC_SUBST(GTK3_LIBDIR)
 AC_SUBST(GTK3_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
               [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
-              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk-3-0:/usr/lib/x86_64-linux-gnu/libgtk-3-0t64:/usr/lib/x86_64-linux-gnu/libgtk-3-0])
+              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk-3-0:\
+/usr/lib/x86_64-linux-gnu/libgtk-3-0t64:/usr/lib/x86_64-linux-gnu/libgtk-3-0:\
+/usr/lib/aarch64-linux-gnu/libgtk-3-0t64])
 if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
 fi
@@ -260,7 +262,9 @@ AC_SUBST(GTK2_LIBDIR)
 AC_SUBST(GTK2_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
               [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
-              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:/usr/lib/x86_64-linux-gnu/libgtk2.0-0t64:/usr/lib/x86_64-linux-gnu/libgtk2.0-0])
+              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
+/usr/lib/x86_64-linux-gnu/libgtk2.0-0t64:/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
+/usr/lib/aarch64-linux-gnu/libgtk2.0-0t64/])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
 fi
