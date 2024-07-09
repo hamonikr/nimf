@@ -38,26 +38,23 @@ sudo dnf install gcc-c++ libtool glib2-devel pkgconfig intltool gtk3-devel gtk2-
 ### Clone the Repository:
 
 ```
-git clone https://github.com/hamonikr/nimf.git
-cd nimf
-```
+git clone --recurse-submodules https://github.com/hamonikr/nimf
+tar -cvf master.tar.gz nimf
+cp master.tar.gz ~/rpmbuild/SOURCES/
 
-### Prepare the Source Tarball:
+sudo yum install epel-release
 
-```
-git archive --format=tar.gz --prefix=nimf/ HEAD > nimf-1.3.5.tar.gz
-```
+sudo yum install gcc-c++ libtool glib2-devel pkgconfig intltool \
+    gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel \
+    libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts \
+    libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel \
+    libxklavier-devel gtk-doc
 
-### Build the Package:
+rpmbuild -bb nimf/nimf.spec
 
-```
-rpmbuild -ta nimf-1.3.5.tar.gz
-```
+ls -R ~/rpmbuild/RPMS/
 
-### Install the Package:
-
-```
-sudo rpm -i ~/rpmbuild/RPMS/x86_64/nimf-1.3.5-1.x86_64.rpm
+sudo yum install ~/rpmbuild/RPMS/`uname -m`/nimf-*.rpm
 ```
 
 ## Arch Linux Package
@@ -91,7 +88,7 @@ By following these steps, you can build and install Nimf on Debian, RPM-based, a
 ## Build from Source
 Open the terminal and run the following commands step by step.
 ```
-git clone https://github.com/hamonikr/nimf.git
+git clone --recurse-submodules https://github.com/hamonikr/nimf
 cd nimf
 
 ./autogen.sh

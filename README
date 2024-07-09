@@ -123,16 +123,10 @@ Compiling and installing
 
     Open the terminal and run the following commands step by step.
 
-    wget https://gitlab.com/nimf-i18n/nimf/-/archive/master/nimf-master.tar.bz2
-    tar -jxvf nimf-master.tar.bz2
+    git clone --recurse-submodules https://github.com/hamonikr/nimf
+    tar -cvf master.tar.gz nimf
+    cp master.tar.gz ~/rpmbuild/SOURCES/
 
-    NIMF_VERSION=`grep AC_INIT nimf-master/configure.ac | \
-      grep -Po '\d{4}.\d{2}.\d{2}'`
-
-    cp -r nimf-master nimf-$NIMF_VERSION
-    tar -jcvf nimf-master.tar.bz2 nimf-$NIMF_VERSION
-    mkdir -p rpmbuild/SOURCES
-    cp -f nimf-master.tar.bz2 rpmbuild/SOURCES
     sudo yum install epel-release
 
     sudo yum install gcc-c++ libtool glib2-devel pkgconfig intltool \
@@ -141,11 +135,11 @@ Compiling and installing
       libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel \
       libxklavier-devel gtk-doc
 
-    rpmbuild -bb nimf-master/nimf.spec
-    ls -R rpmbuild/RPMS/
+    rpmbuild -bb nimf/nimf.spec
 
-    sudo yum install \
-      rpmbuild/RPMS/`uname -m`/nimf-YYYY.mm.dd-1.el7.`uname-m`.rpm
+    ls -R ~/rpmbuild/RPMS/
+
+    sudo yum install ~/rpmbuild/RPMS/`uname -m`/nimf-*.rpm
 
   * Other Linux distributions
 

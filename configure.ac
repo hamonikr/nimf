@@ -1,9 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 1.3.7)
+AC_INIT(nimf, 1.3.8)
 
 AC_CONFIG_HEADERS([config.h])
-
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 
@@ -46,13 +45,6 @@ LT_INIT([disable-static])
 dnl ***************************************************************************
 dnl libnimf
 dnl ***************************************************************************
-# Before making a release, the LT_VERSION string should be modified.
-# The string is of the form C:R:A.
-# - If interfaces have been changed or added, but binary compatibility has
-#   been preserved, change to C+1:0:A+1
-# - If binary compatibility has been broken (eg removed or changed interfaces)
-#   change to C+1:0:0
-# - If the interface is the same as the previous version, change to C:R+1:A
 
 LIBNIMF_LT_VERSION=1:0:0
 AC_SUBST(LIBNIMF_LT_VERSION)
@@ -122,40 +114,40 @@ dnl ***************************************************************************
 # Check for Qt5
 PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [has_qt5=yes], [has_qt5=no])
 AS_IF([test "x$has_qt5" = "xyes"], [
-  QT5_VERSION=`pkg-config --modversion Qt5Core`
-  QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
-  QT5_CORE_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtCore/$QT5_VERSION
-  QT5_GUI_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtGui/$QT5_VERSION
+QT5_VERSION=`pkg-config --modversion Qt5Core`
+QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
+QT5_CORE_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtCore/$QT5_VERSION
+QT5_GUI_PRIVATE_INCLUDE_PATH=$QT5_INCLUDE_DIR/QtGui/$QT5_VERSION
 
-  AC_CHECK_FILES(
-     [$QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
-      $QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontextplugin_p.h], [],
-      AC_MSG_ERROR([Qt 5 base private development files are not found.]))
+AC_CHECK_FILES(
+   [$QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontext.h
+    $QT5_GUI_PRIVATE_INCLUDE_PATH/QtGui/qpa/qplatforminputcontextplugin_p.h], [],
+    AC_MSG_ERROR([Qt 5 base private development files are not found.]))
 
-  AC_SUBST(QT5_CORE_PRIVATE_INCLUDE_PATH)
-  AC_SUBST(QT5_GUI_PRIVATE_INCLUDE_PATH)
+AC_SUBST(QT5_CORE_PRIVATE_INCLUDE_PATH)
+AC_SUBST(QT5_GUI_PRIVATE_INCLUDE_PATH)
 
-  AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
-                [`pkg-config --variable=host_bins Qt5Core`])
-  if test "x$QT5_MOC" = "xno"; then
-    AC_MSG_ERROR([moc for qt5 not found])
-  fi
+AC_PATH_PROGS([QT5_MOC], [moc-qt5 moc], [no],
+              [`pkg-config --variable=host_bins Qt5Core`])
+if test "x$QT5_MOC" = "xno"; then
+  AC_MSG_ERROR([moc for qt5 not found])
+fi
 
-  QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
+QT5_LIB_DIR=`pkg-config --variable=libdir Qt5Core`
 
-  case `pkg-config --variable=includedir Qt5Core` in
-    */qt5)
-      QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
-      ;;
-    */qt)
-      QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
-      ;;
-    *)
-      AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
-      ;;
-  esac
+case `pkg-config --variable=includedir Qt5Core` in
+  */qt5)
+    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt5/plugins/platforminputcontexts
+    ;;
+  */qt)
+    QT5_IM_MODULE_DIR=$QT5_LIB_DIR/qt/plugins/platforminputcontexts
+    ;;
+  *)
+    AC_MSG_ERROR(Can not determine Qt5 plugins/platforminputcontexts directory)
+    ;;
+esac
 
-  AC_SUBST(QT5_IM_MODULE_DIR)
+AC_SUBST(QT5_IM_MODULE_DIR)
 ])
 
 AM_CONDITIONAL([HAVE_QT5], [test "x$has_qt5" = "xyes"])
@@ -186,17 +178,40 @@ AS_IF([test "x$has_qt6" = "xyes"], [
   AC_PATH_PROGS([QT6_MOC], [moc-qt6 moc], [no],
                 [`pkg-config --variable=host_bins Qt6Core`])
   if test "x$QT6_MOC" = "xno"; then
-    QT6_MOC=`find /usr/ -name moc -type f | grep qt6`
+    AC_MSG_CHECKING([for moc-qt6 using find])
+    QT6_MOC=`find /usr/ -name moc -type f 2>/dev/null | grep qt6`
     if test "x$QT6_MOC" = "x"; then
       AC_MSG_ERROR([moc for qt6 not found])
+    else
+      AC_MSG_RESULT([$QT6_MOC])
     fi
   fi
+
+  # Detect distribution
+  AC_MSG_CHECKING([distribution])
+  if test -f /etc/os-release; then
+    . /etc/os-release
+    DISTRIB_ID=$ID
+    DISTRIB_RELEASE=$VERSION_ID
+  else
+    DISTRIB_ID=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+    DISTRIB_RELEASE=$(lsb_release -rs | tr '[:upper:]' '[:lower:]')
+  fi
+  AC_MSG_RESULT([$DISTRIB_ID $DISTRIB_RELEASE])
 
   QT6_LIB_DIR=`pkg-config --variable=libdir Qt6Core`
 
   case `pkg-config --variable=includedir Qt6Core` in
     */qt6)
-      QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts
+      if test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xubuntu22.04"; then
+        AC_MSG_NOTICE("Found Ubuntu 22.04")
+        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
+      elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xhamonikr7.0"; then
+        AC_MSG_NOTICE("Found HamoniKR 7.0")
+        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
+      else
+        QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts      
+      fi
       ;;
     */qt)
       QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt/plugins/platforminputcontexts
@@ -233,19 +248,22 @@ GTK3_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-3.0`
 AC_SUBST(GTK3_LIBDIR)
 AC_SUBST(GTK3_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
-              [gtk-query-immodules-3.0 gtk-query-immodules-3.0-64], [no],
+              [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
               [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk-3-0:/usr/lib/x86_64-linux-gnu/libgtk-3-0t64:/usr/lib/x86_64-linux-gnu/libgtk-3-0])
 if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-64 not found])
+  AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
 fi
 
+GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
+GTK2_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-2.0`
+AC_SUBST(GTK2_LIBDIR)
+AC_SUBST(GTK2_BINARY_VERSION)
 AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
-              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-64], [no],
+              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
               [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:/usr/lib/x86_64-linux-gnu/libgtk2.0-0t64:/usr/lib/x86_64-linux-gnu/libgtk2.0-0])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-64 not found])
+  AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
 fi
-
 
 dnl ***************************************************************************
 dnl  icon cache

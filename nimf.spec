@@ -1,6 +1,6 @@
 Name:     nimf
 Summary:  An input method framework
-Version:  1.3.7
+Version:  1.3.8
 Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -87,9 +87,7 @@ Requires: gtk3-devel
 This package contains development files.
 
 %prep
-%autosetup -c -T
-git clone --branch fedora40 https://github.com/hamonikr/nimf.git .
-git submodule update --init --recursive
+%setup -q -n nimf
 autoreconf -ivf
 
 %build
@@ -112,7 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/update-gtk-immodules %{_host} || :
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
-%{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 55 || :
+%{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 99 || :
 
 %postun
 /sbin/ldconfig
@@ -133,42 +131,29 @@ fi
 /usr/bin/glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files
-%config /etc/X11/xinit/xinput.d/nimf.conf
-%config /etc/apparmor.d/abstractions/nimf
-%config /etc/input.d/nimf.conf
-%config /etc/xdg/autostart/nimf-settings-autostart.desktop
-%{_bindir}/nimf
-%{_bindir}/nimf-settings
-%{_includedir}/nimf/*
-/usr/lib/debug/usr/bin/nimf-1.3.7-1.fc40.x86_64.debug
-/usr/lib/debug/usr/bin/nimf-settings-1.3.7-1.fc40.x86_64.debug
-/usr/lib/debug/usr/lib/x86_64-linux-gnu/libnimf.so.1.0.0-1.3.7-1.fc40.x86_64.debug
-/usr/lib/x86_64-linux-gnu/libnimf.so
-/usr/lib/x86_64-linux-gnu/libnimf.so.1
-/usr/lib/x86_64-linux-gnu/libnimf.so.1.0.0
-/usr/lib/x86_64-linux-gnu/nimf/modules/*.so
-/usr/lib/x86_64-linux-gnu/nimf/modules/services/*.so
-/usr/lib/x86_64-linux-gnu/nimf/mssymbol.txt
-/usr/lib/x86_64-linux-gnu/pkgconfig/nimf.pc
-/gtk-2.0/immodules/im-nimf-gtk2.so
-/usr/lib64/gtk-3.0/3.0.0/immodules/im-nimf-gtk3.so
-/usr/lib64/qt5/plugins/platforminputcontexts/libqt5im-nimf.so
-/usr/lib64/qt6/plugins/platforminputcontexts/libqt6im-nimf.so
-%{_datadir}/applications/nimf-settings.desktop
-%{_datadir}/glib-2.0/schemas/*.xml
-%{_datadir}/gtk-doc/html/nimf/*
-%{_datadir}/icons/hicolor/*/status/*.png
-%{_datadir}/icons/hicolor/*/status/*.svg
-%{_datadir}/locale/*/LC_MESSAGES/nimf.mo
-%{_datadir}/man/man1/nimf-settings.1.gz
-%{_datadir}/man/man1/nimf.1.gz
+%config %{_xinputconf}
+%config %{_sysconfdir}/apparmor.d/abstractions/nimf
+%{_bindir}/*
+%{_libdir}/gtk-2.0/*
+%{_libdir}/gtk-3.0/*
+/usr/lib/x86_64-linux-gnu/libnimf.so*
+/usr/lib/x86_64-linux-gnu/nimf/*
+%{_libdir}/qt5/*
+%{_libdir}/qt6/*
+%{_datadir}/applications/*
+%{_datadir}/glib-2.0/*
+%{_datadir}/icons/*
+%{_datadir}/locale/*
+%{_datadir}/man/*
+%{_sysconfdir}/input.d/nimf.conf
+%{_sysconfdir}/xdg/autostart/*
 
 %files devel
-%{_includedir}/nimf/*
+%{_datadir}/gtk-doc/*
+%{_includedir}/*
 /usr/lib/x86_64-linux-gnu/libnimf.so
-/usr/lib/x86_64-linux-gnu/pkgconfig/nimf.pc
-%{_datadir}/gtk-doc/html/nimf/*
+/usr/lib/x86_64-linux-gnu/pkgconfig/*
 
 %changelog
-* Wed Sep 23 2020 HamoniKR <pkg@hamonikr.org> - 1.3.7-1
+* Mon Jul 08 2024 HamoniKR <pkg@hamonikr.org> - 1.3.8-1
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog
