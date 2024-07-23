@@ -32,29 +32,28 @@ To build an RPM package for Nimf, follow these steps:
 ### Install Dependencies:
 
 ```
-sudo dnf install gcc-c++ libtool glib2-devel pkgconfig intltool gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel qt6-qtbase-devel qt6-qtbase-private-devel libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel libxklavier-devel gtk-doc librime-devel m17n-lib-devel m17n-db-devel ayatana-appindicator3-0.1
+sudo dnf install anthy-devel gcc-c++ glib2-devel gtk-doc gtk2-devel gtk3-devel intltool \
+    libappindicator-gtk3-devel libhangul-devel librime-devel librsvg2-tools libtool \
+    libxkbcommon-devel libxklavier-devel m17n-db-devel m17n-lib-devel \
+    qt5-qtbase-devel qt5-qtbase-private-devel qt6-qtbase-devel qt6-qtbase-private-devel \
+    wayland-devel naver-nanum-fonts-all wayland-protocols-devel expat expat-devel \
+    libayatana-appindicator-gtk3-devel.x86_64 im-chooser
 ```
 
-### Clone the Repository:
-
+### Create RPM and Install:
 ```
-git clone --recurse-submodules https://github.com/hamonikr/nimf
-tar -cvf master.tar.gz nimf
-cp master.tar.gz ~/rpmbuild/SOURCES/
+sudo dnf install rpm-build rpmdevtools
+rpmdev-setuptree
 
-sudo yum install epel-release
+cd ~/
 
-sudo yum install gcc-c++ libtool glib2-devel pkgconfig intltool \
-    gtk3-devel gtk2-devel qt5-qtbase-devel qt5-qtbase-private-devel \
-    libappindicator-gtk3-devel librsvg2-tools google-noto-cjk-fonts \
-    libhangul-devel anthy-devel anthy libxkbcommon-devel wayland-devel \
-    libxklavier-devel gtk-doc
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.src.rpm
 
-rpmbuild -bb nimf/nimf.spec
+rpm -ivh nimf-1.3.8-1.fc40.src.rpm
 
-ls -R ~/rpmbuild/RPMS/
+rpmbuild -ba rpmbuild/SPECS/nimf.spec
 
-sudo yum install ~/rpmbuild/RPMS/`uname -m`/nimf-*.rpm
+sudo rpm -ivh rpmbuild/RPMS/x86_64/nimf-1.3.8-1.fc40.x86_64.rpm 
 ```
 
 ## Arch Linux Package

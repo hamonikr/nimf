@@ -99,6 +99,16 @@ export XMODIFIERS="@im=nimf"
 
  1) Download and Install
 ```
+# install latest libhangul
+sudo yum install expat expat-devel
+
+git clone https://github.com/libhangul/libhangul.git \
+ && cd libhangul \
+ && ./autogen.sh \
+ && ./configure --prefix=/usr \
+ && make \
+ && sudo make install
+
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
 
 sudo yum install ~/nimf-*.rpm
