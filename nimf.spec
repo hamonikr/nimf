@@ -5,6 +5,7 @@ Release:  1%{?dist}
 License:  LGPLv3+
 Group:    User Interface/Desktops
 URL:      https://github.com/hamonikr/nimf
+Source0:  %{name}-%{version}.tar.gz
 
 BuildRequires: gcc-c++
 BuildRequires: libtool
@@ -57,6 +58,7 @@ Requires: anthy
 Requires: glib2
 Requires: gtk3
 Requires: im-chooser
+Requires: git
 Requires: expat
 Requires: expat-devel
 %if 0%{?is_opensuse}
@@ -95,7 +97,7 @@ This package contains development files.
 %setup -q -n nimf
 autoreconf -ivf
 # Clone and build libhangul
-git clone https://github.com/libhangul/libhangul.git
+git submodule update --init --recursive
 cd libhangul
 ./autogen.sh
 ./configure --prefix=/usr
@@ -119,6 +121,21 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 
 %post
+echo "Install latest libhangul ..."
+# Compile and install libhangul
+{
+  cd /tmp
+  git clone https://github.com/libhangul/libhangul.git
+  cd libhangul
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+  make install
+  cd ..
+  rm -rf libhangul
+} > /dev/null 2>&1
+echo "Finished install latest libhangul ..."
+
 /sbin/ldconfig
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/update-gtk-immodules %{_host} || :

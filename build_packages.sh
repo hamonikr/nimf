@@ -12,6 +12,9 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# Enable extended globbing for excluding the build directory
+shopt -s extglob
+
 # Define project root directory
 PROJECT_ROOT=$(pwd)
 
@@ -20,11 +23,12 @@ BUILD_DIR="${PROJECT_ROOT}/build"
 RPMS_DIR="${BUILD_DIR}/RPMS"
 DEBS_DIR="${BUILD_DIR}/DEBS"
 ARCH_DIR="${BUILD_DIR}/ARCH"
+SOURCES_DIR="${BUILD_DIR}/SOURCES"
+NIMF_SRC="${PROJECT_ROOT}"
 
 # Function to build RPM package
 build_rpm() {
     SPEC_FILE="${PROJECT_ROOT}/nimf.spec"
-    SOURCES_DIR="${BUILD_DIR}/SOURCES"
     SPECS_DIR="${BUILD_DIR}/SPECS"
 
     # Create required directories
@@ -39,12 +43,15 @@ build_rpm() {
     # Copy spec file to SPECS directory
     cp "${SPEC_FILE}" "${SPECS_DIR}"
 
-    # Clone and prepare sources
+    # Prepare sources
     cd "${SOURCES_DIR}"
-    git clone https://github.com/hamonikr/nimf.git
-    cd nimf
-    git archive --format=tar.gz --prefix=nimf/ HEAD > ../nimf.tar.gz
-    cd ..
+    if [ -d "nimf" ]; then
+        rm -rf nimf
+    fi
+    mkdir nimf
+    # Copy all contents except the build directory
+    cp -r ${NIMF_SRC}/!(build) nimf/
+    tar -czf nimf-1.3.8.tar.gz -C "${SOURCES_DIR}" nimf
 
     # Return to the project root directory
     cd "${PROJECT_ROOT}"
@@ -67,12 +74,17 @@ build_deb() {
     sudo apt-get update
     sudo apt-get install -y build-essential devscripts debhelper
 
-    # Clone and prepare sources
+    # Prepare sources
     cd "${BUILD_DIR}"
-    git clone https://github.com/hamonikr/nimf.git
-    cd nimf
+    if [ -d "nimf" ]; then
+        rm -rf nimf
+    fi
+    mkdir nimf
+    # Copy all contents except the build directory
+    cp -r ${NIMF_SRC}/!(build) nimf/
 
     # Build the DEB package
+    cd nimf
     debuild -us -uc
 
     # Move DEB files to DEBS_DIR
@@ -95,11 +107,17 @@ build_arch() {
     # Install required packages
     sudo pacman -Sy --needed base-devel
 
-    # Copy PKGBUILD to build directory
-    cp "${PKGBUILD_FILE}" "${BUILD_DIR}"
+    # Prepare sources
+    cd "${BUILD_DIR}"
+    if [ -d "nimf" ]; then
+        rm -rf nimf
+    fi
+    mkdir nimf
+    # Copy all contents except the build directory
+    cp -r ${NIMF_SRC}/!(build) nimf/
 
     # Build the Arch package
-    cd "${BUILD_DIR}"
+    cd nimf
     makepkg -si
 
     # Move package files to ARCH_DIR
