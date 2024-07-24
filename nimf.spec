@@ -14,6 +14,9 @@ BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
 BuildRequires: git
+BuildRequires: expat
+BuildRequires: expat-devel
+BuildRequires: im-chooser
 %if 0%{?is_opensuse}
 BuildRequires: libqt5-qtbase-devel
 BuildRequires: libQt5Gui-private-headers-devel
@@ -54,6 +57,8 @@ Requires: anthy
 Requires: glib2
 Requires: gtk3
 Requires: im-chooser
+Requires: expat
+Requires: expat-devel
 %if 0%{?is_opensuse}
 Requires: libappindicator3
 %else
@@ -89,6 +94,14 @@ This package contains development files.
 %prep
 %setup -q -n nimf
 autoreconf -ivf
+# Clone and build libhangul
+git clone https://github.com/libhangul/libhangul.git
+cd libhangul
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+cd ..
 
 %build
 %if 0%{?rhel}
