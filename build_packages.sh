@@ -3,6 +3,11 @@
 # Create package of various environments from the source
 # Wed, 24 Jul 2024 10:59:35 +0900
 # Kevin Kim (chaeya@gmail.com)
+# 
+# ./build_packages.sh rpm
+# ./build_packages.sh deb
+# ./build_packages.sh arch
+# ./build_packages.sh rpm deb arch  # All
 
 # Exit immediately if a command exits with a non-zero status
 set -e
