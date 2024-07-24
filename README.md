@@ -101,7 +101,7 @@ export XMODIFIERS="@im=nimf"
 ```
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
 
-sudo yum install ~/nimf-*.rpm
+sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
 ``` 
 
 ## Build Instructions
