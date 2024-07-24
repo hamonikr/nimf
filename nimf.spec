@@ -144,13 +144,13 @@ echo "Finished install latest libhangul ..."
 
 %postun
 /sbin/ldconfig
-if [ $1 -eq 0 ] ; then
+if [ $1 -eq 0 ]; then
     /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 %{_bindir}/update-gtk-immodules %{_host} || :
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
-if [ "$1" = "0"] ; then
+if [ "$1" = "0" ]; then
   %{_sbindir}/alternatives --remove xinputrc %{_xinputconf} || :
   # if alternative was set to manual, reset to auto
   [ -L %{_sysconfdir}/alternatives/xinputrc -a "`readlink %{_sysconfdir}/alternatives/xinputrc`" = "%{_xinputconf}" ] && %{_sbindir}/alternatives --auto xinputrc || :
