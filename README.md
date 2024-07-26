@@ -85,6 +85,12 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1-any.pkg.tar.zst
 
 sudo pacman -U ./nimf-1.3.8-1-any.pkg.tar.zst
+
+# If you want to install only Korean
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2-any.pkg.tar.zst
+
+sudo pacman -U ./nimf-1.3.8-2-any.pkg.tar.zst
+
 ``` 
 
  2) im setting
@@ -184,20 +190,19 @@ sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf
 ```
 # 최신 libhangul-git 패키지 설치
 git clone https://aur.archlinux.org/libhangul-git.git
-
 cd libhangul-git
-
 makepkg -si 
 
 # nimf 설치
-git clone https://github.com/hamonikr/nimf.git
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1-any.pkg.tar.zst
+sudo pacman -U ./nimf-1.3.8-1-any.pkg.tar.zst
 
-cd nimf
-
-makepkg -si 
+# 한국어만 사용하고 싶은 경우
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2-any.pkg.tar.zst
+sudo pacman -U ./nimf-1.3.8-2-any.pkg.tar.zst
 ```
 
-2) 입력기 설정
+2) 환경변수 설정
 ```
 vi ~/.xprofile
 
@@ -231,6 +236,28 @@ wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.open
 sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
 
 ``` 
+
+## 패키지 제작
+
+자세한 내용은 [BUILD.md](BUILD.md) 문서의 아래 섹션을 참고하세요:
+
+- [데비안 패키지 만들기](BUILD.md#debian-package)
+- [Arch 패키지 만들기](BUILD.md#arch-linux-package)
+- [RPM 패키지 만들기](BUILD.md#rpm-package)
+- [OpenSUSE 패키지 만들기](BUILD.md#opensuse)
+- [소스코드 컴파일 및 설치](BUILD.md#Build-from-Source)
+- [디버깅 방법](BUILD.md#Debugging)
+
+
+### 빌드 관련 다른 문서들
+* Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
+* CentOS 8 : https://blog.naver.com/dfnk5516/222074913406
+* Raspberry pi 4 arm64 : https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
+* Armbian : https://github.com/hamonikr/nimf/wiki/Armbian-build
+* Manjaro ARM : https://github.com/hamonikr/nimf/wiki/Manjaro-build
+* Arch AUR : https://aur.archlinux.org/packages/nimf-git/
+* Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
+
 
 # LICENSE
 * GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
