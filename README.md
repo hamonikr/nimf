@@ -1,4 +1,5 @@
-[![Build Status](https://github.com/hamonikr/nimf/actions/workflows/build-test.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/build-test.yml)
+[![Build Status](https://github.com/hamonikr/nimf/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/build.yml)
+[![Release Status](https://github.com/hamonikr/nimf/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/release.yml)
 [![Donate Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://ko.liberapay.com/hamonikr/)
 
 ![x86_64](https://img.shields.io/badge/amd64-darkblue)
@@ -110,9 +111,15 @@ sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
 
  1) Download and Install
 ```
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.x86_64.rpm
 
-sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
+sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
+
+# If you want to install only Korean
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+
+sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+
 ``` 
 
 ## Build Instructions
@@ -120,10 +127,12 @@ sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
 For detailed build instructions, see the following sections in the [BUILD.md](BUILD.md) file:
 
 - [Building Debian Package](BUILD.md#debian-package)
-- [Building RPM Package](BUILD.md#rpm-package)
 - [Building Arch Linux Package](BUILD.md#arch-linux-package)
+- [Building RPM Package](BUILD.md#rpm-package)
+- [Building OpenSUSE Package](BUILD.md#opensuse)
 - [Building from source](BUILD.md#Build-from-Source)
 - [Debugging](BUILD.md#Debugging)
+
 
 ### Others
 
@@ -206,6 +215,22 @@ export XMODIFIERS="@im=nimf"
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
 
 sudo yum install ~/nimf-*.rpm
+``` 
+
+## opensuse-leap
+
+ 1) 패키지 다운로드 및 설치
+```
+# 다른 언어도 포함하는 경우
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.x86_64.rpm
+
+sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
+
+# 한국어만 설치하는 경우
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+
+sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+
 ``` 
 
 # LICENSE

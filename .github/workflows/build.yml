@@ -28,5 +28,4 @@ jobs:
           submodules: recursive
           
       - name: Build docker test image
-        # run: docker build . --file .docker/${{ matrix.dockerfile }}
-        run: docker build . --file .docker/opensuse.Dockerfile
+        run: docker build . --file .docker/${{ matrix.dockerfile }}
