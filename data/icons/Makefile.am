@@ -18,7 +18,7 @@ status_16_icon_DATA = $(status_16_icon_tmp:.svg=.png)
 
 $(status_16_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 16x16; \
-	  $(RSVG_CONVERT) -w 16 -h 16 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 16 -h 16 scalable/`basename "$@" .png`.svg -o $@
 
 # 22x22 icons
 
@@ -28,7 +28,7 @@ status_22_icon_DATA = $(status_22_icon_tmp:.svg=.png)
 
 $(status_22_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 22x22; \
-	  $(RSVG_CONVERT) -w 22 -h 22 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 22 -h 22 scalable/`basename "$@" .png`.svg -o $@
 
 # 24x24 icons
 
@@ -38,7 +38,7 @@ status_24_icon_DATA = $(status_24_icon_tmp:.svg=.png)
 
 $(status_24_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 24x24; \
-	  $(RSVG_CONVERT) -w 24 -h 24 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 24 -h 24 scalable/`basename "$@" .png`.svg -o $@
 
 # 32x32 icons
 
@@ -48,7 +48,7 @@ status_32_icon_DATA = $(status_32_icon_tmp:.svg=.png)
 
 $(status_32_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 32x32; \
-	  $(RSVG_CONVERT) -w 32 -h 32 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 32 -h 32 scalable/`basename "$@" .png`.svg -o $@
 
 update-gtk-icon-cache:
 	@if [ -d "$(icon_themedir)" ]; then \
@@ -66,7 +66,7 @@ status_48_icon_DATA = $(status_48_icon_tmp:.svg=.png)
 
 $(status_48_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 48x48; \
-	  $(RSVG_CONVERT) -w 48 -h 48 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 48 -h 48 scalable/`basename "$@" .png`.svg -o $@
 
 # 96x96 icons
 
@@ -76,7 +76,7 @@ status_96_icon_DATA = $(status_96_icon_tmp:.svg=.png)
 
 $(status_96_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 96x96; \
-	  $(RSVG_CONVERT) -w 96 -h 96 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 96 -h 96 scalable/`basename "$@" .png`.svg -o $@
 
 # 256x256 icons
 
@@ -86,7 +86,7 @@ status_256_icon_DATA = $(status_256_icon_tmp:.svg=.png)
 
 $(status_256_icon_DATA): $(status_scalable_icon_DATA)
 	$(AM_V_GEN) $(MKDIR_P) 256x256; \
-	  $(RSVG_CONVERT) -w 256 -h 256 scalable/`basename "$@" .png`.svg -o $@
+	  $(RSVG_CONVERT) -d 300 -p 300 -w 256 -h 256 scalable/`basename "$@" .png`.svg -o $@
 
 clean-local:
 	-rmdir 16x16 22x22 24x24 32x32 48x48 96x96 256x256

@@ -7,6 +7,7 @@
 ![arch](https://img.shields.io/badge/archlinux-rolling-blue)
 ![manjaro](https://img.shields.io/badge/manjaro-x86_64-freen)
 ![fedora-33](https://img.shields.io/badge/fedora->=33-blue)
+![opensuse](https://img.shields.io/badge/opensuse-leap-green)
 
 ![arm64](https://img.shields.io/badge/arm64-purple)
 ![ubuntu](https://img.shields.io/badge/ubuntu->=18.04-red)
@@ -14,6 +15,7 @@
 ![arch](https://img.shields.io/badge/archlinux-rolling-blue)
 ![manjaro](https://img.shields.io/badge/manjaro-x86_64-freen)
 ![fedora-33](https://img.shields.io/badge/fedora->=33-blue)
+
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
@@ -96,6 +98,15 @@ export XMODIFIERS="@im=nimf"
 ```
 
 ## fedora, centos, redhat
+
+ 1) Download and Install
+```
+wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
+
+sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
+``` 
+
+## opensuse-leap
 
  1) Download and Install
 ```

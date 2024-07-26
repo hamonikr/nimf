@@ -1,7 +1,10 @@
+# detect os_id 
+%define os_id %(source /etc/os-release && echo $ID | tr - _)
+
 Name:     nimf
 Summary:  An input method framework
 Version:  1.3.8
-Release:  1%{?dist}
+Release:  2%{?dist}.%{?os_id}
 License:  LGPLv3+
 Group:    User Interface/Desktops
 URL:      https://github.com/hamonikr/nimf
@@ -15,19 +18,22 @@ BuildRequires: intltool >= 0.50.1
 BuildRequires: gtk3-devel
 BuildRequires: gtk2-devel
 BuildRequires: git
+%if 0%{?suse_version}
+BuildRequires: libexpat-devel
+BuildRequires: libqt5-qtbase-devel
+BuildRequires: libQt5Gui-private-headers-devel
+BuildRequires: libqt5-qtbase-private-headers-devel
+BuildRequires: libappindicator3-devel
+BuildRequires: libayatana-appindicator3-devel
+BuildRequires: rsvg-convert
+BuildRequires: librsvg-devel
+BuildRequires: google-noto-sans-cjk-fonts
+BuildRequires: qt6-base-devel
+BuildRequires: qt6-base-private-devel
+%else
 BuildRequires: expat
 BuildRequires: expat-devel
 BuildRequires: im-chooser
-%if 0%{?is_opensuse}
-BuildRequires: libqt5-qtbase-devel
-BuildRequires: libQt5Gui-private-headers-devel
-BuildRequires: libappindicator3-devel
-BuildRequires: ayatana-appindicator3-0.1
-BuildRequires: rsvg-view
-BuildRequires: noto-sans-cjk-fonts
-BuildRequires: libqt6-qtbase-devel
-BuildRequires: libQt6Gui-private-headers-devel
-%else
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtbase-private-devel
 BuildRequires: qt6-qtbase-devel
@@ -43,38 +49,46 @@ BuildRequires: libxkbcommon-devel
 BuildRequires: wayland-devel
 BuildRequires: libxklavier-devel
 BuildRequires: gtk-doc
-%if 0%{?fedora} || 0%{?is_opensuse}
-BuildRequires: librime-devel >= 1.2.9
-BuildRequires: m17n-lib-devel >= 1.7.0
+%if 0%{?fedora} || 0%{?suse_version}
+BuildRequires: librime-devel
+BuildRequires: m17n-lib-devel
 %endif
 %if 0%{?fedora}
 BuildRequires: m17n-db-devel >= 1.7.0
 %endif
-%if 0%{?is_opensuse}
+%if 0%{?suse_version}
 BuildRequires: m17n-db >= 1.7.0
 %endif
 
 Requires: anthy
 Requires: glib2
 Requires: gtk3
-Requires: im-chooser
 Requires: git
+%if 0%{?suse_version}
+Requires: libappindicator3-1
+BuildRequires: libexpat-devel
+Requires: libhangul1
+Requires: libxkbcommon0
+Requires: libxklavier16
+Requires: libqt5-qtbase-devel
+Requires: qt6-base-devel
+Requires: librime1
+Requires: m17n-lib >= 1.7.0
+Requires: m17n-db >= 1.7.0
+%else
+Requires: im-chooser
+Requires: libappindicator-gtk3
 Requires: expat
 Requires: expat-devel
-%if 0%{?is_opensuse}
-Requires: libappindicator3
-%else
-Requires: libappindicator-gtk3
-%endif
 Requires: libhangul
 Requires: libxkbcommon
 Requires: libxklavier
 Requires: qt5-qtbase
-Requires: qt6-qtbase
-%if 0%{?fedora} || 0%{?is_opensuse}
+Requires: qt6-base-devel
 Requires: librime
 Requires: m17n-lib >= 1.7.0, m17n-db >= 1.7.0
 %endif
+
 Requires(post):   %{_sbindir}/alternatives
 Requires(postun): %{_sbindir}/alternatives
 
@@ -138,9 +152,24 @@ echo "Finished install latest libhangul ..."
 
 /sbin/ldconfig
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-%{_bindir}/update-gtk-immodules %{_host} || :
+if [ -x %{_bindir}/update-gtk-immodules ]; then
+  %{_bindir}/update-gtk-immodules %{_host} || :
+fi
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
 %{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 99 || :
+
+%if 0%{?suse_version}
+echo "Add environment variables ..."
+for dir in /home/*; do
+  if [ -d "$dir" ]; then
+    for file in "$dir/.bashrc" "$dir/.zshrc"; do
+      if [ -f $file ]; then
+        echo -e "\n# Nimf environment variables\nexport GTK_IM_MODULE=nimf\nexport QT4_IM_MODULE=xim\nexport QT_IM_MODULE=nimf\nexport XMODIFIERS=@im=nimf" >> $file
+      fi
+    done
+  fi
+done
+%endif
 
 %postun
 /sbin/ldconfig
@@ -148,13 +177,28 @@ if [ $1 -eq 0 ]; then
     /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
-%{_bindir}/update-gtk-immodules %{_host} || :
+if [ -x %{_bindir}/update-gtk-immodules ]; then
+  %{_bindir}/update-gtk-immodules %{_host} || :
+fi
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
 if [ "$1" = "0" ]; then
   %{_sbindir}/alternatives --remove xinputrc %{_xinputconf} || :
   # if alternative was set to manual, reset to auto
   [ -L %{_sysconfdir}/alternatives/xinputrc -a "`readlink %{_sysconfdir}/alternatives/xinputrc`" = "%{_xinputconf}" ] && %{_sbindir}/alternatives --auto xinputrc || :
 fi
+
+%if 0%{?suse_version}
+echo "Remove environment variables ..."
+for dir in /home/*; do
+  if [ -d "$dir" ]; then
+    for file in "$dir/.bashrc" "$dir/.zshrc"; do
+      if [ -f $file ]; then
+        sed -i '/# Nimf environment variables/,+4d' $file
+      fi
+    done
+  fi
+done
+%endif
 
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -185,5 +229,8 @@ fi
 /usr/lib/x86_64-linux-gnu/pkgconfig/*
 
 %changelog
+* Mon Jul 26 2024 Kevin Kim <chaeya@gmail.com> - 1.3.8-2
+- Fixed dependancy for opensuse-leap
+
 * Mon Jul 08 2024 HamoniKR <pkg@hamonikr.org> - 1.3.8-1
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog

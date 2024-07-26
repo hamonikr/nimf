@@ -35,7 +35,17 @@ build_rpm() {
     mkdir -p "${BUILD_DIR}" "${RPMS_DIR}" "${SOURCES_DIR}" "${SPECS_DIR}"
 
     # Install required packages
-    sudo yum install -y rpm-build rpmdevtools
+    . /etc/os-release
+    if [[ "$ID" = "opensuse-leap" ]] ; then
+        sudo zypper install -y rpm-build rpmdevtools
+        # sudo zypper refresh
+        # sudo zypper install -y anthy anthy-devel libexpat-devel gcc-c++ glib2-devel gtk-doc gtk2-devel gtk3-devel intltool libhangul-devel libtool libxkbcommon-devel libxklavier-devel wayland-devel wayland-protocols-devel
+        # sudo zypper install -y google-noto-sans-cjk-fonts libappindicator3-devel libayatana-appindicator3-devel librsvg-devel 
+        # sudo zypper install -y libqt5-qtbase-devel libqt5-qtbase-private-headers-devel
+        # sudo zypper install -y qt6-base-devel qt6-base-private-devel rsvg-convert librime-devel m17n-lib-devel
+    else
+        sudo yum install -y rpm-build rpmdevtools
+    fi
 
     # Setup rpmbuild environment
     rpmdev-setuptree

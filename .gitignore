@@ -60,7 +60,9 @@ po/.intltool-merge-cache
 tags
 # docs
 gtk-doc.make
-# docs/
+docs/*
+docs/html/
+docs/xml/
 !docs/nimf.png
 # tests
 test-*.log
@@ -70,3 +72,5 @@ test-nimf-m17n
 # vscode
 .vscode/
 *.stamp
+build/
+libhangul/
