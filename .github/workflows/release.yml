@@ -1,4 +1,4 @@
-name: Build and Release Debian Package
+name: Release
 
 on:
   push:
