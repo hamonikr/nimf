@@ -37,7 +37,8 @@ RUN zypper install -y \
  qt6-base-private-devel \
  rsvg-convert \
  librime-devel \
- m17n-lib-devel
+ m17n-lib-devel \
+ git
 
 # Clone, build, and install libhangul
 RUN git clone https://github.com/libhangul/libhangul.git \
