@@ -1,5 +1,4 @@
 [![Build Status](https://github.com/hamonikr/nimf/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/build.yml)
-[![Release Status](https://github.com/hamonikr/nimf/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/release.yml)
 [![Donate Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://ko.liberapay.com/hamonikr/)
 
 ![x86_64](https://img.shields.io/badge/amd64-darkblue)
