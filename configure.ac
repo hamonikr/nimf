@@ -22,12 +22,17 @@ AC_ARG_ENABLE([hardening],
   AS_HELP_STRING([--disable-hardening], [Disable hardening]))
 
 # EXTRA_CFLAGS="-Wall -Werror"
-EXTRA_CFLAGS="-Wall"
+EXTRA_CFLAGS="-Wall -fPIE"
+EXTRA_LDFLAGS="-pie"
 AS_IF([test "x$enable_hardening" != "xno"],
       [AS_IF([echo "$EXTRA_CFLAGS" | grep -vq '\-D_FORTIFY_SOURCE'],
              [EXTRA_CFLAGS+=" -D_FORTIFY_SOURCE=2"])])
 
 AC_SUBST(EXTRA_CFLAGS)
+AC_SUBST(EXTRA_LDFLAGS)
+
+CFLAGS="$CFLAGS $EXTRA_CFLAGS"
+LDFLAGS="$LDFLAGS $EXTRA_LDFLAGS"
 
 dnl ***************************************************************************
 dnl Internationalization
