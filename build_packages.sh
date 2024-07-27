@@ -55,8 +55,9 @@ build_rpm() {
     fi
     mkdir nimf
     # Copy all contents except the build directory
+    VER=$(grep "^Version:" ${SPEC_FILE} | awk '{print $2}')
     cp -r ${NIMF_SRC}/!(build) nimf/
-    tar -czf nimf-1.3.8.tar.gz -C "${SOURCES_DIR}" nimf
+    tar -czf nimf-${VER}.tar.gz -C "${SOURCES_DIR}" nimf
 
     # Return to the project root directory
     cd "${PROJECT_ROOT}"
