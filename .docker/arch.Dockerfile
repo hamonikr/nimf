@@ -1,5 +1,10 @@
 FROM archlinux:latest AS builder
 
+# 빠른 미러 설정
+RUN pacman -Syu --noconfirm reflector \
+ && reflector --latest 10 --sort rate --save /etc/pacman.d/mirrorlist \
+ && pacman -Syyu --noconfirm
+ 
 # 필요한 패키지 설치
 RUN pacman -Syu --noconfirm \
     binutils \
