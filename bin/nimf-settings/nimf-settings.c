@@ -465,7 +465,7 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
       gchar  *p;
 
       engine_id = schema_id + strlen ("org.nimf.engines.");
-      path   = g_module_build_path (NIMF_MODULE_DIR, engine_id);
+      path   = g_build_filename (NIMF_MODULE_DIR, engine_id, NULL);
       module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 
       symbol_name = g_strdup_printf ("%s_%s", engine_id, page_key->key);
@@ -1440,7 +1440,7 @@ static void
 nimf_settings_init (NimfSettings *nsettings)
 {
   nsettings->app = g_application_new ("org.nimf.settings",
-                                      G_APPLICATION_FLAGS_NONE);
+                                      G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (nsettings->app, "activate",
                     G_CALLBACK (on_activate), nsettings);
 }
