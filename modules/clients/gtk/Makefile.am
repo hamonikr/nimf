@@ -23,7 +23,7 @@ gtk2_im_module_LTLIBRARIES = im-nimf-gtk2.la
 
 im_nimf_gtk2_la_SOURCES  = im-nimf.c
 im_nimf_gtk2_la_CFLAGS   = $(IM_NIMF_GTK2_DEPS_CFLAGS) $(AM_CFLAGS) \
-                           -Wno-error=deprecated-declarations
+                           -Wno-deprecated-declarations
 im_nimf_gtk2_la_LDFLAGS  = $(IM_NIMF_GTK2_DEPS_LIBS) -avoid-version -module
 im_nimf_gtk2_la_LIBADD   = $(top_builddir)/libnimf/libnimf.la
 
