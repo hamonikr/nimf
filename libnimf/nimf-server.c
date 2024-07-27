@@ -51,6 +51,18 @@ on_comparing_engine_with_id (NimfEngine *engine, const gchar *engine_id)
   return g_strcmp0 (nimf_engine_get_id (engine), engine_id);
 }
 
+static gchar *build_module_path(const gchar *directory, const gchar *module_name) {
+  gchar *path;
+  #ifdef G_OS_WIN32
+    path = g_build_filename(directory, g_strconcat(module_name, ".dll", NULL), NULL);
+  #elif defined(G_OS_MACOS)
+    path = g_build_filename(directory, g_strconcat("lib", module_name, ".dylib", NULL), NULL);
+  #else
+    path = g_build_filename(directory, g_strconcat("lib", module_name, ".so", NULL), NULL);
+  #endif
+  return path;
+}
+
 NimfEngine *
 nimf_server_get_engine_by_id (NimfServer  *server,
                               const gchar *engine_id)
@@ -638,7 +650,7 @@ nimf_server_load_engines (NimfServer *server)
         NimfEngine *engine;
         gchar      *path;
 
-        path = g_module_build_path (NIMF_MODULE_DIR, engine_id);
+        path = build_module_path (NIMF_MODULE_DIR, engine_id);
         module = nimf_module_new (path);
 
         if (!g_type_module_use (G_TYPE_MODULE (module)))
@@ -707,7 +719,7 @@ on_changed_active_engines (GSettings  *settings,
       {
         gchar *path;
 
-        path = g_module_build_path (NIMF_MODULE_DIR, engine_ids[i]);
+        path = build_module_path (NIMF_MODULE_DIR, engine_ids[i]);
         module = nimf_module_new (path);
 
         if (!g_type_module_use (G_TYPE_MODULE (module)))
