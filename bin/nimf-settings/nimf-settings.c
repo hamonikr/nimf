@@ -1440,7 +1440,7 @@ static void
 nimf_settings_init (NimfSettings *nsettings)
 {
   nsettings->app = g_application_new ("org.nimf.settings",
-                                      G_APPLICATION_DEFAULT_FLAGS);
+                                      G_APPLICATION_FLAGS_NONE);
   g_signal_connect (nsettings->app, "activate",
                     G_CALLBACK (on_activate), nsettings);
 }
