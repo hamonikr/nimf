@@ -1,3 +1,10 @@
+nimf (1.3.8+h2) paektu; urgency=medium
+
+  [Kevin Kim]
+  * Release for HamoniKR paektu
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 29 Jul 2024 15:18:59 +0900
+
 nimf (1.3.8+h1) stable; urgency=medium
 
   * Release for HamoniKR kumkang update
