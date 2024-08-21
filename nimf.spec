@@ -84,7 +84,7 @@ Requires: libhangul
 Requires: libxkbcommon
 Requires: libxklavier
 Requires: qt5-qtbase
-Requires: qt6-base-devel
+Requires: qt6-qtbase-devel
 Requires: librime
 Requires: m17n-lib >= 1.7.0, m17n-db >= 1.7.0
 %endif
@@ -111,7 +111,7 @@ This package contains development files.
 %setup -q -n nimf
 autoreconf -ivf
 # Clone and build libhangul
-git submodule update --init --recursive
+# git submodule update --init --recursive
 cd libhangul
 ./autogen.sh
 ./configure --prefix=/usr
@@ -229,8 +229,5 @@ done
 /usr/lib/x86_64-linux-gnu/pkgconfig/*
 
 %changelog
-* Mon Jul 26 2024 Kevin Kim <chaeya@gmail.com> - 1.3.8-2
-- Fixed dependancy for opensuse-leap
-
-* Mon Jul 08 2024 HamoniKR <pkg@hamonikr.org> - 1.3.8-1
+* Mon Jul 08 2024 HamoniKR <pkg@hamonikr.org> - 1.3.8
 - See https://github.com/hamonikr/nimf/blob/master/debian/changelog

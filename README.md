@@ -105,6 +105,8 @@ export XMODIFIERS="@im=nimf"
 
 ## fedora, centos, redhat
 
+If using ibus-hangul, there is a conflict with nimf, remove it first and install it.
+
  1) Download and Install
 ```
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
