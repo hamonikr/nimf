@@ -45,8 +45,7 @@ WORKDIR /home/builduser/src
 # AUR 도우미 yay 설치
 RUN git clone https://aur.archlinux.org/yay.git /home/builduser/yay \
  && cd /home/builduser/yay \
- && makepkg -si --noconfirm \
- && rm -rf /home/builduser/yay
+ && makepkg -si --noconfirm
 
 # AUR에서 libhangul-git 패키지 설치
 RUN yay -S --noconfirm libhangul-git
@@ -56,6 +55,7 @@ RUN yay -S --noconfirm libhangul-git
 
 # 루트 사용자로 전환
 USER root
+RUN rm -rf /home/builduser/yay
 
 # 프로젝트 빌드
 RUN cd /home/builduser/src \
