@@ -239,7 +239,7 @@ libhangul에서 사용하는 한글 자판 배열은 두 경로에 XML 파일로
 * `/usr/share/libhangul/keyboards` 경로에 설치된 파일은 모든 사용자에게서 인식됩니다.
 * `$HOME/.local/share/libhangul/keyboards` 또는 `$XDG_DATA_HOME/libhangul/keyboards` 경로에 설치된 파일은 개별 사용자에게 인식됩니다.
 
-자판 배열 파일 구조는 기본으로 설치되는 [두벌식 배열 파일](docs/hangul-keyboard-2.xml)과 [자모 기본조합 파일](docs/hangul-combination-deafult.xml)를 참고하세요. 일반적인 구조는 다음과 같습니다.
+자판 배열 파일 구조는 기본으로 설치되는 [두벌식 배열 파일](docs/hangul-keyboard-2.xml)과 [자모 기본조합 파일](docs/hangul-combination-default.xml)를 참고하세요. 일반적인 구조는 다음과 같습니다.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -268,6 +268,7 @@ libhangul에서 사용하는 한글 자판 배열은 두 경로에 XML 파일로
 * hangul-keyboard: 자판 배열을 정의하는 루트 요소.
     * id: 입력기에서 사용하는 ID 값.
     * type: 자판의 유형에 따라 jamo(두벌식), jamo-yet(두벌식 옛한글), jaso(세벌식), jaso-yet(세벌식 옛한글), ro(로마자)로 설정합니다.
+* name: 설정 창에 나타나는 자판 배열의 이름. xml:lang 값에 따라 지역화된 이름을 설정할 수 있습니다.
 * map: 각 키를 눌렀을 때 입력될 문자를 설정합니다. id 값은 0으로 고정합니다.
     * item: QWERTY 자판 기준 아스키코드 key에 해당하는 키를 누르면, 유니코드 value에 해당하는 한글 초/중/종성을 입력합니다. key와 value 값은 16진수로 지정합니다.
 * combination: 키를 연달아 누를 때 입력될 조합자를 item으로 나열합니다. id 값은 0으로 고정합니다.
