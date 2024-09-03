@@ -64,23 +64,6 @@ struct _NimfLibhangulClass
   NimfEngineClass parent_class;
 };
 
-typedef struct {
-  const gchar *id;
-  const gchar *name;
-} Keyboard;
-
-static const Keyboard keyboards[] = {
-  {"2",   N_("Dubeolsik")},
-  {"2y",  N_("Dubeolsik Yetgeul")},
-  {"32",  N_("Sebeolsik Dubeol Layout")},
-  {"39",  N_("Sebeolsik 390")},
-  {"3f",  N_("Sebeolsik Final")},
-  {"3s",  N_("Sebeolsik Noshift")},
-  {"3y",  N_("Sebeolsik Yetgeul")},
-  {"ro",  N_("Romaja")},
-  {"ahn", N_("Ahnmatae")}
-};
-
 static HanjaTable *nimf_libhangul_hanja_table  = NULL;
 static HanjaTable *nimf_libhangul_symbol_table = NULL;
 static gint        nimf_libhangul_hanja_table_ref_count = 0;
@@ -718,6 +701,8 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   gchar **hanja_keys;
 
+  hangul_init ();
+
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
   hangul->method = g_settings_get_string (hangul->settings, "get-method-infos");
   hangul->is_double_consonant_rule =
@@ -783,6 +768,8 @@ nimf_libhangul_finalize (GObject *object)
   g_free (hangul->method);
   nimf_key_freev (hangul->hanja_keys);
   g_object_unref (hangul->settings);
+
+  hangul_fini();
 
   G_OBJECT_CLASS (nimf_libhangul_parent_class)->finalize (object);
 }
@@ -863,8 +850,10 @@ nimf_libhangul_get_method_infos ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  hangul_init ();
+
   NimfMethodInfo **infos;
-  gint             n_methods = G_N_ELEMENTS (keyboards);
+  gint             n_methods = hangul_keyboard_list_get_count ();
   gint             i;
 
   infos = g_malloc (sizeof (NimfMethodInfo *) * n_methods + 1);
@@ -872,8 +861,8 @@ nimf_libhangul_get_method_infos ()
   for (i = 0; i < n_methods; i++)
   {
     infos[i] = nimf_method_info_new ();
-    infos[i]->method_id = g_strdup (keyboards[i].id);
-    infos[i]->label     = g_strdup (gettext (keyboards[i].name));
+    infos[i]->method_id = g_strdup (hangul_keyboard_list_get_keyboard_id (i));
+    infos[i]->label     = g_strdup (hangul_keyboard_list_get_keyboard_name (i));
     infos[i]->group     = NULL;
   }
 
