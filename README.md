@@ -232,6 +232,48 @@ sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
 
 ``` 
 
+# 한글 자판 배열 추가
+
+libhangul에서 사용하는 한글 자판 배열은 두 경로에 XML 파일로 정의됩니다.
+
+* `/usr/share/libhangul/keyboards` 경로에 설치된 파일은 모든 사용자에게서 인식됩니다.
+* `$HOME/.local/share/libhangul/keyboards` 또는 `$XDG_DATA_HOME/libhangul/keyboards` 경로에 설치된 파일은 개별 사용자에게 인식됩니다.
+
+자판 배열 파일 구조는 기본으로 설치되는 [두벌식 배열 파일](docs/hangul-keyboard-2.xml)과 [자모 기본조합 파일](docs/hangul-combination-deafult.xml)를 참고하세요. 일반적인 구조는 다음과 같습니다.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<hangul-keyboard id="2" type="jamo">
+
+    <name>Dubeolsik</name>
+    <name xml:lang="ko">두벌식</name>
+
+    <map id="0">
+        <item key="0x41" value="0x1106"/>  <!-- A → ᄆᅠ -->
+        <item key="0x42" value="0x1172"/>  <!-- B → ᅟᅲ -->
+        ...
+    </map>
+
+    <combination id="0">
+        <item first="0x1100" second="0x1100" result="0x1101"/>  <!-- ᄀ   + ᄀ   → ᄁ  -->
+        <item first="0x1169" second="0x1161" result="0x116a"/>  <!-- ᅩ   + ᅡ   → ᅪ  -->
+        ...
+    </combination>
+    <!-- 또는 -->
+    <include file="hangul-combination-default.xml"/>
+
+</hangul-keyboard>
+```
+
+* hangul-keyboard: 자판 배열을 정의하는 루트 요소.
+    * id: 입력기에서 사용하는 ID 값.
+    * type: 자판의 유형에 따라 jamo(두벌식), jamo-yet(두벌식 옛한글), jaso(세벌식), jaso-yet(세벌식 옛한글), ro(로마자)로 설정합니다.
+* map: 각 키를 눌렀을 때 입력될 문자를 설정합니다. id 값은 0으로 고정합니다.
+    * item: QWERTY 자판 기준 아스키코드 key에 해당하는 키를 누르면, 유니코드 value에 해당하는 한글 초/중/종성을 입력합니다. key와 value 값은 16진수로 지정합니다.
+* combination: 키를 연달아 누를 때 입력될 조합자를 item으로 나열합니다. id 값은 0으로 고정합니다.
+    * item: first 문자가 입력된 상태에서 second 키를 누르면 result 문자로 바뀝니다. first, second, result는 한글 초/중/종성에 대응되는 16진수 유니코드로 지정합니다.
+* include: file 경로의 XML 파일을 읽어 그 자리에 인라인합니다. file 값은 상대경로 또는 절대경로로 설정할 수 있습니다.
+
 # LICENSE
 * GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
   
