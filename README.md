@@ -106,20 +106,38 @@ wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40
 sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
 ``` 
 
-## opensuse-leap
+## opensuse-leap 15.6
 
- 1) Download and Install
+ 1) Install package gpg key from nimf repo.
+ ```
+ # Package GPG Key Download
+ wget https://github.com/hamonikr/nimf/raw/master/RPM-GPG-KEY-nimf
+ 
+ # Package GPG key installation
+ sudo rpm --import RPM-GPG-KEY-nimf
+ 
+ # Check the installed key
+ rpm -qa gpg-pubkey --qf "%{NAME}-%{VERSION}-%{RELEASE}\n" | grep e42665b8
+ ```
+
+ 2) Download and Install
+ 
+ The user can select and install the package you use, including a Korean package or including other languages package.
 ```
+# When using other languages
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.x86_64.rpm
 
-sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
+sudo zypper install ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
 
 # If you want to install only Korean
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
 
-sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+sudo zypper install ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
 
 ``` 
+ 3) Reboot
+
+ Use the nimf after the system restart.
 
 ## Build Instructions
 
@@ -216,21 +234,41 @@ wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40
 sudo yum install ~/nimf-*.rpm
 ``` 
 
-## opensuse-leap
+## opensuse-leap 15.6
 
- 1) 패키지 다운로드 및 설치
+ 1) nimf 저장소에서 GPG 키 설치
+
 ```
-# 다른 언어도 포함하는 경우
+# GPG 키 다운로드
+wget https://github.com/hamonikr/nimf/raw/master/RPM-GPG-KEY-nimf
+
+# GPG 키 설치
+sudo rpm --import RPM-GPG-KEY-nimf
+
+# 설치된 키 확인
+rpm -qa gpg-pubkey --qf "%{NAME}-%{VERSION}-%{RELEASE}\n" | grep e42665b8
+```
+
+ 2) 패키지 다운로드 및 설치
+
+사용자는 한국어 패키지를 포함한 패키지 또는 다른 언어를 포함한 패키지를 선택하여 설치할 수 있습니다.
+
+```
+# 다른 언어를 사용할 경우
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.x86_64.rpm
 
-sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
+sudo zypper install ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
 
-# 한국어만 설치하는 경우
+# 한국어만 설치하고 싶은 경우
 wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
 
-sudo rpm -ivh ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+sudo zypper install ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+```
 
-``` 
+ 3) 재부팅
+
+시스템을 재시작한 후 nimf를 사용하십시오.
+
 
 # 한글 자판 배열 추가
 
