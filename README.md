@@ -16,8 +16,25 @@
 ![manjaro](https://img.shields.io/badge/manjaro-x86_64-freen)
 ![fedora-33](https://img.shields.io/badge/fedora->=33-blue)
 
-
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
+
+## Table of Contents
+- [Nimf](#nimf)
+  - [Features](#features)
+  - [Supported Platforms](#supported-platforms)
+  - [Installation](#installation)
+    - [Ubuntu, Debian, LinuxMint](#ubuntu-debian-linuxmint)
+    - [Arch Linux, Manjaro](#arch-linux-manjaro)
+    - [Fedora, CentOS, RedHat](#fedora-centos-redhat)
+    - [OpenSUSE Leap](#opensuse-leap)
+  - [Configuration](#configuration)
+  - [Build Instructions](#build-instructions)
+  - [Additional Resources](#additional-resources)
+  - [License](#license)
+  - [Issue](#issue)
+  - [Contribution](#contribution)  
+- [Korean Section](#가볍고-빠른-입력기-프레임워크-nimf)
+
 
 # nimf
 
@@ -25,30 +42,32 @@ Nimf is a lightweight, fast and extensible input method framework.
 
 ![nimf](docs/nimf.png)
 
-Nimf provides:
-  * Input Method Server:
-    * nimf
+### Features
+- Input Method Server: `nimf`
+- Language Engines: 
+  - System Keyboard
+  - Chinese (based on librime)
+  - Japanese (based on anthy)
+  - Korean (based on libhangul)
+  - Various languages (based on m17n)
+- Service Modules:
+  - Indicator (based on appindicator)
+  - Wayland, XIM (based on IMdkit)
+  - Preedit window, Candidate window
+- Client Modules:
+  - GTK+2, GTK+3, Qt5, Qt6
 
-  * Language Engines:
-    * System keyboard
-    * Chinese (based on librime)
-    * Japanese (based on anthy)
-    * Korean (based on libhangul)
-    * Various languages (based on m17n)
-
-  * Service Modules:
-    * Indicator (based on appindicator)
-    * Wayland
-    * NIM (Nimf Input Method)
-    * XIM (based on IMdkit)
-    * Preedit window
-    * Candidate
-
-  * Client Modules:
-    * GTK+2, GTK+3, Qt5, Qt6
-    
-  * Settings tool to configure the Nimf:
-    * nimf-settings
+### Supported Platforms
+- **x86_64**
+  - Ubuntu (>= 18.04)
+  - Debian (>= 10)
+  - Arch Linux (Rolling)
+  - Fedora (>= 33)
+  - openSUSE Leap (15.6)
+- **arm64**
+  - Ubuntu (>= 18.04)
+  - Debian (>= 10)
+  - Arch Linux (Rolling)
 
 # Install
 
@@ -151,7 +170,7 @@ For detailed build instructions, see the following sections in the [BUILD.md](BU
 - [Debugging](BUILD.md#Debugging)
 
 
-### Others
+### Additional Resources
 
 * Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
 * CentOS 8 : https://blog.naver.com/dfnk5516/222074913406
@@ -162,6 +181,7 @@ For detailed build instructions, see the following sections in the [BUILD.md](BU
 * Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
 
 <hr>
+
 
 # 가볍고 빠른 입력기 프레임워크 nimf
 
