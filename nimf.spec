@@ -158,15 +158,15 @@ fi
 %{_bindir}/gtk-query-immodules-3.0-%{__isa_bits} --update-cache || :
 %{_sbindir}/alternatives --install %{_sysconfdir}/X11/xinit/xinputrc xinputrc %{_xinputconf} 99 || :
 
-%if 0%{?suse_version}
+# OpenSUSE와 Fedora 모두에 환경변수 추가
+%if 0%{?suse_version} || 0%{?fedora}
 echo "Add environment variables ..."
 for dir in /home/*; do
   if [ -d "$dir" ]; then
-    for file in "$dir/.bashrc" "$dir/.zshrc"; do
-      if [ -f $file ]; then
-        echo -e "\n# Nimf environment variables\nexport GTK_IM_MODULE=nimf\nexport QT4_IM_MODULE=xim\nexport QT_IM_MODULE=nimf\nexport XMODIFIERS=@im=nimf" >> $file
-      fi
-    done
+    # .xprofile 파일에 환경변수 추가
+    echo -e "\n# Nimf environment variables\nexport GTK_IM_MODULE=nimf\nexport QT4_IM_MODULE=xim\nexport QT_IM_MODULE=nimf\nexport XMODIFIERS=@im=nimf" >> "$dir/.xprofile"
+    # 파일 권한 설정
+    chown $(basename $dir):$(basename $dir) "$dir/.xprofile"
   fi
 done
 %endif
@@ -187,15 +187,14 @@ if [ "$1" = "0" ]; then
   [ -L %{_sysconfdir}/alternatives/xinputrc -a "`readlink %{_sysconfdir}/alternatives/xinputrc`" = "%{_xinputconf}" ] && %{_sbindir}/alternatives --auto xinputrc || :
 fi
 
-%if 0%{?suse_version}
+# OpenSUSE와 Fedora 모두에서 환경변수 제거
+%if 0%{?suse_version} || 0%{?fedora}
 echo "Remove environment variables ..."
 for dir in /home/*; do
   if [ -d "$dir" ]; then
-    for file in "$dir/.bashrc" "$dir/.zshrc"; do
-      if [ -f $file ]; then
-        sed -i '/# Nimf environment variables/,+4d' $file
-      fi
-    done
+    if [ -f "$dir/.xprofile" ]; then
+      sed -i '/# Nimf environment variables/,+4d' "$dir/.xprofile"
+    fi
   fi
 done
 %endif
