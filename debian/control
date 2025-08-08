@@ -77,10 +77,7 @@ Provides: libnimf1,
           nimf-libhangul,
           nimf-anthy,
           nimf-m17n,
-          nimf-rime,
-          libhangul1,
-          libhangul-dev,
-          libhangul-data
+          nimf-rime
 Recommends: im-config
 Description: Modern Input Method Framework
  Nimf is a lightweight, fast and extensible input method framework that supports
