@@ -121,4 +121,4 @@ else
 fi
 
 cd "$olddir"
-test -n "$NOCONFIGURE" || "$srcdir/configure" "$@" --libdir=/usr/lib/x86_64-linux-gnu
+test -n "$NOCONFIGURE" || "$srcdir/configure" "$@" --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu
