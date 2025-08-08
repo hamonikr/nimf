@@ -305,6 +305,15 @@ if test "x$RSVG_CONVERT" = "xno"; then
 fi
 
 dnl ***************************************************************************
+dnl X11 support
+dnl ***************************************************************************
+
+AC_ARG_ENABLE([x11],
+  AS_HELP_STRING([--disable-x11], [Disable X11 support (for Wayland-only systems)]))
+
+AM_CONDITIONAL([ENABLE_X11], [test "x$enable_x11" != "xno"])
+
+dnl ***************************************************************************
 dnl nimf-wayland
 dnl ***************************************************************************
 
@@ -316,7 +325,8 @@ dnl ***************************************************************************
 dnl nimf-xim
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)
+AS_IF([test "x$enable_x11" != "xno"],
+      [PKG_CHECK_MODULES(NIMF_XIM_DEPS, [$LIBNIMF_REQUIRES] x11)])
 
 dnl ***************************************************************************
 dnl nimf-nim
@@ -334,29 +344,31 @@ dnl ***************************************************************************
 dnl nimf-indicator
 dnl ***************************************************************************
 
-# Detect OS using /etc/os-release
-OS_ID=""
-if test -f /etc/os-release; then
-  . /etc/os-release
-  OS_ID=$ID
-fi
+AS_IF([test "x$enable_x11" != "xno"], [
+  # Detect OS using /etc/os-release
+  OS_ID=""
+  if test -f /etc/os-release; then
+    . /etc/os-release
+    OS_ID=$ID
+  fi
 
-AC_MSG_NOTICE([Detected OS: $OS_ID])
+  AC_MSG_NOTICE([Detected OS: $OS_ID])
 
-case $OS_ID in
-  fedora)
-    AC_MSG_NOTICE([Fedora detected, using ayatana-appindicator3-0.1])
-    PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                      [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
-                       gdk-x11-3.0 gmodule-2.0])
-    ;;
-  *)
-    AC_MSG_NOTICE([Non-Fedora OS detected, using ayatana-appindicator3-0.1])
-    PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
-                      [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
-                       gdk-x11-3.0 gmodule-2.0])
-    ;;
-esac
+  case $OS_ID in
+    fedora)
+      AC_MSG_NOTICE([Fedora detected, using ayatana-appindicator3-0.1])
+      PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
+                        [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
+                         gdk-x11-3.0 gmodule-2.0])
+      ;;
+    *)
+      AC_MSG_NOTICE([Non-Fedora OS detected, using ayatana-appindicator3-0.1])
+      PKG_CHECK_MODULES(NIMF_INDICATOR_DEPS,
+                        [glib-2.0 x11 gtk+-3.0 ayatana-appindicator3-0.1 libxklavier gdk-3.0
+                         gdk-x11-3.0 gmodule-2.0])
+      ;;
+  esac
+])
 
 dnl ***************************************************************************
 dnl nimf-preedit-window  nimf-candidate
