@@ -176,8 +176,13 @@ on_incoming_message (GSocket      *socket,
                                                sizeof (NimfPreeditAttr *));
 
         for (i = 0; i < n_attr; i++)
+#if GLIB_CHECK_VERSION(2, 68, 0)
           im->priv->preedit_attrs[i] = g_memdup2 (message->data + str_len + 1 + i * sizeof (NimfPreeditAttr),
                                                  sizeof (NimfPreeditAttr));
+#else
+          im->priv->preedit_attrs[i] = g_memdup (message->data + str_len + 1 + i * sizeof (NimfPreeditAttr),
+                                                sizeof (NimfPreeditAttr));
+#endif
 
         im->priv->preedit_attrs[n_attr] = NULL;
 

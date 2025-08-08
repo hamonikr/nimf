@@ -113,6 +113,7 @@ dnl ***************************************************************************
 
 # Check for Qt5
 PKG_CHECK_MODULES(IM_NIMF_QT5_DEPS, [Qt5Core Qt5Gui Qt5Widgets], [has_qt5=yes], [has_qt5=no])
+AM_CONDITIONAL([HAVE_QT5], [test "x$has_qt5" = "xyes"])
 AS_IF([test "x$has_qt5" = "xyes"], [
 QT5_VERSION=`pkg-config --modversion Qt5Core`
 QT5_INCLUDE_DIR=`pkg-config --variable=includedir Qt5Core`
@@ -150,13 +151,18 @@ esac
 AC_SUBST(QT5_IM_MODULE_DIR)
 ])
 
-AM_CONDITIONAL([HAVE_QT5], [test "x$has_qt5" = "xyes"])
-
 dnl ***************************************************************************
 dnl im-nimf-qt6
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(IM_NIMF_QT6_DEPS, [Qt6Core Qt6Gui Qt6Widgets], [has_qt6=yes], [has_qt6=no])
+AC_ARG_ENABLE([qt6],
+  AS_HELP_STRING([--disable-qt6], [Disable Qt6 support]))
+
+AS_IF([test "x$enable_qt6" != "xno"],
+      [PKG_CHECK_MODULES(IM_NIMF_QT6_DEPS, [Qt6Core Qt6Gui Qt6Widgets], [has_qt6=yes], [has_qt6=no])],
+      [has_qt6=no])
+
+AM_CONDITIONAL([HAVE_QT6], [test "x$has_qt6" = "xyes"])
 AS_IF([test "x$has_qt6" = "xyes"], [
   QT6_VERSION=`pkg-config --modversion Qt6Core`
   QT6_INCLUDE_DIR=`pkg-config --variable=includedir Qt6Core`
