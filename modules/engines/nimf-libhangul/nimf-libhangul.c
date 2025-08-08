@@ -622,6 +622,7 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
       case '/':
         nimf_libhangul_emit_commit (engine, target, (char *) &keyval);
         retval = TRUE;
+        break;
       default:
         break;
     }
