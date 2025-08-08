@@ -1,5 +1,5 @@
 moduledir = $(libdir)/nimf/modules
-module_LTLIBRARIES = libnimf-libhangul.la
+noinst_LTLIBRARIES = libnimf-libhangul.la
 
 gsettings_SCHEMAS = org.nimf.engines.nimf-libhangul.gschema.xml
 @GSETTINGS_RULES@
@@ -20,9 +20,13 @@ libnimf_libhangul_la_LIBADD  = $(top_builddir)/libnimf/libnimf.la
 
 DISTCLEANFILES = Makefile.in
 
-install-data-hook:
+install-exec-hook:
+	$(MKDIR_P) $(DESTDIR)$(moduledir)
+	$(INSTALL) -m 755 .libs/libnimf-libhangul.so $(DESTDIR)$(moduledir)/libnimf-libhangul.so
 	chmod -x $(DESTDIR)$(moduledir)/libnimf-libhangul.so
-	rm    -f $(DESTDIR)$(moduledir)/libnimf-libhangul.la
+
+install-data-hook:
+	rm -f $(DESTDIR)$(moduledir)/libnimf-libhangul.la
 
 uninstall-hook:
 	 rm    -f $(DESTDIR)$(moduledir)/libnimf-libhangul.so
