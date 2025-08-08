@@ -1,4 +1,8 @@
-SUBDIRS = nimf-libhangul nimf-system-keyboard
+SUBDIRS = nimf-system-keyboard
+
+if ENABLE_NIMF_LIBHANGUL
+  SUBDIRS += nimf-libhangul
+endif
 
 if ENABLE_NIMF_ANTHY
   SUBDIRS += nimf-anthy

@@ -57,7 +57,14 @@ dnl ***************************************************************************
 dnl nimf-libhangul  nimf-system-keyboard
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])
+AC_ARG_ENABLE([nimf-libhangul],
+  AS_HELP_STRING([--disable-nimf-libhangul], [Disable nimf-libhangul]))
+
+AS_IF([test "x$enable_nimf_libhangul" != "xno"],
+      [PKG_CHECK_MODULES(NIMF_LIBHANGUL_DEPS, [libhangul >= 0.0.12 $LIBNIMF_REQUIRES])])
+
+AM_CONDITIONAL([ENABLE_NIMF_LIBHANGUL], [test "x$enable_nimf_libhangul" != "xno"])
+
 PKG_CHECK_MODULES(NIMF_SYSTEM_KEYBOARD_DEPS,
                                        [xkbcommon >= 0.5.0  $LIBNIMF_REQUIRES])
 
