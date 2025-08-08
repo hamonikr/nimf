@@ -578,6 +578,21 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
   else
     keyval = nimf_event_keycode_to_qwerty_keyval (event);
 
+  /* Handle Enter key - commit preedit and pass through */
+  if (event->key.keyval == NIMF_KEY_Return || event->key.keyval == NIMF_KEY_KP_Enter)
+  {
+    const ucschar *preedit_ucs = hangul_ic_get_preedit_string (hangul->context);
+    if (preedit_ucs[0] != 0)
+    {
+      gchar *preedit_str = g_ucs4_to_utf8 (preedit_ucs, -1, NULL, NULL, NULL);
+      nimf_libhangul_emit_commit (engine, target, preedit_str);
+      g_free (preedit_str);
+      hangul_ic_reset (hangul->context);
+      nimf_libhangul_update_preedit (engine, target, g_strdup (""));
+    }
+    return FALSE; /* Pass through Enter key to application */
+  }
+
   if (!hangul->is_double_consonant_rule &&
       (g_strcmp0 (hangul->method, "2") == 0) &&
       nimf_libhangul_filter_leading_consonant (engine, target, keyval))
@@ -620,8 +635,11 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
       case '.':
       case '?':
       case '/':
-        nimf_libhangul_emit_commit (engine, target, (char *) &keyval);
-        retval = TRUE;
+        {
+          gchar str[2] = {keyval, '\0'};
+          nimf_libhangul_emit_commit (engine, target, str);
+          retval = TRUE;
+        }
         break;
       default:
         break;
