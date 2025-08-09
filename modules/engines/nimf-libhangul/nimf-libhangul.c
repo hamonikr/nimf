@@ -19,6 +19,7 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include <nimf.h>
 #include <hangul.h>
 #include <glib/gi18n.h>
@@ -720,8 +721,6 @@ nimf_libhangul_init (NimfLibhangul *hangul)
 
   gchar **hanja_keys;
 
-  hangul_init ();
-
   hangul->settings = g_settings_new ("org.nimf.engines.nimf-libhangul");
   hangul->method = g_settings_get_string (hangul->settings, "get-method-infos");
   hangul->is_double_consonant_rule =
@@ -787,8 +786,6 @@ nimf_libhangul_finalize (GObject *object)
   g_free (hangul->method);
   nimf_key_freev (hangul->hanja_keys);
   g_object_unref (hangul->settings);
-
-  hangul_fini();
 
   G_OBJECT_CLASS (nimf_libhangul_parent_class)->finalize (object);
 }
@@ -868,8 +865,6 @@ NimfMethodInfo **
 nimf_libhangul_get_method_infos ()
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  hangul_init ();
 
   NimfMethodInfo **infos;
   gint             n_methods = hangul_keyboard_list_get_count ();

@@ -22,6 +22,10 @@
 #include <nimf.h>
 #undef Bool
 #include <rime_api.h>
+/* Include deprecated API header for newer librime versions (>= 1.10.0) */
+#if __has_include(<rime_api_deprecated.h>)
+#include <rime_api_deprecated.h>
+#endif
 #include <glib/gi18n.h>
 
 #define NIMF_TYPE_RIME             (nimf_rime_get_type ())
