@@ -176,50 +176,8 @@ nimf_system_keyboard_filter_event (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfSystemKeyboard *keyboard = NIMF_SYSTEM_KEYBOARD (engine);
-  enum xkb_compose_feed_result result;
-
-  if (G_UNLIKELY (!keyboard->xkb_compose_table))
-    return FALSE;
-
-  if (event->type == NIMF_EVENT_KEY_RELEASE)
-    return FALSE;
-
-  result = xkb_compose_state_feed (keyboard->xkb_compose_state,
-                                   event->key.keyval);
-
-  if (result == XKB_COMPOSE_FEED_IGNORED)
-    return FALSE;
-
-  switch (xkb_compose_state_get_status (keyboard->xkb_compose_state))
-  {
-    case XKB_COMPOSE_NOTHING:
-      return FALSE;
-    case XKB_COMPOSE_COMPOSING:
-      if (xkb_keysym_to_utf8 (event->key.keyval, keyboard->buffer,
-                              sizeof (keyboard->buffer)) > 0)
-        nimf_system_keyboard_update_preedit (engine, target,
-          g_strconcat (keyboard->preedit_string, keyboard->buffer, NULL));
-
-      break;
-    case XKB_COMPOSE_COMPOSED:
-      nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
-
-      if (xkb_compose_state_get_utf8 (keyboard->xkb_compose_state,
-                                      keyboard->buffer,
-                                      sizeof (keyboard->buffer)) > 0)
-        nimf_engine_emit_commit (engine, target, keyboard->buffer);
-
-      break;
-    case XKB_COMPOSE_CANCELLED:
-      nimf_system_keyboard_update_preedit (engine, target, g_strdup (""));
-      nimf_engine_emit_beep (engine, target);
-      break;
-    default:
-      break;
-  }
-
-  return TRUE;
+  /* System Keyboard 엔진은 모든 키 이벤트를 애플리케이션에 전달 */
+  return FALSE;
 }
 
 static void

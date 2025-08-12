@@ -1,3 +1,14 @@
+nimf (1.3.9) paektu; urgency=medium
+
+  [Kevin Kim]
+  * Add full GTK4 support for modern applications
+  * Improve Wayland compatibility
+  * Support both GTK3 and GTK4 environments simultaneously
+  * Fix GDK_BACKEND environment variable handling for Wayland
+  * Add GTK4 IM module (im-nimf-gtk4.so)
+
+ -- HamoniKR <pkg@hamonikr.org>  Tue, 12 Aug 2025 15:04:24 +0900
+
 nimf (1.3.8+h2) paektu; urgency=medium
 
   [Kevin Kim]

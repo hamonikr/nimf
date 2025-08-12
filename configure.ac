@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(nimf, 1.3.8)
+AC_INIT(nimf, 1.3.9)
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -253,6 +253,23 @@ dnl ***************************************************************************
 PKG_CHECK_MODULES(IM_NIMF_GTK3_DEPS, [gtk+-3.0 gdk-x11-3.0])
 PKG_CHECK_MODULES(IM_NIMF_GTK2_DEPS, [gtk+-2.0])
 
+dnl Check for GTK4 support
+AC_ARG_ENABLE([gtk4],
+  AS_HELP_STRING([--enable-gtk4], [Enable GTK4 support (default: auto)]),
+  [enable_gtk4=$enableval],
+  [enable_gtk4=auto])
+
+if test "x$enable_gtk4" != "xno"; then
+  PKG_CHECK_MODULES(IM_NIMF_GTK4_DEPS, [gtk4], [have_gtk4=yes], [have_gtk4=no])
+  if test "x$enable_gtk4" = "xyes" -a "x$have_gtk4" = "xno"; then
+    AC_MSG_ERROR([GTK4 support requested but not found])
+  fi
+else
+  have_gtk4=no
+fi
+
+AM_CONDITIONAL([HAVE_GTK4], [test "x$have_gtk4" = "xyes"])
+
 case `uname -m` in
   x86_64)
     BITS=64
@@ -266,6 +283,13 @@ GTK3_LIBDIR=`pkg-config --variable=libdir gtk+-3.0`
 GTK3_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-3.0`
 AC_SUBST(GTK3_LIBDIR)
 AC_SUBST(GTK3_BINARY_VERSION)
+
+if test "x$have_gtk4" = "xyes"; then
+  GTK4_LIBDIR=`pkg-config --variable=libdir gtk4`
+  GTK4_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk4`
+  AC_SUBST(GTK4_LIBDIR)
+  AC_SUBST(GTK4_BINARY_VERSION)
+fi
 AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
               [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
               [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk-3-0:\
@@ -286,6 +310,16 @@ AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
 /usr/lib/aarch64-linux-gnu/libgtk2.0-0t64:/usr/lib/aarch64-linux-gnu/libgtk2.0-0])
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
+fi
+
+if test "x$have_gtk4" = "xyes"; then
+  AC_PATH_PROGS([GTK_QUERY_IMMODULES4],
+                [gtk4-query-immodules gtk4-query-immodules-$BITS], [no],
+                [/usr/bin:/usr/lib/x86_64-linux-gnu/libgtk-4-1:\
+/usr/lib/aarch64-linux-gnu/libgtk-4-1])
+  if test "x$GTK_QUERY_IMMODULES4" = "xno"; then
+    AC_MSG_WARN([gtk4-query-immodules not found, GTK4 IM module cache will not be updated])
+  fi
 fi
 
 dnl ***************************************************************************
@@ -378,12 +412,26 @@ PKG_CHECK_MODULES(NIMF_PREEDIT_WINDOW_DEPS, [glib-2.0 gtk+-3.0])
 PKG_CHECK_MODULES(NIMF_CANDIDATE_DEPS,      [glib-2.0 gtk+-3.0])
 
 dnl ***************************************************************************
-dnl nimf-settings
+dnl nimf-settings (GTK3/GTK4 selectable)
 dnl ***************************************************************************
 
-PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS,
-                  [gtk+-3.0 glib-2.0 >= 2.54 gio-2.0 gmodule-2.0 libxklavier
-                   gdk-3.0 gdk-x11-3.0])
+AC_ARG_WITH([gtk],
+  AS_HELP_STRING([--with-gtk=3|4], [Select GTK major version for nimf-settings (default: 3)]),
+  [], [with_gtk=3])
+
+AS_CASE([$with_gtk],
+  [4], [
+    AC_MSG_NOTICE([Configuring nimf-settings for GTK4])
+    PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS, [gtk4 >= 4.6 glib-2.0 >= 2.66 gio-2.0 gmodule-2.0 libxklavier])
+    AC_DEFINE([HAVE_GTK4], [1], [Building nimf-settings with GTK4])
+  ],
+  [3], [
+    AC_MSG_NOTICE([Configuring nimf-settings for GTK3])
+    PKG_CHECK_MODULES(NIMF_SETTINGS_DEPS,
+                      [gtk+-3.0 glib-2.0 >= 2.54 gio-2.0 gmodule-2.0 libxklavier
+                       gdk-3.0 gdk-x11-3.0])
+  ],
+  [*], [AC_MSG_ERROR([--with-gtk must be 3 or 4])])
 
 dnl ***************************************************************************
 dnl im-config data

@@ -114,6 +114,9 @@ export GTK_IM_MODULE=nimf
 export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
+
+# For GTK4 applications (optional)
+export GTK4_IM_MODULE=nimf
 ```
 
 ## fedora, centos, redhat
@@ -243,6 +246,9 @@ export GTK_IM_MODULE=nimf
 export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
+
+# For GTK4 applications (optional)
+export GTK4_IM_MODULE=nimf
 ```
 
 ## fedora, centos, redhat

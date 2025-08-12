@@ -231,7 +231,14 @@ main (int argc, char **argv)
   }
 
   g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
-  g_setenv ("GDK_BACKEND", "x11", TRUE);
+  
+  const gchar *display_name = g_getenv ("DISPLAY");
+  const gchar *wayland_display = g_getenv ("WAYLAND_DISPLAY");
+  
+  if (display_name && !wayland_display)
+  {
+    g_setenv ("GDK_BACKEND", "x11", TRUE);
+  }
 
 #if ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);

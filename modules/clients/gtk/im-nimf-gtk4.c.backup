@@ -1,0 +1,585 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*- */
+/*
+ * im-nimf-gtk4.c
+ * This file is part of Nimf.
+ *
+ * Copyright (C) 2015-2019 Hodong Kim <cogniti@gmail.com>
+ *
+ * Nimf is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Nimf is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program;  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "config.h"
+#include <gtk/gtk.h>
+#include <glib/gi18n.h>
+#include <nimf.h>
+#include <gio/gio.h>
+
+/* GTK4 defines this in gtkimcontextimpl.h (private header) */
+#ifndef GTK_IM_MODULE_EXTENSION_POINT_NAME
+#define GTK_IM_MODULE_EXTENSION_POINT_NAME "gtk-im-module"
+#endif
+
+/* Define module name */
+#define NIMF_GTK4_MODULE_NAME "nimf"
+
+#define NIMF_GTK_TYPE_IM_CONTEXT  (nimf_gtk_im_context_get_type ())
+#define NIMF_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_GTK_TYPE_IM_CONTEXT, NimfGtkIMContext))
+
+typedef struct _NimfGtkIMContext      NimfGtkIMContext;
+typedef struct _NimfGtkIMContextClass NimfGtkIMContextClass;
+
+struct _NimfGtkIMContext
+{
+  GtkIMContext  parent_instance;
+
+  NimfIM       *im;
+  GtkIMContext *simple;
+  GdkSurface   *client_surface;
+  GSettings    *settings;
+  GtkEventController *key_controller;
+  gboolean      is_reset_on_button_press_event;
+  gboolean      has_focus;
+};
+
+struct _NimfGtkIMContextClass
+{
+  GtkIMContextClass parent_class;
+};
+
+G_DEFINE_DYNAMIC_TYPE (NimfGtkIMContext, nimf_gtk_im_context, GTK_TYPE_IM_CONTEXT);
+
+static NimfEvent *
+translate_gdk_event_key (GdkEvent *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfEvent *nimf_event = nimf_event_new (NIMF_EVENT_NOTHING);
+
+  if (gdk_event_get_event_type (event) == GDK_KEY_PRESS)
+    nimf_event->key.type = NIMF_EVENT_KEY_PRESS;
+  else
+    nimf_event->key.type = NIMF_EVENT_KEY_RELEASE;
+
+  nimf_event->key.state = gdk_event_get_modifier_state (event);
+  nimf_event->key.keyval = gdk_key_event_get_keyval (event);
+  nimf_event->key.hardware_keycode = gdk_key_event_get_keycode (event);
+
+  return nimf_event;
+}
+
+static gboolean
+on_key_press_event (GtkEventControllerKey *controller,
+                   guint                  keyval,
+                   guint                  keycode,
+                   GdkModifierType        state,
+                   NimfGtkIMContext      *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GdkEvent *event = gtk_event_controller_get_current_event (GTK_EVENT_CONTROLLER (controller));
+  NimfEvent *nimf_event = translate_gdk_event_key (event);
+  gboolean retval = nimf_im_filter_event (context->im, nimf_event);
+  nimf_event_free (nimf_event);
+
+  return retval;
+}
+
+static gboolean
+on_key_release_event (GtkEventControllerKey *controller,
+                     guint                  keyval,
+                     guint                  keycode,
+                     GdkModifierType        state,
+                     NimfGtkIMContext      *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GdkEvent *event = gtk_event_controller_get_current_event (GTK_EVENT_CONTROLLER (controller));
+  NimfEvent *nimf_event = translate_gdk_event_key (event);
+  gboolean retval = nimf_im_filter_event (context->im, nimf_event);
+  nimf_event_free (nimf_event);
+
+  return retval;
+}
+
+static void
+nimf_gtk_im_context_set_client_widget (GtkIMContext *context,
+                                       GtkWidget    *widget)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  /* Clean up previous client surface */
+  if (nimf_context->client_surface)
+  {
+    g_object_unref (nimf_context->client_surface);
+    nimf_context->client_surface = NULL;
+  }
+
+  /* Clean up previous key controller */
+  if (nimf_context->key_controller)
+  {
+    gtk_widget_remove_controller (gtk_event_controller_get_widget (nimf_context->key_controller),
+                                 nimf_context->key_controller);
+    nimf_context->key_controller = NULL;
+  }
+
+  if (widget)
+  {
+    GtkNative *native = gtk_widget_get_native (widget);
+    if (native)
+    {
+      GdkSurface *surface = gtk_native_get_surface (native);
+      if (surface)
+      {
+        nimf_context->client_surface = g_object_ref (surface);
+        
+        /* Create and setup key controller */
+        nimf_context->key_controller = gtk_event_controller_key_new ();
+        gtk_widget_add_controller (widget, nimf_context->key_controller);
+        
+        g_signal_connect (nimf_context->key_controller, "key-pressed",
+                         G_CALLBACK (on_key_press_event), nimf_context);
+        g_signal_connect (nimf_context->key_controller, "key-released", 
+                         G_CALLBACK (on_key_release_event), nimf_context);
+      }
+    }
+  }
+
+  GTK_IM_CONTEXT_CLASS (nimf_gtk_im_context_parent_class)->set_client_widget (context, widget);
+}
+
+static void
+nimf_gtk_im_context_get_preedit_string (GtkIMContext   *context,
+                                        gchar         **str,
+                                        PangoAttrList **attrs,
+                                        gint           *cursor_pos)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+  NimfPreeditAttr **nimf_attrs = NULL;
+
+  if (!nimf_context->im) {
+    if (str) *str = g_strdup ("");
+    if (attrs) *attrs = pango_attr_list_new ();
+    if (cursor_pos) *cursor_pos = 0;
+    return;
+  }
+
+  nimf_im_get_preedit_string (nimf_context->im, str, &nimf_attrs, cursor_pos);
+
+  if (attrs)
+  {
+    *attrs = pango_attr_list_new ();
+    if (nimf_attrs)
+    {
+      for (int i = 0; nimf_attrs[i]; i++)
+      {
+        PangoAttribute *attr = NULL;
+        
+        switch (nimf_attrs[i]->type)
+        {
+          case NIMF_PREEDIT_ATTR_UNDERLINE:
+            attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+            break;
+          case NIMF_PREEDIT_ATTR_HIGHLIGHT:
+            attr = pango_attr_background_new (0, 0, 65535);
+            break;
+          default:
+            break;
+        }
+        
+        if (attr)
+        {
+          attr->start_index = nimf_attrs[i]->start_index;
+          attr->end_index = nimf_attrs[i]->end_index;
+          pango_attr_list_insert (*attrs, attr);
+        }
+      }
+    }
+  }
+  
+  nimf_preedit_attr_freev (nimf_attrs);
+}
+
+static gboolean
+nimf_gtk_im_context_filter_keypress (GtkIMContext *context,
+                                     GdkEvent     *event)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+  NimfEvent        *nimf_event;
+  gboolean          retval = FALSE;
+
+  if (!nimf_context->im || !event)
+    return FALSE;
+
+  nimf_event = translate_gdk_event_key (event);
+  if (nimf_event)
+  {
+    retval = nimf_im_filter_event (nimf_context->im, nimf_event);
+    nimf_event_free (nimf_event);
+  }
+
+  return retval;
+}
+
+static void
+nimf_gtk_im_context_focus_in (GtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  nimf_context->has_focus = TRUE;
+  if (nimf_context->im)
+    nimf_im_focus_in (nimf_context->im);
+  if (nimf_context->simple)
+    gtk_im_context_focus_in (nimf_context->simple);
+}
+
+static void
+nimf_gtk_im_context_focus_out (GtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  nimf_context->has_focus = FALSE;
+  if (nimf_context->im)
+    nimf_im_focus_out (nimf_context->im);
+  if (nimf_context->simple)
+    gtk_im_context_focus_out (nimf_context->simple);
+}
+
+static void
+nimf_gtk_im_context_reset (GtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  if (nimf_context->im)
+    nimf_im_reset (nimf_context->im);
+  if (nimf_context->simple)
+    gtk_im_context_reset (nimf_context->simple);
+}
+
+static void
+nimf_gtk_im_context_set_cursor_location (GtkIMContext *context,
+                                         GdkRectangle *area)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  if (nimf_context->client_surface && nimf_context->im && area)
+  {
+    double x, y;
+    GdkDisplay *display = gdk_surface_get_display (nimf_context->client_surface);
+    if (display)
+    {
+      GdkSeat *seat = gdk_display_get_default_seat (display);
+      if (seat)
+      {
+        GdkDevice *pointer = gdk_seat_get_pointer (seat);
+        if (pointer)
+        {
+          gdk_surface_get_device_position (nimf_context->client_surface, pointer, &x, &y, NULL);
+        }
+      }
+    }
+    
+    NimfRectangle nimf_area = {area->x, area->y, area->width, area->height};
+    nimf_im_set_cursor_location (nimf_context->im, &nimf_area);
+  }
+
+  if (nimf_context->simple && area)
+    gtk_im_context_set_cursor_location (nimf_context->simple, area);
+}
+
+static void
+nimf_gtk_im_context_set_use_preedit (GtkIMContext *context,
+                                     gboolean      use_preedit)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  if (nimf_context->im)
+    nimf_im_set_use_preedit (nimf_context->im, use_preedit);
+  if (nimf_context->simple)
+    gtk_im_context_set_use_preedit (nimf_context->simple, use_preedit);
+}
+
+static void
+nimf_gtk_im_context_set_surrounding (GtkIMContext *context,
+                                     const gchar  *text,
+                                     gint          len,
+                                     gint          cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  if (nimf_context->im)
+    nimf_im_set_surrounding (nimf_context->im, text, len, cursor_index);
+  if (nimf_context->simple)
+    gtk_im_context_set_surrounding_with_selection (nimf_context->simple, text, len, cursor_index, cursor_index);
+}
+
+static gboolean
+nimf_gtk_im_context_get_surrounding (GtkIMContext *context,
+                                     gchar       **text,
+                                     gint         *cursor_index)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (context);
+
+  if (nimf_context->simple)
+    return gtk_im_context_get_surrounding (nimf_context->simple, text, cursor_index);
+  
+  return FALSE;
+}
+
+static void
+on_commit (NimfIM           *im,
+           const gchar      *text,
+           NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_signal_emit_by_name (context, "commit", text);
+}
+
+static void
+on_preedit_start (NimfIM           *im,
+                  NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_signal_emit_by_name (context, "preedit-start");
+}
+
+static void
+on_preedit_end (NimfIM           *im,
+                NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_signal_emit_by_name (context, "preedit-end");
+}
+
+static void
+on_preedit_changed (NimfIM           *im,
+                    NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  g_signal_emit_by_name (context, "preedit-changed");
+}
+
+static void
+on_retrieve_surrounding (NimfIM           *im,
+                         NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval;
+
+  g_signal_emit_by_name (context, "retrieve-surrounding", &retval);
+}
+
+static void
+on_delete_surrounding (NimfIM           *im,
+                       gint              offset,
+                       gint              n_chars,
+                       NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gboolean retval;
+  g_signal_emit_by_name (context, "delete-surrounding", offset, n_chars, &retval);
+}
+
+static void
+on_beep (NimfIM           *im,
+         NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  gdk_display_beep (gdk_display_get_default ());
+}
+
+static void
+nimf_gtk_im_context_finalize (GObject *object)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  NimfGtkIMContext *nimf_context = NIMF_GTK_IM_CONTEXT (object);
+
+  if (nimf_context->client_surface)
+    g_object_unref (nimf_context->client_surface);
+
+  /* Clean up key controller */
+  if (nimf_context->key_controller)
+  {
+    GtkWidget *widget = gtk_event_controller_get_widget (nimf_context->key_controller);
+    if (widget)
+      gtk_widget_remove_controller (widget, nimf_context->key_controller);
+    nimf_context->key_controller = NULL;
+  }
+
+  if (nimf_context->im)
+    g_object_unref (nimf_context->im);
+  if (nimf_context->simple)
+    g_object_unref (nimf_context->simple);
+  if (nimf_context->settings)
+    g_object_unref (nimf_context->settings);
+
+  G_OBJECT_CLASS (nimf_gtk_im_context_parent_class)->finalize (object);
+}
+
+static void
+on_reset_on_button_press_event_changed (GSettings        *settings,
+                                        gchar            *key,
+                                        NimfGtkIMContext *context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  context->is_reset_on_button_press_event = g_settings_get_boolean (settings, key);
+}
+
+static void
+nimf_gtk_im_context_init (NimfGtkIMContext *nimf_context)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Initialize pointers to NULL */
+  nimf_context->im = NULL;
+  nimf_context->simple = NULL;
+  nimf_context->client_surface = NULL;
+  nimf_context->key_controller = NULL;
+  nimf_context->settings = NULL;
+  nimf_context->is_reset_on_button_press_event = FALSE;
+  nimf_context->has_focus = FALSE;
+
+  nimf_context->im = nimf_im_new ();
+  if (!nimf_context->im)
+  {
+    g_warning ("Failed to create Nimf IM instance");
+    return;
+  }
+
+  nimf_context->simple = gtk_im_context_simple_new ();
+  if (!nimf_context->simple)
+  {
+    g_warning ("Failed to create GTK simple IM context");
+    g_object_unref (nimf_context->im);
+    nimf_context->im = NULL;
+    return;
+  }
+
+  g_signal_connect (nimf_context->im, "commit",
+                    G_CALLBACK (on_commit), nimf_context);
+  g_signal_connect (nimf_context->im, "preedit-start",
+                    G_CALLBACK (on_preedit_start), nimf_context);
+  g_signal_connect (nimf_context->im, "preedit-end",
+                    G_CALLBACK (on_preedit_end), nimf_context);
+  g_signal_connect (nimf_context->im, "preedit-changed",
+                    G_CALLBACK (on_preedit_changed), nimf_context);
+  g_signal_connect (nimf_context->im, "retrieve-surrounding",
+                    G_CALLBACK (on_retrieve_surrounding), nimf_context);
+  g_signal_connect (nimf_context->im, "delete-surrounding",
+                    G_CALLBACK (on_delete_surrounding), nimf_context);
+  g_signal_connect (nimf_context->im, "beep",
+                    G_CALLBACK (on_beep), nimf_context);
+
+  nimf_context->settings = g_settings_new ("org.nimf.clients.gtk");
+
+  nimf_context->is_reset_on_button_press_event =
+    g_settings_get_boolean (nimf_context->settings, "reset-on-gdk-button-press-event");
+
+  g_signal_connect (nimf_context->settings, "changed::reset-on-gdk-button-press-event",
+                    G_CALLBACK (on_reset_on_button_press_event_changed), nimf_context);
+}
+
+static void
+nimf_gtk_im_context_class_init (NimfGtkIMContextClass *class)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
+
+  im_context_class->set_client_widget   = nimf_gtk_im_context_set_client_widget;
+  im_context_class->get_preedit_string  = nimf_gtk_im_context_get_preedit_string;
+  im_context_class->filter_keypress     = nimf_gtk_im_context_filter_keypress;
+  im_context_class->focus_in            = nimf_gtk_im_context_focus_in;
+  im_context_class->focus_out           = nimf_gtk_im_context_focus_out;
+  im_context_class->reset               = nimf_gtk_im_context_reset;
+  im_context_class->set_cursor_location = nimf_gtk_im_context_set_cursor_location;
+  im_context_class->set_use_preedit     = nimf_gtk_im_context_set_use_preedit;
+  im_context_class->set_surrounding     = nimf_gtk_im_context_set_surrounding;
+  im_context_class->get_surrounding     = nimf_gtk_im_context_get_surrounding;
+
+  object_class->finalize = nimf_gtk_im_context_finalize;
+}
+
+static void
+nimf_gtk_im_context_class_finalize (NimfGtkIMContextClass *class)
+{
+  g_debug (G_STRLOC ": %s", G_STRFUNC);
+}
+
+/* GTK4 uses GIOExtension for loading modules */
+
+G_MODULE_EXPORT void
+g_io_module_load (GIOModule *module)
+{
+  g_debug (G_STRLOC ": %s - Loading nimf GTK4 IM module", G_STRFUNC);
+
+  /* Register the type */
+  nimf_gtk_im_context_register_type (G_TYPE_MODULE (module));
+
+  /* Implement the extension point with high priority */
+  g_io_extension_point_implement (GTK_IM_MODULE_EXTENSION_POINT_NAME,
+                                   NIMF_GTK_TYPE_IM_CONTEXT,
+                                   NIMF_GTK4_MODULE_NAME,
+                                   20); /* Higher priority than default (10) */
+
+  g_debug ("nimf GTK4 IM module loaded successfully");
+}
+
+G_MODULE_EXPORT void
+g_io_module_unload (GIOModule *module)
+{
+  g_debug (G_STRLOC ": %s - Unloading nimf GTK4 IM module", G_STRFUNC);
+}
+
+G_MODULE_EXPORT char **
+g_io_module_query (void)
+{
+  g_debug (G_STRLOC ": %s - Querying nimf GTK4 IM module", G_STRFUNC);
+  
+  char *eps[] = {
+    GTK_IM_MODULE_EXTENSION_POINT_NAME,
+    NULL
+  };
+
+  return g_strdupv (eps);
+}

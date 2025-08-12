@@ -22,7 +22,11 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <libxklavier/xklavier.h>
+#if GTK_CHECK_VERSION(4, 0, 0)
+#include <gdk/x11/gdkx.h>
+#else
 #include <gdk/gdkx.h>
+#endif
 #include "config.h"
 #include "nimf.h"
 #include "nimf-enum-types-private.h"
@@ -370,8 +374,13 @@ nimf_settings_page_key_build_boolean (NimfSettingsPageKey *page_key,
   g_free (detailed_signal);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 15);
+#if !GTK_CHECK_VERSION(4, 0, 0)
   gtk_box_pack_start (GTK_BOX (hbox), page_key->label, FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (hbox), gswitch, FALSE, FALSE, 0);
+#else
+  gtk_box_append (GTK_BOX (hbox), page_key->label);
+  gtk_box_append (GTK_BOX (hbox), gswitch);
+#endif
 
   return hbox;
 }
@@ -521,8 +530,13 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
   }
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 15);
+#if !GTK_CHECK_VERSION(4, 0, 0)
   gtk_box_pack_start (GTK_BOX (hbox), page_key->label, FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (hbox), combo, FALSE, FALSE, 0);
+#else
+  gtk_box_append (GTK_BOX (hbox), page_key->label);
+  gtk_box_append (GTK_BOX (hbox), combo);
+#endif
   detailed_signal = g_strdup_printf ("changed::%s", page_key->key);
 
   g_signal_connect (combo, "changed",
@@ -540,6 +554,10 @@ on_key_press_event (GtkWidget *widget,
                     GdkEvent  *event,
                     GtkWidget *dialog)
 {
+#if GTK_CHECK_VERSION(4, 0, 0)
+  /* Not used in GTK4; handled by GtkEventControllerKey in on_button_clicked_add */
+  return FALSE;
+#else
   const gchar *keystr;
   GString     *combination;
   GFlagsClass *flags_class; /* do not free */
@@ -587,6 +605,7 @@ on_key_press_event (GtkWidget *widget,
   g_string_free (combination, TRUE);
 
   return TRUE;
+#endif
 }
 
 static void
@@ -648,7 +667,11 @@ on_button_clicked_add (GtkButton           *button,
   entry = gtk_entry_new ();
   gtk_entry_set_placeholder_text (GTK_ENTRY (entry),
                                   _("Click here and then press key combination"));
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (content_area), entry);
+#else
   gtk_box_pack_start (GTK_BOX (content_area), entry, TRUE, TRUE, 0);
+#endif
   g_signal_connect (entry, "key-press-event",
                     G_CALLBACK (on_key_press_event), dialog);
 
@@ -701,7 +724,11 @@ on_tree_view_realize (GtkWidget         *tree_view,
   gint height;
 
   column = gtk_tree_view_get_column (GTK_TREE_VIEW (tree_view), 0);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_tree_view_column_cell_get_size (column, NULL, NULL, &height);
+#else
   gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
+#endif
   gtk_widget_set_size_request (GTK_WIDGET (scrolled_w), -1, height * 3 );
 }
 
@@ -722,10 +749,15 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   GtkTreeIter        iter;
   gint               j;
 
+#if GTK_CHECK_VERSION(4, 0, 0)
+  button1 = gtk_button_new_from_icon_name ("list-add");
+  button2 = gtk_button_new_from_icon_name ("list-remove");
+#else
   button1 = gtk_button_new_from_icon_name ("list-add",    GTK_ICON_SIZE_SMALL_TOOLBAR);
   button2 = gtk_button_new_from_icon_name ("list-remove", GTK_ICON_SIZE_SMALL_TOOLBAR);
   gtk_button_set_relief (GTK_BUTTON (button1), GTK_RELIEF_NONE);
   gtk_button_set_relief (GTK_BUTTON (button2), GTK_RELIEF_NONE);
+#endif
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
@@ -757,15 +789,26 @@ nimf_settings_page_key_build_string_array (NimfSettingsPageKey *page_key)
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 
   scrolled_w = gtk_scrolled_window_new (NULL, NULL);
+#if !GTK_CHECK_VERSION(4, 0, 0)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_w),
                                        GTK_SHADOW_ETCHED_IN);
+#endif
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_w),
                                   GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scrolled_w), treeview);
+#else
   gtk_container_add (GTK_CONTAINER (scrolled_w), treeview);
+#endif
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (vbox), hbox);
+  gtk_box_append (GTK_BOX (vbox), scrolled_w);
+#else
   gtk_box_pack_start (GTK_BOX (vbox), hbox,       FALSE, FALSE, 0);
   gtk_box_pack_end   (GTK_BOX (vbox), scrolled_w, FALSE, FALSE, 0);
+#endif
 
   page_key->treeview = treeview;
   detailed_signal = g_strdup_printf ("changed::%s", page_key->key);
@@ -973,19 +1016,19 @@ nimf_settings_page_new (const gchar  *schema_id)
     {
       GtkWidget *item;
       item = nimf_settings_page_key_build_boolean (page_key, schema_id);
-      gtk_box_pack_start (GTK_BOX (page->box), item, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (page->box), item, FALSE, FALSE, 0);
     }
     else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
     {
       GtkWidget *item;
       item = nimf_settings_page_key_build_string (page_key, schema_id, key_list);
-      gtk_box_pack_start (GTK_BOX (page->box), item, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (page->box), item, FALSE, FALSE, 0);
     }
     else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING_ARRAY))
     {
       GtkWidget *item;
       item = nimf_settings_page_key_build_string_array (page_key);
-      gtk_box_pack_start (GTK_BOX (page->box), item, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (page->box), item, FALSE, FALSE, 0);
     }
     else
       g_error (G_STRLOC ": %s: not supported variant type: \"%s\"",
@@ -1219,20 +1262,36 @@ on_row_selected (GtkListBox    *box,
   GtkWidget        *content = user_data;
   GtkWidget        *child;
 
+#if GTK_CHECK_VERSION(4, 0, 0)
+  if ((child = gtk_scrolled_window_get_child (GTK_SCROLLED_WINDOW (content))))
+    gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (content), NULL);
+#else
   if ((child = gtk_bin_get_child (GTK_BIN (content))))
     gtk_container_remove (GTK_CONTAINER (content), child);
+#endif
 
   schema_id = gtk_widget_get_name (GTK_WIDGET (row));
 
   if (g_strcmp0 (schema_id, "xkb-options"))
   {
     page = nimf_settings_page_new (schema_id);
+#if GTK_CHECK_VERSION(4, 0, 0)
+    gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (content), page->box);
+#else
     gtk_container_add (GTK_CONTAINER (content), page->box);
+#endif
   }
   else
   {
-    gtk_container_add (GTK_CONTAINER (content),
-                       nimf_settings_build_xkb_options_ui ());
+    GtkWidget *xkb = nimf_settings_build_xkb_options_ui ();
+    if (xkb)
+    {
+#if GTK_CHECK_VERSION(4, 0, 0)
+      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (content), xkb);
+#else
+      gtk_container_add (GTK_CONTAINER (content), xkb);
+#endif
+    }
   }
 
   gtk_widget_show_all (content);
@@ -1247,7 +1306,11 @@ append_xkb_menu_after_nimf_menu (GtkWidget *listbox)
   row   = gtk_list_box_row_new ();
   gtk_widget_set_name (row, "xkb-options");
   gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), FALSE);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), label);
+#else
   gtk_container_add (GTK_CONTAINER (row), label);
+#endif
   gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_widget_set_margin_start  (label, 15);
   gtk_widget_set_margin_end    (label, 15);
@@ -1330,10 +1393,14 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
       label = gtk_label_new (title);
     }
 
-    row = gtk_list_box_row_new ();
-    gtk_widget_set_name (row, schema_id);
-    gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), FALSE);
-    gtk_container_add (GTK_CONTAINER (row), label);
+  row = gtk_list_box_row_new ();
+  gtk_widget_set_name (row, schema_id);
+  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), FALSE);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), label);
+#else
+  gtk_container_add (GTK_CONTAINER (row), label);
+#endif
     gtk_widget_set_halign (label, GTK_ALIGN_START);
     gtk_widget_set_margin_start  (label, 15);
     gtk_widget_set_margin_end    (label, 15);
@@ -1366,7 +1433,11 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (box), sidebar, FALSE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (box), content, TRUE,  TRUE, 0);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_window_set_child (GTK_WINDOW (window), box);
+#else
   gtk_container_add (GTK_CONTAINER (window), box);
+#endif
 
   g_signal_connect (listbox, "row-selected", G_CALLBACK (on_row_selected), content);
 
@@ -1490,7 +1561,14 @@ int main (int argc, char **argv)
   int status;
 
   g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
-  g_setenv ("GDK_BACKEND", "x11", TRUE);
+  
+  const gchar *display_name = g_getenv ("DISPLAY");
+  const gchar *wayland_display = g_getenv ("WAYLAND_DISPLAY");
+  
+  if (display_name && !wayland_display)
+  {
+    g_setenv ("GDK_BACKEND", "x11", TRUE);
+  }
 
   /* Ensure GLib can find compiled schemas even when XDG_DATA_DIRS is misconfigured.
    * If the app is started without GSETTINGS_SCHEMA_DIR and default lookup fails

@@ -8,9 +8,15 @@
 
 override_dh_autoreconf:
 	./autogen.sh
+	# stale libtool artifacts cause wrong install libdir (/usr/local) to be embedded
+	# ensure a clean rebuild of modules so .la files are regenerated with correct --prefix/--libdir
+	find . -name '*.la' -delete
+	find . -name '*.lo' -delete
+	find . -name '*.o' -delete
+	find . -name '.libs' -type d -prune -exec rm -rf {} +
 
 override_dh_auto_configure:
-	dh_auto_configure -- --with-im-config-data --enable-gtk-doc
+	dh_auto_configure -- --prefix=/usr --with-im-config-data --enable-gtk-doc --enable-gtk4 --libdir=/usr/lib/$(DEB_HOST_MULTIARCH)
 
 override_dh_auto_clean:
 	rm -rf $(STAMP_DIR) $(SOURCE_DIR)

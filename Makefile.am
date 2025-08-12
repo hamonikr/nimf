@@ -22,6 +22,11 @@ distclean-local:
 update-gtk-im-cache:
 	$(GTK_QUERY_IMMODULES2) --update-cache
 	$(GTK_QUERY_IMMODULES3) --update-cache
+if HAVE_GTK4
+	if test "x$(GTK_QUERY_IMMODULES4)" != "xno"; then \
+		$(GTK_QUERY_IMMODULES4) --update-cache; \
+	fi
+endif
 
 update-gtk-icon-cache:
 	(cd data/icons; make update-gtk-icon-cache)

@@ -91,7 +91,7 @@ nimf_libhangul_update_preedit (NimfEngine    *engine,
   {
     g_free (hangul->preedit_string);
     hangul->preedit_string = new_preedit;
-    hangul->preedit_attrs[0]->end_index = g_utf8_strlen (hangul->preedit_string, -1);
+    hangul->preedit_attrs[0]->end_index = strlen (hangul->preedit_string);
     nimf_engine_emit_preedit_changed (engine, target, hangul->preedit_string,
                                       hangul->preedit_attrs,
                                       g_utf8_strlen (hangul->preedit_string,
