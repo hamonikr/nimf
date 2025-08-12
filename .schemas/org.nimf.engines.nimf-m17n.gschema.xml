@@ -1,0 +1,1515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-m17n-am"
+          path="/org/nimf/engines/nimf-m17n-am/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Amharic (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Amharic</summary>
+      <description>Shortcuts to switch to Amharic (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Amharic to system keyboard</summary>
+      <description>Shortcuts from Amharic to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'am:sera'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ar"
+          path="/org/nimf/engines/nimf-m17n-ar/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Arabic (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Arabic</summary>
+      <description>Shortcuts to switch to Arabic (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Arabic to system keyboard</summary>
+      <description>Shortcuts from Arabic to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ar:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-as"
+          path="/org/nimf/engines/nimf-m17n-as/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Assamese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Assamese</summary>
+      <description>Shortcuts to switch to Assamese (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Assamese to system keyboard</summary>
+      <description>Shortcuts from Assamese to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'as:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ath"
+          path="/org/nimf/engines/nimf-m17n-ath/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Athabaskan languages (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Athabaskan languages</summary>
+      <description>Shortcuts to switch to Athabaskan languages (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Athabaskan languages to system keyboard</summary>
+      <description>Shortcuts from Athabaskan languages to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ath:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-be"
+          path="/org/nimf/engines/nimf-m17n-be/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Belarusian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Belarusian</summary>
+      <description>Shortcuts to switch to Belarusian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Belarusian to system keyboard</summary>
+      <description>Shortcuts from Belarusian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'be:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-bla"
+          path="/org/nimf/engines/nimf-m17n-bla/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Siksika (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Siksika</summary>
+      <description>Shortcuts to switch to Siksika (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Siksika to system keyboard</summary>
+      <description>Shortcuts from Siksika to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'bla:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-bn"
+          path="/org/nimf/engines/nimf-m17n-bn/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Bengali (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Bengali</summary>
+      <description>Shortcuts to switch to Bengali (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Bengali to system keyboard</summary>
+      <description>Shortcuts from Bengali to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'bn:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-bo"
+          path="/org/nimf/engines/nimf-m17n-bo/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Tibetan (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Tibetan</summary>
+      <description>Shortcuts to switch to Tibetan (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Tibetan to system keyboard</summary>
+      <description>Shortcuts from Tibetan to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'bo:tcrc'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-cmc"
+          path="/org/nimf/engines/nimf-m17n-cmc/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Chamic Languages (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Chamic Languages</summary>
+      <description>Shortcuts to switch to Chamic Languages (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Chamic Languages to system keyboard</summary>
+      <description>Shortcuts from Chamic Languages to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'cmc:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-cr"
+          path="/org/nimf/engines/nimf-m17n-cr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Cree (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Cree</summary>
+      <description>Shortcuts to switch to Cree (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Cree to system keyboard</summary>
+      <description>Shortcuts from Cree to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'cr:western'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-cs"
+          path="/org/nimf/engines/nimf-m17n-cs/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Czech (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Czech</summary>
+      <description>Shortcuts to switch to Czech (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Czech to system keyboard</summary>
+      <description>Shortcuts from Czech to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'cs:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-da"
+          path="/org/nimf/engines/nimf-m17n-da/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Danish (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Danish</summary>
+      <description>Shortcuts to switch to Danish (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Danish to system keyboard</summary>
+      <description>Shortcuts from Danish to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'da:post'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-dv"
+          path="/org/nimf/engines/nimf-m17n-dv/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Divehi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Divehi</summary>
+      <description>Shortcuts to switch to Divehi (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Divehi to system keyboard</summary>
+      <description>Shortcuts from Divehi to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'dv:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-el"
+          path="/org/nimf/engines/nimf-m17n-el/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Greek (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Greek</summary>
+      <description>Shortcuts to switch to Greek (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Greek to system keyboard</summary>
+      <description>Shortcuts from Greek to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'el:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-eo"
+          path="/org/nimf/engines/nimf-m17n-eo/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Esperanto (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Esperanto</summary>
+      <description>Shortcuts to switch to Esperanto (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Esperanto to system keyboard</summary>
+      <description>Shortcuts from Esperanto to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'eo:vi-sistemo'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-fa"
+          path="/org/nimf/engines/nimf-m17n-fa/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Persian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Persian</summary>
+      <description>Shortcuts to switch to Persian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Persian to system keyboard</summary>
+      <description>Shortcuts from Persian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'fa:isiri'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-fr"
+          path="/org/nimf/engines/nimf-m17n-fr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'French (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to French</summary>
+      <description>Shortcuts to switch to French (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from French to system keyboard</summary>
+      <description>Shortcuts from French to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'fr:azerty'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-grc"
+          path="/org/nimf/engines/nimf-m17n-grc/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Ancient Greek (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Ancient Greek</summary>
+      <description>Shortcuts to switch to Ancient Greek (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Ancient Greek to system keyboard</summary>
+      <description>Shortcuts from Ancient Greek to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'grc:mizuochi'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-gu"
+          path="/org/nimf/engines/nimf-m17n-gu/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Gujarati (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Gujarati</summary>
+      <description>Shortcuts to switch to Gujarati (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Gujarati to system keyboard</summary>
+      <description>Shortcuts from Gujarati to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'gu:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-he"
+          path="/org/nimf/engines/nimf-m17n-he/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Hebrew (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Hebrew</summary>
+      <description>Shortcuts to switch to Hebrew (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Hebrew to system keyboard</summary>
+      <description>Shortcuts from Hebrew to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'he:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-hr"
+          path="/org/nimf/engines/nimf-m17n-hr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Croatian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Croatian</summary>
+      <description>Shortcuts to switch to Croatian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Croatian to system keyboard</summary>
+      <description>Shortcuts from Croatian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'hr:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-hy"
+          path="/org/nimf/engines/nimf-m17n-hy/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Armenian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Armenian</summary>
+      <description>Shortcuts to switch to Armenian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Armenian to system keyboard</summary>
+      <description>Shortcuts from Armenian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'hy:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ii"
+          path="/org/nimf/engines/nimf-m17n-ii/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sichuan Yi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Sichuan Yi</summary>
+      <description>Shortcuts to switch to Sichuan Yi (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Sichuan Yi to system keyboard</summary>
+      <description>Shortcuts from Sichuan Yi to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ii:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-iu"
+          path="/org/nimf/engines/nimf-m17n-iu/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Inuktitut (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Inuktitut</summary>
+      <description>Shortcuts to switch to Inuktitut (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Inuktitut to system keyboard</summary>
+      <description>Shortcuts from Inuktitut to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'iu:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ka"
+          path="/org/nimf/engines/nimf-m17n-ka/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Georgian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Georgian</summary>
+      <description>Shortcuts to switch to Georgian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Georgian to system keyboard</summary>
+      <description>Shortcuts from Georgian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ka:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-kk"
+          path="/org/nimf/engines/nimf-m17n-kk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Kazakh (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Kazakh</summary>
+      <description>Shortcuts to switch to Kazakh (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Kazakh to system keyboard</summary>
+      <description>Shortcuts from Kazakh to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'kk:arabic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-km"
+          path="/org/nimf/engines/nimf-m17n-km/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Khmer (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Khmer</summary>
+      <description>Shortcuts to switch to Khmer (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Khmer to system keyboard</summary>
+      <description>Shortcuts from Khmer to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'km:yannis'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ks"
+          path="/org/nimf/engines/nimf-m17n-ks/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Kashmiri (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Kashmiri</summary>
+      <description>Shortcuts to switch to Kashmiri (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Kashmiri to system keyboard</summary>
+      <description>Shortcuts from Kashmiri to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ks:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-lo"
+          path="/org/nimf/engines/nimf-m17n-lo/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Lao (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Lao</summary>
+      <description>Shortcuts to switch to Lao (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Lao to system keyboard</summary>
+      <description>Shortcuts from Lao to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'lo:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-mai"
+          path="/org/nimf/engines/nimf-m17n-mai/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Maithili (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Maithili</summary>
+      <description>Shortcuts to switch to Maithili (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Maithili to system keyboard</summary>
+      <description>Shortcuts from Maithili to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'mai:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-my"
+          path="/org/nimf/engines/nimf-m17n-my/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Burmese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Burmese</summary>
+      <description>Shortcuts to switch to Burmese (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Burmese to system keyboard</summary>
+      <description>Shortcuts from Burmese to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'my:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-nsk"
+          path="/org/nimf/engines/nimf-m17n-nsk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Naskapi language (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Naskapi language</summary>
+      <description>Shortcuts to switch to Naskapi language (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Naskapi language to system keyboard</summary>
+      <description>Shortcuts from Naskapi language to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'nsk:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-oj"
+          path="/org/nimf/engines/nimf-m17n-oj/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Ojibwa (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Ojibwa</summary>
+      <description>Shortcuts to switch to Ojibwa (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Ojibwa to system keyboard</summary>
+      <description>Shortcuts from Ojibwa to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'oj:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-or"
+          path="/org/nimf/engines/nimf-m17n-or/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Oriya (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Oriya</summary>
+      <description>Shortcuts to switch to Oriya (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Oriya to system keyboard</summary>
+      <description>Shortcuts from Oriya to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'or:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-pa"
+          path="/org/nimf/engines/nimf-m17n-pa/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Punjabi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Punjabi</summary>
+      <description>Shortcuts to switch to Punjabi (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Punjabi to system keyboard</summary>
+      <description>Shortcuts from Punjabi to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'pa:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ps"
+          path="/org/nimf/engines/nimf-m17n-ps/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Pushto (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Pushto</summary>
+      <description>Shortcuts to switch to Pushto (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Pushto to system keyboard</summary>
+      <description>Shortcuts from Pushto to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ps:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ru"
+          path="/org/nimf/engines/nimf-m17n-ru/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Russian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Russian</summary>
+      <description>Shortcuts to switch to Russian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Russian to system keyboard</summary>
+      <description>Shortcuts from Russian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ru:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sa"
+          path="/org/nimf/engines/nimf-m17n-sa/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sanskrit (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Sanskrit</summary>
+      <description>Shortcuts to switch to Sanskrit (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Sanskrit to system keyboard</summary>
+      <description>Shortcuts from Sanskrit to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sa:IAST'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sd"
+          path="/org/nimf/engines/nimf-m17n-sd/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sindhi (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Sindhi</summary>
+      <description>Shortcuts to switch to Sindhi (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Sindhi to system keyboard</summary>
+      <description>Shortcuts from Sindhi to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sd:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-si"
+          path="/org/nimf/engines/nimf-m17n-si/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Sinhalese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Sinhalese</summary>
+      <description>Shortcuts to switch to Sinhalese (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Sinhalese to system keyboard</summary>
+      <description>Shortcuts from Sinhalese to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'si:samanala'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sk"
+          path="/org/nimf/engines/nimf-m17n-sk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Slovak (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Slovak</summary>
+      <description>Shortcuts to switch to Slovak (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Slovak to system keyboard</summary>
+      <description>Shortcuts from Slovak to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sk:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sr"
+          path="/org/nimf/engines/nimf-m17n-sr/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Serbian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Serbian</summary>
+      <description>Shortcuts to switch to Serbian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Serbian to system keyboard</summary>
+      <description>Shortcuts from Serbian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sr:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-sv"
+          path="/org/nimf/engines/nimf-m17n-sv/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Swedish (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Swedish</summary>
+      <description>Shortcuts to switch to Swedish (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Swedish to system keyboard</summary>
+      <description>Shortcuts from Swedish to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'sv:post'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-t"
+          path="/org/nimf/engines/nimf-m17n-t/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Etc (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Etc</summary>
+      <description>Shortcuts to switch to Etc (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Etc to system keyboard</summary>
+      <description>Shortcuts from Etc to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'t:math-latex'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ta"
+          path="/org/nimf/engines/nimf-m17n-ta/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Tamil (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Tamil</summary>
+      <description>Shortcuts to switch to Tamil (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Tamil to system keyboard</summary>
+      <description>Shortcuts from Tamil to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ta:itrans'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-tai"
+          path="/org/nimf/engines/nimf-m17n-tai/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Tai Viet (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Tai Viet</summary>
+      <description>Shortcuts to switch to Tai Viet (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Tai Viet to system keyboard</summary>
+      <description>Shortcuts from Tai Viet to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'tai:sonla-kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-te"
+          path="/org/nimf/engines/nimf-m17n-te/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Telugu (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Telugu</summary>
+      <description>Shortcuts to switch to Telugu (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Telugu to system keyboard</summary>
+      <description>Shortcuts from Telugu to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'te:apple'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-th"
+          path="/org/nimf/engines/nimf-m17n-th/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Thai (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Thai</summary>
+      <description>Shortcuts to switch to Thai (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Thai to system keyboard</summary>
+      <description>Shortcuts from Thai to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'th:tis820'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ug"
+          path="/org/nimf/engines/nimf-m17n-ug/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Uighur (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Uighur</summary>
+      <description>Shortcuts to switch to Uighur (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Uighur to system keyboard</summary>
+      <description>Shortcuts from Uighur to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ug:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-uk"
+          path="/org/nimf/engines/nimf-m17n-uk/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Ukrainian (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Ukrainian</summary>
+      <description>Shortcuts to switch to Ukrainian (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Ukrainian to system keyboard</summary>
+      <description>Shortcuts from Ukrainian to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'uk:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-ur"
+          path="/org/nimf/engines/nimf-m17n-ur/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Urdu (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Urdu</summary>
+      <description>Shortcuts to switch to Urdu (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Urdu to system keyboard</summary>
+      <description>Shortcuts from Urdu to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'ur:phonetic'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-uz"
+          path="/org/nimf/engines/nimf-m17n-uz/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Uzbek (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Uzbek</summary>
+      <description>Shortcuts to switch to Uzbek (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Uzbek to system keyboard</summary>
+      <description>Shortcuts from Uzbek to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'uz:kbd'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-vi"
+          path="/org/nimf/engines/nimf-m17n-vi/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Vietnamese (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>true</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; v']</default>
+      <summary>Shortcuts to switch to Vietnamese</summary>
+      <description>Shortcuts to switch to Vietnamese (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; v']</default>
+      <summary>Shortcuts from Vietnamese to system keyboard</summary>
+      <description>Shortcuts from Vietnamese to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'vi:telex'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+  <schema id="org.nimf.engines.nimf-m17n-yi"
+          path="/org/nimf/engines/nimf-m17n-yi/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Yiddish (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Yiddish</summary>
+      <description>Shortcuts to switch to Yiddish (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Yiddish to system keyboard</summary>
+      <description>Shortcuts from Yiddish to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'yi:yivo'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+</schemalist>

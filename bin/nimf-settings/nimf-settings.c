@@ -36,6 +36,8 @@
 
 #define EXPORT_ENVIRONMENT "export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)"
 #define INPUT_CONF         "50-input.conf"
+/* Minimum width to prevent sidebar from collapsing on some GTK themes */
+#define SIDEBAR_MIN_WIDTH  240
 
 #define NIMF_TYPE_SETTINGS             (nimf_settings_get_type ())
 #define NIMF_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SETTINGS, NimfSettings))
@@ -1440,7 +1442,7 @@ static void
 nimf_settings_init (NimfSettings *nsettings)
 {
   nsettings->app = g_application_new ("org.nimf.settings",
-                                      G_APPLICATION_FLAGS_NONE);
+                                      G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (nsettings->app, "activate",
                     G_CALLBACK (on_activate), nsettings);
 }
@@ -1489,6 +1491,21 @@ int main (int argc, char **argv)
 
   g_setenv ("GTK_IM_MODULE", "gtk-im-context-simple", TRUE);
   g_setenv ("GDK_BACKEND", "x11", TRUE);
+
+  /* Ensure GLib can find compiled schemas even when XDG_DATA_DIRS is misconfigured.
+   * If the app is started without GSETTINGS_SCHEMA_DIR and default lookup fails
+   * in some environments, explicitly point to the system schemas directory. */
+  if (g_getenv ("GSETTINGS_SCHEMA_DIR") == NULL)
+  {
+    const gchar *system_schema_dir = "/usr/share/glib-2.0/schemas";
+    gchar       *compiled = g_build_filename (G_DIR_SEPARATOR_S,
+                                              system_schema_dir,
+                                              "gschemas.compiled",
+                                              NULL);
+    if (g_file_test (compiled, G_FILE_TEST_EXISTS))
+      g_setenv ("GSETTINGS_SCHEMA_DIR", system_schema_dir, TRUE);
+    g_free (compiled);
+  }
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, NIMF_LOCALE_DIR);

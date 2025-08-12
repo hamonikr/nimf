@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-system-keyboard"
+          path="/org/nimf/engines/nimf-system-keyboard/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'System Keyboard'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to system keyboard</summary>
+      <description>Shortcuts to switch to system keyboard</description>
+    </key>
+  </schema>
+</schemalist>

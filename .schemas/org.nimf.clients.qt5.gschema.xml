@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.clients.qt5"
+          path="/org/nimf/clients/qt5/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Qt5'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="reset-on-mouse-button-press">
+      <default>true</default>
+      <summary>Reset when clicking the mouse button</summary>
+      <description>Reset when clicking the mouse button</description>
+    </key>
+  </schema>
+</schemalist>

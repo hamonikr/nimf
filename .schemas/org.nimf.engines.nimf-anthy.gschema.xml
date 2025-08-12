@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-anthy"
+          path="/org/nimf/engines/nimf-anthy/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Japanese (anthy)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>true</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
+      <summary>Shortcuts to switch to Japanese</summary>
+      <description>Shortcuts to switch to Japanese (anthy)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
+      <summary>Shortcuts from Japanese to system keyboard</summary>
+      <description>Shortcuts from Japanese to system keyboard</description>
+    </key>
+    <key type="as" name="hiragana-keys">
+      <default>['F6']</default>
+      <summary>Hotkey for Hiragana</summary>
+      <description>Hotkeys for converting to Hiragana</description>
+    </key>
+    <key type="as" name="katakana-keys">
+      <default>['F7']</default>
+      <summary>Hotkey for Katakana</summary>
+      <description>Hotkeys for converting to Katakana</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'romaji'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+    <key type="s" name="get-n-input-mode-list">
+      <choices>
+        <choice value='common' />
+        <choice value='explicit' />
+      </choices>
+      <default>'common'</default>
+      <summary>n input mode</summary>
+      <description>Choose how you type Hiragana letter n.</description>
+    </key>
+  </schema>
+</schemalist>
