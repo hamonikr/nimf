@@ -41,7 +41,7 @@
 #define EXPORT_ENVIRONMENT "export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)"
 #define INPUT_CONF         "50-input.conf"
 /* Minimum width to prevent sidebar from collapsing on some GTK themes */
-#define SIDEBAR_MIN_WIDTH  240
+#define SIDEBAR_MIN_WIDTH  180
 
 #define NIMF_TYPE_SETTINGS             (nimf_settings_get_type ())
 #define NIMF_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_SETTINGS, NimfSettings))
@@ -54,11 +54,13 @@ typedef struct _NimfXkb
 {
   XklEngine  *engine;
   GtkWidget  *options_box;
+  GtkWidget  *scrolled;
   GtkWidget  *vbox;
   gchar     **options;
   gint        options_len;
   GSList     *toggle_buttons;
   GSList     *radio_group;
+  GSList     *expanders;
 } NimfXkb;
 
 typedef struct _NimfSettings      NimfSettings;
@@ -729,7 +731,8 @@ on_tree_view_realize (GtkWidget         *tree_view,
 #else
   gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
 #endif
-  gtk_widget_set_size_request (GTK_WIDGET (scrolled_w), -1, height * 3 );
+  /* Increase visible rows for hotkey list (default: 6 rows) */
+  gtk_widget_set_size_request (GTK_WIDGET (scrolled_w), -1, height * 5 );
 }
 
 static GtkWidget *
@@ -1169,6 +1172,24 @@ build_radio_button_option (XklConfigRegistry   *config,
   configure_button (radio_button, item, xkb);
 }
 
+/* XKB 옵션 그룹 아코디언 동작: 하나만 펼쳐지도록 콜백 */
+static void
+on_xkb_expander_notify_expanded (GtkExpander *expander,
+                                 GParamSpec  *pspec,
+                                 gpointer     user_data)
+{
+  NimfXkb *xkb = (NimfXkb *) user_data;
+
+  if (!gtk_expander_get_expanded (expander))
+    return;
+
+  for (GSList *l = xkb->expanders; l; l = l->next)
+  {
+    if (l->data != expander)
+      gtk_expander_set_expanded (GTK_EXPANDER (l->data), FALSE);
+  }
+}
+
 static void
 build_option_group (XklConfigRegistry   *config,
                     const XklConfigItem *item,
@@ -1180,6 +1201,11 @@ build_option_group (XklConfigRegistry   *config,
   gtk_widget_set_margin_start  (xkb->vbox, 15);
   gtk_container_add (GTK_CONTAINER (expander), xkb->vbox);
   gtk_box_pack_start (GTK_BOX (xkb->options_box), expander, FALSE, FALSE, 0);
+
+  /* 아코디언: 하나만 펼쳐지도록 관리 */
+  xkb->expanders = g_slist_append (xkb->expanders, expander);
+  g_signal_connect (expander, "notify::expanded",
+                    G_CALLBACK (on_xkb_expander_notify_expanded), xkb);
 
   if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), XCI_PROP_ALLOW_MULTIPLE_SELECTION)))
   {
@@ -1211,6 +1237,7 @@ nimf_xkb_free (NimfXkb *xkb)
 */
   g_slist_free (xkb->toggle_buttons);
   g_slist_free (xkb->radio_group);
+  g_slist_free (xkb->expanders);
   g_slice_free (NimfXkb, xkb);
 }
 
@@ -1231,7 +1258,7 @@ nimf_settings_build_xkb_options_ui ()
   xkb = g_slice_new0 (NimfXkb);
   xkb->options = g_settings_get_strv (settings, "xkb-options");
   xkb->options_len = g_strv_length (xkb->options);
-  xkb->options_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  xkb->options_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   g_object_set_data_full (G_OBJECT (xkb->options_box), "xkb", xkb,
                           (GDestroyNotify) nimf_xkb_free);
   gtk_widget_set_margin_start  (xkb->options_box, 15);
@@ -1249,7 +1276,22 @@ nimf_settings_build_xkb_options_ui ()
   g_object_unref (settings);
   g_object_unref (config_registry);
 
-  return xkb->options_box;
+  /* 스크롤 컨테이너로 감싸서 높이를 제한 */
+  GtkWidget *scrolled = gtk_scrolled_window_new (NULL, NULL);
+  xkb->scrolled = scrolled;
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+#if GTK_CHECK_VERSION(3,16,0)
+  gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (scrolled), 220);
+#endif
+  gtk_widget_set_size_request (scrolled, -1, 360);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scrolled), xkb->options_box);
+#else
+  gtk_container_add (GTK_CONTAINER (scrolled), xkb->options_box);
+#endif
+
+  return scrolled;
 }
 
 static void
@@ -1297,6 +1339,289 @@ on_row_selected (GtkListBox    *box,
   gtk_widget_show_all (content);
 }
 
+/* -----------------------------
+ * 새 UI 구성 요소 (GTK3/GTK4 겸용)
+ * - 좌측 사이드바는 범주 단위로만 구성하고,
+ *   각 범주에 해당하는 페이지를 스택으로 전환한다.
+ * ----------------------------- */
+
+static GtkWidget *
+build_group_title (const gchar *title)
+{
+  GtkWidget *label = gtk_label_new (NULL);
+  gchar *markup = g_strdup_printf ("<span weight=\"bold\" size=\"large\">%s</span>", title);
+  gtk_label_set_markup (GTK_LABEL (label), markup);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
+#if GTK_CHECK_VERSION(3,12,0)
+  gtk_widget_set_margin_top (label, 10);
+  gtk_widget_set_margin_bottom (label, 6);
+#endif
+  g_free (markup);
+  return label;
+}
+
+static GtkWidget *
+nimf_settings_build_keyboard_page (void)
+{
+  GtkWidget *page;
+  GtkWidget *section;
+
+  page = gtk_box_new (GTK_ORIENTATION_VERTICAL, 15);
+#if GTK_CHECK_VERSION (3, 12, 0)
+  gtk_widget_set_margin_start  (page, 15);
+  gtk_widget_set_margin_end    (page, 15);
+#else
+  gtk_widget_set_margin_left   (page, 15);
+  gtk_widget_set_margin_right  (page, 15);
+#endif
+  gtk_widget_set_margin_top    (page, 15);
+  gtk_widget_set_margin_bottom (page, 15);
+
+  /* 전역 설정: 단축키 등 */
+  section = build_group_title (_("기본 설정"));
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (page), section);
+#else
+  gtk_box_pack_start (GTK_BOX (page), section, FALSE, FALSE, 0);
+#endif
+  {
+    NimfSettingsPage *general = nimf_settings_page_new ("org.nimf");
+#if GTK_CHECK_VERSION(4, 0, 0)
+    gtk_box_append (GTK_BOX (page), general->box);
+#else
+    gtk_box_pack_start (GTK_BOX (page), general->box, FALSE, FALSE, 0);
+#endif
+  }
+
+  /* 기본 엔진 선택 섹션 */
+  section = build_group_title (_("기본 엔진"));
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (page), section);
+#else
+  gtk_box_pack_start (GTK_BOX (page), section, FALSE, FALSE, 0);
+#endif
+  {
+    NimfSettingsPage *engines_root = nimf_settings_page_new ("org.nimf.engines");
+#if GTK_CHECK_VERSION(4, 0, 0)
+    gtk_box_append (GTK_BOX (page), engines_root->box);
+#else
+    gtk_box_pack_start (GTK_BOX (page), engines_root->box, FALSE, FALSE, 0);
+#endif
+  }
+
+  /* XKB 옵션 섹션 */
+  section = build_group_title (_("XKB 옵션"));
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (page), section);
+#else
+  gtk_box_pack_start (GTK_BOX (page), section, FALSE, FALSE, 0);
+#endif
+  {
+    GtkWidget *xkb = nimf_settings_build_xkb_options_ui ();
+    if (xkb)
+    {
+#if GTK_CHECK_VERSION(4, 0, 0)
+      gtk_box_append (GTK_BOX (page), xkb);
+#else
+      gtk_box_pack_start (GTK_BOX (page), xkb, FALSE, FALSE, 0);
+#endif
+    }
+  }
+
+  return page;
+}
+
+typedef struct
+{
+  gchar *schema_id;
+} EngineDialogData;
+
+static void
+on_engine_settings_clicked (GtkButton *button, gpointer user_data)
+{
+  EngineDialogData *data = (EngineDialogData *) user_data;
+  NimfSettingsPage *page = nimf_settings_page_new (data->schema_id);
+
+  GtkWidget *dialog;
+  GtkWidget *content_area;
+#if GTK_CHECK_VERSION (3, 12, 0)
+  GtkDialogFlags flags = GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR;
+#else
+  GtkDialogFlags flags = GTK_DIALOG_MODAL;
+#endif
+  dialog = gtk_dialog_new_with_buttons (_("엔진 설정"),
+                                        GTK_WINDOW (nimf_settings_window),
+                                        flags,
+                                        _("_Close"), GTK_RESPONSE_CLOSE,
+                                        NULL);
+  gtk_widget_set_size_request (dialog, 560, 420);
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (content_area), page->box);
+#else
+  gtk_box_pack_start (GTK_BOX (content_area), page->box, TRUE, TRUE, 0);
+#endif
+  gtk_widget_show_all (content_area);
+  gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
+  g_free (data->schema_id);
+  g_slice_free (EngineDialogData, data);
+}
+
+static void
+on_engine_active_toggled (GtkSwitch *sw, GParamSpec *pspec, gpointer user_data)
+{
+  const gchar *schema_id = (const gchar *) user_data;
+  GSettings *gsettings = g_settings_new (schema_id);
+  gboolean active = gtk_switch_get_active (sw);
+
+  GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
+  GSettingsSchema *schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+  if (schema && g_settings_schema_has_key (schema, "active-engine"))
+    g_settings_set_boolean (gsettings, "active-engine", active);
+
+  if (schema)
+    g_settings_schema_unref (schema);
+  g_object_unref (gsettings);
+}
+
+static GtkWidget *
+nimf_settings_build_engines_page (void)
+{
+  GtkWidget *outer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
+#if GTK_CHECK_VERSION (3, 12, 0)
+  gtk_widget_set_margin_start  (outer, 15);
+  gtk_widget_set_margin_end    (outer, 15);
+#else
+  gtk_widget_set_margin_left   (outer, 15);
+  gtk_widget_set_margin_right  (outer, 15);
+#endif
+  gtk_widget_set_margin_top    (outer, 15);
+  gtk_widget_set_margin_bottom (outer, 15);
+
+  GtkWidget *title = build_group_title (_("언어 엔진"));
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_box_append (GTK_BOX (outer), title);
+#else
+  gtk_box_pack_start (GTK_BOX (outer), title, FALSE, FALSE, 0);
+#endif
+
+  GtkWidget *scrolled = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+                                  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  GtkWidget *list = gtk_list_box_new ();
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scrolled), list);
+  gtk_box_append (GTK_BOX (outer), scrolled);
+#else
+  gtk_container_add (GTK_CONTAINER (scrolled), list);
+  gtk_box_pack_start (GTK_BOX (outer), scrolled, TRUE, TRUE, 0);
+#endif
+
+  /* 엔진 스키마를 열거하여 한 페이지로 나열 */
+  GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
+  gchar **schemas = NULL;
+  g_settings_schema_source_list_schemas (source, TRUE, &schemas, NULL);
+  for (gint i = 0; schemas[i] != NULL; i++)
+  {
+    const gchar *schema_id = schemas[i];
+    if (g_str_has_prefix (schema_id, "org.nimf.engines.") == FALSE)
+      continue;
+
+    GSettingsSchema *schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+    if (schema == NULL)
+      continue;
+
+    GSettings *gs = g_settings_new (schema_id);
+    gchar *name = g_settings_get_string (gs, "hidden-schema-name");
+
+    GtkWidget *row = gtk_list_box_row_new ();
+    GtkWidget *hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
+    GtkWidget *label = gtk_label_new (name ? name : schema_id);
+    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    gtk_widget_set_hexpand (label, TRUE);
+
+    GtkWidget *settings_btn = gtk_button_new_with_label (_("설정…"));
+    EngineDialogData *data = g_slice_new0 (EngineDialogData);
+    data->schema_id = g_strdup (schema_id);
+    g_signal_connect (settings_btn, "clicked",
+                      G_CALLBACK (on_engine_settings_clicked), data);
+
+    GtkWidget *active_sw = gtk_switch_new ();
+    if (g_settings_schema_has_key (schema, "active-engine"))
+    {
+      gboolean active = g_settings_get_boolean (gs, "active-engine");
+      gtk_switch_set_active (GTK_SWITCH (active_sw), active);
+      g_signal_connect (active_sw, "notify::active",
+                        G_CALLBACK (on_engine_active_toggled), (gpointer) schema_id);
+    }
+    else
+    {
+      gtk_widget_set_sensitive (active_sw, FALSE);
+    }
+
+#if GTK_CHECK_VERSION(4, 0, 0)
+    gtk_box_append (GTK_BOX (hbox), label);
+    gtk_box_append (GTK_BOX (hbox), active_sw);
+    gtk_box_append (GTK_BOX (hbox), settings_btn);
+    gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), hbox);
+#else
+    gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+    gtk_box_pack_end   (GTK_BOX (hbox), settings_btn, FALSE, FALSE, 0);
+    gtk_box_pack_end   (GTK_BOX (hbox), active_sw, FALSE, FALSE, 0);
+    gtk_container_add  (GTK_CONTAINER (row), hbox);
+#endif
+
+    gtk_list_box_insert (GTK_LIST_BOX (list), row, -1);
+
+    g_free (name);
+    g_object_unref (gs);
+    g_settings_schema_unref (schema);
+  }
+  g_strfreev (schemas);
+
+  return outer;
+}
+
+static GtkWidget *
+nimf_settings_build_clients_page (void)
+{
+  GtkWidget *page = gtk_box_new (GTK_ORIENTATION_VERTICAL, 15);
+#if GTK_CHECK_VERSION (3, 12, 0)
+  gtk_widget_set_margin_start  (page, 15);
+  gtk_widget_set_margin_end    (page, 15);
+#else
+  gtk_widget_set_margin_left   (page, 15);
+  gtk_widget_set_margin_right  (page, 15);
+#endif
+  gtk_widget_set_margin_top    (page, 15);
+  gtk_widget_set_margin_bottom (page, 15);
+
+  struct { const gchar *schema; const gchar *title; } sections[] = {
+    { "org.nimf.clients.gtk", _("GTK+") },
+    { "org.nimf.clients.qt5", _("Qt5") },
+    { "org.nimf.clients.qt6", _("Qt6") },
+  };
+
+  for (guint i = 0; i < G_N_ELEMENTS (sections); i++)
+  {
+    GtkWidget *title = build_group_title (sections[i].title);
+#if GTK_CHECK_VERSION(4, 0, 0)
+    gtk_box_append (GTK_BOX (page), title);
+#else
+    gtk_box_pack_start (GTK_BOX (page), title, FALSE, FALSE, 0);
+#endif
+    NimfSettingsPage *sec = nimf_settings_page_new (sections[i].schema);
+#if GTK_CHECK_VERSION(4, 0, 0)
+    gtk_box_append (GTK_BOX (page), sec->box);
+#else
+    gtk_box_pack_start (GTK_BOX (page), sec->box, FALSE, FALSE, 0);
+#endif
+  }
+
+  return page;
+}
+
 static void
 append_xkb_menu_after_nimf_menu (GtkWidget *listbox)
 {
@@ -1322,127 +1647,66 @@ append_xkb_menu_after_nimf_menu (GtkWidget *listbox)
 static GtkWidget *
 nimf_settings_build_main_window (NimfSettings *nsettings)
 {
-  GSettingsSchemaSource *source;
   GtkWidget  *window;
   GtkWidget  *sidebar;
-  GtkWidget  *content;
-  GtkWidget  *listbox;
-  GtkWidget  *box;
-  GSList     *schema_list = NULL;
-  gchar     **schemas;
-  gint        i;
+  GtkWidget  *stack;
+  GtkWidget  *container;
 
-  source = g_settings_schema_source_get_default ();
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size (GTK_WINDOW (window), 800, 600);
+  gtk_window_set_default_size (GTK_WINDOW (window), 880, 520);
   gtk_window_set_title        (GTK_WINDOW (window), _("Nimf Settings"));
   gtk_window_set_icon_name    (GTK_WINDOW (window), "nimf-logo");
 
-  listbox = gtk_list_box_new ();
-  gtk_list_box_set_selection_mode (GTK_LIST_BOX (listbox), GTK_SELECTION_BROWSE);
-  g_settings_schema_source_list_schemas (source, TRUE, &schemas, NULL);
-
-  for (i = 0; schemas[i] != NULL; i++)
-    if (g_str_has_prefix (schemas[i], "org.nimf") &&
-        g_strcmp0 (schemas[i], "org.nimf.settings"))
-      schema_list = g_slist_prepend (schema_list, schemas[i]);
-
-  for (schema_list = g_slist_sort (schema_list, (GCompareFunc) on_comparison);
-       schema_list != NULL;
-       schema_list = schema_list->next)
-  {
-    GSettingsSchemaKey *key;
-    GSettingsSchema    *schema;
-    GVariant           *variant;
-    GtkWidget          *row;
-    GtkWidget          *label;
-    gchar              *title;
-    gchar              *p;
-    gint                level = 0;
-    gchar              *schema_id = schema_list->data;
-
-    schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
-
-    if (schema == NULL)
-    {
-      g_warning (G_STRLOC ": %s: %s is not found.", G_STRFUNC, schema_id);
-      continue;
-    }
-
-    key = g_settings_schema_get_key (schema, "hidden-schema-name");
-    variant = g_settings_schema_key_get_default_value (key);
-    title = g_strdup (g_variant_get_string (variant, NULL));
-
-    for (p = schema_id; *p != 0; p++)
-      if (*p == '.')
-        level++;
-
-    if (level < 3)
-    {
-      gchar *markup;
-
-      label  = gtk_label_new (NULL);
-      markup = g_strdup_printf ("<span weight=\"bold\""
-                                "size=\"large\">\%s</span>", title);
-      gtk_label_set_markup (GTK_LABEL (label), markup);
-
-      g_free (markup);
-    }
-    else
-    {
-      label = gtk_label_new (title);
-    }
-
-  row = gtk_list_box_row_new ();
-  gtk_widget_set_name (row, schema_id);
-  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), FALSE);
+  /* 스택과 사이드바 구성 */
 #if GTK_CHECK_VERSION(4, 0, 0)
-  gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), label);
+  stack = gtk_stack_new ();
+  gtk_stack_set_transition_type (GTK_STACK (stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
+  GtkWidget *sidebar_widget = gtk_stack_sidebar_new (); /* GTK4도 동일 명칭 */
+  gtk_stack_sidebar_set_stack (GTK_STACK_SIDEBAR (sidebar_widget), GTK_STACK (stack));
 #else
-  gtk_container_add (GTK_CONTAINER (row), label);
+  stack = gtk_stack_new ();
+  gtk_stack_set_transition_type (GTK_STACK (stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
+  GtkWidget *sidebar_widget = gtk_stack_sidebar_new ();
+  gtk_stack_sidebar_set_stack (GTK_STACK_SIDEBAR (sidebar_widget), GTK_STACK (stack));
 #endif
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
-    gtk_widget_set_margin_start  (label, 15);
-    gtk_widget_set_margin_end    (label, 15);
-    gtk_widget_set_margin_top    (label, 5);
-    gtk_widget_set_margin_bottom (label, 5);
-    gtk_list_box_insert (GTK_LIST_BOX (listbox), row, -1);
 
-    if (!g_strcmp0 (schema_id, "org.nimf.clients") ||
-        !g_strcmp0 (schema_id, "org.nimf.services"))
-    {
-      gtk_list_box_row_set_selectable (GTK_LIST_BOX_ROW (row), FALSE);
-    }
+  /* 페이지 추가: 키보드, 클라이언트, 언어 엔진 */
+  GtkWidget *page_keyboard = nimf_settings_build_keyboard_page ();
+  GtkWidget *page_clients  = nimf_settings_build_clients_page ();
+  GtkWidget *page_engines  = nimf_settings_build_engines_page ();
 
-    g_free (title);
-    g_variant_unref (variant);
-    g_settings_schema_key_unref (key);
-    g_settings_schema_unref (schema);
-  }
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_stack_add_titled (GTK_STACK (stack), page_keyboard, "keyboard", _("키보드"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_clients,  "clients",  _("클라이언트"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_engines,  "engines",  _("언어 엔진"));
+#else
+  gtk_stack_add_titled (GTK_STACK (stack), page_keyboard, "keyboard", _("키보드"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_clients,  "clients",  _("클라이언트"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_engines,  "engines",  _("언어 엔진"));
+#endif
 
-  if ((gnome_xkb_is_available () && gnome_is_running ()) ||
-      !g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "x11"))
-    append_xkb_menu_after_nimf_menu (listbox);
-
+  /* 레이아웃 배치 */
   sidebar = gtk_scrolled_window_new (NULL, NULL);
-  content = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sidebar),
-                                  GTK_POLICY_NEVER,
-                                  GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (sidebar), listbox);
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX (box), sidebar, FALSE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (box), content, TRUE,  TRUE, 0);
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 #if GTK_CHECK_VERSION(4, 0, 0)
-  gtk_window_set_child (GTK_WINDOW (window), box);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sidebar), sidebar_widget);
 #else
-  gtk_container_add (GTK_CONTAINER (window), box);
+  gtk_container_add (GTK_CONTAINER (sidebar), sidebar_widget);
 #endif
 
-  g_signal_connect (listbox, "row-selected", G_CALLBACK (on_row_selected), content);
-
-  g_strfreev   (schemas);
-  g_slist_free (schema_list);
+  container = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#if GTK_CHECK_VERSION(4, 0, 0)
+  gtk_widget_set_size_request (sidebar, SIDEBAR_MIN_WIDTH, -1);
+  gtk_box_append (GTK_BOX (container), sidebar);
+  gtk_box_append (GTK_BOX (container), stack);
+  gtk_window_set_child (GTK_WINDOW (window), container);
+#else
+  gtk_widget_set_size_request (sidebar, SIDEBAR_MIN_WIDTH, -1);
+  gtk_box_pack_start (GTK_BOX (container), sidebar, FALSE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (container), stack, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (window), container);
+#endif
 
   g_signal_connect (window, "destroy",
                     G_CALLBACK (on_destroy), nsettings->app);
