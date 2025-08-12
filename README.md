@@ -1,117 +1,177 @@
+# nimf
+
 [![Build Status](https://github.com/hamonikr/nimf/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/build.yml)
 [![Donate Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://ko.liberapay.com/hamonikr/)
 
-![x86_64](https://img.shields.io/badge/amd64-darkblue)
-![ubuntu](https://img.shields.io/badge/ubuntu->=18.04-red)
-![debian](https://img.shields.io/badge/debian->=10-brown)
-![arch](https://img.shields.io/badge/archlinux-rolling-blue)
-![manjaro](https://img.shields.io/badge/manjaro-x86_64-freen)
-![fedora-33](https://img.shields.io/badge/fedora->=33-blue)
-![opensuse](https://img.shields.io/badge/opensuse-leap-green)
-
-![arm64](https://img.shields.io/badge/arm64-purple)
-![ubuntu](https://img.shields.io/badge/ubuntu->=18.04-red)
-![debian](https://img.shields.io/badge/debian->=10-brown)
-![arch](https://img.shields.io/badge/archlinux-rolling-blue)
-![manjaro](https://img.shields.io/badge/manjaro-x86_64-freen)
-![fedora-33](https://img.shields.io/badge/fedora->=33-blue)
+![version](https://img.shields.io/badge/version-1.3.9-blue)
+![toolkits](https://img.shields.io/badge/GTK-2%2F3%2F4-green)
+![qt](https://img.shields.io/badge/Qt-5%2F6-green)
+![arch](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-darkblue)
+![ubuntu](https://img.shields.io/badge/Ubuntu-22.04%2B-orange)
+![debian](https://img.shields.io/badge/Debian-12%2B-brown)
+![fedora](https://img.shields.io/badge/Fedora-33%2B-blue)
+![opensuse](https://img.shields.io/badge/openSUSE-Leap%2015.6-green)
+![archlinux](https://img.shields.io/badge/Arch-Rolling-blue)
 
 [English](#nimf) | [한국어](#가볍고-빠른-입력기-프레임워크-nimf)
 
 ## Table of Contents
+
 - [Nimf](#nimf)
+  - [What’s New in 1.3.9](#whats-new-in-139)
   - [Features](#features)
   - [Supported Platforms](#supported-platforms)
   - [Installation](#installation)
-    - [Ubuntu, Debian, LinuxMint](#ubuntu-debian-linuxmint)
+    - [Ubuntu/Debian/LinuxMint](#ubuntudebianlinuxmint)
     - [Arch Linux, Manjaro](#arch-linux-manjaro)
     - [Fedora, CentOS, RedHat](#fedora-centos-redhat)
-    - [OpenSUSE Leap](#opensuse-leap)
+    - [openSUSE Leap 15.6](#opensuse-leap-156)
   - [Configuration](#configuration)
   - [Build Instructions](#build-instructions)
+  - [Add Custom Hangul Keyboard Layouts](#add-custom-hangul-keyboard-layouts)
   - [Additional Resources](#additional-resources)
   - [License](#license)
   - [Issue](#issue)
-  - [Contribution](#contribution)  
+  - [Contribution](#contribution)
 - [Korean Section](#가볍고-빠른-입력기-프레임워크-nimf)
-
-
-# nimf
 
 Nimf is a lightweight, fast and extensible input method framework.
 
 ![nimf](docs/nimf.png)
 
-### Features
+## What’s New in 1.3.9
+
+- Full GTK4 support (GTK2/GTK3/GTK4 can co-exist)
+- Debian packaging split into two packages:
+  - `nimf`: core framework + Korean(libhangul), Japanese(anthy), Chinese(rime)
+  - `nimf-i18n`: additional multilingual engines (m17n)
+- Updated build options:
+  - `--enable-gtk4` to build GTK4 IM module
+  - `--with-gtk=3|4` to select GTK version for `nimf-settings`
+  - Engine toggles: `--disable-nimf-{libhangul,anthy,m17n,rime}`
+  - `--disable-x11` for Wayland-only setups
+  - `--with-im-config-data`, `--with-imsettings-data` for integration
+
+## Features
+
 - Input Method Server: `nimf`
-- Language Engines: 
+- Language Engines:
   - System Keyboard
-  - Chinese (based on librime)
-  - Japanese (based on anthy)
   - Korean (based on libhangul)
-  - Various languages (based on m17n)
+  - Japanese (based on anthy)
+  - Chinese (based on librime)
+  - Various languages (based on m17n, via `nimf-i18n`)
 - Service Modules:
-  - Indicator (based on appindicator)
+  - Indicator (ayatana-appindicator)
   - Wayland, XIM (based on IMdkit)
   - Preedit window, Candidate window
 - Client Modules:
-  - GTK+2, GTK+3, Qt5, Qt6
+  - GTK+2, GTK+3, GTK4, Qt5, Qt6
 
-### Supported Platforms
-- **x86_64**
-  - Ubuntu (>= 18.04)
-  - Debian (>= 10)
+## Supported Platforms
+
+- x86_64
+  - Ubuntu (>= 18.04; GTK4 support on >= 22.04)
+  - Debian (>= 10; GTK4 support on >= 12)
   - Arch Linux (Rolling)
   - Fedora (>= 33)
   - openSUSE Leap (15.6)
-- **arm64**
+- arm64
   - Ubuntu (>= 18.04)
   - Debian (>= 10)
   - Arch Linux (Rolling)
 
-# Install
+## Installation
 
-## Ubuntu(amd64, arm64), Debian(amd64, arm64), LinuxMint
-On Ubuntu 21.10 or later distributions, the ibus-daemon starts automatically, causing conflicts with the input method nimf. 
+### Ubuntu/Debian/LinuxMint
+
+On Ubuntu 21.10 or later, `ibus-daemon` may auto-start and conflict with Nimf.
 
 Method 1: Remove ibus
-```
+
+```bash
 sudo apt purge ibus
 ```
+
 Method 2: Disable ibus-daemon
-```
+
+```bash
 sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
 ```
 
-Install nimf
-```
+Install Nimf
+
+```bash
 wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
-sudo apt install nimf nimf-libhangul
+sudo apt install nimf
 
 im-config -n nimf
 ```
 
-If you want to use other languages (Japanese, Chinese, etc.)
+Additional multilingual engines (m17n)
+
+```bash
+sudo apt install nimf-i18n
 ```
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+
+### Arch Linux, Manjaro
+
+Option A) Build from source with makepkg
+
+```bash
+# Install latest libhangul-git
+git clone https://aur.archlinux.org/libhangul-git.git
+cd libhangul-git
+makepkg -si
+
+# Build nimf package
+git clone https://github.com/hamonikr/nimf.git
+cd nimf
+makepkg -si
 ```
 
-## Arch Linux, Manjaro
+Option B) Install from Releases
 
- 1) Download and Install
+```bash
+# Download latest release package from the Releases page and install
+sudo pacman -U ./nimf-*.pkg.tar.zst
 ```
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1-any.pkg.tar.zst
 
-sudo pacman -U ./nimf-1.3.8-1-any.pkg.tar.zst
-``` 
+### Fedora, CentOS, RedHat
 
- 2) im setting
+Install from Releases (RPM)
+
+```bash
+# Download the latest .rpm from the Releases page and install
+sudo dnf install ./nimf-*.rpm
 ```
-vi ~/.xprofile
 
+### openSUSE Leap 15.6
+
+1. Install package GPG key
+
+```bash
+wget https://github.com/hamonikr/nimf/raw/master/RPM-GPG-KEY-nimf
+sudo rpm --import RPM-GPG-KEY-nimf
+rpm -qa gpg-pubkey --qf "%{NAME}-%{VERSION}-%{RELEASE}\n" | grep e42665b8
+```
+
+1. Install package
+
+```bash
+# Download the latest .rpm from the Releases page
+sudo zypper install ./nimf-*.rpm
+```
+
+1. Reboot
+
+## Configuration
+
+Set IM modules in your shell profile if needed:
+
+```bash
 export GTK_IM_MODULE=nimf
-export QT4_IM_MODULE="nimf"
 export QT_IM_MODULE=nimf
 export XMODIFIERS="@im=nimf"
 
@@ -119,250 +179,307 @@ export XMODIFIERS="@im=nimf"
 export GTK4_IM_MODULE=nimf
 ```
 
-## fedora, centos, redhat
-
- 1) Download and Install
-```
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
-
-sudo yum install ./nimf-1.3.8-1.fc40.x86_64.rpm
-``` 
-
-## opensuse-leap 15.6
-
- 1) Install package gpg key from nimf repo.
- ```
- # Package GPG Key Download
- wget https://github.com/hamonikr/nimf/raw/master/RPM-GPG-KEY-nimf
- 
- # Package GPG key installation
- sudo rpm --import RPM-GPG-KEY-nimf
- 
- # Check the installed key
- rpm -qa gpg-pubkey --qf "%{NAME}-%{VERSION}-%{RELEASE}\n" | grep e42665b8
- ```
-
- 2) Download and Install
- 
- The user can select and install the package you use, including a Korean package or including other languages package.
-```
-# When using other languages
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.x86_64.rpm
-
-sudo zypper install ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
-
-# If you want to install only Korean
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
-
-sudo zypper install ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
-
-``` 
- 3) Reboot
-
- Use the nimf after the system restart.
-
 ## Build Instructions
 
-For detailed build instructions, see the following sections in the [BUILD.md](BUILD.md) file:
+See [BUILD.md](BUILD.md) for full, distro-specific packaging guides.
 
-- [Building Debian Package](BUILD.md#debian-package)
-- [Building Arch Linux Package](BUILD.md#arch-linux-package)
-- [Building RPM Package](BUILD.md#rpm-package)
-- [Building OpenSUSE Package](BUILD.md#opensuse)
-- [Building from source](BUILD.md#Build-from-Source)
-- [Debugging](BUILD.md#Debugging)
+Quick start (from source):
 
+```bash
+git clone --recurse-submodules https://github.com/hamonikr/nimf
+cd nimf
+./autogen.sh
+./configure --prefix=/usr/local
+make -j "$(nproc)"
+sudo make install
+```
 
-### Additional Resources
+Key configure options:
 
-* Manjaro : https://github.com/hamonikr/nimf/wiki/Manjaro-build
-* CentOS 8 : https://blog.naver.com/dfnk5516/222074913406
-* Raspberry pi 4 arm64 : https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64
-* Armbian : https://github.com/hamonikr/nimf/wiki/Armbian-build
-* Manjaro ARM : https://github.com/hamonikr/nimf/wiki/Manjaro-build
-* Arch AUR : https://aur.archlinux.org/packages/nimf-git/
-* Others : https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro
+- `--enable-gtk4`: Build GTK4 IM module (auto-detect by default)
+- `--with-gtk=3|4`: Select GTK version for `nimf-settings` (default: 3)
+- `--disable-nimf-libhangul`, `--disable-nimf-anthy`, `--disable-nimf-m17n`, `--disable-nimf-rime`
+- `--disable-x11`: Build without X11 (Wayland-only)
+- `--with-im-config-data`, `--with-imsettings-data`: Install integration data
 
-<hr>
+## Add Custom Hangul Keyboard Layouts
 
+Hangul layouts for libhangul are defined as XML files in the following paths:
+- System-wide: `/usr/share/libhangul/keyboards`
+- Per-user: `$HOME/.local/share/libhangul/keyboards` or `$XDG_DATA_HOME/libhangul/keyboards`
 
-# 가볍고 빠른 입력기 프레임워크 nimf
+Refer to the default layouts and combination file for structure:
+
+- `docs/hangul-keyboard-2.xml`
+- `docs/hangul-combination-default.xml`
+
+General structure:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<hangul-keyboard id="2" type="jamo">
+  <name>Dubeolsik</name>
+  <name xml:lang="ko">두벌식</name>
+
+  <map id="0">
+    <item key="0x41" value="0x1106"/>
+    <item key="0x42" value="0x1172"/>
+    ...
+  </map>
+
+  <combination id="0">
+    <item first="0x1100" second="0x1100" result="0x1101"/>
+    <item first="0x1169" second="0x1161" result="0x116a"/>
+    ...
+  </combination>
+  <!-- or -->
+  <include file="hangul-combination-default.xml"/>
+</hangul-keyboard>
+```
+
+Element notes:
+
+- `hangul-keyboard`: Root layout element
+  - `id`: ID used by the input engine
+  - `type`: `jamo`, `jamo-yet`, `jaso`, `jaso-yet`, `ro`
+- `name`: Visible name; localized via `xml:lang`
+- `map`: Key-to-Unicode mapping (ID fixed to 0)
+- `combination`: Sequential composition rules (ID fixed to 0)
+- `include`: Inline another XML by relative/absolute path
+
+## Additional Resources
+
+- Manjaro: <https://github.com/hamonikr/nimf/wiki/Manjaro-build>
+- CentOS 8: <https://blog.naver.com/dfnk5516/222074913406>
+- Raspberry Pi 4 arm64: <https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64>
+- Armbian: <https://github.com/hamonikr/nimf/wiki/Armbian-build>
+- Manjaro ARM: <https://github.com/hamonikr/nimf/wiki/Manjaro-build>
+- Arch AUR: <https://aur.archlinux.org/packages/nimf-git/>
+- Others: <https://github.com/hamonikr/nimf/wiki/How-to-Build-and-Install-with-Others-Distro>
+
+---
+
+## 가볍고 빠른 입력기 프레임워크 nimf
 
 [Go to English](#nimf)
 
 이 프로젝트는 한글입력기 nimf 가 더이상 [지속되기 힘든 상황](https://launchpad.net/~hodong/+archive/ubuntu/nimf) 이 되었기 때문에
 
-프로젝트의 지속적인 사용을 위해서는 관리가 필요하다고 생각되어 [nimf Project](https://gitlab.com/nimf-i18n/nimf) 를 포크한 프로젝트 입니다.
+프로젝트의 지속적인 사용을 위해 [nimf Project](https://gitlab.com/nimf-i18n/nimf)를 포크한 프로젝트입니다.
 
-다년간 한글 사용자를 위한 환경 개선에 많은 기여를 하신 Hodong Kim 님께 감사를 드립니다. 
+하모니카 개발팀은 개방형 OS 배포에 필수적인 한글 입력기에 대한 관리가 필요하다고 생각하며 앞으로 하모니카 팀에서 직접 nimf 프로젝트를 계속 관리합니다.
 
-하모니카 개발팀은 개방형OS 배포에 필수적인 한글입력기에 대한 관리가 필요하다고 생각하고 있으며
+## 1.3.9의 주요 변경사항
+- GTK4 완전 지원 (GTK2/GTK3/GTK4 동시 환경 지원)
+- 데비안 패키지 분리:
+  - `nimf`: 코어 + 한글(libhangul), 일본어(anthy), 중국어(rime)
+  - `nimf-i18n`: 다국어 엔진(m17n) 추가 패키지
+- 빌드 옵션 업데이트:
+  - `--enable-gtk4`: GTK4 IM 모듈 빌드
+  - `--with-gtk=3|4`: `nimf-settings`의 GTK 버전 선택
+  - 엔진 토글: `--disable-nimf-{libhangul,anthy,m17n,rime}`
+  - `--disable-x11`: Wayland 전용 빌드
+  - 통합 옵션: `--with-im-config-data`, `--with-imsettings-data`
 
-앞으로 하모니카 팀에서 직접 nimf 프로젝트를 계속 관리하기로 결정하였습니다.
+## 기능
+- 입력기 서버: `nimf`
+- 언어 엔진:
+  - 시스템 키보드
+  - 한글 (libhangul)
+  - 일본어 (anthy)
+  - 중국어 (librime)
+  - 다양한 언어 (m17n, `nimf-i18n` 설치 시)
+- 서비스 모듈:
+  - 인디케이터 (ayatana-appindicator)
+  - Wayland, XIM (IMdkit 기반)
+  - 미리보기/후보창
+- 클라이언트 모듈:
+  - GTK+2, GTK+3, GTK4, Qt5, Qt6
 
-향후 하모니카 팀에서 이 프로젝트에 필요한 기능을 계속 추가하여 좋은 소프트웨어를 사용할 수 있도록 노력하겠습니다.
+## 지원 플랫폼
+- x86_64
+  - Ubuntu (>= 18.04; GTK4는 >= 22.04)
+  - Debian (>= 10; GTK4는 >= 12)
+  - Arch Linux (Rolling)
+  - Fedora (>= 33)
+  - openSUSE Leap (15.6)
+- arm64
+  - Ubuntu (>= 18.04)
+  - Debian (>= 10)
+  - Arch Linux (Rolling)
 
-# nimf 설치
+## 설치
 
-## Ubuntu(amd64, arm64), Debian(amd64, arm64), LinuxMint
+### Ubuntu(amd64, arm64), Debian(amd64, arm64), LinuxMint
+Ubuntu 21.10 이상에서는 `ibus-daemon`이 자동 시작되어 nimf와 충돌할 수 있습니다.
+
+방법 1: ibus 제거
+```bash
+sudo apt purge ibus
 ```
-# 우분투 21.10 이상을 기반으로 하는 배포판에서는 ibus-daemon이 자동으로 시작되어 입력기가 nimf 와 충돌됩니다.
-# 부팅 시 ibus가 동작하지 않도록 아래의 방법으로 ibus를 제거하거나 ibus-daemon을 비활성화할 수 있습니다.
-# 방법1 : sudo apt purge ibus
-# 방법2 : sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
+방법 2: ibus-daemon 비활성화
+```bash
+sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
+```
 
+Nimf 설치
+```bash
 wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
 
-sudo apt install nimf nimf-libhangul
+sudo apt install nimf
 
 im-config -n nimf
+```
 
-# 만약 일본어, 중국어 등 다른 언어를 사용하고 싶은 경우에는 다음과 같이 추가 패키지를 설치해줍니다.
-sudo apt install libnimf1 nimf nimf-anthy nimf-dev nimf-libhangul nimf-m17n nimf-rime
+다국어 엔진 추가(m17n)
+```bash
+sudo apt install nimf-i18n
 ```
-## Arch Linux, Manjaro
-1) 패키지 다운로드 및 설치
-```
-# 최신 libhangul-git 패키지 설치
+
+### Arch Linux, Manjaro
+
+방법 A) makepkg로 빌드 설치
+```bash
+# 최신 libhangul-git 설치
 git clone https://aur.archlinux.org/libhangul-git.git
-
 cd libhangul-git
+makepkg -si
 
-makepkg -si 
-
-# nimf 설치
+# nimf 패키지 빌드
 git clone https://github.com/hamonikr/nimf.git
-
 cd nimf
-
-makepkg -si 
+makepkg -si
 ```
 
-2) 입력기 설정
-```
-vi ~/.xprofile
+방법 B) 릴리스 패키지 설치
 
-export GTK_IM_MODULE=nimf
-export QT4_IM_MODULE="nimf"
-export QT_IM_MODULE=nimf
-export XMODIFIERS="@im=nimf"
-
-# For GTK4 applications (optional)
-export GTK4_IM_MODULE=nimf
+```bash
+# 릴리스 페이지에서 최신 패키지 다운로드 후 설치
+sudo pacman -U ./nimf-*.pkg.tar.zst
 ```
 
-## fedora, centos, redhat
+### Fedora, CentOS, RedHat
 
- 1) 패키지 다운로드 및 설치
+릴리스(RPM)에서 설치
+
+```bash
+# 릴리스 페이지에서 최신 .rpm 다운로드 후 설치
+sudo dnf install ./nimf-*.rpm
 ```
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-1.fc40.x86_64.rpm
 
-sudo yum install ~/nimf-*.rpm
-``` 
+### openSUSE Leap 15.6
 
-## opensuse-leap 15.6
+1) nimf 저장소 GPG 키 설치
 
- 1) nimf 저장소에서 GPG 키 설치
-
-```
-# GPG 키 다운로드
+```bash
 wget https://github.com/hamonikr/nimf/raw/master/RPM-GPG-KEY-nimf
-
-# GPG 키 설치
 sudo rpm --import RPM-GPG-KEY-nimf
-
-# 설치된 키 확인
 rpm -qa gpg-pubkey --qf "%{NAME}-%{VERSION}-%{RELEASE}\n" | grep e42665b8
 ```
 
- 2) 패키지 다운로드 및 설치
+2) 패키지 설치
 
-사용자는 한국어 패키지를 포함한 패키지 또는 다른 언어를 포함한 패키지를 선택하여 설치할 수 있습니다.
-
-```
-# 다른 언어를 사용할 경우
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.x86_64.rpm
-
-sudo zypper install ./nimf-1.3.8-2.opensuse_leap.x86_64.rpm
-
-# 한국어만 설치하고 싶은 경우
-wget https://github.com/hamonikr/nimf/releases/download/v1.3.8/nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
-
-sudo zypper install ./nimf-1.3.8-2.opensuse_leap.kr.x86_64.rpm
+```bash
+# 릴리스 페이지에서 최신 .rpm 다운로드 후 설치
+sudo zypper install ./nimf-*.rpm
 ```
 
- 3) 재부팅
+3) 재부팅
 
-시스템을 재시작한 후 nimf를 사용하십시오.
+#### 설정
 
+필요 시 셸 프로파일에 입력기 모듈 설정을 추가합니다.
 
-# 한글 자판 배열 추가
+```bash
+export GTK_IM_MODULE=nimf
+export QT_IM_MODULE=nimf
+export XMODIFIERS="@im=nimf"
 
-libhangul에서 사용하는 한글 자판 배열은 두 경로에 XML 파일로 정의됩니다.
+# GTK4 앱을 사용하는 경우(선택)
+export GTK4_IM_MODULE=nimf
+```
 
-* `/usr/share/libhangul/keyboards` 경로에 설치된 파일은 모든 사용자에게서 인식됩니다.
-* `$HOME/.local/share/libhangul/keyboards` 또는 `$XDG_DATA_HOME/libhangul/keyboards` 경로에 설치된 파일은 개별 사용자에게 인식됩니다.
+## 빌드 안내
+배포판별 패키지 생성 방법은 [BUILD.md](BUILD.md)를 참고하세요.
 
-자판 배열 파일 구조는 기본으로 설치되는 [두벌식 배열 파일](docs/hangul-keyboard-2.xml)과 [자모 기본조합 파일](docs/hangul-combination-default.xml)를 참고하세요. 일반적인 구조는 다음과 같습니다.
+소스에서 빌드(요약):
+```bash
+git clone --recurse-submodules https://github.com/hamonikr/nimf
+cd nimf
+./autogen.sh
+./configure --prefix=/usr/local
+make -j "$(nproc)"
+sudo make install
+```
+
+주요 설정 옵션:
+- `--enable-gtk4`: GTK4 IM 모듈 빌드(기본 자동 감지)
+- `--with-gtk=3|4`: `nimf-settings`의 GTK 버전 선택(기본 3)
+- `--disable-nimf-libhangul`, `--disable-nimf-anthy`, `--disable-nimf-m17n`, `--disable-nimf-rime`
+- `--disable-x11`: X11 제외(Wayland 전용)
+- `--with-im-config-data`, `--with-imsettings-data`: 통합 데이터 설치
+
+## 한글 자판 배열 추가
+libhangul에서 사용하는 한글 자판 배열은 다음 경로에 XML 파일로 정의됩니다.
+- 시스템 전체: `/usr/share/libhangul/keyboards`
+- 사용자별: `$HOME/.local/share/libhangul/keyboards` 또는 `$XDG_DATA_HOME/libhangul/keyboards`
+
+기본 제공 예제를 참고하세요.
+- `docs/hangul-keyboard-2.xml`
+- `docs/hangul-combination-default.xml`
+
+일반적인 구조:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <hangul-keyboard id="2" type="jamo">
+  <name>Dubeolsik</name>
+  <name xml:lang="ko">두벌식</name>
 
-    <name>Dubeolsik</name>
-    <name xml:lang="ko">두벌식</name>
+  <map id="0">
+    <item key="0x41" value="0x1106"/>
+    <item key="0x42" value="0x1172"/>
+    ...
+  </map>
 
-    <map id="0">
-        <item key="0x41" value="0x1106"/>  <!-- A → ᄆᅠ -->
-        <item key="0x42" value="0x1172"/>  <!-- B → ᅟᅲ -->
-        ...
-    </map>
-
-    <combination id="0">
-        <item first="0x1100" second="0x1100" result="0x1101"/>  <!-- ᄀ   + ᄀ   → ᄁ  -->
-        <item first="0x1169" second="0x1161" result="0x116a"/>  <!-- ᅩ   + ᅡ   → ᅪ  -->
-        ...
-    </combination>
-    <!-- 또는 -->
-    <include file="hangul-combination-default.xml"/>
-
+  <combination id="0">
+    <item first="0x1100" second="0x1100" result="0x1101"/>
+    <item first="0x1169" second="0x1161" result="0x116a"/>
+    ...
+  </combination>
+  <!-- 또는 -->
+  <include file="hangul-combination-default.xml"/>
 </hangul-keyboard>
 ```
 
-* hangul-keyboard: 자판 배열을 정의하는 루트 요소.
-    * id: 입력기에서 사용하는 ID 값.
-    * type: 자판의 유형에 따라 jamo(두벌식), jamo-yet(두벌식 옛한글), jaso(세벌식), jaso-yet(세벌식 옛한글), ro(로마자)로 설정합니다.
-* name: 설정 창에 나타나는 자판 배열의 이름. xml:lang 값에 따라 지역화된 이름을 설정할 수 있습니다.
-* map: 각 키를 눌렀을 때 입력될 문자를 설정합니다. id 값은 0으로 고정합니다.
-    * item: QWERTY 자판 기준 아스키코드 key에 해당하는 키를 누르면, 유니코드 value에 해당하는 한글 초/중/종성을 입력합니다. key와 value 값은 16진수로 지정합니다.
-* combination: 키를 연달아 누를 때 입력될 조합자를 item으로 나열합니다. id 값은 0으로 고정합니다.
-    * item: first 문자가 입력된 상태에서 second 키를 누르면 result 문자로 바뀝니다. first, second, result는 한글 초/중/종성에 대응되는 16진수 유니코드로 지정합니다.
-* include: file 경로의 XML 파일을 읽어 그 자리에 인라인합니다. file 값은 상대경로 또는 절대경로로 설정할 수 있습니다.
+요소 설명:
+- `hangul-keyboard`: 루트 요소
+  - `id`: 입력기에서 사용하는 식별자
+  - `type`: `jamo`, `jamo-yet`, `jaso`, `jaso-yet`, `ro`
+- `name`: 표시 이름, `xml:lang`로 지역화 가능
+- `map`: 키-유니코드 매핑(항상 id=0)
+- `combination`: 연속 조합 규칙(항상 id=0)
+- `include`: 다른 XML을 경로로 인라인 포함
 
-# LICENSE
-* GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
-  
-  Nimf is free software: you can redistribute it and/or modify it
-  under the terms of the GNU Lesser General Public License as published
-  by the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+## LICENSE
 
-  Nimf is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU Lesser General Public License for more details.
+- GNU Lesser General Public License v3.0 ([한글 해석](https://olis.or.kr/license/Detailselect.do?lId=1073))
 
-  You should have received a copy of the GNU Lesser General Public License
-  along with this program;  If not, see <http://www.gnu.org/licenses/>.
+Nimf is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Nimf is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 ## ISSUE
-사용 중 이슈는 깃허브 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주시면 함께 고민하도록 하겠습니다.
 
-For any issues you encounter while using this software, please use GitHub Issues or visit the [Hamonikr Community](https://hamonikr.org) to let us know so we can work together to address them.
+사용 중 이슈는 깃허브 이슈를 이용하시거나 [하모니카 커뮤니티](https://hamonikr.org)를 방문해서 알려주세요.
+
+For any issues you encounter while using this software, please use GitHub Issues or visit the [Hamonikr Community](https://hamonikr.org).
 
 ## Contribution
+
 깃허브 저장소를 포크하신 후 수정하실 내용을 수정하고 PR을 요청하시면 하모니카 팀에서 리뷰 후 반영됩니다.
 
 To contribute, please fork the GitHub repository, make your changes, and submit a PR. The Hamonikr team will review and integrate your contributions.
-
 

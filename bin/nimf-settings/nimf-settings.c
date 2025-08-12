@@ -731,8 +731,8 @@ on_tree_view_realize (GtkWidget         *tree_view,
 #else
   gtk_tree_view_column_cell_get_size (column, NULL, NULL, NULL, NULL, &height);
 #endif
-  /* Increase visible rows for hotkey list (default: 6 rows) */
-  gtk_widget_set_size_request (GTK_WIDGET (scrolled_w), -1, height * 5 );
+  /* Increase visible rows for hotkey list (default: 4 rows) */
+  gtk_widget_set_size_request (GTK_WIDGET (scrolled_w), -1, height * 4 );
 }
 
 static GtkWidget *
@@ -1284,7 +1284,7 @@ nimf_settings_build_xkb_options_ui ()
 #if GTK_CHECK_VERSION(3,16,0)
   gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (scrolled), 220);
 #endif
-  gtk_widget_set_size_request (scrolled, -1, 360);
+  gtk_widget_set_size_request (scrolled, -1, 260);
 #if GTK_CHECK_VERSION(4, 0, 0)
   gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scrolled), xkb->options_box);
 #else
