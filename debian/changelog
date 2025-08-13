@@ -1,47 +1,26 @@
-nimf (1.3.10) paektu; urgency=medium
+nimf (1.3.9) stable; urgency=medium
 
-  * Release v1.3.10
-
- -- HamoniKR <pkg@hamonikr.org>  Wed, 13 Aug 2025 11:51:28 +0900
-
-nimf (1.3.10) paektu; urgency=medium
-
-  * Release v1.3.10
-
- -- HamoniKR <pkg@hamonikr.org>  Wed, 13 Aug 2025 11:11:22 +0900
-
-nimf (1.3.10) paektu; urgency=medium
-
-  * Release v1.3.10
-  *   * Remove outdated GTK4 build guide and update README for version
-    1.3.9
-  *   * Refactor nimf-settings UI and enhance functionality
-  *   * Update copyright information in nimf-indicator.c
-  *   * Enhance GTK4 support and improve Wayland compatibility
-  *   * Add GSettings schemas for nimf
-  *   * Fix librime 1.13+ compatibility with deprecated API headers
-  *   * 릴리즈 자동화 스크립트 추가
-  *   * Fix libtool installation path issues for issues #93 and #94
-  *   * Fix libtool installation path issues
-  *   * Fix autogen.sh configure prefix
-  *   * Add --disable-x11 configure option for Wayland-only systems
-  *   * Add --disable-nimf-libhangul configure option
-  *   * HamoniKR 배포판 지원 추가
-  *   * Qt6 지원 및 GLIB 호환성 개선
-  *   * 버전 업데이트 자동화 스크립트 추가
-  *   * cleanup: nimf.install 파일도 제거
-  *   * cleanup: 사용하지 않는 개별 패키지 install 파일들 제거
-  *   * Provides에서 libhangul 관련 항목 제거
-  *   * libhangul 의존성 문제 해결
-  *   * 통합 패키지 구조로 변경
-  *   * libhangul 서브모듈 설정 수정
-  *   * 2-3단계 - 메모리 안전한 문자열 처리 및 Enter 키 개선
-
- -- HamoniKR <pkg@hamonikr.org>  Tue, 12 Aug 2025 21:57:32 +0900
-
-nimf (1.3.9) paektu; urgency=medium
-
-  [Kevin Kim]
+  * Refactor nimf-settings UI and enhance functionality
+  * Update copyright information in nimf-indicator.c
+  * Enhance GTK4 support and improve Wayland compatibility
+  * Add GSettings schemas for nimf
+  * Fix librime 1.13+ compatibility with deprecated API headers
+  * 릴리즈 자동화 스크립트 추가
+  * Fix libtool installation path issues for issues #93 and #94
+  * Fix libtool installation path issues
+  * Fix autogen.sh configure prefix
+  * Add --disable-x11 configure option for Wayland-only systems
+  * Add --disable-nimf-libhangul configure option
+  * HamoniKR 배포판 지원 추가
+  * Qt6 지원 및 GLIB 호환성 개선
+  * 버전 업데이트 자동화 스크립트 추가
+  * cleanup: nimf.install 파일도 제거
+  * cleanup: 사용하지 않는 개별 패키지 install 파일들 제거
+  * Provides에서 libhangul 관련 항목 제거
+  * libhangul 의존성 문제 해결
+  * 통합 패키지 구조로 변경
+  * libhangul 서브모듈 설정 수정
+  * 2-3단계 - 메모리 안전한 문자열 처리 및 Enter 키 개선
   * Add full GTK4 support for modern applications
   * Improve Wayland compatibility
   * Support both GTK3 and GTK4 environments simultaneously
