@@ -1,0 +1,75 @@
+#!/bin/sh
+set -e
+
+# Refresh GTK immodules caches, GSettings schemas, icon and desktop caches
+
+update_gtk_caches() {
+    # GTK 3
+    for cache in /usr/lib/*/gtk-3.0/*/immodules.cache; do
+        [ -f "$cache" ] || continue
+        dir="$(dirname "$cache")"
+        tool="$dir/gtk-query-immodules-3.0"
+        if [ -x "$tool" ]; then
+            "$tool" --update-cache || true
+        fi
+    done
+    if command -v gtk-query-immodules-3.0 >/dev/null 2>&1; then
+        gtk-query-immodules-3.0 --update-cache || true
+    fi
+
+    # GTK 4
+    for dir in /usr/lib/*/gtk-4.0/*; do
+        [ -d "$dir" ] || continue
+        tool="$dir/gtk4-query-immodules"
+        if [ -x "$tool" ]; then
+            "$tool" --update-cache || true
+        fi
+    done
+    if command -v gtk4-query-immodules >/dev/null 2>&1; then
+        gtk4-query-immodules --update-cache || true
+    fi
+
+    # GTK 2 (for legacy apps)
+    for cache in /usr/lib/*/gtk-2.0/*/immodules.cache; do
+        [ -f "$cache" ] || continue
+        dir="$(dirname "$cache")"
+        tool="$dir/gtk-query-immodules-2.0"
+        if [ -x "$tool" ]; then
+            "$tool" --update-cache || true
+        fi
+    done
+    if command -v gtk-query-immodules-2.0 >/dev/null 2>&1; then
+        gtk-query-immodules-2.0 --update-cache || true
+    fi
+}
+
+update_gsettings_schemas() {
+    if command -v glib-compile-schemas >/dev/null 2>&1; then
+        glib-compile-schemas /usr/share/glib-2.0/schemas || true
+    fi
+}
+
+update_icon_cache() {
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+    fi
+}
+
+update_desktop_database() {
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database -q /usr/share/applications || true
+    fi
+}
+
+case "$1" in
+    configure|triggered)
+        update_gtk_caches
+        update_gsettings_schemas
+        update_icon_cache
+        update_desktop_database
+        ;;
+esac
+
+exit 0
+
+

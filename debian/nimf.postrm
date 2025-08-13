@@ -1,0 +1,57 @@
+#!/bin/sh
+set -e
+
+cleanup_gtk_caches() {
+    # Rebuild caches after removal to drop stale entries
+    if command -v gtk-query-immodules-3.0 >/dev/null 2>&1; then
+        gtk-query-immodules-3.0 --update-cache || true
+    fi
+    if command -v gtk4-query-immodules >/dev/null 2>&1; then
+        gtk4-query-immodules --update-cache || true
+    fi
+    if command -v gtk-query-immodules-2.0 >/dev/null 2>&1; then
+        gtk-query-immodules-2.0 --update-cache || true
+    fi
+    for tool in /usr/lib/*/gtk-3.0/*/gtk-query-immodules-3.0; do
+        [ -x "$tool" ] && "$tool" --update-cache || true
+    done
+    for tool in /usr/lib/*/gtk-4.0/*/gtk4-query-immodules; do
+        [ -x "$tool" ] && "$tool" --update-cache || true
+    done
+    for tool in /usr/lib/*/gtk-2.0/*/gtk-query-immodules-2.0; do
+        [ -x "$tool" ] && "$tool" --update-cache || true
+    done
+}
+
+cleanup_gsettings() {
+    if [ "$1" = "purge" ]; then
+        if command -v glib-compile-schemas >/dev/null 2>&1; then
+            glib-compile-schemas /usr/share/glib-2.0/schemas || true
+        fi
+    fi
+}
+
+refresh_icon_and_desktop() {
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+    fi
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database -q /usr/share/applications || true
+    fi
+}
+
+case "$1" in
+    remove|disappear)
+        cleanup_gtk_caches
+        refresh_icon_and_desktop
+        ;;
+    purge)
+        cleanup_gtk_caches
+        cleanup_gsettings purge
+        refresh_icon_and_desktop
+        ;;
+esac
+
+exit 0
+
+
