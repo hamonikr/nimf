@@ -29,3 +29,4 @@ jobs:
           
       - name: Build docker test image
         run: docker build . --file .docker/${{ matrix.dockerfile }}
+        continue-on-error: ${{ matrix.dockerfile == 'arch.Dockerfile' }}

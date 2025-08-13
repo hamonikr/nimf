@@ -42,8 +42,11 @@ RUN chown -R builduser:builduser /home/builduser/src
 USER builduser
 WORKDIR /home/builduser/src
 
-# AUR 도우미 yay 설치
-RUN git clone https://aur.archlinux.org/yay.git /home/builduser/yay \
+# AUR 도우미 yay 설치 (재시도 로직 포함)
+RUN for i in 1 2 3 4 5; do \
+    git clone https://aur.archlinux.org/yay.git /home/builduser/yay && break || \
+    echo "Attempt $i failed, retrying in 5 seconds..." && sleep 5; \
+    done \
  && cd /home/builduser/yay \
  && makepkg -si --noconfirm
 
