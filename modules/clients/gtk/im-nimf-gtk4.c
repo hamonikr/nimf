@@ -234,6 +234,8 @@ nimf_gtk4_im_context_set_client_widget (GtkIMContext *context, GtkWidget *widget
         
         /* Create key event controller */
         nimf_context->key_controller = gtk_event_controller_key_new ();
+        /* Ensure IM gets key events before app-level handlers that may capture Enter */
+        gtk_event_controller_set_propagation_phase (nimf_context->key_controller, GTK_PHASE_CAPTURE);
         gtk_widget_add_controller (widget, nimf_context->key_controller);
         
         g_signal_connect (nimf_context->key_controller, "key-pressed",

@@ -40,13 +40,8 @@ RUN zypper install -y \
  m17n-lib-devel \
  git
 
-# Clone, build, and install libhangul
-RUN git clone https://github.com/libhangul/libhangul.git \
- && cd libhangul \
- && ./autogen.sh \
- && ./configure --prefix=/usr \
- && make \
- && make install
+# libhangul is already installed via libhangul-devel package above
+# No need to build from source
 
 # Copy the source code and set the working directory
 COPY . /src

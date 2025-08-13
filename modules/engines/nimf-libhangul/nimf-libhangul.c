@@ -579,16 +579,15 @@ nimf_libhangul_filter_event (NimfEngine    *engine,
   else
     keyval = nimf_event_keycode_to_qwerty_keyval (event);
 
-  /* Handle Enter key - commit preedit and pass through */
+  /* Handle Enter key - flush composition completely and pass through */
   if (event->key.keyval == NIMF_KEY_Return || event->key.keyval == NIMF_KEY_KP_Enter)
   {
-    const ucschar *preedit_ucs = hangul_ic_get_preedit_string (hangul->context);
-    if (preedit_ucs[0] != 0)
+    const ucschar *flush = hangul_ic_flush (hangul->context);
+    if (flush[0] != 0)
     {
-      gchar *preedit_str = g_ucs4_to_utf8 (preedit_ucs, -1, NULL, NULL, NULL);
-      nimf_libhangul_emit_commit (engine, target, preedit_str);
-      g_free (preedit_str);
-      hangul_ic_reset (hangul->context);
+      gchar *flush_str = g_ucs4_to_utf8 (flush, -1, NULL, NULL, NULL);
+      nimf_libhangul_emit_commit (engine, target, flush_str);
+      g_free (flush_str);
       nimf_libhangul_update_preedit (engine, target, g_strdup (""));
     }
     return FALSE; /* Pass through Enter key to application */

@@ -1777,7 +1777,11 @@ static void
 nimf_settings_init (NimfSettings *nsettings)
 {
   nsettings->app = g_application_new ("org.nimf.settings",
+#if GLIB_CHECK_VERSION(2, 74, 0)
                                       G_APPLICATION_DEFAULT_FLAGS);
+#else
+                                      G_APPLICATION_FLAGS_NONE);
+#endif
   g_signal_connect (nsettings->app, "activate",
                     G_CALLBACK (on_activate), nsettings);
 }
