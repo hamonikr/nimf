@@ -1,6 +1,12 @@
 nimf (1.3.10) paektu; urgency=medium
 
   * Release v1.3.10
+
+ -- HamoniKR <pkg@hamonikr.org>  Wed, 13 Aug 2025 11:11:22 +0900
+
+nimf (1.3.10) paektu; urgency=medium
+
+  * Release v1.3.10
   *   * Remove outdated GTK4 build guide and update README for version
     1.3.9
   *   * Refactor nimf-settings UI and enhance functionality
