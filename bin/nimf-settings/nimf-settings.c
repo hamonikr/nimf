@@ -1576,28 +1576,28 @@ nimf_settings_build_engines_page (void)
     g_signal_connect (settings_btn, "clicked",
                       G_CALLBACK (on_engine_settings_clicked), data);
 
-    GtkWidget *active_sw = gtk_switch_new ();
+    // Only show toggle switch for engines that can be activated/deactivated
+    GtkWidget *active_sw = NULL;
     if (g_settings_schema_has_key (schema, "active-engine"))
     {
+      active_sw = gtk_switch_new ();
       gboolean active = g_settings_get_boolean (gs, "active-engine");
       gtk_switch_set_active (GTK_SWITCH (active_sw), active);
       g_signal_connect (active_sw, "notify::active",
                         G_CALLBACK (on_engine_active_toggled), (gpointer) schema_id);
     }
-    else
-    {
-      gtk_widget_set_sensitive (active_sw, FALSE);
-    }
 
 #if GTK_CHECK_VERSION(4, 0, 0)
     gtk_box_append (GTK_BOX (hbox), label);
-    gtk_box_append (GTK_BOX (hbox), active_sw);
+    if (active_sw)
+      gtk_box_append (GTK_BOX (hbox), active_sw);
     gtk_box_append (GTK_BOX (hbox), settings_btn);
     gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), hbox);
 #else
     gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
     gtk_box_pack_end   (GTK_BOX (hbox), settings_btn, FALSE, FALSE, 0);
-    gtk_box_pack_end   (GTK_BOX (hbox), active_sw, FALSE, FALSE, 0);
+    if (active_sw)
+      gtk_box_pack_end   (GTK_BOX (hbox), active_sw, FALSE, FALSE, 0);
     gtk_container_add  (GTK_CONTAINER (row), hbox);
 #endif
 
