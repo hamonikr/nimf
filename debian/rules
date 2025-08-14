@@ -18,6 +18,13 @@ override_dh_autoreconf:
 override_dh_auto_configure:
 	dh_auto_configure -- --prefix=/usr --with-im-config-data --enable-gtk-doc --enable-gtk4 --libdir=/usr/lib/$(DEB_HOST_MULTIARCH)
 
+override_dh_auto_install:
+	dh_auto_install
+	# Install systemd user service
+	install -D -m 644 debian/nimf.service debian/tmp/usr/lib/systemd/user/nimf.service
+	# Install XDG autostart file
+	install -D -m 644 debian/nimf-autostart.desktop debian/tmp/etc/xdg/autostart/nimf-autostart.desktop
+
 override_dh_auto_clean:
 	rm -rf $(STAMP_DIR) $(SOURCE_DIR)
 	dh_clean

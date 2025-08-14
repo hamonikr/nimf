@@ -1,3 +1,4 @@
 usr/lib/*/nimf/modules/libnimf-m17n*.so
-usr/share/glib-2.0/schemas/org.nimf.engines.nimf-m17n*.xml
-usr/share/icons/hicolor/*/status/nimf-m17n-*.*
+usr/share/icons/hicolor/*/status/nimf-m17n-*.png
+usr/share/icons/hicolor/scalable/status/nimf-m17n-*.svg
+usr/share/glib-2.0/schemas/org.nimf.engines.nimf-m17n*.gschema.xml

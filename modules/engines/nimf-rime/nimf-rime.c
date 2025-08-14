@@ -22,11 +22,25 @@
 #include <nimf.h>
 #undef Bool
 #include <rime_api.h>
-/* Include deprecated API header for newer librime versions (>= 1.10.0) */
-#if __has_include(<rime_api_deprecated.h>)
-#include <rime_api_deprecated.h>
-#endif
 #include <glib/gi18n.h>
+
+/* API compatibility macros for librime >= 1.13.0 */
+static RimeApi *g_api = NULL;
+#define INIT_API() do { if (!g_api) g_api = rime_get_api(); } while(0)
+#define RimeSetupLogging(x) /* deprecated, skip */
+#define RimeSetNotificationHandler(f, ctx) do { INIT_API(); if (g_api && g_api->set_notification_handler) g_api->set_notification_handler(f, ctx); } while(0)
+#define RimeInitialize(t) do { INIT_API(); if (g_api && g_api->initialize) g_api->initialize(t); } while(0)
+#define RimeStartMaintenance(x) do { INIT_API(); if (g_api && g_api->start_maintenance) g_api->start_maintenance(x); } while(0)
+#define RimeFinalize() do { INIT_API(); if (g_api && g_api->finalize) g_api->finalize(); } while(0)
+#define RimeCreateSession() (g_api && g_api->create_session ? g_api->create_session() : 0)
+#define RimeDestroySession(s) do { INIT_API(); if (g_api && g_api->destroy_session) g_api->destroy_session(s); } while(0)
+#define RimeGetContext(s, c) (g_api && g_api->get_context ? g_api->get_context(s, c) : False)
+#define RimeFreeContext(c) do { INIT_API(); if (g_api && g_api->free_context) g_api->free_context(c); } while(0)
+#define RimeProcessKey(s, k, m) (g_api && g_api->process_key ? g_api->process_key(s, k, m) : False)
+#define RimeGetCommit(s, c) (g_api && g_api->get_commit ? g_api->get_commit(s, c) : False)
+#define RimeFreeCommit(c) do { INIT_API(); if (g_api && g_api->free_commit) g_api->free_commit(c); } while(0)
+#define RimeGetOption(s, o) (g_api && g_api->get_option ? g_api->get_option(s, o) : False)
+#define RimeSetOption(s, o, v) do { INIT_API(); if (g_api && g_api->set_option) g_api->set_option(s, o, v); } while(0)
 
 #define NIMF_TYPE_RIME             (nimf_rime_get_type ())
 #define NIMF_RIME(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_RIME, NimfRime))
@@ -403,21 +417,12 @@ nimf_rime_init (NimfRime *rime)
   if (nimf_rime_ref_count == 0)
   {
     gchar *user_data_dir;
-    static gboolean logging = FALSE;
-
-    if (logging == FALSE)
-    {
-#ifdef RIME_API_VERSION
-      /* Use new API for librime >= 1.10.0 */
-      RimeApi* api = rime_get_api();
-      if (api && api->set_log_dir) {
-        api->set_log_dir("/tmp");
-      }
-#else
-      /* Fallback for older versions */
-      RimeSetupLogging ("nimf-rime");
-#endif
-      logging = TRUE;
+    
+    /* Initialize API first */
+    INIT_API();
+    if (!g_api) {
+      g_warning ("Failed to get Rime API");
+      return;
     }
 
     user_data_dir = g_strconcat (g_getenv ("HOME"), "/.config/nimf/rime", NULL);
