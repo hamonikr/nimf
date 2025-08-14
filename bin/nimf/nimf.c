@@ -210,11 +210,13 @@ main (int argc, char **argv)
 
   gboolean is_debug   = FALSE;
   gboolean is_version = FALSE;
+  gboolean no_daemon  = FALSE;
 
   GOptionContext *context;
   GOptionEntry    entries[] = {
-    {"debug",   0, 0, G_OPTION_ARG_NONE, &is_debug,   N_("Log debugging message"), NULL},
-    {"version", 0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
+    {"debug",     0, 0, G_OPTION_ARG_NONE, &is_debug,   N_("Log debugging message"), NULL},
+    {"version",   0, 0, G_OPTION_ARG_NONE, &is_version, N_("Version"), NULL},
+    {"no-daemon", 0, 0, G_OPTION_ARG_NONE, &no_daemon,  N_("Do not daemonize"), NULL},
     {NULL}
   };
 
@@ -258,7 +260,7 @@ main (int argc, char **argv)
   openlog (g_get_prgname (), LOG_PID | LOG_PERROR, LOG_DAEMON);
   g_log_set_default_handler ((GLogFunc) nimf_log_default_handler, &is_debug);
 
-  if (daemon (0, 0) != 0)
+  if (!no_daemon && daemon (0, 0) != 0)
   {
     g_critical ("Couldn't daemonize.");
     return EXIT_FAILURE;

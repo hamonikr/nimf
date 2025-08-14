@@ -407,7 +407,16 @@ nimf_rime_init (NimfRime *rime)
 
     if (logging == FALSE)
     {
+#ifdef RIME_API_VERSION
+      /* Use new API for librime >= 1.10.0 */
+      RimeApi* api = rime_get_api();
+      if (api && api->set_log_dir) {
+        api->set_log_dir("/tmp");
+      }
+#else
+      /* Fallback for older versions */
       RimeSetupLogging ("nimf-rime");
+#endif
       logging = TRUE;
     }
 
