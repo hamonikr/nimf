@@ -29,7 +29,19 @@ override_dh_clean:
 	rm -rf debian/tmp
 	
 override_dh_shlibdeps:
-	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info 
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+	# Check if we're building for Debian (where Qt ABI packages are unavailable)
+	@if [ -f /etc/os-release ]; then \
+		. /etc/os-release; \
+		if [ "$$ID" = "debian" ]; then \
+			echo "Debian detected: using dummy ABI packages"; \
+			sed -i 's/qt6-base-abi (= [^,]*)/qt6-base-abi-dummy/g' debian/nimf.substvars || true; \
+			sed -i 's/qtbase-abi-5-15-[^,]*/qtbase-abi-5-15-13-dummy/g' debian/nimf.substvars || true; \
+		fi; \
+	fi
+	# Make Qt dependencies flexible for different distributions
+	sed -i 's/libqt6gui6t64/libqt6gui6t64 | libqt6gui6/g' debian/nimf.substvars || true
+	sed -i 's/libqt6widgets6t64/libqt6widgets6t64 | libqt6widgets6/g' debian/nimf.substvars || true 
 
 override_dh_auto_test:
 # 	dh_auto_test || true

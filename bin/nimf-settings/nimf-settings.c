@@ -963,6 +963,20 @@ nimf_settings_page_new (const gchar  *schema_id)
   GList            *l;
   gint              i;
 
+  if (schema_id == NULL || *schema_id == '\0')
+  {
+    g_warning ("Invalid schema_id provided to nimf_settings_page_new");
+    return NULL;
+  }
+
+  GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
+  schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+  if (schema == NULL)
+  {
+    g_warning ("Schema '%s' is not installed, cannot create settings page", schema_id);
+    return NULL;
+  }
+
   page = g_slice_new0 (NimfSettingsPage);
   page->gsettings = g_settings_new (schema_id);
   page->box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 15);
@@ -1314,14 +1328,23 @@ on_row_selected (GtkListBox    *box,
 
   schema_id = gtk_widget_get_name (GTK_WIDGET (row));
 
+  if (schema_id == NULL || *schema_id == '\0')
+  {
+    g_warning ("Empty schema_id for row widget, skipping");
+    return;
+  }
+
   if (g_strcmp0 (schema_id, "xkb-options"))
   {
     page = nimf_settings_page_new (schema_id);
+    if (page != NULL)
+    {
 #if GTK_CHECK_VERSION(4, 0, 0)
-    gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (content), page->box);
+      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (content), page->box);
 #else
-    gtk_container_add (GTK_CONTAINER (content), page->box);
+      gtk_container_add (GTK_CONTAINER (content), page->box);
 #endif
+    }
   }
   else
   {
@@ -1472,16 +1495,22 @@ static void
 on_engine_active_toggled (GtkSwitch *sw, GParamSpec *pspec, gpointer user_data)
 {
   const gchar *schema_id = (const gchar *) user_data;
-  GSettings *gsettings = g_settings_new (schema_id);
   gboolean active = gtk_switch_get_active (sw);
 
   GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
   GSettingsSchema *schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
-  if (schema && g_settings_schema_has_key (schema, "active-engine"))
+  
+  if (schema == NULL)
+  {
+    g_warning ("Schema '%s' is not installed, skipping activation toggle", schema_id);
+    return;
+  }
+
+  GSettings *gsettings = g_settings_new (schema_id);
+  if (g_settings_schema_has_key (schema, "active-engine"))
     g_settings_set_boolean (gsettings, "active-engine", active);
 
-  if (schema)
-    g_settings_schema_unref (schema);
+  g_settings_schema_unref (schema);
   g_object_unref (gsettings);
 }
 

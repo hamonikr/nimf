@@ -43,21 +43,8 @@ Package: nimf
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends},
-         libglib2.0-0 (>= 2.54),
-         libgtk-3-0,
-         libgtk-4-1,
-         libgtk2.0-0,
-         libqt5core5a,
-         libqt6core6,
-         libayatana-appindicator3-1,
          fonts-noto-cjk,
-         libanthy1,
          anthy,
-         librime1 (>= 1.2.9),
-         libxkbcommon0 (>= 0.5.0),
-         libwayland-client0,
-         libxklavier16,
-         libhangul1,
          libhangul-data
 Replaces: libnimf1,
           nimf-dev,
@@ -108,4 +95,18 @@ Description: Additional multilingual engines (m17n) for Nimf
  This package contains additional multilingual input method engines based on
  m17n for Nimf, along with their icons and settings schemas. Install this to
  enable many extra languages beyond Korean, Japanese, and Chinese.
+
+Package: qt6-base-abi-dummy
+Architecture: any
+Provides: qt6-base-abi (= 6.4.2)
+Description: Qt6 base ABI compatibility dummy package
+ This is a dummy package to provide Qt6 base ABI compatibility
+ for systems where the specific ABI version is not available.
+
+Package: qtbase-abi-5-15-13-dummy
+Architecture: any
+Provides: qtbase-abi-5-15-13
+Description: Qt5 base ABI compatibility dummy package
+ This is a dummy package to provide Qt5 base ABI compatibility
+ for systems where the specific ABI version is not available.
 
