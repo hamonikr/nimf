@@ -77,3 +77,24 @@ libhangul/
 debian/tmp/
 
 .serena/
+# debian package build files
+debian/files
+debian/*.substvars
+debian/*.debhelper.log
+debian/debhelper-build-stamp
+debian/autoreconf.after
+debian/tmp/
+debian/.debhelper/
+debian/nimf/
+debian/nimf-i18n/
+debian/qt6-base-abi-dummy/
+debian/qtbase-abi-5-15-13-dummy/
+# build output files
+*.deb
+*.buildinfo
+*.changes
+*.dsc
+*.tar.gz
+*.tar.xz
+*.udeb
+*-dbgsym_*.deb

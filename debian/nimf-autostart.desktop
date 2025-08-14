@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Nimf Input Method
+Name[ko]=입력기 프레임워크
+Comment=Input Method Framework
+Comment[ko]=입력기 프레임워크
+Exec=nimf
+Icon=nimf-logo
+Terminal=false
+NoDisplay=true
+Categories=System;Utility;
+StartupNotify=false
+X-GNOME-AutoRestart=true
+X-GNOME-Autostart-Notify=false
+X-GNOME-Autostart-Phase=Applications
+X-KDE-autostart-after=panel
+X-KDE-StartupNotify=false
