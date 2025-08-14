@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-libhangul"
+          path="/org/nimf/engines/nimf-libhangul/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Korean (libhangul)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>true</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'2'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>['Hangul']</default>
+      <summary>Shortcuts to switch to Korean</summary>
+      <description>Shortcuts to switch to Korean (libhangul)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>['Hangul']</default>
+      <summary>Shortcuts from Korean to system keyboard</summary>
+      <description>Shortcuts from Korean to system keyboard</description>
+    </key>
+    <key type="as" name="hanja-keys">
+      <default>['Hangul_Hanja']</default>
+      <summary>Hotkey for Hanja</summary>
+      <description>Binding to Hanja key</description>
+    </key>
+    <key type="b" name="double-consonant-rule">
+      <default>false</default>
+      <summary>Use a rule composing double consonants</summary>
+      <description>Compose a double consonant on pressing same consonant twice</description>
+    </key>
+    <key type="b" name="auto-reordering">
+      <default>false</default>
+      <summary>Auto-reordering in Dubeolsik</summary>
+      <description>Auto-reordering in Dubeolsik</description>
+    </key>
+    <key type="b" name="ignore-reset-in-commit-cb">
+      <default>true</default>
+      <summary>Ignore reset() in commit callback</summary>
+      <description>Ignore reset() called by commit callback in application</description>
+    </key>
+  </schema>
+</schemalist>

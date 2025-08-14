@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="Nimf Reference Manual" link="index.html" author="" name="nimf" version="2" language="c" online="https://nimf-i18n.gitlab.io/reference/">
+  <chapters>
+    <sub name="libnimf API" link="libnimf-api.html">
+      <sub name="NimfIM" link="NimfIM.html"/>
+      <sub name="Events" link="nimf-events.html"/>
+      <sub name="Key symbols" link="nimf-key-syms.html"/>
+      <sub name="Types" link="nimf-types.html"/>
+      <sub name="NimfServer" link="NimfServer.html"/>
+      <sub name="Utility Functions" link="nimf-utils.html"/>
+      <sub name="Interfaces" link="interfaces.html">
+        <sub name="NimfCandidatable" link="NimfCandidatable.html"/>
+        <sub name="NimfPreeditable" link="NimfPreeditable.html"/>
+      </sub>
+      <sub name="Abstract Classes" link="abstract-classes.html">
+        <sub name="NimfEngine" link="NimfEngine.html"/>
+        <sub name="NimfService" link="NimfService.html"/>
+        <sub name="NimfServiceIC" link="NimfServiceIC.html"/>
+      </sub>
+    </sub>
+    <sub name="Executables" link="executables.html">
+      <sub name="nimf" link="nimf.html"/>
+      <sub name="nimf-settings" link="nimf-settings.html"/>
+    </sub>
+    <sub name="Object Hierarchy" link="object-tree.html"/>
+    <sub name="API Index" link="api-index-full.html"/>
+    <sub name="Index of deprecated API" link="deprecated-api-index.html"/>
+    <sub name="Annotation Glossary" link="annotation-glossary.html"/>
+  </chapters>
+  <functions>
+    <keyword type="function" name="nimf_im_new ()" link="NimfIM.html#nimf-im-new"/>
+    <keyword type="function" name="nimf_im_focus_in ()" link="NimfIM.html#nimf-im-focus-in"/>
+    <keyword type="function" name="nimf_im_focus_out ()" link="NimfIM.html#nimf-im-focus-out"/>
+    <keyword type="function" name="nimf_im_reset ()" link="NimfIM.html#nimf-im-reset"/>
+    <keyword type="function" name="nimf_im_filter_event ()" link="NimfIM.html#nimf-im-filter-event"/>
+    <keyword type="function" name="nimf_im_get_preedit_string ()" link="NimfIM.html#nimf-im-get-preedit-string"/>
+    <keyword type="function" name="nimf_im_set_cursor_location ()" link="NimfIM.html#nimf-im-set-cursor-location"/>
+    <keyword type="function" name="nimf_im_set_use_preedit ()" link="NimfIM.html#nimf-im-set-use-preedit"/>
+    <keyword type="function" name="nimf_im_set_surrounding ()" link="NimfIM.html#nimf-im-set-surrounding"/>
+    <keyword type="signal" name="The “beep” signal" link="NimfIM.html#NimfIM-beep"/>
+    <keyword type="signal" name="The “commit” signal" link="NimfIM.html#NimfIM-commit"/>
+    <keyword type="signal" name="The “delete-surrounding” signal" link="NimfIM.html#NimfIM-delete-surrounding"/>
+    <keyword type="signal" name="The “preedit-changed” signal" link="NimfIM.html#NimfIM-preedit-changed"/>
+    <keyword type="signal" name="The “preedit-end” signal" link="NimfIM.html#NimfIM-preedit-end"/>
+    <keyword type="signal" name="The “preedit-start” signal" link="NimfIM.html#NimfIM-preedit-start"/>
+    <keyword type="signal" name="The “retrieve-surrounding” signal" link="NimfIM.html#NimfIM-retrieve-surrounding"/>
+    <keyword type="function" name="nimf_event_new ()" link="nimf-events.html#nimf-event-new"/>
+    <keyword type="function" name="nimf_event_free ()" link="nimf-events.html#nimf-event-free"/>
+    <keyword type="function" name="nimf_event_matches ()" link="nimf-events.html#nimf-event-matches"/>
+    <keyword type="function" name="nimf_event_keycode_to_qwerty_keyval ()" link="nimf-events.html#nimf-event-keycode-to-qwerty-keyval"/>
+    <keyword type="enum" name="enum NimfEventType" link="nimf-events.html#NimfEventType"/>
+    <keyword type="struct" name="struct NimfEventKey" link="nimf-events.html#NimfEventKey"/>
+    <keyword type="union" name="union NimfEvent" link="nimf-events.html#NimfEvent"/>
+    <keyword type="enum" name="enum NimfKeySym" link="nimf-key-syms.html#NimfKeySym"/>
+    <keyword type="function" name="nimf_key_new ()" link="nimf-types.html#nimf-key-new"/>
+    <keyword type="function" name="nimf_key_new_from_nicks ()" link="nimf-types.html#nimf-key-new-from-nicks"/>
+    <keyword type="function" name="nimf_key_free ()" link="nimf-types.html#nimf-key-free"/>
+    <keyword type="function" name="nimf_key_newv ()" link="nimf-types.html#nimf-key-newv"/>
+    <keyword type="function" name="nimf_key_freev ()" link="nimf-types.html#nimf-key-freev"/>
+    <keyword type="function" name="nimf_preedit_attr_new ()" link="nimf-types.html#nimf-preedit-attr-new"/>
+    <keyword type="function" name="nimf_preedit_attrs_copy ()" link="nimf-types.html#nimf-preedit-attrs-copy"/>
+    <keyword type="function" name="nimf_preedit_attr_free ()" link="nimf-types.html#nimf-preedit-attr-free"/>
+    <keyword type="function" name="nimf_preedit_attr_freev ()" link="nimf-types.html#nimf-preedit-attr-freev"/>
+    <keyword type="function" name="nimf_method_info_new ()" link="nimf-types.html#nimf-method-info-new"/>
+    <keyword type="function" name="nimf_method_info_free ()" link="nimf-types.html#nimf-method-info-free"/>
+    <keyword type="function" name="nimf_method_info_freev ()" link="nimf-types.html#nimf-method-info-freev"/>
+    <keyword type="enum" name="enum NimfModifierType" link="nimf-types.html#NimfModifierType"/>
+    <keyword type="struct" name="NimfRectangle" link="nimf-types.html#NimfRectangle"/>
+    <keyword type="struct" name="NimfKey" link="nimf-types.html#NimfKey"/>
+    <keyword type="enum" name="enum NimfPreeditState" link="nimf-types.html#NimfPreeditState"/>
+    <keyword type="enum" name="enum NimfPreeditAttrType" link="nimf-types.html#NimfPreeditAttrType"/>
+    <keyword type="struct" name="NimfPreeditAttr" link="nimf-types.html#NimfPreeditAttr"/>
+    <keyword type="function" name="nimf_server_change_engine_by_id ()" link="NimfServer.html#nimf-server-change-engine-by-id"/>
+    <keyword type="function" name="nimf_server_change_engine ()" link="NimfServer.html#nimf-server-change-engine"/>
+    <keyword type="function" name="nimf_server_get_loaded_engine_ids ()" link="NimfServer.html#nimf-server-get-loaded-engine-ids"/>
+    <keyword type="function" name="nimf_server_get_default ()" link="NimfServer.html#nimf-server-get-default"/>
+    <keyword type="function" name="nimf_server_get_preeditable ()" link="NimfServer.html#nimf-server-get-preeditable"/>
+    <keyword type="signal" name="The “engine-changed” signal" link="NimfServer.html#NimfServer-engine-changed"/>
+    <keyword type="signal" name="The “engine-loaded” signal" link="NimfServer.html#NimfServer-engine-loaded"/>
+    <keyword type="signal" name="The “engine-status-changed” signal" link="NimfServer.html#NimfServer-engine-status-changed"/>
+    <keyword type="signal" name="The “engine-unloaded” signal" link="NimfServer.html#NimfServer-engine-unloaded"/>
+    <keyword type="function" name="nimf_keyval_to_keysym_name ()" link="nimf-utils.html#nimf-keyval-to-keysym-name"/>
+    <keyword type="function" name="nimf_get_socket_path ()" link="nimf-utils.html#nimf-get-socket-path"/>
+    <keyword type="function" name="nimf_candidatable_show ()" link="NimfCandidatable.html#nimf-candidatable-show"/>
+    <keyword type="function" name="nimf_candidatable_hide ()" link="NimfCandidatable.html#nimf-candidatable-hide"/>
+    <keyword type="function" name="nimf_candidatable_is_visible ()" link="NimfCandidatable.html#nimf-candidatable-is-visible"/>
+    <keyword type="function" name="nimf_candidatable_clear ()" link="NimfCandidatable.html#nimf-candidatable-clear"/>
+    <keyword type="function" name="nimf_candidatable_set_page_values ()" link="NimfCandidatable.html#nimf-candidatable-set-page-values"/>
+    <keyword type="function" name="nimf_candidatable_append ()" link="NimfCandidatable.html#nimf-candidatable-append"/>
+    <keyword type="function" name="nimf_candidatable_get_selected_index ()" link="NimfCandidatable.html#nimf-candidatable-get-selected-index"/>
+    <keyword type="function" name="nimf_candidatable_get_selected_text ()" link="NimfCandidatable.html#nimf-candidatable-get-selected-text"/>
+    <keyword type="function" name="nimf_candidatable_select_first_item_in_page ()" link="NimfCandidatable.html#nimf-candidatable-select-first-item-in-page"/>
+    <keyword type="function" name="nimf_candidatable_select_last_item_in_page ()" link="NimfCandidatable.html#nimf-candidatable-select-last-item-in-page"/>
+    <keyword type="function" name="nimf_candidatable_select_item_by_index_in_page ()" link="NimfCandidatable.html#nimf-candidatable-select-item-by-index-in-page"/>
+    <keyword type="function" name="nimf_candidatable_select_previous_item ()" link="NimfCandidatable.html#nimf-candidatable-select-previous-item"/>
+    <keyword type="function" name="nimf_candidatable_select_next_item ()" link="NimfCandidatable.html#nimf-candidatable-select-next-item"/>
+    <keyword type="function" name="nimf_candidatable_set_auxiliary_text ()" link="NimfCandidatable.html#nimf-candidatable-set-auxiliary-text"/>
+    <keyword type="macro" name="NIMF_TYPE_CANDIDATABLE" link="NimfCandidatable.html#NIMF-TYPE-CANDIDATABLE:CAPS"/>
+    <keyword type="struct" name="struct NimfCandidatableInterface" link="NimfCandidatable.html#NimfCandidatableInterface"/>
+    <keyword type="struct" name="NimfCandidatable" link="NimfCandidatable.html#NimfCandidatable-struct"/>
+    <keyword type="function" name="nimf_preeditable_show ()" link="NimfPreeditable.html#nimf-preeditable-show"/>
+    <keyword type="function" name="nimf_preeditable_hide ()" link="NimfPreeditable.html#nimf-preeditable-hide"/>
+    <keyword type="function" name="nimf_preeditable_is_visible ()" link="NimfPreeditable.html#nimf-preeditable-is-visible"/>
+    <keyword type="function" name="nimf_preeditable_set_text ()" link="NimfPreeditable.html#nimf-preeditable-set-text"/>
+    <keyword type="function" name="nimf_preeditable_set_cursor_location ()" link="NimfPreeditable.html#nimf-preeditable-set-cursor-location"/>
+    <keyword type="macro" name="NIMF_TYPE_PREEDITABLE" link="NimfPreeditable.html#NIMF-TYPE-PREEDITABLE:CAPS"/>
+    <keyword type="struct" name="struct NimfPreeditableInterface" link="NimfPreeditable.html#NimfPreeditableInterface"/>
+    <keyword type="struct" name="NimfPreeditable" link="NimfPreeditable.html#NimfPreeditable-struct"/>
+    <keyword type="function" name="nimf_engine_filter_event ()" link="NimfEngine.html#nimf-engine-filter-event"/>
+    <keyword type="function" name="nimf_engine_reset ()" link="NimfEngine.html#nimf-engine-reset"/>
+    <keyword type="function" name="nimf_engine_focus_in ()" link="NimfEngine.html#nimf-engine-focus-in"/>
+    <keyword type="function" name="nimf_engine_focus_out ()" link="NimfEngine.html#nimf-engine-focus-out"/>
+    <keyword type="function" name="nimf_engine_set_surrounding ()" link="NimfEngine.html#nimf-engine-set-surrounding"/>
+    <keyword type="function" name="nimf_engine_get_surrounding ()" link="NimfEngine.html#nimf-engine-get-surrounding"/>
+    <keyword type="function" name="nimf_engine_status_changed ()" link="NimfEngine.html#nimf-engine-status-changed"/>
+    <keyword type="function" name="nimf_engine_set_method ()" link="NimfEngine.html#nimf-engine-set-method"/>
+    <keyword type="function" name="nimf_engine_emit_preedit_start ()" link="NimfEngine.html#nimf-engine-emit-preedit-start"/>
+    <keyword type="function" name="nimf_engine_emit_preedit_changed ()" link="NimfEngine.html#nimf-engine-emit-preedit-changed"/>
+    <keyword type="function" name="nimf_engine_emit_preedit_end ()" link="NimfEngine.html#nimf-engine-emit-preedit-end"/>
+    <keyword type="function" name="nimf_engine_emit_commit ()" link="NimfEngine.html#nimf-engine-emit-commit"/>
+    <keyword type="function" name="nimf_engine_emit_retrieve_surrounding ()" link="NimfEngine.html#nimf-engine-emit-retrieve-surrounding"/>
+    <keyword type="function" name="nimf_engine_emit_delete_surrounding ()" link="NimfEngine.html#nimf-engine-emit-delete-surrounding"/>
+    <keyword type="function" name="nimf_engine_emit_beep ()" link="NimfEngine.html#nimf-engine-emit-beep"/>
+    <keyword type="function" name="nimf_engine_get_id ()" link="NimfEngine.html#nimf-engine-get-id"/>
+    <keyword type="function" name="nimf_engine_get_icon_name ()" link="NimfEngine.html#nimf-engine-get-icon-name"/>
+    <keyword type="function" name="nimf_engine_get_candidatable ()" link="NimfEngine.html#nimf-engine-get-candidatable"/>
+    <keyword type="struct" name="struct NimfEngineClass" link="NimfEngine.html#NimfEngineClass"/>
+    <keyword type="function" name="nimf_service_start ()" link="NimfService.html#nimf-service-start"/>
+    <keyword type="function" name="nimf_service_stop ()" link="NimfService.html#nimf-service-stop"/>
+    <keyword type="function" name="nimf_service_is_active ()" link="NimfService.html#nimf-service-is-active"/>
+    <keyword type="function" name="nimf_service_get_id ()" link="NimfService.html#nimf-service-get-id"/>
+    <keyword type="function" name="nimf_service_change_engine_by_id ()" link="NimfService.html#nimf-service-change-engine-by-id"/>
+    <keyword type="function" name="nimf_service_change_engine ()" link="NimfService.html#nimf-service-change-engine"/>
+    <keyword type="struct" name="struct NimfServiceClass" link="NimfService.html#NimfServiceClass"/>
+    <keyword type="function" name="nimf_service_ic_focus_in ()" link="NimfServiceIC.html#nimf-service-ic-focus-in"/>
+    <keyword type="function" name="nimf_service_ic_focus_out ()" link="NimfServiceIC.html#nimf-service-ic-focus-out"/>
+    <keyword type="function" name="nimf_service_ic_filter_event ()" link="NimfServiceIC.html#nimf-service-ic-filter-event"/>
+    <keyword type="function" name="nimf_service_ic_set_surrounding ()" link="NimfServiceIC.html#nimf-service-ic-set-surrounding"/>
+    <keyword type="function" name="nimf_service_ic_set_use_preedit ()" link="NimfServiceIC.html#nimf-service-ic-set-use-preedit"/>
+    <keyword type="function" name="nimf_service_ic_get_use_preedit ()" link="NimfServiceIC.html#nimf-service-ic-get-use-preedit"/>
+    <keyword type="function" name="nimf_service_ic_set_cursor_location ()" link="NimfServiceIC.html#nimf-service-ic-set-cursor-location"/>
+    <keyword type="function" name="nimf_service_ic_get_cursor_location ()" link="NimfServiceIC.html#nimf-service-ic-get-cursor-location"/>
+    <keyword type="function" name="nimf_service_ic_reset ()" link="NimfServiceIC.html#nimf-service-ic-reset"/>
+    <keyword type="function" name="nimf_service_ic_change_engine_by_id ()" link="NimfServiceIC.html#nimf-service-ic-change-engine-by-id"/>
+    <keyword type="function" name="nimf_service_ic_change_engine ()" link="NimfServiceIC.html#nimf-service-ic-change-engine"/>
+    <keyword type="function" name="nimf_service_ic_engine_changed ()" link="NimfServiceIC.html#nimf-service-ic-engine-changed"/>
+    <keyword type="function" name="nimf_service_ic_get_engine ()" link="NimfServiceIC.html#nimf-service-ic-get-engine"/>
+    <keyword type="function" name="nimf_service_ic_get_service_id ()" link="NimfServiceIC.html#nimf-service-ic-get-service-id"/>
+    <keyword type="function" name="nimf_service_ic_emit_preedit_start ()" link="NimfServiceIC.html#nimf-service-ic-emit-preedit-start"/>
+    <keyword type="function" name="nimf_service_ic_emit_preedit_changed ()" link="NimfServiceIC.html#nimf-service-ic-emit-preedit-changed"/>
+    <keyword type="function" name="nimf_service_ic_emit_preedit_end ()" link="NimfServiceIC.html#nimf-service-ic-emit-preedit-end"/>
+    <keyword type="function" name="nimf_service_ic_emit_commit ()" link="NimfServiceIC.html#nimf-service-ic-emit-commit"/>
+    <keyword type="function" name="nimf_service_ic_emit_retrieve_surrounding ()" link="NimfServiceIC.html#nimf-service-ic-emit-retrieve-surrounding"/>
+    <keyword type="function" name="nimf_service_ic_emit_delete_surrounding ()" link="NimfServiceIC.html#nimf-service-ic-emit-delete-surrounding"/>
+    <keyword type="function" name="nimf_service_ic_emit_beep ()" link="NimfServiceIC.html#nimf-service-ic-emit-beep"/>
+    <keyword type="constant" name="NIMF_EVENT_NOTHING" link="nimf-events.html#NIMF-EVENT-NOTHING:CAPS"/>
+    <keyword type="constant" name="NIMF_EVENT_KEY_PRESS" link="nimf-events.html#NIMF-EVENT-KEY-PRESS:CAPS"/>
+    <keyword type="constant" name="NIMF_EVENT_KEY_RELEASE" link="nimf-events.html#NIMF-EVENT-KEY-RELEASE:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_space" link="nimf-key-syms.html#NIMF-KEY-space"/>
+    <keyword type="constant" name="NIMF_KEY_exclam" link="nimf-key-syms.html#NIMF-KEY-exclam"/>
+    <keyword type="constant" name="NIMF_KEY_quotedbl" link="nimf-key-syms.html#NIMF-KEY-quotedbl"/>
+    <keyword type="constant" name="NIMF_KEY_numbersign" link="nimf-key-syms.html#NIMF-KEY-numbersign"/>
+    <keyword type="constant" name="NIMF_KEY_dollar" link="nimf-key-syms.html#NIMF-KEY-dollar"/>
+    <keyword type="constant" name="NIMF_KEY_percent" link="nimf-key-syms.html#NIMF-KEY-percent"/>
+    <keyword type="constant" name="NIMF_KEY_ampersand" link="nimf-key-syms.html#NIMF-KEY-ampersand"/>
+    <keyword type="constant" name="NIMF_KEY_apostrophe" link="nimf-key-syms.html#NIMF-KEY-apostrophe"/>
+    <keyword type="constant" name="NIMF_KEY_parenleft" link="nimf-key-syms.html#NIMF-KEY-parenleft"/>
+    <keyword type="constant" name="NIMF_KEY_parenright" link="nimf-key-syms.html#NIMF-KEY-parenright"/>
+    <keyword type="constant" name="NIMF_KEY_asterisk" link="nimf-key-syms.html#NIMF-KEY-asterisk"/>
+    <keyword type="constant" name="NIMF_KEY_plus" link="nimf-key-syms.html#NIMF-KEY-plus"/>
+    <keyword type="constant" name="NIMF_KEY_comma" link="nimf-key-syms.html#NIMF-KEY-comma"/>
+    <keyword type="constant" name="NIMF_KEY_minus" link="nimf-key-syms.html#NIMF-KEY-minus"/>
+    <keyword type="constant" name="NIMF_KEY_period" link="nimf-key-syms.html#NIMF-KEY-period"/>
+    <keyword type="constant" name="NIMF_KEY_slash" link="nimf-key-syms.html#NIMF-KEY-slash"/>
+    <keyword type="constant" name="NIMF_KEY_0" link="nimf-key-syms.html#NIMF-KEY-0:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_1" link="nimf-key-syms.html#NIMF-KEY-1:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_2" link="nimf-key-syms.html#NIMF-KEY-2:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_3" link="nimf-key-syms.html#NIMF-KEY-3:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_4" link="nimf-key-syms.html#NIMF-KEY-4:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_5" link="nimf-key-syms.html#NIMF-KEY-5:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_6" link="nimf-key-syms.html#NIMF-KEY-6:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_7" link="nimf-key-syms.html#NIMF-KEY-7:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_8" link="nimf-key-syms.html#NIMF-KEY-8:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_9" link="nimf-key-syms.html#NIMF-KEY-9:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_colon" link="nimf-key-syms.html#NIMF-KEY-colon"/>
+    <keyword type="constant" name="NIMF_KEY_semicolon" link="nimf-key-syms.html#NIMF-KEY-semicolon"/>
+    <keyword type="constant" name="NIMF_KEY_less" link="nimf-key-syms.html#NIMF-KEY-less"/>
+    <keyword type="constant" name="NIMF_KEY_equal" link="nimf-key-syms.html#NIMF-KEY-equal"/>
+    <keyword type="constant" name="NIMF_KEY_greater" link="nimf-key-syms.html#NIMF-KEY-greater"/>
+    <keyword type="constant" name="NIMF_KEY_question" link="nimf-key-syms.html#NIMF-KEY-question"/>
+    <keyword type="constant" name="NIMF_KEY_at" link="nimf-key-syms.html#NIMF-KEY-at"/>
+    <keyword type="constant" name="NIMF_KEY_A" link="nimf-key-syms.html#NIMF-KEY-A:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_B" link="nimf-key-syms.html#NIMF-KEY-B:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_C" link="nimf-key-syms.html#NIMF-KEY-C:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_D" link="nimf-key-syms.html#NIMF-KEY-D:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_E" link="nimf-key-syms.html#NIMF-KEY-E:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F" link="nimf-key-syms.html#NIMF-KEY-F:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_G" link="nimf-key-syms.html#NIMF-KEY-G:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_H" link="nimf-key-syms.html#NIMF-KEY-H:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_I" link="nimf-key-syms.html#NIMF-KEY-I:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_J" link="nimf-key-syms.html#NIMF-KEY-J:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_K" link="nimf-key-syms.html#NIMF-KEY-K:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_L" link="nimf-key-syms.html#NIMF-KEY-L:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_M" link="nimf-key-syms.html#NIMF-KEY-M:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_N" link="nimf-key-syms.html#NIMF-KEY-N:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_O" link="nimf-key-syms.html#NIMF-KEY-O:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_P" link="nimf-key-syms.html#NIMF-KEY-P:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_Q" link="nimf-key-syms.html#NIMF-KEY-Q:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_R" link="nimf-key-syms.html#NIMF-KEY-R:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_S" link="nimf-key-syms.html#NIMF-KEY-S:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_T" link="nimf-key-syms.html#NIMF-KEY-T:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_U" link="nimf-key-syms.html#NIMF-KEY-U:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_V" link="nimf-key-syms.html#NIMF-KEY-V:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_W" link="nimf-key-syms.html#NIMF-KEY-W:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_X" link="nimf-key-syms.html#NIMF-KEY-X:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_Y" link="nimf-key-syms.html#NIMF-KEY-Y:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_Z" link="nimf-key-syms.html#NIMF-KEY-Z:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_bracketleft" link="nimf-key-syms.html#NIMF-KEY-bracketleft"/>
+    <keyword type="constant" name="NIMF_KEY_backslash" link="nimf-key-syms.html#NIMF-KEY-backslash"/>
+    <keyword type="constant" name="NIMF_KEY_bracketright" link="nimf-key-syms.html#NIMF-KEY-bracketright"/>
+    <keyword type="constant" name="NIMF_KEY_asciicircum" link="nimf-key-syms.html#NIMF-KEY-asciicircum"/>
+    <keyword type="constant" name="NIMF_KEY_underscore" link="nimf-key-syms.html#NIMF-KEY-underscore"/>
+    <keyword type="constant" name="NIMF_KEY_grave" link="nimf-key-syms.html#NIMF-KEY-grave"/>
+    <keyword type="constant" name="NIMF_KEY_a" link="nimf-key-syms.html#NIMF-KEY-a"/>
+    <keyword type="constant" name="NIMF_KEY_b" link="nimf-key-syms.html#NIMF-KEY-b"/>
+    <keyword type="constant" name="NIMF_KEY_c" link="nimf-key-syms.html#NIMF-KEY-c"/>
+    <keyword type="constant" name="NIMF_KEY_d" link="nimf-key-syms.html#NIMF-KEY-d"/>
+    <keyword type="constant" name="NIMF_KEY_e" link="nimf-key-syms.html#NIMF-KEY-e"/>
+    <keyword type="constant" name="NIMF_KEY_f" link="nimf-key-syms.html#NIMF-KEY-f"/>
+    <keyword type="constant" name="NIMF_KEY_g" link="nimf-key-syms.html#NIMF-KEY-g"/>
+    <keyword type="constant" name="NIMF_KEY_h" link="nimf-key-syms.html#NIMF-KEY-h"/>
+    <keyword type="constant" name="NIMF_KEY_i" link="nimf-key-syms.html#NIMF-KEY-i"/>
+    <keyword type="constant" name="NIMF_KEY_j" link="nimf-key-syms.html#NIMF-KEY-j"/>
+    <keyword type="constant" name="NIMF_KEY_k" link="nimf-key-syms.html#NIMF-KEY-k"/>
+    <keyword type="constant" name="NIMF_KEY_l" link="nimf-key-syms.html#NIMF-KEY-l"/>
+    <keyword type="constant" name="NIMF_KEY_m" link="nimf-key-syms.html#NIMF-KEY-m"/>
+    <keyword type="constant" name="NIMF_KEY_n" link="nimf-key-syms.html#NIMF-KEY-n"/>
+    <keyword type="constant" name="NIMF_KEY_o" link="nimf-key-syms.html#NIMF-KEY-o"/>
+    <keyword type="constant" name="NIMF_KEY_p" link="nimf-key-syms.html#NIMF-KEY-p"/>
+    <keyword type="constant" name="NIMF_KEY_q" link="nimf-key-syms.html#NIMF-KEY-q"/>
+    <keyword type="constant" name="NIMF_KEY_r" link="nimf-key-syms.html#NIMF-KEY-r"/>
+    <keyword type="constant" name="NIMF_KEY_s" link="nimf-key-syms.html#NIMF-KEY-s"/>
+    <keyword type="constant" name="NIMF_KEY_t" link="nimf-key-syms.html#NIMF-KEY-t"/>
+    <keyword type="constant" name="NIMF_KEY_u" link="nimf-key-syms.html#NIMF-KEY-u"/>
+    <keyword type="constant" name="NIMF_KEY_v" link="nimf-key-syms.html#NIMF-KEY-v"/>
+    <keyword type="constant" name="NIMF_KEY_w" link="nimf-key-syms.html#NIMF-KEY-w"/>
+    <keyword type="constant" name="NIMF_KEY_x" link="nimf-key-syms.html#NIMF-KEY-x"/>
+    <keyword type="constant" name="NIMF_KEY_y" link="nimf-key-syms.html#NIMF-KEY-y"/>
+    <keyword type="constant" name="NIMF_KEY_z" link="nimf-key-syms.html#NIMF-KEY-z"/>
+    <keyword type="constant" name="NIMF_KEY_braceleft" link="nimf-key-syms.html#NIMF-KEY-braceleft"/>
+    <keyword type="constant" name="NIMF_KEY_bar" link="nimf-key-syms.html#NIMF-KEY-bar"/>
+    <keyword type="constant" name="NIMF_KEY_braceright" link="nimf-key-syms.html#NIMF-KEY-braceright"/>
+    <keyword type="constant" name="NIMF_KEY_asciitilde" link="nimf-key-syms.html#NIMF-KEY-asciitilde"/>
+    <keyword type="constant" name="NIMF_KEY_ISO_Level3_Shift" link="nimf-key-syms.html#NIMF-KEY-ISO-Level3-Shift"/>
+    <keyword type="constant" name="NIMF_KEY_ISO_Left_Tab" link="nimf-key-syms.html#NIMF-KEY-ISO-Left-Tab"/>
+    <keyword type="constant" name="NIMF_KEY_BackSpace" link="nimf-key-syms.html#NIMF-KEY-BackSpace"/>
+    <keyword type="constant" name="NIMF_KEY_Tab" link="nimf-key-syms.html#NIMF-KEY-Tab"/>
+    <keyword type="constant" name="NIMF_KEY_Return" link="nimf-key-syms.html#NIMF-KEY-Return"/>
+    <keyword type="constant" name="NIMF_KEY_Pause" link="nimf-key-syms.html#NIMF-KEY-Pause"/>
+    <keyword type="constant" name="NIMF_KEY_Scroll_Lock" link="nimf-key-syms.html#NIMF-KEY-Scroll-Lock"/>
+    <keyword type="constant" name="NIMF_KEY_Sys_Req" link="nimf-key-syms.html#NIMF-KEY-Sys-Req"/>
+    <keyword type="constant" name="NIMF_KEY_Escape" link="nimf-key-syms.html#NIMF-KEY-Escape"/>
+    <keyword type="constant" name="NIMF_KEY_Multi_key" link="nimf-key-syms.html#NIMF-KEY-Multi-key"/>
+    <keyword type="constant" name="NIMF_KEY_Kanji" link="nimf-key-syms.html#NIMF-KEY-Kanji"/>
+    <keyword type="constant" name="NIMF_KEY_Kana_Shift" link="nimf-key-syms.html#NIMF-KEY-Kana-Shift"/>
+    <keyword type="constant" name="NIMF_KEY_Hangul" link="nimf-key-syms.html#NIMF-KEY-Hangul"/>
+    <keyword type="constant" name="NIMF_KEY_Hangul_Hanja" link="nimf-key-syms.html#NIMF-KEY-Hangul-Hanja"/>
+    <keyword type="constant" name="NIMF_KEY_Home" link="nimf-key-syms.html#NIMF-KEY-Home"/>
+    <keyword type="constant" name="NIMF_KEY_Left" link="nimf-key-syms.html#NIMF-KEY-Left"/>
+    <keyword type="constant" name="NIMF_KEY_Up" link="nimf-key-syms.html#NIMF-KEY-Up"/>
+    <keyword type="constant" name="NIMF_KEY_Right" link="nimf-key-syms.html#NIMF-KEY-Right"/>
+    <keyword type="constant" name="NIMF_KEY_Down" link="nimf-key-syms.html#NIMF-KEY-Down"/>
+    <keyword type="constant" name="NIMF_KEY_Page_Up" link="nimf-key-syms.html#NIMF-KEY-Page-Up"/>
+    <keyword type="constant" name="NIMF_KEY_Page_Down" link="nimf-key-syms.html#NIMF-KEY-Page-Down"/>
+    <keyword type="constant" name="NIMF_KEY_End" link="nimf-key-syms.html#NIMF-KEY-End"/>
+    <keyword type="constant" name="NIMF_KEY_Print" link="nimf-key-syms.html#NIMF-KEY-Print"/>
+    <keyword type="constant" name="NIMF_KEY_Execute" link="nimf-key-syms.html#NIMF-KEY-Execute"/>
+    <keyword type="constant" name="NIMF_KEY_Insert" link="nimf-key-syms.html#NIMF-KEY-Insert"/>
+    <keyword type="constant" name="NIMF_KEY_Menu" link="nimf-key-syms.html#NIMF-KEY-Menu"/>
+    <keyword type="constant" name="NIMF_KEY_Break" link="nimf-key-syms.html#NIMF-KEY-Break"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Enter" link="nimf-key-syms.html#NIMF-KEY-KP-Enter"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Left" link="nimf-key-syms.html#NIMF-KEY-KP-Left"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Up" link="nimf-key-syms.html#NIMF-KEY-KP-Up"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Right" link="nimf-key-syms.html#NIMF-KEY-KP-Right"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Down" link="nimf-key-syms.html#NIMF-KEY-KP-Down"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Page_Up" link="nimf-key-syms.html#NIMF-KEY-KP-Page-Up"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Page_Down" link="nimf-key-syms.html#NIMF-KEY-KP-Page-Down"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Delete" link="nimf-key-syms.html#NIMF-KEY-KP-Delete"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Multiply" link="nimf-key-syms.html#NIMF-KEY-KP-Multiply"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Add" link="nimf-key-syms.html#NIMF-KEY-KP-Add"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Subtract" link="nimf-key-syms.html#NIMF-KEY-KP-Subtract"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Decimal" link="nimf-key-syms.html#NIMF-KEY-KP-Decimal"/>
+    <keyword type="constant" name="NIMF_KEY_KP_Divide" link="nimf-key-syms.html#NIMF-KEY-KP-Divide"/>
+    <keyword type="constant" name="NIMF_KEY_KP_0" link="nimf-key-syms.html#NIMF-KEY-KP-0:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_1" link="nimf-key-syms.html#NIMF-KEY-KP-1:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_2" link="nimf-key-syms.html#NIMF-KEY-KP-2:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_3" link="nimf-key-syms.html#NIMF-KEY-KP-3:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_4" link="nimf-key-syms.html#NIMF-KEY-KP-4:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_5" link="nimf-key-syms.html#NIMF-KEY-KP-5:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_6" link="nimf-key-syms.html#NIMF-KEY-KP-6:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_7" link="nimf-key-syms.html#NIMF-KEY-KP-7:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_8" link="nimf-key-syms.html#NIMF-KEY-KP-8:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_KP_9" link="nimf-key-syms.html#NIMF-KEY-KP-9:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F1" link="nimf-key-syms.html#NIMF-KEY-F1:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F2" link="nimf-key-syms.html#NIMF-KEY-F2:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F3" link="nimf-key-syms.html#NIMF-KEY-F3:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F4" link="nimf-key-syms.html#NIMF-KEY-F4:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F5" link="nimf-key-syms.html#NIMF-KEY-F5:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F6" link="nimf-key-syms.html#NIMF-KEY-F6:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F7" link="nimf-key-syms.html#NIMF-KEY-F7:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F8" link="nimf-key-syms.html#NIMF-KEY-F8:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F9" link="nimf-key-syms.html#NIMF-KEY-F9:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F10" link="nimf-key-syms.html#NIMF-KEY-F10:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F11" link="nimf-key-syms.html#NIMF-KEY-F11:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_F12" link="nimf-key-syms.html#NIMF-KEY-F12:CAPS"/>
+    <keyword type="constant" name="NIMF_KEY_Shift_L" link="nimf-key-syms.html#NIMF-KEY-Shift-L"/>
+    <keyword type="constant" name="NIMF_KEY_Shift_R" link="nimf-key-syms.html#NIMF-KEY-Shift-R"/>
+    <keyword type="constant" name="NIMF_KEY_Control_L" link="nimf-key-syms.html#NIMF-KEY-Control-L"/>
+    <keyword type="constant" name="NIMF_KEY_Control_R" link="nimf-key-syms.html#NIMF-KEY-Control-R"/>
+    <keyword type="constant" name="NIMF_KEY_Caps_Lock" link="nimf-key-syms.html#NIMF-KEY-Caps-Lock"/>
+    <keyword type="constant" name="NIMF_KEY_Shift_Lock" link="nimf-key-syms.html#NIMF-KEY-Shift-Lock"/>
+    <keyword type="constant" name="NIMF_KEY_Meta_L" link="nimf-key-syms.html#NIMF-KEY-Meta-L"/>
+    <keyword type="constant" name="NIMF_KEY_Meta_R" link="nimf-key-syms.html#NIMF-KEY-Meta-R"/>
+    <keyword type="constant" name="NIMF_KEY_Alt_L" link="nimf-key-syms.html#NIMF-KEY-Alt-L"/>
+    <keyword type="constant" name="NIMF_KEY_Alt_R" link="nimf-key-syms.html#NIMF-KEY-Alt-R"/>
+    <keyword type="constant" name="NIMF_KEY_Super_L" link="nimf-key-syms.html#NIMF-KEY-Super-L"/>
+    <keyword type="constant" name="NIMF_KEY_Super_R" link="nimf-key-syms.html#NIMF-KEY-Super-R"/>
+    <keyword type="constant" name="NIMF_KEY_Delete" link="nimf-key-syms.html#NIMF-KEY-Delete"/>
+    <keyword type="constant" name="NIMF_KEY_VoidSymbol" link="nimf-key-syms.html#NIMF-KEY-VoidSymbol"/>
+    <keyword type="constant" name="NIMF_KEY_WakeUp" link="nimf-key-syms.html#NIMF-KEY-WakeUp"/>
+    <keyword type="constant" name="NIMF_KEY_WebCam" link="nimf-key-syms.html#NIMF-KEY-WebCam"/>
+    <keyword type="constant" name="NIMF_KEY_WLAN" link="nimf-key-syms.html#NIMF-KEY-WLAN:CAPS"/>
+    <keyword type="constant" name="NIMF_SHIFT_MASK" link="nimf-types.html#NIMF-SHIFT-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_LOCK_MASK" link="nimf-types.html#NIMF-LOCK-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_CONTROL_MASK" link="nimf-types.html#NIMF-CONTROL-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MOD1_MASK" link="nimf-types.html#NIMF-MOD1-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MOD2_MASK" link="nimf-types.html#NIMF-MOD2-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MOD3_MASK" link="nimf-types.html#NIMF-MOD3-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MOD4_MASK" link="nimf-types.html#NIMF-MOD4-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MOD5_MASK" link="nimf-types.html#NIMF-MOD5-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_BUTTON1_MASK" link="nimf-types.html#NIMF-BUTTON1-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_BUTTON2_MASK" link="nimf-types.html#NIMF-BUTTON2-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_BUTTON3_MASK" link="nimf-types.html#NIMF-BUTTON3-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_BUTTON4_MASK" link="nimf-types.html#NIMF-BUTTON4-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_BUTTON5_MASK" link="nimf-types.html#NIMF-BUTTON5-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_13_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-13-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_14_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-14-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_15_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-15-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_16_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-16-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_17_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-17-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_18_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-18-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_19_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-19-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_20_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-20-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_21_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-21-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_22_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-22-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_23_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-23-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_24_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-24-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_25_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-25-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_SUPER_MASK" link="nimf-types.html#NIMF-SUPER-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_HYPER_MASK" link="nimf-types.html#NIMF-HYPER-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_META_MASK" link="nimf-types.html#NIMF-META-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_RESERVED_29_MASK" link="nimf-types.html#NIMF-MODIFIER-RESERVED-29-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_RELEASE_MASK" link="nimf-types.html#NIMF-RELEASE-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_MODIFIER_MASK" link="nimf-types.html#NIMF-MODIFIER-MASK:CAPS"/>
+    <keyword type="constant" name="NIMF_PREEDIT_STATE_START" link="nimf-types.html#NIMF-PREEDIT-STATE-START:CAPS"/>
+    <keyword type="constant" name="NIMF_PREEDIT_STATE_END" link="nimf-types.html#NIMF-PREEDIT-STATE-END:CAPS"/>
+    <keyword type="constant" name="NIMF_PREEDIT_ATTR_UNDERLINE" link="nimf-types.html#NIMF-PREEDIT-ATTR-UNDERLINE:CAPS"/>
+    <keyword type="constant" name="NIMF_PREEDIT_ATTR_HIGHLIGHT" link="nimf-types.html#NIMF-PREEDIT-ATTR-HIGHLIGHT:CAPS"/>
+    <keyword type="member" name="NimfEventKey.type" link="nimf-events.html#NimfEventKey.type"/>
+    <keyword type="member" name="NimfEventKey.state" link="nimf-events.html#NimfEventKey.state"/>
+    <keyword type="member" name="NimfEventKey.keyval" link="nimf-events.html#NimfEventKey.keyval"/>
+    <keyword type="member" name="NimfEventKey.hardware-keycode" link="nimf-events.html#NimfEventKey.hardware-keycode"/>
+    <keyword type="member" name="NimfRectangle.x" link="nimf-types.html#NimfRectangle.x"/>
+    <keyword type="member" name="NimfRectangle.y" link="nimf-types.html#NimfRectangle.y"/>
+    <keyword type="member" name="NimfRectangle.width" link="nimf-types.html#NimfRectangle.width"/>
+    <keyword type="member" name="NimfRectangle.height" link="nimf-types.html#NimfRectangle.height"/>
+    <keyword type="member" name="NimfKey.state" link="nimf-types.html#NimfKey.state"/>
+    <keyword type="member" name="NimfKey.keyval" link="nimf-types.html#NimfKey.keyval"/>
+    <keyword type="member" name="NimfPreeditAttr.type" link="nimf-types.html#NimfPreeditAttr.type"/>
+    <keyword type="member" name="NimfPreeditAttr.start-index" link="nimf-types.html#NimfPreeditAttr.start-index"/>
+    <keyword type="member" name="NimfPreeditAttr.end-index" link="nimf-types.html#NimfPreeditAttr.end-index"/>
+    <keyword type="member" name="NimfCandidatableInterface.parent" link="NimfCandidatable.html#NimfCandidatableInterface.parent"/>
+    <keyword type="member" name="NimfCandidatableInterface.show" link="NimfCandidatable.html#NimfCandidatableInterface.show"/>
+    <keyword type="member" name="NimfCandidatableInterface.hide" link="NimfCandidatable.html#NimfCandidatableInterface.hide"/>
+    <keyword type="member" name="NimfCandidatableInterface.is-visible" link="NimfCandidatable.html#NimfCandidatableInterface.is-visible"/>
+    <keyword type="member" name="NimfCandidatableInterface.clear" link="NimfCandidatable.html#NimfCandidatableInterface.clear"/>
+    <keyword type="member" name="NimfCandidatableInterface.set-page-values" link="NimfCandidatable.html#NimfCandidatableInterface.set-page-values"/>
+    <keyword type="member" name="NimfCandidatableInterface.append" link="NimfCandidatable.html#NimfCandidatableInterface.append"/>
+    <keyword type="member" name="NimfCandidatableInterface.get-selected-index" link="NimfCandidatable.html#NimfCandidatableInterface.get-selected-index"/>
+    <keyword type="member" name="NimfCandidatableInterface.get-selected-text" link="NimfCandidatable.html#NimfCandidatableInterface.get-selected-text"/>
+    <keyword type="member" name="NimfCandidatableInterface.select-first-item-in-page" link="NimfCandidatable.html#NimfCandidatableInterface.select-first-item-in-page"/>
+    <keyword type="member" name="NimfCandidatableInterface.select-last-item-in-page" link="NimfCandidatable.html#NimfCandidatableInterface.select-last-item-in-page"/>
+    <keyword type="member" name="NimfCandidatableInterface.select-item-by-index-in-page" link="NimfCandidatable.html#NimfCandidatableInterface.select-item-by-index-in-page"/>
+    <keyword type="member" name="NimfCandidatableInterface.select-previous-item" link="NimfCandidatable.html#NimfCandidatableInterface.select-previous-item"/>
+    <keyword type="member" name="NimfCandidatableInterface.select-next-item" link="NimfCandidatable.html#NimfCandidatableInterface.select-next-item"/>
+    <keyword type="member" name="NimfCandidatableInterface.set-auxiliary-text" link="NimfCandidatable.html#NimfCandidatableInterface.set-auxiliary-text"/>
+    <keyword type="member" name="NimfPreeditableInterface.parent" link="NimfPreeditable.html#NimfPreeditableInterface.parent"/>
+    <keyword type="member" name="NimfPreeditableInterface.show" link="NimfPreeditable.html#NimfPreeditableInterface.show"/>
+    <keyword type="member" name="NimfPreeditableInterface.hide" link="NimfPreeditable.html#NimfPreeditableInterface.hide"/>
+    <keyword type="member" name="NimfPreeditableInterface.is-visible" link="NimfPreeditable.html#NimfPreeditableInterface.is-visible"/>
+    <keyword type="member" name="NimfPreeditableInterface.set-text" link="NimfPreeditable.html#NimfPreeditableInterface.set-text"/>
+    <keyword type="member" name="NimfPreeditableInterface.set-cursor-location" link="NimfPreeditable.html#NimfPreeditableInterface.set-cursor-location"/>
+    <keyword type="member" name="NimfEngineClass.filter-event" link="NimfEngine.html#NimfEngineClass.filter-event"/>
+    <keyword type="member" name="NimfEngineClass.reset" link="NimfEngine.html#NimfEngineClass.reset"/>
+    <keyword type="member" name="NimfEngineClass.focus-in" link="NimfEngine.html#NimfEngineClass.focus-in"/>
+    <keyword type="member" name="NimfEngineClass.focus-out" link="NimfEngine.html#NimfEngineClass.focus-out"/>
+    <keyword type="member" name="NimfEngineClass.set-method" link="NimfEngine.html#NimfEngineClass.set-method"/>
+    <keyword type="member" name="NimfEngineClass.candidate-page-up" link="NimfEngine.html#NimfEngineClass.candidate-page-up"/>
+    <keyword type="member" name="NimfEngineClass.candidate-page-down" link="NimfEngine.html#NimfEngineClass.candidate-page-down"/>
+    <keyword type="member" name="NimfEngineClass.candidate-clicked" link="NimfEngine.html#NimfEngineClass.candidate-clicked"/>
+    <keyword type="member" name="NimfEngineClass.candidate-scrolled" link="NimfEngine.html#NimfEngineClass.candidate-scrolled"/>
+    <keyword type="member" name="NimfEngineClass.get-id" link="NimfEngine.html#NimfEngineClass.get-id"/>
+    <keyword type="member" name="NimfEngineClass.get-icon-name" link="NimfEngine.html#NimfEngineClass.get-icon-name"/>
+    <keyword type="member" name="NimfServiceClass.get-id" link="NimfService.html#NimfServiceClass.get-id"/>
+    <keyword type="member" name="NimfServiceClass.start" link="NimfService.html#NimfServiceClass.start"/>
+    <keyword type="member" name="NimfServiceClass.stop" link="NimfService.html#NimfServiceClass.stop"/>
+    <keyword type="member" name="NimfServiceClass.is-active" link="NimfService.html#NimfServiceClass.is-active"/>
+    <keyword type="member" name="NimfServiceClass.change-engine-by-id" link="NimfService.html#NimfServiceClass.change-engine-by-id"/>
+    <keyword type="member" name="NimfServiceClass.change-engine" link="NimfService.html#NimfServiceClass.change-engine"/>
+  </functions>
+</book>

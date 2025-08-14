@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="레이어_1"
+   data-name="레이어 1"
+   viewBox="0 0 64 64"
+   version="1.1"
+   sodipodi:docname="nimf-m17n-vi.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>nimf-m17n-yi</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1499"
+     inkscape:window-height="931"
+     id="namedview15"
+     showgrid="false"
+     inkscape:zoom="3.6875"
+     inkscape:cx="-72.375513"
+     inkscape:cy="90.398376"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="레이어_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#fff;}.cls-2{fill:#262933;}</style>
+  </defs>
+  <title
+     id="title6">nimf-m17n-yi</title>
+  <rect
+     class="cls-1"
+     width="64"
+     height="64"
+     rx="12.22"
+     ry="12.22"
+     id="rect8" />
+  <path
+     class="cls-2"
+     d="m 27.08,41.74 7.05,-21.41 h 5 L 28.716151,47.449832 24.38,47.52 v 0 L 14.63,20.33 h 5.15 l 7.1,21.41 z"
+     id="path10"
+     inkscape:connector-curvature="0"
+     style="fill:#262933"
+     sodipodi:nodetypes="cccccccccc" />
+  <path
+     class="cls-2"
+     d="M46.19,10.72v5.2h-5v-5.2ZM46,20.33v26.8H41.29V20.33Z"
+     id="path12" />
+</svg>

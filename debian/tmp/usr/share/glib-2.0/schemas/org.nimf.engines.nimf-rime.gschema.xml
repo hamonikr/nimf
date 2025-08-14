@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-rime"
+          path="/org/nimf/engines/nimf-rime/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Chinese (rime)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>true</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; r']</default>
+      <summary>Shortcuts to switch to Chinese</summary>
+      <description>Shortcuts to switch to Chinese (rime)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; r']</default>
+      <summary>Shortcuts from Chinese to system keyboard</summary>
+      <description>Shortcuts from Chinese to system keyboard</description>
+    </key>
+    <key type="b" name="simplification">
+      <default>true</default>
+      <summary>Simplified Chinese</summary>
+      <description>If Simplified Chinese is set, Simplified Chinese is used. Otherwise Traditional Chinese is used.</description>
+    </key>
+  </schema>
+</schemalist>

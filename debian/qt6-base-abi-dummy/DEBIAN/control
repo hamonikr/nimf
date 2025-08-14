@@ -1,0 +1,13 @@
+Package: qt6-base-abi-dummy
+Source: nimf
+Version: 1.3.9
+Architecture: amd64
+Maintainer: Kevin Kim <chaeya@gmail.com>
+Installed-Size: 20
+Provides: qt6-base-abi (= 6.4.2)
+Section: utils
+Priority: optional
+Homepage: https://github.com/hamonikr/nimf
+Description: Qt6 base ABI compatibility dummy package
+ This is a dummy package to provide Qt6 base ABI compatibility
+ for systems where the specific ABI version is not available.

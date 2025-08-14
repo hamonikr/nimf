@@ -1,0 +1,7 @@
+nimf-dbgsym_1.3.9_amd64.deb debug optional automatic=yes
+nimf-i18n-dbgsym_1.3.9_amd64.deb debug optional automatic=yes
+nimf-i18n_1.3.9_amd64.deb utils optional
+nimf_1.3.9_amd64.buildinfo utils optional
+nimf_1.3.9_amd64.deb utils optional
+qt6-base-abi-dummy_1.3.9_amd64.deb utils optional
+qtbase-abi-5-15-13-dummy_1.3.9_amd64.deb utils optional

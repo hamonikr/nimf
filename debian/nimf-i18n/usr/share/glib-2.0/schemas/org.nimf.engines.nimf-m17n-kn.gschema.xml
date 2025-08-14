@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-m17n-kn"
+          path="/org/nimf/engines/nimf-m17n-kn/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Kannada (m17n)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>false</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>[]</default>
+      <summary>Shortcuts to switch to Kannada</summary>
+      <description>Shortcuts to switch to Kannada (m17n)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>[]</default>
+      <summary>Shortcuts from Kannada to system keyboard</summary>
+      <description>Shortcuts from Kannada to system keyboard</description>
+    </key>
+    <key type="s" name="get-method-infos">
+      <default>'kn:inscript'</default>
+      <summary>Input method</summary>
+      <description>Input method</description>
+    </key>
+  </schema>
+</schemalist>
