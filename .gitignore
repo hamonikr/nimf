@@ -74,5 +74,6 @@ test-nimf-m17n
 *.stamp
 build/
 libhangul/
+debian/tmp/
 
 .serena/
