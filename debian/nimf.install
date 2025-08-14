@@ -1,4 +1,5 @@
 usr/bin/nimf
+usr/bin/nimf-settings-bin
 usr/bin/nimf-settings
 usr/share/applications/nimf-settings.desktop
 etc/xdg/autostart/nimf-settings-autostart.desktop

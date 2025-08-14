@@ -1,4 +1,6 @@
-bin_PROGRAMS = nimf-settings
+bin_PROGRAMS = nimf-settings-bin
+
+bin_SCRIPTS = nimf-settings
 
 man_MANS = nimf-settings.1
 
@@ -20,13 +22,13 @@ AM_CFLAGS = \
 	-DNIMF_MODULE_DIR=\"$(libdir)/nimf/modules\" \
 	-DG_LOG_DOMAIN=\"nimf\"
 
-nimf_settings_SOURCES = nimf-settings.c
-nimf_settings_CFLAGS = \
+nimf_settings_bin_SOURCES = nimf-settings.c
+nimf_settings_bin_CFLAGS = \
 	$(NIMF_SETTINGS_DEPS_CFLAGS) \
 	$(AM_CFLAGS)
 
-nimf_settings_LDFLAGS = $(NIMF_SETTINGS_DEPS_LIBS)
-nimf_settings_LDADD   = $(top_builddir)/libnimf/libnimf.la
+nimf_settings_bin_LDFLAGS = $(NIMF_SETTINGS_DEPS_LIBS)
+nimf_settings_bin_LDADD   = $(top_builddir)/libnimf/libnimf.la
 
 DISTCLEANFILES = \
 		Makefile.in \
