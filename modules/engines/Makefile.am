@@ -8,6 +8,10 @@ if ENABLE_NIMF_ANTHY
   SUBDIRS += nimf-anthy
 endif
 
+if ENABLE_NIMF_MOZC
+  SUBDIRS += nimf-mozc
+endif
+
 if ENABLE_NIMF_M17N
   SUBDIRS += nimf-m17n
 endif

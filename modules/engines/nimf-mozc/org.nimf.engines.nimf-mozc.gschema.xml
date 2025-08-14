@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.nimf.engines.nimf-mozc"
+          path="/org/nimf/engines/nimf-mozc/" gettext-domain="nimf">
+    <key type="s" name="hidden-schema-name">
+      <default l10n="messages">'Japanese (Mozc)'</default>
+      <summary>schema name for nimf-settings</summary>
+      <description>This key is intended for nimf-settings.</description>
+    </key>
+    <key type="b" name="active-engine">
+      <default>true</default>
+      <summary>Active engine</summary>
+      <description>Active engine</description>
+    </key>
+    <key type="as" name="shortcuts-to-lang">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
+      <summary>Shortcuts to switch to Japanese</summary>
+      <description>Shortcuts to switch to Japanese (Mozc)</description>
+    </key>
+    <key type="as" name="shortcuts-to-sys">
+      <default>['&lt;Control&gt; &lt;Mod1&gt; j']</default>
+      <summary>Shortcuts from Japanese to system keyboard</summary>
+      <description>Shortcuts from Japanese to system keyboard</description>
+    </key>
+    <key type="as" name="hiragana-keys">
+      <default>['F6']</default>
+      <summary>Hotkey for Hiragana</summary>
+      <description>Hotkeys for converting to Hiragana</description>
+    </key>
+    <key type="as" name="katakana-keys">
+      <default>['F7']</default>
+      <summary>Hotkey for Katakana</summary>
+      <description>Hotkeys for converting to Katakana</description>
+    </key>
+    <key type="s" name="get-input-mode">
+      <choices>
+        <choice value='hiragana' />
+        <choice value='katakana' />
+        <choice value='latin' />
+      </choices>
+      <default>'hiragana'</default>
+      <summary>Input mode</summary>
+      <description>Default input mode (hiragana/katakana/latin)</description>
+    </key>
+  </schema>
+</schemalist>

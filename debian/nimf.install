@@ -11,12 +11,14 @@ usr/share/glib-2.0/schemas/org.nimf.clients.qt6.gschema.xml
 usr/share/glib-2.0/schemas/org.nimf.engines.nimf-system-keyboard.gschema.xml
 usr/share/glib-2.0/schemas/org.nimf.engines.nimf-libhangul.gschema.xml
 usr/share/glib-2.0/schemas/org.nimf.engines.nimf-anthy.gschema.xml
+usr/share/glib-2.0/schemas/org.nimf.engines.nimf-mozc.gschema.xml
 usr/share/glib-2.0/schemas/org.nimf.engines.nimf-rime.gschema.xml
 usr/share/icons/hicolor/*/status/nimf-logo.png
 usr/share/icons/hicolor/*/status/nimf-focus-out.png
 usr/share/icons/hicolor/*/status/nimf-system-keyboard.png
 usr/share/icons/hicolor/*/status/nimf-libhangul.png
 usr/share/icons/hicolor/*/status/nimf-anthy.png
+usr/share/icons/hicolor/*/status/nimf-mozc.png
 usr/share/icons/hicolor/*/status/nimf-rime-simplified.png
 usr/share/icons/hicolor/*/status/nimf-rime-traditional.png
 usr/share/icons/hicolor/scalable/status/nimf-logo.svg
@@ -24,6 +26,7 @@ usr/share/icons/hicolor/scalable/status/nimf-focus-out.svg
 usr/share/icons/hicolor/scalable/status/nimf-system-keyboard.svg
 usr/share/icons/hicolor/scalable/status/nimf-libhangul.svg
 usr/share/icons/hicolor/scalable/status/nimf-anthy.svg
+usr/share/icons/hicolor/scalable/status/nimf-mozc.svg
 usr/share/icons/hicolor/scalable/status/nimf-rime-simplified.svg
 usr/share/icons/hicolor/scalable/status/nimf-rime-traditional.svg
 usr/lib/*/gtk-2.0/*/immodules/im-nimf-gtk2.so
@@ -36,6 +39,7 @@ usr/lib/*/nimf/modules/services/*.so
 usr/lib/*/nimf/modules/libnimf-system-keyboard.so
 usr/lib/*/nimf/modules/libnimf-libhangul.so
 usr/lib/*/nimf/modules/libnimf-anthy.so
+usr/lib/*/nimf/modules/libnimf-mozc.so
 usr/lib/*/nimf/modules/libnimf-rime.so
 usr/lib/*/nimf/mssymbol.txt
 usr/share/man/man1/nimf.1*

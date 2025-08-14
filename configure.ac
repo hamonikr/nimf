@@ -115,6 +115,23 @@ AS_IF([test "x$enable_nimf_anthy" != "xno" -a "x$HAVE_ANTHY_DIC" != "xyes"],
 AM_CONDITIONAL([ENABLE_NIMF_ANTHY], [test "x$enable_nimf_anthy" != "xno"])
 
 dnl ***************************************************************************
+dnl nimf-mozc
+dnl ***************************************************************************
+
+AC_ARG_ENABLE([nimf-mozc],
+  AS_HELP_STRING([--disable-nimf-mozc], [Disable nimf-mozc]))
+
+AS_IF([test "x$enable_nimf_mozc" != "xno"],
+      [AC_PATH_PROG([MOZC_SERVER], [mozc_server], [no])])
+AS_IF([test "x$enable_nimf_mozc" != "xno" -a "x$MOZC_SERVER" = "xno"],
+      [AC_MSG_WARN([mozc_server is not found. Please install mozc-server package for full functionality.])])
+
+AS_IF([test "x$enable_nimf_mozc" != "xno"],
+      [PKG_CHECK_MODULES(NIMF_MOZC_DEPS, [$LIBNIMF_REQUIRES])])
+
+AM_CONDITIONAL([ENABLE_NIMF_MOZC], [test "x$enable_nimf_mozc" != "xno"])
+
+dnl ***************************************************************************
 dnl im-nimf-qt5
 dnl ***************************************************************************
 
@@ -485,6 +502,7 @@ AC_OUTPUT([
   modules/clients/qt6/Makefile  
   modules/engines/Makefile
   modules/engines/nimf-anthy/Makefile
+  modules/engines/nimf-mozc/Makefile
   modules/engines/nimf-libhangul/Makefile
   modules/engines/nimf-m17n/Makefile
   modules/engines/nimf-m17n/icons/Makefile
