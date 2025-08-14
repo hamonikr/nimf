@@ -13,7 +13,9 @@ configure~
 *.lo
 *.o
 /bin/nimf/nimf
-/bin/nimf-settings/nimf-settings
+# /bin/nimf-settings/nimf-settings  # Now managed as wrapper script
+!/bin/nimf-settings/nimf-settings
+!/bin/nimf-settings/nimf-settings-wrapper.sh
 libtool
 m4/
 stamp-h1
