@@ -22,25 +22,45 @@
 #include <nimf.h>
 #undef Bool
 #include <rime_api.h>
+/* Include deprecated API header for newer librime versions (>= 1.10.0) */
+#if __has_include(<rime_api_deprecated.h>)
+#include <rime_api_deprecated.h>
+#endif
 #include <glib/gi18n.h>
 
-/* API compatibility macros for librime >= 1.13.0 */
+/* Version-agnostic compatibility layer for rime API */
 static RimeApi *g_api = NULL;
-#define INIT_API() do { if (!g_api) g_api = rime_get_api(); } while(0)
-#define RimeSetupLogging(x) /* deprecated, skip */
-#define RimeSetNotificationHandler(f, ctx) do { INIT_API(); if (g_api && g_api->set_notification_handler) g_api->set_notification_handler(f, ctx); } while(0)
-#define RimeInitialize(t) do { INIT_API(); if (g_api && g_api->initialize) g_api->initialize(t); } while(0)
-#define RimeStartMaintenance(x) do { INIT_API(); if (g_api && g_api->start_maintenance) g_api->start_maintenance(x); } while(0)
-#define RimeFinalize() do { INIT_API(); if (g_api && g_api->finalize) g_api->finalize(); } while(0)
-#define RimeCreateSession() (g_api && g_api->create_session ? g_api->create_session() : 0)
-#define RimeDestroySession(s) do { INIT_API(); if (g_api && g_api->destroy_session) g_api->destroy_session(s); } while(0)
-#define RimeGetContext(s, c) (g_api && g_api->get_context ? g_api->get_context(s, c) : False)
-#define RimeFreeContext(c) do { INIT_API(); if (g_api && g_api->free_context) g_api->free_context(c); } while(0)
-#define RimeProcessKey(s, k, m) (g_api && g_api->process_key ? g_api->process_key(s, k, m) : False)
-#define RimeGetCommit(s, c) (g_api && g_api->get_commit ? g_api->get_commit(s, c) : False)
-#define RimeFreeCommit(c) do { INIT_API(); if (g_api && g_api->free_commit) g_api->free_commit(c); } while(0)
-#define RimeGetOption(s, o) (g_api && g_api->get_option ? g_api->get_option(s, o) : False)
-#define RimeSetOption(s, o, v) do { INIT_API(); if (g_api && g_api->set_option) g_api->set_option(s, o, v); } while(0)
+
+/* Check if we have the new API structure (rime >= 1.13.0) */
+#if defined(RIME_API_AVAILABLE) && __has_include(<rime_api_deprecated.h>)
+  #define HAS_NEW_API 1
+  #define INIT_API() do { if (!g_api) g_api = rime_get_api(); } while(0)
+#else
+  #define HAS_NEW_API 0
+  #define INIT_API() do { } while(0)
+#endif
+
+/* Universal API macros that work with both old and new versions */
+#if HAS_NEW_API
+  #define RimeSetupLogging(x) /* deprecated, skip */
+  #define RimeSetNotificationHandler(f, ctx) do { INIT_API(); if (g_api && g_api->set_notification_handler) g_api->set_notification_handler(f, ctx); } while(0)
+  #define RimeInitialize(t) do { INIT_API(); if (g_api && g_api->initialize) g_api->initialize(t); } while(0)
+  #define RimeStartMaintenance(x) do { INIT_API(); if (g_api && g_api->start_maintenance) g_api->start_maintenance(x); } while(0)
+  #define RimeFinalize() do { INIT_API(); if (g_api && g_api->finalize) g_api->finalize(); } while(0)
+  #define RimeCreateSession() (g_api && g_api->create_session ? g_api->create_session() : 0)
+  #define RimeDestroySession(s) do { INIT_API(); if (g_api && g_api->destroy_session) g_api->destroy_session(s); } while(0)
+  #define RimeGetContext(s, c) (g_api && g_api->get_context ? g_api->get_context(s, c) : False)
+  #define RimeFreeContext(c) do { INIT_API(); if (g_api && g_api->free_context) g_api->free_context(c); } while(0)
+  #define RimeProcessKey(s, k, m) (g_api && g_api->process_key ? g_api->process_key(s, k, m) : False)
+  #define RimeGetCommit(s, c) (g_api && g_api->get_commit ? g_api->get_commit(s, c) : False)
+  #define RimeFreeCommit(c) do { INIT_API(); if (g_api && g_api->free_commit) g_api->free_commit(c); } while(0)
+  #define RimeGetOption(s, o) (g_api && g_api->get_option ? g_api->get_option(s, o) : False)
+  #define RimeSetOption(s, o, v) do { INIT_API(); if (g_api && g_api->set_option) g_api->set_option(s, o, v); } while(0)
+  #define RimeGetVersion() (g_api && g_api->get_version ? g_api->get_version() : "1.13.1")
+#else
+  /* Use direct API calls for older versions */
+  #define RimeGetVersion() rime_get_version()
+#endif
 
 #define NIMF_TYPE_RIME             (nimf_rime_get_type ())
 #define NIMF_RIME(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_RIME, NimfRime))
@@ -190,18 +210,38 @@ static void nimf_rime_update_preedit2 (NimfEngine    *engine,
 
   RIME_STRUCT (RimeContext, context);
 
-  if (!RimeGetContext (rime->session_id, &context) ||
-      context.composition.length == 0)
+  if (!RimeGetContext (rime->session_id, &context))
   {
     nimf_rime_update_preedit (engine, target, "", 0);
-    nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
 
+  /* Version-aware clearing logic */
+#if HAS_NEW_API
+  /* For newer rime versions, check all conditions */
+  if (context.composition.length == 0 && context.menu.num_candidates == 0 && !context.commit_text_preview)
+  {
+    nimf_rime_update_preedit (engine, target, "", 0);
+    RimeFreeContext (&context);
+    return;
+  }
+#else
+  /* For older rime versions, simpler check */
+  if (context.composition.length == 0)
+  {
+    nimf_rime_update_preedit (engine, target, "", 0);
+    RimeFreeContext (&context);
+    return;
+  }
+#endif
+
   if (context.commit_text_preview)
     nimf_rime_update_preedit (engine, target, context.commit_text_preview,
                               g_utf8_strlen (context.commit_text_preview, -1));
+  else if (context.composition.preedit)
+    nimf_rime_update_preedit (engine, target, context.composition.preedit,
+                              context.composition.cursor_pos);
   else
     nimf_rime_update_preedit (engine, target, "", 0);
 
@@ -229,14 +269,35 @@ static void nimf_rime_update (NimfEngine    *engine,
 
   RIME_STRUCT (RimeContext, context);
 
-  if (!RimeGetContext (rime->session_id, &context) ||
-      context.composition.length == 0)
+  if (!RimeGetContext (rime->session_id, &context))
   {
     nimf_rime_update_preedit (engine, target, "", 0);
     nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
+
+  /* Version-aware context checking */
+#if HAS_NEW_API
+  /* For newer rime versions (1.13+), be more conservative about hiding */
+  if (context.composition.length == 0 && context.menu.num_candidates == 0 && 
+      !context.commit_text_preview)
+  {
+    nimf_rime_update_preedit (engine, target, "", 0);
+    nimf_candidatable_hide (rime->candidatable);
+    RimeFreeContext (&context);
+    return;
+  }
+#else
+  /* For older rime versions (1.10), use original logic */
+  if (context.composition.length == 0)
+  {
+    nimf_rime_update_preedit (engine, target, "", 0);
+    nimf_candidatable_hide (rime->candidatable);
+    RimeFreeContext (&context);
+    return;
+  }
+#endif
 
   nimf_rime_update_preedit2 (engine, target);
 
@@ -250,6 +311,13 @@ static void nimf_rime_update (NimfEngine    *engine,
   else
   {
     nimf_candidatable_clear (rime->candidatable, target);
+#if HAS_NEW_API
+    /* For newer versions, don't hide immediately - let composition check handle it */
+#else
+    /* For older versions, hide when no candidates */
+    if (context.composition.length == 0)
+      nimf_candidatable_hide (rime->candidatable);
+#endif
   }
 
   RimeFreeContext (&context);
@@ -347,6 +415,11 @@ nimf_rime_filter_event (NimfEngine    *engine,
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
 
+  if (!rime->session_id) {
+    g_warning ("Invalid Rime session ID");
+    return FALSE;
+  }
+
   retval = RimeProcessKey (rime->session_id, event->key.keyval,
                            event->key.state & NIMF_MODIFIER_MASK);
   nimf_rime_update (engine, target);
@@ -436,7 +509,7 @@ nimf_rime_init (NimfRime *rime)
     traits.user_data_dir          = user_data_dir;
     traits.distribution_name      = _("Rime");
     traits.distribution_code_name = "nimf-rime";
-    traits.distribution_version   = rime_get_api()->get_version();
+    traits.distribution_version   = RimeGetVersion();
     traits.app_name               = "nimf-rime";
 
     RimeInitialize (&traits);
@@ -448,7 +521,11 @@ nimf_rime_init (NimfRime *rime)
   nimf_rime_ref_count++;
 
   rime->session_id = RimeCreateSession();
-  RimeSetOption (rime->session_id, "simplification", rime->is_simplified);
+  if (rime->session_id) {
+    RimeSetOption (rime->session_id, "simplification", rime->is_simplified);
+  } else {
+    g_warning ("Failed to create Rime session");
+  }
 
   g_signal_connect_data (rime->settings, "changed::simplification",
           G_CALLBACK (on_changed_simplification), rime, NULL, G_CONNECT_AFTER);
