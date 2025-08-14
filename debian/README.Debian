@@ -1,0 +1,43 @@
+nimf for Debian
+===============
+
+Startup Methods
+---------------
+
+By default, nimf starts automatically using XDG autostart when you log in to your
+desktop environment. This works with GNOME, KDE, XFCE, and most other desktop
+environments.
+
+The package also includes a systemd user service for advanced users who prefer
+systemd management. However, it is NOT enabled by default to avoid duplicate
+processes.
+
+If you want to use systemd instead of XDG autostart:
+
+1. Remove or disable the XDG autostart file:
+   sudo rm /etc/xdg/autostart/nimf-autostart.desktop
+   (or move it to /etc/xdg/autostart/nimf-autostart.desktop.disabled)
+
+2. Enable and start the systemd user service:
+   systemctl --user enable nimf.service
+   systemctl --user start nimf.service
+
+Important: Use only ONE startup method to avoid running multiple nimf instances.
+
+Manual Start
+------------
+
+You can also start nimf manually:
+   nimf --no-daemon    # Run in foreground
+   nimf                # Run as daemon (background)
+
+Troubleshooting
+---------------
+
+If applications crash with GSettings schema errors:
+   sudo glib-compile-schemas /usr/share/glib-2.0/schemas
+
+To check if nimf is running:
+   ps aux | grep nimf
+
+ -- Nimf Maintainers <hamonikr@gmail.com>

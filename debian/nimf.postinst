@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        # Compile GSettings schemas
+        if [ -x /usr/bin/glib-compile-schemas ]; then
+            glib-compile-schemas /usr/share/glib-2.0/schemas || true
+        fi
+        
+        # Ensure only one startup method is active
+        # Use XDG autostart as default (works on all desktop environments)
+        # Disable systemd service if it was previously enabled to prevent duplicate startup
+        if [ -d /usr/lib/systemd/user ] && systemctl --user is-enabled nimf.service >/dev/null 2>&1; then
+            echo "Disabling systemd user service for nimf (using XDG autostart instead)"
+            systemctl --user disable nimf.service >/dev/null 2>&1 || true
+        fi
+        
+        # Note: Advanced users can still manually enable systemd service with:
+        # systemctl --user enable nimf.service
+        # But they should remove /etc/xdg/autostart/nimf-autostart.desktop first
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
