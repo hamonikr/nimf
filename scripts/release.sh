@@ -130,10 +130,10 @@ grep "AC_INIT" configure.ac
 # OS 확인 후 적절한 sed 명령어 사용
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
-    sed -i '' "s/AC_INIT(nimf, .*))/AC_INIT(nimf, ${NEW_VERSION#v})/" configure.ac
+    sed -i '' "s/AC_INIT(nimf, [0-9.]*)/AC_INIT(nimf, ${NEW_VERSION#v})/" configure.ac
 else
     # Linux 및 기타
-    sed -i "s/AC_INIT(nimf, .*))/AC_INIT(nimf, ${NEW_VERSION#v})/" configure.ac
+    sed -i "s/AC_INIT(nimf, [0-9.]*)/AC_INIT(nimf, ${NEW_VERSION#v})/" configure.ac
 fi
 
 echo -e "${YELLOW}업데이트 후 configure.ac 버전:${NC}"
