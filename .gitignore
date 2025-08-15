@@ -102,3 +102,4 @@ debian/qtbase-abi-5-15-13-dummy/
 
 # Package distribution directory
 dist/
+bin/nimf-settings/nimf-settings
