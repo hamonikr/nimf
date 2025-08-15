@@ -153,11 +153,17 @@ fi
 # nimf.spec 버전 업데이트
 if [ -f "nimf.spec" ]; then
     echo -e "\n${YELLOW}nimf.spec 버전 업데이트 중...${NC}"
+    echo -e "${YELLOW}업데이트 전 nimf.spec 버전:${NC}"
+    grep "^Version:" nimf.spec
+    
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        sed -i '' "s/^%define version .*$/%define version ${NEW_VERSION#v}/" nimf.spec
+        sed -i '' "s/^Version:.*$/Version:  ${NEW_VERSION#v}/" nimf.spec
     else
-        sed -i "s/^%define version .*$/%define version ${NEW_VERSION#v}/" nimf.spec
+        sed -i "s/^Version:.*$/Version:  ${NEW_VERSION#v}/" nimf.spec
     fi
+    
+    echo -e "${YELLOW}업데이트 후 nimf.spec 버전:${NC}"
+    grep "^Version:" nimf.spec
     echo -e "${GREEN}nimf.spec 버전 업데이트 완료${NC}"
 fi
 

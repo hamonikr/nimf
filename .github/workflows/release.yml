@@ -28,6 +28,12 @@ jobs:
           - dockerfile: opensuse.Dockerfile
             platform: opensuse
             arch: amd64
+          - dockerfile: opensuse.arm64.Dockerfile
+            platform: opensuse.arm64
+            arch: arm64
+          - dockerfile: fedora.latest.arm64.Dockerfile
+            platform: fedora.latest.arm64
+            arch: arm64
           - dockerfile: arch.Dockerfile
             platform: arch
             arch: amd64
@@ -170,8 +176,8 @@ jobs:
           
           **Supported Distributions & Architectures:**
           - Ubuntu 24.04+ / Debian 12+ (Bookworm/Trixie) - x86_64, ARM64
-          - Fedora 33+ / CentOS / RHEL - x86_64
-          - openSUSE Leap 15.6+ - x86_64
+          - Fedora 33+ / CentOS / RHEL - x86_64, ARM64
+          - openSUSE Leap 15.6+ - x86_64, ARM64
           - Arch Linux / Manjaro - x86_64, ARM64
           
           ---

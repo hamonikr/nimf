@@ -27,7 +27,9 @@ AVAILABLE_DOCKERFILES=(
     "debian.trixie.Dockerfile"
     "debian.sid.Dockerfile"
     "fedora.latest.Dockerfile"
+    "fedora.latest.arm64.Dockerfile"
     "opensuse.Dockerfile"
+    "opensuse.arm64.Dockerfile"
     "arch.Dockerfile"
     "arch.arm64.Dockerfile"
 )
@@ -113,22 +115,49 @@ test_dockerfile() {
     if [[ "$dockerfile_name" == *"fedora"* ]] || [[ "$dockerfile_name" == *"opensuse"* ]]; then
         echo -e "${YELLOW}RPM 패키지 생성 중...${NC}"
         if ! docker run --rm -v "$PROJECT_ROOT:/packages" --entrypoint="/bin/bash" "$image_name" -c "
+            set -e
             cd /src && 
+            # 환경 변수 설정
+            export HOME=/root
+            export RPMBUILD_DIR=\$HOME/rpmbuild
+            
             # RPM 빌드 디렉토리 구조 생성
-            mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS} &&
+            mkdir -p \$RPMBUILD_DIR/{BUILD,RPMS,SOURCES,SPECS,SRPMS} &&
+            
             # tarball 생성
             VERSION=\$(grep '^Version:' nimf.spec | awk '{print \$2}') &&
-            tar czf ~/rpmbuild/SOURCES/nimf-\${VERSION}.tar.gz --transform \"s,^,nimf-\${VERSION}/,\" * &&
-            # spec 파일 복사
-            cp nimf.spec ~/rpmbuild/SPECS/ &&
+            echo \"Creating tarball for version: \${VERSION}\" &&
+            
+            # Create a clean copy for tarball
+            cd /tmp &&
+            cp -r /src nimf-\${VERSION} &&
+            
+            # Remove unwanted files
+            find nimf-\${VERSION} -name '.git*' -exec rm -rf {} + 2>/dev/null || true &&
+            rm -rf nimf-\${VERSION}/dist 2>/dev/null || true &&
+            rm -f nimf-\${VERSION}/*.tar.gz 2>/dev/null || true &&
+            
+            # Create tarball
+            tar czf \$RPMBUILD_DIR/SOURCES/nimf-\${VERSION}.tar.gz nimf-\${VERSION} &&
+            
+            # Return to source directory and copy spec file
+            cd /src &&
+            cp nimf.spec \$RPMBUILD_DIR/SPECS/ &&
+            
+            echo \"Starting RPM build...\" &&
             # RPM 패키지 빌드
-            rpmbuild -ba ~/rpmbuild/SPECS/nimf.spec &&
+            rpmbuild -ba \$RPMBUILD_DIR/SPECS/nimf.spec --define \"_topdir \$RPMBUILD_DIR\" || true &&
+            
+            # 빌드 결과 확인
+            echo \"Checking build results:\" &&
+            find \$RPMBUILD_DIR -name '*.rpm' -type f &&
+            
             # 생성된 패키지 복사
             mkdir -p /packages/dist/$dockerfile_name &&
-            cp ~/rpmbuild/RPMS/*/*.rpm /packages/dist/$dockerfile_name/ 2>/dev/null &&
-            cp ~/rpmbuild/SRPMS/*.rpm /packages/dist/$dockerfile_name/ 2>/dev/null &&
-            echo -e '${GREEN}RPM 패키지 생성 완료:${NC}' &&
-            ls -la /packages/dist/$dockerfile_name/*.rpm 2>/dev/null || echo 'No RPM files created'
+            find \$RPMBUILD_DIR -name '*.rpm' -type f -exec cp {} /packages/dist/$dockerfile_name/ \; &&
+            
+            echo \"RPM build completed\" &&
+            ls -la /packages/dist/$dockerfile_name/ 2>/dev/null || echo 'No RPM files found in output directory'
         "; then
             echo -e "${RED}Warning: RPM 패키지 생성 중 오류 발생 - $dockerfile_name${NC}"
         else

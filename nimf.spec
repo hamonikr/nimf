@@ -3,7 +3,7 @@
 
 Name:     nimf
 Summary:  An input method framework
-Version:  1.3.9
+Version:  1.3.10
 Release:  2%{?dist}.%{?os_id}
 License:  LGPLv3+
 Group:    User Interface/Desktops
@@ -108,16 +108,8 @@ Requires: gtk3-devel
 This package contains development files.
 
 %prep
-%setup -q -n nimf
+%setup -q -n nimf-%{version}
 autoreconf -ivf
-# Clone and build libhangul
-git submodule update --init --recursive
-cd libhangul
-./autogen.sh
-./configure --prefix=/usr
-make
-sudo make install
-cd ..
 
 %build
 %if 0%{?rhel}
@@ -135,21 +127,6 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 
 %post
-echo "Install latest libhangul ..."
-# Compile and install libhangul
-{
-  cd /tmp
-  git clone https://github.com/libhangul/libhangul.git
-  cd libhangul
-  ./autogen.sh
-  ./configure --prefix=/usr
-  make
-  make install
-  cd ..
-  rm -rf libhangul
-} > /dev/null 2>&1
-echo "Finished install latest libhangul ..."
-
 /sbin/ldconfig
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 if [ -x %{_bindir}/update-gtk-immodules ]; then
@@ -228,7 +205,7 @@ done
 /usr/lib/x86_64-linux-gnu/pkgconfig/*
 
 %changelog
-* Mon Jul 26 2024 Kevin Kim <chaeya@gmail.com> - 1.3.8-2
+* Fri Jul 26 2024 Kevin Kim <chaeya@gmail.com> - 1.3.8-2
 - Fixed dependancy for opensuse-leap
 
 * Mon Jul 08 2024 HamoniKR <pkg@hamonikr.org> - 1.3.8-1

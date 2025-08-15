@@ -1,13 +1,6 @@
 # Use the openSUSE Leap 15.6 as the base
 FROM opensuse/leap:15.6 AS builder
 
-# Change fastest repo and set priority to 50
-# RUN zypper addrepo --priority 50 -f https://ftp.kaist.ac.kr/opensuse/update/leap/15.6/oss/ Kaist_Main_Update_Repo \
-#  && zypper addrepo --priority 50 -f https://ftp.kaist.ac.kr/opensuse/distribution/leap/15.6/repo/oss/ Kaist_Main_OSS_Repo \
-#  && zypper addrepo --priority 50 -f https://ftp.kaist.ac.kr/opensuse/distribution/leap/15.6/repo/non-oss/ Kaist_Main_NON-OSS_Repo \
-#  && zypper addrepo --priority 50 -f https://ftp.kaist.ac.kr/opensuse/update/leap/15.6/backports/ Kaist_Update_Backports_Repo \
-#  && zypper addrepo --priority 50 -f https://ftp.kaist.ac.kr/opensuse/update/leap/15.6/sle/ Kaist_Update_SUSE_Enterprise_Linux_Repo
-
 # Install the required packages
 RUN zypper install -y \
  rpm-build \
@@ -40,9 +33,6 @@ RUN zypper install -y \
  m17n-lib-devel \
  m17n-db \
  git
-
-# libhangul is already installed via libhangul-devel package above
-# No need to build from source
 
 # Copy the source code and set the working directory
 COPY . /src

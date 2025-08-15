@@ -22,7 +22,7 @@ RUN yum install -y \
     libxkbcommon-devel \
     libxklavier-devel \
     libappindicator-gtk3-devel \
-    libayatana-appindicator-gtk3-devel.x86_64 \
+    libayatana-appindicator-gtk3-devel \
     librsvg2-tools \
     google-noto-cjk-fonts \
     m17n-lib-devel \
