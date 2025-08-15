@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nimf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-03 17:54+0900\n"
+"POT-Creation-Date: 2025-08-14 23:15+0900\n"
 "PO-Revision-Date: 2019-07-03 19:04+0900\n"
 "Last-Translator: Kevin Kim <root@hamonikr.org>\n"
 "Language-Team: Hodong Kim <cogniti@gmail.com>\n"
@@ -19,68 +19,127 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../bin/nimf/nimf.c:216
+#: ../bin/nimf/nimf.c:217
 msgid "Log debugging message"
 msgstr "디버깅 메시지를 기록합니다"
 
-#: ../bin/nimf/nimf.c:217
+#: ../bin/nimf/nimf.c:218
 msgid "Version"
 msgstr "버전"
 
-#: ../bin/nimf-settings/nimf-settings.c:557
+#: ../bin/nimf/nimf.c:219
+msgid "Do not daemonize"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:649
 #, c-format
 msgid "Please report a bug. (keyval: %d)"
 msgstr "버그를 제보해 주세요. (keyval: %d)"
 
-#: ../bin/nimf-settings/nimf-settings.c:618
+#: ../bin/nimf-settings/nimf-settings.c:711
 msgid "Press key combination"
 msgstr "키 조합을 누르세요"
 
-#: ../bin/nimf-settings/nimf-settings.c:621
+#: ../bin/nimf-settings/nimf-settings.c:714
 msgid "_OK"
 msgstr "예 (_O)"
 
-#: ../bin/nimf-settings/nimf-settings.c:622
+#: ../bin/nimf-settings/nimf-settings.c:715
 msgid "_Cancel"
 msgstr "취소 (_C)"
 
-#: ../bin/nimf-settings/nimf-settings.c:634
+#: ../bin/nimf-settings/nimf-settings.c:727
 msgid "Click here and then press key combination"
 msgstr "여기를 클릭한 후 키 조합을 누르세요"
 
-#: ../bin/nimf-settings/nimf-settings.c:1132
+#: ../bin/nimf-settings/nimf-settings.c:1293
 msgid "Default"
 msgstr "기본값"
 
-#: ../bin/nimf-settings/nimf-settings.c:1227
+#. 전역 설정: 단축키 등
+#: ../bin/nimf-settings/nimf-settings.c:1463
+msgid "기본 설정"
+msgstr ""
+
+#. 기본 엔진 선택 섹션
+#: ../bin/nimf-settings/nimf-settings.c:1479
+msgid "기본 엔진"
+msgstr ""
+
+#. XKB 옵션 섹션
+#: ../bin/nimf-settings/nimf-settings.c:1495
+msgid "XKB 옵션"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1534
+msgid "엔진 설정"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1537
+msgid "_Close"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1590
+#: ../bin/nimf-settings/nimf-settings.c:1770
+#: ../bin/nimf-settings/nimf-settings.c:1774
+msgid "언어 엔진"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1633
+msgid "설정…"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1690
+msgid "GTK+"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1691
+msgid "Qt5"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1692
+msgid "Qt6"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1719
 msgid "XKB Options"
 msgstr "XKB 옵션"
 
-#: ../bin/nimf-settings/nimf-settings.c:1256
+#: ../bin/nimf-settings/nimf-settings.c:1746
 #: ../bin/nimf-settings/nimf-settings.desktop.in.h:1
 #: ../bin/nimf-settings/nimf-settings-autostart.desktop.in.h:1
 msgid "Nimf Settings"
 msgstr "입력기 설정"
 
+#: ../bin/nimf-settings/nimf-settings.c:1768
+#: ../bin/nimf-settings/nimf-settings.c:1772
+msgid "키보드"
+msgstr ""
+
+#: ../bin/nimf-settings/nimf-settings.c:1769
+#: ../bin/nimf-settings/nimf-settings.c:1773
+msgid "클라이언트"
+msgstr ""
+
 #. ID
 #: ../modules/clients/gtk/im-nimf.c:553
-#: ../modules/services/indicator/nimf-indicator.c:126
+#: ../modules/services/indicator/nimf-indicator.c:127
 msgid "Nimf"
 msgstr "입력기(님프)"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1674
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1689
 msgid "Romaji"
 msgstr "로마지"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1675
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1690
 msgid "English Keyboard (pc104)"
 msgstr "영문 키보드 (pc104)"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1703
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1718
 msgid "Common practice"
 msgstr "일반적인 관행"
 
-#: ../modules/engines/nimf-anthy/nimf-anthy.c:1704
+#: ../modules/engines/nimf-anthy/nimf-anthy.c:1719
 msgid "Explicitly type nn"
 msgstr "명시적으로 nn을 누릅니다"
 
@@ -124,37 +183,42 @@ msgstr "안마태"
 msgid "Rime"
 msgstr "라임"
 
-#: ../modules/services/indicator/nimf-indicator.c:108
 #: ../modules/services/indicator/nimf-indicator.c:109
 #: ../modules/services/indicator/nimf-indicator.c:110
+#: ../modules/services/indicator/nimf-indicator.c:111
 msgid "Hodong Kim <cogniti@gmail.com>"
 msgstr "김호동 <cogniti@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:111
+#: ../modules/services/indicator/nimf-indicator.c:112
 msgid "Bumsik Kim <k.bumsik@gmail.com>"
 msgstr "김범식 <k.bumsik@gmail.com>"
 
-#: ../modules/services/indicator/nimf-indicator.c:121
+#: ../modules/services/indicator/nimf-indicator.c:122
 msgid "Nimf is an input method framework"
 msgstr "님프는 입력기 프레임워크입니다"
 
-#: ../modules/services/indicator/nimf-indicator.c:122
-msgid "Copyright (c) 2015-2019 Hodong Kim\nCopyright (c) 2020-2024 HamoniKR"
-msgstr "저작권 (c) 2015-2019 김호동 \n저작권 (c) 2020-2024 하모니카"
+#: ../modules/services/indicator/nimf-indicator.c:123
 
-#: ../modules/services/indicator/nimf-indicator.c:127
+msgid ""
+"Copyright (c) 2015-2019 Hodong Kim\n"
+"2019-2025 HamoniKR"
+msgstr ""
+"저작권 (c) 2015-2019 김호동 \n"
+"저작권 (c) 2020-2024 하모니카"
+
+#: ../modules/services/indicator/nimf-indicator.c:128
 msgid "Hodong Kim, Max Neupert"
 msgstr "김호동, Max Neupert"
 
-#: ../modules/services/indicator/nimf-indicator.c:130
+#: ../modules/services/indicator/nimf-indicator.c:131
 msgid "Website"
 msgstr "웹사이트"
 
-#: ../modules/services/indicator/nimf-indicator.c:332
+#: ../modules/services/indicator/nimf-indicator.c:340
 msgid "Settings"
 msgstr "설정"
 
-#: ../modules/services/indicator/nimf-indicator.c:333
+#: ../modules/services/indicator/nimf-indicator.c:341
 msgid "About"
 msgstr "정보"
 
@@ -178,6 +242,7 @@ msgstr "'기본 설정'"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:2
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:2
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:2
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:2
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:2
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:2
 msgid "schema name for nimf-settings"
@@ -195,6 +260,7 @@ msgstr "nimf-settings 를 위한 스키마 이름"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:3
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:3
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:3
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:3
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:3
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:3
 msgid "This key is intended for nimf-settings."
@@ -219,8 +285,9 @@ msgstr "싱글톤 모드를 사용합니다"
 #: ../libnimf/org.nimf.gschema.xml.h:8
 msgid ""
 "Create one instance per language engine. Singleton mode reduces memory usage."
-msgstr "언어 엔진 당 하나의 인스턴스를 만듭니다. 싱글톤 모드는 메모리 "
-"사용량을 감소시킵니다."
+msgstr ""
+"언어 엔진 당 하나의 인스턴스를 만듭니다. 싱글톤 모드는 메모리 사용량을 감소시"
+"킵니다."
 
 #: ../libnimf/org.nimf.gschema.xml.h:9
 msgid "Setup environment variables"
@@ -237,11 +304,11 @@ msgid ""
 "effect will appear after you login again."
 msgstr ""
 "이 옵션을 켜면 $HOME/.config/environment.d/50-input.conf 링크 파일이 생성되고"
-"\"export $(/usr/lib/systemd/user-environment-generators/30-systemd-environmen"
-"t-d-generator)\" 가 .xprofile 에 한 번만 추가될 것입니다. 이 옵션을 끄면 링크"
-" 파일이 삭제됩니다. ibus, fcitx 등과 같은 다른 입력 방법을 사용하려면 이 옵션"
-"을 끄십시오. 이 옵션을 켜거나 끄면 파일 작업이 즉시 수행됩니다. 하지만 다시"
-" 로그인하셔야 효과가 나타납니다."
+"\"export $(/usr/lib/systemd/user-environment-generators/30-systemd-"
+"environment-d-generator)\" 가 .xprofile 에 한 번만 추가될 것입니다. 이 옵션"
+"을 끄면 링크 파일이 삭제됩니다. ibus, fcitx 등과 같은 다른 입력 방법을 사용하"
+"려면 이 옵션을 끄십시오. 이 옵션을 켜거나 끄면 파일 작업이 즉시 수행됩니다. "
+"하지만 다시 로그인하셔야 효과가 나타납니다."
 
 #: ../libnimf/org.nimf.gschema.xml.h:11
 msgid "'Services'"
@@ -275,8 +342,9 @@ msgstr "GDK 키 이벤트 후킹하기"
 msgid ""
 "Filter all key events before delivering them normally, which avoids bugs of "
 "many applications"
-msgstr "모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니다."
-" 이것은 여러 응용 프로그램의 버그를 회피합니다."
+msgstr ""
+"모든 키 이벤트를 전달하기 전에 그것들을 투과시킵니다. 이것은 여러 응용 프로그"
+"램의 버그를 회피합니다."
 
 #: ../modules/clients/gtk/org.nimf.clients.gtk.gschema.xml.h:6
 #: ../modules/clients/qt5/org.nimf.clients.qt5.gschema.xml.h:4
@@ -300,11 +368,13 @@ msgstr "'일본어 (anthy)'"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ml.gschema.xml.h:4
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-mr.gschema.xml.h:4
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:4
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:4
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:4
 msgid "Active engine"
 msgstr "엔진 활성화"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:5
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:5
 msgid "Shortcuts to switch to Japanese"
 msgstr "일본어로 전환하기 위한 단축키"
 
@@ -313,22 +383,27 @@ msgid "Shortcuts to switch to Japanese (anthy)"
 msgstr "일본어로 전환하기 위한 단축키 (anthy)"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:7
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:7
 msgid "Shortcuts from Japanese to system keyboard"
 msgstr "일본어에서 시스템 키보드로 전환하기 위한 단축키"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:8
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:8
 msgid "Hotkey for Hiragana"
 msgstr "히라가나 단축키"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:9
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:9
 msgid "Hotkeys for converting to Hiragana"
 msgstr "히라가나로 변환하기 위한 단축키"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:10
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:10
 msgid "Hotkey for Katakana"
 msgstr "가타카나 단축키"
 
 #: ../modules/engines/nimf-anthy/org.nimf.engines.nimf-anthy.gschema.xml.h:11
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:11
 msgid "Hotkeys for converting to Katakana"
 msgstr "가타카나로 변환하기 위한 단축키"
 
@@ -1355,6 +1430,22 @@ msgstr "네팔어로 전환하기 위한 단축키 (m17n)"
 #: ../modules/engines/nimf-m17n/org.nimf.engines.nimf-m17n-ne.gschema.xml.h:7
 msgid "Shortcuts from Nepali to system keyboard"
 msgstr "네팔어에서 시스템 키보드로 전환하기 위한 단축키"
+
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:1
+msgid "'Japanese (Mozc)'"
+msgstr "'일본어 (Mozc)'"
+
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:6
+msgid "Shortcuts to switch to Japanese (Mozc)"
+msgstr "일본어로 전환하기 위한 단축키 (Mozc)"
+
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:12
+msgid "Input mode"
+msgstr "입력 모드"
+
+#: ../modules/engines/nimf-mozc/org.nimf.engines.nimf-mozc.gschema.xml.h:13
+msgid "Default input mode (hiragana/katakana/latin)"
+msgstr "기본 입력 모드 (히라가나/가타카나/라틴)"
 
 #: ../modules/engines/nimf-rime/org.nimf.engines.nimf-rime.gschema.xml.h:1
 msgid "'Chinese (rime)'"

@@ -48,6 +48,52 @@
 #define NIMF_SETTINGS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), NIMF_TYPE_SETTINGS, NimfSettingsClass))
 #define NIMF_IS_SETTINGS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_TYPE_SETTINGS))
 #define NIMF_IS_SETTINGS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), NIMF_TYPE_SETTINGS))
+
+/* Helper function to lookup schema with XDG_DATA_DIRS fallback */
+static GSettingsSchema *
+nimf_settings_lookup_schema_with_fallback (GSettingsSchemaSource *source, 
+                                            const gchar *schema_id)
+{
+  GSettingsSchema *schema = NULL;
+  
+  /* First try default source */
+  schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+  if (schema != NULL)
+    return schema;
+  
+  /* Try schema directories from XDG_DATA_DIRS */
+  const gchar *xdg_data_dirs = g_getenv ("XDG_DATA_DIRS");
+  if (xdg_data_dirs == NULL)
+    xdg_data_dirs = "/usr/local/share:/usr/share";
+  
+  gchar **data_dirs = g_strsplit (xdg_data_dirs, ":", -1);
+  for (gint i = 0; data_dirs[i] != NULL && schema == NULL; i++)
+  {
+    gchar *schema_dir = g_build_filename (data_dirs[i], "glib-2.0", "schemas", NULL);
+    if (g_file_test (schema_dir, G_FILE_TEST_IS_DIR))
+    {
+      GSettingsSchemaSource *additional_source = NULL;
+      GError *error = NULL;
+      
+      additional_source = g_settings_schema_source_new_from_directory (schema_dir,
+                                                                        source, FALSE, &error);
+      if (additional_source != NULL)
+      {
+        schema = g_settings_schema_source_lookup (additional_source, schema_id, FALSE);
+        g_settings_schema_source_unref (additional_source);
+      }
+      else if (error != NULL)
+      {
+        g_debug ("Failed to load schema source from %s: %s", schema_dir, error->message);
+        g_error_free (error);
+      }
+    }
+    g_free (schema_dir);
+  }
+  g_strfreev (data_dirs);
+  
+  return schema;
+}
 #define NIMF_SETTINGS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), NIMF_TYPE_SETTINGS, NimfSettingsClass))
 
 typedef struct _NimfXkb
@@ -196,7 +242,7 @@ on_comparison (const char *a,
     gint                   retval;
 
     source = g_settings_schema_source_get_default ();
-    schema_a = g_settings_schema_source_lookup (source, a, FALSE);
+    schema_a = nimf_settings_lookup_schema_with_fallback (source, a);
 
     if (schema_a == NULL)
     {
@@ -204,7 +250,7 @@ on_comparison (const char *a,
       return g_strcmp0 (a, b);
     }
 
-    schema_b = g_settings_schema_source_lookup (source, b, FALSE);
+    schema_b = nimf_settings_lookup_schema_with_fallback (source, b);
 
     if (schema_b == NULL)
     {
@@ -298,6 +344,12 @@ on_active_engine_state_set (GtkSwitch           *widget,
 
     g_settings_set_strv (settings, "hidden-active-engines", (const gchar *const *) strv);
     g_settings_set_boolean (page_key->gsettings, page_key->key, state);
+
+    /* Force settings synchronization to ensure server picks up changes immediately */
+    g_settings_sync ();
+    
+    /* Give the server a moment to process the settings change */
+    g_usleep (100000); /* 100ms delay */
 
     g_strfreev (strv);
     g_object_unref (settings);
@@ -434,6 +486,16 @@ nimf_settings_page_key_build_string (NimfSettingsPageKey *page_key,
 
       schema = g_settings_schema_source_lookup (schema_source,
                                                 schema_list->data, TRUE);
+      
+      /* Try to lookup schema with XDG_DATA_DIRS fallback */
+      if (schema == NULL)
+      {
+        schema = nimf_settings_lookup_schema_with_fallback (schema_source, schema_list->data);
+      }
+      
+      if (schema == NULL)
+        continue;
+        
       gsettings = g_settings_new (schema_list->data);
       name = g_settings_get_string (gsettings, "hidden-schema-name");
       id2 = schema_list->data + strlen ("org.nimf.engines.");
@@ -970,7 +1032,10 @@ nimf_settings_page_new (const gchar  *schema_id)
   }
 
   GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
-  schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+  
+  /* Try to lookup schema with XDG_DATA_DIRS fallback */
+  schema = nimf_settings_lookup_schema_with_fallback (source, schema_id);
+  
   if (schema == NULL)
   {
     g_warning ("Schema '%s' is not installed, cannot create settings page", schema_id);
@@ -994,8 +1059,8 @@ nimf_settings_page_new (const gchar  *schema_id)
   gtk_widget_set_margin_top    (page->box, 15);
   gtk_widget_set_margin_bottom (page->box, 15);
 
-  schema = g_settings_schema_source_lookup (g_settings_schema_source_get_default (),
-                                            schema_id, TRUE);
+  GSettingsSchemaSource *default_source = g_settings_schema_source_get_default ();
+  schema = nimf_settings_lookup_schema_with_fallback (default_source, schema_id);
 #if GLIB_CHECK_VERSION (2, 46, 0)
   keys = g_settings_schema_list_keys (schema);
 #else
@@ -1498,7 +1563,7 @@ on_engine_active_toggled (GtkSwitch *sw, GParamSpec *pspec, gpointer user_data)
   gboolean active = gtk_switch_get_active (sw);
 
   GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
-  GSettingsSchema *schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+  GSettingsSchema *schema = nimf_settings_lookup_schema_with_fallback (source, schema_id);
   
   if (schema == NULL)
   {
@@ -1557,7 +1622,8 @@ nimf_settings_build_engines_page (void)
     if (g_str_has_prefix (schema_id, "org.nimf.engines.") == FALSE)
       continue;
 
-    GSettingsSchema *schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+    GSettingsSchema *schema = nimf_settings_lookup_schema_with_fallback (source, schema_id);
+    
     if (schema == NULL)
       continue;
 
@@ -1583,8 +1649,10 @@ nimf_settings_build_engines_page (void)
       active_sw = gtk_switch_new ();
       gboolean active = g_settings_get_boolean (gs, "active-engine");
       gtk_switch_set_active (GTK_SWITCH (active_sw), active);
-      g_signal_connect (active_sw, "notify::active",
-                        G_CALLBACK (on_engine_active_toggled), (gpointer) schema_id);
+      gchar *schema_id_copy = g_strdup (schema_id);
+      g_signal_connect_data (active_sw, "notify::active",
+                             G_CALLBACK (on_engine_active_toggled), schema_id_copy,
+                             (GClosureNotify) g_free, 0);
     }
 
 #if GTK_CHECK_VERSION(4, 0, 0)

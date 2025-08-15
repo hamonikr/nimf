@@ -46,7 +46,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
          fonts-noto-cjk,
          anthy,
          libhangul-data
-Recommends: mozc-server, im-config
+Recommends: im-config
 Replaces: libnimf1,
           nimf-dev,
           nimf-libhangul,
@@ -71,7 +71,7 @@ Description: Modern Input Method Framework
   * Lightweight and fast input method framework
   * Supports GTK2, GTK3, GTK4, Qt5, Qt6
   * Korean input (libhangul)
-  * Japanese input (anthy, mozc with mozc-server)
+  * Japanese input (anthy)
   * Chinese input (rime)
   * Optional multilingual input via separate package `nimf-i18n` (m17n)
   * System keyboard integration
@@ -79,7 +79,7 @@ Description: Modern Input Method Framework
   * Modern UI with system tray indicator
  .
  This package provides the core Nimf framework and the K/J/C input method
- engines (libhangul, anthy/mozc, rime).
+ engines (libhangul, anthy, rime).
 
 Package: nimf-i18n
 Architecture: any

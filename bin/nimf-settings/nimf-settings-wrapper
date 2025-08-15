@@ -25,16 +25,37 @@ detect_virtual_env() {
 
 # Function to detect GTK version
 detect_gtk_version() {
-    if command -v ldd >/dev/null 2>&1; then
-        if ldd /usr/bin/nimf-settings-bin 2>/dev/null | grep -q "libgtk-4"; then
+    # First try to find the binary in the current build directory
+    local binary_path="./nimf-settings"
+    if [ ! -f "$binary_path" ]; then
+        binary_path="/usr/bin/nimf-settings"
+    fi
+    
+    if command -v ldd >/dev/null 2>&1 && [ -f "$binary_path" ]; then
+        if ldd "$binary_path" 2>/dev/null | grep -q "libgtk-4"; then
             echo "gtk4"
             return
-        elif ldd /usr/bin/nimf-settings-bin 2>/dev/null | grep -q "libgtk-3"; then
+        elif ldd "$binary_path" 2>/dev/null | grep -q "libgtk-3"; then
             echo "gtk3"
             return
         fi
     fi
     echo "unknown"
+}
+
+# Function to try running nimf-settings with fallback paths
+run_nimf_settings() {
+    local binary_path="./nimf-settings"
+    if [ ! -f "$binary_path" ]; then
+        binary_path="/usr/bin/nimf-settings"
+    fi
+    
+    if [ ! -f "$binary_path" ]; then
+        echo "Error: nimf-settings not found" >&2
+        exit 1
+    fi
+    
+    "$binary_path" "$@"
 }
 
 # Main execution logic
@@ -45,25 +66,25 @@ main() {
     if detect_virtual_env; then
         # For GTK4 in virtual environments
         if [ "$gtk_version" = "gtk4" ]; then
-            GSK_RENDERER=cairo nimf-settings-bin "$@" 2>/dev/null && exit 0
+            GSK_RENDERER=cairo run_nimf_settings "$@" 2>/dev/null && exit 0
         fi
         
         # For GTK3 or general virtual env issues
         # Try with X11 backend (prevents Wayland issues in VMs)
-        GDK_BACKEND=x11 nimf-settings-bin "$@" 2>/dev/null && exit 0
+        GDK_BACKEND=x11 run_nimf_settings "$@" 2>/dev/null && exit 0
         
         # Try with default theme (prevents theme loading issues)
-        GTK_THEME=Adwaita nimf-settings-bin "$@" 2>/dev/null && exit 0
+        GTK_THEME=Adwaita run_nimf_settings "$@" 2>/dev/null && exit 0
         
         # Try disabling animations (reduces GPU load)
-        GTK_ENABLE_ANIMATIONS=0 nimf-settings-bin "$@" 2>/dev/null && exit 0
+        GTK_ENABLE_ANIMATIONS=0 run_nimf_settings "$@" 2>/dev/null && exit 0
         
         # Try with software OpenGL
-        LIBGL_ALWAYS_SOFTWARE=1 nimf-settings-bin "$@" 2>/dev/null && exit 0
+        LIBGL_ALWAYS_SOFTWARE=1 run_nimf_settings "$@" 2>/dev/null && exit 0
     fi
     
     # Default execution for physical hardware or when all else fails
-    exec nimf-settings-bin "$@"
+    run_nimf_settings "$@"
 }
 
 # Execute main function
