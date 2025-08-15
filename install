@@ -1,0 +1,614 @@
+#!/bin/bash
+
+# Nimf Input Method Framework Installation Script
+# Usage: curl -fsSL https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo bash
+# Alternative: wget -qO- https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo -E bash -
+#
+# By default, this script automatically handles ibus conflicts (safest option).
+# For interactive installation (ask about ibus handling):
+#   curl -fsSL https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo NIMF_INTERACTIVE=1 bash
+#   wget -qO- https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo -E NIMF_INTERACTIVE=1 bash -
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# GitHub repository information
+GITHUB_REPO="hamonikr/nimf"
+GITHUB_API="https://api.github.com/repos/${GITHUB_REPO}"
+GITHUB_RELEASES="${GITHUB_API}/releases/latest"
+
+# Functions for colored output
+print_error() {
+    echo -e "${RED}Error: $1${NC}" >&2
+}
+
+print_success() {
+    echo -e "${GREEN}$1${NC}"
+}
+
+print_info() {
+    echo -e "${YELLOW}$1${NC}"
+}
+
+# Function to detect OS
+detect_os() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        OS=$ID
+        OS_VERSION=$VERSION_ID
+        OS_CODENAME=$VERSION_CODENAME
+        OS_PRETTY=$PRETTY_NAME
+    elif [ -f /etc/redhat-release ]; then
+        OS="fedora"
+        OS_VERSION=$(rpm -E %fedora)
+    elif [ -f /etc/arch-release ]; then
+        OS="arch"
+        OS_VERSION=""
+    elif [ -f /etc/SuSE-release ]; then
+        OS="opensuse"
+        OS_VERSION=""
+    else
+        print_error "Unsupported operating system"
+        exit 1
+    fi
+}
+
+# Function to check if running as root
+check_root() {
+    if [ "$EUID" -ne 0 ]; then
+        print_error "This script must be run as root (use sudo)"
+        exit 1
+    fi
+}
+
+# Function to check dependencies
+check_dependencies() {
+    local deps=("curl" "wget")
+    local missing_deps=()
+    
+    for dep in "${deps[@]}"; do
+        if ! command -v $dep &> /dev/null; then
+            missing_deps+=($dep)
+        fi
+    done
+    
+    if [ ${#missing_deps[@]} -gt 0 ]; then
+        print_info "Installing missing dependencies: ${missing_deps[*]}"
+        
+        case $OS in
+            ubuntu|debian|linuxmint|elementary|pop)
+                apt-get update && apt-get install -y "${missing_deps[@]}"
+                ;;
+            fedora|rhel|centos)
+                dnf install -y "${missing_deps[@]}"
+                ;;
+            opensuse*)
+                zypper install -y "${missing_deps[@]}"
+                ;;
+            arch|manjaro)
+                pacman -S --noconfirm "${missing_deps[@]}"
+                ;;
+        esac
+    fi
+}
+
+# Function to get latest release version
+get_latest_version() {
+    local version
+    local retry_count=0
+    local max_retries=3
+    
+    while [ $retry_count -lt $max_retries ]; do
+        version=$(curl -s --connect-timeout 10 --max-time 30 "$GITHUB_RELEASES" 2>/dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | head -1)
+        
+        if [ -n "$version" ] && [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "$version"
+            return 0
+        fi
+        
+        retry_count=$((retry_count + 1))
+        if [ $retry_count -lt $max_retries ]; then
+            print_info "Failed to get version, retrying... ($retry_count/$max_retries)"
+            sleep 2
+        fi
+    done
+    
+    print_error "Failed to get latest version after $max_retries attempts"
+    print_info "Please check your internet connection and try again"
+    print_info "You can also manually install from: https://github.com/${GITHUB_REPO}/releases"
+    exit 1
+}
+
+# Function to install on Ubuntu/Debian
+install_debian() {
+    local version=$1
+    local version_num=${version#v}  # Remove 'v' prefix
+    local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    local temp_dir
+    local download_success=0
+    
+    print_info "Installing Nimf for $OS_PRETTY..."
+    
+    # Determine package names based on distribution
+    local pkg_suffix=""
+    case $OS in
+        debian)
+            if [[ "$OS_VERSION" == "12" ]] || [[ "$OS_CODENAME" == "bookworm" ]]; then
+                pkg_suffix="debian.bookworm"
+            elif [[ "$OS_VERSION" == "13" ]] || [[ "$OS_CODENAME" == "trixie" ]]; then
+                pkg_suffix="debian.trixie"
+            else
+                pkg_suffix="debian.bookworm"  # Default to bookworm
+            fi
+            ;;
+        ubuntu|linuxmint|elementary|pop)
+            pkg_suffix="ubuntu.2404"  # Use Ubuntu 24.04 packages as default
+            ;;
+        *)
+            pkg_suffix="ubuntu.2404"
+            ;;
+    esac
+    
+    # Create temp directory with error handling
+    temp_dir=$(mktemp -d 2>/dev/null) || {
+        print_error "Failed to create temporary directory"
+        exit 1
+    }
+    
+    # Ensure cleanup on exit
+    trap "cd /; rm -rf '$temp_dir' 2>/dev/null || true" EXIT INT TERM
+    
+    cd "$temp_dir" || {
+        print_error "Failed to access temporary directory"
+        exit 1
+    }
+    
+    print_info "Downloading packages..."
+    
+    # Try multiple package naming patterns with retries
+    local package_patterns=(
+        "nimf_${version_num}_amd64.deb"
+        "nimf_${version_num}-${pkg_suffix}_amd64.deb"
+        "nimf-${pkg_suffix}_${version_num}_amd64.deb"
+    )
+    
+    for pattern in "${package_patterns[@]}"; do
+        if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
+            print_info "Downloaded: $pattern"
+            download_success=1
+            break
+        fi
+    done
+    
+    if [ $download_success -eq 0 ]; then
+        print_error "Failed to download nimf package. Tried patterns:"
+        for pattern in "${package_patterns[@]}"; do
+            print_error "  - $pattern"
+        done
+        print_info "Available releases: https://github.com/${GITHUB_REPO}/releases"
+        exit 1
+    fi
+    
+    # Download i18n package (optional)
+    local i18n_patterns=(
+        "nimf-i18n_${version_num}_amd64.deb"
+        "nimf-i18n_${version_num}-${pkg_suffix}_amd64.deb"
+        "nimf-i18n-${pkg_suffix}_${version_num}_amd64.deb"
+    )
+    
+    local i18n_downloaded=0
+    for pattern in "${i18n_patterns[@]}"; do
+        if wget --timeout=30 --tries=1 -q "${base_url}/${pattern}" 2>/dev/null; then
+            print_info "Downloaded i18n package: $pattern"
+            i18n_downloaded=1
+            break
+        fi
+    done
+    
+    if [ $i18n_downloaded -eq 0 ]; then
+        print_info "i18n package not found (optional - provides additional language support)"
+    fi
+    
+    # Verify downloaded packages
+    local deb_count=$(ls -1 *.deb 2>/dev/null | wc -l)
+    if [ $deb_count -eq 0 ]; then
+        print_error "No .deb packages found after download"
+        exit 1
+    fi
+    
+    print_info "Installing packages..."
+    
+    # Install packages with better error handling
+    if ! dpkg -i *.deb 2>/dev/null; then
+        print_info "Package installation encountered dependency issues, resolving..."
+    fi
+    
+    # Fix dependencies with error handling
+    print_info "Resolving dependencies..."
+    if ! apt-get install -f -y; then
+        print_error "Failed to resolve package dependencies"
+        print_info "You may need to run: sudo apt-get install -f"
+        exit 1
+    fi
+    
+    # Verify installation
+    if ! dpkg -l | grep -q nimf; then
+        print_error "Nimf installation verification failed"
+        exit 1
+    fi
+    
+    print_success "Nimf packages installed successfully"
+}
+
+# Function to install on Fedora
+install_fedora() {
+    local version=$1
+    local version_num=${version#v}
+    local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    
+    print_info "Installing Nimf for $OS_PRETTY..."
+    
+    # Download and install
+    local temp_dir=$(mktemp -d)
+    cd "$temp_dir"
+    
+    print_info "Downloading packages..."
+    wget -q "${base_url}/nimf-${version_num}-1.fc${OS_VERSION}.x86_64.rpm" || \
+        wget -q "${base_url}/nimf-${version_num}-1.fedora.latest.x86_64.rpm" || \
+        wget -q "${base_url}/nimf-fedora.latest-${version_num}-1.x86_64.rpm" || {
+            print_error "Failed to download nimf package"
+            rm -rf "$temp_dir"
+            exit 1
+        }
+    
+    print_info "Installing packages..."
+    dnf install -y *.rpm
+    
+    # Clean up
+    cd - > /dev/null
+    rm -rf "$temp_dir"
+}
+
+# Function to install on OpenSUSE
+install_opensuse() {
+    local version=$1
+    local version_num=${version#v}
+    local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    
+    print_info "Installing Nimf for $OS_PRETTY..."
+    
+    # Download and install
+    local temp_dir=$(mktemp -d)
+    cd "$temp_dir"
+    
+    print_info "Downloading packages..."
+    wget -q "${base_url}/nimf-${version_num}-1.opensuse.x86_64.rpm" || \
+        wget -q "${base_url}/nimf-opensuse-${version_num}-1.x86_64.rpm" || {
+            print_error "Failed to download nimf package"
+            rm -rf "$temp_dir"
+            exit 1
+        }
+    
+    print_info "Installing packages..."
+    zypper install -y *.rpm
+    
+    # Clean up
+    cd - > /dev/null
+    rm -rf "$temp_dir"
+}
+
+# Function to install on Arch Linux
+install_arch() {
+    local version=$1
+    local version_num=${version#v}
+    local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    
+    print_info "Installing Nimf for $OS_PRETTY..."
+    
+    # Download and install
+    local temp_dir=$(mktemp -d)
+    cd "$temp_dir"
+    
+    print_info "Downloading packages..."
+    wget -q "${base_url}/nimf-${version_num}-1-x86_64.pkg.tar.zst" || \
+        wget -q "${base_url}/nimf-arch-${version_num}-1-x86_64.pkg.tar.zst" || {
+            print_error "Failed to download nimf package"
+            rm -rf "$temp_dir"
+            exit 1
+        }
+    
+    print_info "Installing packages..."
+    pacman -U --noconfirm *.pkg.tar.zst
+    
+    # Clean up
+    cd - > /dev/null
+    rm -rf "$temp_dir"
+}
+
+# Function to handle ibus conflicts
+handle_ibus_conflict() {
+    # Check if ibus-daemon exists and is running
+    if command -v ibus-daemon &> /dev/null; then
+        print_info "Detected ibus-daemon which may conflict with Nimf"
+        
+        # Check if ibus is currently running
+        if pgrep -x "ibus-daemon" > /dev/null; then
+            print_info "Stopping ibus-daemon..."
+            pkill -x ibus-daemon 2>/dev/null || true
+        fi
+        
+        # Ask user for preferred method (default to auto-disable for simplicity)
+        if [ "${NIMF_INTERACTIVE:-0}" = "1" ]; then
+            # Interactive mode - ask user
+            echo ""
+            echo "ibus-daemon conflicts with Nimf. Choose how to handle it:"
+            echo "1) Remove ibus completely (recommended for dedicated Nimf users)"
+            echo "2) Disable ibus-daemon (keep ibus installed but disabled)"
+            echo "3) Skip (handle manually later)"
+            echo ""
+            read -p "Enter choice [1-3] (default: 2): " CHOICE
+            CHOICE=${CHOICE:-2}
+        else
+            # Auto mode by default - disable ibus-daemon (safest option)
+            print_info "Automatically disabling ibus-daemon to prevent conflicts..."
+            CHOICE=2
+        fi
+        
+        case $CHOICE in
+            1)
+                print_info "Removing ibus packages..."
+                case $OS in
+                    ubuntu|debian|linuxmint|elementary|pop)
+                        apt-get remove --purge -y ibus ibus-data 2>/dev/null || true
+                        apt-get autoremove -y 2>/dev/null || true
+                        ;;
+                    fedora|rhel|centos)
+                        dnf remove -y ibus 2>/dev/null || true
+                        ;;
+                    opensuse*)
+                        zypper remove -y ibus 2>/dev/null || true
+                        ;;
+                    arch|manjaro)
+                        pacman -Rns --noconfirm ibus 2>/dev/null || true
+                        ;;
+                esac
+                print_success "ibus has been removed"
+                ;;
+            2)
+                print_info "Disabling ibus-daemon..."
+                # Backup and disable ibus-daemon
+                if [ -f /usr/bin/ibus-daemon ]; then
+                    if [ ! -f /usr/bin/ibus-daemon.bak ]; then
+                        mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
+                        print_success "ibus-daemon has been disabled (backed up to ibus-daemon.bak)"
+                    else
+                        print_info "ibus-daemon is already disabled"
+                    fi
+                fi
+                
+                # Disable ibus autostart
+                if [ -f /etc/xdg/autostart/ibus.desktop ]; then
+                    mv /etc/xdg/autostart/ibus.desktop /etc/xdg/autostart/ibus.desktop.disabled 2>/dev/null || true
+                fi
+                
+                # Remove ibus from im-config if present
+                if command -v im-config &> /dev/null; then
+                    im-config -n none 2>/dev/null || true
+                fi
+                ;;
+            3)
+                print_info "Skipping ibus handling. You may need to disable it manually."
+                print_info "To disable: sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak"
+                ;;
+            *)
+                print_info "Invalid choice. Skipping ibus handling."
+                ;;
+        esac
+    fi
+}
+
+# Function to configure nimf
+configure_nimf() {
+    print_info "Configuring Nimf..."
+    
+    # Handle ibus conflicts first
+    handle_ibus_conflict
+    
+    # Set nimf as default input method
+    if command -v im-config &> /dev/null; then
+        print_info "Setting Nimf as default input method..."
+        im-config -n nimf
+    fi
+    
+    # Configure environment variables for different desktop environments
+    configure_environment_vars
+    
+    # Enable for current user if not running in container
+    if [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
+        sudo -u "$SUDO_USER" nimf-settings 2>/dev/null || true
+    fi
+    
+    print_success "Nimf installation completed successfully!"
+    print_info "Please log out and log back in for changes to take effect."
+    print_info "You can configure Nimf by running: nimf-settings"
+}
+
+# Function to configure environment variables
+configure_environment_vars() {
+    print_info "Configuring environment variables..."
+    
+    # Create nimf.sh for system-wide environment variables
+    if ! cat > /etc/profile.d/nimf.sh << 'EOF'; then
+# Nimf Input Method Framework
+export GTK_IM_MODULE=nimf
+export QT_IM_MODULE=nimf
+export QT4_IM_MODULE=nimf
+export XMODIFIERS=@im=nimf
+export CLUTTER_IM_MODULE=nimf
+export ECORE_IMF_MODULE=nimf
+EOF
+        print_error "Failed to create /etc/profile.d/nimf.sh"
+        return 1
+    fi
+    
+    chmod 644 /etc/profile.d/nimf.sh 2>/dev/null || {
+        print_error "Failed to set permissions on /etc/profile.d/nimf.sh"
+        return 1
+    }
+    
+    # For systemd-based systems, also create environment.d configuration
+    if [ -d /etc/environment.d ] || mkdir -p /etc/environment.d 2>/dev/null; then
+        if cat > /etc/environment.d/50-nimf.conf << 'EOF' 2>/dev/null; then
+GTK_IM_MODULE=nimf
+QT_IM_MODULE=nimf
+QT4_IM_MODULE=nimf
+XMODIFIERS=@im=nimf
+CLUTTER_IM_MODULE=nimf
+ECORE_IMF_MODULE=nimf
+EOF
+            chmod 644 /etc/environment.d/50-nimf.conf 2>/dev/null || true
+            print_info "Created systemd environment configuration"
+        fi
+    fi
+    
+    # For GNOME users on Wayland (with better error handling)
+    if [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
+        # Check if user is using GNOME (with timeout and error handling)
+        if timeout 10 sudo -u "$SUDO_USER" dbus-send --session --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null | grep -q org.gnome; then
+            print_info "Configuring for GNOME desktop..."
+            if ! sudo -u "$SUDO_USER" gsettings set org.gnome.desktop.interface gtk-im-module 'nimf' 2>/dev/null; then
+                print_info "Note: Could not set GNOME gsettings (may require user to be logged in)"
+            fi
+        fi
+    fi
+    
+    print_success "Environment variables configured"
+}
+
+# Function to cleanup on error
+cleanup_on_error() {
+    local exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        print_error "Installation failed with exit code $exit_code"
+        print_info "For help, please visit: https://github.com/${GITHUB_REPO}/issues"
+    fi
+    exit $exit_code
+}
+
+# Function to validate system requirements
+validate_system() {
+    # Check architecture
+    local arch=$(uname -m)
+    if [[ "$arch" != "x86_64" && "$arch" != "aarch64" ]]; then
+        print_error "Unsupported architecture: $arch"
+        print_info "Nimf currently supports x86_64 and aarch64 only"
+        exit 1
+    fi
+    
+    # Check available disk space (at least 100MB)
+    local available_space=$(df /tmp | awk 'NR==2 {print int($4/1024)}')
+    if [ "$available_space" -lt 100 ]; then
+        print_error "Insufficient disk space. Need at least 100MB free in /tmp"
+        print_info "Available: ${available_space}MB"
+        exit 1
+    fi
+    
+    # Check if nimf is already installed
+    if dpkg -l 2>/dev/null | grep -q "^ii.*nimf" || \
+       rpm -q nimf 2>/dev/null || \
+       pacman -Q nimf 2>/dev/null; then
+        print_info "Nimf is already installed. This will update to the latest version."
+    fi
+}
+
+# Main installation flow
+main() {
+    # Set up error handling
+    set -e
+    trap cleanup_on_error ERR
+    
+    echo "================================================"
+    echo "     Nimf Input Method Framework Installer"
+    echo "================================================"
+    echo ""
+    
+    # Check if running as root
+    check_root
+    
+    # Detect OS
+    detect_os
+    print_info "Detected OS: $OS_PRETTY"
+    
+    # Validate system requirements
+    validate_system
+    
+    # Check dependencies
+    check_dependencies
+    
+    # Get latest version
+    print_info "Fetching latest version..."
+    VERSION=$(get_latest_version)
+    print_info "Latest version: $VERSION"
+    
+    # Install based on OS
+    case $OS in
+        ubuntu|debian|linuxmint|elementary|pop)
+            install_debian "$VERSION" || {
+                print_error "Failed to install on Debian/Ubuntu-based system"
+                exit 1
+            }
+            ;;
+        fedora|rhel|centos)
+            install_fedora "$VERSION" || {
+                print_error "Failed to install on Fedora/RedHat-based system"
+                exit 1
+            }
+            ;;
+        opensuse|opensuse-leap|opensuse-tumbleweed)
+            install_opensuse "$VERSION" || {
+                print_error "Failed to install on openSUSE system"
+                exit 1
+            }
+            ;;
+        arch|manjaro|endeavouros)
+            install_arch "$VERSION" || {
+                print_error "Failed to install on Arch-based system"
+                exit 1
+            }
+            ;;
+        *)
+            print_error "Unsupported distribution: $OS"
+            print_info "Supported distributions:"
+            print_info "  - Ubuntu 24.04+"
+            print_info "  - Debian 12+ (Bookworm/Trixie)"
+            print_info "  - Fedora 33+"
+            print_info "  - openSUSE Leap 15.6+"
+            print_info "  - Arch Linux (rolling)"
+            print_info "Please install manually from: https://github.com/${GITHUB_REPO}/releases"
+            exit 1
+            ;;
+    esac
+    
+    # Configure nimf
+    if ! configure_nimf; then
+        print_error "Package installation succeeded but configuration failed"
+        print_info "You may need to configure Nimf manually"
+        print_info "Run: nimf-settings"
+        exit 1
+    fi
+    
+    echo ""
+    echo "================================================"
+    print_success "✅ Nimf installation completed successfully!"
+    echo "================================================"
+}
+
+# Run main function with error handling
+if ! main "$@"; then
+    exit 1
+fi

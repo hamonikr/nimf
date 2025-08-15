@@ -103,52 +103,41 @@ jobs:
       - name: Generate release notes
         id: release-notes
         run: |
-          # 동적으로 릴리즈 노트 생성 (패키지 설치 방법)
+          # 동적으로 릴리즈 노트 생성 (자동 설치 스크립트)
           cat > release-body.md << 'EOF'
           
-          ## 🚀 설치 방법
+          ## 🚀 Quick Install (Recommended)
           
-          ### Ubuntu/Debian
+          Install the latest version with a single command on all supported distributions:
+          
           ```bash
-          # 릴리즈 페이지에서 패키지 확인 후 다운로드
-          # 버전 번호는 릴리즈 태그에 따라 변경됩니다 (예: v1.3.10 → 1.3.10)
-          VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
+          # Using curl
+          curl -fsSL https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo bash
           
-          # 패키지 다운로드
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf_${VERSION}_amd64.deb
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-i18n_${VERSION}_amd64.deb
-          
-          # nimf 패키지 설치
-          sudo dpkg -i nimf_${VERSION}_amd64.deb nimf-i18n_${VERSION}_amd64.deb
-          sudo apt-get install -f  # 의존성 해결
+          # Or using wget
+          wget -qO- https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo -E bash -
           ```
           
-          ### Fedora
-          ```bash
-          # 릴리즈 페이지에서 정확한 파일명 확인 후 다운로드
-          # 파일명 패턴: nimf-VERSION-1.fc42.x86_64.rpm
-          VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
-          curl -LO https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-${VERSION}-1.fc42.x86_64.rpm
-          sudo dnf install ./nimf-${VERSION}-1.fc42.x86_64.rpm
-          ```
+          This script automatically:
+          - Detects your distribution and installs the appropriate package
+          - Handles ibus conflicts (disables ibus-daemon if present)  
+          - Configures environment variables for all desktop environments
+          - Sets Nimf as the default input method
           
-          ### OpenSUSE
-          ```bash
-          # 릴리즈 페이지에서 정확한 파일명 확인 후 다운로드
-          # 파일명 패턴: nimf-VERSION-1.opensuse.x86_64.rpm
-          VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
-          curl -LO https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-${VERSION}-1.opensuse.x86_64.rpm
-          sudo zypper install ./nimf-${VERSION}-1.opensuse.x86_64.rpm
-          ```
+          **Supported Distributions:**
+          - Ubuntu 24.04+ / Debian 12+ (Bookworm/Trixie)
+          - Fedora 33+ / CentOS / RHEL
+          - openSUSE Leap 15.6+
+          - Arch Linux / Manjaro
           
-          ### Arch Linux
-          ```bash
-          # 릴리즈 페이지에서 정확한 파일명 확인 후 다운로드
-          # 파일명 패턴: nimf-VERSION-1-x86_64.pkg.tar.zst
-          VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
-          curl -LO https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-${VERSION}-1-x86_64.pkg.tar.zst
-          sudo pacman -U nimf-${VERSION}-1-x86_64.pkg.tar.zst
-          ```
+          ---
+          
+          ## 📦 Manual Package Installation
+          
+          If you prefer manual installation, download the appropriate package for your distribution from the assets below and install using your package manager.
+          
+          **Note:** Manual installation requires additional configuration steps. The automatic installation script above is recommended for most users.
+          
           EOF
           
           echo "Generated release notes:"

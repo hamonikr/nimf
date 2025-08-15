@@ -1473,7 +1473,7 @@ nimf_settings_build_keyboard_page (void)
   gtk_widget_set_margin_bottom (page, 15);
 
   /* 전역 설정: 단축키 등 */
-  section = build_group_title (_("기본 설정"));
+  section = build_group_title (_("General Settings"));
 #if GTK_CHECK_VERSION(4, 0, 0)
   gtk_box_append (GTK_BOX (page), section);
 #else
@@ -1489,7 +1489,7 @@ nimf_settings_build_keyboard_page (void)
   }
 
   /* 기본 엔진 선택 섹션 */
-  section = build_group_title (_("기본 엔진"));
+  section = build_group_title (_("Default Engine"));
 #if GTK_CHECK_VERSION(4, 0, 0)
   gtk_box_append (GTK_BOX (page), section);
 #else
@@ -1505,7 +1505,7 @@ nimf_settings_build_keyboard_page (void)
   }
 
   /* XKB 옵션 섹션 */
-  section = build_group_title (_("XKB 옵션"));
+  section = build_group_title (_("XKB Options"));
 #if GTK_CHECK_VERSION(4, 0, 0)
   gtk_box_append (GTK_BOX (page), section);
 #else
@@ -1544,7 +1544,7 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
 #else
   GtkDialogFlags flags = GTK_DIALOG_MODAL;
 #endif
-  dialog = gtk_dialog_new_with_buttons (_("엔진 설정"),
+  dialog = gtk_dialog_new_with_buttons (_("Engine Settings"),
                                         GTK_WINDOW (nimf_settings_window),
                                         flags,
                                         _("_Close"), GTK_RESPONSE_CLOSE,
@@ -1600,7 +1600,7 @@ nimf_settings_build_engines_page (void)
   gtk_widget_set_margin_top    (outer, 15);
   gtk_widget_set_margin_bottom (outer, 15);
 
-  GtkWidget *title = build_group_title (_("언어 엔진"));
+  GtkWidget *title = build_group_title (_("Language Engines"));
 #if GTK_CHECK_VERSION(4, 0, 0)
   gtk_box_append (GTK_BOX (outer), title);
 #else
@@ -1643,7 +1643,7 @@ nimf_settings_build_engines_page (void)
     gtk_widget_set_halign (label, GTK_ALIGN_START);
     gtk_widget_set_hexpand (label, TRUE);
 
-    GtkWidget *settings_btn = gtk_button_new_with_label (_("설정…"));
+    GtkWidget *settings_btn = gtk_button_new_with_label (_("Settings..."));
     EngineDialogData *data = g_slice_new0 (EngineDialogData);
     data->schema_id = g_strdup (schema_id);
     g_signal_connect (settings_btn, "clicked",
@@ -1780,13 +1780,13 @@ nimf_settings_build_main_window (NimfSettings *nsettings)
   GtkWidget *page_engines  = nimf_settings_build_engines_page ();
 
 #if GTK_CHECK_VERSION(4, 0, 0)
-  gtk_stack_add_titled (GTK_STACK (stack), page_keyboard, "keyboard", _("키보드"));
-  gtk_stack_add_titled (GTK_STACK (stack), page_clients,  "clients",  _("클라이언트"));
-  gtk_stack_add_titled (GTK_STACK (stack), page_engines,  "engines",  _("언어 엔진"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_keyboard, "keyboard", _("Keyboard"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_clients,  "clients",  _("Clients"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_engines,  "engines",  _("Language Engines"));
 #else
-  gtk_stack_add_titled (GTK_STACK (stack), page_keyboard, "keyboard", _("키보드"));
-  gtk_stack_add_titled (GTK_STACK (stack), page_clients,  "clients",  _("클라이언트"));
-  gtk_stack_add_titled (GTK_STACK (stack), page_engines,  "engines",  _("언어 엔진"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_keyboard, "keyboard", _("Keyboard"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_clients,  "clients",  _("Clients"));
+  gtk_stack_add_titled (GTK_STACK (stack), page_engines,  "engines",  _("Language Engines"));
 #endif
 
   /* 레이아웃 배치 */

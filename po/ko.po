@@ -1482,3 +1482,31 @@ msgstr "'시스템 키보드'"
 #: ../modules/engines/nimf-system-keyboard/org.nimf.engines.nimf-system-keyboard.gschema.xml.h:4
 msgid "Shortcuts to switch to system keyboard"
 msgstr "시스템 키보드로 전환하기 위한 단축키"
+
+#: ../bin/nimf-settings/nimf-settings.c:1476
+msgid "General Settings"
+msgstr "기본 설정"
+
+#: ../bin/nimf-settings/nimf-settings.c:1492
+msgid "Default Engine"
+msgstr "기본 엔진"
+
+#: ../bin/nimf-settings/nimf-settings.c:1547
+msgid "Engine Settings"
+msgstr "엔진 설정"
+
+#: ../bin/nimf-settings/nimf-settings.c:1603
+msgid "Language Engines"
+msgstr "언어 엔진"
+
+#: ../bin/nimf-settings/nimf-settings.c:1646
+msgid "Settings..."
+msgstr "설정..."
+
+#: ../bin/nimf-settings/nimf-settings.c:1783
+msgid "Keyboard"
+msgstr "키보드"
+
+#: ../bin/nimf-settings/nimf-settings.c:1784
+msgid "Clients"
+msgstr "클라이언트"
