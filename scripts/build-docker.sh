@@ -21,12 +21,15 @@ echo -e "${YELLOW}프로젝트 디렉토리: ${NC}$PROJECT_ROOT"
 AVAILABLE_DOCKERFILES=(
     "ubuntu.2204.Dockerfile"
     "ubuntu.2404.Dockerfile" 
+    "ubuntu.2404.arm64.Dockerfile"
     "debian.bookworm.Dockerfile"
+    "debian.bookworm.arm64.Dockerfile"
     "debian.trixie.Dockerfile"
     "debian.sid.Dockerfile"
     "fedora.latest.Dockerfile"
     "opensuse.Dockerfile"
     "arch.Dockerfile"
+    "arch.arm64.Dockerfile"
 )
 
 # 함수: 사용법 출력

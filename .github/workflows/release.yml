@@ -12,22 +12,49 @@ jobs:
     strategy:
       matrix:
         include:
+          # x86_64 builds
           - dockerfile: debian.bookworm.Dockerfile
             platform: debian.bookworm
+            arch: amd64
           - dockerfile: debian.trixie.Dockerfile
             platform: debian.trixie
+            arch: amd64
           - dockerfile: ubuntu.2404.Dockerfile
             platform: ubuntu.2404
+            arch: amd64
           - dockerfile: fedora.latest.Dockerfile
             platform: fedora.latest
+            arch: amd64
           - dockerfile: opensuse.Dockerfile
             platform: opensuse
+            arch: amd64
           - dockerfile: arch.Dockerfile
             platform: arch
+            arch: amd64
+          # ARM64 builds
+          - dockerfile: debian.bookworm.arm64.Dockerfile
+            platform: debian.bookworm.arm64
+            arch: arm64
+          - dockerfile: ubuntu.2404.arm64.Dockerfile
+            platform: ubuntu.2404.arm64
+            arch: arm64
+          - dockerfile: arch.arm64.Dockerfile
+            platform: arch.arm64
+            arch: arm64
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
+
+      - name: Set up QEMU for multi-platform builds
+        if: matrix.arch == 'arm64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        if: matrix.arch == 'arm64'
+        uses: docker/setup-buildx-action@v3
 
       - name: Build packages with docker build script
         run: |
@@ -38,7 +65,15 @@ jobs:
           DOCKERFILE_NAME="${{ matrix.dockerfile }}"
           PLATFORM_NAME="${DOCKERFILE_NAME%.Dockerfile}"
           
-          echo "Building packages for platform: $PLATFORM_NAME"
+          echo "Building packages for platform: $PLATFORM_NAME (architecture: ${{ matrix.arch }})"
+          
+          # ARM64 빌드의 경우 추가 설정
+          if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+            echo "Setting up ARM64 build environment..."
+            # Docker에서 ARM64 빌드를 위한 환경 설정
+            export DOCKER_CLI_EXPERIMENTAL=enabled
+          fi
+          
           ./scripts/build-docker.sh "$PLATFORM_NAME"
           
           # 생성된 패키지 확인
@@ -83,9 +118,18 @@ jobs:
                 filename=$(basename "$file")
                 # 파일명에 플랫폼 정보가 없으면 추가
                 if [[ ! "$filename" =~ (fc42|opensuse|ubuntu|debian|arch) ]]; then
-                  ext="${filename##*.}"
-                  name="${filename%.*}"
-                  new_filename="${name}-${platform_name}.${ext}"
+                  # 파일 확장자 처리 (.deb, .rpm, .pkg.tar.zst 등)
+                  if [[ "$filename" == *.pkg.tar.* ]]; then
+                    # Arch 패키지의 경우 (.pkg.tar.zst, .pkg.tar.xz 등)
+                    base_name="${filename%.pkg.tar.*}"
+                    ext="pkg.tar.${filename##*.pkg.tar.}"
+                    new_filename="${base_name}-${platform_name}.${ext}"
+                  else
+                    # 일반적인 확장자 (.deb, .rpm 등)
+                    ext="${filename##*.}"
+                    name="${filename%.*}"
+                    new_filename="${name}-${platform_name}.${ext}"
+                  fi
                 else
                   new_filename="$filename"
                 fi
@@ -124,11 +168,11 @@ jobs:
           - Configures environment variables for all desktop environments
           - Sets Nimf as the default input method
           
-          **Supported Distributions:**
-          - Ubuntu 24.04+ / Debian 12+ (Bookworm/Trixie)
-          - Fedora 33+ / CentOS / RHEL
-          - openSUSE Leap 15.6+
-          - Arch Linux / Manjaro
+          **Supported Distributions & Architectures:**
+          - Ubuntu 24.04+ / Debian 12+ (Bookworm/Trixie) - x86_64, ARM64
+          - Fedora 33+ / CentOS / RHEL - x86_64
+          - openSUSE Leap 15.6+ - x86_64
+          - Arch Linux / Manjaro - x86_64, ARM64
           
           ---
           

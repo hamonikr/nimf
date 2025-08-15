@@ -131,26 +131,41 @@ install_debian() {
     local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
     local temp_dir
     local download_success=0
+    local pkg_arch=$(get_package_arch)
     
-    print_info "Installing Nimf for $OS_PRETTY..."
+    print_info "Installing Nimf for $OS_PRETTY (${pkg_arch})..."
     
-    # Determine package names based on distribution
+    # Determine package names based on distribution and architecture
     local pkg_suffix=""
     case $OS in
         debian)
             if [[ "$OS_VERSION" == "12" ]] || [[ "$OS_CODENAME" == "bookworm" ]]; then
                 pkg_suffix="debian.bookworm"
+                # ARM64 support check for Debian
+                if [[ "$pkg_arch" == "arm64" ]]; then
+                    pkg_suffix="debian.bookworm.arm64"
+                fi
             elif [[ "$OS_VERSION" == "13" ]] || [[ "$OS_CODENAME" == "trixie" ]]; then
                 pkg_suffix="debian.trixie"
             else
                 pkg_suffix="debian.bookworm"  # Default to bookworm
+                if [[ "$pkg_arch" == "arm64" ]]; then
+                    pkg_suffix="debian.bookworm.arm64"
+                fi
             fi
             ;;
         ubuntu|linuxmint|elementary|pop)
             pkg_suffix="ubuntu.2404"  # Use Ubuntu 24.04 packages as default
+            # ARM64 support check for Ubuntu
+            if [[ "$pkg_arch" == "arm64" ]]; then
+                pkg_suffix="ubuntu.2404.arm64"
+            fi
             ;;
         *)
             pkg_suffix="ubuntu.2404"
+            if [[ "$pkg_arch" == "arm64" ]]; then
+                pkg_suffix="ubuntu.2404.arm64"
+            fi
             ;;
     esac
     
@@ -172,9 +187,9 @@ install_debian() {
     
     # Try multiple package naming patterns with retries
     local package_patterns=(
-        "nimf_${version_num}_amd64.deb"
-        "nimf_${version_num}-${pkg_suffix}_amd64.deb"
-        "nimf-${pkg_suffix}_${version_num}_amd64.deb"
+        "nimf_${version_num}_${pkg_arch}.deb"
+        "nimf_${version_num}-${pkg_suffix}_${pkg_arch}.deb"
+        "nimf-${pkg_suffix}_${version_num}_${pkg_arch}.deb"
     )
     
     for pattern in "${package_patterns[@]}"; do
@@ -196,9 +211,9 @@ install_debian() {
     
     # Download i18n package (optional)
     local i18n_patterns=(
-        "nimf-i18n_${version_num}_amd64.deb"
-        "nimf-i18n_${version_num}-${pkg_suffix}_amd64.deb"
-        "nimf-i18n-${pkg_suffix}_${version_num}_amd64.deb"
+        "nimf-i18n_${version_num}_${pkg_arch}.deb"
+        "nimf-i18n_${version_num}-${pkg_suffix}_${pkg_arch}.deb"
+        "nimf-i18n-${pkg_suffix}_${version_num}_${pkg_arch}.deb"
     )
     
     local i18n_downloaded=0
@@ -307,20 +322,55 @@ install_arch() {
     local version=$1
     local version_num=${version#v}
     local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    local rpm_arch=$(get_rpm_arch)
+    local pkg_suffix=""
     
-    print_info "Installing Nimf for $OS_PRETTY..."
+    # ARM64 support check for Arch
+    if [[ "$rpm_arch" == "aarch64" ]]; then
+        pkg_suffix="arch.arm64"
+        rpm_arch="aarch64"
+    else
+        rpm_arch="x86_64"
+    fi
+    
+    print_info "Installing Nimf for $OS_PRETTY (${rpm_arch})..."
     
     # Download and install
     local temp_dir=$(mktemp -d)
     cd "$temp_dir"
     
     print_info "Downloading packages..."
-    wget -q "${base_url}/nimf-${version_num}-1-x86_64.pkg.tar.zst" || \
-        wget -q "${base_url}/nimf-arch-${version_num}-1-x86_64.pkg.tar.zst" || {
-            print_error "Failed to download nimf package"
-            rm -rf "$temp_dir"
-            exit 1
-        }
+    # Try multiple package naming patterns
+    local download_success=0
+    local arch_patterns=(
+        "nimf-${version_num}-1-${rpm_arch}.pkg.tar.zst"
+        "nimf-arch-${version_num}-1-${rpm_arch}.pkg.tar.zst"
+    )
+    
+    # Add ARM64 specific patterns
+    if [[ "$pkg_suffix" == "arch.arm64" ]]; then
+        arch_patterns+=(
+            "nimf-${pkg_suffix}-${version_num}-1-${rpm_arch}.pkg.tar.zst"
+            "nimf-${version_num}-${pkg_suffix}-1-${rpm_arch}.pkg.tar.zst"
+        )
+    fi
+    
+    for pattern in "${arch_patterns[@]}"; do
+        if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
+            print_info "Downloaded: $pattern"
+            download_success=1
+            break
+        fi
+    done
+    
+    if [ $download_success -eq 0 ]; then
+        print_error "Failed to download nimf package. Tried patterns:"
+        for pattern in "${arch_patterns[@]}"; do
+            print_error "  - $pattern"
+        done
+        rm -rf "$temp_dir"
+        exit 1
+    fi
     
     print_info "Installing packages..."
     pacman -U --noconfirm *.pkg.tar.zst
@@ -500,6 +550,42 @@ cleanup_on_error() {
     exit $exit_code
 }
 
+# Function to get system architecture in package format
+get_package_arch() {
+    local arch=$(uname -m)
+    case $arch in
+        x86_64)
+            echo "amd64"
+            ;;
+        aarch64)
+            echo "arm64"
+            ;;
+        *)
+            print_error "Unsupported architecture: $arch"
+            print_info "Nimf currently supports x86_64 (amd64) and aarch64 (arm64) only"
+            exit 1
+            ;;
+    esac
+}
+
+# Function to get system architecture in RPM format
+get_rpm_arch() {
+    local arch=$(uname -m)
+    case $arch in
+        x86_64)
+            echo "x86_64"
+            ;;
+        aarch64)
+            echo "aarch64"
+            ;;
+        *)
+            print_error "Unsupported architecture: $arch"
+            print_info "Nimf currently supports x86_64 and aarch64 only"
+            exit 1
+            ;;
+    esac
+}
+
 # Function to validate system requirements
 validate_system() {
     # Check architecture
@@ -564,12 +650,34 @@ main() {
             }
             ;;
         fedora|rhel|centos)
+            # Check if ARM64 is supported for Fedora/RHEL
+            local arch=$(uname -m)
+            if [[ "$arch" == "aarch64" ]]; then
+                print_error "ARM64 is not yet supported for $OS_PRETTY"
+                print_info "ARM64 support is currently available for:"
+                print_info "  - Ubuntu 24.04+ / Debian 12+"
+                print_info "  - Arch Linux"
+                print_info "Please check: https://github.com/${GITHUB_REPO}/releases"
+                exit 1
+            fi
+            
             install_fedora "$VERSION" || {
                 print_error "Failed to install on Fedora/RedHat-based system"
                 exit 1
             }
             ;;
         opensuse|opensuse-leap|opensuse-tumbleweed)
+            # Check if ARM64 is supported for openSUSE
+            local arch=$(uname -m)
+            if [[ "$arch" == "aarch64" ]]; then
+                print_error "ARM64 is not yet supported for $OS_PRETTY"
+                print_info "ARM64 support is currently available for:"
+                print_info "  - Ubuntu 24.04+ / Debian 12+"
+                print_info "  - Arch Linux"
+                print_info "Please check: https://github.com/${GITHUB_REPO}/releases"
+                exit 1
+            fi
+            
             install_opensuse "$VERSION" || {
                 print_error "Failed to install on openSUSE system"
                 exit 1
@@ -584,11 +692,11 @@ main() {
         *)
             print_error "Unsupported distribution: $OS"
             print_info "Supported distributions:"
-            print_info "  - Ubuntu 24.04+"
-            print_info "  - Debian 12+ (Bookworm/Trixie)"
-            print_info "  - Fedora 33+"
-            print_info "  - openSUSE Leap 15.6+"
-            print_info "  - Arch Linux (rolling)"
+            print_info "  - Ubuntu 24.04+ (x86_64, ARM64)"
+            print_info "  - Debian 12+ Bookworm/Trixie (x86_64, ARM64)"
+            print_info "  - Fedora 33+ (x86_64)"
+            print_info "  - openSUSE Leap 15.6+ (x86_64)"
+            print_info "  - Arch Linux (x86_64, ARM64)"
             print_info "Please install manually from: https://github.com/${GITHUB_REPO}/releases"
             exit 1
             ;;

@@ -96,6 +96,21 @@ docker run --rm -v $PWD/dist:/packages --entrypoint="/bin/bash" nimf-builder:arc
 "
 ```
 
+#### 🛠️ 로컬 ARM64 빌드 테스트 방법
+
+  1. 멀티 아키텍처 환경 설정
+
+  # 한 번만 실행하면 됩니다
+  ./scripts/setup-multiarch.sh
+
+  2. ARM64 빌드 테스트
+
+  # 기존 스크립트 대신 멀티아키텍처 스크립트 사용
+  ./scripts/build-docker-multiarch.sh ubuntu.2404.arm64
+  ./scripts/build-docker-multiarch.sh debian.bookworm.arm64
+  ./scripts/build-docker-multiarch.sh arch.arm64
+
+
 ## 빌드 결과
 
 빌드가 완료되면 `dist/` 디렉토리에 다음과 같은 구조로 패키지들이 생성됩니다:
