@@ -10,6 +10,8 @@ jobs:
   # 통합 빌드 job - 모든 플랫폼을 한 번에 빌드
   build-packages:
     runs-on: ubuntu-latest
+    # 릴리즈 태그가 생성될 때는 실행하지 않음 (release.yml이 대신 실행됨)
+    if: "!contains(github.event.head_commit.message, 'chore: bump version to v')"
     strategy:
       matrix:
         include:
@@ -58,6 +60,8 @@ jobs:
   test-release-preparation:
     needs: build-packages
     runs-on: ubuntu-latest
+    # 릴리즈 태그가 생성될 때는 실행하지 않음 (release.yml이 대신 실행됨)
+    if: "!contains(github.event.head_commit.message, 'chore: bump version to v')"
     
     steps:
       - name: Checkout source code
