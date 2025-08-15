@@ -104,45 +104,8 @@ jobs:
       - name: Generate release notes (test)
         id: release-notes
         run: |
-          # 동적으로 릴리즈 노트 생성 (패키지 목록과 설치 방법만)
+          # 동적으로 릴리즈 노트 생성 (패키지 설치 방법)
           cat > release-body.md << 'EOF'
-          ## 📦 패키지 목록
-          
-          ### DEB 패키지 (Ubuntu/Debian)
-          EOF
-          
-          # DEB 패키지 정보 추가
-          find final-packages/ -name "*.deb" | sort | while read deb; do
-            filename=$(basename "$deb")
-            size=$(du -h "$deb" | cut -f1)
-            echo "- \`$filename\` ($size)" >> release-body.md
-          done
-          
-          cat >> release-body.md << 'EOF'
-          
-          ### RPM 패키지 (Fedora/OpenSUSE)
-          EOF
-          
-          # RPM 패키지 정보 추가
-          find final-packages/ -name "*.rpm" | sort | while read rpm; do
-            filename=$(basename "$rpm")
-            size=$(du -h "$rpm" | cut -f1)
-            echo "- \`$filename\` ($size)" >> release-body.md
-          done
-          
-          cat >> release-body.md << 'EOF'
-          
-          ### Arch 패키지
-          EOF
-          
-          # Arch 패키지 정보 추가
-          find final-packages/ -name "*.pkg.tar.*" | sort | while read pkg; do
-            filename=$(basename "$pkg")
-            size=$(du -h "$pkg" | cut -f1)
-            echo "- \`$filename\` ($size)" >> release-body.md
-          done
-          
-          cat >> release-body.md << 'EOF'
           
           ## 🚀 설치 방법
           

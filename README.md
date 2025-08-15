@@ -7,8 +7,8 @@
 ![toolkits](https://img.shields.io/badge/GTK-2%2F3%2F4-green)
 ![qt](https://img.shields.io/badge/Qt-5%2F6-green)
 ![arch](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-darkblue)
-![ubuntu](https://img.shields.io/badge/Ubuntu-22.04%2B-orange)
-![debian](https://img.shields.io/badge/Debian-12%2B-brown)
+![ubuntu](https://img.shields.io/badge/Ubuntu-24.04%2B-orange)
+![debian](https://img.shields.io/badge/Debian-Bookworm%2FTrixie-brown)
 ![fedora](https://img.shields.io/badge/Fedora-33%2B-blue)
 ![opensuse](https://img.shields.io/badge/openSUSE-Leap%2015.6-green)
 ![archlinux](https://img.shields.io/badge/Arch-Rolling-blue)
@@ -71,14 +71,14 @@ Nimf is a lightweight, fast and extensible input method framework.
 ## Supported Platforms
 
 - x86_64
-  - Ubuntu (>= 18.04; GTK4 support on >= 22.04)
-  - Debian (>= 10; GTK4 support on >= 12)
+  - Ubuntu (>= 24.04)
+  - Debian (>= 12 Bookworm)
   - Arch Linux (Rolling)
   - Fedora (>= 33)
   - openSUSE Leap (15.6)
 - arm64
-  - Ubuntu (>= 18.04)
-  - Debian (>= 10)
+  - Ubuntu (>= 24.04)
+  - Debian (>= 12 Bookworm)
   - Arch Linux (Rolling)
 
 ## Installation
@@ -181,6 +181,30 @@ export GTK4_IM_MODULE=nimf
 
 ## Build Instructions
 
+### Docker-based Package Building (Recommended)
+
+We provide Docker-based builds for all supported platforms:
+
+```bash
+git clone --recurse-submodules https://github.com/hamonikr/nimf
+cd nimf
+
+# Build for specific platform
+./scripts/build-docker.sh debian.bookworm
+./scripts/build-docker.sh debian.trixie
+./scripts/build-docker.sh ubuntu.2404
+./scripts/build-docker.sh fedora.latest
+./scripts/build-docker.sh opensuse
+./scripts/build-docker.sh arch
+
+# Generated packages will be in dist/ folder
+find dist/ -name "*.deb" -o -name "*.rpm" -o -name "*.pkg.tar.*"
+```
+
+See [DOCKER-BUILD.md](DOCKER-BUILD.md) for detailed Docker build instructions.
+
+### Source Build
+
 See [BUILD.md](BUILD.md) for full, distro-specific packaging guides.
 
 Quick start (from source):
@@ -247,8 +271,39 @@ Element notes:
 - `combination`: Sequential composition rules (ID fixed to 0)
 - `include`: Inline another XML by relative/absolute path
 
+## Release and Development
+
+### Automated Release Process
+
+This project uses GitHub Actions for automated multi-platform package building and releases:
+
+- **Development Testing**: Use `test-release.yml` workflow on `dev` branch
+- **Production Releases**: Triggered by `v*` tags on `master` branch
+- **Supported Platforms**: Debian Bookworm/Trixie, Ubuntu 24.04, Fedora, OpenSUSE, Arch Linux
+
+### Release Management
+
+Use the provided release script for version management:
+
+```bash
+# Patch version increment (automatic)
+./scripts/release.sh -y
+
+# Minor version increment  
+./scripts/release.sh minor
+
+# Major version increment
+./scripts/release.sh major
+```
+
+The script automatically:
+- Updates versions in `configure.ac`, `PKGBUILD`, `nimf.spec`, `debian/changelog`
+- Creates commits and tags
+- Pushes to trigger GitHub Actions release workflow
+
 ## Additional Resources
 
+- Docker Build Guide: [DOCKER-BUILD.md](DOCKER-BUILD.md)
 - Manjaro: <https://github.com/hamonikr/nimf/wiki/Manjaro-build>
 - CentOS 8: <https://blog.naver.com/dfnk5516/222074913406>
 - Raspberry Pi 4 arm64: <https://github.com/hamonikr/nimf/wiki/Install-nimf-on-raspberry-pi-4---arm64>
@@ -298,19 +353,19 @@ Element notes:
 
 ## 지원 플랫폼
 - x86_64
-  - Ubuntu (>= 18.04; GTK4는 >= 22.04)
-  - Debian (>= 10; GTK4는 >= 12)
+  - Ubuntu (>= 24.04)
+  - Debian (>= 12 Bookworm)
   - Arch Linux (Rolling)
   - Fedora (>= 33)
   - openSUSE Leap (15.6)
 - arm64
-  - Ubuntu (>= 18.04)
-  - Debian (>= 10)
+  - Ubuntu (>= 24.04)
+  - Debian (>= 12 Bookworm)
   - Arch Linux (Rolling)
 
 ## 설치
 
-### Ubuntu(amd64, arm64), Debian(amd64, arm64), LinuxMint
+### Ubuntu 24.04+, Debian 12+ (amd64, arm64), LinuxMint
 Ubuntu 21.10 이상에서는 `ibus-daemon`이 자동 시작되어 nimf와 충돌할 수 있습니다.
 
 방법 1: ibus 제거
@@ -400,6 +455,31 @@ export GTK4_IM_MODULE=nimf
 ```
 
 ## 빌드 안내
+
+### Docker 기반 패키지 빌드 (권장)
+
+모든 지원 플랫폼에 대한 Docker 기반 빌드를 제공합니다:
+
+```bash
+git clone --recurse-submodules https://github.com/hamonikr/nimf
+cd nimf
+
+# 특정 플랫폼용 빌드
+./scripts/build-docker.sh debian.bookworm
+./scripts/build-docker.sh debian.trixie
+./scripts/build-docker.sh ubuntu.2404
+./scripts/build-docker.sh fedora.latest
+./scripts/build-docker.sh opensuse
+./scripts/build-docker.sh arch
+
+# 생성된 패키지는 dist/ 폴더에 위치
+find dist/ -name "*.deb" -o -name "*.rpm" -o -name "*.pkg.tar.*"
+```
+
+자세한 Docker 빌드 방법은 [DOCKER-BUILD.md](DOCKER-BUILD.md)를 참고하세요.
+
+### 소스 빌드
+
 배포판별 패키지 생성 방법은 [BUILD.md](BUILD.md)를 참고하세요.
 
 소스에서 빌드(요약):
