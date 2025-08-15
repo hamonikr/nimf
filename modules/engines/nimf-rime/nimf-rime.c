@@ -28,39 +28,34 @@
 #endif
 #include <glib/gi18n.h>
 
-/* Check if we have the new API structure (rime >= 1.13.0) */
-#if __has_include(<rime_api_deprecated.h>)
-  #define HAS_NEW_API 1
-  
-  /* Simple compatibility layer for rime API */
-  static RimeApi *g_api = NULL;
-  #define INIT_API() do { if (!g_api) g_api = rime_get_api(); } while(0)
-  
-  #define RimeSetupLogging(x) /* deprecated, skip */
-  #define RimeSetNotificationHandler(f, ctx) do { INIT_API(); if (g_api && g_api->set_notification_handler) g_api->set_notification_handler(f, ctx); } while(0)
-  #define RimeInitialize(t) do { INIT_API(); if (g_api && g_api->initialize) g_api->initialize(t); } while(0)
-  #define RimeStartMaintenance(x) do { INIT_API(); if (g_api && g_api->start_maintenance) g_api->start_maintenance(x); } while(0)
-  #define RimeFinalize() do { INIT_API(); if (g_api && g_api->finalize) g_api->finalize(); } while(0)
-  #define RimeCreateSession() (g_api && g_api->create_session ? g_api->create_session() : 0)
-  #define RimeDestroySession(s) do { INIT_API(); if (g_api && g_api->destroy_session) g_api->destroy_session(s); } while(0)
-  #define RimeGetContext(s, c) (g_api && g_api->get_context ? g_api->get_context(s, c) : False)
-  #define RimeFreeContext(c) do { INIT_API(); if (g_api && g_api->free_context) g_api->free_context(c); } while(0)
-  #define RimeProcessKey(s, k, m) (g_api && g_api->process_key ? g_api->process_key(s, k, m) : False)
-  #define RimeGetCommit(s, c) (g_api && g_api->get_commit ? g_api->get_commit(s, c) : False)
-  #define RimeFreeCommit(c) do { INIT_API(); if (g_api && g_api->free_commit) g_api->free_commit(c); } while(0)
-  #define RimeGetOption(s, o) (g_api && g_api->get_option ? g_api->get_option(s, o) : False)
-  #define RimeSetOption(s, o, v) do { INIT_API(); if (g_api && g_api->set_option) g_api->set_option(s, o, v); } while(0)
-  #define RimeGetVersion() (g_api && g_api->get_version ? g_api->get_version() : "1.13.1")
-#else
-  /* For older librime versions (< 1.13.0), use direct API calls */
-  #define HAS_NEW_API 0
-  
-  /* For librime 1.10.0, all functions are available directly - no need to redefine them */
-  /* Just define the version getter for consistency */
-  #define RimeGetVersion() rime_get_api()->get_version()
-  
-  /* All other functions (RimeProcessKey, RimeGetContext, etc.) are available directly from rime_api.h */
-#endif
+/* For librime 1.13+, we need to use the API structure */
+static RimeApi *g_rime_api = NULL;
+
+static inline void ensure_rime_api(void) {
+  if (!g_rime_api) {
+    g_rime_api = rime_get_api();
+    if (!g_rime_api) {
+      g_error("Failed to get Rime API");
+    }
+  }
+}
+
+/* Redefine all Rime functions to use the API structure */
+#define RimeSetupLogging(x) /* deprecated in new versions */
+#define RimeSetNotificationHandler(f, ctx) do { ensure_rime_api(); if (g_rime_api->set_notification_handler) g_rime_api->set_notification_handler(f, ctx); } while(0)
+#define RimeInitialize(t) do { ensure_rime_api(); if (g_rime_api->initialize) g_rime_api->initialize(t); } while(0)
+#define RimeStartMaintenance(x) do { ensure_rime_api(); if (g_rime_api->start_maintenance) g_rime_api->start_maintenance(x); } while(0)
+#define RimeFinalize() do { ensure_rime_api(); if (g_rime_api->finalize) g_rime_api->finalize(); } while(0)
+#define RimeCreateSession() (ensure_rime_api(), g_rime_api->create_session ? g_rime_api->create_session() : 0)
+#define RimeDestroySession(s) do { ensure_rime_api(); if (g_rime_api->destroy_session) g_rime_api->destroy_session(s); } while(0)
+#define RimeGetContext(s, c) (ensure_rime_api(), g_rime_api->get_context ? g_rime_api->get_context(s, c) : False)
+#define RimeFreeContext(c) do { ensure_rime_api(); if (g_rime_api->free_context) g_rime_api->free_context(c); } while(0)
+#define RimeProcessKey(s, k, m) (ensure_rime_api(), g_rime_api->process_key ? g_rime_api->process_key(s, k, m) : False)
+#define RimeGetCommit(s, c) (ensure_rime_api(), g_rime_api->get_commit ? g_rime_api->get_commit(s, c) : False)
+#define RimeFreeCommit(c) do { ensure_rime_api(); if (g_rime_api->free_commit) g_rime_api->free_commit(c); } while(0)
+#define RimeGetOption(s, o) (ensure_rime_api(), g_rime_api->get_option ? g_rime_api->get_option(s, o) : False)
+#define RimeSetOption(s, o, v) do { ensure_rime_api(); if (g_rime_api->set_option) g_rime_api->set_option(s, o, v); } while(0)
+#define RimeGetVersion() (ensure_rime_api(), g_rime_api->get_version ? g_rime_api->get_version() : "unknown")
 
 #define NIMF_TYPE_RIME             (nimf_rime_get_type ())
 #define NIMF_RIME(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_TYPE_RIME, NimfRime))
@@ -98,6 +93,18 @@ struct _NimfRimeClass
 static gint nimf_rime_ref_count = 0;
 
 G_DEFINE_DYNAMIC_TYPE (NimfRime, nimf_rime, NIMF_TYPE_ENGINE);
+
+/* Helper function to show candidatable with proper positioning */
+static void nimf_rime_show_candidatable (NimfRime *rime, NimfServiceIC *target)
+{
+  gboolean use_preedit = nimf_service_ic_get_use_preedit (target);
+  
+  /* For both X11 and Wayland: use consistent preedit logic */
+  nimf_candidatable_show (rime->candidatable, target, !use_preedit);
+  
+  g_debug ("RIME: Showing candidatable with use_preedit=%d, show_entry=%d", 
+           use_preedit, !use_preedit);
+}
 
 static void nimf_rime_update_preedit (NimfEngine    *engine,
                                       NimfServiceIC *target,
@@ -171,10 +178,17 @@ nimf_rime_update_candidate (NimfEngine    *engine,
 
   RIME_STRUCT (RimeContext, context);
 
-  if (!RimeGetContext (rime->session_id, &context) ||
-      context.composition.length == 0)
+  if (!RimeGetContext (rime->session_id, &context))
   {
     nimf_candidatable_hide (rime->candidatable);
+    RimeFreeContext (&context);
+    return;
+  }
+
+  /* Update page values even when no candidates to maintain state */
+  if (context.menu.num_candidates == 0)
+  {
+    nimf_candidatable_clear (rime->candidatable, target);
     RimeFreeContext (&context);
     return;
   }
@@ -187,17 +201,40 @@ nimf_rime_update_candidate (NimfEngine    *engine,
 
   nimf_candidatable_clear (rime->candidatable, target);
 
+  g_debug ("RIME: Adding %d candidates to candidatable", context.menu.num_candidates);
+  
   for (i = 0; i < context.menu.num_candidates; i++)
   {
+    const gchar *candidate_text = context.menu.candidates[i].text;
+    const gchar *candidate_comment = context.menu.candidates[i].comment;
+    
+    g_debug ("RIME: Candidate %d: text='%s', comment='%s'", 
+             i, candidate_text ? candidate_text : "NULL",
+             candidate_comment ? candidate_comment : "NULL");
+    
     nimf_candidatable_append (rime->candidatable,
-                              context.menu.candidates[i].text,
-                              context.menu.candidates[i].comment);
+                              candidate_text,
+                              candidate_comment);
+  }
+  
+  /* Set selection after all candidates are added */
+  if (context.menu.num_candidates > 0)
+  {
+    g_debug ("RIME: Setting highlighted candidate index: %d", context.menu.highlighted_candidate_index);
     nimf_candidatable_select_item_by_index_in_page (rime->candidatable,
                                                     context.menu.highlighted_candidate_index);
   }
 
   nimf_candidatable_set_page_values (rime->candidatable, target,
                                      context.menu.page_no + 1, rime->n_pages, 5);
+  
+  /* Always ensure candidatable is visible after adding candidates */
+  if (!nimf_candidatable_is_visible (rime->candidatable))
+  {
+    g_debug ("RIME: Showing candidatable with %d candidates", context.menu.num_candidates);
+    nimf_rime_show_candidatable (rime, target);
+  }
+  
   RimeFreeContext (&context);
 }
 
@@ -214,7 +251,6 @@ static void nimf_rime_update_preedit2 (NimfEngine    *engine,
       context.composition.length == 0)
   {
     nimf_rime_update_preedit (engine, target, "", 0);
-    nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
@@ -225,9 +261,22 @@ static void nimf_rime_update_preedit2 (NimfEngine    *engine,
   else
     nimf_rime_update_preedit (engine, target, "", 0);
 
-  nimf_candidatable_set_auxiliary_text (rime->candidatable,
-                                        context.composition.preedit,
-                                        context.composition.cursor_pos);
+  /* Set auxiliary text and ensure candidatable is visible in Wayland */
+  if (context.composition.preedit && context.composition.length > 0)
+  {
+    g_debug ("RIME: Setting auxiliary text: '%s' (cursor_pos=%d)", 
+             context.composition.preedit, context.composition.cursor_pos);
+    nimf_candidatable_set_auxiliary_text (rime->candidatable,
+                                          context.composition.preedit,
+                                          context.composition.cursor_pos);
+    
+    /* Show candidatable if not visible and we have candidates or composition */
+    if (!nimf_candidatable_is_visible (rime->candidatable))
+    {
+      g_debug ("RIME: Showing candidatable for composition: %s", context.composition.preedit);
+      nimf_rime_show_candidatable (rime, target);
+    }
+  }
   RimeFreeContext (&context);
 }
 
@@ -240,37 +289,44 @@ static void nimf_rime_update (NimfEngine    *engine,
 
   /* commit text */
   RIME_STRUCT (RimeCommit, commit);
+  gboolean has_commit = FALSE;
 
   if (RimeGetCommit (rime->session_id, &commit))
   {
+    g_debug ("RIME: Committing text: %s", commit.text);
     nimf_engine_emit_commit (engine, target, commit.text);
     RimeFreeCommit (&commit);
+    has_commit = TRUE;
+    
+    /* Hide candidatable immediately after commit and clear all content */
+    g_debug ("RIME: Hiding candidatable after commit");
+    nimf_candidatable_clear (rime->candidatable, target);
+    nimf_candidatable_hide (rime->candidatable);
+    /* Also clear preedit */
+    nimf_rime_update_preedit (engine, target, "", 0);
+    /* Don't process further updates after commit */
+    return;
   }
 
   RIME_STRUCT (RimeContext, context);
 
   if (!RimeGetContext (rime->session_id, &context))
   {
+    g_debug ("RIME: Failed to get context");
     nimf_rime_update_preedit (engine, target, "", 0);
     nimf_candidatable_hide (rime->candidatable);
     RimeFreeContext (&context);
     return;
   }
 
-  /* Check if we should hide the candidate window - be more conservative for librime 1.13+ */
-  gboolean should_hide = FALSE;
-  
-#if HAS_NEW_API
-  /* For librime 1.13+: Only hide when there's truly nothing to show */
-  should_hide = (context.composition.length == 0 && 
-                 context.menu.num_candidates == 0 && 
-                 !context.commit_text_preview);
-#else
-  /* For older librime: Use original logic */
-  should_hide = (context.composition.length == 0);
-#endif
+  g_debug ("RIME: Got context - composition.length=%d, menu.num_candidates=%d, preview=%s",
+           context.composition.length, context.menu.num_candidates,
+           context.commit_text_preview ? context.commit_text_preview : "NULL");
 
-  if (should_hide)
+  /* Only hide when there's absolutely nothing to show */
+  if (context.composition.length == 0 && 
+      context.menu.num_candidates == 0 && 
+      !context.commit_text_preview)
   {
     nimf_rime_update_preedit (engine, target, "", 0);
     nimf_candidatable_hide (rime->candidatable);
@@ -278,19 +334,44 @@ static void nimf_rime_update (NimfEngine    *engine,
     return;
   }
 
+  /* Update preedit first */
   nimf_rime_update_preedit2 (engine, target);
 
+  /* Then handle candidates */
   if (context.menu.num_candidates > 0)
   {
+    /* Update candidates first */
     nimf_rime_update_candidate (engine, target);
-
+    
+    /* Show candidate window if not visible */
     if (!nimf_candidatable_is_visible (rime->candidatable))
-      nimf_candidatable_show (rime->candidatable, target, TRUE);
+    {
+      g_debug ("RIME: Showing candidatable with %d candidates", context.menu.num_candidates);
+      nimf_rime_show_candidatable (rime, target);
+    }
+  }
+  else if (context.composition.length > 0)
+  {
+    /* Keep candidatable visible even without candidates if composing */
+    g_debug ("RIME: Composition exists but no candidates, keeping candidatable");
+    nimf_candidatable_clear (rime->candidatable, target);
+    
+    /* Show empty candidatable with auxiliary text for composition */
+    if (!nimf_candidatable_is_visible (rime->candidatable))
+    {
+      g_debug ("RIME: Showing empty candidatable for composition");
+      nimf_rime_show_candidatable (rime, target);
+    }
   }
   else
   {
-    /* Don't hide immediately when no candidates - let the composition check handle it */
+    /* Hide only when no composition and no candidates */
+    g_debug ("RIME: No composition and no candidates");
     nimf_candidatable_clear (rime->candidatable, target);
+    
+    /* Hide candidatable when no content */
+    g_debug ("RIME: Hiding candidatable (no content)");
+    nimf_candidatable_hide (rime->candidatable);
   }
 
   RimeFreeContext (&context);
@@ -304,21 +385,21 @@ on_candidate_clicked (NimfEngine    *engine,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
-  NimfRime *rime = NIMF_RIME (engine);
-  RimeApi  *api  = rime_get_api();
+  NimfRime *nimf_rime = NIMF_RIME (engine);
+  ensure_rime_api();
 
-  if (RIME_API_AVAILABLE (api, select_candidate))
+  if (g_rime_api && g_rime_api->select_candidate)
   {
     RIME_STRUCT(RimeContext, context);
 
-    if (!RimeGetContext (rime->session_id, &context) ||
+    if (!RimeGetContext (nimf_rime->session_id, &context) ||
         context.composition.length == 0)
     {
       RimeFreeContext (&context);
       return;
     }
 
-    api->select_candidate (rime->session_id,
+    g_rime_api->select_candidate (nimf_rime->session_id,
                            context.menu.page_no * context.menu.page_size + index);
     RimeFreeContext (&context);
     nimf_rime_update (engine, target);
@@ -383,7 +464,7 @@ nimf_rime_filter_event (NimfEngine    *engine,
 
   NimfRime *rime = NIMF_RIME (engine);
 
-  gboolean retval;
+  gboolean retval = FALSE;
 
   if (event->key.type == NIMF_EVENT_KEY_RELEASE)
     return FALSE;
@@ -393,9 +474,94 @@ nimf_rime_filter_event (NimfEngine    *engine,
     return FALSE;
   }
 
+  g_debug ("RIME: Processing key - keyval=%d (%c), state=%d, session_id=%d", 
+           event->key.keyval, (char)event->key.keyval, event->key.state, rime->session_id);
+  
+  /* Check if candidatable is visible for special key handling */
+  gboolean candidatable_visible = nimf_candidatable_is_visible (rime->candidatable);
+  
+  /* Handle special keys when candidatable is visible */
+  if (candidatable_visible)
+  {
+    switch (event->key.keyval)
+    {
+      case NIMF_KEY_Return:
+      case NIMF_KEY_KP_Enter:
+        g_debug ("RIME: Enter key pressed with visible candidatable");
+        /* Get currently highlighted candidate and select it */
+        gint selected_index = nimf_candidatable_get_selected_index (rime->candidatable);
+        if (selected_index >= 0)
+        {
+          g_debug ("RIME: Selecting candidate at index %d", selected_index);
+          on_candidate_clicked (engine, target, NULL, selected_index);
+          return TRUE;
+        }
+        break;
+      case NIMF_KEY_Up:
+      case NIMF_KEY_KP_Up:
+        g_debug ("RIME: Up key pressed");
+        nimf_candidatable_select_previous_item (rime->candidatable);
+        return TRUE;
+      case NIMF_KEY_Down:
+      case NIMF_KEY_KP_Down:
+        g_debug ("RIME: Down key pressed");
+        nimf_candidatable_select_next_item (rime->candidatable);
+        return TRUE;
+      case NIMF_KEY_Escape:
+        g_debug ("RIME: Escape key pressed");
+        nimf_rime_reset (engine, target);
+        return TRUE;
+    }
+  }
+  
+  /* Process key through Rime */
   retval = RimeProcessKey (rime->session_id, event->key.keyval,
                            event->key.state & NIMF_MODIFIER_MASK);
+  
+  g_debug ("RIME: RimeProcessKey returned %d", retval);
+  
+  /* Update state after key processing */
   nimf_rime_update (engine, target);
+  
+  /* Enhanced key consumption logic for Wayland */
+  const gchar *session_type = g_getenv ("XDG_SESSION_TYPE");
+  if (session_type && g_strcmp0 (session_type, "wayland") == 0)
+  {
+    /* Check composition state after update */
+    RIME_STRUCT (RimeContext, context);
+    gboolean has_composition = FALSE;
+    gboolean has_candidates = FALSE;
+    
+    if (RimeGetContext (rime->session_id, &context))
+    {
+      has_composition = (context.composition.length > 0);
+      has_candidates = (context.menu.num_candidates > 0);
+      g_debug ("RIME: Post-update state - composition.length=%d, candidates=%d, commit_preview=%s", 
+               context.composition.length, context.menu.num_candidates,
+               context.commit_text_preview ? context.commit_text_preview : "NULL");
+      RimeFreeContext (&context);
+    }
+    
+    /* In Wayland, consume keys more aggressively when we have active IME state */
+    if (retval ||  /* Rime processed it */
+        has_composition ||  /* We have active composition */
+        has_candidates ||   /* We have candidates */
+        candidatable_visible || /* Candidatable is showing */
+        /* Consume input keys during IME session */
+        (event->key.keyval >= 'a' && event->key.keyval <= 'z') ||
+        (event->key.keyval >= 'A' && event->key.keyval <= 'Z') ||
+        (event->key.keyval >= '0' && event->key.keyval <= '9') ||
+        event->key.keyval == NIMF_KEY_space ||
+        event->key.keyval == NIMF_KEY_apostrophe ||
+        event->key.keyval == NIMF_KEY_semicolon)
+    {
+      g_debug ("RIME: Wayland consuming key '%c' (%d) - retval=%d, comp=%d, cand=%d, visible=%d", 
+               (char)event->key.keyval, event->key.keyval, retval, has_composition, has_candidates, candidatable_visible);
+      return TRUE;
+    }
+    
+    g_debug ("RIME: Wayland NOT consuming key '%c' (%d)", (char)event->key.keyval, event->key.keyval);
+  }
 
   return retval;
 }
@@ -494,6 +660,8 @@ nimf_rime_init (NimfRime *rime)
   nimf_rime_ref_count++;
 
   rime->session_id = RimeCreateSession();
+  g_message ("RIME: Created session with ID=%d", rime->session_id);
+  
   if (rime->session_id) {
     RimeSetOption (rime->session_id, "simplification", rime->is_simplified);
   } else {
@@ -562,6 +730,21 @@ nimf_rime_constructed (GObject *object)
   NimfRime *rime = NIMF_RIME (object);
 
   rime->candidatable = nimf_engine_get_candidatable (NIMF_ENGINE (rime));
+  
+  if (!rime->candidatable)
+  {
+    g_warning ("RIME: Failed to get candidatable");
+  }
+  else
+  {
+    g_debug ("RIME: Candidatable successfully obtained");
+    /* Check if we're running on Wayland */
+    const gchar *session_type = g_getenv ("XDG_SESSION_TYPE");
+    if (session_type && g_strcmp0 (session_type, "wayland") == 0)
+    {
+      g_debug ("RIME: Running on Wayland, adjusting candidatable behavior");
+    }
+  }
 }
 
 static void
