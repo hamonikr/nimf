@@ -1345,15 +1345,22 @@ nimf_settings_build_xkb_options_ui ()
   gtk_widget_set_margin_top    (xkb->options_box, 15);
   gtk_widget_set_margin_bottom (xkb->options_box, 15);
 
-  xkb->engine =
-    xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-  config_registry = xkl_config_registry_get_instance (xkb->engine);
-  xkl_config_registry_load (config_registry, TRUE);
-  xkl_config_registry_foreach_option_group (config_registry,
-                                            (ConfigItemProcessFunc) build_option_group,
-                                            xkb);
+  /* Check if we're running on X11 before using X11-specific functions */
+  if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
+  {
+    xkb->engine =
+      xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
+    if (xkb->engine)
+    {
+      config_registry = xkl_config_registry_get_instance (xkb->engine);
+      xkl_config_registry_load (config_registry, TRUE);
+      xkl_config_registry_foreach_option_group (config_registry,
+                                                (ConfigItemProcessFunc) build_option_group,
+                                                xkb);
+      g_object_unref (config_registry);
+    }
+  }
   g_object_unref (settings);
-  g_object_unref (config_registry);
 
   /* 스크롤 컨테이너로 감싸서 높이를 제한 */
   GtkWidget *scrolled = gtk_scrolled_window_new (NULL, NULL);

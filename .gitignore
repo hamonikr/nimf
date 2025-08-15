@@ -12,9 +12,9 @@ configure~
 *.la
 *.lo
 *.o
+# libtool wrapper scripts (auto-generated)
 /bin/nimf/nimf
-# /bin/nimf-settings/nimf-settings  # Now managed as wrapper script
-!/bin/nimf-settings/nimf-settings
+/bin/nimf-settings/nimf-settings
 libtool
 m4/
 stamp-h1
