@@ -44,9 +44,7 @@ jobs:
           - dockerfile: ubuntu.2404.arm64.Dockerfile
             platform: ubuntu.2404.arm64
             arch: arm64
-          - dockerfile: arch.arm64.Dockerfile
-            platform: arch.arm64
-            arch: arm64
+
 
     steps:
       - name: Checkout source code
