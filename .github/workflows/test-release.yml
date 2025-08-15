@@ -5,13 +5,13 @@ on:
   push:
     branches:
       - dev  # dev 브랜치에서 테스트
+    tags-ignore:
+      - "v*"  # v로 시작하는 태그는 제외 (release.yml이 처리)
 
 jobs:
   # 통합 빌드 job - 모든 플랫폼을 한 번에 빌드
   build-packages:
     runs-on: ubuntu-latest
-    # 릴리즈 태그가 생성될 때는 실행하지 않음 (release.yml이 대신 실행됨)
-    if: contains(github.event.head_commit.message, 'chore: bump version to v') == false
     strategy:
       matrix:
         include:
@@ -101,8 +101,6 @@ jobs:
   test-release-preparation:
     needs: build-packages
     runs-on: ubuntu-latest
-    # 릴리즈 태그가 생성될 때는 실행하지 않음 (release.yml이 대신 실행됨)
-    if: contains(github.event.head_commit.message, 'chore: bump version to v') == false
     
     steps:
       - name: Checkout source code
