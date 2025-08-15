@@ -41,6 +41,9 @@ jobs:
           - dockerfile: debian.bookworm.arm64.Dockerfile
             platform: debian.bookworm.arm64
             arch: arm64
+          - dockerfile: debian.trixie.arm64.Dockerfile
+            platform: debian.trixie.arm64
+            arch: arm64
           - dockerfile: ubuntu.2404.arm64.Dockerfile
             platform: ubuntu.2404.arm64
             arch: arm64
