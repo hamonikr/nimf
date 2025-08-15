@@ -54,11 +54,10 @@ RUN git clone https://github.com/libhangul/libhangul.git \
 COPY . /src
 WORKDIR /src
 
-# Build, compile, and install the project
+# Build the project (without install for package building)
 RUN ./autogen.sh \
- && ./configure --prefix=/usr/local \
- && make -j$(nproc) \
- && make install
+ && ./configure --prefix=/usr \
+ && make -j$(nproc)
 
 # Set the default entrypoint to bash
 ENTRYPOINT ["bash"]

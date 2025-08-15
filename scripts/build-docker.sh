@@ -92,66 +92,63 @@ test_dockerfile() {
     # 패키지 생성 (Debian/Ubuntu의 경우)
     if [[ "$dockerfile_name" == *"ubuntu"* ]] || [[ "$dockerfile_name" == *"debian"* ]]; then
         echo -e "${YELLOW}DEB 패키지 생성 중...${NC}"
-        if ! docker run --rm -v "$PROJECT_ROOT:/packages" "$image_name" bash -c "
+        if ! docker run --rm -v "$PROJECT_ROOT:/packages" --entrypoint="/bin/bash" "$image_name" -c "
             cd /src && 
             debuild -us -uc &&
-            mkdir -p /packages/deb &&
-            cp ../*.deb /packages/deb/ 2>/dev/null && 
+            mkdir -p /packages/dist/$dockerfile_name &&
+            find .. -name '*.deb' -exec cp {} /packages/dist/$dockerfile_name/ \; && 
             echo -e '${GREEN}DEB 패키지 생성 완료:${NC}' && 
-            ls -la /packages/deb/*.deb 2>/dev/null || echo 'No .deb files created'
+            ls -la /packages/dist/$dockerfile_name/*.deb 2>/dev/null || echo 'No .deb files created'
         "; then
             echo -e "${RED}Warning: DEB 패키지 생성 중 오류 발생 - $dockerfile_name${NC}"
         else
-            echo -e "${GREEN}DEB 패키지가 $PROJECT_ROOT/deb 디렉토리에 저장되었습니다.${NC}"
+            echo -e "${GREEN}DEB 패키지가 $PROJECT_ROOT/dist/$dockerfile_name 디렉토리에 저장되었습니다.${NC}"
         fi
     fi
     
     # RPM 패키지 생성 (Fedora/OpenSUSE의 경우)
     if [[ "$dockerfile_name" == *"fedora"* ]] || [[ "$dockerfile_name" == *"opensuse"* ]]; then
         echo -e "${YELLOW}RPM 패키지 생성 중...${NC}"
-        if ! docker run --rm -v "$PROJECT_ROOT:/packages" "$image_name" bash -c "
+        if ! docker run --rm -v "$PROJECT_ROOT:/packages" --entrypoint="/bin/bash" "$image_name" -c "
             cd /src && 
             # RPM 빌드 디렉토리 구조 생성
             mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS} &&
             # tarball 생성
             VERSION=\$(grep '^Version:' nimf.spec | awk '{print \$2}') &&
-            tar czf ~/rpmbuild/SOURCES/nimf-\${VERSION}.tar.gz --transform "s,^,nimf-\${VERSION}/," * &&
+            tar czf ~/rpmbuild/SOURCES/nimf-\${VERSION}.tar.gz --transform \"s,^,nimf-\${VERSION}/,\" * &&
             # spec 파일 복사
             cp nimf.spec ~/rpmbuild/SPECS/ &&
             # RPM 패키지 빌드
             rpmbuild -ba ~/rpmbuild/SPECS/nimf.spec &&
             # 생성된 패키지 복사
-            mkdir -p /packages/rpm &&
-            cp ~/rpmbuild/RPMS/*/*.rpm /packages/rpm/ 2>/dev/null &&
-            cp ~/rpmbuild/SRPMS/*.rpm /packages/rpm/ 2>/dev/null &&
+            mkdir -p /packages/dist/$dockerfile_name &&
+            cp ~/rpmbuild/RPMS/*/*.rpm /packages/dist/$dockerfile_name/ 2>/dev/null &&
+            cp ~/rpmbuild/SRPMS/*.rpm /packages/dist/$dockerfile_name/ 2>/dev/null &&
             echo -e '${GREEN}RPM 패키지 생성 완료:${NC}' &&
-            ls -la /packages/rpm/*.rpm 2>/dev/null || echo 'No RPM files created'
+            ls -la /packages/dist/$dockerfile_name/*.rpm 2>/dev/null || echo 'No RPM files created'
         "; then
             echo -e "${RED}Warning: RPM 패키지 생성 중 오류 발생 - $dockerfile_name${NC}"
         else
-            echo -e "${GREEN}RPM 패키지가 $PROJECT_ROOT/rpm 디렉토리에 저장되었습니다.${NC}"
+            echo -e "${GREEN}RPM 패키지가 $PROJECT_ROOT/dist/$dockerfile_name 디렉토리에 저장되었습니다.${NC}"
         fi
     fi
     
     # Arch 패키지 생성
     if [[ "$dockerfile_name" == *"arch"* ]]; then
         echo -e "${YELLOW}Arch 패키지 생성 중...${NC}"
-        if ! docker run --rm -v "$PROJECT_ROOT:/packages" "$image_name" bash -c "
-            cd /src && 
-            # makepkg는 root로 실행할 수 없으므로 일반 사용자 생성
-            useradd -m builduser &&
-            chown -R builduser:builduser /src &&
-            # 패키지 빌드
-            su - builduser -c 'cd /src && makepkg -sf --noconfirm' &&
+        if ! docker run --rm -v "$PROJECT_ROOT:/packages" --entrypoint="/bin/bash" "$image_name" -c "
+            cd /home/builduser/src && 
+            # builduser로 패키지 빌드 (makepkg는 root로 실행할 수 없음)
+            su - builduser -c 'cd /home/builduser/src && makepkg -sf --noconfirm' &&
             # 생성된 패키지 복사
-            mkdir -p /packages/arch &&
-            cp *.pkg.tar.* /packages/arch/ 2>/dev/null &&
+            mkdir -p /packages/dist/$dockerfile_name &&
+            cp /home/builduser/src/*.pkg.tar.* /packages/dist/$dockerfile_name/ 2>/dev/null &&
             echo -e '${GREEN}Arch 패키지 생성 완료:${NC}' &&
-            ls -la /packages/arch/*.pkg.tar.* 2>/dev/null || echo 'No Arch packages created'
+            ls -la /packages/dist/$dockerfile_name/*.pkg.tar.* 2>/dev/null || echo 'No Arch packages created'
         "; then
             echo -e "${RED}Warning: Arch 패키지 생성 중 오류 발생 - $dockerfile_name${NC}"
         else
-            echo -e "${GREEN}Arch 패키지가 $PROJECT_ROOT/arch 디렉토리에 저장되었습니다.${NC}"
+            echo -e "${GREEN}Arch 패키지가 $PROJECT_ROOT/dist/$dockerfile_name 디렉토리에 저장되었습니다.${NC}"
         fi
     fi
     

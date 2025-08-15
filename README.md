@@ -102,14 +102,14 @@ sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
 Install Nimf
 
 ```bash
-wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
+curl -fsSL https://repo.hamonikr.org/install | sudo bash
 
 sudo apt install nimf
 
 im-config -n nimf
 ```
 
-Additional multilingual engines (m17n)
+Additional multilingual engines
 
 ```bash
 sudo apt install nimf-i18n
@@ -324,7 +324,7 @@ sudo mv /usr/bin/ibus-daemon /usr/bin/ibus-daemon.bak
 
 Nimf 설치
 ```bash
-wget -qO- https://pkg.hamonikr.org/add-hamonikr.apt | sudo -E bash -
+curl -fsSL https://repo.hamonikr.org/install | sudo bash
 
 sudo apt install nimf
 

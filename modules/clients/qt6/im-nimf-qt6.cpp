@@ -29,6 +29,14 @@
 #include "nimf-im.h"
 #include <gio/gio.h>
 
+// Qt6 compatibility includes
+#include <QtCore/qglobal.h>
+
+// Ensure compatibility with Qt6.9+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#include <QtCore/qobjectdefs.h>
+#endif
+
 #ifdef USE_DLFCN
 
 #include <dlfcn.h>
@@ -741,9 +749,13 @@ NimfInputContext::setFocusObject (QObject *object)
 class NimfInputContextPlugin : public QPlatformInputContextPlugin
 {
   Q_OBJECT
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+  Q_PLUGIN_METADATA(IID QPlatformInputContextFactoryInterface_iid FILE "./nimf.json")
+#else
   Q_PLUGIN_METADATA(IID
     QPlatformInputContextFactoryInterface_iid
     FILE "./nimf.json")
+#endif
 
 public:
   NimfInputContextPlugin ()

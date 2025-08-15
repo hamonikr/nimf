@@ -1,9 +1,10 @@
-name: Multi-Platform Release with Docker Build
+name: Test Multi-Platform Release with Docker Build
 
 on:
+  workflow_dispatch:  # 수동 실행 가능
   push:
-    tags:
-      - "v*"
+    branches:
+      - dev  # dev 브랜치에서 테스트
 
 jobs:
   # 통합 빌드 job - 모든 플랫폼을 한 번에 빌드
@@ -53,8 +54,8 @@ jobs:
           path: dist/${{ matrix.platform }}/*
           retention-days: 1
 
-  # 릴리즈 생성
-  create-release:
+  # 릴리즈 생성 (테스트용 - 실제 릴리즈는 생성하지 않음)
+  test-release-preparation:
     needs: build-packages
     runs-on: ubuntu-latest
     
@@ -100,7 +101,7 @@ jobs:
           ls -la final-packages/ || echo "No packages found"
           echo "Total packages: $(find final-packages/ -type f | wc -l)"
 
-      - name: Generate release notes
+      - name: Generate release notes (test)
         id: release-notes
         run: |
           # 동적으로 릴리즈 노트 생성 (패키지 목록과 설치 방법만)
@@ -148,30 +149,30 @@ jobs:
           ### Ubuntu/Debian
           ```bash
           # 메인 패키지
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf_*_amd64.deb
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf_*_amd64.deb
           sudo dpkg -i nimf_*_amd64.deb
           sudo apt-get install -f  # 의존성 해결
           
           # 국제화 패키지 (선택사항)
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-i18n_*_amd64.deb
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-i18n_*_amd64.deb
           sudo dpkg -i nimf-i18n_*_amd64.deb
           ```
           
           ### Fedora
           ```bash
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-*fedora*.rpm
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-*fedora*.rpm
           sudo dnf install nimf-*fedora*.rpm
           ```
           
           ### OpenSUSE
           ```bash
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-*opensuse*.rpm
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-*opensuse*.rpm
           sudo zypper install nimf-*opensuse*.rpm
           ```
           
           ### Arch Linux
           ```bash
-          wget https://github.com/hamonikr/nimf/releases/download/${{ github.ref_name }}/nimf-*.pkg.tar.zst
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-*.pkg.tar.zst
           sudo pacman -U nimf-*.pkg.tar.zst
           ```
           EOF
@@ -179,24 +180,20 @@ jobs:
           echo "Generated release notes:"
           cat release-body.md
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload test release artifacts
+        uses: actions/upload-artifact@v4
         with:
-          files: final-packages/*
-          name: Release ${{ github.ref_name }}
-          body_path: release-body.md
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: test-release-packages
+          path: final-packages/*
+          retention-days: 7
 
-      - name: Release Summary
+      - name: Test Summary
         run: |
-          echo "🎉 Release ${{ github.ref_name }} created successfully!"
-          echo "📦 Packages included:"
+          echo "🧪 Test build completed successfully!"
+          echo "📦 Packages that would be included in release:"
           find final-packages/ -type f | while read file; do
             filename=$(basename "$file")
             size=$(du -h "$file" | cut -f1)
             echo "  - $filename ($size)"
           done
-          echo "🔗 Release URL: https://github.com/hamonikr/nimf/releases/tag/${{ github.ref_name }}"
+          echo "✅ GitHub Actions workflow validation passed!"

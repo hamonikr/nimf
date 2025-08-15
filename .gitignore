@@ -99,3 +99,6 @@ debian/qtbase-abi-5-15-13-dummy/
 *.tar.xz
 *.udeb
 *-dbgsym_*.deb
+
+# Package distribution directory
+dist/

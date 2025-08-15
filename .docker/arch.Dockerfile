@@ -60,21 +60,12 @@ RUN yay -S --noconfirm libhangul-git
 USER root
 RUN rm -rf /home/builduser/yay
 
-# 프로젝트 빌드
+# 프로젝트 빌드 (패키지 빌드용)
 RUN cd /home/builduser/src \
+ && make clean || true \
+ && find . -name "*.moc" -delete \
+ && find . -name "moc_*.cpp" -delete \
  && ./autogen.sh --prefix=/usr --enable-gtk-doc \
- && make -j $(nproc)
-
-# 패키지 설치
-RUN cd /home/builduser/src \
- && make DESTDIR="/pkgdir/" install
-
-# 설치 후 설정 안내
-RUN echo 'To use Nimf as your input method framework, add the following lines to your ~/.xprofile:' \
- && echo 'export GTK_IM_MODULE=nimf' \
- && echo 'export QT4_IM_MODULE="nimf"' \
- && echo 'export QT_IM_MODULE=nimf' \
- && echo 'export QT6_IM_MODULE=nimf' \
- && echo 'export XMODIFIERS="@im=nimf"' 
+ && make -j $(nproc) 
 
 ENTRYPOINT ["bash"]

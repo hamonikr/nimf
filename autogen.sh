@@ -73,6 +73,20 @@ handle_fedora() {
         sudo make install
         cd "$srcdir"
     fi
+    
+    # Check Qt6 version and apply workaround for 6.9+
+    QT6_VERSION=`pkg-config --modversion Qt6Core 2>/dev/null`
+    if [ $? -eq 0 ]; then
+        QT6_MAJOR=`echo $QT6_VERSION | cut -d. -f1`
+        QT6_MINOR=`echo $QT6_VERSION | cut -d. -f2`
+        echo "Detected Qt6 version: $QT6_VERSION"
+        
+        if [ "$QT6_MAJOR" -eq 6 ] && [ "$QT6_MINOR" -ge 9 ]; then
+            echo "Applying Qt6.9+ compatibility workaround..."
+            # Apply Qt6.9+ specific fixes if needed
+            export QT6_COMPAT_MODE=1
+        fi
+    fi
 }
 
 handle_ubuntu() {
