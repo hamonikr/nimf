@@ -25,13 +25,13 @@ AVAILABLE_DOCKERFILES=(
     "debian.bookworm.Dockerfile"
     "debian.bookworm.arm64.Dockerfile"
     "debian.trixie.Dockerfile"
+    "debian.trixie.arm64.Dockerfile"
     "debian.sid.Dockerfile"
     "fedora.latest.Dockerfile"
     "fedora.latest.arm64.Dockerfile"
     "opensuse.Dockerfile"
     "opensuse.arm64.Dockerfile"
     "arch.Dockerfile"
-    "arch.arm64.Dockerfile"
 )
 
 # 함수: 사용법 출력
