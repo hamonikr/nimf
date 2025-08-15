@@ -11,26 +11,59 @@ jobs:
   build-packages:
     runs-on: ubuntu-latest
     # 릴리즈 태그가 생성될 때는 실행하지 않음 (release.yml이 대신 실행됨)
-    if: "!contains(github.event.head_commit.message, 'chore: bump version to v')"
+    if: contains(github.event.head_commit.message, 'chore: bump version to v') == false
     strategy:
       matrix:
         include:
+          # x86_64 builds
           - dockerfile: debian.bookworm.Dockerfile
             platform: debian.bookworm
+            arch: amd64
           - dockerfile: debian.trixie.Dockerfile
             platform: debian.trixie
+            arch: amd64
           - dockerfile: ubuntu.2404.Dockerfile
             platform: ubuntu.2404
+            arch: amd64
           - dockerfile: fedora.latest.Dockerfile
             platform: fedora.latest
+            arch: amd64
           - dockerfile: opensuse.Dockerfile
             platform: opensuse
+            arch: amd64
           - dockerfile: arch.Dockerfile
             platform: arch
+            arch: amd64
+          # ARM64 builds
+          - dockerfile: debian.bookworm.arm64.Dockerfile
+            platform: debian.bookworm.arm64
+            arch: arm64
+          - dockerfile: debian.trixie.arm64.Dockerfile
+            platform: debian.trixie.arm64
+            arch: arm64
+          - dockerfile: ubuntu.2404.arm64.Dockerfile
+            platform: ubuntu.2404.arm64
+            arch: arm64
+          - dockerfile: fedora.latest.arm64.Dockerfile
+            platform: fedora.latest.arm64
+            arch: arm64
+          - dockerfile: opensuse.arm64.Dockerfile
+            platform: opensuse.arm64
+            arch: arm64
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
+
+      - name: Set up QEMU for multi-platform builds
+        if: matrix.arch == 'arm64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        if: matrix.arch == 'arm64'
+        uses: docker/setup-buildx-action@v3
 
       - name: Build packages with docker build script
         run: |
@@ -41,7 +74,15 @@ jobs:
           DOCKERFILE_NAME="${{ matrix.dockerfile }}"
           PLATFORM_NAME="${DOCKERFILE_NAME%.Dockerfile}"
           
-          echo "Building packages for platform: $PLATFORM_NAME"
+          echo "Building packages for platform: $PLATFORM_NAME (architecture: ${{ matrix.arch }})"
+          
+          # ARM64 빌드의 경우 추가 설정
+          if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+            echo "Setting up ARM64 build environment..."
+            # Docker에서 ARM64 빌드를 위한 환경 설정
+            export DOCKER_CLI_EXPERIMENTAL=enabled
+          fi
+          
           ./scripts/build-docker.sh "$PLATFORM_NAME"
           
           # 생성된 패키지 확인
@@ -61,7 +102,7 @@ jobs:
     needs: build-packages
     runs-on: ubuntu-latest
     # 릴리즈 태그가 생성될 때는 실행하지 않음 (release.yml이 대신 실행됨)
-    if: "!contains(github.event.head_commit.message, 'chore: bump version to v')"
+    if: contains(github.event.head_commit.message, 'chore: bump version to v') == false
     
     steps:
       - name: Checkout source code
