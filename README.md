@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/hamonikr/nimf/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/build.yml)
 [![Donate Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://ko.liberapay.com/hamonikr/)
 
-![version](https://img.shields.io/badge/version-1.3.9-blue)
+![version](https://img.shields.io/badge/version-1.3.10-blue)
 ![toolkits](https://img.shields.io/badge/GTK-2%2F3%2F4-green)
 ![qt](https://img.shields.io/badge/Qt-5%2F6-green)
 ![arch](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-darkblue)
@@ -18,7 +18,7 @@
 ## Table of Contents
 
 - [Nimf](#nimf)
-  - [What’s New in 1.3.9](#whats-new-in-139)
+  - [What’s New in 1.3.10](#whats-new-in-139)
   - [Features](#features)
   - [Supported Platforms](#supported-platforms)
   - [Installation](#installation)
@@ -39,7 +39,7 @@ Nimf is a lightweight, fast and extensible input method framework.
 
 ![nimf](docs/nimf.png)
 
-## What’s New in 1.3.9
+## What’s New in 1.3.10
 
 - Full GTK4 support (GTK2/GTK3/GTK4 can co-exist)
 - Debian packaging split into two packages:
@@ -324,7 +324,7 @@ The script automatically:
 
 하모니카 개발팀은 개방형 OS 배포에 필수적인 한글 입력기에 대한 관리가 필요하다고 생각하며 앞으로 하모니카 팀에서 직접 nimf 프로젝트를 계속 관리합니다.
 
-## 1.3.9의 주요 변경사항
+## 1.3.10의 주요 변경사항
 - GTK4 완전 지원 (GTK2/GTK3/GTK4 동시 환경 지원)
 - 데비안 패키지 분리:
   - `nimf`: 코어 + 한글(libhangul), 일본어(anthy), 중국어(rime)
