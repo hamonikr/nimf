@@ -33,7 +33,7 @@ Nimf is a lightweight, fast and extensible input method framework that supports 
 
 Nimf is maintained by the **HamoniKR Team** as a continuation of the original nimf project. This fork ensures the sustainability of this essential input method framework for Korean and multilingual text input on Linux systems.
 
-### What's New in 1.3.10
+### What's New
 - **Full GTK4 support** with backwards compatibility (GTK2/3/4)
 - **Modular packaging**: Core package + optional multilingual extension (`nimf-i18n`)
 - **Enhanced platform support** across major Linux distributions

@@ -4,6 +4,10 @@
 # Usage: curl -fsSL https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo bash
 # Alternative: wget -qO- https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo -E bash -
 #
+# SECURITY NOTE: This script will download and install packages from GitHub releases.
+# Only run this script if you trust the source. For maximum security, download and
+# inspect the script first: curl -fsSL https://raw.githubusercontent.com/hamonikr/nimf/master/install > install.sh
+#
 # By default, this script automatically handles ibus conflicts (safest option).
 # For interactive installation (ask about ibus handling):
 #   curl -fsSL https://raw.githubusercontent.com/hamonikr/nimf/master/install | sudo NIMF_INTERACTIVE=1 bash
@@ -265,28 +269,72 @@ install_fedora() {
     local version=$1
     local version_num=${version#v}
     local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    local rpm_arch=$(get_rpm_arch)
     
-    print_info "Installing Nimf for $OS_PRETTY..."
+    print_info "Installing Nimf for $OS_PRETTY (${rpm_arch})..."
     
-    # Download and install
-    local temp_dir=$(mktemp -d)
-    cd "$temp_dir"
+    # Create temp directory with error handling
+    local temp_dir=$(mktemp -d 2>/dev/null) || {
+        print_error "Failed to create temporary directory"
+        exit 1
+    }
+    
+    # Ensure cleanup on exit
+    trap "cd /; rm -rf '$temp_dir' 2>/dev/null || true" EXIT INT TERM
+    
+    cd "$temp_dir" || {
+        print_error "Failed to access temporary directory"
+        exit 1
+    }
     
     print_info "Downloading packages..."
-    wget -q "${base_url}/nimf-${version_num}-1.fc${OS_VERSION}.x86_64.rpm" || \
-        wget -q "${base_url}/nimf-${version_num}-1.fedora.latest.x86_64.rpm" || \
-        wget -q "${base_url}/nimf-fedora.latest-${version_num}-1.x86_64.rpm" || {
-            print_error "Failed to download nimf package"
-            rm -rf "$temp_dir"
-            exit 1
-        }
+    
+    # Try multiple package naming patterns with retries
+    local download_success=0
+    local fedora_patterns=(
+        "nimf-${version_num}-1.fc${OS_VERSION}.${rpm_arch}.rpm"
+        "nimf-${version_num}-1.fedora.latest.${rpm_arch}.rpm"
+        "nimf-fedora.latest-${version_num}-1.${rpm_arch}.rpm"
+    )
+    
+    # Add ARM64 specific patterns
+    if [[ "$rpm_arch" == "aarch64" ]]; then
+        fedora_patterns+=(
+            "nimf-fedora.latest.arm64-${version_num}-1.${rpm_arch}.rpm"
+            "nimf-${version_num}-fedora.latest.arm64-1.${rpm_arch}.rpm"
+        )
+    fi
+    
+    for pattern in "${fedora_patterns[@]}"; do
+        if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
+            print_info "Downloaded: $pattern"
+            download_success=1
+            break
+        fi
+    done
+    
+    if [ $download_success -eq 0 ]; then
+        print_error "Failed to download nimf package. Tried patterns:"
+        for pattern in "${fedora_patterns[@]}"; do
+            print_error "  - $pattern"
+        done
+        print_info "Available releases: https://github.com/${GITHUB_REPO}/releases"
+        exit 1
+    fi
     
     print_info "Installing packages..."
-    dnf install -y *.rpm
+    if ! dnf install -y *.rpm; then
+        print_error "Failed to install packages"
+        exit 1
+    fi
     
-    # Clean up
-    cd - > /dev/null
-    rm -rf "$temp_dir"
+    # Verify installation
+    if ! rpm -q nimf > /dev/null 2>&1; then
+        print_error "Nimf installation verification failed"
+        exit 1
+    fi
+    
+    print_success "Nimf packages installed successfully"
 }
 
 # Function to install on OpenSUSE
@@ -294,27 +342,71 @@ install_opensuse() {
     local version=$1
     local version_num=${version#v}
     local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
+    local rpm_arch=$(get_rpm_arch)
     
-    print_info "Installing Nimf for $OS_PRETTY..."
+    print_info "Installing Nimf for $OS_PRETTY (${rpm_arch})..."
     
-    # Download and install
-    local temp_dir=$(mktemp -d)
-    cd "$temp_dir"
+    # Create temp directory with error handling
+    local temp_dir=$(mktemp -d 2>/dev/null) || {
+        print_error "Failed to create temporary directory"
+        exit 1
+    }
+    
+    # Ensure cleanup on exit
+    trap "cd /; rm -rf '$temp_dir' 2>/dev/null || true" EXIT INT TERM
+    
+    cd "$temp_dir" || {
+        print_error "Failed to access temporary directory"
+        exit 1
+    }
     
     print_info "Downloading packages..."
-    wget -q "${base_url}/nimf-${version_num}-1.opensuse.x86_64.rpm" || \
-        wget -q "${base_url}/nimf-opensuse-${version_num}-1.x86_64.rpm" || {
-            print_error "Failed to download nimf package"
-            rm -rf "$temp_dir"
-            exit 1
-        }
+    
+    # Try multiple package naming patterns with retries
+    local download_success=0
+    local opensuse_patterns=(
+        "nimf-${version_num}-1.opensuse.${rpm_arch}.rpm"
+        "nimf-opensuse-${version_num}-1.${rpm_arch}.rpm"
+    )
+    
+    # Add ARM64 specific patterns
+    if [[ "$rpm_arch" == "aarch64" ]]; then
+        opensuse_patterns+=(
+            "nimf-opensuse.arm64-${version_num}-1.${rpm_arch}.rpm"
+            "nimf-${version_num}-opensuse.arm64-1.${rpm_arch}.rpm"
+        )
+    fi
+    
+    for pattern in "${opensuse_patterns[@]}"; do
+        if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
+            print_info "Downloaded: $pattern"
+            download_success=1
+            break
+        fi
+    done
+    
+    if [ $download_success -eq 0 ]; then
+        print_error "Failed to download nimf package. Tried patterns:"
+        for pattern in "${opensuse_patterns[@]}"; do
+            print_error "  - $pattern"
+        done
+        print_info "Available releases: https://github.com/${GITHUB_REPO}/releases"
+        exit 1
+    fi
     
     print_info "Installing packages..."
-    zypper install -y *.rpm
+    if ! zypper install -y *.rpm; then
+        print_error "Failed to install packages"
+        exit 1
+    fi
     
-    # Clean up
-    cd - > /dev/null
-    rm -rf "$temp_dir"
+    # Verify installation
+    if ! rpm -q nimf > /dev/null 2>&1; then
+        print_error "Nimf installation verification failed"
+        exit 1
+    fi
+    
+    print_success "Nimf packages installed successfully"
 }
 
 # Function to install on Arch Linux
@@ -650,33 +742,12 @@ main() {
             }
             ;;
         fedora|rhel|centos)
-            # Check if ARM64 is supported for Fedora/RHEL
-            local arch=$(uname -m)
-            if [[ "$arch" == "aarch64" ]]; then
-                print_error "ARM64 is not yet supported for $OS_PRETTY"
-                print_info "ARM64 support is currently available for:"
-                print_info "  - Ubuntu 24.04+ / Debian 12+"
-                print_info "  - Arch Linux"
-                print_info "Please check: https://github.com/${GITHUB_REPO}/releases"
-                exit 1
-            fi
-            
             install_fedora "$VERSION" || {
                 print_error "Failed to install on Fedora/RedHat-based system"
                 exit 1
             }
             ;;
         opensuse|opensuse-leap|opensuse-tumbleweed)
-            # Check if ARM64 is supported for openSUSE
-            local arch=$(uname -m)
-            if [[ "$arch" == "aarch64" ]]; then
-                print_error "ARM64 is not yet supported for $OS_PRETTY"
-                print_info "ARM64 support is currently available for:"
-                print_info "  - Ubuntu 24.04+ / Debian 12+"
-                print_info "  - Arch Linux"
-                print_info "Please check: https://github.com/${GITHUB_REPO}/releases"
-                exit 1
-            fi
             
             install_opensuse "$VERSION" || {
                 print_error "Failed to install on openSUSE system"
@@ -694,8 +765,8 @@ main() {
             print_info "Supported distributions:"
             print_info "  - Ubuntu 24.04+ (x86_64, ARM64)"
             print_info "  - Debian 12+ Bookworm/Trixie (x86_64, ARM64)"
-            print_info "  - Fedora 33+ (x86_64)"
-            print_info "  - openSUSE Leap 15.6+ (x86_64)"
+            print_info "  - Fedora 33+ (x86_64, ARM64)"
+            print_info "  - openSUSE Leap 15.6+ (x86_64, ARM64)"
             print_info "  - Arch Linux (x86_64, ARM64)"
             print_info "Please install manually from: https://github.com/${GITHUB_REPO}/releases"
             exit 1
