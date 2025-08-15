@@ -96,17 +96,4 @@ Description: Additional multilingual engines (m17n) for Nimf
  m17n for Nimf, along with their icons and settings schemas. Install this to
  enable many extra languages beyond Korean, Japanese, and Chinese.
 
-Package: qt6-base-abi-dummy
-Architecture: any
-Provides: qt6-base-abi (= 6.4.2)
-Description: Qt6 base ABI compatibility dummy package
- This is a dummy package to provide Qt6 base ABI compatibility
- for systems where the specific ABI version is not available.
-
-Package: qtbase-abi-5-15-13-dummy
-Architecture: any
-Provides: qtbase-abi-5-15-13
-Description: Qt5 base ABI compatibility dummy package
- This is a dummy package to provide Qt5 base ABI compatibility
- for systems where the specific ABI version is not available.
 

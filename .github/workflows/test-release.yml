@@ -111,32 +111,40 @@ jobs:
           
           ### Ubuntu/Debian
           ```bash
-          # 메인 패키지
-          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf_*_amd64.deb
-          sudo dpkg -i nimf_*_amd64.deb
-          sudo apt-get install -f  # 의존성 해결
+          # 릴리즈 페이지에서 패키지 확인 후 다운로드
+          # 예시: wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf_1.3.10_amd64.deb
           
-          # 국제화 패키지 (선택사항)
-          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-i18n_*_amd64.deb
-          sudo dpkg -i nimf-i18n_*_amd64.deb
+          # 패키지 다운로드
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf_1.3.10_amd64.deb
+          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-i18n_1.3.10_amd64.deb
+          
+          # nimf 패키지 설치
+          sudo dpkg -i nimf_1.3.10_amd64.deb nimf-i18n_1.3.10_amd64.deb
+          sudo apt-get install -f  # 의존성 해결
           ```
           
           ### Fedora
           ```bash
-          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-*fedora*.rpm
-          sudo dnf install nimf-*fedora*.rpm
+          # 릴리즈 페이지에서 정확한 파일명 확인 후 다운로드
+          # 예시: wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-1.3.10-1.fc42.x86_64.rpm
+          curl -LO https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-1.3.10-1.fc42.x86_64.rpm
+          sudo dnf install ./nimf-1.3.10-1.fc42.x86_64.rpm
           ```
           
           ### OpenSUSE
           ```bash
-          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-*opensuse*.rpm
-          sudo zypper install nimf-*opensuse*.rpm
+          # 릴리즈 페이지에서 정확한 파일명 확인 후 다운로드
+          # 예시: wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-1.3.10-1.opensuse.x86_64.rpm
+          curl -LO https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-1.3.10-1.opensuse.x86_64.rpm
+          sudo zypper install ./nimf-1.3.10-1.opensuse.x86_64.rpm
           ```
           
           ### Arch Linux
           ```bash
-          wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-*.pkg.tar.zst
-          sudo pacman -U nimf-*.pkg.tar.zst
+          # 릴리즈 페이지에서 정확한 파일명 확인 후 다운로드
+          # 예시: wget https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-1.3.10-1-x86_64.pkg.tar.zst
+          curl -LO https://github.com/hamonikr/nimf/releases/download/VERSION/nimf-1.3.10-1-x86_64.pkg.tar.zst
+          sudo pacman -U nimf-1.3.10-1-x86_64.pkg.tar.zst
           ```
           EOF
           
