@@ -8,6 +8,9 @@ RUN dnf update -y && \
     autoconf \
     automake \
     libtool \
+    gettext \
+    gettext-devel \
+    libtool-ltdl-devel \
     pkg-config \
     make \
     gcc \
@@ -38,7 +41,6 @@ RUN dnf update -y && \
     librime-devel \
     gtk-doc \
     intltool \
-    gettext-devel \
     git \
     expat.x86_64 \
     expat-devel.x86_64 \
@@ -59,8 +61,17 @@ RUN echo "Building libhangul from submodule..." && \
         git clone https://github.com/libhangul/libhangul.git libhangul && \
         cd libhangul; \
     fi && \
+    echo "Fixing gettext version requirement..." && \
+    if [ -f "configure.ac" ]; then \
+        sed -i 's/AM_GNU_GETTEXT_VERSION(\[0\.23\.1\])/AM_GNU_GETTEXT_VERSION([0.19])/' configure.ac || true; \
+        sed -i 's/AM_GNU_GETTEXT_VERSION(\[0\.23\]/AM_GNU_GETTEXT_VERSION([0.19/' configure.ac || true; \
+    fi && \
+    echo "Creating missing required files..." && \
+    touch ChangeLog AUTHORS NEWS README && \
     echo "Configuring and building libhangul..." && \
-    ./autogen.sh && \
+    echo "Installing libtoolize and running autoreconf..." && \
+    libtoolize --force --copy && \
+    autoreconf -fiv && \
     ./configure --prefix=/usr && \
     make -j$(nproc) && \
     make install && \
@@ -72,8 +83,9 @@ RUN find . -name "*.moc" -delete && \
     find . -name "*.la" -delete && \
     make clean 2>/dev/null || true
 
-# Build the project (without install for package building)
-RUN ./autogen.sh && \
+# Remove libhangul-devel dependency from spec file and build the project
+RUN sed -i '/BuildRequires: libhangul-devel/d' nimf.spec && \
+    ./autogen.sh && \
     ./configure --prefix=/usr && \
     make -j$(nproc)
 
