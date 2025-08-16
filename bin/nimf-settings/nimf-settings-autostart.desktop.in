@@ -3,6 +3,7 @@ Type=Application
 Encoding=UTF-8
 _Name=Nimf Settings
 Exec=nimf-settings-wrapper --gapplication-service
+NoDisplay=true
 Icon=nimf-logo
 Terminal=false
 Categories=System;Utility;
