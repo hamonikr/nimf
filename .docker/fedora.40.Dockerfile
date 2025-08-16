@@ -1,8 +1,9 @@
 # Use Fedora 40 image as the base
 FROM fedora:40 AS builder
 
-# Install the required packages (excluding libhangul-devel which will be built from source)
-RUN dnf install -y \
+# Update and install the required packages
+RUN dnf update -y && \
+    dnf install -y --setopt=install_weak_deps=False \
     cmake \
     autoconf \
     automake \
@@ -39,40 +40,24 @@ RUN dnf install -y \
     intltool \
     gettext-devel \
     git \
-    expat-devel \
-    im-chooser 
+    expat.x86_64 \
+    expat-devel.x86_64 \
+    im-chooser \
+    libhangul-devel && \
+    dnf clean all 
 
 # Copy the source code and set the working directory
 COPY . /src
 WORKDIR /src
 
-# Build and install libhangul from submodule
-RUN echo "Building libhangul from submodule..." && \
-    cd /src/libhangul && \
-    if [ ! -f "configure.ac" ] && [ ! -f "configure.in" ]; then \
-        echo "libhangul submodule is empty, cloning from GitHub..." && \
-        cd /src && \
-        rm -rf libhangul && \
-        git clone https://github.com/libhangul/libhangul.git libhangul && \
-        cd libhangul; \
-    fi && \
-    echo "Configuring and building libhangul..." && \
-    ./autogen.sh && \
-    ./configure --prefix=/usr && \
-    make -j$(nproc) && \
-    make install && \
-    ldconfig
-
 # Clean any existing build artifacts and MOC files
-RUN cd /src && \
-    find . -name "*.moc" -delete && \
+RUN find . -name "*.moc" -delete && \
     find . -name "*.lo" -delete && \
     find . -name "*.la" -delete && \
     make clean 2>/dev/null || true
 
 # Build the project (without install for package building)
-RUN cd /src && \
-    ./autogen.sh && \
+RUN ./autogen.sh && \
     ./configure --prefix=/usr && \
     make -j$(nproc)
 
