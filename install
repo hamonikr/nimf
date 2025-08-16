@@ -343,33 +343,29 @@ install_opensuse() {
     local version_num=${version#v}
     local base_url="https://github.com/${GITHUB_REPO}/releases/download/${version}"
     local rpm_arch=$(get_rpm_arch)
-    
+
     print_info "Installing Nimf for $OS_PRETTY (${rpm_arch})..."
-    
+
     # Create temp directory with error handling
     local temp_dir=$(mktemp -d 2>/dev/null) || {
         print_error "Failed to create temporary directory"
         exit 1
     }
-    
-    # Ensure cleanup on exit
+
     trap "cd /; rm -rf '$temp_dir' 2>/dev/null || true" EXIT INT TERM
-    
     cd "$temp_dir" || {
         print_error "Failed to access temporary directory"
         exit 1
     }
-    
+
     print_info "Downloading packages..."
-    
-    # Try multiple package naming patterns with retries
     local download_success=0
     local opensuse_patterns=(
         "nimf-${version_num}-2.opensuse_leap.${rpm_arch}.rpm"
         "nimf-${version_num}-1.opensuse.${rpm_arch}.rpm"
         "nimf-opensuse-${version_num}-1.${rpm_arch}.rpm"
     )
-    
+
     for pattern in "${opensuse_patterns[@]}"; do
         if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
             print_info "Downloaded: $pattern"
@@ -377,28 +373,36 @@ install_opensuse() {
             break
         fi
     done
-    
+
     if [ $download_success -eq 0 ]; then
-        print_error "Failed to download nimf package. Tried patterns:"
-        for pattern in "${opensuse_patterns[@]}"; do
-            print_error "  - $pattern"
-        done
-        print_info "Available releases: https://github.com/${GITHUB_REPO}/releases"
+        print_error "Failed to download nimf package."
         exit 1
     fi
-    
+
+    # --- 추가된 부분: PackageKit 중단 ---
+    print_info "Stopping PackageKit service to avoid zypper lock..."
+    systemctl stop packagekit.service 2>/dev/null || true
+    systemctl stop packagekit-offline-update.service 2>/dev/null || true
+    pkill -9 packagekitd 2>/dev/null || true
+
     print_info "Installing packages..."
-    if ! zypper install -y *.rpm; then
+    if ! zypper --non-interactive install -y *.rpm; then
         print_error "Failed to install packages"
+        # 실패 시 PackageKit 재시작 보장
+        systemctl start packagekit.service 2>/dev/null || true
         exit 1
     fi
-    
+
+    # 설치 성공 후 PackageKit 재시작
+    print_info "Restarting PackageKit service..."
+    systemctl start packagekit.service 2>/dev/null || true
+
     # Verify installation
     if ! rpm -q nimf > /dev/null 2>&1; then
         print_error "Nimf installation verification failed"
         exit 1
     fi
-    
+
     print_success "Nimf packages installed successfully"
 }
 
