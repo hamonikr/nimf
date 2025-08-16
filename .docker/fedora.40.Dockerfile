@@ -1,8 +1,8 @@
 # Use Fedora 40 image as the base
 FROM fedora:40 AS builder
 
-# Install the required packages
-RUN yum install -y \
+# Install the required packages (excluding libhangul-devel which will be built from source)
+RUN dnf install -y \
     cmake \
     autoconf \
     automake \
@@ -22,7 +22,7 @@ RUN yum install -y \
     libxkbcommon-devel \
     libxklavier-devel \
     libappindicator-gtk3-devel \
-    libayatana-appindicator-gtk3-devel.x86_64 \
+    libayatana-appindicator-gtk3-devel \
     librsvg2-tools \
     google-noto-cjk-fonts \
     m17n-lib-devel \
@@ -39,25 +39,42 @@ RUN yum install -y \
     intltool \
     gettext-devel \
     git \
-    expat \
     expat-devel \
-    im-chooser \
-    libhangul-devel 
+    im-chooser 
 
 # Copy the source code and set the working directory
 COPY . /src
 WORKDIR /src
 
+# Build and install libhangul from submodule
+RUN echo "Building libhangul from submodule..." && \
+    cd /src/libhangul && \
+    if [ ! -f "configure.ac" ] && [ ! -f "configure.in" ]; then \
+        echo "libhangul submodule is empty, cloning from GitHub..." && \
+        cd /src && \
+        rm -rf libhangul && \
+        git clone https://github.com/libhangul/libhangul.git libhangul && \
+        cd libhangul; \
+    fi && \
+    echo "Configuring and building libhangul..." && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
+
 # Clean any existing build artifacts and MOC files
-RUN find . -name "*.moc" -delete && \
+RUN cd /src && \
+    find . -name "*.moc" -delete && \
     find . -name "*.lo" -delete && \
     find . -name "*.la" -delete && \
     make clean 2>/dev/null || true
 
 # Build the project (without install for package building)
-RUN ./autogen.sh \
- && ./configure --prefix=/usr \
- && make -j$(nproc)
+RUN cd /src && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr && \
+    make -j$(nproc)
 
 # Set the default entrypoint to bash
 ENTRYPOINT ["bash"]
