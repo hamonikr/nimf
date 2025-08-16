@@ -190,11 +190,15 @@ install_debian() {
     print_info "Downloading packages..."
     
     # Try multiple package naming patterns with retries
+    # Note: All Debian/Ubuntu packages use 'amd64' in filename regardless of actual architecture
     local package_patterns=(
-        "nimf_${version_num}_${pkg_arch}.deb"
-        "nimf_${version_num}-${pkg_suffix}_${pkg_arch}.deb"
-        "nimf-${pkg_suffix}_${version_num}_${pkg_arch}.deb"
+        "nimf_${version_num}_amd64-${pkg_suffix}.deb"
     )
+    
+    # Add ARM64 specific pattern if needed
+    if [[ "$pkg_arch" == "arm64" ]]; then
+        package_patterns+=("nimf_${version_num}_amd64-${pkg_suffix}.arm64.deb")
+    fi
     
     for pattern in "${package_patterns[@]}"; do
         if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
@@ -214,11 +218,15 @@ install_debian() {
     fi
     
     # Download i18n package (optional)
+    # Note: All i18n packages also use 'amd64' in filename regardless of actual architecture
     local i18n_patterns=(
-        "nimf-i18n_${version_num}_${pkg_arch}.deb"
-        "nimf-i18n_${version_num}-${pkg_suffix}_${pkg_arch}.deb"
-        "nimf-i18n-${pkg_suffix}_${version_num}_${pkg_arch}.deb"
+        "nimf-i18n_${version_num}_amd64-${pkg_suffix}.deb"
     )
+    
+    # Add ARM64 specific pattern if needed
+    if [[ "$pkg_arch" == "arm64" ]]; then
+        i18n_patterns+=("nimf-i18n_${version_num}_amd64-${pkg_suffix}.arm64.deb")
+    fi
     
     local i18n_downloaded=0
     for pattern in "${i18n_patterns[@]}"; do
@@ -292,18 +300,10 @@ install_fedora() {
     # Try multiple package naming patterns with retries
     local download_success=0
     local fedora_patterns=(
+        "nimf-${version_num}-2.fc42.fedora.${rpm_arch}.rpm"
         "nimf-${version_num}-1.fc${OS_VERSION}.${rpm_arch}.rpm"
-        "nimf-${version_num}-1.fedora.latest.${rpm_arch}.rpm"
-        "nimf-fedora.latest-${version_num}-1.${rpm_arch}.rpm"
+        "nimf-${version_num}-2.fedora.${rpm_arch}.rpm"
     )
-    
-    # Add ARM64 specific patterns
-    if [[ "$rpm_arch" == "aarch64" ]]; then
-        fedora_patterns+=(
-            "nimf-fedora.latest.arm64-${version_num}-1.${rpm_arch}.rpm"
-            "nimf-${version_num}-fedora.latest.arm64-1.${rpm_arch}.rpm"
-        )
-    fi
     
     for pattern in "${fedora_patterns[@]}"; do
         if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
@@ -365,17 +365,10 @@ install_opensuse() {
     # Try multiple package naming patterns with retries
     local download_success=0
     local opensuse_patterns=(
+        "nimf-${version_num}-2.opensuse_leap.${rpm_arch}.rpm"
         "nimf-${version_num}-1.opensuse.${rpm_arch}.rpm"
         "nimf-opensuse-${version_num}-1.${rpm_arch}.rpm"
     )
-    
-    # Add ARM64 specific patterns
-    if [[ "$rpm_arch" == "aarch64" ]]; then
-        opensuse_patterns+=(
-            "nimf-opensuse.arm64-${version_num}-1.${rpm_arch}.rpm"
-            "nimf-${version_num}-opensuse.arm64-1.${rpm_arch}.rpm"
-        )
-    fi
     
     for pattern in "${opensuse_patterns[@]}"; do
         if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
@@ -435,17 +428,10 @@ install_arch() {
     # Try multiple package naming patterns
     local download_success=0
     local arch_patterns=(
+        "nimf-${version_num}-1-any-arch.pkg.tar.zst"
         "nimf-${version_num}-1-${rpm_arch}.pkg.tar.zst"
         "nimf-arch-${version_num}-1-${rpm_arch}.pkg.tar.zst"
     )
-    
-    # Add ARM64 specific patterns
-    if [[ "$pkg_suffix" == "arch.arm64" ]]; then
-        arch_patterns+=(
-            "nimf-${pkg_suffix}-${version_num}-1-${rpm_arch}.pkg.tar.zst"
-            "nimf-${version_num}-${pkg_suffix}-1-${rpm_arch}.pkg.tar.zst"
-        )
-    fi
     
     for pattern in "${arch_patterns[@]}"; do
         if wget --timeout=30 --tries=2 -q "${base_url}/${pattern}"; then
