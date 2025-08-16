@@ -167,6 +167,23 @@ if [ -f "nimf.spec" ]; then
     echo -e "${GREEN}nimf.spec 버전 업데이트 완료${NC}"
 fi
 
+# README.md 버전 배지 업데이트
+if [ -f "README.md" ]; then
+    echo -e "\n${YELLOW}README.md 버전 배지 업데이트 중...${NC}"
+    echo -e "${YELLOW}업데이트 전 README.md 버전 배지:${NC}"
+    grep "version.*blue" README.md
+    
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "s/version-[0-9.]*-blue/version-${NEW_VERSION#v}-blue/" README.md
+    else
+        sed -i "s/version-[0-9.]*-blue/version-${NEW_VERSION#v}-blue/" README.md
+    fi
+    
+    echo -e "${YELLOW}업데이트 후 README.md 버전 배지:${NC}"
+    grep "version.*blue" README.md
+    echo -e "${GREEN}README.md 버전 배지 업데이트 완료${NC}"
+fi
+
 # debian/changelog 업데이트
 if [ -f "debian/changelog" ]; then
     echo -e "\n${YELLOW}debian/changelog 버전 업데이트 중...${NC}"
@@ -256,6 +273,9 @@ if [ -f "PKGBUILD" ]; then
 fi
 if [ -f "nimf.spec" ]; then
     git add nimf.spec
+fi
+if [ -f "README.md" ]; then
+    git add README.md
 fi
 if [ -f "debian/changelog" ]; then
     git add debian/changelog
