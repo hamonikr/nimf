@@ -1,6 +1,28 @@
 nimf (1.4.0) stable; urgency=medium
 
   * Release v1.4.0
+  *   * update build scripts to remove unnecessary flags and add
+    hamonikr support
+  *   * update PKGBUILD to use dynamic versioning and remove libhangul-
+    git dependency
+  *   * replace AUR libhangul-git with local submodule build
+  *   * improve arch.Dockerfile to handle network issues and missing
+    dependencies
+  *   * add debian.trixie.arm64 support to build-docker.sh and remove
+    non-existent arch.arm64
+  *   * use tags-ignore to prevent test-release on v* tags instead of
+    commit message filtering
+  *   * add ARM64 builds to test-release workflow and fix linter errors
+  *   * add debian.trixie.arm64 build support
+  *   * remove arch.arm64.Dockerfile - archlinux:latest doesn't support
+    ARM64
+  *   * revert version to 1.3.9 and remove v1.4.0 tag
+
+ -- HamoniKR <pkg@hamonikr.org>  Sat, 16 Aug 2025 10:01:36 +0900
+
+nimf (1.4.0) stable; urgency=medium
+
+  * Release v1.4.0
   *   * update GitHub Actions workflow to prevent execution on release
     tag creation
   *   * enhance installation script for improved package handling and
