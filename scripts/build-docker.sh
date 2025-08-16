@@ -27,6 +27,7 @@ AVAILABLE_DOCKERFILES=(
     "debian.trixie.Dockerfile"
     "debian.trixie.arm64.Dockerfile"
     "debian.sid.Dockerfile"
+    "fedora.40.Dockerfile"
     "fedora.latest.Dockerfile"
     "fedora.latest.arm64.Dockerfile"
     "opensuse.Dockerfile"
