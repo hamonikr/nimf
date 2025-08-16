@@ -42,13 +42,29 @@ RUN dnf update -y && \
     git \
     expat.x86_64 \
     expat-devel.x86_64 \
-    im-chooser \
-    libhangul-devel && \
+    im-chooser && \
     dnf clean all 
 
 # Copy the source code and set the working directory
 COPY . /src
 WORKDIR /src
+
+# Build and install libhangul from submodule
+RUN echo "Building libhangul from submodule..." && \
+    cd /src/libhangul && \
+    if [ ! -f "configure.ac" ] && [ ! -f "configure.in" ]; then \
+        echo "libhangul submodule is empty, cloning from GitHub..." && \
+        cd /src && \
+        rm -rf libhangul && \
+        git clone https://github.com/libhangul/libhangul.git libhangul && \
+        cd libhangul; \
+    fi && \
+    echo "Configuring and building libhangul..." && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
 
 # Clean any existing build artifacts and MOC files
 RUN find . -name "*.moc" -delete && \
