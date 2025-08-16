@@ -114,7 +114,7 @@ autoreconf -ivf
 %build
 %if 0%{?rhel}
 ./autogen.sh --prefix=/usr --libdir=%{_libdir} --enable-gtk-doc \
-  --with-imsettings-data --disable-nimf-m17n --disable-nimf-rime
+  --with-imsettings-data
 %else
 ./autogen.sh --prefix=/usr --libdir=%{_libdir} --with-imsettings-data --enable-gtk-doc
 %endif

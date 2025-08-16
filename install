@@ -158,7 +158,7 @@ install_debian() {
                 fi
             fi
             ;;
-        ubuntu|linuxmint|elementary|pop)
+        ubuntu|linuxmint|elementary|pop|hamonikr)
             pkg_suffix="ubuntu.2404"  # Use Ubuntu 24.04 packages as default
             # ARM64 support check for Ubuntu
             if [[ "$pkg_arch" == "arm64" ]]; then

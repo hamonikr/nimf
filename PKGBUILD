@@ -23,7 +23,7 @@ md5sums=('SKIP')
 
 build() {
 	cd nimf
-	./autogen.sh --prefix=/usr --enable-gtk-doc --disable-nimf-rime
+	./autogen.sh --prefix=/usr --enable-gtk-doc
 	make -j $(nproc)
 }
 
