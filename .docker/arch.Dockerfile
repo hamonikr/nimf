@@ -32,7 +32,8 @@ RUN pacman -Syu --noconfirm \
     wget \
     intltool \
     libtool \
-    pkg-config
+    pkg-config \
+    gettext
 
 # 일반 사용자 생성
 RUN useradd -m builduser && echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -45,49 +46,34 @@ RUN chown -R builduser:builduser /home/builduser/src
 USER builduser
 WORKDIR /home/builduser/src
 
-# 네트워크 연결 확인
-RUN echo "Testing network connectivity..." && \
-    ping -c 3 aur.archlinux.org || echo "AUR connectivity test failed, but continuing..."
-
-# AUR 도우미 yay 설치 (개선된 재시도 로직)
-RUN echo "Installing yay AUR helper..." && \
-    for i in 1 2 3 4 5; do \
-        echo "Attempt $i to clone yay..." && \
-        rm -rf /home/builduser/yay 2>/dev/null || true && \
-        git clone https://aur.archlinux.org/yay.git /home/builduser/yay && \
-        echo "Successfully cloned yay on attempt $i" && break || \
-        echo "Attempt $i failed, waiting 10 seconds before retry..." && sleep 10; \
-    done && \
-    if [ ! -d "/home/builduser/yay" ]; then \
-        echo "Failed to clone yay after 5 attempts" && exit 1; \
+# libhangul 서브모듈 빌드 및 설치
+RUN echo "Building libhangul from submodule..." && \
+    cd /home/builduser/src/libhangul && \
+    if [ ! -f "configure.ac" ] && [ ! -f "configure.in" ]; then \
+        echo "libhangul submodule is empty, cloning from GitHub..." && \
+        cd /home/builduser/src && \
+        rm -rf libhangul && \
+        git clone https://github.com/libhangul/libhangul.git libhangul && \
+        cd libhangul; \
     fi && \
-    cd /home/builduser/yay && \
-    makepkg -si --noconfirm
+    echo "Configuring and building libhangul..." && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr && \
+    make -j $(nproc) && \
+    sudo make install && \
+    sudo ldconfig
 
-# AUR에서 libhangul-git 패키지 설치 (재시도 로직 포함)
-RUN echo "Installing libhangul-git from AUR..." && \
-    for i in 1 2 3; do \
-        echo "Attempt $i to install libhangul-git..." && \
-        yay -S --noconfirm libhangul-git && \
-        echo "Successfully installed libhangul-git on attempt $i" && break || \
-        echo "Attempt $i failed, waiting 15 seconds before retry..." && sleep 15; \
-    done
-
-# 패키지 빌드 및 설치
-# RUN makepkg -si --noconfirm
-
-# 루트 사용자로 전환
+# 루트 사용자로 전환 (libhangul 설치 완료 후)
 USER root
-RUN rm -rf /home/builduser/yay
 
 # 프로젝트 빌드 (패키지 빌드용)
 RUN cd /home/builduser/src && \
     echo "Cleaning up previous build artifacts..." && \
-    make clean || echo "No Makefile found, skipping make clean" && \
+    make clean 2>/dev/null || echo "No Makefile found, skipping make clean" && \
     find . -name "*.moc" -delete 2>/dev/null || true && \
     find . -name "moc_*.cpp" -delete 2>/dev/null || true && \
     echo "Checking for intltoolize..." && \
-    which intltoolize || echo "intltoolize not found in PATH" && \
+    which intltoolize && \
     echo "Running autogen.sh..." && \
     ./autogen.sh --prefix=/usr --enable-gtk-doc && \
     echo "Building project..." && \
