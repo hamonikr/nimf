@@ -22,6 +22,9 @@ jobs:
           - dockerfile: ubuntu.2404.Dockerfile
             platform: ubuntu.2404
             arch: amd64
+          - dockerfile: fedora.40.Dockerfile
+            platform: fedora.40
+            arch: amd64
           - dockerfile: fedora.latest.Dockerfile
             platform: fedora.latest
             arch: amd64
@@ -30,6 +33,9 @@ jobs:
             arch: amd64
           - dockerfile: opensuse.arm64.Dockerfile
             platform: opensuse.arm64
+            arch: arm64
+          - dockerfile: fedora.40.arm64.Dockerfile
+            platform: fedora.40.arm64
             arch: arm64
           - dockerfile: fedora.latest.arm64.Dockerfile
             platform: fedora.latest.arm64
