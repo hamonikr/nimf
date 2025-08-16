@@ -1,3 +1,15 @@
+nimf (1.4.2) stable; urgency=medium
+
+  * Release v1.4.2
+  *   * remove ARM64 Dockerfile for Fedora 40 and update workflows
+  *   * improve Fedora 40 Dockerfile libhangul build reliability
+  *   * optimize Fedora 40 Dockerfiles based on local system testing
+  *   * resolve Fedora 40 build issues by building libhangul from source
+  *   * add Fedora 40 support to build-docker.sh script
+  *   * add Fedora 40 support for build and release
+
+ -- HamoniKR <pkg@hamonikr.org>  Sat, 16 Aug 2025 16:56:43 +0900
+
 nimf (1.4.1) stable; urgency=medium
 
   * Release v1.4.1
