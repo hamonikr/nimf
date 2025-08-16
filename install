@@ -556,10 +556,9 @@ configure_nimf() {
     # Configure environment variables for different desktop environments
     configure_environment_vars
     
-    # Enable for current user if not running in container
-    if [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
-        sudo -u "$SUDO_USER" nimf-settings 2>/dev/null || true
-    fi
+    # Note: nimf-settings GUI can be launched manually after installation
+    # Automatic GUI launch during installation has been disabled to prevent
+    # interruption of the installation process
     
     print_success "Nimf installation completed successfully!"
     print_info "Please log out and log back in for changes to take effect."
