@@ -1,3 +1,11 @@
+nimf (1.4.1) stable; urgency=medium
+
+  * Release v1.4.1
+  *   * update README.md version badge to v1.4.0 and enhance release
+    script for badge management
+
+ -- HamoniKR <pkg@hamonikr.org>  Sat, 16 Aug 2025 11:17:47 +0900
+
 nimf (1.4.0) stable; urgency=medium
 
   * Release v1.4.0
