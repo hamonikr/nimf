@@ -724,7 +724,7 @@ main() {
     
     # Install based on OS
     case $OS in
-        ubuntu|debian|linuxmint|elementary|pop)
+        ubuntu|debian|linuxmint|elementary|pop|hamonikr)
             install_debian "$VERSION" || {
                 print_error "Failed to install on Debian/Ubuntu-based system"
                 exit 1
