@@ -151,6 +151,10 @@ install_debian() {
                 fi
             elif [[ "$OS_VERSION" == "13" ]] || [[ "$OS_CODENAME" == "trixie" ]]; then
                 pkg_suffix="debian.trixie"
+                # ARM64 support check for Debian 13
+                if [[ "$pkg_arch" == "arm64" ]]; then
+                    pkg_suffix="debian.trixie.arm64"
+                fi
             else
                 pkg_suffix="debian.bookworm"  # Default to bookworm
                 if [[ "$pkg_arch" == "arm64" ]]; then
