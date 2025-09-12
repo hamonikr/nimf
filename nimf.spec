@@ -36,8 +36,13 @@ BuildRequires: expat-devel
 BuildRequires: im-chooser
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtbase-private-devel
+%if 0%{?fedora} >= 42
 BuildRequires: qt6-qtbase-devel
 BuildRequires: qt6-qtbase-private-devel
+%else
+BuildRequires: qt6-qtbase-devel
+BuildRequires: qt6-qtbase-private-devel
+%endif
 BuildRequires: libappindicator-gtk3-devel
 BuildRequires: librsvg2-tools
 BuildRequires: google-noto-cjk-fonts
@@ -70,8 +75,8 @@ BuildRequires: libexpat-devel
 Requires: libhangul1
 Requires: libxkbcommon0
 Requires: libxklavier16
-Requires: libqt5-qtbase-devel
-Requires: qt6-base-devel
+Requires: libqt5-qtbase
+Requires: qt6-qtbase
 Requires: librime1
 Requires: m17n-lib >= 1.7.0
 Requires: m17n-db >= 1.7.0
@@ -84,7 +89,7 @@ Requires: libhangul
 Requires: libxkbcommon
 Requires: libxklavier
 Requires: qt5-qtbase
-Requires: qt6-base-devel
+Requires: qt6-qtbase
 Requires: librime
 Requires: m17n-lib >= 1.7.0, m17n-db >= 1.7.0
 %endif

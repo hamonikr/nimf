@@ -328,8 +328,15 @@ install_fedora() {
     
     print_info "Installing packages..."
     if ! dnf install -y *.rpm; then
-        print_error "Failed to install packages"
-        exit 1
+        print_info "Package installation failed, trying with --skip-broken..."
+        if ! dnf install -y --skip-broken *.rpm; then
+            print_error "Failed to install packages even with --skip-broken"
+            print_info "This might be due to missing Qt6 development packages."
+            print_info "Try installing qt6-qtbase-devel first: sudo dnf install qt6-qtbase-devel"
+            exit 1
+        else
+            print_info "Package installed with some dependencies skipped"
+        fi
     fi
     
     # Verify installation
