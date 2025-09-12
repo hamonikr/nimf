@@ -197,7 +197,12 @@ if [ -f "debian/changelog" ]; then
         # 커밋 메시지에서 feat:, fix:, chore: 등을 제거하고 정리
         CLEAN_MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ //' | sed -E 's/^(feat|fix|chore|docs|style|refactor|test|build):\s*//')
         if [ -n "$CLEAN_MSG" ]; then
-            CHANGELOG_ENTRIES="${CHANGELOG_ENTRIES}  * ${CLEAN_MSG}\n"
+            # 이미 *로 시작하는지 확인하여 중복 방지
+            if [[ "$CLEAN_MSG" =~ ^\*\s* ]]; then
+                CHANGELOG_ENTRIES="${CHANGELOG_ENTRIES}  ${CLEAN_MSG}\n"
+            else
+                CHANGELOG_ENTRIES="${CHANGELOG_ENTRIES}  * ${CLEAN_MSG}\n"
+            fi
         fi
     done < <(git --no-pager log --oneline origin/master..origin/dev --pretty=format:"%h %s")
     
