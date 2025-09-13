@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/hamonikr/nimf/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hamonikr/nimf/actions/workflows/build.yml)
 [![Donate Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://ko.liberapay.com/hamonikr/)
 
-![version](https://img.shields.io/badge/version-1.4.3-blue)
+![version](https://img.shields.io/badge/version-1.4.4-blue)
 ![toolkits](https://img.shields.io/badge/GTK-2%2F3%2F4-green)
 ![qt](https://img.shields.io/badge/Qt-5%2F6-green)
 ![arch](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-darkblue)
