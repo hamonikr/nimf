@@ -257,16 +257,23 @@ install_debian() {
     # Install packages with better error handling
     if ! dpkg -i *.deb 2>/dev/null; then
         print_info "Package installation encountered dependency issues, resolving..."
+
+        # Fix dependencies with error handling
+        print_info "Resolving dependencies..."
+        if ! apt-get install -f -y; then
+            print_error "Failed to resolve package dependencies"
+            print_info "You may need to run: sudo apt-get install -f"
+            exit 1
+        fi
+
+        # Try installing packages again after dependency resolution
+        print_info "Retrying package installation..."
+        if ! dpkg -i *.deb 2>/dev/null; then
+            print_error "Failed to install packages even after dependency resolution"
+            exit 1
+        fi
     fi
-    
-    # Fix dependencies with error handling
-    print_info "Resolving dependencies..."
-    if ! apt-get install -f -y; then
-        print_error "Failed to resolve package dependencies"
-        print_info "You may need to run: sudo apt-get install -f"
-        exit 1
-    fi
-    
+
     # Verify installation
     if ! dpkg -l | grep -q nimf; then
         print_error "Nimf installation verification failed"
