@@ -1,6 +1,6 @@
-nimf (1.4.3) stable; urgency=medium
+nimf (1.4.4) stable; urgency=medium
 
-  * Release v1.4.3
+  * Release v1.4.4
   *   * prevent duplicate entries in changelog generation
   *   * enhance Fedora installation script to handle package
     installation failures
