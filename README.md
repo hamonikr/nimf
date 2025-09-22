@@ -105,6 +105,33 @@ sudo zypper install nimf-*.rpm
 
 **Note**: Manual installation requires additional configuration steps. The automatic installation script above is recommended for most users.
 
+## ⚙️ Configuration
+
+### GNOME Desktop Environment
+
+On GNOME desktops (especially Fedora), you may need to install the **AppIndicator extension** to see the Nimf system tray icon:
+
+```bash
+# Fedora/RHEL
+sudo dnf install gnome-shell-extension-appindicator
+
+# Ubuntu/Debian
+sudo apt install gnome-shell-extension-appindicator
+
+# Arch Linux
+sudo pacman -S gnome-shell-extension-appindicator
+```
+
+After installation:
+1. Log out and log back in (or restart GNOME Shell with `Alt+F2` → `r`)
+2. Enable the extension in **GNOME Extensions** app or via command line:
+   ```bash
+   gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
+   ```
+3. The Nimf icon should now appear in the system tray
+
+**Reference**: [How to use Nimf in GNOME](https://nimfsoft.art/support/how-to-use-nimf-in-gnome/)
+
 ## 🔧 Build from Source
 
 ### Quick Start
