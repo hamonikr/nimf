@@ -3,7 +3,7 @@
 
 Name:     nimf
 Summary:  An input method framework
-Version:  1.4.5
+Version:  1.4.6
 Release:  2%{?dist}.%{?os_id}
 License:  LGPLv3+
 Group:    User Interface/Desktops
