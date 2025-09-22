@@ -57,6 +57,10 @@ WORKDIR /src
 # 자동으로 yes 응답을 전달
 RUN yes | mk-build-deps --install --root-cmd sudo --remove /src/debian/control
 
+# Set correct architecture for ARM64 package building
+ENV DEB_BUILD_ARCH=arm64
+ENV DEB_HOST_ARCH=arm64
+
 # Build the entire project
 RUN autoreconf --force --install --verbose \
  && ./configure --prefix=/usr \
