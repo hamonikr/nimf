@@ -1,3 +1,10 @@
+nimf (1.4.8) stable; urgency=medium
+
+  * Fix ARM64 package architecture issue
+  * ARM64 packages now correctly identify as arm64 instead of amd64
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 24 Sep 2025 20:00:00 +0900
+
 nimf (1.4.7) stable; urgency=medium
 
   * Release v1.4.7

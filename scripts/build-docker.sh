@@ -98,12 +98,28 @@ test_dockerfile() {
     # 패키지 생성 (Debian/Ubuntu의 경우)
     if [[ "$dockerfile_name" == *"ubuntu"* ]] || [[ "$dockerfile_name" == *"debian"* ]]; then
         echo -e "${YELLOW}DEB 패키지 생성 중...${NC}"
+
+        # ARM64 빌드인지 확인하여 적절한 아키텍처 설정
+        local debuild_arch_args=""
+        if [[ "$dockerfile_name" == *"arm64"* ]]; then
+            debuild_arch_args="-aarm64 --host-arch arm64"
+            echo -e "${YELLOW}ARM64 아키텍처로 빌드합니다...${NC}"
+        fi
+
         if ! docker run --rm -v "$PROJECT_ROOT:/packages" --entrypoint="/bin/bash" "$image_name" -c "
-            cd /src && 
-            debuild -us -uc &&
+            cd /src &&
+            # ARM64 빌드인 경우 명시적으로 아키텍처 설정
+            if [[ \"$dockerfile_name\" == *\"arm64\"* ]]; then
+                export DEB_BUILD_ARCH=arm64
+                export DEB_HOST_ARCH=arm64
+                export DEB_TARGET_ARCH=arm64
+                debuild -us -uc -aarm64 --host-arch arm64
+            else
+                debuild -us -uc
+            fi &&
             mkdir -p /packages/dist/$dockerfile_name &&
-            find .. -name '*.deb' -exec cp {} /packages/dist/$dockerfile_name/ \; && 
-            echo -e '${GREEN}DEB 패키지 생성 완료:${NC}' && 
+            find .. -name '*.deb' -exec cp {} /packages/dist/$dockerfile_name/ \; &&
+            echo -e '${GREEN}DEB 패키지 생성 완료:${NC}' &&
             ls -la /packages/dist/$dockerfile_name/*.deb 2>/dev/null || echo 'No .deb files created'
         "; then
             echo -e "${RED}Warning: DEB 패키지 생성 중 오류 발생 - $dockerfile_name${NC}"
