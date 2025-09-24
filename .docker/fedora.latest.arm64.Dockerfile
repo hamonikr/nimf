@@ -16,6 +16,7 @@ RUN yum install -y \
     redhat-rpm-config \
     glib2-devel \
     gtk3-devel \
+    gtk3-immodules \
     gtk2-devel \
     wayland-devel \
     wayland-protocols-devel \
@@ -33,7 +34,7 @@ RUN yum install -y \
     qt5-qtbase-private-devel \
     qt6-qtbase-devel \
     qt6-qttools-devel \
-    qt6-qtbase-private-devel \    
+    qt6-qtbase-private-devel \
     librime-devel \
     gtk-doc \
     intltool \
