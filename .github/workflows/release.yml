@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # x86_64 builds
+          # x86_64 builds only (ARM64 temporarily disabled due to timeout issues)
           - dockerfile: debian.bookworm.Dockerfile
             platform: debian.bookworm
             arch: amd64
@@ -31,25 +31,9 @@ jobs:
           - dockerfile: opensuse.Dockerfile
             platform: opensuse
             arch: amd64
-          - dockerfile: opensuse.arm64.Dockerfile
-            platform: opensuse.arm64
-            arch: arm64
-          - dockerfile: fedora.latest.arm64.Dockerfile
-            platform: fedora.latest.arm64
-            arch: arm64
           - dockerfile: arch.Dockerfile
             platform: arch
             arch: amd64
-          # ARM64 builds
-          - dockerfile: debian.bookworm.arm64.Dockerfile
-            platform: debian.bookworm.arm64
-            arch: arm64
-          - dockerfile: debian.trixie.arm64.Dockerfile
-            platform: debian.trixie.arm64
-            arch: arm64
-          - dockerfile: ubuntu.2404.arm64.Dockerfile
-            platform: ubuntu.2404.arm64
-            arch: arm64
 
 
     steps:

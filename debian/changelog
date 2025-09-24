@@ -1,3 +1,11 @@
+nimf (1.4.11) stable; urgency=medium
+
+  * Temporarily disable ARM64 builds due to GitHub Actions timeout
+  * Fix x86_64 package architecture metadata (force amd64 in debuild)
+  * Ensure proper package architecture identification
+
+ -- HamoniKR <pkg@hamonikr.org>  Tue, 24 Sep 2025 15:10:00 +0900
+
 nimf (1.4.9) stable; urgency=medium
 
   * Fix ARM64 Docker build platform issue
