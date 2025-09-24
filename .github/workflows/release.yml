@@ -9,10 +9,11 @@ jobs:
   # 통합 빌드 job - 모든 플랫폼을 한 번에 빌드
   build-packages:
     runs-on: ubuntu-latest
+    timeout-minutes: 360  # 6 hours for ARM64 builds
     strategy:
       matrix:
         include:
-          # x86_64 builds only (ARM64 temporarily disabled due to timeout issues)
+          # x86_64 builds
           - dockerfile: debian.bookworm.Dockerfile
             platform: debian.bookworm
             arch: amd64
@@ -34,6 +35,16 @@ jobs:
           - dockerfile: arch.Dockerfile
             platform: arch
             arch: amd64
+          # ARM64 builds (with increased timeout)
+          - dockerfile: debian.bookworm.arm64.Dockerfile
+            platform: debian.bookworm.arm64
+            arch: arm64
+          - dockerfile: debian.trixie.arm64.Dockerfile
+            platform: debian.trixie.arm64
+            arch: arm64
+          - dockerfile: ubuntu.2404.arm64.Dockerfile
+            platform: ubuntu.2404.arm64
+            arch: arm64
 
 
     steps:

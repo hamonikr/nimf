@@ -108,18 +108,14 @@ test_dockerfile() {
 
         if ! docker run --rm -v "$PROJECT_ROOT:/packages" --entrypoint="/bin/bash" "$image_name" -c "
             cd /src &&
-            # 아키텍처별 debuild 설정
+            # ARM64 빌드인 경우 명시적으로 아키텍처 설정
             if [[ \"$dockerfile_name\" == *\"arm64\"* ]]; then
                 export DEB_BUILD_ARCH=arm64
                 export DEB_HOST_ARCH=arm64
                 export DEB_TARGET_ARCH=arm64
                 debuild -us -uc -aarm64 --host-arch arm64
             else
-                # x86_64 빌드의 경우 명시적으로 amd64 지정
-                export DEB_BUILD_ARCH=amd64
-                export DEB_HOST_ARCH=amd64
-                export DEB_TARGET_ARCH=amd64
-                debuild -us -uc -aamd64 --host-arch amd64
+                debuild -us -uc
             fi &&
             mkdir -p /packages/dist/$dockerfile_name &&
             find .. -name '*.deb' -exec cp {} /packages/dist/$dockerfile_name/ \; &&

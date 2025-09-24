@@ -1,7 +1,7 @@
 # Maintainer: Kevin Kim <root@hamonikr.org>
 
 pkgname=nimf
-pkgver=1.4.11
+pkgver=1.4.12
 pkgrel=1
 pkgdesc="Nimf is an input method framework."
 arch=('any')
