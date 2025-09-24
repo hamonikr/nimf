@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS builder
+FROM --platform=linux/arm64 ubuntu:24.04 AS builder
 
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get -qq update \

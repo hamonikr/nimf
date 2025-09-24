@@ -1,5 +1,5 @@
 # Use the openSUSE Leap 15.6 as the base
-FROM opensuse/leap:15.6 AS builder
+FROM --platform=linux/arm64 opensuse/leap:15.6 AS builder
 
 # Install the required packages
 RUN zypper install -y \

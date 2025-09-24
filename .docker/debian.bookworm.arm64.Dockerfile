@@ -1,4 +1,4 @@
-FROM debian:bookworm AS builder
+FROM --platform=linux/arm64 debian:bookworm AS builder
 
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get -qq update \

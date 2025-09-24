@@ -1,4 +1,4 @@
-FROM debian:trixie AS builder
+FROM --platform=linux/arm64 debian:trixie AS builder
 
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get -qq update \

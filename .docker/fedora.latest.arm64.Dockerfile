@@ -1,5 +1,5 @@
 # Use the latest Fedora image as the base
-FROM fedora:latest AS builder
+FROM --platform=linux/arm64 fedora:latest AS builder
 
 # Install the required packages
 RUN yum install -y \
