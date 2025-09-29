@@ -106,26 +106,35 @@ get_latest_version() {
     local version
     local retry_count=0
     local max_retries=3
-    
+
+    # Try API first, fallback to releases page parsing
     while [ $retry_count -lt $max_retries ]; do
-        version=$(curl -s --connect-timeout 10 --max-time 30 "$GITHUB_RELEASES" 2>/dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | head -1)
-        
+        # Try GitHub API
+        version=$(curl -s --connect-timeout 5 --max-time 15 "$GITHUB_RELEASES" 2>/dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | head -1)
+
         if [ -n "$version" ] && [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "$version"
             return 0
         fi
-        
+
+        # If API fails, try parsing releases page directly
+        version=$(curl -s --connect-timeout 10 --max-time 20 "https://github.com/${GITHUB_REPO}/releases/latest" 2>/dev/null | grep -o '/releases/tag/v[0-9]\+\.[0-9]\+\.[0-9]\+' | head -1 | sed 's|.*/||')
+
+        if [ -n "$version" ] && [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "$version"
+            return 0
+        fi
+
         retry_count=$((retry_count + 1))
         if [ $retry_count -lt $max_retries ]; then
             print_info "Failed to get version, retrying... ($retry_count/$max_retries)"
             sleep 2
         fi
     done
-    
-    print_error "Failed to get latest version after $max_retries attempts"
-    print_info "Please check your internet connection and try again"
-    print_info "You can also manually install from: https://github.com/${GITHUB_REPO}/releases"
-    exit 1
+
+    # Final fallback: use hardcoded recent version
+    print_info "Could not fetch latest version, using fallback version v1.4.12"
+    echo "v1.4.12"
 }
 
 # Function to install on Ubuntu/Debian
@@ -151,10 +160,6 @@ install_debian() {
                 fi
             elif [[ "$OS_VERSION" == "13" ]] || [[ "$OS_CODENAME" == "trixie" ]]; then
                 pkg_suffix="debian.trixie"
-                # ARM64 support check for Debian 13
-                if [[ "$pkg_arch" == "arm64" ]]; then
-                    pkg_suffix="debian.trixie.arm64"
-                fi
             else
                 pkg_suffix="debian.bookworm"  # Default to bookworm
                 if [[ "$pkg_arch" == "arm64" ]]; then
@@ -194,14 +199,19 @@ install_debian() {
     print_info "Downloading packages..."
     
     # Try multiple package naming patterns with retries
-    # Note: All Debian/Ubuntu packages use 'amd64' in filename regardless of actual architecture
-    local package_patterns=(
-        "nimf_${version_num}_amd64-${pkg_suffix}.deb"
-    )
-    
-    # Add ARM64 specific pattern if needed
+    local package_patterns=()
+
     if [[ "$pkg_arch" == "arm64" ]]; then
-        package_patterns+=("nimf_${version_num}_amd64-${pkg_suffix}.arm64.deb")
+        # ARM64 packages use arm64 prefix in filename
+        package_patterns=(
+            "nimf_${version_num}_arm64-${pkg_suffix}.arm64.deb"
+            "nimf_${version_num}_amd64-${pkg_suffix}.deb"
+        )
+    else
+        # x86_64 packages use amd64 prefix in filename
+        package_patterns=(
+            "nimf_${version_num}_amd64-${pkg_suffix}.deb"
+        )
     fi
     
     for pattern in "${package_patterns[@]}"; do
@@ -222,14 +232,19 @@ install_debian() {
     fi
     
     # Download i18n package (optional)
-    # Note: All i18n packages also use 'amd64' in filename regardless of actual architecture
-    local i18n_patterns=(
-        "nimf-i18n_${version_num}_amd64-${pkg_suffix}.deb"
-    )
-    
-    # Add ARM64 specific pattern if needed
+    local i18n_patterns=()
+
     if [[ "$pkg_arch" == "arm64" ]]; then
-        i18n_patterns+=("nimf-i18n_${version_num}_amd64-${pkg_suffix}.arm64.deb")
+        # ARM64 i18n packages use arm64 prefix in filename
+        i18n_patterns=(
+            "nimf-i18n_${version_num}_arm64-${pkg_suffix}.arm64.deb"
+            "nimf-i18n_${version_num}_amd64-${pkg_suffix}.deb"
+        )
+    else
+        # x86_64 i18n packages use amd64 prefix in filename
+        i18n_patterns=(
+            "nimf-i18n_${version_num}_amd64-${pkg_suffix}.deb"
+        )
     fi
     
     local i18n_downloaded=0
