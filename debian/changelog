@@ -1,3 +1,14 @@
+nimf (1.4.13) stable; urgency=medium
+
+  * Release v1.4.13
+  *   * Re-enable ARM64 builds with proper timeout handling for v1.4.12
+  *   * Re-enable ARM64 builds with proper timeout handling for v1.4.12
+  *   * Focus on x86_64 package architecture metadata for v1.4.11
+  *   * Add gtk3-immodules package to Fedora ARM64 Dockerfile
+  *   * ARM64 Docker build platform issue for v1.4.9
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 29 Sep 2025 15:17:15 +0900
+
 nimf (1.4.12) stable; urgency=medium
 
   * Re-enable ARM64 builds with increased timeout (6 hours)
