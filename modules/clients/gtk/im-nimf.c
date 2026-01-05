@@ -32,6 +32,7 @@
 
 #define NIMF_GTK_TYPE_IM_CONTEXT  (nimf_gtk_im_context_get_type ())
 #define NIMF_GTK_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_CAST ((obj), NIMF_GTK_TYPE_IM_CONTEXT, NimfGtkIMContext))
+#define NIMF_GTK_IS_IM_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), NIMF_GTK_TYPE_IM_CONTEXT))
 
 typedef struct _NimfGtkIMContext      NimfGtkIMContext;
 typedef struct _NimfGtkIMContextClass NimfGtkIMContextClass;
@@ -48,6 +49,7 @@ struct _NimfGtkIMContext
   gboolean      is_hook_gdk_event_key;
   gboolean      has_focus;
   gboolean      has_event_filter;
+  gboolean      is_destroying;
 };
 
 struct _NimfGtkIMContextClass
@@ -334,6 +336,13 @@ on_commit (NimfIM           *im,
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "commit", text);
 }
 
@@ -344,6 +353,13 @@ on_delete_surrounding (NimfIM           *im,
                        NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return FALSE;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return FALSE;
 
   gboolean retval;
   g_signal_emit_by_name (context,
@@ -356,6 +372,14 @@ on_preedit_changed (NimfIM           *im,
                     NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "preedit-changed");
 }
 
@@ -364,6 +388,14 @@ on_preedit_end (NimfIM           *im,
                 NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "preedit-end");
 }
 
@@ -372,6 +404,14 @@ on_preedit_start (NimfIM           *im,
                   NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "preedit-start");
 }
 
@@ -380,6 +420,13 @@ on_retrieve_surrounding (NimfIM           *im,
                          NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return FALSE;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return FALSE;
 
   gboolean retval;
   g_signal_emit_by_name (context, "retrieve-surrounding", &retval);
@@ -392,6 +439,13 @@ on_beep (NimfIM           *im,
          NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK_IS_IM_CONTEXT (context))
+    return;
 
   gdk_display_beep (gdk_display_get_default ());
 }
@@ -451,6 +505,8 @@ nimf_gtk_im_context_init (NimfGtkIMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
 
+  context->is_destroying = FALSE;
+
   context->im = nimf_im_new ();
   context->simple = gtk_im_context_simple_new ();
 
@@ -508,16 +564,39 @@ nimf_gtk_im_context_finalize (GObject *object)
 
   NimfGtkIMContext *context = NIMF_GTK_IM_CONTEXT (object);
 
-  if (context->has_event_filter)
-    gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
+  /* STEP 1: Mark as destroying */
+  context->is_destroying = TRUE;
 
-  g_object_unref (context->im);
-  g_object_unref (context->simple);
-  g_object_unref (context->settings);
+  /* STEP 2: Disconnect all signals */
+  if (context->im)
+    g_signal_handlers_disconnect_by_data (context->im, context);
+
+  if (context->simple)
+    g_signal_handlers_disconnect_by_data (context->simple, context);
+
+  if (context->settings)
+    g_signal_handlers_disconnect_by_data (context->settings, context);
+
+  /* STEP 3: Remove event filter */
+  if (context->has_event_filter)
+  {
+    gdk_window_remove_filter (NULL, (GdkFilterFunc) on_gdk_x_event, context);
+    context->has_event_filter = FALSE;
+  }
+
+  /* STEP 4: Process pending events */
+  while (g_main_context_pending (NULL))
+    g_main_context_iteration (NULL, FALSE);
+
+  /* STEP 5: Clean up resources */
+  g_clear_object (&context->im);
+  g_clear_object (&context->simple);
+  g_clear_object (&context->settings);
 
   if (context->client_window)
     g_object_unref (context->client_window);
 
+  /* STEP 6: Chain up to parent */
   G_OBJECT_CLASS (nimf_gtk_im_context_parent_class)->finalize (object);
 }
 

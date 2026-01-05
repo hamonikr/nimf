@@ -44,6 +44,7 @@ struct _NimfGtk4IMContext
   GtkEventController *key_controller;
   gboolean      is_reset_on_button_press_event;
   gboolean      has_focus;
+  gboolean      is_destroying;
 };
 
 struct _NimfGtk4IMContextClass
@@ -76,6 +77,14 @@ static void
 on_commit (NimfIM *im, const gchar *text, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "commit", text);
 }
 
@@ -83,6 +92,14 @@ static void
 on_preedit_start (NimfIM *im, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "preedit-start");
 }
 
@@ -90,6 +107,14 @@ static void
 on_preedit_end (NimfIM *im, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "preedit-end");
 }
 
@@ -97,6 +122,14 @@ static void
 on_preedit_changed (NimfIM *im, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   g_signal_emit_by_name (context, "preedit-changed");
 }
 
@@ -104,6 +137,14 @@ static void
 on_retrieve_surrounding (NimfIM *im, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   gboolean retval;
   g_signal_emit_by_name (context, "retrieve-surrounding", &retval);
 }
@@ -112,6 +153,14 @@ static void
 on_delete_surrounding (NimfIM *im, gint offset, gint n_chars, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   gboolean retval;
   g_signal_emit_by_name (context, "delete-surrounding", offset, n_chars, &retval);
 }
@@ -120,6 +169,14 @@ static void
 on_beep (NimfIM *im, NimfGtk4IMContext *context)
 {
   g_debug (G_STRLOC ": %s", G_STRFUNC);
+
+  /* Validate: Check if context is valid and not being destroyed */
+  if (context == NULL || context->is_destroying)
+    return;
+
+  if (!NIMF_GTK4_IS_IM_CONTEXT (context))
+    return;
+
   gdk_display_beep (gdk_display_get_default ());
 }
 
@@ -498,6 +555,7 @@ nimf_gtk4_im_context_init (NimfGtk4IMContext *context)
   context->settings = NULL;
   context->is_reset_on_button_press_event = FALSE;
   context->has_focus = FALSE;
+  context->is_destroying = FALSE;
 
   /* Create Nimf IM instance */
   context->im = nimf_im_new ();
@@ -549,7 +607,24 @@ nimf_gtk4_im_context_finalize (GObject *object)
 
   NimfGtk4IMContext *context = NIMF_GTK4_IM_CONTEXT (object);
 
-  /* Clean up key controller */
+  /* STEP 1: Mark as destroying to prevent new signal emissions */
+  context->is_destroying = TRUE;
+
+  /* STEP 2: Disconnect all signals BEFORE cleanup */
+  if (context->im)
+    g_signal_handlers_disconnect_by_data (context->im, context);
+
+  if (context->simple)
+    g_signal_handlers_disconnect_by_data (context->simple, context);
+
+  if (context->settings)
+    g_signal_handlers_disconnect_by_data (context->settings, context);
+
+  /* STEP 3: Process pending callbacks */
+  while (g_main_context_pending (NULL))
+    g_main_context_iteration (NULL, FALSE);
+
+  /* STEP 4: Clean up key controller */
   if (context->key_controller)
   {
     GtkWidget *widget = gtk_event_controller_get_widget (context->key_controller);
@@ -558,12 +633,13 @@ nimf_gtk4_im_context_finalize (GObject *object)
     context->key_controller = NULL;
   }
 
-  /* Clean up resources */
+  /* STEP 5: Clean up resources */
   g_clear_object (&context->client_surface);
   g_clear_object (&context->im);
   g_clear_object (&context->simple);
   g_clear_object (&context->settings);
 
+  /* STEP 6: Chain up to parent */
   G_OBJECT_CLASS (nimf_gtk4_im_context_parent_class)->finalize (object);
 }
 
