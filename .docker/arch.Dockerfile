@@ -1,6 +1,7 @@
 FROM archlinux:latest AS builder
 
 # 필요한 패키지 설치
+# Note: gtk2 removed as it's no longer available in Arch Linux repositories
 RUN pacman -Syu --noconfirm \
     binutils \
     autoconf \
@@ -10,7 +11,6 @@ RUN pacman -Syu --noconfirm \
     glib2 \
     glib2-devel \
     gtk3 \
-    gtk2 \
     qt5-base \
     qt6-base \
     libappindicator-gtk3 \
