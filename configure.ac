@@ -253,7 +253,23 @@ dnl  Check for im-nimf-gtk
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(IM_NIMF_GTK3_DEPS, [gtk+-3.0 gdk-x11-3.0])
-PKG_CHECK_MODULES(IM_NIMF_GTK2_DEPS, [gtk+-2.0])
+
+dnl Check for GTK2 support (optional, as it's no longer available in some distros)
+AC_ARG_ENABLE([gtk2],
+  AS_HELP_STRING([--enable-gtk2], [Enable GTK2 support (default: auto)]),
+  [enable_gtk2=$enableval],
+  [enable_gtk2=auto])
+
+if test "x$enable_gtk2" != "xno"; then
+  PKG_CHECK_MODULES(IM_NIMF_GTK2_DEPS, [gtk+-2.0], [have_gtk2=yes], [have_gtk2=no])
+  if test "x$enable_gtk2" = "xyes" -a "x$have_gtk2" = "xno"; then
+    AC_MSG_ERROR([GTK2 support requested but not found])
+  fi
+else
+  have_gtk2=no
+fi
+
+AM_CONDITIONAL([HAVE_GTK2], [test "x$have_gtk2" = "xyes"])
 
 dnl Check for GTK4 support
 AC_ARG_ENABLE([gtk4],
@@ -301,17 +317,20 @@ if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
 fi
 
-GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
-GTK2_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-2.0`
-AC_SUBST(GTK2_LIBDIR)
-AC_SUBST(GTK2_BINARY_VERSION)
-AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
-              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
-              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
+dnl GTK2 support is now optional
+if test "x$have_gtk2" = "xyes"; then
+  GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
+  GTK2_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-2.0`
+  AC_SUBST(GTK2_LIBDIR)
+  AC_SUBST(GTK2_BINARY_VERSION)
+  AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
+                [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
+                [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
 /usr/lib/x86_64-linux-gnu/libgtk2.0-0t64:/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
 /usr/lib/aarch64-linux-gnu/libgtk2.0-0t64:/usr/lib/aarch64-linux-gnu/libgtk2.0-0])
-if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
-  AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
+  if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
+    AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
+  fi
 fi
 
 if test "x$have_gtk4" = "xyes"; then

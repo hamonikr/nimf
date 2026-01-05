@@ -30,6 +30,7 @@ endif
 
 # for gtk2
 
+if HAVE_GTK2
 gtk2_im_moduledir = $(GTK2_LIBDIR)/gtk-2.0/$(GTK2_BINARY_VERSION)/immodules
 gtk2_im_module_LTLIBRARIES = im-nimf-gtk2.la
 
@@ -38,14 +39,17 @@ im_nimf_gtk2_la_CFLAGS   = $(IM_NIMF_GTK2_DEPS_CFLAGS) $(AM_CFLAGS) \
                            -Wno-error=deprecated-declarations
 im_nimf_gtk2_la_LDFLAGS  = $(IM_NIMF_GTK2_DEPS_LIBS) -avoid-version -module
 im_nimf_gtk2_la_LIBADD   = $(top_builddir)/libnimf/libnimf.la
+endif
 
 DISTCLEANFILES = Makefile.in
 
 install-data-hook:
 	chmod -x $(DESTDIR)$(gtk3_im_moduledir)/im-nimf-gtk3.so
-	chmod -x $(DESTDIR)$(gtk2_im_moduledir)/im-nimf-gtk2.so
 	rm -f $(DESTDIR)$(gtk3_im_moduledir)/im-nimf-gtk3.la
+if HAVE_GTK2
+	chmod -x $(DESTDIR)$(gtk2_im_moduledir)/im-nimf-gtk2.so
 	rm -f $(DESTDIR)$(gtk2_im_moduledir)/im-nimf-gtk2.la
+endif
 if HAVE_GTK4
 	chmod -x $(DESTDIR)$(gtk4_im_moduledir)/libim-nimf-gtk4.so
 	rm -f $(DESTDIR)$(gtk4_im_moduledir)/libim-nimf-gtk4.la
@@ -56,7 +60,9 @@ endif
 
 uninstall-hook:
 	rm -f $(DESTDIR)$(gtk3_im_moduledir)/im-nimf-gtk3.so
+if HAVE_GTK2
 	rm -f $(DESTDIR)$(gtk2_im_moduledir)/im-nimf-gtk2.so
+endif
 if HAVE_GTK4
 	rm -f $(DESTDIR)$(gtk4_im_moduledir)/libim-nimf-gtk4.so
 endif
