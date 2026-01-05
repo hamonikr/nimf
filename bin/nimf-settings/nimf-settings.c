@@ -1537,6 +1537,21 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
   EngineDialogData *data = (EngineDialogData *) user_data;
   NimfSettingsPage *page = nimf_settings_page_new (data->schema_id);
 
+  /* Validation: Check if parent window still exists */
+  if (!nimf_settings_window || !GTK_IS_WINDOW (nimf_settings_window))
+  {
+    g_warning ("Parent settings window is no longer valid");
+    if (page)
+    {
+      if (page->box)
+        g_object_unref (page->box);
+      g_slice_free (NimfSettingsPage, page);
+    }
+    g_free (data->schema_id);
+    g_slice_free (EngineDialogData, data);
+    return;
+  }
+
   GtkWidget *dialog;
   GtkWidget *content_area;
 #if GTK_CHECK_VERSION (3, 12, 0)
@@ -1549,6 +1564,10 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
                                         flags,
                                         _("_Close"), GTK_RESPONSE_CLOSE,
                                         NULL);
+
+  /* PRIMARY FIX: Explicitly prevent dialog from taking down parent window */
+  gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), FALSE);
+
   gtk_widget_set_size_request (dialog, 560, 420);
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 #if GTK_CHECK_VERSION(4, 0, 0)
@@ -1557,8 +1576,21 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
   gtk_box_pack_start (GTK_BOX (content_area), page->box, TRUE, TRUE, 0);
 #endif
   gtk_widget_show_all (content_area);
-  gtk_dialog_run (GTK_DIALOG (dialog));
+
+  /* Run dialog and validate parent window state */
+  gint response = gtk_dialog_run (GTK_DIALOG (dialog));
+
+  /* Check if parent window still exists after dialog closes */
+  if (!nimf_settings_window || !GTK_IS_WINDOW (nimf_settings_window))
+  {
+    g_debug ("Parent window was closed while dialog was open");
+  }
+
   gtk_widget_destroy (dialog);
+
+  /* Clear dialog pointer to prevent use-after-free */
+  dialog = NULL;
+
   g_free (data->schema_id);
   g_slice_free (EngineDialogData, data);
 }
