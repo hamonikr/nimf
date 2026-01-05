@@ -1532,6 +1532,20 @@ typedef struct
 } EngineDialogData;
 
 static void
+engine_dialog_data_free (gpointer data, GClosure *closure)
+{
+  EngineDialogData *dialog_data = (EngineDialogData *) data;
+
+  if (dialog_data == NULL)
+    return;
+
+  if (dialog_data->schema_id)
+    g_free (dialog_data->schema_id);
+
+  g_slice_free (EngineDialogData, dialog_data);
+}
+
+static void
 on_engine_settings_clicked (GtkButton *button, gpointer user_data)
 {
   EngineDialogData *data = (EngineDialogData *) user_data;
@@ -1547,8 +1561,7 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
         g_object_unref (page->box);
       g_slice_free (NimfSettingsPage, page);
     }
-    g_free (data->schema_id);
-    g_slice_free (EngineDialogData, data);
+    /* NOTE: data is NOT freed here - it will be auto-freed when button is destroyed */
     return;
   }
 
@@ -1565,7 +1578,7 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
                                         _("_Close"), GTK_RESPONSE_CLOSE,
                                         NULL);
 
-  /* PRIMARY FIX: Explicitly prevent dialog from taking down parent window */
+  /* FIX: Prevent dialog from taking down parent window when destroyed */
   gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), FALSE);
 
   gtk_widget_set_size_request (dialog, 560, 420);
@@ -1588,11 +1601,7 @@ on_engine_settings_clicked (GtkButton *button, gpointer user_data)
 
   gtk_widget_destroy (dialog);
 
-  /* Clear dialog pointer to prevent use-after-free */
-  dialog = NULL;
-
-  g_free (data->schema_id);
-  g_slice_free (EngineDialogData, data);
+  /* NOTE: data is NOT freed here - it will be auto-freed when button is destroyed */
 }
 
 static void
@@ -1678,8 +1687,10 @@ nimf_settings_build_engines_page (void)
     GtkWidget *settings_btn = gtk_button_new_with_label (_("Settings..."));
     EngineDialogData *data = g_slice_new0 (EngineDialogData);
     data->schema_id = g_strdup (schema_id);
-    g_signal_connect (settings_btn, "clicked",
-                      G_CALLBACK (on_engine_settings_clicked), data);
+    /* FIX: Use g_signal_connect_data to auto-free data when button is destroyed */
+    g_signal_connect_data (settings_btn, "clicked",
+                           G_CALLBACK (on_engine_settings_clicked), data,
+                           (GClosureNotify) engine_dialog_data_free, 0);
 
     // Only show toggle switch for engines that can be activated/deactivated
     GtkWidget *active_sw = NULL;
