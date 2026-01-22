@@ -85,7 +85,7 @@ check_dependencies() {
         print_info "Installing missing dependencies: ${missing_deps[*]}"
         
         case $OS in
-            ubuntu|debian|linuxmint|elementary|pop)
+            ubuntu|debian|linuxmint|elementary|pop|neon)
                 apt-get update && apt-get install -y "${missing_deps[@]}"
                 ;;
             fedora|rhel|centos)
@@ -167,7 +167,7 @@ install_debian() {
                 fi
             fi
             ;;
-        ubuntu|linuxmint|elementary|pop|hamonikr)
+        ubuntu|linuxmint|elementary|pop|hamonikr|neon)
             pkg_suffix="ubuntu.2404"  # Use Ubuntu 24.04 packages as default
             # ARM64 support check for Ubuntu
             if [[ "$pkg_arch" == "arm64" ]]; then
@@ -757,7 +757,7 @@ main() {
     
     # Install based on OS
     case $OS in
-        ubuntu|debian|linuxmint|elementary|pop|hamonikr)
+        ubuntu|debian|linuxmint|elementary|pop|hamonikr|neon)
             install_debian "$VERSION" || {
                 print_error "Failed to install on Debian/Ubuntu-based system"
                 exit 1
