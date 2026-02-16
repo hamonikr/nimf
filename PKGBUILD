@@ -8,10 +8,10 @@ arch=('any')
 url="https://github.com/hamonikr/nimf"
 license=('LGPL3')
 makedepends=('binutils' 'autoconf' 'automake' 'gcc' 'make' 'glib2' 'glib2-devel' 'intltool'
-             'gtk3' 'gtk2' 'qt5-base' 'qt6-base' 'libappindicator-gtk3' 'libayatana-appindicator' 'librsvg'
+             'gtk3' 'qt5-base' 'qt6-base' 'libappindicator-gtk3' 'libayatana-appindicator' 'librsvg'
              'noto-fonts-cjk' 'anthy' 'librime' 'libxkbcommon'
              'wayland' 'wayland-protocols' 'libxklavier' 'm17n-lib' 'm17n-db' 'gtk-doc')
-depends=('glib2' 'gtk3' 'gtk2' 'qt5-base' 'qt6-base' 'libappindicator-gtk3'
+depends=('glib2' 'gtk3' 'qt5-base' 'qt6-base' 'libappindicator-gtk3'
          'anthy' 'librime' 'libxkbcommon' 'wayland' 'libxklavier' 'm17n-lib'
          'm17n-db')
 provides=('nimf-git')
