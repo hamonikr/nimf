@@ -1,3 +1,10 @@
+nimf (1.4.16) stable; urgency=medium
+
+  * Release v1.4.16
+  *   * Correct installation logic in install script
+
+ -- HamoniKR <pkg@hamonikr.org>  Mon, 16 Mar 2026 13:20:09 +0900
+
 nimf (1.4.15) stable; urgency=medium
 
   * Release v1.4.15
