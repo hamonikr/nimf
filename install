@@ -268,25 +268,16 @@ install_debian() {
     fi
     
     print_info "Installing packages..."
-    
-    # Install packages with better error handling
-    if ! dpkg -i *.deb 2>/dev/null; then
-        print_info "Package installation encountered dependency issues, resolving..."
 
-        # Fix dependencies with error handling
-        print_info "Resolving dependencies..."
-        if ! apt-get install -f -y; then
-            print_error "Failed to resolve package dependencies"
-            print_info "You may need to run: sudo apt-get install -f"
-            exit 1
-        fi
+    # First, unpack packages (may fail due to dependencies, but that's OK)
+    dpkg --unpack *.deb 2>/dev/null || true
 
-        # Try installing packages again after dependency resolution
-        print_info "Retrying package installation..."
-        if ! dpkg -i *.deb 2>/dev/null; then
-            print_error "Failed to install packages even after dependency resolution"
-            exit 1
-        fi
+    # Then resolve dependencies and complete installation
+    print_info "Resolving dependencies and completing installation..."
+    if ! apt-get install -f -y; then
+        print_error "Failed to resolve package dependencies"
+        print_info "You may need to run: sudo apt-get install -f"
+        exit 1
     fi
 
     # Verify installation
