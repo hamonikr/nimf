@@ -173,6 +173,13 @@ install_debian() {
             if [[ "$pkg_arch" == "arm64" ]]; then
                 pkg_suffix="ubuntu.2404.arm64"
             fi
+            # Ubuntu 24.10 (questing) support - use 24.04 packages for compatibility
+            if [[ "$OS_CODENAME" == "questing" ]]; then
+                pkg_suffix="ubuntu.2404"
+                if [[ "$pkg_arch" == "arm64" ]]; then
+                    pkg_suffix="ubuntu.2404.arm64"
+                fi
+            fi
             ;;
         *)
             pkg_suffix="ubuntu.2404"
