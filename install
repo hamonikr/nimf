@@ -276,20 +276,32 @@ install_debian() {
     
     print_info "Installing packages..."
 
-    # First, unpack packages (may fail due to dependencies, but that's OK)
-    dpkg --unpack *.deb 2>/dev/null || true
+    # Install local packages directly so the downloaded release replaces any
+    # older package already installed on the system.
+    if ! apt-get install -y ./*.deb; then
+        print_info "Direct package install failed, trying dpkg/apt fallback..."
 
-    # Then resolve dependencies and complete installation
-    print_info "Resolving dependencies and completing installation..."
-    if ! apt-get install -f -y; then
-        print_error "Failed to resolve package dependencies"
-        print_info "You may need to run: sudo apt-get install -f"
-        exit 1
+        # First, unpack packages (may fail due to dependencies, but that's OK)
+        dpkg --unpack *.deb 2>/dev/null || true
+
+        # Then resolve dependencies and complete installation
+        print_info "Resolving dependencies and completing installation..."
+        if ! apt-get install -f -y; then
+            print_error "Failed to resolve package dependencies"
+            print_info "You may need to run: sudo apt-get install -f"
+            exit 1
+        fi
     fi
 
-    # Verify installation
-    if ! dpkg -l | grep -q nimf; then
+    # Verify that the installed package matches the requested release, not just
+    # that some older nimf package happens to be present.
+    local installed_version
+    installed_version=$(dpkg-query -W -f='${Version}' nimf 2>/dev/null || true)
+    if [[ -z "$installed_version" || ! "$installed_version" =~ ^${version_num}([-.].*)?$ ]]; then
         print_error "Nimf installation verification failed"
+        print_info "Expected version: ${version_num}"
+        print_info "Installed version: ${installed_version:-not installed}"
+        print_info "Try removing the old package first: sudo apt remove --purge nimf nimf-i18n"
         exit 1
     fi
     
