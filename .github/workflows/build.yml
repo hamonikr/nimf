@@ -21,12 +21,28 @@ jobs:
         dockerfile: [arch.Dockerfile, fedora.40.Dockerfile, fedora.latest.Dockerfile, opensuse.Dockerfile, ubuntu.2204.Dockerfile, ubuntu.2404.Dockerfile, debian.bookworm.Dockerfile, debian.trixie.Dockerfile, debian.sid.Dockerfile]
 
     steps:
-    
+      - name: Check release bump commit
+        id: skip_check
+        shell: bash
+        run: |
+          skip_build=false
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && [ -f "$GITHUB_EVENT_PATH" ]; then
+            commit_message=$(jq -r '.head_commit.message // ""' "$GITHUB_EVENT_PATH")
+            if [[ "$commit_message" == chore:\ bump\ version\ to\ v* ]]; then
+              skip_build=true
+              echo "Detected release bump commit: $commit_message"
+            fi
+          fi
+
+          echo "skip_build=$skip_build" >> "$GITHUB_OUTPUT"
+
       - name: Checkout source code
+        if: steps.skip_check.outputs.skip_build != 'true'
         uses: actions/checkout@v3
         with:
           submodules: recursive
           
       - name: Build docker test image
+        if: steps.skip_check.outputs.skip_build != 'true'
         run: docker build . --file .docker/${{ matrix.dockerfile }}
         continue-on-error: ${{ matrix.dockerfile == 'arch.Dockerfile' }}
