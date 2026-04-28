@@ -32,8 +32,8 @@ fi
 
 # master와 dev 브랜치의 차이 확인
 git fetch origin master dev
-MASTER_HEAD=$(git rev-parse origin/master)
-DEV_HEAD=$(git rev-parse origin/dev)
+MASTER_HEAD=$(git rev-parse master)
+DEV_HEAD=$(git rev-parse dev)
 
 if [ "$MASTER_HEAD" == "$DEV_HEAD" ]; then
     echo -e "${RED}Error: master 브랜치와 dev 브랜치의 내용이 동일합니다.${NC}"
@@ -41,17 +41,19 @@ if [ "$MASTER_HEAD" == "$DEV_HEAD" ]; then
     exit 1
 fi
 
-# 현재 버전 가져오기 (configure.ac에서 추출)
-CURRENT_VERSION_FROM_CONFIG=$(grep "AC_INIT" configure.ac | sed -n 's/AC_INIT(nimf, \([^)]*\))/\1/p')
-CURRENT_VERSION="v$CURRENT_VERSION_FROM_CONFIG"
+# 현재 릴리즈 버전은 최신 태그를 기준으로 삼는다.
+# configure.ac 는 개발 중 미리 올려둔 버전과 다를 수 있으므로
+# 릴리즈 기준점으로는 git tag 를 신뢰한다.
+CURRENT_VERSION=$(git tag --sort=-v:refname | grep '^v' | head -n1 || echo "v0.0.0")
+if [ "$CURRENT_VERSION" = "v0.0.0" ]; then
+    echo -e "${RED}Error: 릴리즈 태그를 찾을 수 없습니다.${NC}"
+    exit 1
+fi
 
-# Git 태그에서도 확인하여 더 높은 버전이 있으면 사용
-GIT_VERSION=$(git tag --sort=-v:refname | grep '^v' | head -n1 || echo "v0.0.0")
-if [ "$GIT_VERSION" != "v0.0.0" ]; then
-    # 버전 비교 (간단한 비교)
-    if [[ "$GIT_VERSION" > "$CURRENT_VERSION" ]]; then
-        CURRENT_VERSION="$GIT_VERSION"
-    fi
+CURRENT_VERSION_FROM_CONFIG=$(grep "AC_INIT" configure.ac | sed -n 's/AC_INIT(nimf, \([^)]*\))/\1/p')
+if [ "v$CURRENT_VERSION_FROM_CONFIG" != "$CURRENT_VERSION" ]; then
+    echo -e "${YELLOW}경고: configure.ac 버전(v$CURRENT_VERSION_FROM_CONFIG)과 최신 태그(${CURRENT_VERSION})가 다릅니다.${NC}"
+    echo -e "${YELLOW}릴리즈는 최신 태그를 기준으로 계속 진행합니다.${NC}"
 fi
 
 # 버전 증가 함수
@@ -191,11 +193,15 @@ if [ -f "debian/changelog" ]; then
     # 현재 배포판 이름 가져오기 (기본값: unstable)
     DISTRIBUTION=$(head -n1 debian/changelog | awk '{print $3}' | tr -d ';' || echo "unstable")
     
-    # 변경사항 수집 (master와 dev 브랜치 간 차이)
+    # 변경사항 수집 (최신 릴리즈 태그 이후의 커밋)
     CHANGELOG_ENTRIES=""
     while IFS= read -r line; do
         # 커밋 메시지에서 feat:, fix:, chore: 등을 제거하고 정리
         CLEAN_MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ //' | sed -E 's/^(feat|fix|chore|docs|style|refactor|test|build):\s*//')
+        # 버전 bump 커밋은 릴리즈 노트에서 제외
+        if [[ "$CLEAN_MSG" =~ ^bump\ version\ to\ v ]]; then
+            continue
+        fi
         if [ -n "$CLEAN_MSG" ]; then
             # 이미 *로 시작하는지 확인하여 중복 방지
             if [[ "$CLEAN_MSG" =~ ^\*\s* ]]; then
@@ -204,7 +210,7 @@ if [ -f "debian/changelog" ]; then
                 CHANGELOG_ENTRIES="${CHANGELOG_ENTRIES}  * ${CLEAN_MSG}\n"
             fi
         fi
-    done < <(git --no-pager log --oneline origin/master..origin/dev --pretty=format:"%h %s")
+    done < <(git --no-pager log --no-merges --oneline "${CURRENT_VERSION}..HEAD" --pretty=format:"%h %s")
     
     # dch 명령어가 있는지 확인
     if command -v dch &> /dev/null; then
@@ -252,7 +258,7 @@ fi
 
 # 변경사항 요약 표시
 echo -e "\n${YELLOW}변경사항 요약:${NC}"
-git --no-pager log --oneline origin/master..origin/dev
+git --no-pager log --no-merges --oneline "${CURRENT_VERSION}..HEAD"
 
 echo -e "\n${YELLOW}현재 버전: ${NC}$CURRENT_VERSION"
 echo -e "${YELLOW}새로운 버전: ${NC}$NEW_VERSION"
