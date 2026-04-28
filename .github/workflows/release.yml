@@ -29,9 +29,6 @@ jobs:
           - dockerfile: fedora.latest.Dockerfile
             platform: fedora.latest
             arch: amd64
-          - dockerfile: opensuse.Dockerfile
-            platform: opensuse
-            arch: amd64
           - dockerfile: arch.Dockerfile
             platform: arch
             arch: amd64
@@ -176,8 +173,11 @@ jobs:
           **Supported Distributions & Architectures:**
           - Ubuntu 24.04+ / Debian 12+ (Bookworm/Trixie) - x86_64, ARM64
           - Fedora 33+ / CentOS / RHEL - x86_64, ARM64
-          - openSUSE Leap 15.6+ - x86_64, ARM64
           - Arch Linux / Manjaro - x86_64, ARM64
+
+          > openSUSE packages are temporarily excluded from this release because the
+          > upstream dependency solver is currently unstable in CI. They will return
+          > once the build is pinned or stabilized.
           
           ---
           
