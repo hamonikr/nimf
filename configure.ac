@@ -218,21 +218,22 @@ AS_IF([test "x$has_qt6" = "xyes"], [
 
   case `pkg-config --variable=includedir Qt6Core` in
     */qt6)
+      # NOTE:
+      #   Debian/Ubuntu multiarch installs Qt plugins under architecture-specific
+      #   lib directories (e.g. /usr/lib/aarch64-linux-gnu on arm64).
+      #   Hardcoding x86_64 paths breaks ARM64 packaging (see issue #115).
+      #   Therefore we always derive the correct directory from QT6_LIB_DIR.
       if test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xubuntu22.04"; then
         AC_MSG_NOTICE("Found Ubuntu 22.04")
-        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
       elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xubuntu24.04"; then
         AC_MSG_NOTICE("Found Ubuntu 24.04")
-        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
       elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xhamonikr7.0"; then
         AC_MSG_NOTICE("Found HamoniKR 7.0")
-        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
       elif test "x$DISTRIB_ID$DISTRIB_RELEASE" = "xhamonikr8.0"; then
         AC_MSG_NOTICE("Found HamoniKR 8.0")
-        QT6_IM_MODULE_DIR=/usr/lib/x86_64-linux-gnu/qt6/plugins/platforminputcontexts
-      else
-        QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts      
       fi
+
+      QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt6/plugins/platforminputcontexts
       ;;
     */qt)
       QT6_IM_MODULE_DIR=$QT6_LIB_DIR/qt/plugins/platforminputcontexts
