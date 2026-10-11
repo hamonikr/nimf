@@ -312,14 +312,17 @@ nimf_server_finalize (GObject *object)
   GHashTableIter  iter;
   gpointer        service;
 
-  g_ptr_array_free (server->priv->ics, FALSE);
-
+  /* Stop all services before releasing input contexts. */
   g_hash_table_iter_init (&iter, server->priv->services);
   while (g_hash_table_iter_next (&iter, NULL, &service))
     nimf_service_stop (NIMF_SERVICE (service));
 
   g_hash_table_unref (server->priv->modules);
   g_hash_table_unref (server->priv->services);
+
+  /* Input contexts may be finalized while destroying services. */
+  g_ptr_array_free (server->priv->ics, TRUE);
+  server->priv->ics = NULL;
 
   if (server->priv->engines)
   {

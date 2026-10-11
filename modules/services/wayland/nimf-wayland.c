@@ -309,6 +309,34 @@ input_method_keyboard_keymap (void               *data,
 }
 
 static void
+input_method_keyboard_enter (void *data,
+                             struct wl_keyboard *keyboard,
+                             uint32_t serial,
+                             struct wl_surface *surface,
+                             struct wl_array *keys)
+{
+  /* Intentionally ignored */
+}
+
+static void
+input_method_keyboard_leave (void *data,
+                             struct wl_keyboard *keyboard,
+                             uint32_t serial,
+                             struct wl_surface *surface)
+{
+  /* Intentionally ignored */
+}
+
+static void
+input_method_keyboard_repeat_info (void *data,
+                                   struct wl_keyboard *keyboard,
+                                   int32_t rate,
+                                   int32_t delay)
+{
+  /* Intentionally ignored */
+}
+
+static void
 input_method_keyboard_key (void *data,
                            struct wl_keyboard *wl_keyboard,
                            uint32_t serial,
@@ -404,17 +432,22 @@ input_method_keyboard_modifiers (void *data,
   if (mask & wayland->meta_mask)
     wayland->modifiers |= NIMF_META_MASK;
 
-  zwp_input_method_context_v1_modifiers (context, serial,
-                                         mods_depressed, mods_depressed,
-                                         mods_latched, group);
+    zwp_input_method_context_v1_modifiers (
+    context,
+    serial,
+    mods_depressed,
+    mods_latched,
+    mods_locked,
+    group);
 }
 
 static const struct wl_keyboard_listener input_method_keyboard_listener = {
   input_method_keyboard_keymap,
-  NULL, /* enter */
-  NULL, /* leave */
+  input_method_keyboard_enter,
+  input_method_keyboard_leave,
   input_method_keyboard_key,
-  input_method_keyboard_modifiers
+  input_method_keyboard_modifiers,
+  input_method_keyboard_repeat_info
 };
 
 static void

@@ -64,7 +64,22 @@ nimf_wayland_ic_emit_preedit_changed (NimfServiceIC    *ic,
 
   NimfWayland *wayland = NIMF_WAYLAND_IC (ic)->wayland;
 
-  zwp_input_method_context_v1_preedit_cursor (wayland->context, cursor_pos);
+  /* Convert character offset to UTF-8 byte offset for Wayland. */
+  gint cursor_byte_pos = cursor_pos;
+
+  if (cursor_pos >= 0 && preedit_string != NULL)
+  {
+    glong char_len = g_utf8_strlen (preedit_string, -1);
+    glong safe_pos = MIN ((glong) cursor_pos, char_len);
+
+    cursor_byte_pos =
+      (gint) (g_utf8_offset_to_pointer (preedit_string, safe_pos)
+              - preedit_string);
+  }
+
+  zwp_input_method_context_v1_preedit_cursor (
+      wayland->context, cursor_byte_pos);
+
   zwp_input_method_context_v1_preedit_string (wayland->context,
                wayland->serial, preedit_string, preedit_string);
 }
